@@ -34,7 +34,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "msg_wait"
                 }
@@ -43,7 +43,8 @@
                 {
                     "destination_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                     "exit_uuid": "8e3752c7-8c30-4d9c-9a7f-b04a4bf730ac",
-                    "flow_uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                    "flow_uuid": "733ceec6-955d-4bf6-81da-ba067670e840",
+                    "time": "2018-07-06T12:30:21.123456789Z"
                 }
             ],
             "session": {
@@ -155,7 +156,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "msg_wait"
                             }
@@ -166,7 +167,7 @@
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2018-07-06T12:30:24.123456789Z",
+                        "modified_on": "2018-07-06T12:30:25.123456789Z",
                         "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                         "path": [
                             {
@@ -176,7 +177,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }
@@ -233,13 +234,13 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "created_on": "2018-07-06T12:30:30.123456789Z",
                     "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_expired"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "msg": {
                         "text": "What's your middle name?",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -248,7 +249,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:35.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_wait"
                 }
@@ -257,12 +258,14 @@
                 {
                     "destination_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                     "exit_uuid": "90866618-58a2-4552-b91a-970b91dfa693",
-                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
+                    "time": "2018-07-06T12:30:32.123456789Z"
                 },
                 {
                     "destination_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                     "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
-                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                    "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
+                    "time": "2018-07-06T12:30:36.123456789Z"
                 }
             ],
             "session": {
@@ -312,12 +315,12 @@
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T15:30:26.123456789Z",
+                        "expires_on": "2018-07-06T15:30:27.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2018-07-06T12:30:28.123456789Z",
+                        "modified_on": "2018-07-06T12:30:29.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -343,7 +346,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -352,18 +355,18 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T14:30:26.123456789Z",
+                        "expires_on": "2018-07-06T14:30:27.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2018-07-06T12:30:37.123456789Z",
+                        "modified_on": "2018-07-06T12:30:40.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -373,13 +376,13 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             }
@@ -400,24 +403,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "exited_on": "2018-07-06T12:30:26.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                         "path": [
                             {
@@ -427,7 +430,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }
@@ -484,13 +487,13 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:41.123456789Z",
+                    "created_on": "2018-07-06T12:30:44.123456789Z",
                     "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_expired"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "created_on": "2018-07-06T12:30:48.123456789Z",
                     "msg": {
                         "text": "What's your last name?",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -499,7 +502,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:47.123456789Z",
+                    "created_on": "2018-07-06T12:30:52.123456789Z",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_wait"
                 }
@@ -508,12 +511,14 @@
                 {
                     "destination_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                     "exit_uuid": "4e1122b2-e96d-4a8b-9e55-ae47d9d9355c",
-                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
+                    "time": "2018-07-06T12:30:46.123456789Z"
                 },
                 {
                     "destination_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                     "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
-                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
+                    "time": "2018-07-06T12:30:50.123456789Z"
                 }
             ],
             "session": {
@@ -562,7 +567,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:48.123456789Z",
                                 "msg": {
                                     "text": "What's your last name?",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -571,18 +576,18 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:47.123456789Z",
+                                "created_on": "2018-07-06T12:30:52.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T13:30:39.123456789Z",
+                        "expires_on": "2018-07-06T13:30:42.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2018-07-06T12:30:49.123456789Z",
+                        "modified_on": "2018-07-06T12:30:54.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -591,13 +596,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:43.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:47.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:51.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             }
@@ -620,7 +625,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -629,24 +634,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "created_on": "2018-07-06T12:30:44.123456789Z",
                                 "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:41.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test B",
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "modified_on": "2018-07-06T12:30:45.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -656,13 +661,13 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             }
@@ -683,24 +688,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "exited_on": "2018-07-06T12:30:26.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                         "path": [
                             {
@@ -710,7 +715,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }
@@ -767,7 +772,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:51.123456789Z",
+                    "created_on": "2018-07-06T12:30:56.123456789Z",
                     "run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_expired"
@@ -820,7 +825,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:48.123456789Z",
                                 "msg": {
                                     "text": "What's your last name?",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -829,24 +834,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:47.123456789Z",
+                                "created_on": "2018-07-06T12:30:52.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:51.123456789Z",
+                                "created_on": "2018-07-06T12:30:56.123456789Z",
                                 "run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:50.123456789Z",
+                        "exited_on": "2018-07-06T12:30:55.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test A",
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2018-07-06T12:30:52.123456789Z",
+                        "modified_on": "2018-07-06T12:30:57.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -855,13 +860,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:43.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:47.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:51.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             }
@@ -884,7 +889,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -893,24 +898,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:41.123456789Z",
+                                "created_on": "2018-07-06T12:30:44.123456789Z",
                                 "run_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:41.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test B",
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "modified_on": "2018-07-06T12:30:45.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -920,13 +925,13 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             }
@@ -947,24 +952,24 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "run_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_expired"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:25.123456789Z",
+                        "exited_on": "2018-07-06T12:30:26.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Expiration Test C",
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "parent_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                         "path": [
                             {
@@ -974,7 +979,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }

@@ -2,7 +2,9 @@ package engine
 
 import (
 	"testing"
+	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -17,6 +19,8 @@ import (
 
 func TestSprint(t *testing.T) {
 	env := envs.NewBuilder().Build()
+
+	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	source, err := static.NewSource([]byte(`{
 		"flows": [
@@ -79,6 +83,8 @@ func TestSprint(t *testing.T) {
 	event1 := events.NewError(errors.New("error 1"))
 	event2 := events.NewError(errors.New("error 1"))
 
+	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)))
+
 	sprint := newEmptySprint()
 	sprint.logSegment(flow, node1Exit1, node2)
 	sprint.logModifier(mod1)
@@ -87,17 +93,25 @@ func TestSprint(t *testing.T) {
 	sprint.logModifier(mod2)
 	sprint.logEvent(event2)
 
+	var seg1 flows.Segment = &segment{flow, node1Exit1, node2, time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)}
+	var seg2 flows.Segment = &segment{flow, node2Exit1, node3, time.Date(2021, 12, 8, 10, 13, 31, 0, time.UTC)}
+
 	assert.Equal(t, []flows.Modifier{mod1, mod2}, sprint.Modifiers())
 	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
-	assert.Equal(t, []flows.Segment{&segment{flow, node1Exit1, node2}, &segment{flow, node2Exit1, node3}}, sprint.Segments())
+	assert.Equal(t, []flows.Segment{seg1, seg2}, sprint.Segments())
 
 	assert.Equal(t, flow, sprint.Segments()[0].Flow())
 	assert.Equal(t, node1Exit1, sprint.Segments()[0].Exit())
 	assert.Equal(t, node2, sprint.Segments()[0].Destination())
+	assert.Equal(t, time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), sprint.Segments()[0].Time())
 	assert.Equal(t,
-		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61"}`,
+		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61","time":"2021-12-08T10:13:30Z"}`,
 		string(jsonx.MustMarshal(sprint.Segments()[0])),
 	)
 
-	assert.Equal(t, sprint, NewSprint([]flows.Modifier{mod1, mod2}, []flows.Event{event1, event2}, []flows.Segment{&segment{flow, node1Exit1, node2}, &segment{flow, node2Exit1, node3}}))
+	assert.Equal(t, sprint, NewSprint(
+		[]flows.Modifier{mod1, mod2},
+		[]flows.Event{event1, event2},
+		[]flows.Segment{seg1, seg2},
+	))
 }

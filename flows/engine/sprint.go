@@ -2,7 +2,9 @@ package engine
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -11,16 +13,19 @@ type segment struct {
 	flow        flows.Flow
 	exit        flows.Exit
 	destination flows.Node
+	time        time.Time
 }
 
 func (s *segment) Flow() flows.Flow        { return s.flow }
 func (s *segment) Exit() flows.Exit        { return s.exit }
 func (s *segment) Destination() flows.Node { return s.destination }
+func (s *segment) Time() time.Time         { return s.time }
 
 type segmentEnvelope struct {
 	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
 	ExitUUID        flows.ExitUUID  `json:"exit_uuid"`
 	DestinationUUID flows.NodeUUID  `json:"destination_uuid"`
+	Time            time.Time       `json:"time"`
 }
 
 func (s *segment) MarshalJSON() ([]byte, error) {
@@ -28,6 +33,7 @@ func (s *segment) MarshalJSON() ([]byte, error) {
 		FlowUUID:        s.flow.UUID(),
 		ExitUUID:        s.exit.UUID(),
 		DestinationUUID: s.destination.UUID(),
+		Time:            s.time,
 	})
 }
 
@@ -66,7 +72,7 @@ func (s *sprint) logEvent(e flows.Event) {
 }
 
 func (s *sprint) logSegment(flow flows.Flow, exit flows.Exit, dest flows.Node) {
-	s.segments = append(s.segments, &segment{flow: flow, exit: exit, destination: dest})
+	s.segments = append(s.segments, &segment{flow: flow, exit: exit, destination: dest, time: dates.Now()})
 }
 
 var _ flows.Sprint = (*sprint)(nil)
