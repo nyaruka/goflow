@@ -1,3 +1,9 @@
+v0.143.0
+----------
+ * For random router results, input should be raw random number, value is the bucket
+ * Include segments with no destination
+ * Add operand and time to flows.Segment
+
 v0.142.1
 ----------
  * Put back engine.NewSprint which mailroom uses for surveyor submissions
