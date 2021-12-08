@@ -190,6 +190,7 @@
                     "destination_uuid": "1db62b2a-7885-48f8-abaf-43074c6201b5",
                     "exit_uuid": "67a730a1-20a4-42c7-9da5-b093e859c24e",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "operand": "Bobby",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
@@ -427,6 +428,7 @@
                     "destination_uuid": "050d338f-33d5-4c95-8a55-d4702c8365f5",
                     "exit_uuid": "47063adc-04c6-478f-b13d-fad09f383e1e",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "operand": "123",
                     "time": "2018-07-06T12:30:40.123456789Z"
                 },
                 {
@@ -732,6 +734,7 @@
                     "destination_uuid": "4c6e76f3-c91b-4a3c-b5fc-998e8bfd4bd8",
                     "exit_uuid": "16772a2d-7302-4b4d-af6f-0a9eb7b68f1f",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "operand": "18",
                     "time": "2018-07-06T12:30:58.123456789Z"
                 },
                 {
@@ -744,7 +747,13 @@
                     "destination_uuid": "0e260a3e-d506-4c21-aded-1eb63bbfd911",
                     "exit_uuid": "83b81834-0287-4428-991d-c2a9fbfdff77",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "operand": "18",
                     "time": "2018-07-06T12:31:08.123456789Z"
+                },
+                {
+                    "exit_uuid": "c6f4db9d-cfa5-46a0-a90d-0d4314a13188",
+                    "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "time": "2018-07-06T12:31:12.123456789Z"
                 }
             ],
             "session": {
@@ -930,13 +939,13 @@
                                 "type": "contact_groups_changed"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:12.123456789Z",
+                        "exited_on": "2018-07-06T12:31:13.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Registration",
                             "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
                         },
-                        "modified_on": "2018-07-06T12:31:12.123456789Z",
+                        "modified_on": "2018-07-06T12:31:13.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

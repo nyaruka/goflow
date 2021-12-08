@@ -268,7 +268,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:37.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -287,13 +287,25 @@
                     "destination_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
                     "exit_uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d",
                     "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+                    "operand": "Ryan Lewis",
                     "time": "2018-07-06T12:30:28.123456789Z"
+                },
+                {
+                    "exit_uuid": "80aa94f5-1c2f-4286-b2ec-5a3bdaf9c7d0",
+                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+                    "time": "2018-07-06T12:30:32.123456789Z"
                 },
                 {
                     "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                     "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-                    "time": "2018-07-06T12:30:35.123456789Z"
+                    "operand": "completed",
+                    "time": "2018-07-06T12:30:36.123456789Z"
+                },
+                {
+                    "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "time": "2018-07-06T12:30:40.123456789Z"
                 }
             ],
             "session": {
@@ -376,7 +388,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:37.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -390,13 +402,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:39.123456789Z",
+                        "exited_on": "2018-07-06T12:30:41.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:39.123456789Z",
+                        "modified_on": "2018-07-06T12:30:41.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -405,7 +417,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:36.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
                                 "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -474,13 +486,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:32.123456789Z",
+                        "exited_on": "2018-07-06T12:30:33.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2018-07-06T12:30:32.123456789Z",
+                        "modified_on": "2018-07-06T12:30:33.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {

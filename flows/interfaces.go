@@ -188,7 +188,7 @@ type Router interface {
 
 	Validate(Flow, []Exit) error
 	AllowTimeout() bool
-	Route(FlowRun, Step, EventCallback) (ExitUUID, error)
+	Route(FlowRun, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
 
 	EnumerateTemplates(Localization, func(envs.Language, string))
@@ -335,6 +335,7 @@ type Engine interface {
 type Segment interface {
 	Flow() Flow
 	Exit() Exit
+	Operand() string
 	Destination() Node
 	Time() time.Time
 }

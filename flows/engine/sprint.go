@@ -12,27 +12,36 @@ import (
 type segment struct {
 	flow        flows.Flow
 	exit        flows.Exit
+	operand     string
 	destination flows.Node
 	time        time.Time
 }
 
 func (s *segment) Flow() flows.Flow        { return s.flow }
 func (s *segment) Exit() flows.Exit        { return s.exit }
+func (s *segment) Operand() string         { return s.operand }
 func (s *segment) Destination() flows.Node { return s.destination }
 func (s *segment) Time() time.Time         { return s.time }
 
 type segmentEnvelope struct {
 	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
 	ExitUUID        flows.ExitUUID  `json:"exit_uuid"`
-	DestinationUUID flows.NodeUUID  `json:"destination_uuid"`
+	Operand         string          `json:"operand,omitempty"`
+	DestinationUUID flows.NodeUUID  `json:"destination_uuid,omitempty"`
 	Time            time.Time       `json:"time"`
 }
 
 func (s *segment) MarshalJSON() ([]byte, error) {
+	var destinationUUID flows.NodeUUID
+	if s.destination != nil {
+		destinationUUID = s.destination.UUID()
+	}
+
 	return json.Marshal(&segmentEnvelope{
 		FlowUUID:        s.flow.UUID(),
 		ExitUUID:        s.exit.UUID(),
-		DestinationUUID: s.destination.UUID(),
+		Operand:         s.operand,
+		DestinationUUID: destinationUUID,
 		Time:            s.time,
 	})
 }
@@ -71,8 +80,8 @@ func (s *sprint) logEvent(e flows.Event) {
 	s.events = append(s.events, e)
 }
 
-func (s *sprint) logSegment(flow flows.Flow, exit flows.Exit, dest flows.Node) {
-	s.segments = append(s.segments, &segment{flow: flow, exit: exit, destination: dest, time: dates.Now()})
+func (s *sprint) logSegment(flow flows.Flow, exit flows.Exit, operand string, dest flows.Node) {
+	s.segments = append(s.segments, &segment{flow: flow, exit: exit, operand: operand, destination: dest, time: dates.Now()})
 }
 
 var _ flows.Sprint = (*sprint)(nil)

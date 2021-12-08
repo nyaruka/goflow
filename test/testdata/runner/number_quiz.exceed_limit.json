@@ -199,12 +199,14 @@
                     "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
                     "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "3",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
                     "destination_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
                     "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "1",
                     "time": "2018-07-06T12:30:22.123456789Z"
                 },
                 {
@@ -457,12 +459,14 @@
                     "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
                     "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "5",
                     "time": "2018-07-06T12:30:40.123456789Z"
                 },
                 {
                     "destination_uuid": "5bd2bd47-3f5f-4ae3-8406-45033fd95f54",
                     "exit_uuid": "e019307e-8860-4cba-a289-55b1405d75e3",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "2",
                     "time": "2018-07-06T12:30:42.123456789Z"
                 },
                 {
@@ -766,13 +770,20 @@
                     "destination_uuid": "a73e154a-bc5c-4791-9960-7edba635848f",
                     "exit_uuid": "08172910-1167-460a-a168-7afe746f424a",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "22",
                     "time": "2018-07-06T12:31:00.123456789Z"
                 },
                 {
                     "destination_uuid": "de66d8f7-90b2-4c42-90bb-c6610ddad071",
                     "exit_uuid": "b0cf0ca5-5736-4ecb-8304-4c508e2a5b65",
                     "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "operand": "3",
                     "time": "2018-07-06T12:31:02.123456789Z"
+                },
+                {
+                    "exit_uuid": "4bc3fc37-e347-4cd6-9e9a-8e62ec5be7f7",
+                    "flow_uuid": "8f107d42-7416-4cf2-9a51-9490361ad517",
+                    "time": "2018-07-06T12:31:06.123456789Z"
                 }
             ],
             "session": {
@@ -946,13 +957,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:06.123456789Z",
+                        "exited_on": "2018-07-06T12:31:07.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Number Test",
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
-                        "modified_on": "2018-07-06T12:31:06.123456789Z",
+                        "modified_on": "2018-07-06T12:31:07.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

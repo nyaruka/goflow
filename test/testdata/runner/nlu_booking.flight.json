@@ -243,13 +243,20 @@
                     "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+                    "operand": "I'd like to book a flight to Quito",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
                     "destination_uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
                     "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+                    "operand": "book_flight",
                     "time": "2018-07-06T12:30:32.123456789Z"
+                },
+                {
+                    "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+                    "time": "2018-07-06T12:30:36.123456789Z"
                 }
             ],
             "session": {
@@ -400,13 +407,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:36.123456789Z",
+                        "exited_on": "2018-07-06T12:30:37.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "NLU Test",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
-                        "modified_on": "2018-07-06T12:30:36.123456789Z",
+                        "modified_on": "2018-07-06T12:30:37.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

@@ -215,7 +215,13 @@
                     "destination_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
                     "exit_uuid": "feb35432-c156-44cc-af7b-136db6713aa4",
                     "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                    "operand": "Ryan Lewis",
                     "time": "2018-07-06T12:30:20.123456789Z"
+                },
+                {
+                    "exit_uuid": "645dc267-40aa-4777-bda1-bb3133fba511",
+                    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                    "time": "2018-07-06T12:30:29.123456789Z"
                 }
             ],
             "session": {
@@ -344,13 +350,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:29.123456789Z",
+                        "exited_on": "2018-07-06T12:30:30.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Another Flow",
                             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                         },
-                        "modified_on": "2018-07-06T12:30:29.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

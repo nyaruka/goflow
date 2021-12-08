@@ -1403,7 +1403,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:36:42.123456789Z",
+                    "created_on": "2018-07-06T12:36:43.123456789Z",
                     "step_uuid": "d67c1713-db75-4403-a020-37bccfcdf0e7",
                     "text": "reached maximum number of steps per sprint (100)",
                     "type": "failure"
@@ -2003,6 +2003,12 @@
                     "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                     "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
                     "time": "2018-07-06T12:36:38.123456789Z"
+                },
+                {
+                    "destination_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+                    "time": "2018-07-06T12:36:42.123456789Z"
                 }
             ],
             "session": {
@@ -3448,19 +3454,19 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:36:42.123456789Z",
+                                "created_on": "2018-07-06T12:36:43.123456789Z",
                                 "step_uuid": "d67c1713-db75-4403-a020-37bccfcdf0e7",
                                 "text": "reached maximum number of steps per sprint (100)",
                                 "type": "failure"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:36:43.123456789Z",
+                        "exited_on": "2018-07-06T12:36:44.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Node Loop",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                         },
-                        "modified_on": "2018-07-06T12:36:44.123456789Z",
+                        "modified_on": "2018-07-06T12:36:45.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

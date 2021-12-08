@@ -184,6 +184,7 @@
                     "destination_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                     "exit_uuid": "0ca5e8ce-6979-4c2f-b934-ca628897342e",
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                    "operand": "xx",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
@@ -396,7 +397,14 @@
                     "value": "13"
                 }
             ],
-            "segments": [],
+            "segments": [
+                {
+                    "exit_uuid": "0dfdf99b-3dc6-4028-8184-1b6e9afb6c8d",
+                    "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                    "operand": "13",
+                    "time": "2018-07-06T12:30:38.123456789Z"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -506,13 +514,13 @@
                                 "value": "13"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:39.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
-                        "modified_on": "2018-07-06T12:30:38.123456789Z",
+                        "modified_on": "2018-07-06T12:30:39.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
