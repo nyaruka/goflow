@@ -336,6 +336,7 @@ type Segment interface {
 	Flow() Flow
 	Exit() Exit
 	Destination() Node
+	Time() time.Time
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session

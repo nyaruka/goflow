@@ -243,13 +243,13 @@
                     "value": "blue"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "language": "fra",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_language_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:25.123456789Z",
+                    "created_on": "2018-07-06T12:30:26.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -263,7 +263,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:27.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -272,7 +272,8 @@
                 {
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
-                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                    "time": "2018-07-06T12:30:22.123456789Z"
                 }
             ],
             "session": {
@@ -426,13 +427,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -446,7 +447,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
@@ -457,7 +458,7 @@
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:29.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -466,7 +467,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
@@ -538,7 +539,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -554,7 +555,7 @@
                 {
                     "category": "Coke",
                     "category_localized": "Coke",
-                    "created_on": "2018-07-06T12:30:37.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "input": "Coke",
                     "name": "Soda",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -562,7 +563,7 @@
                     "value": "Coke"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:42.123456789Z",
+                    "created_on": "2018-07-06T12:30:44.123456789Z",
                     "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -574,7 +575,7 @@
                     "url": "http://localhost/?cmd=success"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "created_on": "2018-07-06T12:30:46.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -592,7 +593,8 @@
                 {
                     "destination_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                     "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
-                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                    "time": "2018-07-06T12:30:40.123456789Z"
                 }
             ],
             "session": {
@@ -746,13 +748,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -766,12 +768,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -787,7 +789,7 @@
                             {
                                 "category": "Coke",
                                 "category_localized": "Coke",
-                                "created_on": "2018-07-06T12:30:37.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -795,7 +797,7 @@
                                 "value": "Coke"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:42.123456789Z",
+                                "created_on": "2018-07-06T12:30:44.123456789Z",
                                 "elapsed_ms": 1000,
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -807,7 +809,7 @@
                                 "url": "http://localhost/?cmd=success"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:46.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -821,13 +823,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:46.123456789Z",
+                        "exited_on": "2018-07-06T12:30:48.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:46.123456789Z",
+                        "modified_on": "2018-07-06T12:30:48.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -836,13 +838,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
                                 "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:39.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:41.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -860,7 +862,7 @@
                             "soda": {
                                 "category": "Coke",
                                 "category_localized": "Coke",
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

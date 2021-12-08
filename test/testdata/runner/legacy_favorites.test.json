@@ -12,7 +12,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_wait"
                 }
@@ -21,7 +21,8 @@
                 {
                     "destination_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
                     "exit_uuid": "370db3e8-061b-40d9-a666-06698f27bd79",
-                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
+                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
             "session": {
@@ -66,7 +67,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             }
@@ -77,7 +78,7 @@
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
-                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "modified_on": "2018-07-06T12:30:10.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -86,7 +87,7 @@
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             }
@@ -141,7 +142,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:14.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -156,7 +157,7 @@
                 },
                 {
                     "category": "Blue",
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:18.123456789Z",
                     "input": "I like blue!",
                     "name": "Color",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -164,7 +165,7 @@
                     "value": "blue"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "msg": {
                         "text": "What's your favorite beer?",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -173,7 +174,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:26.123456789Z",
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_wait"
                 }
@@ -182,12 +183,14 @@
                 {
                     "destination_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
                     "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
-                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
+                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
                     "destination_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
                     "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be",
-                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
+                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "time": "2018-07-06T12:30:24.123456789Z"
                 }
             ],
             "session": {
@@ -240,12 +243,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -260,7 +263,7 @@
                             },
                             {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -268,7 +271,7 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -277,18 +280,18 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:11.123456789Z",
+                        "expires_on": "2018-07-13T12:30:12.123456789Z",
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
-                        "modified_on": "2018-07-06T12:30:25.123456789Z",
+                        "modified_on": "2018-07-06T12:30:28.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -297,19 +300,19 @@
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
                                 "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
                                 "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be",
                                 "node_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:25.123456789Z",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             }
@@ -317,7 +320,7 @@
                         "results": {
                             "color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
@@ -374,7 +377,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -389,7 +392,7 @@
                 },
                 {
                     "category": "Pilsner",
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:36.123456789Z",
                     "input": "Pilsner",
                     "name": "Beer",
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
@@ -397,7 +400,7 @@
                     "value": "Pilsner"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "created_on": "2018-07-06T12:30:40.123456789Z",
                     "msg": {
                         "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
                         "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -410,7 +413,8 @@
                 {
                     "destination_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
                     "exit_uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
-                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
+                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "time": "2018-07-06T12:30:38.123456789Z"
                 }
             ],
             "session": {
@@ -463,12 +467,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -483,7 +487,7 @@
                             },
                             {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -491,7 +495,7 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -500,12 +504,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -520,7 +524,7 @@
                             },
                             {
                                 "category": "Pilsner",
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "Pilsner",
                                 "name": "Beer",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
@@ -528,7 +532,7 @@
                                 "value": "Pilsner"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:40.123456789Z",
                                 "msg": {
                                     "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
                                     "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -537,13 +541,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:42.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
-                        "modified_on": "2018-07-06T12:30:38.123456789Z",
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -552,25 +556,25 @@
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
                                 "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
                                 "exit_uuid": "3c464d16-3445-4a0b-b1cd-36ba9e1f89be",
                                 "node_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:25.123456789Z",
                                 "exit_uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:35.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:39.123456789Z",
                                 "exit_uuid": "80818696-0e64-4834-9452-335b273f5417",
                                 "node_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
                                 "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -579,7 +583,7 @@
                         "results": {
                             "beer": {
                                 "category": "Pilsner",
-                                "created_on": "2018-07-06T12:30:31.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "input": "Pilsner",
                                 "name": "Beer",
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
@@ -587,7 +591,7 @@
                             },
                             "color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Color",
                                 "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2",

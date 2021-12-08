@@ -17,7 +17,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -26,7 +26,8 @@
                 {
                     "destination_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
                     "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-                    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+                    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                    "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
             "session": {
@@ -83,7 +84,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
@@ -94,7 +95,7 @@
                             "name": "Another Flow",
                             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                         },
-                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "modified_on": "2018-07-06T12:30:10.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -103,7 +104,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
                                 "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
@@ -154,7 +155,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:14.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -169,7 +170,7 @@
                 },
                 {
                     "category": "All Responses",
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:18.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Contact Name",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -177,13 +178,13 @@
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "name": "Ryan Lewis",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_name_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:25.123456789Z",
                     "field": {
                         "key": "first_name",
                         "name": "First Name"
@@ -195,7 +196,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:25.123456789Z",
+                    "created_on": "2018-07-06T12:30:27.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -213,7 +214,8 @@
                 {
                     "destination_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
                     "exit_uuid": "feb35432-c156-44cc-af7b-136db6713aa4",
-                    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+                    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                    "time": "2018-07-06T12:30:20.123456789Z"
                 }
             ],
             "session": {
@@ -282,12 +284,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -302,7 +304,7 @@
                             },
                             {
                                 "category": "All Responses",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Contact Name",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -310,13 +312,13 @@
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "name": "Ryan Lewis",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "contact_name_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:25.123456789Z",
                                 "field": {
                                     "key": "first_name",
                                     "name": "First Name"
@@ -328,7 +330,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:27.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -342,13 +344,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:27.123456789Z",
+                        "exited_on": "2018-07-06T12:30:29.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Another Flow",
                             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                         },
-                        "modified_on": "2018-07-06T12:30:27.123456789Z",
+                        "modified_on": "2018-07-06T12:30:29.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -357,13 +359,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
                                 "exit_uuid": "feb35432-c156-44cc-af7b-136db6713aa4",
                                 "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
                                 "exit_uuid": "645dc267-40aa-4777-bda1-bb3133fba511",
                                 "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -372,7 +374,7 @@
                         "results": {
                             "contact_name": {
                                 "category": "All Responses",
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Contact Name",
                                 "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",

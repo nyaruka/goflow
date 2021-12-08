@@ -91,7 +91,7 @@
                     "value": "400"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -109,7 +109,8 @@
                 {
                     "destination_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "exit_uuid": "cffd72b4-0b30-41a8-ae2b-b8e5019a164d",
-                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "time": "2018-07-06T12:30:18.123456789Z"
                 }
             ],
             "session": {
@@ -215,7 +216,7 @@
                                 "value": "400"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -229,13 +230,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:21.123456789Z",
+                        "exited_on": "2018-07-06T12:30:22.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Resthook",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:21.123456789Z",
+                        "modified_on": "2018-07-06T12:30:22.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -244,7 +245,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "exit_uuid": "d075e84c-cdfd-4b6d-82e1-d64a03fb7acb",
                                 "node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
