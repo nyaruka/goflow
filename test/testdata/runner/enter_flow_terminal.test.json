@@ -42,7 +42,13 @@
                     "type": "msg_created"
                 }
             ],
-            "segments": [],
+            "segments": [
+                {
+                    "exit_uuid": "d47af449-7faa-4387-9059-8fad67085538",
+                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+                    "time": "2018-07-06T12:30:16.123456789Z"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -103,12 +109,12 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:08.123456789Z",
-                        "expires_on": "2018-07-06T12:30:17.123456789Z",
+                        "expires_on": "2018-07-06T12:30:18.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:18.123456789Z",
+                        "modified_on": "2018-07-06T12:30:19.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -137,13 +143,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:16.123456789Z",
+                        "exited_on": "2018-07-06T12:30:17.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2018-07-06T12:30:16.123456789Z",
+                        "modified_on": "2018-07-06T12:30:17.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {

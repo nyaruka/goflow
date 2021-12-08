@@ -256,7 +256,13 @@
                     "destination_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081",
                     "exit_uuid": "19a1c2ad-719e-4f1a-b128-863ba4222a1a",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "operand": "expired",
                     "time": "2018-07-06T12:30:23.123456789Z"
+                },
+                {
+                    "exit_uuid": "3edede74-c67f-4151-921c-1635627aa256",
+                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "time": "2018-07-06T12:30:27.123456789Z"
                 }
             ],
             "session": {
@@ -341,13 +347,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:27.123456789Z",
+                        "exited_on": "2018-07-06T12:30:28.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:27.123456789Z",
+                        "modified_on": "2018-07-06T12:30:28.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

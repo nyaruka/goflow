@@ -172,7 +172,13 @@
                     "type": "msg_created"
                 }
             ],
-            "segments": [],
+            "segments": [
+                {
+                    "exit_uuid": "a884d1f8-2e1e-43d2-9221-fa08ee29b31b",
+                    "flow_uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c",
+                    "time": "2018-07-06T12:30:30.123456789Z"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -406,13 +412,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:30.123456789Z",
+                        "exited_on": "2018-07-06T12:30:31.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Smart Groups",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:04.123456789Z",

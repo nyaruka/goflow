@@ -57,6 +57,7 @@
                     "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83",
                     "exit_uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "operand": "Success",
                     "time": "2018-07-06T12:30:12.123456789Z"
                 },
                 {
@@ -272,6 +273,7 @@
                     "destination_uuid": "23eb8d34-59b6-46b6-991a-440381c54947",
                     "exit_uuid": "21f393db-1b49-4777-a995-3cfb7abfeb96",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "operand": "Ok",
                     "time": "2018-07-06T12:30:30.123456789Z"
                 },
                 {
@@ -284,6 +286,7 @@
                     "destination_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
                     "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "operand": "Success",
                     "time": "2018-07-06T12:30:44.123456789Z"
                 },
                 {
@@ -578,7 +581,13 @@
                     "destination_uuid": "066c0ea6-68f1-4849-a4f5-5ef3465e9e97",
                     "exit_uuid": "066c4b62-72f2-460b-a671-b4fa919c745a",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "operand": "Sure",
                     "time": "2018-07-06T12:31:02.123456789Z"
+                },
+                {
+                    "exit_uuid": "28236174-02ce-49b0-bdce-403afd9850fb",
+                    "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "time": "2018-07-06T12:31:06.123456789Z"
                 }
             ],
             "session": {
@@ -747,13 +756,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:06.123456789Z",
+                        "exited_on": "2018-07-06T12:31:07.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Webhook Results",
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
-                        "modified_on": "2018-07-06T12:31:06.123456789Z",
+                        "modified_on": "2018-07-06T12:31:07.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

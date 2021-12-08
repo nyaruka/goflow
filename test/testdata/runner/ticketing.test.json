@@ -244,13 +244,20 @@
                     "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
+                    "operand": "Rats",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
                     "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                     "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
+                    "operand": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "time": "2018-07-06T12:30:30.123456789Z"
+                },
+                {
+                    "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
+                    "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
+                    "time": "2018-07-06T12:30:34.123456789Z"
                 }
             ],
             "session": {
@@ -408,13 +415,13 @@
                                 "type": "email_sent"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:34.123456789Z",
+                        "exited_on": "2018-07-06T12:30:35.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
-                        "modified_on": "2018-07-06T12:30:34.123456789Z",
+                        "modified_on": "2018-07-06T12:30:35.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

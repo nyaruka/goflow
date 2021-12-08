@@ -184,6 +184,7 @@
                     "destination_uuid": "0ec90220-1025-4533-8410-38f9adc0452b",
                     "exit_uuid": "8548318b-4da8-4fae-96ef-ec9eb572edfd",
                     "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "operand": "I like blue!",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
                 {
@@ -414,7 +415,13 @@
                     "destination_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc",
                     "exit_uuid": "a3078f7d-63b3-4486-9481-ea97c5c4e49a",
                     "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "operand": "Pilsner",
                     "time": "2018-07-06T12:30:38.123456789Z"
+                },
+                {
+                    "exit_uuid": "80818696-0e64-4834-9452-335b273f5417",
+                    "flow_uuid": "64e86aff-61a1-4029-a2da-f1615493d239",
+                    "time": "2018-07-06T12:30:42.123456789Z"
                 }
             ],
             "session": {
@@ -541,13 +548,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:42.123456789Z",
+                        "exited_on": "2018-07-06T12:30:43.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Favorites",
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
-                        "modified_on": "2018-07-06T12:30:42.123456789Z",
+                        "modified_on": "2018-07-06T12:30:43.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

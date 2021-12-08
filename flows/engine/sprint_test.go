@@ -86,15 +86,15 @@ func TestSprint(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)))
 
 	sprint := newEmptySprint()
-	sprint.logSegment(flow, node1Exit1, node2)
+	sprint.logSegment(flow, node1Exit1, "yes", node2)
 	sprint.logModifier(mod1)
 	sprint.logEvent(event1)
-	sprint.logSegment(flow, node2Exit1, node3)
+	sprint.logSegment(flow, node2Exit1, "", node3)
 	sprint.logModifier(mod2)
 	sprint.logEvent(event2)
 
-	var seg1 flows.Segment = &segment{flow, node1Exit1, node2, time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)}
-	var seg2 flows.Segment = &segment{flow, node2Exit1, node3, time.Date(2021, 12, 8, 10, 13, 31, 0, time.UTC)}
+	var seg1 flows.Segment = &segment{flow: flow, exit: node1Exit1, operand: "yes", destination: node2, time: time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)}
+	var seg2 flows.Segment = &segment{flow: flow, exit: node2Exit1, destination: node3, time: time.Date(2021, 12, 8, 10, 13, 31, 0, time.UTC)}
 
 	assert.Equal(t, []flows.Modifier{mod1, mod2}, sprint.Modifiers())
 	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
@@ -102,10 +102,11 @@ func TestSprint(t *testing.T) {
 
 	assert.Equal(t, flow, sprint.Segments()[0].Flow())
 	assert.Equal(t, node1Exit1, sprint.Segments()[0].Exit())
+	assert.Equal(t, "yes", sprint.Segments()[0].Operand())
 	assert.Equal(t, node2, sprint.Segments()[0].Destination())
 	assert.Equal(t, time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), sprint.Segments()[0].Time())
 	assert.Equal(t,
-		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61","time":"2021-12-08T10:13:30Z"}`,
+		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","operand":"yes","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61","time":"2021-12-08T10:13:30Z"}`,
 		string(jsonx.MustMarshal(sprint.Segments()[0])),
 	)
 

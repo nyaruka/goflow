@@ -49,7 +49,13 @@
                     "destination_uuid": "0b45a338-d7a6-4c19-b0b2-03b2d35141ed",
                     "exit_uuid": "dd9f9855-46fd-42e9-9dc0-6694439594b3",
                     "flow_uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791",
+                    "operand": "Success",
                     "time": "2018-07-06T12:30:12.123456789Z"
+                },
+                {
+                    "exit_uuid": "5f2be383-2d09-46e7-9397-ac52ab8faf6e",
+                    "flow_uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791",
+                    "time": "2018-07-06T12:30:16.123456789Z"
                 }
             ],
             "session": {
@@ -118,13 +124,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:16.123456789Z",
+                        "exited_on": "2018-07-06T12:30:17.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Webhook",
                             "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791"
                         },
-                        "modified_on": "2018-07-06T12:30:16.123456789Z",
+                        "modified_on": "2018-07-06T12:30:17.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

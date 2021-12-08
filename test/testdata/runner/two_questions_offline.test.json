@@ -181,6 +181,7 @@
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8",
                     "flow_uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
+                    "operand": "red",
                     "time": "2018-07-06T12:30:18.123456789Z"
                 }
             ],
@@ -407,6 +408,7 @@
                     "destination_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                     "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                     "flow_uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
+                    "operand": "pepsi",
                     "time": "2018-07-06T12:30:34.123456789Z"
                 }
             ],
@@ -658,7 +660,13 @@
                     "type": "msg_received"
                 }
             ],
-            "segments": [],
+            "segments": [
+                {
+                    "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
+                    "flow_uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
+                    "time": "2018-07-06T12:30:46.123456789Z"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -806,13 +814,13 @@
                                 "type": "msg_received"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:46.123456789Z",
+                        "exited_on": "2018-07-06T12:30:47.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
-                        "modified_on": "2018-07-06T12:30:46.123456789Z",
+                        "modified_on": "2018-07-06T12:30:47.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

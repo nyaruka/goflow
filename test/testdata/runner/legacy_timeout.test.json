@@ -185,6 +185,12 @@
                     "exit_uuid": "9fe5f0c2-5734-4014-885c-1e8413857916",
                     "flow_uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f",
                     "time": "2018-07-06T12:30:18.123456789Z"
+                },
+                {
+                    "exit_uuid": "67db43bb-846c-4184-b79a-71a075bb5a00",
+                    "flow_uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f",
+                    "operand": "30",
+                    "time": "2018-07-06T12:30:24.123456789Z"
                 }
             ],
             "session": {
@@ -263,13 +269,13 @@
                                 "value": "30"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:24.123456789Z",
+                        "exited_on": "2018-07-06T12:30:25.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Legacy Timeout",
                             "uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f"
                         },
-                        "modified_on": "2018-07-06T12:30:24.123456789Z",
+                        "modified_on": "2018-07-06T12:30:25.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

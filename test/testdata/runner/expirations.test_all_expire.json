@@ -259,6 +259,7 @@
                     "destination_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                     "exit_uuid": "90866618-58a2-4552-b91a-970b91dfa693",
                     "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
+                    "operand": "expired",
                     "time": "2018-07-06T12:30:32.123456789Z"
                 },
                 {
@@ -512,6 +513,7 @@
                     "destination_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                     "exit_uuid": "4e1122b2-e96d-4a8b-9e55-ae47d9d9355c",
                     "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
+                    "operand": "expired",
                     "time": "2018-07-06T12:30:46.123456789Z"
                 },
                 {
