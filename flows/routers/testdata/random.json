@@ -25,9 +25,10 @@
         "results": {
             "random_result": {
                 "name": "Random Result",
-                "value": "0.3849275689214193",
+                "value": "1",
                 "category": "No",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                "input": "0.3849275689214193",
                 "created_on": "2018-10-18T14:20:30.000123456Z"
             }
         },
@@ -37,8 +38,9 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Random Result",
-                "value": "0.3849275689214193",
-                "category": "No"
+                "value": "1",
+                "category": "No",
+                "input": "0.3849275689214193"
             }
         ],
         "localizables": [

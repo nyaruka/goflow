@@ -126,11 +126,11 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 		run.LogError(step, err)
 	}
 
-	var input string
+	var operandAsStr string
 
 	if operand != nil {
 		asText, _ := types.ToXText(env, operand)
-		input = asText.Native()
+		operandAsStr = asText.Native()
 	}
 
 	// find first matching case
@@ -151,8 +151,8 @@ func (r *SwitchRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 		categoryUUID = r.defaultCategoryUUID
 	}
 
-	exit, err := r.routeToCategory(run, step, categoryUUID, match, input, extra, logEvent)
-	return exit, input, err
+	exit, err := r.routeToCategory(run, step, categoryUUID, match, operandAsStr, extra, logEvent)
+	return exit, operandAsStr, err
 }
 
 func (r *SwitchRouter) matchCase(run flows.FlowRun, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, *types.XObject, error) {

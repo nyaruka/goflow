@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/random"
@@ -40,8 +41,7 @@ func (r *RandomRouter) Route(run flows.FlowRun, step flows.Step, logEvent flows.
 	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()
 	categoryUUID := r.categories[categoryNum].UUID()
 
-	// TODO should raw rand value be iput and category number the match ?
-	exit, err := r.routeToCategory(run, step, categoryUUID, rand.String(), "", nil, logEvent)
+	exit, err := r.routeToCategory(run, step, categoryUUID, fmt.Sprintf("%d", categoryNum), rand.String(), nil, logEvent)
 	return exit, rand.String(), err
 }
 
