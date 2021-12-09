@@ -57,6 +57,7 @@
                     "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83",
                     "exit_uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
                     "operand": "Success",
                     "time": "2018-07-06T12:30:12.123456789Z"
                 },
@@ -64,6 +65,7 @@
                     "destination_uuid": "763f3570-bc76-4e6e-85fb-da62cc112cd4",
                     "exit_uuid": "007f0b86-4e2d-451f-88cc-4ce1f8395ffe",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "48541207-c17a-4207-8c3c-0be96a571b83",
                     "time": "2018-07-06T12:30:16.123456789Z"
                 }
             ],
@@ -273,6 +275,7 @@
                     "destination_uuid": "23eb8d34-59b6-46b6-991a-440381c54947",
                     "exit_uuid": "21f393db-1b49-4777-a995-3cfb7abfeb96",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "763f3570-bc76-4e6e-85fb-da62cc112cd4",
                     "operand": "Ok",
                     "time": "2018-07-06T12:30:30.123456789Z"
                 },
@@ -280,12 +283,14 @@
                     "destination_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                     "exit_uuid": "bd58fffa-f763-4622-bed6-70f1fcd83159",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "23eb8d34-59b6-46b6-991a-440381c54947",
                     "time": "2018-07-06T12:30:34.123456789Z"
                 },
                 {
                     "destination_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
                     "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                     "operand": "Success",
                     "time": "2018-07-06T12:30:44.123456789Z"
                 },
@@ -293,6 +298,7 @@
                     "destination_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                     "exit_uuid": "20d4d0a1-b1a8-4bc8-a50d-c5f6cf09cc88",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
                     "time": "2018-07-06T12:30:48.123456789Z"
                 }
             ],
@@ -581,13 +587,9 @@
                     "destination_uuid": "066c0ea6-68f1-4849-a4f5-5ef3465e9e97",
                     "exit_uuid": "066c4b62-72f2-460b-a671-b4fa919c745a",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+                    "node_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                     "operand": "Sure",
                     "time": "2018-07-06T12:31:02.123456789Z"
-                },
-                {
-                    "exit_uuid": "28236174-02ce-49b0-bdce-403afd9850fb",
-                    "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
-                    "time": "2018-07-06T12:31:06.123456789Z"
                 }
             ],
             "session": {
@@ -756,13 +758,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:07.123456789Z",
+                        "exited_on": "2018-07-06T12:31:06.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Webhook Results",
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
-                        "modified_on": "2018-07-06T12:31:07.123456789Z",
+                        "modified_on": "2018-07-06T12:31:06.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

@@ -34,13 +34,7 @@
                     "type": "msg_created"
                 }
             ],
-            "segments": [
-                {
-                    "exit_uuid": "c7c85cef-12d1-4225-afb0-91d1a72cf7b9",
-                    "flow_uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e",
-                    "time": "2018-07-06T12:30:11.123456789Z"
-                }
-            ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -107,13 +101,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:12.123456789Z",
+                        "exited_on": "2018-07-06T12:30:11.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Field Clear",
                             "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"
                         },
-                        "modified_on": "2018-07-06T12:30:12.123456789Z",
+                        "modified_on": "2018-07-06T12:30:11.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

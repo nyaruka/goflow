@@ -37,13 +37,7 @@
                     "url": "http://localhost/?cmd=success"
                 }
             ],
-            "segments": [
-                {
-                    "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
-                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-                    "time": "2018-07-06T12:30:10.123456789Z"
-                }
-            ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -113,13 +107,13 @@
                                 "url": "http://localhost/?cmd=success"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:11.123456789Z",
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Redacted URNs",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:11.123456789Z",
+                        "modified_on": "2018-07-06T12:30:10.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

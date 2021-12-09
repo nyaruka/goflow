@@ -22,6 +22,7 @@
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
+                    "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                     "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
@@ -221,6 +222,7 @@
                     "destination_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                     "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
+                    "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "operand": "name",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
@@ -228,18 +230,21 @@
                     "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
+                    "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                     "time": "2018-07-06T12:30:32.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
+                    "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "time": "2018-07-06T12:30:36.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
+                    "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                     "time": "2018-07-06T12:30:52.123456789Z"
                 }
             ],
@@ -588,6 +593,7 @@
                     "destination_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                     "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
+                    "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "operand": "name",
                     "time": "2018-07-06T12:31:08.123456789Z"
                 },
@@ -595,18 +601,21 @@
                     "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
+                    "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                     "time": "2018-07-06T12:31:29.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
+                    "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "time": "2018-07-06T12:31:31.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
+                    "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                     "time": "2018-07-06T12:31:58.123456789Z"
                 }
             ],
@@ -1047,14 +1056,7 @@
                     "value": "exit"
                 }
             ],
-            "segments": [
-                {
-                    "exit_uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0",
-                    "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
-                    "operand": "exit",
-                    "time": "2018-07-06T12:32:16.123456789Z"
-                }
-            ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -1142,12 +1144,12 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:35.123456789Z",
-                        "expires_on": "2018-08-03T12:32:18.123456789Z",
+                        "expires_on": "2018-08-03T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:22.123456789Z",
+                        "modified_on": "2018-07-06T12:32:21.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -1211,12 +1213,12 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:36.123456789Z",
-                        "expires_on": "2018-07-27T12:32:18.123456789Z",
+                        "expires_on": "2018-07-27T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:32:21.123456789Z",
+                        "modified_on": "2018-07-06T12:32:20.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -1289,12 +1291,12 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:39.123456789Z",
-                        "expires_on": "2018-07-20T12:32:18.123456789Z",
+                        "expires_on": "2018-07-20T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:20.123456789Z",
+                        "modified_on": "2018-07-06T12:32:19.123456789Z",
                         "parent_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                         "path": [
                             {
@@ -1353,12 +1355,12 @@
                             }
                         ],
                         "exited_on": "2018-07-06T12:31:43.123456789Z",
-                        "expires_on": "2018-07-13T12:32:18.123456789Z",
+                        "expires_on": "2018-07-13T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:32:19.123456789Z",
+                        "modified_on": "2018-07-06T12:32:18.123456789Z",
                         "parent_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                         "path": [
                             {
@@ -1419,13 +1421,13 @@
                                 "value": "exit"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:32:17.123456789Z",
+                        "exited_on": "2018-07-06T12:32:16.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:17.123456789Z",
+                        "modified_on": "2018-07-06T12:32:16.123456789Z",
                         "parent_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                         "path": [
                             {

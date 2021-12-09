@@ -22,6 +22,7 @@
                     "destination_uuid": "797e66c1-99bf-4d65-8944-812e723be5f1",
                     "exit_uuid": "1e92bd7e-f531-442d-982b-7d8ef4435400",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "e48228ed-085d-4c54-81f8-da2a5f4a6c24",
                     "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
@@ -190,6 +191,7 @@
                     "destination_uuid": "1db62b2a-7885-48f8-abaf-43074c6201b5",
                     "exit_uuid": "67a730a1-20a4-42c7-9da5-b093e859c24e",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "797e66c1-99bf-4d65-8944-812e723be5f1",
                     "operand": "Bobby",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
@@ -197,6 +199,7 @@
                     "destination_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                     "exit_uuid": "62b9d8fe-d1ff-4992-97d9-14e9d424f17f",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "1db62b2a-7885-48f8-abaf-43074c6201b5",
                     "time": "2018-07-06T12:30:26.123456789Z"
                 }
             ],
@@ -428,6 +431,7 @@
                     "destination_uuid": "050d338f-33d5-4c95-8a55-d4702c8365f5",
                     "exit_uuid": "47063adc-04c6-478f-b13d-fad09f383e1e",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                     "operand": "123",
                     "time": "2018-07-06T12:30:40.123456789Z"
                 },
@@ -435,6 +439,7 @@
                     "destination_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                     "exit_uuid": "6d57b815-ad64-4091-9b37-5428f6cc56bb",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "050d338f-33d5-4c95-8a55-d4702c8365f5",
                     "time": "2018-07-06T12:30:44.123456789Z"
                 }
             ],
@@ -734,6 +739,7 @@
                     "destination_uuid": "4c6e76f3-c91b-4a3c-b5fc-998e8bfd4bd8",
                     "exit_uuid": "16772a2d-7302-4b4d-af6f-0a9eb7b68f1f",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                     "operand": "18",
                     "time": "2018-07-06T12:30:58.123456789Z"
                 },
@@ -741,19 +747,16 @@
                     "destination_uuid": "45ba2955-3d64-43a6-bad9-a1eb30f6e27e",
                     "exit_uuid": "f0942cd4-c09b-4b35-b4aa-825eb805db45",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "4c6e76f3-c91b-4a3c-b5fc-998e8bfd4bd8",
                     "time": "2018-07-06T12:31:02.123456789Z"
                 },
                 {
                     "destination_uuid": "0e260a3e-d506-4c21-aded-1eb63bbfd911",
                     "exit_uuid": "83b81834-0287-4428-991d-c2a9fbfdff77",
                     "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
+                    "node_uuid": "45ba2955-3d64-43a6-bad9-a1eb30f6e27e",
                     "operand": "18",
                     "time": "2018-07-06T12:31:08.123456789Z"
-                },
-                {
-                    "exit_uuid": "c6f4db9d-cfa5-46a0-a90d-0d4314a13188",
-                    "flow_uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f",
-                    "time": "2018-07-06T12:31:12.123456789Z"
                 }
             ],
             "session": {
@@ -939,13 +942,13 @@
                                 "type": "contact_groups_changed"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:13.123456789Z",
+                        "exited_on": "2018-07-06T12:31:12.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Registration",
                             "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
                         },
-                        "modified_on": "2018-07-06T12:31:13.123456789Z",
+                        "modified_on": "2018-07-06T12:31:12.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

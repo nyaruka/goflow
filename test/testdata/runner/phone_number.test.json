@@ -27,6 +27,7 @@
                     "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
+                    "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
                     "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
@@ -199,6 +200,7 @@
                     "destination_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                     "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
+                    "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "135532",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
@@ -206,6 +208,7 @@
                     "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
+                    "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                     "time": "2018-07-06T12:30:24.123456789Z"
                 }
             ],
@@ -463,13 +466,9 @@
                     "destination_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829",
                     "exit_uuid": "2b9ce880-3556-410a-af5a-edd366a1d628",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
+                    "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "718-456-7890",
                     "time": "2018-07-06T12:30:38.123456789Z"
-                },
-                {
-                    "exit_uuid": "91023689-f038-405e-a3c0-c4e8e8580bd9",
-                    "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
-                    "time": "2018-07-06T12:30:46.123456789Z"
                 }
             ],
             "session": {
@@ -634,13 +633,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:47.123456789Z",
+                        "exited_on": "2018-07-06T12:30:46.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2018-07-06T12:30:47.123456789Z",
+                        "modified_on": "2018-07-06T12:30:46.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
