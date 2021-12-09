@@ -1,3 +1,7 @@
+v0.143.1
+----------
+ * Include node on segments, revert change to add segments without destinations
+
 v0.143.0
 ----------
  * For random router results, input should be raw random number, value is the bucket
