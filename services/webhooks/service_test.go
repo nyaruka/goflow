@@ -173,8 +173,7 @@ func TestWebhookParsing(t *testing.T) {
 }
 
 func TestRetries(t *testing.T) {
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
+	session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
@@ -219,8 +218,7 @@ func TestAccessRestrictions(t *testing.T) {
 }
 
 func TestGzipEncoding(t *testing.T) {
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
+	session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 

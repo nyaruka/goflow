@@ -4,14 +4,10 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -99,41 +95,22 @@ func TestMsgWait(t *testing.T) {
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
-	eng := test.NewEngine()
-	env := envs.NewBuilder().Build()
-	sa, flow := initializeSessionAssets(t)
-	contact := flows.NewEmptyContact(sa, "Ben Haggerty", envs.Language("eng"), nil)
-
 	// a manual trigger will wait at the initial wait
-	trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
-
-	session, sprint, err := eng.NewSession(sa, trigger)
-	require.NoError(t, err)
+	session, sprint := test.NewSessionBuilder().WithAssets([]byte(initialWaitJSON)).
+		WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").
+		MustBuild()
 
 	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
 	assert.Equal(t, 1, len(sprint.Events()))
 	assert.Equal(t, "msg_wait", sprint.Events()[0].Type())
 
-	sa, flow = initializeSessionAssets(t)
-
 	// whereas a msg trigger will skip over it
-	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, "Hi there", nil)
-	trigger2 := triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
-
-	session, sprint, err = eng.NewSession(sa, trigger2)
-	require.NoError(t, err)
+	session, sprint = test.NewSessionBuilder().WithAssets([]byte(initialWaitJSON)).
+		WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").
+		WithTriggerMsg("Hi there").
+		MustBuild()
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
 	assert.Equal(t, 1, len(sprint.Events()))
 	assert.Equal(t, "msg_received", sprint.Events()[0].Type())
-}
-
-func initializeSessionAssets(t *testing.T) (flows.SessionAssets, flows.Flow) {
-	sa, err := test.CreateSessionAssets([]byte(initialWaitJSON), "")
-	require.NoError(t, err)
-
-	flow, err := sa.Flows().Get("615b8a0f-588c-4d20-a05f-363b0b4ce6f4")
-	require.NoError(t, err)
-
-	return sa, flow
 }

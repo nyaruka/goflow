@@ -349,8 +349,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 }
 
 func TestContactEqual(t *testing.T) {
-	session, _, err := test.CreateTestSession("http://localhost", envs.RedactionPolicyNone)
-	require.NoError(t, err)
+	session, _ := test.NewSessionBuilder().MustBuild()
 
 	contact1JSON := []byte(`{
 		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -389,8 +388,7 @@ func TestContactEqual(t *testing.T) {
 }
 
 func TestContactQuery(t *testing.T) {
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
+	session, _ := test.NewSessionBuilder().MustBuild()
 
 	contactJSON := []byte(`{
 		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",

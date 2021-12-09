@@ -3,6 +3,7 @@ package test
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -589,24 +590,103 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	return sa, nil
 }
 
-// CreateSession creates a new session from the give assets
-func CreateSession(assetsJSON json.RawMessage, flowUUID assets.FlowUUID) (flows.Session, flows.Sprint, error) {
-	sa, err := CreateSessionAssets(assetsJSON, "")
-	if err != nil {
-		return nil, nil, err
+type SessionBuilder struct {
+	env         envs.Environment
+	assetsJSON  []byte
+	assetsPath  string
+	flowUUID    assets.FlowUUID
+	engine      flows.Engine
+	contactName string
+	contactLang envs.Language
+	triggerMsg  string
+}
+
+func NewSessionBuilder() *SessionBuilder {
+	env := envs.NewBuilder().
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithDefaultCountry("US").
+		WithAllowedLanguages([]envs.Language{"eng", "spa"}).
+		Build()
+
+	return &SessionBuilder{
+		env:         env,
+		assetsJSON:  []byte(sessionAssets),
+		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
+		engine:      NewEngine(),
+		contactName: "Bob",
+		contactLang: "eng",
+	}
+}
+
+func (b *SessionBuilder) WithEnvironment(env envs.Environment) *SessionBuilder {
+	b.env = env
+	return b
+}
+
+func (b *SessionBuilder) WithAssetsPath(path string) *SessionBuilder {
+	b.assetsPath = path
+	return b
+}
+
+func (b *SessionBuilder) WithAssets(assetsJSON []byte) *SessionBuilder {
+	b.assetsJSON = assetsJSON
+	return b
+}
+
+func (b *SessionBuilder) WithFlow(flowUUID assets.FlowUUID) *SessionBuilder {
+	b.flowUUID = flowUUID
+	return b
+}
+
+func (b *SessionBuilder) WithContact(name string, lang envs.Language) *SessionBuilder {
+	b.contactName = name
+	b.contactLang = lang
+	return b
+}
+
+func (b *SessionBuilder) WithTriggerMsg(text string) *SessionBuilder {
+	b.triggerMsg = text
+	return b
+}
+
+func (b *SessionBuilder) Build() (flows.Session, flows.Sprint, error) {
+	var err error
+	if b.assetsPath != "" {
+		b.assetsJSON, err = os.ReadFile(b.assetsPath)
+		if err != nil {
+			errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
+		}
 	}
 
-	flow, err := sa.Flows().Get(flowUUID)
+	sa, err := CreateSessionAssets(b.assetsJSON, "")
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errors.Wrap(err, "error creating session assets")
 	}
 
-	env := envs.NewBuilder().Build()
-	contact := flows.NewEmptyContact(sa, "Bob", envs.NilLanguage, nil)
-	trigger := triggers.NewBuilder(env, flow.Reference(), contact).Manual().Build()
-	eng := engine.NewBuilder().Build()
+	flow, err := sa.Flows().Get(b.flowUUID)
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "error getting flow %s from assets", b.flowUUID)
+	}
 
-	return eng.NewSession(sa, trigger)
+	contact := flows.NewEmptyContact(sa, b.contactName, b.contactLang, nil)
+
+	var trigger flows.Trigger
+	if b.triggerMsg != "" {
+		msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil)
+		trigger = triggers.NewBuilder(b.env, flow.Reference(), contact).Msg(msg).Build()
+	} else {
+		trigger = triggers.NewBuilder(b.env, flow.Reference(), contact).Manual().Build()
+	}
+
+	return b.engine.NewSession(sa, trigger)
+}
+
+func (b *SessionBuilder) MustBuild() (flows.Session, flows.Sprint) {
+	session, sprint, err := b.Build()
+	if err != nil {
+		panic(err)
+	}
+	return session, sprint
 }
 
 // ResumeSession resumes the given session with potentially different assets

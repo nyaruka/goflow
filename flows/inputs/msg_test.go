@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -15,13 +14,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestMsgInput(t *testing.T) {
-	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
-	require.NoError(t, err)
-
+	session, _ := test.NewSessionBuilder().MustBuild()
 	env := session.Environment()
 
 	channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
