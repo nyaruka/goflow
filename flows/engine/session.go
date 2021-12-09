@@ -184,7 +184,7 @@ func (s *session) start(trigger flows.Trigger) (flows.Sprint, error) {
 	s.ensureQueryBasedGroups(sprint.logEvent)
 
 	// off to the races...
-	if err := s.continueUntilWait(sprint, nil, nil, "", nil, trigger); err != nil {
+	if err := s.continueUntilWait(sprint, nil, nil, nil, "", nil, trigger); err != nil {
 		return sprint, err
 	}
 
@@ -283,7 +283,7 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.FlowRun, resume f
 	}
 
 	// off to the races again...
-	return s.continueUntilWait(sprint, waitingRun, exit, operand, step, nil)
+	return s.continueUntilWait(sprint, waitingRun, node, exit, operand, step, nil)
 }
 
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow
@@ -307,7 +307,7 @@ func (s *session) findResumeExit(sprint *sprint, run flows.FlowRun, isTimeout bo
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(sprint *sprint, currentRun flows.FlowRun, exit flows.Exit, operand string, step flows.Step, trigger flows.Trigger) (err error) {
+func (s *session) continueUntilWait(sprint *sprint, currentRun flows.FlowRun, node flows.Node, exit flows.Exit, operand string, step flows.Step, trigger flows.Trigger) (err error) {
 	var destination flows.NodeUUID
 	var numNewSteps int
 
@@ -341,12 +341,13 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.FlowRun, ex
 			// if we're at an exit, use its destination
 			destination = exit.DestinationUUID()
 
-			// record as segment to a valid node or nowhere
-			var destNode flows.Node
+			// if we have a destination, record as segment
 			if destination != "" {
-				destNode = currentRun.Flow().GetNode(destination)
+				destNode := currentRun.Flow().GetNode(destination)
+				if destNode != nil {
+					sprint.logSegment(currentRun.Flow(), node, exit, operand, destNode)
+				}
 			}
-			sprint.logSegment(currentRun.Flow(), exit, operand, destNode)
 
 			// clear the exit and operand
 			exit, operand = nil, ""
@@ -404,7 +405,7 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.FlowRun, ex
 				// we've hit the step limit - usually a sign of a loop
 				failure(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.Engine().MaxStepsPerSprint()))
 			} else {
-				node := currentRun.Flow().GetNode(destination)
+				node = currentRun.Flow().GetNode(destination)
 				if node == nil {
 					return errors.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}

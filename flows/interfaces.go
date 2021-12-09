@@ -334,6 +334,7 @@ type Engine interface {
 // Segment is a movement on the flow graph from an exit to another node
 type Segment interface {
 	Flow() Flow
+	Node() Node
 	Exit() Exit
 	Operand() string
 	Destination() Node

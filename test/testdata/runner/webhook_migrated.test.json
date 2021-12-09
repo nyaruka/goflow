@@ -157,6 +157,7 @@
                     "destination_uuid": "d02536d0-7e86-47ab-8c60-fcf2678abc2b",
                     "exit_uuid": "cbb4ff9e-fa50-4d19-be5b-3c219e9366b1",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "node_uuid": "5b5abbf2-5f12-4f83-a804-90695e6c4302",
                     "operand": "Ryan Lewis",
                     "time": "2018-07-06T12:30:16.123456789Z"
                 },
@@ -164,14 +165,9 @@
                     "destination_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
                     "exit_uuid": "96a1ff26-af04-4698-a4bd-40939bf2e7ab",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                    "node_uuid": "d02536d0-7e86-47ab-8c60-fcf2678abc2b",
                     "operand": "Success",
                     "time": "2018-07-06T12:30:26.123456789Z"
-                },
-                {
-                    "exit_uuid": "10b6fb5d-7da8-433c-835c-d05cfd352ce4",
-                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-                    "operand": "valid",
-                    "time": "2018-07-06T12:30:32.123456789Z"
                 }
             ],
             "session": {
@@ -268,13 +264,13 @@
                                 "value": "valid"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:33.123456789Z",
+                        "exited_on": "2018-07-06T12:30:32.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Migrated Webhook",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:33.123456789Z",
+                        "modified_on": "2018-07-06T12:30:32.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

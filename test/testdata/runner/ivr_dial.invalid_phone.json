@@ -17,13 +17,7 @@
                     "value": ""
                 }
             ],
-            "segments": [
-                {
-                    "exit_uuid": "fda29737-867c-45d7-89ab-f9c97a3f08cb",
-                    "flow_uuid": "90420633-8c92-4480-940a-382cdd6a33b9",
-                    "time": "2018-07-06T12:30:10.123456789Z"
-                }
-            ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -78,13 +72,13 @@
                                 "value": ""
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:11.123456789Z",
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "IVR Redirect",
                             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
                         },
-                        "modified_on": "2018-07-06T12:30:11.123456789Z",
+                        "modified_on": "2018-07-06T12:30:10.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

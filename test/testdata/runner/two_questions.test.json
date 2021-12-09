@@ -273,6 +273,7 @@
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "I like blue!",
                     "time": "2018-07-06T12:30:22.123456789Z"
                 }
@@ -595,13 +596,9 @@
                     "destination_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                     "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                    "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "Coke",
                     "time": "2018-07-06T12:30:40.123456789Z"
-                },
-                {
-                    "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
-                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-                    "time": "2018-07-06T12:30:48.123456789Z"
                 }
             ],
             "session": {
@@ -830,13 +827,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:49.123456789Z",
+                        "exited_on": "2018-07-06T12:30:48.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:49.123456789Z",
+                        "modified_on": "2018-07-06T12:30:48.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

@@ -214,13 +214,9 @@
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "exit_uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6",
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "I was born on 1977.06.23 at 3:34 pm",
                     "time": "2018-07-06T12:30:19.123456789Z"
-                },
-                {
-                    "exit_uuid": "4ae06b16-3854-4336-b285-302c984fc235",
-                    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-                    "time": "2018-07-06T12:30:25.123456789Z"
                 }
             ],
             "session": {
@@ -351,13 +347,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:26.123456789Z",
+                        "exited_on": "2018-07-06T12:30:25.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Date Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:26.123456789Z",
+                        "modified_on": "2018-07-06T12:30:25.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

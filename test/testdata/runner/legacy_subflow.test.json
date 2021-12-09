@@ -22,6 +22,7 @@
                     "destination_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "exit_uuid": "faeaff17-1c00-4fc1-a4a6-32b5cf28f7f6",
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                    "node_uuid": "fb57fe4a-d3d6-4765-a554-f13d344dbd9b",
                     "time": "2018-07-06T12:30:06.123456789Z"
                 }
             ],
@@ -184,6 +185,7 @@
                     "destination_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                     "exit_uuid": "0ca5e8ce-6979-4c2f-b934-ca628897342e",
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                    "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "operand": "xx",
                     "time": "2018-07-06T12:30:20.123456789Z"
                 },
@@ -191,6 +193,7 @@
                     "destination_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "exit_uuid": "94567b19-ab3a-4d81-a0e7-2f30120bcd85",
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
+                    "node_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                     "time": "2018-07-06T12:30:24.123456789Z"
                 }
             ],
@@ -397,14 +400,7 @@
                     "value": "13"
                 }
             ],
-            "segments": [
-                {
-                    "exit_uuid": "0dfdf99b-3dc6-4028-8184-1b6e9afb6c8d",
-                    "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
-                    "operand": "13",
-                    "time": "2018-07-06T12:30:38.123456789Z"
-                }
-            ],
+            "segments": [],
             "session": {
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
@@ -514,13 +510,13 @@
                                 "value": "13"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:39.123456789Z",
+                        "exited_on": "2018-07-06T12:30:38.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
-                        "modified_on": "2018-07-06T12:30:39.123456789Z",
+                        "modified_on": "2018-07-06T12:30:38.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
