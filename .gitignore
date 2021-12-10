@@ -30,6 +30,7 @@ debug
 .DS_Store
 /docs
 
+deploy
 fabric
 fabfile.*
 fabconfig.*
