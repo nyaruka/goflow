@@ -1,3 +1,7 @@
+v0.143.3
+----------
+ * Add more options for customizing contact used by test.SessionBuilder
+
 v0.143.2
 ----------
  * Add test.SessionBuilder to make it easier to build sessions for testing
