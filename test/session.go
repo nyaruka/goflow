@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -596,8 +597,11 @@ type SessionBuilder struct {
 	assetsPath  string
 	flowUUID    assets.FlowUUID
 	engine      flows.Engine
+	contactUUID flows.ContactUUID
+	contactID   flows.ContactID
 	contactName string
 	contactLang envs.Language
+	contactURN  urns.URN
 	triggerMsg  string
 }
 
@@ -613,8 +617,11 @@ func NewSessionBuilder() *SessionBuilder {
 		assetsJSON:  []byte(sessionAssets),
 		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		engine:      NewEngine(),
+		contactUUID: flows.ContactUUID(uuids.New()),
+		contactID:   flows.ContactID(123),
 		contactName: "Bob",
 		contactLang: "eng",
+		contactURN:  "tel:+12065551212",
 	}
 }
 
@@ -638,9 +645,12 @@ func (b *SessionBuilder) WithFlow(flowUUID assets.FlowUUID) *SessionBuilder {
 	return b
 }
 
-func (b *SessionBuilder) WithContact(name string, lang envs.Language) *SessionBuilder {
+func (b *SessionBuilder) WithContact(uuid flows.ContactUUID, id flows.ContactID, name string, lang envs.Language, urn urns.URN) *SessionBuilder {
+	b.contactUUID = uuid
+	b.contactID = id
 	b.contactName = name
 	b.contactLang = lang
+	b.contactURN = urn
 	return b
 }
 
@@ -668,7 +678,29 @@ func (b *SessionBuilder) Build() (flows.Session, flows.Sprint, error) {
 		return nil, nil, errors.Wrapf(err, "error getting flow %s from assets", b.flowUUID)
 	}
 
-	contact := flows.NewEmptyContact(sa, b.contactName, b.contactLang, nil)
+	var urnz []urns.URN
+	if b.contactURN != "" {
+		urnz = []urns.URN{b.contactURN}
+	}
+
+	contact, err := flows.NewContact(sa,
+		b.contactUUID,
+		b.contactID,
+		b.contactName,
+		b.contactLang,
+		flows.ContactStatusActive,
+		nil,
+		time.Date(2020, 1, 1, 12, 45, 30, 123456, time.UTC),
+		nil,
+		urnz,
+		nil,
+		nil,
+		nil,
+		assets.PanicOnMissing,
+	)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "error creating contact")
+	}
 
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
