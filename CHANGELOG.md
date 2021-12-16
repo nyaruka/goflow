@@ -1,3 +1,7 @@
+v0.144.0
+----------
+ * Add extraction field to webhook_called events
+
 v0.143.4
 ----------
  * Use WebhookCall.ResponseJSON for @webhook and @result.*.extra
