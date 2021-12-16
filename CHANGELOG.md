@@ -1,3 +1,8 @@
+v0.143.4
+----------
+ * Use WebhookCall.ResponseJSON for @webhook and @result.*.extra
+ * Updated translations from Transifex
+
 v0.143.3
 ----------
  * Add more options for customizing contact used by test.SessionBuilder
