@@ -103,7 +103,8 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             },
             {
                 "type": "webhook_called",
@@ -116,7 +117,8 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             }
         ],
         "inspection": {
@@ -216,7 +218,8 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             },
             {
                 "type": "webhook_called",
@@ -229,7 +232,8 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             },
             {
                 "type": "run_result_changed",
@@ -360,7 +364,8 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "registration-complete"
+                "resthook": "registration-complete",
+                "extraction": "valid"
             },
             {
                 "type": "webhook_called",
@@ -373,7 +378,8 @@
                 "response": "HTTP/1.0 410 Gone\r\nContent-Length: 22\r\n\r\n{ \"errors\": [\"gone\"] }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "registration-complete"
+                "resthook": "registration-complete",
+                "extraction": "valid"
             },
             {
                 "type": "run_result_changed",
@@ -574,7 +580,8 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             },
             {
                 "type": "webhook_called",
@@ -587,7 +594,8 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "elapsed_ms": 0,
                 "retries": 0,
-                "resthook": "new-registration"
+                "resthook": "new-registration",
+                "extraction": "valid"
             },
             {
                 "type": "run_result_changed",

@@ -46,7 +46,8 @@ const (
 // WebhookCall is the result of a webhook call
 type WebhookCall struct {
 	*httpx.Trace
-	ResponseJSON []byte
+	ResponseJSON    []byte
+	ResponseCleaned bool // whether response had to be cleaned to make it valid JSON
 }
 
 // WebhookService provides webhook functionality to the engine
