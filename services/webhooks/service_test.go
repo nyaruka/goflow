@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 
@@ -270,4 +271,28 @@ func TestExtractJSON(t *testing.T) {
 	foo, _ := asXObject.Get("foo")
 	assert.Equal(t, types.NewXText(`01\02\03`), foo)
 	assert.Equal(t, `"01\\02\\03"`, string(jsonx.MustMarshal(foo)))
+}
+
+func TestWebhookResponseWithEscapes(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://cheapcontactlookups.com": {
+			httpx.NewMockResponse(200, nil, `{"name": "01\\02\\03", "joined": "04\\05\\06"}`),
+		},
+	})
+	httpx.SetRequestor(mocks)
+
+	session, _ := test.NewSessionBuilder().
+		WithAssetsPath("testdata/webhook_flow.json").
+		WithFlow("bb38eefb-3cd9-4f80-9867-9c84ae276f7a").MustBuild()
+
+	joined := session.Assets().Fields().Get("joined")
+
+	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
+	assert.Equal(t, `01\02\03`, session.Contact().Name())
+	assert.Equal(t, types.NewXText(`04\05\06`), session.Contact().Fields().Get(joined).Text)
+
+	// check nothing became an escaped NULL
+	assert.NotContains(t, string(jsonx.MustMarshal(session)), `\u0000`)
 }
