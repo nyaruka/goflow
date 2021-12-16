@@ -62,7 +62,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 
 		if len(call.ResponseBody) > 0 {
-			call.ResponseJSON = ExtractJSON(call.ResponseBody)
+			call.ResponseJSON, call.ResponseCleaned = ExtractJSON(call.ResponseBody)
 		}
 
 		return call, err
@@ -71,7 +71,7 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 	return nil, err
 }
 
-func ExtractJSON(body []byte) []byte {
+func ExtractJSON(body []byte) ([]byte, bool) {
 	// we make a best effort to turn the body into JSON, so we strip out:
 	//  1. any invalid UTF-8 sequences
 	//  2. null chars
@@ -81,9 +81,10 @@ func ExtractJSON(body []byte) []byte {
 	cleaned = utils.ReplaceEscapedNulls(cleaned, nil)
 
 	if json.Valid(cleaned) {
-		return cleaned
+		changed := !bytes.Equal(body, cleaned)
+		return cleaned, changed
 	}
-	return nil
+	return nil, false
 }
 
 var _ flows.WebhookService = (*service)(nil)

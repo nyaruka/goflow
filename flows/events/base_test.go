@@ -652,6 +652,29 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	assert.Equal(t, "YYYYYYY...", event.Response[9990:])
 }
 
+func TestWebhookCalledEventValid(t *testing.T) {
+	defer httpx.SetRequestor(httpx.DefaultRequestor)
+
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+		"http://temba.io/": {
+			httpx.NewMockResponse(200, map[string]string{"Header": "hello"}, "{\"foo\": \"bar\"}"),
+		},
+	}))
+
+	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
+
+	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
+	call, err := svc.Call(nil, request)
+	require.NoError(t, err)
+
+	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
+
+	assert.Equal(t, "http://temba.io/", event.URL)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 14\r\nHeader: hello\r\n\r\n{\"foo\": \"bar\"}", event.Response)
+	assert.True(t, utf8.ValidString(event.Response))
+	assert.Equal(t, events.ExtractionValid, event.Extraction)
+}
+
 func TestWebhookCalledEventNullChar(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
@@ -673,6 +696,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nabc � � \\� \\\\u0000", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
+	assert.Equal(t, events.ExtractionIgnored, event.Extraction)
 }
 
 func TestWebhookCalledEventBadUTF8(t *testing.T) {
@@ -680,7 +704,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, "\xa0\xa1"),
+			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, "{\"foo\": \"\xa0\xa1\"}"),
 		},
 	}))
 
@@ -693,8 +717,9 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\nBad-Header: �\r\n\r\n...", event.Response)
+	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 13\r\nBad-Header: �\r\n\r\n...", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
+	assert.Equal(t, events.ExtractionCleaned, event.Extraction)
 }
 
 func TestDeprecatedEvents(t *testing.T) {

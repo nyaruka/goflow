@@ -1,6 +1,7 @@
 package webhooks_test
 
 import (
+	"bytes"
 	"net"
 	"net/http"
 	"strings"
@@ -262,8 +263,11 @@ func TestExtractJSON(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		actual := webhooks.ExtractJSON(tc.body)
+		actual, changed := webhooks.ExtractJSON(tc.body)
 		assert.Equal(t, string(tc.json), string(actual), "extracted JSON mismatch for %s", string(tc.body))
+		if len(actual) > 0 {
+			assert.Equal(t, !bytes.Equal(tc.body, tc.json), changed)
+		}
 	}
 
 	asXValue := types.JSONToXValue([]byte(`{"foo": "01\\02\\03"}`))
