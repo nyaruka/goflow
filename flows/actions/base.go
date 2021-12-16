@@ -142,7 +142,7 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 		value = strconv.Itoa(call.Response.StatusCode)
 
 		if len(call.ResponseJSON) > 0 && len(call.ResponseJSON) < resultExtraMaxBytes {
-			extra = call.ResponseBody
+			extra = call.ResponseJSON
 		}
 	}
 
@@ -150,7 +150,7 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 }
 
 func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
-	parsed := types.JSONToXValue(call.ResponseBody)
+	parsed := types.JSONToXValue(call.ResponseJSON)
 
 	switch typed := parsed.(type) {
 	case nil, types.XError:
