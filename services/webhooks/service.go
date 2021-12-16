@@ -62,23 +62,28 @@ func (s *service) Call(session flows.Session, request *http.Request) (*flows.Web
 		}
 
 		if len(call.ResponseBody) > 0 {
-			// we make a best effort to turn the body into JSON, so we strip out:
-			//  1. any invalid UTF-8 sequences
-			//  2. null chars
-			//  3. escaped null chars (\u0000)
-			cleaned := bytes.ToValidUTF8(call.ResponseBody, nil)
-			cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
-			cleaned = utils.ReplaceEscapedNulls(cleaned, nil)
-
-			if json.Valid(cleaned) {
-				call.ResponseJSON = cleaned
-			}
+			call.ResponseJSON = ExtractJSON(call.ResponseBody)
 		}
 
 		return call, err
 	}
 
 	return nil, err
+}
+
+func ExtractJSON(body []byte) []byte {
+	// we make a best effort to turn the body into JSON, so we strip out:
+	//  1. any invalid UTF-8 sequences
+	//  2. null chars
+	//  3. escaped null chars (\u0000)
+	cleaned := bytes.ToValidUTF8(body, nil)
+	cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
+	cleaned = utils.ReplaceEscapedNulls(cleaned, nil)
+
+	if json.Valid(cleaned) {
+		return cleaned
+	}
+	return nil
 }
 
 var _ flows.WebhookService = (*service)(nil)

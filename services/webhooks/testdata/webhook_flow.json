@@ -1,0 +1,121 @@
+{
+    "flows": [
+        {
+            "name": "Webhook Test",
+            "uuid": "bb38eefb-3cd9-4f80-9867-9c84ae276f7a",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "97c3c8a7-c1d6-4720-8242-c8295a7e798c",
+                    "actions": [
+                        {
+                            "uuid": "1144fa9d-2ee1-4d7f-9b66-b945864dc123",
+                            "headers": {
+                                "Accept": "application/json"
+                            },
+                            "type": "call_webhook",
+                            "url": "http://cheapcontactlookups.com",
+                            "body": "",
+                            "method": "GET",
+                            "result_name": "Result"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@results.result.category",
+                        "cases": [
+                            {
+                                "uuid": "20e8abbe-bd06-4d4e-845d-d49fcd162132",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Success"
+                                ],
+                                "category_uuid": "40c2f62c-f46d-49a7-a94d-8f0f1d03cc6e"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "40c2f62c-f46d-49a7-a94d-8f0f1d03cc6e",
+                                "name": "Success",
+                                "exit_uuid": "8b5f27ca-ccbf-4546-bd53-bcca4c50e1f4"
+                            },
+                            {
+                                "uuid": "a2fb1af5-fccf-4724-811d-aea914ae3195",
+                                "name": "Failure",
+                                "exit_uuid": "bb2ee13a-57e4-45cb-adaa-e6d817f06522"
+                            }
+                        ],
+                        "default_category_uuid": "a2fb1af5-fccf-4724-811d-aea914ae3195"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "8b5f27ca-ccbf-4546-bd53-bcca4c50e1f4",
+                            "destination_uuid": "b80cbb6a-44f4-40ea-8f87-cee602759510"
+                        },
+                        {
+                            "uuid": "bb2ee13a-57e4-45cb-adaa-e6d817f06522",
+                            "destination_uuid": null
+                        }
+                    ]
+                },
+                {
+                    "uuid": "b80cbb6a-44f4-40ea-8f87-cee602759510",
+                    "actions": [
+                        {
+                            "uuid": "7553120e-735c-47a8-a531-3e1b892682b1",
+                            "type": "set_contact_name",
+                            "name": "@webhook.name"
+                        },
+                        {
+                            "uuid": "2646d38e-dd18-47f2-b765-1ad79c7c8e5e",
+                            "type": "set_contact_field",
+                            "field": {
+                                "name": "Joined",
+                                "key": "joined"
+                            },
+                            "value": "@webhook.joined"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "77d4cf03-fcc0-4bb6-ac11-b299e3ba940b",
+                            "destination_uuid": null
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "97c3c8a7-c1d6-4720-8242-c8295a7e798c": {
+                        "type": "split_by_webhook",
+                        "position": {
+                            "left": 80,
+                            "top": 0
+                        },
+                        "config": {}
+                    },
+                    "b80cbb6a-44f4-40ea-8f87-cee602759510": {
+                        "position": {
+                            "left": 80,
+                            "top": 200
+                        },
+                        "type": "execute_actions"
+                    }
+                }
+            },
+            "revision": 9,
+            "expire_after_minutes": 10080,
+            "localization": {}
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "f9d65738-2f03-42ae-985c-3bff719de885",
+            "key": "joined",
+            "name": "Joined",
+            "type": "text"
+        }
+    ]
+}
