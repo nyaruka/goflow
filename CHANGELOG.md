@@ -1,3 +1,7 @@
+v0.144.2
+----------
+ * Update to latest gocommon to get Instagram scheme type
+
 v0.144.1
 ----------
  * Update to latest gocommon
