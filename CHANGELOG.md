@@ -1,3 +1,7 @@
+v0.144.1
+----------
+ * Update to latest gocommon
+
 v0.144.0
 ----------
  * Add extraction field to webhook_called events
