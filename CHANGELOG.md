@@ -1,3 +1,7 @@
+v0.144.3
+----------
+ * Fix tests broken by new scheme addition
+
 v0.144.2
 ----------
  * Update to latest gocommon to get Instagram scheme type
