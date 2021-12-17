@@ -126,6 +126,7 @@ func TestContact(t *testing.T) {
 		"facebook":   nil,
 		"fcm":        nil,
 		"freshchat":  nil,
+		"instagram":  nil,
 		"jiochat":    nil,
 		"line":       nil,
 		"mailto":     nil,
