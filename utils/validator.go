@@ -19,13 +19,23 @@ var valx = validator.New()
 type ErrorMessageFunc func(validator.FieldError) string
 
 var messageFuncs = map[string]ErrorMessageFunc{
-	"required":   func(e validator.FieldError) string { return "is required" },
-	"email":      func(e validator.FieldError) string { return "is not a valid email address" },
-	"uuid":       func(e validator.FieldError) string { return "must be a valid UUID" },
-	"uuid4":      func(e validator.FieldError) string { return "must be a valid UUID4" },
-	"url":        func(e validator.FieldError) string { return "is not a valid URL" },
-	"min":        func(e validator.FieldError) string { return fmt.Sprintf("must have a minimum of %s items", e.Param()) },
-	"max":        func(e validator.FieldError) string { return fmt.Sprintf("must have a maximum of %s items", e.Param()) },
+	"required": func(e validator.FieldError) string { return "is required" },
+	"email":    func(e validator.FieldError) string { return "is not a valid email address" },
+	"uuid":     func(e validator.FieldError) string { return "must be a valid UUID" },
+	"uuid4":    func(e validator.FieldError) string { return "must be a valid UUID4" },
+	"url":      func(e validator.FieldError) string { return "is not a valid URL" },
+	"min": func(e validator.FieldError) string {
+		if e.Kind() == reflect.Slice {
+			return fmt.Sprintf("must have a minimum of %s items", e.Param())
+		}
+		return fmt.Sprintf("must be greater than or equal to %s", e.Param())
+	},
+	"max": func(e validator.FieldError) string {
+		if e.Kind() == reflect.Slice {
+			return fmt.Sprintf("must have a maximum of %s items", e.Param())
+		}
+		return fmt.Sprintf("must be less than or equal to %s", e.Param())
+	},
 	"startswith": func(e validator.FieldError) string { return fmt.Sprintf("must start with '%s'", e.Param()) },
 	"mutually_exclusive": func(e validator.FieldError) string {
 		return fmt.Sprintf("is mutually exclusive with '%s'", e.Param())
