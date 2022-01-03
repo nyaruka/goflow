@@ -433,8 +433,6 @@ type FlowRun interface {
 
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
-	ExpiresOn() *time.Time
-	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
 	Exit(RunStatus)
 }

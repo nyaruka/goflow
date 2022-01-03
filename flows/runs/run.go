@@ -34,7 +34,6 @@ type flowRun struct {
 
 	createdOn  time.Time
 	modifiedOn time.Time
-	expiresOn  *time.Time
 	exitedOn   *time.Time
 
 	webhook     types.XValue
@@ -58,8 +57,6 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
-	r.ResetExpiration(nil)
-
 	r.webhook = types.XObjectEmpty
 	r.legacyExtra = newLegacyExtra(r)
 
@@ -91,14 +88,9 @@ func (r *flowRun) Exit(status flows.RunStatus) {
 
 	r.status = status
 	r.exitedOn = &now
-	r.expiresOn = nil
 	r.modifiedOn = now
-
-	// if we have a parent, it's expiration should no longer include our expiration
-	if r.ParentInSession() != nil {
-		r.ParentInSession().ResetExpiration(nil)
-	}
 }
+
 func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
@@ -200,27 +192,7 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 
 func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time { return r.modifiedOn }
-func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
-func (r *flowRun) ResetExpiration(from *time.Time) {
-	if r.Flow() != nil && r.Flow().ExpireAfterMinutes() >= 0 {
-		if from == nil {
-			now := dates.Now()
-			from = &now
-		}
-
-		expiresAfterMinutes := time.Duration(r.Flow().ExpireAfterMinutes())
-		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
-
-		r.expiresOn = &expiresOn
-		r.modifiedOn = dates.Now()
-	}
-
-	if r.ParentInSession() != nil {
-		r.ParentInSession().ResetExpiration(r.expiresOn)
-	}
-}
-
-func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
+func (r *flowRun) ExitedOn() *time.Time  { return r.exitedOn }
 
 // RootContext returns the root context for expression evaluation
 //
@@ -444,7 +416,6 @@ type runEnvelope struct {
 
 	CreatedOn  time.Time  `json:"created_on" validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
-	ExpiresOn  *time.Time `json:"expires_on"`
 	ExitedOn   *time.Time `json:"exited_on"`
 }
 
@@ -465,7 +436,6 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 		status:     e.Status,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
-		expiresOn:  e.ExpiresOn,
 		exitedOn:   e.ExitedOn,
 	}
 
@@ -519,7 +489,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 		Status:     r.status,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,
-		ExpiresOn:  r.expiresOn,
 		ExitedOn:   r.exitedOn,
 		Results:    r.results,
 	}

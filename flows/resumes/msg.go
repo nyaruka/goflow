@@ -67,7 +67,6 @@ func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
 	input := inputs.NewMsg(run.Session().Assets(), r.msg, r.ResumedOn())
 
 	run.Session().SetInput(input)
-	run.ResetExpiration(nil)
 
 	logEvent(events.NewMsgReceived(r.msg))
 }

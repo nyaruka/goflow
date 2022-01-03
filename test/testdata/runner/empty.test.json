@@ -41,13 +41,12 @@
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
-                        "exited_on": "2018-07-06T12:30:03.123456789Z",
-                        "expires_on": null,
+                        "exited_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Empty Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:03.123456789Z",
+                        "modified_on": "2018-07-06T12:30:01.123456789Z",
                         "path": [],
                         "status": "completed",
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"

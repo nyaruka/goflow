@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -17,7 +17,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_wait"
                 }
@@ -66,7 +66,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -80,21 +80,20 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Date Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:08.123456789Z",
+                        "modified_on": "2018-07-06T12:30:06.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
@@ -159,7 +158,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -174,7 +173,7 @@
                 },
                 {
                     "category": "Valid",
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "input": "I was born on 1977.06.23 at 3:34 pm",
                     "name": "Birth Date",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -182,7 +181,7 @@
                     "value": "1977-06-23T15:34:00.000000-05:00"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "field": {
                         "key": "birth_date",
                         "name": "Birth Date"
@@ -195,7 +194,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -216,7 +215,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "I was born on 1977.06.23 at 3:34 pm",
-                    "time": "2018-07-06T12:30:19.123456789Z"
+                    "time": "2018-07-06T12:30:15.123456789Z"
                 }
             ],
             "session": {
@@ -278,7 +277,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -292,12 +291,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -312,7 +311,7 @@
                             },
                             {
                                 "category": "Valid",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "I was born on 1977.06.23 at 3:34 pm",
                                 "name": "Birth Date",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -320,7 +319,7 @@
                                 "value": "1977-06-23T15:34:00.000000-05:00"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "field": {
                                     "key": "birth_date",
                                     "name": "Birth Date"
@@ -333,7 +332,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -347,22 +346,21 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:25.123456789Z",
-                        "expires_on": null,
+                        "exited_on": "2018-07-06T12:30:21.123456789Z",
                         "flow": {
                             "name": "Date Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:25.123456789Z",
+                        "modified_on": "2018-07-06T12:30:21.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "079f247a-16f4-419f-8cd2-0c8ae13152c6",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:16.123456789Z",
                                 "exit_uuid": "4ae06b16-3854-4336-b285-302c984fc235",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -371,7 +369,7 @@
                         "results": {
                             "birth_date": {
                                 "category": "Valid",
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "I was born on 1977.06.23 at 3:34 pm",
                                 "name": "Birth Date",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
