@@ -2,7 +2,9 @@ package waits
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -50,13 +52,6 @@ func (w *MsgWait) AllowedFlowTypes() []flows.FlowType {
 
 // Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.ActivatedWait {
-	var timeoutSeconds *int
-
-	if w.timeout != nil {
-		seconds := w.timeout.Seconds()
-		timeoutSeconds = &seconds
-	}
-
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 
@@ -64,7 +59,19 @@ func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) flows.Activa
 		return nil
 	}
 
-	log(events.NewMsgWait(timeoutSeconds, w.hint))
+	var timeoutSeconds *int
+	var expiresOn *time.Time
+
+	if w.timeout != nil {
+		seconds := w.timeout.Seconds()
+		timeoutSeconds = &seconds
+	}
+	if run.Flow().ExpireAfterMinutes() > 0 {
+		dt := dates.Now().Add(time.Duration(run.Flow().ExpireAfterMinutes() * int(time.Minute)))
+		expiresOn = &dt
+	}
+
+	log(events.NewMsgWait(timeoutSeconds, expiresOn, w.hint))
 
 	return NewActivatedMsgWait(timeoutSeconds, w.hint)
 }

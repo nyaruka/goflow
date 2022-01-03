@@ -2,6 +2,7 @@ package events
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
@@ -23,8 +24,9 @@ const TypeMsgWait string = "msg_wait"
 //
 //   {
 //     "type": "msg_wait",
-//     "created_on": "2019-01-02T15:04:05Z",
+//     "created_on": "2022-01-03T13:27:30Z",
 //     "timeout_seconds": 300,
+//     "expires_on": "2022-02-02T13:27:30Z",
 //     "hint": {
 //        "type": "image"
 //     }
@@ -34,15 +36,22 @@ const TypeMsgWait string = "msg_wait"
 type MsgWaitEvent struct {
 	baseEvent
 
-	TimeoutSeconds *int       `json:"timeout_seconds,omitempty"`
-	Hint           flows.Hint `json:"hint,omitempty"`
+	// when this wait times out and we can proceed assuming router has a timeout category. This value is relative
+	// because we want it to start counting when the last message is actually sent, which the engine can't know.
+	TimeoutSeconds *int `json:"timeout_seconds,omitempty"`
+
+	// When this wait expires and the whole run can be expired
+	ExpiresOn *time.Time `json:"expires_on,omitempty"`
+
+	Hint flows.Hint `json:"hint,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutSeconds *int, hint flows.Hint) *MsgWaitEvent {
+func NewMsgWait(timeoutSeconds *int, expiresOn *time.Time, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
 		baseEvent:      newBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
+		ExpiresOn:      expiresOn,
 		Hint:           hint,
 	}
 }
@@ -55,6 +64,7 @@ type msgWaitEnvelope struct {
 	baseEvent
 
 	TimeoutSeconds *int            `json:"timeout_seconds,omitempty"`
+	ExpiresOn      *time.Time      `json:"expires_on,omitempty"`
 	Hint           json.RawMessage `json:"hint,omitempty"`
 }
 
@@ -67,6 +77,7 @@ func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 
 	e.baseEvent = v.baseEvent
 	e.TimeoutSeconds = v.TimeoutSeconds
+	e.ExpiresOn = v.ExpiresOn
 
 	var err error
 	if v.Hint != nil {

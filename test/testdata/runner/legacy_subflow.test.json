@@ -12,7 +12,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "expires_on": "2018-07-13T12:30:08.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "msg_wait"
                 }
@@ -70,7 +71,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_wait"
                             }
@@ -81,7 +83,7 @@
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
-                        "modified_on": "2018-07-06T12:30:10.123456789Z",
+                        "modified_on": "2018-07-06T12:30:11.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -147,7 +149,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:14.123456789Z",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
                     "msg": {
                         "text": "xx",
                         "urn": "tel:+12065551212",
@@ -158,7 +160,7 @@
                 },
                 {
                     "category": "Other",
-                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "input": "xx",
                     "name": "Number",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -166,7 +168,7 @@
                     "value": "xx"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
                     "msg": {
                         "text": "That's not a number.. try again",
                         "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -175,7 +177,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "expires_on": "2018-07-13T12:30:27.123456789Z",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_wait"
                 }
@@ -187,14 +190,14 @@
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
                     "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "operand": "xx",
-                    "time": "2018-07-06T12:30:20.123456789Z"
+                    "time": "2018-07-06T12:30:21.123456789Z"
                 },
                 {
                     "destination_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                     "exit_uuid": "94567b19-ab3a-4d81-a0e7-2f30120bcd85",
                     "flow_uuid": "29f5815d-4c0f-403b-b331-2b2e84158804",
                     "node_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
-                    "time": "2018-07-06T12:30:24.123456789Z"
+                    "time": "2018-07-06T12:30:25.123456789Z"
                 }
             ],
             "session": {
@@ -249,12 +252,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "text": "xx",
                                     "urn": "tel:+12065551212",
@@ -265,7 +269,7 @@
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "xx",
                                 "name": "Number",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -273,7 +277,7 @@
                                 "value": "xx"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "msg": {
                                     "text": "That's not a number.. try again",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -282,18 +286,19 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "expires_on": "2018-07-13T12:30:27.123456789Z",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:12.123456789Z",
+                        "expires_on": "2018-07-13T12:30:13.123456789Z",
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
-                        "modified_on": "2018-07-06T12:30:28.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -308,13 +313,13 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "exit_uuid": "94567b19-ab3a-4d81-a0e7-2f30120bcd85",
                                 "node_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:25.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:26.123456789Z",
                                 "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
@@ -322,7 +327,7 @@
                         "results": {
                             "number": {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "xx",
                                 "name": "Number",
                                 "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
@@ -381,7 +386,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "msg": {
                         "text": "13",
                         "urn": "tel:+12065551212",
@@ -392,7 +397,7 @@
                 },
                 {
                     "category": "Numeric",
-                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "input": "13",
                     "name": "Number",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
@@ -453,12 +458,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "text": "xx",
                                     "urn": "tel:+12065551212",
@@ -469,7 +475,7 @@
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "xx",
                                 "name": "Number",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -477,7 +483,7 @@
                                 "value": "xx"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "msg": {
                                     "text": "That's not a number.. try again",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -486,12 +492,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "expires_on": "2018-07-13T12:30:27.123456789Z",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "text": "13",
                                     "urn": "tel:+12065551212",
@@ -502,7 +509,7 @@
                             },
                             {
                                 "category": "Numeric",
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "input": "13",
                                 "name": "Number",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
@@ -510,13 +517,13 @@
                                 "value": "13"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:40.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Subflow Child",
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
-                        "modified_on": "2018-07-06T12:30:38.123456789Z",
+                        "modified_on": "2018-07-06T12:30:40.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -531,13 +538,13 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "exit_uuid": "94567b19-ab3a-4d81-a0e7-2f30120bcd85",
                                 "node_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:25.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:26.123456789Z",
                                 "exit_uuid": "0dfdf99b-3dc6-4028-8184-1b6e9afb6c8d",
                                 "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -546,7 +553,7 @@
                         "results": {
                             "number": {
                                 "category": "Numeric",
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "13",
                                 "name": "Number",
                                 "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050",

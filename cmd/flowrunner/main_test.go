@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -60,6 +61,7 @@ func TestPrintEvent(t *testing.T) {
 	sa := session.Assets()
 	flow, _ := sa.Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
 	timeout := 3
+	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 
 	tests := []struct {
 		event    flows.Event
@@ -82,8 +84,8 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
 		{events.NewFlowEntered(flow.Reference(), "", false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
-		{events.NewMsgWait(nil, nil), `⏳ waiting for message...`},
-		{events.NewMsgWait(&timeout, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
+		{events.NewMsgWait(nil, nil, nil), `⏳ waiting for message...`},
+		{events.NewMsgWait(&timeout, &expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
 	}
 
 	for _, tc := range tests {
