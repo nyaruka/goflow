@@ -40,6 +40,7 @@ func TestEventMarshaling(t *testing.T) {
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
 	timeout := 500
+	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 	gender := session.Assets().Fields().Get("gender")
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
@@ -447,19 +448,20 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewMsgWait(&timeout, hints.NewImageHint()),
+			events.NewMsgWait(&timeout, &expiresOn, hints.NewImageHint()),
 			`{
+				"type": "msg_wait",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"hint": {"type": "image"},
 				"timeout_seconds": 500,
-				"type": "msg_wait"
+				"expires_on": "2022-02-03T13:45:30Z",
+				"hint": {"type": "image"}
 			}`,
 		},
 		{
 			events.NewWaitTimedOut(),
 			`{
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"type": "wait_timed_out"
+				"type": "wait_timed_out",
+				"created_on": "2018-10-18T14:20:30.000123456Z"
 			}`,
 		},
 		{

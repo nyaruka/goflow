@@ -12,7 +12,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "expires_on": "2018-07-13T12:30:08.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -70,7 +71,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
@@ -81,7 +83,7 @@
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:30:10.123456789Z",
+                        "modified_on": "2018-07-06T12:30:11.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -144,7 +146,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:14.123456789Z",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
                     "msg": {
                         "text": "name",
                         "urn": "tel:+12065551212",
@@ -155,7 +157,7 @@
                 },
                 {
                     "category": "Name",
-                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "input": "name",
                     "name": "Command",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -163,7 +165,7 @@
                     "value": "name"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
                     "flow": {
                         "name": "Start Actions Child",
                         "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -174,7 +176,7 @@
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:31.123456789Z",
                     "msg": {
                         "text": "Clearing name",
                         "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -183,13 +185,13 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "created_on": "2018-07-06T12:30:35.123456789Z",
                     "name": "",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "contact_name_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "created_on": "2018-07-06T12:30:39.123456789Z",
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -200,7 +202,7 @@
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:50.123456789Z",
+                    "created_on": "2018-07-06T12:30:51.123456789Z",
                     "msg": {
                         "text": "Enter command: name or exit",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -209,7 +211,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:54.123456789Z",
+                    "created_on": "2018-07-06T12:30:56.123456789Z",
+                    "expires_on": "2018-07-13T12:30:55.123456789Z",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_wait"
                 }
@@ -221,28 +224,28 @@
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "operand": "name",
-                    "time": "2018-07-06T12:30:20.123456789Z"
+                    "time": "2018-07-06T12:30:21.123456789Z"
                 },
                 {
                     "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                    "time": "2018-07-06T12:30:32.123456789Z"
+                    "time": "2018-07-06T12:30:33.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                    "time": "2018-07-06T12:30:36.123456789Z"
+                    "time": "2018-07-06T12:30:37.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                    "time": "2018-07-06T12:30:52.123456789Z"
+                    "time": "2018-07-06T12:30:53.123456789Z"
                 }
             ],
             "session": {
@@ -296,12 +299,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "text": "name",
                                     "urn": "tel:+12065551212",
@@ -312,7 +316,7 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -320,7 +324,7 @@
                                 "value": "name"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Child",
                                     "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -331,13 +335,13 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:40.123456789Z",
-                        "expires_on": "2018-07-27T12:30:45.123456789Z",
+                        "exited_on": "2018-07-06T12:30:41.123456789Z",
+                        "expires_on": "2018-07-27T12:30:46.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:30:48.123456789Z",
+                        "modified_on": "2018-07-06T12:30:49.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -352,7 +356,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
@@ -360,7 +364,7 @@
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -371,10 +375,10 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:25.123456789Z",
+                        "created_on": "2018-07-06T12:30:26.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -383,13 +387,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
                                 "name": "",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "contact_name_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Parent",
                                     "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -400,29 +404,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:41.123456789Z",
-                        "expires_on": "2018-07-20T12:30:45.123456789Z",
+                        "exited_on": "2018-07-06T12:30:42.123456789Z",
+                        "expires_on": "2018-07-20T12:30:46.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:30:47.123456789Z",
+                        "modified_on": "2018-07-06T12:30:48.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:30.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:38.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
@@ -431,10 +435,10 @@
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:44.123456789Z",
+                        "created_on": "2018-07-06T12:30:45.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:50.123456789Z",
+                                "created_on": "2018-07-06T12:30:51.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -443,28 +447,29 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:54.123456789Z",
+                                "created_on": "2018-07-06T12:30:56.123456789Z",
+                                "expires_on": "2018-07-13T12:30:55.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:45.123456789Z",
+                        "expires_on": "2018-07-13T12:30:46.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:30:56.123456789Z",
+                        "modified_on": "2018-07-06T12:30:58.123456789Z",
                         "parent_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:49.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:50.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:53.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:54.123456789Z",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             }
@@ -518,7 +523,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:31:02.123456789Z",
+                    "created_on": "2018-07-06T12:31:04.123456789Z",
                     "msg": {
                         "text": "name",
                         "urn": "tel:+12065551212",
@@ -529,7 +534,7 @@
                 },
                 {
                     "category": "Name",
-                    "created_on": "2018-07-06T12:31:06.123456789Z",
+                    "created_on": "2018-07-06T12:31:08.123456789Z",
                     "input": "name",
                     "name": "Command",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -537,7 +542,7 @@
                     "value": "name"
                 },
                 {
-                    "created_on": "2018-07-06T12:31:10.123456789Z",
+                    "created_on": "2018-07-06T12:31:12.123456789Z",
                     "flow": {
                         "name": "Start Actions Child",
                         "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -548,7 +553,7 @@
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2018-07-06T12:31:27.123456789Z",
+                    "created_on": "2018-07-06T12:31:29.123456789Z",
                     "msg": {
                         "text": "Clearing name",
                         "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -557,7 +562,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:31:33.123456789Z",
+                    "created_on": "2018-07-06T12:31:35.123456789Z",
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -568,7 +573,7 @@
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2018-07-06T12:31:56.123456789Z",
+                    "created_on": "2018-07-06T12:31:58.123456789Z",
                     "msg": {
                         "text": "Enter command: name or exit",
                         "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -577,7 +582,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:32:00.123456789Z",
+                    "created_on": "2018-07-06T12:32:03.123456789Z",
+                    "expires_on": "2018-07-13T12:32:02.123456789Z",
                     "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_wait"
                 }
@@ -589,28 +595,28 @@
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "operand": "name",
-                    "time": "2018-07-06T12:31:08.123456789Z"
+                    "time": "2018-07-06T12:31:10.123456789Z"
                 },
                 {
                     "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                    "time": "2018-07-06T12:31:29.123456789Z"
+                    "time": "2018-07-06T12:31:31.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                    "time": "2018-07-06T12:31:31.123456789Z"
+                    "time": "2018-07-06T12:31:33.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                    "time": "2018-07-06T12:31:58.123456789Z"
+                    "time": "2018-07-06T12:32:00.123456789Z"
                 }
             ],
             "session": {
@@ -664,12 +670,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "text": "name",
                                     "urn": "tel:+12065551212",
@@ -680,7 +687,7 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -688,7 +695,7 @@
                                 "value": "name"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Child",
                                     "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -699,13 +706,13 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:35.123456789Z",
-                        "expires_on": "2018-08-10T12:31:49.123456789Z",
+                        "exited_on": "2018-07-06T12:31:37.123456789Z",
+                        "expires_on": "2018-08-10T12:31:51.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:31:54.123456789Z",
+                        "modified_on": "2018-07-06T12:31:56.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -720,7 +727,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
@@ -728,7 +735,7 @@
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -739,10 +746,10 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:25.123456789Z",
+                        "created_on": "2018-07-06T12:30:26.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -751,13 +758,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
                                 "name": "",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "contact_name_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Parent",
                                     "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -768,29 +775,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:36.123456789Z",
-                        "expires_on": "2018-08-03T12:31:49.123456789Z",
+                        "exited_on": "2018-07-06T12:31:38.123456789Z",
+                        "expires_on": "2018-08-03T12:31:51.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:31:53.123456789Z",
+                        "modified_on": "2018-07-06T12:31:55.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:30.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:38.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
@@ -799,10 +806,10 @@
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:44.123456789Z",
+                        "created_on": "2018-07-06T12:30:45.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:50.123456789Z",
+                                "created_on": "2018-07-06T12:30:51.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -811,12 +818,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:54.123456789Z",
+                                "created_on": "2018-07-06T12:30:56.123456789Z",
+                                "expires_on": "2018-07-13T12:30:55.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:02.123456789Z",
+                                "created_on": "2018-07-06T12:31:04.123456789Z",
                                 "msg": {
                                     "text": "name",
                                     "urn": "tel:+12065551212",
@@ -827,7 +835,7 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:31:06.123456789Z",
+                                "created_on": "2018-07-06T12:31:08.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -835,7 +843,7 @@
                                 "value": "name"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:10.123456789Z",
+                                "created_on": "2018-07-06T12:31:12.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Child",
                                     "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -846,29 +854,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:39.123456789Z",
-                        "expires_on": "2018-07-27T12:31:49.123456789Z",
+                        "exited_on": "2018-07-06T12:31:41.123456789Z",
+                        "expires_on": "2018-07-27T12:31:51.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:31:52.123456789Z",
+                        "modified_on": "2018-07-06T12:31:54.123456789Z",
                         "parent_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:49.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:50.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:53.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:54.123456789Z",
                                 "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:09.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:11.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             }
@@ -876,7 +884,7 @@
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:31:04.123456789Z",
+                                "created_on": "2018-07-06T12:31:06.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -887,10 +895,10 @@
                         "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     },
                     {
-                        "created_on": "2018-07-06T12:31:20.123456789Z",
+                        "created_on": "2018-07-06T12:31:22.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:31:27.123456789Z",
+                                "created_on": "2018-07-06T12:31:29.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -899,7 +907,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:33.123456789Z",
+                                "created_on": "2018-07-06T12:31:35.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Parent",
                                     "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -910,29 +918,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:43.123456789Z",
-                        "expires_on": "2018-07-20T12:31:49.123456789Z",
+                        "exited_on": "2018-07-06T12:31:45.123456789Z",
+                        "expires_on": "2018-07-20T12:31:51.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:31:51.123456789Z",
+                        "modified_on": "2018-07-06T12:31:53.123456789Z",
                         "parent_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:31:26.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:28.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:30.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:32.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                                 "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:34.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                                 "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
                             }
@@ -941,10 +949,10 @@
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     {
-                        "created_on": "2018-07-06T12:31:48.123456789Z",
+                        "created_on": "2018-07-06T12:31:50.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:31:56.123456789Z",
+                                "created_on": "2018-07-06T12:31:58.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
                                     "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -953,28 +961,29 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:32:00.123456789Z",
+                                "created_on": "2018-07-06T12:32:03.123456789Z",
+                                "expires_on": "2018-07-13T12:32:02.123456789Z",
                                 "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:31:49.123456789Z",
+                        "expires_on": "2018-07-13T12:31:51.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:02.123456789Z",
+                        "modified_on": "2018-07-06T12:32:05.123456789Z",
                         "parent_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:31:55.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:57.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                                 "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:59.123456789Z",
+                                "arrived_on": "2018-07-06T12:32:01.123456789Z",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                                 "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             }
@@ -1028,7 +1037,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:32:10.123456789Z",
+                    "created_on": "2018-07-06T12:32:13.123456789Z",
                     "msg": {
                         "text": "exit",
                         "urn": "tel:+12065551212",
@@ -1039,7 +1048,7 @@
                 },
                 {
                     "category": "Exit",
-                    "created_on": "2018-07-06T12:32:14.123456789Z",
+                    "created_on": "2018-07-06T12:32:17.123456789Z",
                     "input": "exit",
                     "name": "Command",
                     "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
@@ -1099,12 +1108,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "expires_on": "2018-07-13T12:30:08.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "text": "name",
                                     "urn": "tel:+12065551212",
@@ -1115,7 +1125,7 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -1123,7 +1133,7 @@
                                 "value": "name"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Child",
                                     "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -1134,13 +1144,13 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:35.123456789Z",
-                        "expires_on": "2018-08-03T12:32:17.123456789Z",
+                        "exited_on": "2018-07-06T12:31:37.123456789Z",
+                        "expires_on": "2018-08-03T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:21.123456789Z",
+                        "modified_on": "2018-07-06T12:32:24.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -1155,7 +1165,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
@@ -1163,7 +1173,7 @@
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -1174,10 +1184,10 @@
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:25.123456789Z",
+                        "created_on": "2018-07-06T12:30:26.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -1186,13 +1196,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
                                 "name": "",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "contact_name_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Parent",
                                     "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -1203,29 +1213,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:36.123456789Z",
-                        "expires_on": "2018-07-27T12:32:17.123456789Z",
+                        "exited_on": "2018-07-06T12:31:38.123456789Z",
+                        "expires_on": "2018-07-27T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:32:20.123456789Z",
+                        "modified_on": "2018-07-06T12:32:23.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:30.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:37.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:38.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                             }
@@ -1234,10 +1244,10 @@
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:44.123456789Z",
+                        "created_on": "2018-07-06T12:30:45.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:50.123456789Z",
+                                "created_on": "2018-07-06T12:30:51.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -1246,12 +1256,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:54.123456789Z",
+                                "created_on": "2018-07-06T12:30:56.123456789Z",
+                                "expires_on": "2018-07-13T12:30:55.123456789Z",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:02.123456789Z",
+                                "created_on": "2018-07-06T12:31:04.123456789Z",
                                 "msg": {
                                     "text": "name",
                                     "urn": "tel:+12065551212",
@@ -1262,7 +1273,7 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:31:06.123456789Z",
+                                "created_on": "2018-07-06T12:31:08.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
@@ -1270,7 +1281,7 @@
                                 "value": "name"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:10.123456789Z",
+                                "created_on": "2018-07-06T12:31:12.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Child",
                                     "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
@@ -1281,29 +1292,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:39.123456789Z",
-                        "expires_on": "2018-07-20T12:32:17.123456789Z",
+                        "exited_on": "2018-07-06T12:31:41.123456789Z",
+                        "expires_on": "2018-07-20T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:19.123456789Z",
+                        "modified_on": "2018-07-06T12:32:22.123456789Z",
                         "parent_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:49.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:50.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:53.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:54.123456789Z",
                                 "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                                 "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:09.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:11.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             }
@@ -1311,7 +1322,7 @@
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2018-07-06T12:31:04.123456789Z",
+                                "created_on": "2018-07-06T12:31:06.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -1322,10 +1333,10 @@
                         "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                     },
                     {
-                        "created_on": "2018-07-06T12:31:20.123456789Z",
+                        "created_on": "2018-07-06T12:31:22.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:31:27.123456789Z",
+                                "created_on": "2018-07-06T12:31:29.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1334,7 +1345,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:33.123456789Z",
+                                "created_on": "2018-07-06T12:31:35.123456789Z",
                                 "flow": {
                                     "name": "Start Actions Parent",
                                     "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -1345,29 +1356,29 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:43.123456789Z",
-                        "expires_on": "2018-07-13T12:32:17.123456789Z",
+                        "exited_on": "2018-07-06T12:31:45.123456789Z",
+                        "expires_on": "2018-07-13T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2018-07-06T12:32:18.123456789Z",
+                        "modified_on": "2018-07-06T12:32:21.123456789Z",
                         "parent_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:31:26.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:28.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:30.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:32.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                                 "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:34.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                                 "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
                             }
@@ -1376,10 +1387,10 @@
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     {
-                        "created_on": "2018-07-06T12:31:48.123456789Z",
+                        "created_on": "2018-07-06T12:31:50.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:31:56.123456789Z",
+                                "created_on": "2018-07-06T12:31:58.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
                                     "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -1388,12 +1399,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:32:00.123456789Z",
+                                "created_on": "2018-07-06T12:32:03.123456789Z",
+                                "expires_on": "2018-07-13T12:32:02.123456789Z",
                                 "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:32:10.123456789Z",
+                                "created_on": "2018-07-06T12:32:13.123456789Z",
                                 "msg": {
                                     "text": "exit",
                                     "urn": "tel:+12065551212",
@@ -1404,7 +1416,7 @@
                             },
                             {
                                 "category": "Exit",
-                                "created_on": "2018-07-06T12:32:14.123456789Z",
+                                "created_on": "2018-07-06T12:32:17.123456789Z",
                                 "input": "exit",
                                 "name": "Command",
                                 "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
@@ -1412,23 +1424,23 @@
                                 "value": "exit"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:32:16.123456789Z",
+                        "exited_on": "2018-07-06T12:32:19.123456789Z",
                         "expires_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2018-07-06T12:32:16.123456789Z",
+                        "modified_on": "2018-07-06T12:32:19.123456789Z",
                         "parent_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:31:55.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:57.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
                                 "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:31:59.123456789Z",
+                                "arrived_on": "2018-07-06T12:32:01.123456789Z",
                                 "exit_uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                                 "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
@@ -1437,7 +1449,7 @@
                         "results": {
                             "command": {
                                 "category": "Exit",
-                                "created_on": "2018-07-06T12:32:12.123456789Z",
+                                "created_on": "2018-07-06T12:32:15.123456789Z",
                                 "input": "exit",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
