@@ -19,7 +19,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
-	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 
@@ -262,14 +261,6 @@ func (s *Session) Resume(resume *Resume) (*Sprint, error) {
 	return &Sprint{target: sprint}, nil
 }
 
-// GetWait gets the current wait of this session.. can't call this Wait() because Object in Java already has a wait() method
-func (s *Session) GetWait() *Wait {
-	if s.target.Wait() != nil {
-		return &Wait{target: s.target.Wait()}
-	}
-	return nil
-}
-
 // ToJSON serializes this session as JSON
 func (s *Session) ToJSON() (string, error) {
 	data, err := jsonx.Marshal(s.target)
@@ -285,22 +276,6 @@ type Hint struct {
 
 func (h *Hint) Type() string {
 	return string(h.target.Type())
-}
-
-type Wait struct {
-	target flows.ActivatedWait
-}
-
-func (w *Wait) Type() string {
-	return string(w.target.Type())
-}
-
-func (w *Wait) Hint() *Hint {
-	asMsgWait, isMsgWait := w.target.(*waits.ActivatedMsgWait)
-	if isMsgWait && asMsgWait.Hint() != nil {
-		return &Hint{target: asMsgWait.Hint()}
-	}
-	return nil
 }
 
 type Engine struct {

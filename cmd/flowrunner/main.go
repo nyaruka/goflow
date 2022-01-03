@@ -170,7 +170,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	printEvents(sprint.Events(), out)
 	scanner := bufio.NewScanner(in)
 
-	for session.Wait() != nil {
+	for session.Status() == flows.SessionStatusWaiting {
 
 		// ask for input
 		fmt.Fprintf(out, "> ")

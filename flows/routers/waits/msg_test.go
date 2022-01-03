@@ -74,16 +74,11 @@ func TestMsgWait(t *testing.T) {
 
 	// try activating the wait
 	log := test.NewEventLog()
-	activated := wait.Begin(run, log.Log)
+	begun := wait.Begin(run, log.Log)
 
-	assert.Equal(t, "msg", activated.Type())
+	assert.True(t, begun)
 	assert.Equal(t, 1, len(log.Events))
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
-
-	// test marsalling activated wait
-	marshaled, err = jsonx.Marshal(activated)
-	assert.NoError(t, err)
-	assert.Equal(t, `{"type":"msg","timeout_seconds":5,"hint":{"type":"image"}}`, string(marshaled))
 
 	// try to end with incorrect resume type
 	err = wait.End(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusBusy, 0)))

@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/test"
@@ -34,16 +35,11 @@ func TestDialWait(t *testing.T) {
 
 	// try activating the wait
 	log := test.NewEventLog()
-	activated := wait.Begin(run, log.Log)
+	begun := wait.Begin(run, log.Log)
 
-	assert.Equal(t, "dial", activated.Type())
+	assert.True(t, begun)
 	assert.Equal(t, 1, len(log.Events))
 	assert.Equal(t, "dial_wait", log.Events[0].Type())
-
-	// test marsalling activated wait
-	marshaled, err = jsonx.Marshal(activated)
-	assert.NoError(t, err)
-	assert.Equal(t, `{"type":"dial","urn":"tel:+593979123456"}`, string(marshaled))
 
 	// try to end with incorrect resume type
 	err = wait.End(resumes.NewWaitTimeout(nil, nil))
@@ -58,22 +54,22 @@ func TestDialWait(t *testing.T) {
 	assert.NoError(t, err)
 
 	log = test.NewEventLog()
-	activated = wait.Begin(run, log.Log)
+	begun = wait.Begin(run, log.Log)
 
-	assert.Equal(t, "dial", activated.Type())
-	assert.Equal(t, urns.URN("tel:+593979123456"), activated.(*waits.ActivatedDialWait).URN())
+	assert.True(t, begun)
 	assert.Equal(t, 2, len(log.Events))
 	assert.Equal(t, "error", log.Events[0].Type())
 	assert.Equal(t, "dial_wait", log.Events[1].Type())
+	assert.Equal(t, urns.URN("tel:+593979123456"), log.Events[1].(*events.DialWaitEvent).URN)
 
 	// try when wait doesn't generate a valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"\")"}`))
 	assert.NoError(t, err)
 
 	log = test.NewEventLog()
-	activated = wait.Begin(run, log.Log)
+	begun = wait.Begin(run, log.Log)
 
-	assert.Nil(t, activated)
+	assert.False(t, begun)
 	assert.Equal(t, 1, len(log.Events))
 	assert.Equal(t, "error", log.Events[0].Type())
 }

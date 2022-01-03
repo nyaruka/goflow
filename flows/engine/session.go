@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/resumes"
-	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -39,7 +38,6 @@ type session struct {
 	contact       *flows.Contact
 	runs          []flows.FlowRun
 	status        flows.SessionStatus
-	wait          flows.ActivatedWait
 	input         flows.Input
 
 	// state which is temporary to each call
@@ -123,7 +121,6 @@ func (s *session) ParentRun() flows.RunSummary {
 }
 
 func (s *session) Status() flows.SessionStatus { return s.status }
-func (s *session) Wait() flows.ActivatedWait   { return s.wait }
 
 func (s *session) CurrentContext() *types.XObject {
 	run := s.currentRun()
@@ -260,7 +257,6 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.FlowRun, resume f
 		sprint.logEvent(events.NewError(err))
 		return nil
 	}
-	s.wait = nil
 	s.status = flows.SessionStatusActive
 	s.currentResume = resume
 
@@ -469,13 +465,10 @@ func (s *session) visitNode(sprint *sprint, run flows.FlowRun, node flows.Node, 
 	}
 
 	if wait != nil {
-
 		// waits have the option to skip themselves
-		activatedWait := wait.Begin(run, logEvent)
-		if activatedWait != nil {
+		if wait.Begin(run, logEvent) {
 			// mark ouselves as waiting and hand back to
 			run.SetStatus(flows.RunStatusWaiting)
-			s.wait = activatedWait
 			s.status = flows.SessionStatusWaiting
 
 			return step, nil, "", nil
@@ -624,23 +617,11 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 		s.addRun(run)
 	}
 
-	// and our wait and input
-	if e.Wait != nil {
-		s.wait, err = waits.ReadActivatedWait(e.Wait)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to read wait")
-		}
-	}
+	// and our input
 	if e.Input != nil {
 		if s.input, err = inputs.ReadInput(s.Assets(), e.Input, missing); err != nil {
 			return nil, errors.Wrap(err, "unable to read input")
 		}
-	}
-
-	// TODO more and don't limit to sessions being read
-	// perform some structural validation
-	if s.status == flows.SessionStatusWaiting && s.wait == nil {
-		return nil, errors.Errorf("session has status of \"waiting\" but no wait object")
 	}
 
 	return s, nil
@@ -668,11 +649,6 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	}
 	if s.trigger != nil {
 		if e.Trigger, err = jsonx.Marshal(s.trigger); err != nil {
-			return nil, err
-		}
-	}
-	if s.wait != nil {
-		if e.Wait, err = jsonx.Marshal(s.wait); err != nil {
 			return nil, err
 		}
 	}
