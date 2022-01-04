@@ -134,10 +134,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
-                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                "wait": {
-                    "type": "msg"
-                }
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         },
         {
@@ -359,10 +356,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
-                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                "wait": {
-                    "type": "msg"
-                }
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         },
         {
@@ -637,13 +631,7 @@
                     "type": "manual"
                 },
                 "type": "messaging_offline",
-                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                "wait": {
-                    "hint": {
-                        "type": "image"
-                    },
-                    "type": "msg"
-                }
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         },
         {

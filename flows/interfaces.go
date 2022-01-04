@@ -216,15 +216,8 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(FlowRun, EventCallback) ActivatedWait
+	Begin(FlowRun, EventCallback) bool
 	End(Resume) error
-}
-
-// ActivatedWait is a wait once it has been activated in a session
-type ActivatedWait interface {
-	utils.Typed
-
-	TimeoutSeconds() *int
 }
 
 // Hint tells the caller what type of input the flow is expecting
@@ -370,7 +363,6 @@ type Session interface {
 	CurrentResume() Resume
 	BatchStart() bool
 	PushFlow(Flow, FlowRun, bool)
-	Wait() ActivatedWait
 
 	Resume(Resume) (Sprint, error)
 	Runs() []FlowRun

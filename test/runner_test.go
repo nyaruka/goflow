@@ -155,8 +155,8 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
 
-		// if we aren't at a wait, that's an error
-		if session.Wait() == nil {
+		// if session isn't waiting for another resume, that's an error
+		if session.Status() != flows.SessionStatusWaiting {
 			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %d", len(rawResumes[i:]))
 		}
 

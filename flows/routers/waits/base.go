@@ -10,15 +10,12 @@ import (
 )
 
 type readFunc func(data json.RawMessage) (flows.Wait, error)
-type readActivatedFunc func(data json.RawMessage) (flows.ActivatedWait, error)
 
 var registeredTypes = map[string]readFunc{}
-var registeredActivatedTypes = map[string]readActivatedFunc{}
 
 // RegisterType registers a new type of wait
-func registerType(name string, f1 readFunc, f2 readActivatedFunc) {
-	registeredTypes[name] = f1
-	registeredActivatedTypes[name] = f2
+func registerType(name string, f readFunc) {
+	registeredTypes[name] = f
 }
 
 type Timeout struct {
@@ -55,15 +52,6 @@ func (w *baseWait) resumeTypeError(r flows.Resume) error {
 	return errors.Errorf("can't end a wait of type '%s' with a resume of type '%s'", w.type_, r.Type())
 }
 
-type baseActivatedWait struct {
-	type_          string
-	timeoutSeconds *int
-}
-
-func (w *baseActivatedWait) Type() string { return w.type_ }
-
-func (w *baseActivatedWait) TimeoutSeconds() *int { return w.timeoutSeconds }
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -96,36 +84,5 @@ func (w *baseWait) unmarshal(e *baseWaitEnvelope) error {
 func (w *baseWait) marshal(e *baseWaitEnvelope) error {
 	e.Type = w.type_
 	e.Timeout = w.timeout
-	return nil
-}
-
-// ReadActivatedWait reads an activated wait from the given JSON
-func ReadActivatedWait(data json.RawMessage) (flows.ActivatedWait, error) {
-	typeName, err := utils.ReadTypeFromJSON(data)
-	if err != nil {
-		return nil, err
-	}
-
-	f := registeredActivatedTypes[typeName]
-	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
-	}
-	return f(data)
-}
-
-type baseActivatedWaitEnvelope struct {
-	Type           string `json:"type" validate:"required"`
-	TimeoutSeconds *int   `json:"timeout_seconds,omitempty"`
-}
-
-func (w *baseActivatedWait) unmarshal(e *baseActivatedWaitEnvelope) error {
-	w.type_ = e.Type
-	w.timeoutSeconds = e.TimeoutSeconds
-	return nil
-}
-
-func (w *baseActivatedWait) marshal(e *baseActivatedWaitEnvelope) error {
-	e.Type = w.type_
-	e.TimeoutSeconds = w.timeoutSeconds
 	return nil
 }

@@ -125,11 +125,7 @@
                     "type": "manual"
                 },
                 "type": "voice",
-                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                "wait": {
-                    "type": "dial",
-                    "urn": "tel:+12065551212"
-                }
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
             }
         },
         {
