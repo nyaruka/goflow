@@ -1,3 +1,9 @@
+v0.145.0
+----------
+ * Add expires_on to msg_wait events
+ * Remove activated wait objects on sessions, callers should use the wait events
+ * Tweak validation error message for min and max tags when field isn't a slice
+
 v0.144.3
 ----------
  * Fix tests broken by new scheme addition
