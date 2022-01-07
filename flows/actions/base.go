@@ -79,7 +79,7 @@ func (a *baseAction) Validate() error { return nil }
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.FlowRun, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetTranslatedTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
@@ -125,14 +125,14 @@ func (a *baseAction) evaluateMessage(run flows.FlowRun, languages []envs.Languag
 }
 
 // helper to save a run result and log it as an event
-func (a *baseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
+func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	run.SaveResult(result)
 	logEvent(events.NewRunResultChanged(result))
 }
 
 // helper to save a run result based on a webhook call and log it as an event
-func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
+func (a *baseAction) saveWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
 	input := fmt.Sprintf("%s %s", call.Request.Method, call.Request.URL.String())
 	value := "0"
 	category := webhookStatusCategories[status]
@@ -149,7 +149,7 @@ func (a *baseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
 }
 
-func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
+func (a *baseAction) updateWebhook(run flows.Run, call *flows.WebhookCall) {
 	parsed := types.JSONToXValue(call.ResponseJSON)
 
 	switch typed := parsed.(type) {
@@ -161,13 +161,13 @@ func (a *baseAction) updateWebhook(run flows.FlowRun, call *flows.WebhookCall) {
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.FlowRun, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
+func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
 	mod.Apply(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
 	logModifier(mod)
 }
 
 // helper to log a failure
-func (a *baseAction) fail(run flows.FlowRun, err error, logEvent flows.EventCallback) {
+func (a *baseAction) fail(run flows.Run, err error, logEvent flows.EventCallback) {
 	run.Exit(flows.RunStatusFailed)
 	logEvent(events.NewFailure(err))
 }
@@ -213,7 +213,7 @@ type otherContactsAction struct {
 	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
-func (a *otherContactsAction) resolveRecipients(run flows.FlowRun, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
+func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -281,7 +281,7 @@ type createMsgAction struct {
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, logEvent flows.EventCallback) []*flows.Group {
+func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent flows.EventCallback) []*flows.Group {
 	groupAssets := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -317,7 +317,7 @@ func resolveGroups(run flows.FlowRun, references []*assets.GroupReference, logEv
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEvent flows.EventCallback) []*flows.Label {
+func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent flows.EventCallback) []*flows.Label {
 	labelAssets := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
@@ -353,7 +353,7 @@ func resolveLabels(run flows.FlowRun, references []*assets.LabelReference, logEv
 }
 
 // helper function to resolve a user reference to a user
-func resolveUser(run flows.FlowRun, ref *assets.UserReference, logEvent flows.EventCallback) *flows.User {
+func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventCallback) *flows.User {
 	userAssets := run.Session().Assets().Users()
 	var user *flows.User
 

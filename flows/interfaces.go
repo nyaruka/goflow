@@ -165,7 +165,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(FlowRun, Step, ModifierCallback, EventCallback) error
+	Execute(Run, Step, ModifierCallback, EventCallback) error
 	Validate() error
 }
 
@@ -188,8 +188,8 @@ type Router interface {
 
 	Validate(Flow, []Exit) error
 	AllowTimeout() bool
-	Route(FlowRun, Step, EventCallback) (ExitUUID, string, error)
-	RouteTimeout(FlowRun, Step, EventCallback) (ExitUUID, error)
+	Route(Run, Step, EventCallback) (ExitUUID, string, error)
+	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
 
 	EnumerateTemplates(Localization, func(envs.Language, string))
 	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
@@ -216,7 +216,7 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(FlowRun, EventCallback) bool
+	Begin(Run, EventCallback) bool
 	End(Resume) error
 }
 
@@ -238,7 +238,7 @@ type Trigger interface {
 	Contextable
 
 	Initialize(Session, EventCallback) error
-	InitializeRun(FlowRun, EventCallback) error
+	InitializeRun(Run, EventCallback) error
 
 	Environment() envs.Environment
 	Flow() *assets.FlowReference
@@ -262,7 +262,7 @@ type Resume interface {
 	utils.Typed
 	Contextable
 
-	Apply(FlowRun, EventCallback)
+	Apply(Run, EventCallback)
 
 	Environment() envs.Environment
 	Contact() *Contact
@@ -362,13 +362,13 @@ type Session interface {
 	Trigger() Trigger
 	CurrentResume() Resume
 	BatchStart() bool
-	PushFlow(Flow, FlowRun, bool)
+	PushFlow(Flow, Run, bool)
 
 	Resume(Resume) (Sprint, error)
-	Runs() []FlowRun
-	GetRun(RunUUID) (FlowRun, error)
-	FindStep(uuid StepUUID) (FlowRun, Step)
-	GetCurrentChild(FlowRun) FlowRun
+	Runs() []Run
+	GetRun(RunUUID) (Run, error)
+	FindStep(uuid StepUUID) (Run, Step)
+	GetCurrentChild(Run) Run
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
 	History() *SessionHistory
@@ -386,9 +386,9 @@ type RunSummary interface {
 	Results() Results
 }
 
-// FlowRun is a single contact's journey through a flow. It records the path they have taken,
+// Run is a single contact's journey through a flow. It records the path they have taken,
 // and the results that have been collected.
-type FlowRun interface {
+type Run interface {
 	Contextable
 	RunSummary
 	FlowReference() *assets.FlowReference
@@ -420,8 +420,8 @@ type FlowRun interface {
 
 	Snapshot() RunSummary
 	Parent() RunSummary
-	ParentInSession() FlowRun
-	Ancestors() []FlowRun
+	ParentInSession() Run
+	Ancestors() []Run
 
 	CreatedOn() time.Time
 	ModifiedOn() time.Time

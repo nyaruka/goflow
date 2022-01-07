@@ -55,7 +55,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	require.NoError(t, err)
 
 	for i, tc := range tests {
-		var run flows.FlowRun
+		var run flows.Run
 		if tc.RedactURNs {
 			run = sessionWithoutURNs.Runs()[0]
 		} else {

@@ -43,7 +43,7 @@ func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLa
 }
 
 // Execute runs this action
-func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactLanguageAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
 		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil

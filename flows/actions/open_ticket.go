@@ -57,7 +57,7 @@ func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, to
 }
 
 // Execute runs this action
-func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	sa := run.Session().Assets()
 
 	ticketer := sa.Ticketers().Get(a.Ticketer.UUID)
@@ -88,7 +88,7 @@ func (a *OpenTicketAction) Execute(run flows.FlowRun, step flows.Step, logModifi
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.FlowRun, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil

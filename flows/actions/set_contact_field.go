@@ -46,7 +46,7 @@ func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, val
 }
 
 // Execute runs this action
-func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactFieldAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	if run.Contact() == nil {
 		logEvent(events.NewErrorf("can't execute action in session without a contact"))
 		return nil

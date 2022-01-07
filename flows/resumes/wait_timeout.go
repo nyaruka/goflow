@@ -46,7 +46,7 @@ func NewWaitTimeout(env envs.Environment, contact *flows.Contact) *WaitTimeoutRe
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *WaitTimeoutResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
+func (r *WaitTimeoutResume) Apply(run flows.Run, logEvent flows.EventCallback) {
 	logEvent(events.NewWaitTimedOut())
 
 	r.baseResume.Apply(run, logEvent)

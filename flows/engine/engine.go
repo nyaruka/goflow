@@ -25,7 +25,7 @@ func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flow
 		trigger:    trigger,
 		status:     flows.SessionStatusActive,
 		batchStart: trigger.Batch(),
-		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
+		runsByUUID: make(map[flows.RunUUID]flows.Run),
 	}
 
 	sprint, err := s.start(trigger)

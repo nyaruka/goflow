@@ -97,7 +97,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 }
 
 // InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.FlowRun, logEvent flows.EventCallback) error {
+func (t *baseTrigger) InitializeRun(run flows.Run, logEvent flows.EventCallback) error {
 	return nil
 }
 

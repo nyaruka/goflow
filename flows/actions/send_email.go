@@ -51,7 +51,7 @@ func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, bod
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendEmailAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	localizedSubject := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, err := run.EvaluateTemplate(localizedSubject)
 	if err != nil {

@@ -59,7 +59,7 @@ func NewMsg(env envs.Environment, contact *flows.Contact, msg *flows.MsgIn) *Msg
 func (r *MsgResume) Msg() *flows.MsgIn { return r.msg }
 
 // Apply applies our state changes and saves any events to the run
-func (r *MsgResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
+func (r *MsgResume) Apply(run flows.Run, logEvent flows.EventCallback) {
 	// do base changes (contact, environment)
 	r.baseResume.Apply(run, logEvent)
 

@@ -52,7 +52,7 @@ func (r *baseResume) Contact() *flows.Contact       { return r.contact }
 func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
-func (r *baseResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
+func (r *baseResume) Apply(run flows.Run, logEvent flows.EventCallback) {
 	if r.environment != nil {
 		if !run.Session().Environment().Equal(r.environment) {
 			logEvent(events.NewEnvironmentRefreshed(r.environment))

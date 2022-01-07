@@ -51,7 +51,7 @@ func (w *MsgWait) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *MsgWait) Begin(run flows.FlowRun, log flows.EventCallback) bool {
+func (w *MsgWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 

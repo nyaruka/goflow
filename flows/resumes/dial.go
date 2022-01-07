@@ -46,7 +46,7 @@ func NewDial(env envs.Environment, contact *flows.Contact, dial *flows.Dial) *Di
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *DialResume) Apply(run flows.FlowRun, logEvent flows.EventCallback) {
+func (r *DialResume) Apply(run flows.Run, logEvent flows.EventCallback) {
 	logEvent(events.NewDialEnded(r.dial))
 
 	r.baseResume.Apply(run, logEvent)

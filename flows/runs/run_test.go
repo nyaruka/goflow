@@ -122,7 +122,7 @@ func TestRun(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	checkRun := func(r flows.FlowRun) {
+	checkRun := func(r flows.Run) {
 		assert.Equal(t, string(flows.RunUUID("e7187099-7d38-4f60-955c-325957214c42")), string(r.UUID()))
 		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
 		assert.Equal(t, flow, r.Flow())

@@ -23,7 +23,7 @@ type runSummary struct {
 }
 
 // creates a new run summary from the given run
-func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
+func newRunSummaryFromRun(run flows.Run) flows.RunSummary {
 	return &runSummary{
 		uuid:    run.UUID(),
 		flow:    run.Flow(),

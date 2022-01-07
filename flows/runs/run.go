@@ -26,7 +26,7 @@ type flowRun struct {
 	flow    flows.Flow
 	flowRef *assets.FlowReference
 
-	parent  flows.FlowRun
+	parent  flows.Run
 	results flows.Results
 	path    Path
 	events  []flows.Event
@@ -42,7 +42,7 @@ type flowRun struct {
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
+func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run {
 	now := dates.Now()
 	r := &flowRun{
 		uuid:       flows.RunUUID(uuids.New()),
@@ -113,7 +113,7 @@ func (r *flowRun) SetWebhook(value types.XValue) {
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
-func (r *flowRun) ParentInSession() flows.FlowRun { return r.parent }
+func (r *flowRun) ParentInSession() flows.Run { return r.parent }
 
 // Parent returns either the same session parent or if this session was triggered from a trigger_flow action
 // in another session, that run
@@ -124,8 +124,8 @@ func (r *flowRun) Parent() flows.RunSummary {
 	return r.ParentInSession()
 }
 
-func (r *flowRun) Ancestors() []flows.FlowRun {
-	ancestors := make([]flows.FlowRun, 0)
+func (r *flowRun) Ancestors() []flows.Run {
+	ancestors := make([]flows.Run, 0)
 	if r.parent != nil {
 		run := r.parent.(*flowRun)
 		ancestors = append(ancestors, run)
@@ -450,7 +450,7 @@ type runEnvelope struct {
 
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
-func ReadRun(session flows.Session, data json.RawMessage, missing assets.MissingCallback) (flows.FlowRun, error) {
+func ReadRun(session flows.Session, data json.RawMessage, missing assets.MissingCallback) (flows.Run, error) {
 	e := &runEnvelope{}
 	var err error
 

@@ -26,7 +26,7 @@ type legacyExtra struct {
 }
 
 // creates a new legacy extra which will be lazily initialized on first call to .update()
-func newLegacyExtra(run flows.FlowRun) *legacyExtra {
+func newLegacyExtra(run flows.Run) *legacyExtra {
 	e := &legacyExtra{values: make(map[string]types.XValue)}
 
 	// if trigger params is set, we include it in @extra

@@ -27,7 +27,7 @@ type RunExpiredEvent struct {
 }
 
 // NewRunExpired creates a new run expired event
-func NewRunExpired(run flows.FlowRun) *RunExpiredEvent {
+func NewRunExpired(run flows.Run) *RunExpiredEvent {
 	return &RunExpiredEvent{
 		baseEvent: newBaseEvent(TypeRunExpired),
 		RunUUID:   run.UUID(),

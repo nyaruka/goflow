@@ -48,7 +48,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 }
 
 // Execute executes the transfer action
-func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *TransferAirtimeAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	transfer, err := a.transfer(run, step, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err))
@@ -61,7 +61,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, logM
 	return nil
 }
 
-func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (a *TransferAirtimeAction) transfer(run flows.Run, step flows.Step, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
 	if contact == nil {
@@ -96,11 +96,11 @@ func (a *TransferAirtimeAction) transfer(run flows.FlowRun, step flows.Step, log
 	return transfer, err
 }
 
-func (a *TransferAirtimeAction) saveSuccess(run flows.FlowRun, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {
+func (a *TransferAirtimeAction) saveSuccess(run flows.Run, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, transfer.ActualAmount.String(), CategorySuccess, "", "", nil, logEvent)
 }
 
-func (a *TransferAirtimeAction) saveFailure(run flows.FlowRun, step flows.Step, logEvent flows.EventCallback) {
+func (a *TransferAirtimeAction) saveFailure(run flows.Run, step flows.Step, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", "", nil, logEvent)
 }
 

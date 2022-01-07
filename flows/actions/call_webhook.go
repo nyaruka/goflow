@@ -83,7 +83,7 @@ func (a *CallWebhookAction) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplate(a.URL)
@@ -115,7 +115,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, logModif
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) call(run flows.FlowRun, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
+func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
 	// build our request
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {

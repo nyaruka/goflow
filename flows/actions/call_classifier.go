@@ -52,7 +52,7 @@ func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierRefer
 }
 
 // Execute runs this action
-func (a *CallClassifierAction) Execute(run flows.FlowRun, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 
@@ -74,7 +74,7 @@ func (a *CallClassifierAction) Execute(run flows.FlowRun, step flows.Step, logMo
 	return nil
 }
 
-func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
+func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
 		logEvent(events.NewErrorf("can't classify empty input, skipping classification"))
 		return nil, true
@@ -106,7 +106,7 @@ func (a *CallClassifierAction) classify(run flows.FlowRun, step flows.Step, inpu
 	return classification, false
 }
 
-func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveSuccess(run flows.Run, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
 	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
@@ -117,11 +117,11 @@ func (a *CallClassifierAction) saveSuccess(run flows.FlowRun, step flows.Step, i
 	a.saveResult(run, step, a.ResultName, value, CategorySuccess, "", input, extra, logEvent)
 }
 
-func (a *CallClassifierAction) saveSkipped(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveSkipped(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategorySkipped, "", input, nil, logEvent)
 }
 
-func (a *CallClassifierAction) saveFailure(run flows.FlowRun, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifierAction) saveFailure(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, logEvent)
 }
 

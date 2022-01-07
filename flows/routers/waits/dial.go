@@ -39,7 +39,7 @@ func (w *DialWait) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *DialWait) Begin(run flows.FlowRun, log flows.EventCallback) bool {
+func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	phone, err := run.EvaluateTemplate(w.phone)
 	if err != nil {
 		log(events.NewError(err))
