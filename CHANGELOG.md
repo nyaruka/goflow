@@ -1,3 +1,8 @@
+v0.146.0
+----------
+ * Rename FlowRun to Run
+ * Update to latest gocommon
+
 v0.145.0
 ----------
  * Add expires_on to msg_wait events
