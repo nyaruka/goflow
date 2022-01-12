@@ -1,3 +1,7 @@
+v0.146.1
+----------
+ * Update to latest gocommon
+
 v0.146.0
 ----------
  * Rename FlowRun to Run
