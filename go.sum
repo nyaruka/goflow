@@ -57,6 +57,8 @@ github.com/mailru/easyjson v0.7.6/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJ
 github.com/mattn/go-sqlite3 v1.14.6/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4A/KQRfk6bU=
 github.com/nyaruka/gocommon v1.16.0 h1:F2DXo8075ErYm3pIJ5209HXRIyGWvwH8mtyxjwRYN0w=
 github.com/nyaruka/gocommon v1.16.0/go.mod h1:pk8L9T79VoKO8OWTiZbtUutFPI3sGGKB5u8nNWDKuGE=
+github.com/nyaruka/gocommon v1.17.0 h1:cTiDLSUgmYJ9OZw752jva0P2rz0utRtv5WGuKFc9kxw=
+github.com/nyaruka/gocommon v1.17.0/go.mod h1:nmYyb7MZDM0iW4DYJKiBzfKuE9nbnx+xSHZasuIBOT0=
 github.com/nyaruka/phonenumbers v1.0.71 h1:itkCGhxkQkHrJ6OyZSApdjQVlPmrWs88MF283pPvbFU=
 github.com/nyaruka/phonenumbers v1.0.71/go.mod h1:sDaTZ/KPX5f8qyV9qN+hIm+4ZBARJrupC6LuhshJq1U=
 github.com/olivere/elastic/v7 v7.0.22 h1:esBA6JJwvYgfms0EVlH7Z+9J4oQ/WUADF2y/nCNDw7s=
