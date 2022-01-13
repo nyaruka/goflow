@@ -339,6 +339,44 @@
         }
     },
     {
+        "description": "Session not triggered if tel legacy var not valid",
+        "action": {
+            "type": "start_session",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "legacy_vars": [
+                "oui"
+            ],
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            }
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "'oui' couldn't be resolved to a contact, group or URN"
+            }
+        ],
+        "templates": [
+            "oui"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
         "description": "Session triggered event with create contact if set on action",
         "action": {
             "type": "start_session",

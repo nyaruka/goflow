@@ -158,13 +158,19 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "scheme or path cannot be empty"
+                "text": "'' couldn't be resolved to a contact, group or URN"
             },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "invalid tel number: Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool"
+                "text": "'Male' couldn't be resolved to a contact, group or URN"
+            },
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "'Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool' couldn't be resolved to a contact, group or URN"
             },
             {
                 "type": "broadcast_created",
@@ -194,7 +200,6 @@
                 ],
                 "urns": [
                     "tel:+1234567890",
-                    "tel:male",
                     "tel:+15129165834",
                     "tel:+12065551212"
                 ]
