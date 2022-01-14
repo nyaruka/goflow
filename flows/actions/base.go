@@ -254,13 +254,13 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
 				urnList = append(urnList, urn)
 			} else {
-				// if that fails, assume this is a phone number, and let the caller worry about validation
-				urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
-				if err != nil {
-					logEvent(events.NewError(err))
-				} else {
-					urn = urn.Normalize(string(run.Environment().DefaultCountry()))
+				// if that fails, try to parse as phone number
+				parsedTel := utils.ParsePhoneNumber(evaluatedLegacyVar, string(run.Environment().DefaultCountry()))
+				if parsedTel != "" {
+					urn, _ := urns.NewURNFromParts(urns.TelScheme, parsedTel, "", "")
 					urnList = append(urnList, urn)
+				} else {
+					logEvent(events.NewErrorf("'%s' couldn't be resolved to a contact, group or URN", evaluatedLegacyVar))
 				}
 			}
 		}

@@ -555,6 +555,7 @@ func TestHasPhone(t *testing.T) {
 		{"0811-1005-611", "ID", "+628111005611"},   // Valid with 11 digits
 		{"10000", "US", ""},
 		{"12067799294", "BW", ""},
+		{"oui", "CD", ""},
 	}
 
 	env := envs.NewBuilder().WithDefaultCountry(envs.Country("RW")).Build()
