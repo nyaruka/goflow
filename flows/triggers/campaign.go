@@ -6,6 +6,8 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -32,6 +34,13 @@ type CampaignReference struct {
 // NewCampaignReference creates a new campaign reference
 func NewCampaignReference(uuid CampaignUUID, name string) *CampaignReference {
 	return &CampaignReference{UUID: uuid, Name: name}
+}
+
+func (c *CampaignReference) Context(env envs.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
+		"uuid": types.NewXText(string(c.UUID)),
+		"name": types.NewXText(c.Name),
+	}
 }
 
 // CampaignEvent describes the specific event in the campaign that triggered the session
@@ -61,6 +70,13 @@ type CampaignEvent struct {
 type CampaignTrigger struct {
 	baseTrigger
 	event *CampaignEvent
+}
+
+// Context for manual triggers always has non-nil params
+func (t *CampaignTrigger) Context(env envs.Environment) map[string]types.XValue {
+	c := t.context()
+	c.campaign = flows.Context(env, t.event.Campaign)
+	return c.asMap()
 }
 
 var _ flows.Trigger = (*CampaignTrigger)(nil)

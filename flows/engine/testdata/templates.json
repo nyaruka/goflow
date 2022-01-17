@@ -929,6 +929,7 @@
     {
         "template": "@(json(trigger))",
         "output_json": {
+            "campaign": null,
             "keyword": "",
             "origin": "",
             "params": {

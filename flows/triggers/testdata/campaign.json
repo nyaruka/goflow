@@ -57,6 +57,10 @@
         },
         "events": [],
         "context": {
+            "campaign": {
+                "name": "New Mothers",
+                "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe"
+            },
             "keyword": "",
             "origin": "",
             "params": {},

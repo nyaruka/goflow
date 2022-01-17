@@ -51,6 +51,7 @@
         },
         "events": [],
         "context": {
+            "campaign": null,
             "keyword": "",
             "origin": "",
             "params": {},
