@@ -1,3 +1,8 @@
+v0.147.0
+----------
+ * Add @trigger.campaign for campaign triggers
+ * Only treat start_session legacy vars as tel URNs if they are parseable phone numbers
+
 v0.146.1
 ----------
  * Update to latest gocommon
