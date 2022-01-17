@@ -399,7 +399,8 @@ func TestTriggerContext(t *testing.T) {
 			"name":        types.NewXText("Bob McTickets"),
 			"first_name":  types.NewXText("Bob"),
 		}),
-		"origin": types.NewXText("api"),
-		"ticket": nil,
+		"origin":   types.NewXText("api"),
+		"campaign": nil,
+		"ticket":   nil,
 	}), flows.Context(env, trigger))
 }

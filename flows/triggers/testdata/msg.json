@@ -126,6 +126,7 @@
             }
         ],
         "context": {
+            "campaign": null,
             "keyword": "start",
             "origin": "",
             "params": {},
@@ -182,6 +183,7 @@
             }
         ],
         "context": {
+            "campaign": null,
             "keyword": "",
             "origin": "",
             "params": {},

@@ -107,22 +107,24 @@ func (t *baseTrigger) InitializeRun(run flows.Run, logEvent flows.EventCallback)
 
 // Context is the schema of trigger objects in the context, across all types
 type Context struct {
-	type_   string
-	params  *types.XObject
-	keyword string
-	user    types.XValue
-	origin  string
-	ticket  types.XValue
+	type_    string
+	params   *types.XObject
+	keyword  string
+	user     types.XValue
+	origin   string
+	campaign types.XValue
+	ticket   types.XValue
 }
 
 func (c *Context) asMap() map[string]types.XValue {
 	return map[string]types.XValue{
-		"type":    types.NewXText(c.type_),
-		"params":  c.params,
-		"keyword": types.NewXText(c.keyword),
-		"user":    c.user,
-		"origin":  types.NewXText(c.origin),
-		"ticket":  c.ticket,
+		"type":     types.NewXText(c.type_),
+		"params":   c.params,
+		"keyword":  types.NewXText(c.keyword),
+		"user":     c.user,
+		"origin":   types.NewXText(c.origin),
+		"campaign": c.campaign,
+		"ticket":   c.ticket,
 	}
 }
 
