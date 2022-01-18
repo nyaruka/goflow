@@ -116,6 +116,8 @@ func (s *sessionAssets) Ticketers() *flows.TicketerAssets     { return s.tickete
 func (s *sessionAssets) Topics() *flows.TopicAssets           { return s.topics }
 func (s *sessionAssets) Users() *flows.UserAssets             { return s.users }
 
+// Resolver methods used by contactql
+
 func (s *sessionAssets) ResolveField(key string) assets.Field {
 	f := s.Fields().Get(key)
 	if f == nil {
@@ -123,10 +125,19 @@ func (s *sessionAssets) ResolveField(key string) assets.Field {
 	}
 	return f
 }
+
 func (s *sessionAssets) ResolveGroup(name string) assets.Group {
 	g := s.Groups().FindByName(name)
 	if g == nil {
 		return nil
 	}
 	return g
+}
+
+func (s *sessionAssets) ResolveFlow(name string) assets.Flow {
+	f, _ := s.Flows().FindByName(name)
+	if f == nil {
+		return nil
+	}
+	return f
 }

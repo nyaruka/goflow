@@ -292,6 +292,9 @@ func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
+// Definition isn't used but allows us to implement assets.Flow
+func (f *flow) Definition() json.RawMessage { return jsonx.MustMarshal(f) }
+
 var _ flows.Flow = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------

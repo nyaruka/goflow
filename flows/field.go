@@ -361,3 +361,7 @@ func (s *FieldAssets) ResolveField(key string) assets.Field {
 func (s *FieldAssets) ResolveGroup(name string) assets.Group {
 	return nil
 }
+
+func (s *FieldAssets) ResolveFlow(name string) assets.Flow {
+	return nil
+}

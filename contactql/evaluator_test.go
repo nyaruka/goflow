@@ -24,6 +24,7 @@ func TestEvaluateQuery(t *testing.T) {
 		"uuid":     []interface{}{"c7d9bece-6bbd-4b3b-8a86-eb0cf1ac9d05"},
 		"id":       []interface{}{"12345"},
 		"name":     []interface{}{"Bob Smithwick"},
+		"flow":     []interface{}{"Registration"},
 		"tel":      []interface{}{"+59313145145"},
 		"twitter":  []interface{}{"bob_smith"},
 		"whatsapp": []interface{}{},
@@ -57,6 +58,11 @@ func TestEvaluateQuery(t *testing.T) {
 		{query: `name ~ "Sm"`, result: true},
 		{query: `name ~ "Smithwicke"`, result: true}, // only compare up to 8 chars
 		{query: `name ~ "Smithx"`, result: false},
+
+		{query: `flow = "Registration"`, result: true},
+		{query: `flow != "Registration"`, result: false},
+		{query: `flow = "Catch All"`, result: false},
+		{query: `flow != "Catch All"`, result: true},
 
 		// URN condition
 		{query: `tel = +59313145145`, result: true},
@@ -136,16 +142,23 @@ func TestEvaluateQuery(t *testing.T) {
 		{query: `(age = 36 OR gender = female) AND age > 35`, result: true},
 	}
 
-	resolver := contactql.NewMockResolver(map[string]assets.Field{
-		"age":      static.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
-		"dob":      static.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
-		"gender":   static.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
-		"state":    static.NewField(assets.FieldUUID("369be3e2-0186-4e5d-93c4-6264736588f8"), "state", "State", assets.FieldTypeState),
-		"district": static.NewField(assets.FieldUUID("e52f34ad-a5a7-4855-9040-05a910a75f57"), "district", "District", assets.FieldTypeDistrict),
-		"ward":     static.NewField(assets.FieldUUID("e9e738ce-617d-4c61-bfce-3d3b55cfe3dd"), "ward", "Ward", assets.FieldTypeWard),
-		"empty":    static.NewField(assets.FieldUUID("023f733d-ce00-4a61-96e4-b411987028ea"), "empty", "Empty", assets.FieldTypeText),
-		"xyz":      static.NewField(assets.FieldUUID("81e25783-a1d8-42b9-85e4-68c7ab2df39d"), "xyz", "XYZ", assets.FieldTypeText),
-	}, map[string]assets.Group{})
+	resolver := contactql.NewMockResolver(
+		[]assets.Field{
+			static.NewField("f1b5aea6-6586-41c7-9020-1a6326cc6565", "age", "Age", assets.FieldTypeNumber),
+			static.NewField("3810a485-3fda-4011-a589-7320c0b8dbef", "dob", "DOB", assets.FieldTypeDatetime),
+			static.NewField("d66a7823-eada-40e5-9a3a-57239d4690bf", "gender", "Gender", assets.FieldTypeText),
+			static.NewField("369be3e2-0186-4e5d-93c4-6264736588f8", "state", "State", assets.FieldTypeState),
+			static.NewField("e52f34ad-a5a7-4855-9040-05a910a75f57", "district", "District", assets.FieldTypeDistrict),
+			static.NewField("e9e738ce-617d-4c61-bfce-3d3b55cfe3dd", "ward", "Ward", assets.FieldTypeWard),
+			static.NewField("023f733d-ce00-4a61-96e4-b411987028ea", "empty", "Empty", assets.FieldTypeText),
+			static.NewField("81e25783-a1d8-42b9-85e4-68c7ab2df39d", "xyz", "XYZ", assets.FieldTypeText),
+		},
+		[]assets.Group{},
+		[]assets.Flow{
+			static.NewFlow("ea351bf8-3c49-46dd-935c-5b20e2a00b7a", "Registration", []byte(`{}`)),
+			static.NewFlow("1b73528f-6e4e-4c64-b393-78088449fb49", "Catch All", []byte(`{}`)),
+		},
+	)
 
 	for _, test := range tests {
 		parsed, err := contactql.ParseQuery(env, test.query, resolver)

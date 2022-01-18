@@ -110,7 +110,11 @@ func (s *testSource) Fields() ([]assets.Field, error) {
 	return nil, s.err("fields")
 }
 
-func (s *testSource) Flow(assets.FlowUUID) (assets.Flow, error) {
+func (s *testSource) FlowByUUID(assets.FlowUUID) (assets.Flow, error) {
+	return nil, s.err("flow")
+}
+
+func (s *testSource) FlowByName(name string) (assets.Flow, error) {
 	return nil, s.err("flow")
 }
 
