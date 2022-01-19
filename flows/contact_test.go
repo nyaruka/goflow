@@ -446,9 +446,6 @@ func TestContactQuery(t *testing.T) {
 		{`uuid = ba96bf7f-bc2a-4873-a7c7-254d1927c4e3`, envs.RedactionPolicyNone, true, ""},
 		{`uuid = 3bf7edda-b926-4a78-9131-d336df77d44f`, envs.RedactionPolicyNone, false, ""},
 
-		{`id = 1234567`, envs.RedactionPolicyNone, true, ""},
-		{`id = 5678889`, envs.RedactionPolicyNone, false, ""},
-
 		{`language = ENG`, envs.RedactionPolicyNone, true, ""},
 		{`language = FRA`, envs.RedactionPolicyNone, false, ""},
 		{`language = ""`, envs.RedactionPolicyNone, false, ""},
@@ -507,11 +504,6 @@ func TestContactQuery(t *testing.T) {
 		{`urn ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
 		{`urn = ""`, envs.RedactionPolicyURNs, false, ""},
 		{`urn != ""`, envs.RedactionPolicyURNs, true, ""},
-
-		{`group = testers`, envs.RedactionPolicyNone, true, ""},
-		{`group != testers`, envs.RedactionPolicyNone, false, ""},
-		{`group = customers`, envs.RedactionPolicyNone, false, ""},
-		{`group != customers`, envs.RedactionPolicyNone, true, ""},
 
 		{`tickets = 1`, envs.RedactionPolicyNone, true, ""},
 		{`tickets = 0`, envs.RedactionPolicyNone, false, ""},

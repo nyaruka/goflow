@@ -65,7 +65,8 @@ func Inspect(query *ContactQuery) *Inspection {
 		}
 	}
 
-	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeGroup])
+	// can't turn a query into a group if it uses id, group or flow
+	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeGroup] || attributes[AttributeFlow])
 
 	return &Inspection{
 		Attributes:   utils.StringSetKeys(attributes),
