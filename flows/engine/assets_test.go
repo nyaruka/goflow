@@ -15,6 +15,16 @@ import (
 )
 
 var assetsJSON = `{
+	"flows": [
+		{
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Empty",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        }
+	],
 	"groups": [
 		{
 			"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -48,17 +58,17 @@ func TestSessionAssets(t *testing.T) {
 
 	assert.Equal(t, source, sa.Source())
 
-	label := sa.Labels().Get(assets.LabelUUID("18644b27-fb7f-40e1-b8f4-4ea8999129ef"))
+	label := sa.Labels().Get("18644b27-fb7f-40e1-b8f4-4ea8999129ef")
 	assert.Equal(t, assets.LabelUUID("18644b27-fb7f-40e1-b8f4-4ea8999129ef"), label.UUID())
 	assert.Equal(t, "Spam", label.Name())
 
-	assert.Nil(t, sa.Labels().Get(assets.LabelUUID("xyz")))
+	assert.Nil(t, sa.Labels().Get("xyz"))
 
-	group := sa.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
+	group := sa.Groups().Get("2aad21f6-30b7-42c5-bd7f-1b720c154817")
 	assert.Equal(t, assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"), group.UUID())
 	assert.Equal(t, "Survey Audience", group.Name())
 
-	assert.Nil(t, sa.Groups().Get(assets.GroupUUID("xyz")))
+	assert.Nil(t, sa.Groups().Get("xyz"))
 
 	resthook := sa.Resthooks().FindBySlug("new-registration")
 	assert.Equal(t, "new-registration", resthook.Slug())
@@ -77,6 +87,10 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 
 	source.currentErrType = "flow"
 	_, err = sa.Flows().Get(assets.FlowUUID("ddba5842-252f-4a20-b901-08696fc773e2"))
+	assert.EqualError(t, err, "unable to load flow assets")
+
+	source.currentErrType = "flow"
+	_, err = sa.Flows().FindByName("Catch All")
 	assert.EqualError(t, err, "unable to load flow assets")
 
 	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "locations", "resthooks", "templates", "users"} {
