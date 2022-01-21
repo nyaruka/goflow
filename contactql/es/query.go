@@ -309,6 +309,26 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 		default:
 			panic(fmt.Sprintf("unsupported group attribute operator: %s", c.Operator()))
 		}
+	case contactql.AttributeFlow:
+		// special case for set/unset
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
+			query = elastic.NewExistsQuery("flow")
+			if c.Operator() == contactql.OpEqual {
+				query = not(query)
+			}
+			return query
+		}
+
+		flow := c.ValueAsFlow(resolver)
+
+		switch c.Operator() {
+		case contactql.OpEqual:
+			return elastic.NewTermQuery("flow", flow.UUID())
+		case contactql.OpNotEqual:
+			return not(elastic.NewTermQuery("flow", flow.UUID()))
+		default:
+			panic(fmt.Sprintf("unsupported flow attribute operator: %s", c.Operator()))
+		}
 	case contactql.AttributeTickets:
 		return numericalAttributeQuery(c, "tickets")
 	default:

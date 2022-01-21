@@ -33,7 +33,9 @@ func newMockResolver() contactql.Resolver {
 			static.NewGroup("8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf", "U-Reporters", ""),
 			static.NewGroup("cf51cf8d-94da-447a-b27e-a42a900c37a6", "Testers", ""),
 		},
-		[]assets.Flow{},
+		[]assets.Flow{
+			static.NewFlow("c261165a-f5b0-40ba-b916-76fb49667a4f", "Registration", []byte(`{}`)),
+		},
 	)
 }
 

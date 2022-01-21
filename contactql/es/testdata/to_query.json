@@ -1692,6 +1692,50 @@
         }
     },
     {
+        "description": "flow equality",
+        "query": "flow = \"registration\"",
+        "elastic": {
+            "term": {
+                "flow": "c261165a-f5b0-40ba-b916-76fb49667a4f"
+            }
+        }
+    },
+    {
+        "description": "flow inequality",
+        "query": "flow != \"registration\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "flow": "c261165a-f5b0-40ba-b916-76fb49667a4f"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "flow is set",
+        "query": "flow != \"\"",
+        "elastic": {
+            "exists": {
+                "field": "flow"
+            }
+        }
+    },
+    {
+        "description": "flow is not set",
+        "query": "flow = \"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "flow"
+                    }
+                }
+            }
+        }
+    },
+    {
         "description": "bool and",
         "query": "color=red and age>10",
         "elastic": {
