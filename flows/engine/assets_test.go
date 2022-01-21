@@ -25,6 +25,10 @@ var assetsJSON = `{
             "nodes": []
         }
 	],
+	"fields": [
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"},
+        {"uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565", "key": "age", "name": "Age", "type": "number"}
+    ],
 	"groups": [
 		{
 			"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -75,6 +79,25 @@ func TestSessionAssets(t *testing.T) {
 	assert.Equal(t, []string{"http://temba.io/"}, resthook.Subscribers())
 
 	assert.Nil(t, sa.Resthooks().FindBySlug("xyz"))
+
+	// sessions assets are used as a contactql resolver for query parsing
+	age := sa.ResolveField("age")
+	assert.Equal(t, assets.FieldUUID(`f1b5aea6-6586-41c7-9020-1a6326cc6565`), age.UUID())
+	assert.Equal(t, "age", age.Key())
+	assert.Equal(t, "Age", age.Name())
+	assert.Equal(t, assets.FieldTypeNumber, age.Type())
+
+	audience := sa.ResolveGroup("survey audience")
+	assert.Equal(t, assets.GroupUUID(`2aad21f6-30b7-42c5-bd7f-1b720c154817`), audience.UUID())
+	assert.Equal(t, "Survey Audience", audience.Name())
+
+	emptyFlow := sa.ResolveFlow("empty")
+	assert.Equal(t, assets.FlowUUID(`76f0a02f-3b75-4b86-9064-e9195e1b3a02`), emptyFlow.UUID())
+	assert.Equal(t, "Empty", emptyFlow.Name())
+
+	assert.Nil(t, sa.ResolveField("xxx"))
+	assert.Nil(t, sa.ResolveGroup("xxx"))
+	assert.Nil(t, sa.ResolveFlow("xxx"))
 }
 
 func TestSessionAssetsWithSourceErrors(t *testing.T) {
