@@ -476,11 +476,12 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewDialWait(urns.URN("tel:+1234567890")),
+			events.NewDialWait(urns.URN("tel:+1234567890"), &expiresOn),
 			`{
 				"type": "dial_wait",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"urn": "tel:+1234567890"
+				"urn": "tel:+1234567890",
+				"expires_on": "2022-02-03T13:45:30Z"
 			}`,
 		},
 		{
