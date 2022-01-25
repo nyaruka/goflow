@@ -1,3 +1,7 @@
+v0.148.0
+----------
+ * Add expiresOn to dial waits so all wait types have it
+
 v0.147.0
 ----------
  * Add @trigger.campaign for campaign triggers
