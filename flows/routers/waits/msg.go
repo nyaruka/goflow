@@ -2,9 +2,7 @@ package waits
 
 import (
 	"encoding/json"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -60,18 +58,12 @@ func (w *MsgWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	}
 
 	var timeoutSeconds *int
-	var expiresOn *time.Time
-
 	if w.timeout != nil {
 		seconds := w.timeout.Seconds()
 		timeoutSeconds = &seconds
 	}
-	if run.Flow().ExpireAfterMinutes() > 0 {
-		dt := dates.Now().Add(time.Duration(run.Flow().ExpireAfterMinutes() * int(time.Minute)))
-		expiresOn = &dt
-	}
 
-	log(events.NewMsgWait(timeoutSeconds, expiresOn, w.hint))
+	log(events.NewMsgWait(timeoutSeconds, w.expiresOn(run), w.hint))
 
 	return true
 }

@@ -1,6 +1,8 @@
 package events
 
 import (
+	"time"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -17,7 +19,8 @@ const TypeDialWait string = "dial_wait"
 //   {
 //     "type": "dial_wait",
 //     "created_on": "2019-01-02T15:04:05Z",
-//     "urn": "tel:+593979123456"
+//     "urn": "tel:+593979123456",
+//     "expires_on": "2022-02-02T13:27:30Z"
 //   }
 //
 // @event dial_wait
@@ -25,13 +28,17 @@ type DialWaitEvent struct {
 	baseEvent
 
 	URN urns.URN `json:"urn" validate:"required,urn"`
+
+	// when this wait expires and the whole run can be expired
+	ExpiresOn *time.Time `json:"expires_on,omitempty"`
 }
 
 // NewDialWait returns a new dial wait with the passed in URN
-func NewDialWait(urn urns.URN) *DialWaitEvent {
+func NewDialWait(urn urns.URN, expiresOn *time.Time) *DialWaitEvent {
 	return &DialWaitEvent{
 		baseEvent: newBaseEvent(TypeDialWait),
 		URN:       urn,
+		ExpiresOn: expiresOn,
 	}
 }
 

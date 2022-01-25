@@ -51,7 +51,7 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 		return false
 	}
 
-	log(events.NewDialWait(urn))
+	log(events.NewDialWait(urn, w.expiresOn(run)))
 
 	return true
 }
