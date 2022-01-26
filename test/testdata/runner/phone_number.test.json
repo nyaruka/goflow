@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -17,8 +17,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:09.123456789Z",
-                    "expires_on": "2018-07-13T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "expires_on": "2018-07-13T12:30:06.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -29,7 +29,7 @@
                     "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
-                    "time": "2018-07-06T12:30:06.123456789Z"
+                    "time": "2018-07-06T12:30:04.123456789Z"
                 }
             ],
             "session": {
@@ -67,7 +67,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -81,28 +81,27 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
-                                "expires_on": "2018-07-13T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "expires_on": "2018-07-13T12:30:06.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:01.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2018-07-06T12:30:11.123456789Z",
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
                                 "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
@@ -156,7 +155,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "msg": {
                         "text": "135532",
                         "urn": "tel:+12065551212",
@@ -167,7 +166,7 @@
                 },
                 {
                     "category": "Other",
-                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
                     "input": "135532",
                     "name": "Backup Phone",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -175,7 +174,7 @@
                     "value": "135532"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -189,8 +188,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
-                    "expires_on": "2018-07-13T12:30:27.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "expires_on": "2018-07-13T12:30:23.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "msg_wait"
                 }
@@ -202,14 +201,14 @@
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "135532",
-                    "time": "2018-07-06T12:30:21.123456789Z"
+                    "time": "2018-07-06T12:30:17.123456789Z"
                 },
                 {
                     "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
-                    "time": "2018-07-06T12:30:25.123456789Z"
+                    "time": "2018-07-06T12:30:21.123456789Z"
                 }
             ],
             "session": {
@@ -255,7 +254,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -269,13 +268,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
-                                "expires_on": "2018-07-13T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "expires_on": "2018-07-13T12:30:06.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
@@ -286,7 +285,7 @@
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "input": "135532",
                                 "name": "Backup Phone",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -294,7 +293,7 @@
                                 "value": "135532"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -308,40 +307,39 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
-                                "expires_on": "2018-07-13T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "expires_on": "2018-07-13T12:30:23.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-13T12:30:13.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:26.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
                                 "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
                                 "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                                 "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:26.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             }
@@ -349,7 +347,7 @@
                         "results": {
                             "backup_phone": {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "135532",
                                 "name": "Backup Phone",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
@@ -405,7 +403,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "msg": {
                         "text": "718-456-7890",
                         "urn": "tel:+12065551212",
@@ -416,7 +414,7 @@
                 },
                 {
                     "category": "Has Phone",
-                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
                     "input": "718-456-7890",
                     "name": "Backup Phone",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -424,7 +422,7 @@
                     "value": "+17184567890"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:42.123456789Z",
+                    "created_on": "2018-07-06T12:30:36.123456789Z",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "contact_urns_changed",
                     "urns": [
@@ -435,7 +433,7 @@
                     ]
                 },
                 {
-                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "groups_added": [
                         {
                             "name": "NYC Area",
@@ -446,7 +444,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:46.123456789Z",
+                    "created_on": "2018-07-06T12:30:40.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -467,7 +465,7 @@
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "718-456-7890",
-                    "time": "2018-07-06T12:30:40.123456789Z"
+                    "time": "2018-07-06T12:30:34.123456789Z"
                 }
             ],
             "session": {
@@ -520,7 +518,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -534,13 +532,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
-                                "expires_on": "2018-07-13T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "expires_on": "2018-07-13T12:30:06.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
@@ -551,7 +549,7 @@
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "input": "135532",
                                 "name": "Backup Phone",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -559,7 +557,7 @@
                                 "value": "135532"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -573,13 +571,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
-                                "expires_on": "2018-07-13T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "expires_on": "2018-07-13T12:30:23.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "text": "718-456-7890",
                                     "urn": "tel:+12065551212",
@@ -590,7 +588,7 @@
                             },
                             {
                                 "category": "Has Phone",
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "718-456-7890",
                                 "name": "Backup Phone",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -598,7 +596,7 @@
                                 "value": "+17184567890"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:42.123456789Z",
+                                "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "contact_urns_changed",
                                 "urns": [
@@ -609,7 +607,7 @@
                                 ]
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "NYC Area",
@@ -620,7 +618,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:46.123456789Z",
+                                "created_on": "2018-07-06T12:30:40.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -634,40 +632,39 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:48.123456789Z",
-                        "expires_on": null,
+                        "exited_on": "2018-07-06T12:30:42.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2018-07-06T12:30:48.123456789Z",
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "12f9509b-f60d-49a1-a34f-df27643638f3",
                                 "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:07.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
                                 "exit_uuid": "6083707c-109a-442b-a2c6-b6d60bb1eaed",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                                 "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:26.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:22.123456789Z",
                                 "exit_uuid": "2b9ce880-3556-410a-af5a-edd366a1d628",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:41.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:35.123456789Z",
                                 "exit_uuid": "91023689-f038-405e-a3c0-c4e8e8580bd9",
                                 "node_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -676,7 +673,7 @@
                         "results": {
                             "backup_phone": {
                                 "category": "Has Phone",
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "718-456-7890",
                                 "name": "Backup Phone",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
