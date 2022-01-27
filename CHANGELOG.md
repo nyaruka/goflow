@@ -1,3 +1,7 @@
+v0.149.0
+----------
+ * Remove no longer used Run.expires_on
+
 v0.148.0
 ----------
  * Add expiresOn to dial waits so all wait types have it
