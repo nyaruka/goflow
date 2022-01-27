@@ -13,7 +13,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "field": {
                         "key": "gender",
                         "name": "Gender"
@@ -25,7 +25,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "groups_added": [
                         {
                             "name": "Males",
@@ -40,7 +40,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "field": {
                         "key": "age",
                         "name": "Age"
@@ -53,7 +53,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "groups_added": [
                         {
                             "name": "Old Men",
@@ -78,7 +78,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -92,7 +92,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "contact_urns_changed",
                     "urns": [
@@ -103,7 +103,7 @@
                     ]
                 },
                 {
-                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "groups_added": [
                         {
                             "name": "MTN Callers",
@@ -114,7 +114,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -128,7 +128,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "field": {
                         "key": "age",
                         "name": "Age"
@@ -141,7 +141,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "groups_added": [
                         {
                             "name": "Youth",
@@ -158,7 +158,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:26.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -247,7 +247,7 @@
                         "created_on": "2018-07-06T12:30:01.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "field": {
                                     "key": "gender",
                                     "name": "Gender"
@@ -259,7 +259,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Males",
@@ -274,7 +274,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "field": {
                                     "key": "age",
                                     "name": "Age"
@@ -287,7 +287,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Old Men",
@@ -312,7 +312,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -326,7 +326,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "contact_urns_changed",
                                 "urns": [
@@ -337,7 +337,7 @@
                                 ]
                             },
                             {
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "MTN Callers",
@@ -348,7 +348,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -362,7 +362,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "field": {
                                     "key": "age",
                                     "name": "Age"
@@ -375,7 +375,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Youth",
@@ -392,7 +392,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -406,16 +406,15 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:30.123456789Z",
-                        "expires_on": null,
+                        "exited_on": "2018-07-06T12:30:28.123456789Z",
                         "flow": {
                             "name": "Smart Groups",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:28.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:04.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "exit_uuid": "a884d1f8-2e1e-43d2-9221-fa08ee29b31b",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
