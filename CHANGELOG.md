@@ -1,3 +1,7 @@
+v0.149.1
+----------
+ * Update to gocommon 1.17.1
+
 v0.149.0
 ----------
  * Remove no longer used Run.expires_on
