@@ -61,6 +61,9 @@ func TestMsgWait(t *testing.T) {
 	marshaled := jsonx.MustMarshal(wait)
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
+	// try to end with timeout resume type
+	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(nil, nil)))
+
 	// timeout and image hint
 	wait = waits.NewMsgWait(
 		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
@@ -81,12 +84,10 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	err = wait.End(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusBusy, 0)))
-	assert.EqualError(t, err, "can't end a wait of type 'msg' with a resume of type 'dial'")
+	assert.False(t, wait.Accepts(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusBusy, 0))))
 
-	// try to end with timeout resume type
-	err = wait.End(resumes.NewWaitTimeout(nil, nil))
-	assert.NoError(t, err)
+	// can end with timeout resume type
+	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(nil, nil)))
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
