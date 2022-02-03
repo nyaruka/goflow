@@ -41,13 +41,7 @@
             "type": "wait_timeout",
             "resumed_on": "2000-01-01T00:00:00Z"
         },
-        "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "text": "can't end with timeout as wait doesn't have a timeout"
-            }
-        ],
+        "resume_error": "resume of type wait_timeout not accepted by wait of type msg",
         "run_status": "waiting",
         "session_status": "waiting"
     }

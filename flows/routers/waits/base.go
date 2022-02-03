@@ -59,10 +59,6 @@ func (w *baseWait) expiresOn(run flows.Run) *time.Time {
 	return nil
 }
 
-func (w *baseWait) resumeTypeError(r flows.Resume) error {
-	return errors.Errorf("can't end a wait of type '%s' with a resume of type '%s'", w.type_, r.Type())
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
