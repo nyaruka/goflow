@@ -1,3 +1,7 @@
+v0.150.0
+----------
+ * If caller tries to resume with wrong resume type, don't fail session but error instead
+
 v0.149.1
 ----------
  * Update to gocommon 1.17.1
