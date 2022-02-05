@@ -28,8 +28,8 @@
                             "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
                         },
                         {
-                            "name": "Static Group 3",
-                            "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                            "name": "Static Group 2",
+                            "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
                         },
                         {
                             "name": "Static Group 3",
@@ -49,12 +49,6 @@
                             "text": "foo"
                         }
                     },
-                    "groups": [
-                        {
-                            "name": "Static Group 2",
-                            "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
-                        }
-                    ],
                     "id": 1234,
                     "language": "eng",
                     "last_seen_on": "2022-02-03T15:10:16.232385Z",
@@ -111,8 +105,8 @@
                                         "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
                                     },
                                     {
-                                        "name": "Static Group 3",
-                                        "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                                        "name": "Static Group 2",
+                                        "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
                                     },
                                     {
                                         "name": "Static Group 3",
