@@ -1,3 +1,7 @@
+v0.150.1
+----------
+ * Fix bug when we remove a contact from all static groups
+
 v0.150.0
 ----------
  * If caller tries to resume with wrong resume type, don't fail session but error instead
