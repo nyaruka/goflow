@@ -137,6 +137,11 @@ func (l *GroupList) Remove(group *Group) bool {
 	return false
 }
 
+// Clear clears this group list
+func (l *GroupList) Clear() {
+	l.groups = []*Group{}
+}
+
 // All returns all groups in this group list
 func (l *GroupList) All() []*Group {
 	return l.groups

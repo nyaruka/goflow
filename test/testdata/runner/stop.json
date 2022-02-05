@@ -1,0 +1,75 @@
+{
+    "flows": [
+        {
+            "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997",
+            "name": "Stopper",
+            "expire_after_minutes": 10080,
+            "language": "eng",
+            "spec_version": "13.1.0",
+            "type": "messaging",
+            "revision": 2,
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "eeed313c-614c-4e26-8471-f3f02d09b6ca",
+                    "actions": [
+                        {
+                            "status": "stopped",
+                            "type": "set_contact_status",
+                            "uuid": "6d116176-48b9-4fac-bd89-e94de3efae76"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "destination_uuid": null,
+                            "uuid": "5ce22d8b-c7ce-49b4-85d6-c780fd79cecc"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "uuid": "ff03c890-88c3-4996-9ac5-4c121bf83c5c",
+            "key": "foo_status",
+            "name": "Foo Status",
+            "type": "text"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e",
+            "name": "Query Group 1",
+            "query": "foo_status = \"foo\""
+        },
+        {
+            "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2",
+            "name": "Static Group 1"
+        },
+        {
+            "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf",
+            "name": "Static Group 2"
+        },
+        {
+            "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190",
+            "name": "Query Group 2",
+            "query": "foo_status != \"zed\""
+        },
+        {
+            "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4",
+            "name": "Query Group 3",
+            "query": "foo_status = \"foo\""
+        },
+        {
+            "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245",
+            "name": "Static Group 3"
+        }
+    ],
+    "users": [
+        {
+            "email": "bob@nyaruka.com",
+            "name": "Bob"
+        }
+    ]
+}

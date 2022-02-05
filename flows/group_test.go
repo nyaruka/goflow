@@ -85,4 +85,7 @@ func TestGroupList(t *testing.T) {
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(testers.ToXValue(env), males.ToXValue(env)), groups.ToXValue(env))
+
+	groups.Clear()
+	assert.Equal(t, 0, groups.Count())
 }

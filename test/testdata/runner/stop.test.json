@@ -1,0 +1,293 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:02.123456789Z",
+                    "status": "stopped",
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "contact_status_changed"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "groups_removed": [
+                        {
+                            "name": "Query Group 1",
+                            "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
+                        },
+                        {
+                            "name": "Query Group 2",
+                            "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
+                        },
+                        {
+                            "name": "Query Group 3",
+                            "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
+                        },
+                        {
+                            "name": "Static Group 1",
+                            "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
+                        },
+                        {
+                            "name": "Static Group 2",
+                            "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
+                        },
+                        {
+                            "name": "Static Group 3",
+                            "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                        }
+                    ],
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "contact_groups_changed"
+                }
+            ],
+            "segments": [],
+            "session": {
+                "contact": {
+                    "created_on": "2022-01-30T18:55:38.757647Z",
+                    "fields": {
+                        "foo_status": {
+                            "text": "foo"
+                        }
+                    },
+                    "id": 1234,
+                    "language": "eng",
+                    "last_seen_on": "2022-02-03T15:10:16.232385Z",
+                    "name": "Joe",
+                    "status": "stopped",
+                    "timezone": "America/Los_Angeles",
+                    "urns": [
+                        "tel:+12065551212"
+                    ],
+                    "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng"
+                    ],
+                    "date_format": "MM-DD-YYYY",
+                    "default_country": "US",
+                    "max_value_length": 640,
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "status": "stopped",
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "contact_status_changed"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "groups_removed": [
+                                    {
+                                        "name": "Query Group 1",
+                                        "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
+                                    },
+                                    {
+                                        "name": "Query Group 2",
+                                        "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
+                                    },
+                                    {
+                                        "name": "Query Group 3",
+                                        "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
+                                    },
+                                    {
+                                        "name": "Static Group 1",
+                                        "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
+                                    },
+                                    {
+                                        "name": "Static Group 2",
+                                        "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
+                                    },
+                                    {
+                                        "name": "Static Group 3",
+                                        "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                                    }
+                                ],
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "contact_groups_changed"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:06.123456789Z",
+                        "flow": {
+                            "name": "Stopper",
+                            "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
+                        },
+                        "modified_on": "2018-07-06T12:30:06.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
+                                "exit_uuid": "5ce22d8b-c7ce-49b4-85d6-c780fd79cecc",
+                                "node_uuid": "eeed313c-614c-4e26-8471-f3f02d09b6ca",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "status": "completed",
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "batch": true,
+                    "contact": {
+                        "created_on": "2022-01-30T18:55:38.757647Z",
+                        "fields": {
+                            "foo_status": {
+                                "text": "foo"
+                            }
+                        },
+                        "groups": [
+                            {
+                                "name": "Query Group 1",
+                                "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
+                            },
+                            {
+                                "name": "Static Group 1",
+                                "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
+                            },
+                            {
+                                "name": "Static Group 2",
+                                "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
+                            },
+                            {
+                                "name": "Query Group 2",
+                                "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
+                            },
+                            {
+                                "name": "Query Group 3",
+                                "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
+                            },
+                            {
+                                "name": "Static Group 3",
+                                "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                            }
+                        ],
+                        "id": 1234,
+                        "language": "eng",
+                        "last_seen_on": "2022-02-03T15:10:16.232385Z",
+                        "name": "Joe",
+                        "status": "active",
+                        "timezone": "America/Los_Angeles",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng"
+                        ],
+                        "date_format": "MM-DD-YYYY",
+                        "default_country": "US",
+                        "max_value_length": 640,
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Stopper",
+                        "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
+                    },
+                    "origin": "ui",
+                    "params": {},
+                    "triggered_on": "2022-02-04T19:43:50.217940873Z",
+                    "type": "manual",
+                    "user": {
+                        "email": "bob@nyaruka.com",
+                        "name": "Bob"
+                    }
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": null,
+    "trigger": {
+        "batch": true,
+        "contact": {
+            "created_on": "2022-01-30T18:55:38.757647Z",
+            "fields": {
+                "foo_status": {
+                    "text": "foo"
+                }
+            },
+            "groups": [
+                {
+                    "name": "Query Group 1",
+                    "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
+                },
+                {
+                    "name": "Static Group 1",
+                    "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
+                },
+                {
+                    "name": "Static Group 2",
+                    "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
+                },
+                {
+                    "name": "Query Group 2",
+                    "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
+                },
+                {
+                    "name": "Query Group 3",
+                    "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
+                },
+                {
+                    "name": "Static Group 3",
+                    "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+                }
+            ],
+            "id": 1234,
+            "language": "eng",
+            "last_seen_on": "2022-02-03T15:10:16.232385Z",
+            "name": "Joe",
+            "status": "active",
+            "timezone": "America/Los_Angeles",
+            "urns": [
+                "tel:+12065551212"
+            ],
+            "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng"
+            ],
+            "date_format": "MM-DD-YYYY",
+            "default_country": "US",
+            "max_value_length": 640,
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Stopper",
+            "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
+        },
+        "origin": "ui",
+        "params": {},
+        "triggered_on": "2022-02-04T19:43:50.217940873Z",
+        "type": "manual",
+        "user": {
+            "email": "bob@nyaruka.com",
+            "name": "Bob"
+        }
+    }
+}
