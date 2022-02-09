@@ -1,3 +1,7 @@
+v0.150.2
+----------
+ * Export events.BaseEvent so that callers can create their own events
+
 v0.150.1
 ----------
  * Fix bug when we remove a contact from all static groups
