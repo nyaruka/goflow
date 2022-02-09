@@ -28,7 +28,7 @@ const TypeContactRefreshed string = "contact_refreshed"
 //
 // @event contact_refreshed
 type ContactRefreshedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Contact json.RawMessage `json:"contact"`
 }
@@ -37,7 +37,7 @@ type ContactRefreshedEvent struct {
 func NewContactRefreshed(contact *flows.Contact) *ContactRefreshedEvent {
 	marshalled, _ := jsonx.Marshal(contact)
 	return &ContactRefreshedEvent{
-		baseEvent: newBaseEvent(TypeContactRefreshed),
+		BaseEvent: NewBaseEvent(TypeContactRefreshed),
 		Contact:   marshalled,
 	}
 }

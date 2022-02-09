@@ -30,7 +30,7 @@ const TypeResthookCalled string = "resthook_called"
 //
 // @event resthook_called
 type ResthookCalledEvent struct {
-	baseEvent
+	BaseEvent
 
 	Resthook string          `json:"resthook"`
 	Payload  json.RawMessage `json:"payload"`
@@ -39,7 +39,7 @@ type ResthookCalledEvent struct {
 // NewResthookCalled returns a new webhook called event
 func NewResthookCalled(resthook string, payload json.RawMessage) *ResthookCalledEvent {
 	return &ResthookCalledEvent{
-		baseEvent: newBaseEvent(TypeResthookCalled),
+		BaseEvent: NewBaseEvent(TypeResthookCalled),
 		Resthook:  resthook,
 		Payload:   payload,
 	}

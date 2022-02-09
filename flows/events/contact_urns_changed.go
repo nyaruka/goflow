@@ -25,7 +25,7 @@ const TypeContactURNsChanged string = "contact_urns_changed"
 //
 // @event contact_urns_changed
 type ContactURNsChangedEvent struct {
-	baseEvent
+	BaseEvent
 
 	URNs []urns.URN `json:"urns" validate:"dive,urn"`
 }
@@ -33,7 +33,7 @@ type ContactURNsChangedEvent struct {
 // NewContactURNsChanged returns a new add URN event
 func NewContactURNsChanged(urns []urns.URN) *ContactURNsChangedEvent {
 	return &ContactURNsChangedEvent{
-		baseEvent: newBaseEvent(TypeContactURNsChanged),
+		BaseEvent: NewBaseEvent(TypeContactURNsChanged),
 		URNs:      urns,
 	}
 }

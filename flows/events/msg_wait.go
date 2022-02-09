@@ -34,7 +34,7 @@ const TypeMsgWait string = "msg_wait"
 //
 // @event msg_wait
 type MsgWaitEvent struct {
-	baseEvent
+	BaseEvent
 
 	// when this wait times out and we can proceed assuming router has a timeout category. This value is relative
 	// because we want it to start counting when the last message is actually sent, which the engine can't know.
@@ -49,7 +49,7 @@ type MsgWaitEvent struct {
 // NewMsgWait returns a new msg wait with the passed in timeout
 func NewMsgWait(timeoutSeconds *int, expiresOn *time.Time, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
-		baseEvent:      newBaseEvent(TypeMsgWait),
+		BaseEvent:      NewBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
 		ExpiresOn:      expiresOn,
 		Hint:           hint,
@@ -61,7 +61,7 @@ func NewMsgWait(timeoutSeconds *int, expiresOn *time.Time, hint flows.Hint) *Msg
 //------------------------------------------------------------------------------------------
 
 type msgWaitEnvelope struct {
-	baseEvent
+	BaseEvent
 
 	TimeoutSeconds *int            `json:"timeout_seconds,omitempty"`
 	ExpiresOn      *time.Time      `json:"expires_on,omitempty"`
@@ -75,7 +75,7 @@ func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	e.baseEvent = v.baseEvent
+	e.BaseEvent = v.BaseEvent
 	e.TimeoutSeconds = v.TimeoutSeconds
 	e.ExpiresOn = v.ExpiresOn
 

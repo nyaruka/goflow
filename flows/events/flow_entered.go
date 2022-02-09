@@ -24,7 +24,7 @@ const TypeFlowEntered string = "flow_entered"
 //
 // @event flow_entered
 type FlowEnteredEvent struct {
-	baseEvent
+	BaseEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
 	ParentRunUUID flows.RunUUID         `json:"parent_run_uuid" validate:"omitempty,uuid4"`
@@ -34,7 +34,7 @@ type FlowEnteredEvent struct {
 // NewFlowEntered returns a new flow entered event for the passed in flow and parent run
 func NewFlowEntered(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowEnteredEvent {
 	return &FlowEnteredEvent{
-		baseEvent:     newBaseEvent(TypeFlowEntered),
+		BaseEvent:     NewBaseEvent(TypeFlowEntered),
 		Flow:          flow,
 		ParentRunUUID: parentRunUUID,
 		Terminal:      terminal,

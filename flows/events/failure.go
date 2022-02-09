@@ -21,7 +21,7 @@ const TypeFailure string = "failure"
 //
 // @event failure
 type FailureEvent struct {
-	baseEvent
+	BaseEvent
 
 	Text string `json:"text" validate:"required"`
 }
@@ -29,7 +29,7 @@ type FailureEvent struct {
 // NewFailure returns a new failure event for the passed in error
 func NewFailure(err error) *FailureEvent {
 	return &FailureEvent{
-		baseEvent: newBaseEvent(TypeFailure),
+		BaseEvent: NewBaseEvent(TypeFailure),
 		Text:      err.Error(),
 	}
 }
