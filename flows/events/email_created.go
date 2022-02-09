@@ -13,7 +13,7 @@ const TypeEmailCreated string = "email_created"
 
 // EmailCreatedEvent is no longer used but old sessions might include these
 type EmailCreatedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`

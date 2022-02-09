@@ -25,7 +25,7 @@ const TypeDialWait string = "dial_wait"
 //
 // @event dial_wait
 type DialWaitEvent struct {
-	baseEvent
+	BaseEvent
 
 	URN urns.URN `json:"urn" validate:"required,urn"`
 
@@ -36,7 +36,7 @@ type DialWaitEvent struct {
 // NewDialWait returns a new dial wait with the passed in URN
 func NewDialWait(urn urns.URN, expiresOn *time.Time) *DialWaitEvent {
 	return &DialWaitEvent{
-		baseEvent: newBaseEvent(TypeDialWait),
+		BaseEvent: NewBaseEvent(TypeDialWait),
 		URN:       urn,
 		ExpiresOn: expiresOn,
 	}

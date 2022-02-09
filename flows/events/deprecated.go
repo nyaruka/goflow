@@ -14,7 +14,7 @@ const TypeClassifierCalled string = "classifier_called"
 
 // ClassifierCalledEvent events have been replaced by service_called.
 type ClassifierCalledEvent struct {
-	baseEvent
+	BaseEvent
 
 	Classifier *assets.ClassifierReference `json:"classifier" validate:"required"`
 	HTTPLogs   []*flows.HTTPLog            `json:"http_logs"`

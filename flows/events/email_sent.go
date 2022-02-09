@@ -23,7 +23,7 @@ const TypeEmailSent string = "email_sent"
 //
 // @event email_sent
 type EmailSentEvent struct {
-	baseEvent
+	BaseEvent
 
 	To      []string `json:"to" validate:"required,min=1"`
 	Subject string   `json:"subject" validate:"required"`
@@ -33,7 +33,7 @@ type EmailSentEvent struct {
 // NewEmailSent returns a new email event with the passed in subject, body and emails
 func NewEmailSent(to []string, subject string, body string) *EmailSentEvent {
 	return &EmailSentEvent{
-		baseEvent: newBaseEvent(TypeEmailSent),
+		BaseEvent: NewBaseEvent(TypeEmailSent),
 		To:        to,
 		Subject:   subject,
 		Body:      body,
