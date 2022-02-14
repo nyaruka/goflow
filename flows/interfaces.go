@@ -92,6 +92,7 @@ const (
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
 	Get(assets.FlowUUID) (Flow, error)
+	FindByName(string) (Flow, error)
 }
 
 // SessionAssets is the assets available to a session
@@ -122,6 +123,7 @@ type Localizable interface {
 
 // Flow describes the ordered logic of actions and routers
 type Flow interface {
+	assets.Flow
 	Contextable
 
 	// spec properties

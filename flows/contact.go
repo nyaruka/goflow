@@ -467,16 +467,14 @@ func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []
 }
 
 // QueryProperty resolves a contact query search key for this contact
+//
+// Note that this method excludes id, group and flow search attributes as those are disallowed
+// query based groups.
 func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
 	if propType == contactql.PropertyTypeAttribute {
 		switch key {
 		case contactql.AttributeUUID:
 			return []interface{}{string(c.uuid)}
-		case contactql.AttributeID:
-			if c.id != 0 {
-				return []interface{}{fmt.Sprintf("%d", c.id)}
-			}
-			return nil
 		case contactql.AttributeName:
 			if c.name != "" {
 				return []interface{}{c.name}
@@ -491,12 +489,6 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			vals := make([]interface{}, len(c.URNs()))
 			for i, urn := range c.URNs() {
 				vals[i] = urn.URN().Path()
-			}
-			return vals
-		case contactql.AttributeGroup:
-			vals := make([]interface{}, c.Groups().Count())
-			for i, group := range c.Groups().All() {
-				vals[i] = group.Name()
 			}
 			return vals
 		case contactql.AttributeTickets:

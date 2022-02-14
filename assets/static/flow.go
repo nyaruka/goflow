@@ -17,6 +17,11 @@ type Flow struct {
 	Definition_ json.RawMessage
 }
 
+// NewFlow creates a new flow from the passed in UUID, name and definition
+func NewFlow(uuid assets.FlowUUID, name string, definition json.RawMessage) assets.Flow {
+	return &Flow{UUID_: uuid, Name_: name, Definition_: definition}
+}
+
 // UUID returns the UUID of the flow
 func (f *Flow) UUID() assets.FlowUUID { return f.UUID_ }
 

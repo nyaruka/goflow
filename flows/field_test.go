@@ -108,3 +108,20 @@ func TestValues(t *testing.T) {
 	assert.False(t, v6.Equals(v4))
 	assert.True(t, v6.Equals(v6))
 }
+
+func TestFieldAssets(t *testing.T) {
+	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
+	require.NoError(t, err)
+
+	// field assets are used as a resolver for query parsing
+	fields := session.Assets().Fields()
+	age := fields.ResolveField("age")
+	assert.Equal(t, assets.FieldUUID(`f1b5aea6-6586-41c7-9020-1a6326cc6565`), age.UUID())
+	assert.Equal(t, "age", age.Key())
+	assert.Equal(t, "Age", age.Name())
+	assert.Equal(t, assets.FieldTypeNumber, age.Type())
+
+	// but groups don't support query conditions on groups or flows so those aren't included
+	assert.Nil(t, fields.ResolveGroup(`b7cf0d83-f1c9-411c-96fd-c511a4cfa86d`))
+	assert.Nil(t, fields.ResolveFlow(`50c3706e-fedb-42c0-8eab-dda3335714b7`))
+}

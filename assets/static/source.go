@@ -4,6 +4,7 @@ package static
 import (
 	"encoding/json"
 	"os"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -54,8 +55,6 @@ func LoadSource(path string) (*StaticSource, error) {
 	return NewSource(data)
 }
 
-var _ assets.Source = (*StaticSource)(nil)
-
 // Channels returns all channel assets
 func (s *StaticSource) Channels() ([]assets.Channel, error) {
 	set := make([]assets.Channel, len(s.s.Channels))
@@ -84,13 +83,23 @@ func (s *StaticSource) Fields() ([]assets.Field, error) {
 }
 
 // Flow returns the flow asset with the given UUID
-func (s *StaticSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
+func (s *StaticSource) FlowByUUID(uuid assets.FlowUUID) (assets.Flow, error) {
 	for _, flow := range s.s.Flows {
 		if flow.UUID() == uuid {
 			return flow, nil
 		}
 	}
 	return nil, errors.Errorf("no such flow with UUID '%s'", uuid)
+}
+
+// Flow returns the flow asset with the given UUID
+func (s *StaticSource) FlowByName(name string) (assets.Flow, error) {
+	for _, flow := range s.s.Flows {
+		if strings.EqualFold(flow.Name(), name) {
+			return flow, nil
+		}
+	}
+	return nil, errors.Errorf("no such flow with name '%s'", name)
 }
 
 // Globals returns all global assets
@@ -173,3 +182,5 @@ func (s *StaticSource) Users() ([]assets.User, error) {
 	}
 	return set, nil
 }
+
+var _ assets.Source = (*StaticSource)(nil)

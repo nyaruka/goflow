@@ -13,13 +13,17 @@ import (
 
 func TestInspect(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	resolver := contactql.NewMockResolver(map[string]assets.Field{
-		"age":    static.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
-		"dob":    static.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
-		"gender": static.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
-	}, map[string]assets.Group{
-		"u-reporters": static.NewGroup(assets.GroupUUID("4eeca453-f474-4767-bdd0-434b180223db"), "U-Reporters", ""),
-	})
+	resolver := contactql.NewMockResolver(
+		[]assets.Field{
+			static.NewField(assets.FieldUUID("f1b5aea6-6586-41c7-9020-1a6326cc6565"), "age", "Age", assets.FieldTypeNumber),
+			static.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
+			static.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
+		},
+		[]assets.Group{
+			static.NewGroup(assets.GroupUUID("4eeca453-f474-4767-bdd0-434b180223db"), "U-Reporters", ""),
+		},
+		[]assets.Flow{},
+	)
 
 	tests := []struct {
 		query      string

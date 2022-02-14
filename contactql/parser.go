@@ -108,9 +108,14 @@ func (c *Condition) ValueAsDate(env envs.Environment) (time.Time, error) {
 	return envs.DateTimeFromString(env, c.value, false)
 }
 
-// ValueAsGroup returns the value as a date if possible, or an error if not
+// ValueAsGroup returns the value as a group if possible
 func (c *Condition) ValueAsGroup(resolver Resolver) assets.Group {
 	return resolver.ResolveGroup(c.value)
+}
+
+// ValueAsFlow returns the value as a flow if possible
+func (c *Condition) ValueAsFlow(resolver Resolver) assets.Flow {
+	return resolver.ResolveFlow(c.value)
 }
 
 func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
@@ -184,6 +189,11 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			group := c.ValueAsGroup(resolver)
 			if group == nil {
 				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
+			}
+		} else if c.propKey == AttributeFlow && resolver != nil {
+			flow := c.ValueAsFlow(resolver)
+			if flow == nil {
+				return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
 			}
 		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {

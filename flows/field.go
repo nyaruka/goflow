@@ -350,6 +350,10 @@ func (s *FieldAssets) FirstOfType(valueType assets.FieldType) *Field {
 	return nil
 }
 
+// Query based groups don't allow conditions based on flows or other groups and therefore
+// can be validated with just field assets. Thus we allow FieldAssets to operate as a
+// contactql.Resolver for the purposes of loading groups.
+
 func (s *FieldAssets) ResolveField(key string) assets.Field {
 	f := s.byKey[key]
 	if f != nil {
@@ -359,5 +363,9 @@ func (s *FieldAssets) ResolveField(key string) assets.Field {
 }
 
 func (s *FieldAssets) ResolveGroup(name string) assets.Group {
+	return nil
+}
+
+func (s *FieldAssets) ResolveFlow(name string) assets.Flow {
 	return nil
 }

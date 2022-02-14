@@ -464,6 +464,38 @@ func TestReadFlow(t *testing.T) {
 	assert.Equal(t, "TestFlow", flow.Name())
 	assert.Equal(t, flows.FlowTypeMessaging, flow.Type())
 	assert.Equal(t, 1, len(flow.Nodes()))
+	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"type": "messaging",
+		"name": "TestFlow",
+		"revision": 0,
+		"spec_version": "13.1.0",
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"nodes": [
+			{
+				"exits": [
+					{
+						"uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045"
+					}
+				],
+				"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65"
+			}
+		],
+		"_ui": {
+			"nodes": {
+				"10e483a8-5ffb-4c4f-917b-d43ce86c1d65": {
+					"position": {
+						"left": 100,
+						"top": 100
+					},
+					"type": "execute_actions"
+				}
+			},
+			"stickies": {}
+		}
+	}`), flow.Definition())
 }
 
 func TestExtractTemplatesAndLocalizables(t *testing.T) {

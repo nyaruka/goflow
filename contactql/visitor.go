@@ -31,6 +31,7 @@ const (
 	AttributeLanguage   = "language"
 	AttributeURN        = "urn"
 	AttributeGroup      = "group"
+	AttributeFlow       = "flow"
 	AttributeTickets    = "tickets"
 	AttributeCreatedOn  = "created_on"
 	AttributeLastSeenOn = "last_seen_on"
@@ -43,15 +44,17 @@ var attributes = map[string]assets.FieldType{
 	AttributeLanguage:   assets.FieldTypeText,
 	AttributeURN:        assets.FieldTypeText,
 	AttributeGroup:      assets.FieldTypeText,
+	AttributeFlow:       assets.FieldTypeText,
 	AttributeTickets:    assets.FieldTypeNumber,
 	AttributeCreatedOn:  assets.FieldTypeDatetime,
 	AttributeLastSeenOn: assets.FieldTypeDatetime,
 }
 
-// Resolver provides functions for resolving fields and groups referenced in queries
+// Resolver provides functions for resolving assets referenced in queries
 type Resolver interface {
 	ResolveField(key string) assets.Field
 	ResolveGroup(name string) assets.Group
+	ResolveFlow(name string) assets.Flow
 }
 
 type visitor struct {
