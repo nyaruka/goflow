@@ -1,3 +1,7 @@
+v0.151.0
+----------
+ * Add flow as contactql query attribute
+
 v0.150.2
 ----------
  * Export events.BaseEvent so that callers can create their own events
