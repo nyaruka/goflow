@@ -24,7 +24,7 @@ const TypeError string = "error"
 //
 // @event error
 type ErrorEvent struct {
-	baseEvent
+	BaseEvent
 
 	Text string `json:"text" validate:"required"`
 }
@@ -37,7 +37,7 @@ func NewError(err error) *ErrorEvent {
 // NewErrorf returns a new error event for the passed in format string and args
 func NewErrorf(format string, a ...interface{}) *ErrorEvent {
 	return &ErrorEvent{
-		baseEvent: newBaseEvent(TypeError),
+		BaseEvent: NewBaseEvent(TypeError),
 		Text:      fmt.Sprintf(format, a...),
 	}
 }

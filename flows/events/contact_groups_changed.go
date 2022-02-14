@@ -23,7 +23,7 @@ const TypeContactGroupsChanged string = "contact_groups_changed"
 //
 // @event contact_groups_changed
 type ContactGroupsChangedEvent struct {
-	baseEvent
+	BaseEvent
 
 	GroupsAdded   []*assets.GroupReference `json:"groups_added,omitempty" validate:"omitempty,dive"`
 	GroupsRemoved []*assets.GroupReference `json:"groups_removed,omitempty" validate:"omitempty,dive"`
@@ -32,7 +32,7 @@ type ContactGroupsChangedEvent struct {
 // NewContactGroupsChanged returns a new contact_groups_changed event
 func NewContactGroupsChanged(added []*flows.Group, removed []*flows.Group) *ContactGroupsChangedEvent {
 	return &ContactGroupsChangedEvent{
-		baseEvent:     newBaseEvent(TypeContactGroupsChanged),
+		BaseEvent:     NewBaseEvent(TypeContactGroupsChanged),
 		GroupsAdded:   groupsToReferences(added),
 		GroupsRemoved: groupsToReferences(removed),
 	}

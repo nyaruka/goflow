@@ -1,3 +1,27 @@
+v0.150.2
+----------
+ * Export events.BaseEvent so that callers can create their own events
+
+v0.150.1
+----------
+ * Fix bug when we remove a contact from all static groups
+
+v0.150.0
+----------
+ * If caller tries to resume with wrong resume type, don't fail session but error instead
+
+v0.149.1
+----------
+ * Update to gocommon 1.17.1
+
+v0.149.0
+----------
+ * Remove no longer used Run.expires_on
+
+v0.148.0
+----------
+ * Add expiresOn to dial waits so all wait types have it
+
 v0.147.0
 ----------
  * Add @trigger.campaign for campaign triggers

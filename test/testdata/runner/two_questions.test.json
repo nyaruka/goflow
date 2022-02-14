@@ -11,7 +11,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -29,7 +29,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "timeout_seconds": 600,
                     "type": "msg_wait"
@@ -76,7 +76,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -94,22 +94,21 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:08.123456789Z",
+                        "modified_on": "2018-07-06T12:30:06.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
@@ -168,7 +167,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -211,12 +210,12 @@
                         ],
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "contact_refreshed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "created_on": "2018-07-06T12:30:12.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -231,7 +230,7 @@
                 },
                 {
                     "category": "Blue",
-                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "created_on": "2018-07-06T12:30:16.123456789Z",
                     "input": "I like blue!",
                     "name": "Favorite Color",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -239,13 +238,13 @@
                     "value": "blue"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "language": "fra",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_language_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -259,7 +258,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -271,7 +270,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "I like blue!",
-                    "time": "2018-07-06T12:30:22.123456789Z"
+                    "time": "2018-07-06T12:30:18.123456789Z"
                 }
             ],
             "session": {
@@ -330,7 +329,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -348,13 +347,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -397,12 +396,12 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "contact_refreshed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -417,7 +416,7 @@
                             },
                             {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -425,13 +424,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -445,27 +444,26 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
                         ],
                         "exited_on": null,
-                        "expires_on": "2018-07-06T12:30:14.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:26.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
@@ -473,7 +471,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -534,7 +532,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -550,7 +548,7 @@
                 {
                     "category": "Coke",
                     "category_localized": "Coke",
-                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
                     "input": "Coke",
                     "name": "Soda",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -558,7 +556,7 @@
                     "value": "Coke"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
                     "elapsed_ms": 1000,
                     "extraction": "valid",
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
@@ -571,7 +569,7 @@
                     "url": "http://localhost/?cmd=success"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:46.123456789Z",
+                    "created_on": "2018-07-06T12:30:40.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -592,7 +590,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "Coke",
-                    "time": "2018-07-06T12:30:40.123456789Z"
+                    "time": "2018-07-06T12:30:34.123456789Z"
                 }
             ],
             "session": {
@@ -651,7 +649,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -669,13 +667,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -718,12 +716,12 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "contact_refreshed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -738,7 +736,7 @@
                             },
                             {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -746,13 +744,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -766,12 +764,12 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -787,7 +785,7 @@
                             {
                                 "category": "Coke",
                                 "category_localized": "Coke",
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -795,7 +793,7 @@
                                 "value": "Coke"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "elapsed_ms": 1000,
                                 "extraction": "valid",
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
@@ -808,7 +806,7 @@
                                 "url": "http://localhost/?cmd=success"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:46.123456789Z",
+                                "created_on": "2018-07-06T12:30:40.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -822,28 +820,27 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:48.123456789Z",
-                        "expires_on": null,
+                        "exited_on": "2018-07-06T12:30:42.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:48.123456789Z",
+                        "modified_on": "2018-07-06T12:30:42.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:23.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
                                 "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:41.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:35.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -852,7 +849,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -861,7 +858,7 @@
                             "soda": {
                                 "category": "Coke",
                                 "category_localized": "Coke",
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

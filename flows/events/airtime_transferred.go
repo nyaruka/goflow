@@ -38,7 +38,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //
 // @event airtime_transferred
 type AirtimeTransferredEvent struct {
-	baseEvent
+	BaseEvent
 
 	Sender        urns.URN         `json:"sender"`
 	Recipient     urns.URN         `json:"recipient"`
@@ -51,7 +51,7 @@ type AirtimeTransferredEvent struct {
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
-		baseEvent:     newBaseEvent(TypeAirtimeTransferred),
+		BaseEvent:     NewBaseEvent(TypeAirtimeTransferred),
 		Sender:        t.Sender,
 		Recipient:     t.Recipient,
 		Currency:      t.Currency,

@@ -30,7 +30,7 @@ const TypeEnvironmentRefreshed string = "environment_refreshed"
 //
 // @event environment_refreshed
 type EnvironmentRefreshedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Environment json.RawMessage `json:"environment"`
 }
@@ -39,7 +39,7 @@ type EnvironmentRefreshedEvent struct {
 func NewEnvironmentRefreshed(env envs.Environment) *EnvironmentRefreshedEvent {
 	marshalled, _ := jsonx.Marshal(env)
 	return &EnvironmentRefreshedEvent{
-		baseEvent:   newBaseEvent(TypeEnvironmentRefreshed),
+		BaseEvent:   NewBaseEvent(TypeEnvironmentRefreshed),
 		Environment: marshalled,
 	}
 }

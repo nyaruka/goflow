@@ -30,7 +30,7 @@ const TypeRunResultChanged string = "run_result_changed"
 //
 // @event run_result_changed
 type RunResultChangedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Name              string          `json:"name" validate:"required"`
 	Value             string          `json:"value"`
@@ -43,7 +43,7 @@ type RunResultChangedEvent struct {
 // NewRunResultChanged returns a new save result event for the passed in values
 func NewRunResultChanged(result *flows.Result) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
-		baseEvent:         newBaseEvent(TypeRunResultChanged),
+		BaseEvent:         NewBaseEvent(TypeRunResultChanged),
 		Name:              result.Name,
 		Value:             result.Value,
 		Category:          result.Category,

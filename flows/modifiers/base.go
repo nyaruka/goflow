@@ -46,10 +46,10 @@ func ReevaluateGroups(env envs.Environment, assets flows.SessionAssets, contact 
 	if contact.Status() != flows.ContactStatusActive {
 		for _, g := range contact.Groups().All() {
 			if !g.UsesQuery() {
-				contact.Groups().Remove(g)
 				removed = append(removed, g)
 			}
 		}
+		contact.Groups().Clear()
 	}
 
 	// add groups changed event for the groups we were added/removed to/from

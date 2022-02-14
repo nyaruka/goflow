@@ -50,7 +50,7 @@ const TypeSessionTriggered string = "session_triggered"
 //
 // @event session_triggered
 type SessionTriggeredEvent struct {
-	baseEvent
+	BaseEvent
 
 	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
@@ -65,7 +65,7 @@ type SessionTriggeredEvent struct {
 // NewSessionTriggered returns a new session triggered event
 func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
-		baseEvent:     newBaseEvent(TypeSessionTriggered),
+		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,
 		Groups:        groups,
 		Contacts:      contacts,

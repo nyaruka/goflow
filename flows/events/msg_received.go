@@ -28,7 +28,7 @@ const TypeMsgReceived string = "msg_received"
 //
 // @event msg_received
 type MsgReceivedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Msg flows.MsgIn `json:"msg" validate:"required,dive"`
 }
@@ -36,7 +36,7 @@ type MsgReceivedEvent struct {
 // NewMsgReceived creates a new incoming msg event for the passed in channel, URN and text
 func NewMsgReceived(msg *flows.MsgIn) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
-		baseEvent: newBaseEvent(TypeMsgReceived),
+		BaseEvent: NewBaseEvent(TypeMsgReceived),
 		Msg:       *msg,
 	}
 }

@@ -39,7 +39,7 @@ const (
 //
 // @event webhook_called
 type WebhookCalledEvent struct {
-	baseEvent
+	BaseEvent
 
 	*flows.HTTPTrace
 
@@ -63,7 +63,7 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 	}
 
 	return &WebhookCalledEvent{
-		baseEvent:  newBaseEvent(TypeWebhookCalled),
+		BaseEvent:  NewBaseEvent(TypeWebhookCalled),
 		HTTPTrace:  flows.NewHTTPTrace(call.Trace, status),
 		Resthook:   resthook,
 		Extraction: extraction,

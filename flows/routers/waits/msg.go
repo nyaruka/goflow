@@ -2,9 +2,7 @@ package waits
 
 import (
 	"encoding/json"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -60,34 +58,25 @@ func (w *MsgWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	}
 
 	var timeoutSeconds *int
-	var expiresOn *time.Time
-
 	if w.timeout != nil {
 		seconds := w.timeout.Seconds()
 		timeoutSeconds = &seconds
 	}
-	if run.Flow().ExpireAfterMinutes() > 0 {
-		dt := dates.Now().Add(time.Duration(run.Flow().ExpireAfterMinutes() * int(time.Minute)))
-		expiresOn = &dt
-	}
 
-	log(events.NewMsgWait(timeoutSeconds, expiresOn, w.hint))
+	log(events.NewMsgWait(timeoutSeconds, w.expiresOn(run), w.hint))
 
 	return true
 }
 
-// End ends this wait or returns an error
-func (w *MsgWait) End(resume flows.Resume) error {
+// Accept returns whether this wait accepts the given resume
+func (w *MsgWait) Accepts(resume flows.Resume) bool {
 	switch resume.Type() {
 	case resumes.TypeMsg, resumes.TypeRunExpiration:
-		return nil
+		return true
 	case resumes.TypeWaitTimeout:
-		if w.timeout == nil {
-			return errors.Errorf("can't end with timeout as wait doesn't have a timeout")
-		}
-		return nil
+		return w.timeout != nil
 	}
-	return w.resumeTypeError(resume)
+	return false
 }
 
 var _ flows.Wait = (*MsgWait)(nil)

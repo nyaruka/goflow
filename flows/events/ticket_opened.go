@@ -44,7 +44,7 @@ type Ticket struct {
 //
 // @event ticket_opened
 type TicketOpenedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Ticket *Ticket `json:"ticket"`
 }
@@ -52,7 +52,7 @@ type TicketOpenedEvent struct {
 // NewTicketOpened returns a new ticket opened event
 func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 	return &TicketOpenedEvent{
-		baseEvent: newBaseEvent(TypeTicketOpened),
+		BaseEvent: NewBaseEvent(TypeTicketOpened),
 		Ticket: &Ticket{
 			UUID:       ticket.UUID(),
 			Ticketer:   ticket.Ticketer().Reference(),

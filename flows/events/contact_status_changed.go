@@ -19,7 +19,7 @@ const TypeContactStatusChanged string = "contact_status_changed"
 //
 // @event contact_status_changed
 type ContactStatusChangedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Status flows.ContactStatus `json:"status"`
 }
@@ -27,7 +27,7 @@ type ContactStatusChangedEvent struct {
 // NewContactStatusChanged returns a new contact_status_changed event
 func NewContactStatusChanged(status flows.ContactStatus) *ContactStatusChangedEvent {
 	return &ContactStatusChangedEvent{
-		baseEvent: newBaseEvent(TypeContactStatusChanged),
+		BaseEvent: NewBaseEvent(TypeContactStatusChanged),
 		Status:    status,
 	}
 }

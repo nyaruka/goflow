@@ -205,11 +205,15 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 		return sprint, errors.Errorf("session doesn't contain any runs which are waiting")
 	}
 
-	if err := s.tryToResume(sprint, waitingRun, resume); err != nil {
-		// if we got an error, add it to the log and shut everything down
-		failure(sprint, waitingRun, nil, err)
+	isFailure, err := s.tryToResume(sprint, waitingRun, resume)
+	if err != nil {
+		if isFailure {
+			failure(sprint, waitingRun, nil, err)
 
-		s.status = flows.SessionStatusFailed
+			s.status = flows.SessionStatusFailed
+		} else {
+			return nil, err
+		}
 	}
 
 	return sprint, nil
@@ -231,32 +235,32 @@ func (s *session) prepareForSprint() error {
 	return nil
 }
 
-// Resume resumes a waiting session
-func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows.Resume) error {
+// tries to resume a waiting session with the given resume
+func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows.Resume) (bool, error) {
 	// if flow for this run is a missing asset, we have a problem
 	if waitingRun.Flow() == nil {
-		return errors.New("can't resume run with missing flow asset")
+		return true, errors.New("can't resume run with missing flow asset")
 	}
 
 	if s.countWaits() >= s.engine.MaxResumesPerSession() {
-		return errors.Errorf("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
+		return true, errors.Errorf("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
 	}
 
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
-		return err
+		return true, err
 	}
 
 	if node.Router() == nil || node.Router().Wait() == nil {
-		return errors.New("can't resume from node without a router or wait")
+		return true, errors.New("can't resume from node without a router or wait")
 	}
 
-	// try to end our wait which will return and log an error if it can't be ended with this resume
-	if err := node.Router().Wait().End(resume); err != nil {
-		sprint.logEvent(events.NewError(err))
-		return nil
+	// check that the wait accepts this resume - not a permanent error - caller can retry with different resume
+	if !node.Router().Wait().Accepts(resume) {
+		return false, errors.Errorf("resume of type %s not accepted by wait of type %s", resume.Type(), node.Router().Wait().Type())
 	}
+
 	s.status = flows.SessionStatusActive
 	s.currentResume = resume
 
@@ -275,11 +279,11 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {
-		return err
+		return true, err
 	}
 
 	// off to the races again...
-	return s.continueUntilWait(sprint, waitingRun, node, exit, operand, step, nil)
+	return true, s.continueUntilWait(sprint, waitingRun, node, exit, operand, step, nil)
 }
 
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow

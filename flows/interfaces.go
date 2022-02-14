@@ -219,7 +219,7 @@ type Wait interface {
 	Timeout() Timeout
 
 	Begin(Run, EventCallback) bool
-	End(Resume) error
+	Accepts(Resume) bool
 }
 
 // Hint tells the caller what type of input the flow is expecting
@@ -427,8 +427,6 @@ type Run interface {
 
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
-	ExpiresOn() *time.Time
-	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
 	Exit(RunStatus)
 }

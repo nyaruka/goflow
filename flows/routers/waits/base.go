@@ -2,7 +2,9 @@ package waits
 
 import (
 	"encoding/json"
+	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -48,8 +50,13 @@ func (w *baseWait) Type() string { return w.type_ }
 // Timeout returns the timeout of this wait or nil if no timeout is set
 func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
 
-func (w *baseWait) resumeTypeError(r flows.Resume) error {
-	return errors.Errorf("can't end a wait of type '%s' with a resume of type '%s'", w.type_, r.Type())
+func (w *baseWait) expiresOn(run flows.Run) *time.Time {
+	expiresAfterMins := run.Flow().ExpireAfterMinutes()
+	if expiresAfterMins > 0 {
+		dt := dates.Now().Add(time.Duration(expiresAfterMins * int(time.Minute)))
+		return &dt
+	}
+	return nil
 }
 
 //------------------------------------------------------------------------------------------

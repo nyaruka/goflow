@@ -51,17 +51,14 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 		return false
 	}
 
-	log(events.NewDialWait(urn))
+	log(events.NewDialWait(urn, w.expiresOn(run)))
 
 	return true
 }
 
-// End ends this wait or returns an error
-func (w *DialWait) End(resume flows.Resume) error {
-	if resume.Type() == resumes.TypeDial {
-		return nil
-	}
-	return w.resumeTypeError(resume)
+// Accept returns whether this wait accepts the given resume
+func (w *DialWait) Accepts(resume flows.Resume) bool {
+	return resume.Type() == resumes.TypeDial
 }
 
 var _ flows.Wait = (*DialWait)(nil)

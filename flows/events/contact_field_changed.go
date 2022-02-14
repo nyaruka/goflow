@@ -24,7 +24,7 @@ const TypeContactFieldChanged string = "contact_field_changed"
 //
 // @event contact_field_changed
 type ContactFieldChangedEvent struct {
-	baseEvent
+	BaseEvent
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value *flows.Value           `json:"value"`
@@ -33,7 +33,7 @@ type ContactFieldChangedEvent struct {
 // NewContactFieldChanged returns a new save to contact event
 func NewContactFieldChanged(field *flows.Field, value *flows.Value) *ContactFieldChangedEvent {
 	return &ContactFieldChangedEvent{
-		baseEvent: newBaseEvent(TypeContactFieldChanged),
+		BaseEvent: NewBaseEvent(TypeContactFieldChanged),
 		Field:     field.Reference(),
 		Value:     value,
 	}
