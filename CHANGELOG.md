@@ -1,3 +1,7 @@
+v0.152.0
+----------
+ * start_session actions should generate error event if flow asset missing
+
 v0.151.0
 ----------
  * Add flow as contactql query attribute
