@@ -62,6 +62,13 @@ func (a *StartSessionAction) Execute(run flows.Run, step flows.Step, logModifier
 		return err
 	}
 
+	// check that flow exists - error event if not
+	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
+	if err != nil {
+		logEvent(events.NewDependencyError(a.Flow))
+		return nil
+	}
+
 	// batch footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
 		logEvent(events.NewErrorf("can't start new sessions for groups or queries during batch starts"))
@@ -87,6 +94,6 @@ func (a *StartSessionAction) Execute(run flows.Run, step flows.Step, logModifier
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(a.Flow, groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot, history))
+	logEvent(events.NewSessionTriggered(flow.Reference(), groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }
