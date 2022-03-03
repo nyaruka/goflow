@@ -109,7 +109,7 @@
                     ],
                     "created_on": "2018-07-06T12:30:17.123456789Z",
                     "flow": {
-                        "name": "Collect Language",
+                        "name": "Registration Flow",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
                     "history": {
@@ -583,7 +583,7 @@
                                 ],
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "flow": {
-                                    "name": "Collect Language",
+                                    "name": "Registration Flow",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                                 },
                                 "history": {
