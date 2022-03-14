@@ -57,12 +57,6 @@ func TestFunctions(t *testing.T) {
 		{"and", dmy, []types.XValue{ERROR}, ERROR},
 		{"and", dmy, []types.XValue{}, ERROR},
 
-		{"append", dmy, []types.XValue{xa(xi(1), xi(2)), xa(xi(3), xi(4))}, xa(xi(1), xi(2), xi(3), xi(4))},
-		{"append", dmy, []types.XValue{xa(), xa()}, xa()},
-		{"append", dmy, []types.XValue{xa()}, ERROR},
-		{"append", dmy, []types.XValue{xa(), ERROR}, ERROR},
-		{"append", dmy, []types.XValue{ERROR, xa()}, ERROR},
-
 		{"array", dmy, []types.XValue{}, xa()},
 		{"array", dmy, []types.XValue{xi(123), xs("abc")}, xa(xi(123), xs("abc"))},
 		{"array", dmy, []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
@@ -116,6 +110,12 @@ func TestFunctions(t *testing.T) {
 		{"clean", dmy, []types.XValue{xs("😃 Hello \nwo\tr\rld")}, xs("😃 Hello world")},
 		{"clean", dmy, []types.XValue{xs("")}, xs("")},
 		{"clean", dmy, []types.XValue{}, ERROR},
+
+		{"concat", dmy, []types.XValue{xa(xi(1), xi(2)), xa(xi(3), xi(4))}, xa(xi(1), xi(2), xi(3), xi(4))},
+		{"concat", dmy, []types.XValue{xa(), xa()}, xa()},
+		{"concat", dmy, []types.XValue{xa()}, ERROR},
+		{"concat", dmy, []types.XValue{xa(), ERROR}, ERROR},
+		{"concat", dmy, []types.XValue{ERROR, xa()}, ERROR},
 
 		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(dates.NewDate(2017, 12, 1))},
 		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(dates.NewDate(2017, 12, 1))},

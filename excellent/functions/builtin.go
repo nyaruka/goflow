@@ -107,7 +107,7 @@ func init() {
 		"sort":    OneArrayFunction(Sort),
 		"sum":     OneArrayFunction(Sum),
 		"unique":  OneArrayFunction(Unique),
-		"append":  TwoArrayFunction(Append),
+		"concat":  TwoArrayFunction(Concat),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1629,23 +1629,23 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 	return types.NewXArray(unique...)
 }
 
-// Append returns the result of appending one array to another as a new array.
+// Concat returns the result of concatenating two arrays.
 //
-//   @(append(array("a", "b"), array("c", "d"))) -> [a, b, c, d]
-//   @(unique(append(array(1, 2, 3), array(3, 4)))) -> [1, 2, 3, 4]
+//   @(concat(array("a", "b"), array("c", "d"))) -> [a, b, c, d]
+//   @(unique(concat(array(1, 2, 3), array(3, 4)))) -> [1, 2, 3, 4]
 //
-// @function append(array1, array2)
-func Append(env envs.Environment, array1 *types.XArray, array2 *types.XArray) types.XValue {
-	appended := make([]types.XValue, 0, array1.Count()+array2.Count())
+// @function concat(array1, array2)
+func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) types.XValue {
+	both := make([]types.XValue, 0, array1.Count()+array2.Count())
 
 	for i := 0; i < array1.Count(); i++ {
-		appended = append(appended, array1.Get(i))
+		both = append(both, array1.Get(i))
 	}
 	for i := 0; i < array2.Count(); i++ {
-		appended = append(appended, array2.Get(i))
+		both = append(both, array2.Get(i))
 	}
 
-	return types.NewXArray(appended...)
+	return types.NewXArray(both...)
 }
 
 //------------------------------------------------------------------------------------------
