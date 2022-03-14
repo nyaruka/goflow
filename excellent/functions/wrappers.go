@@ -316,3 +316,19 @@ func OneArrayFunction(f func(envs.Environment, *types.XArray) types.XValue) type
 		return f(env, array)
 	})
 }
+
+// TwoArrayFunction creates an XFunc from a function that takes two arrays
+func TwoArrayFunction(f func(envs.Environment, *types.XArray, *types.XArray) types.XValue) types.XFunc {
+	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
+		array1, xerr := types.ToXArray(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		array2, xerr := types.ToXArray(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, array1, array2)
+	})
+}
