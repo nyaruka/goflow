@@ -1,3 +1,8 @@
+v0.153.0
+----------
+ * Add concat excellent function
+ * Updated translations from Transifex
+
 v0.152.0
 ----------
  * start_session actions should generate error event if flow asset missing
