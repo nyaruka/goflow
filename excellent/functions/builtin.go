@@ -107,6 +107,7 @@ func init() {
 		"sort":    OneArrayFunction(Sort),
 		"sum":     OneArrayFunction(Sum),
 		"unique":  OneArrayFunction(Unique),
+		"concat":  TwoArrayFunction(Concat),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1626,6 +1627,25 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 	}
 
 	return types.NewXArray(unique...)
+}
+
+// Concat returns the result of concatenating two arrays.
+//
+//   @(concat(array("a", "b"), array("c", "d"))) -> [a, b, c, d]
+//   @(unique(concat(array(1, 2, 3), array(3, 4)))) -> [1, 2, 3, 4]
+//
+// @function concat(array1, array2)
+func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) types.XValue {
+	both := make([]types.XValue, 0, array1.Count()+array2.Count())
+
+	for i := 0; i < array1.Count(); i++ {
+		both = append(both, array1.Get(i))
+	}
+	for i := 0; i < array2.Count(); i++ {
+		both = append(both, array2.Get(i))
+	}
+
+	return types.NewXArray(both...)
 }
 
 //------------------------------------------------------------------------------------------
