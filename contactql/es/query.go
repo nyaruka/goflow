@@ -12,30 +12,35 @@ import (
 	"github.com/olivere/elastic/v7"
 )
 
+// AssetMapper is used to map engine assets to however ES identifies them
+type AssetMapper interface {
+	Flow(assets.Flow) int64
+}
+
 // ToElasticQuery converts a contactql query to an Elastic query
-func ToElasticQuery(env envs.Environment, query *contactql.ContactQuery) elastic.Query {
+func ToElasticQuery(env envs.Environment, mapper AssetMapper, query *contactql.ContactQuery) elastic.Query {
 	if query.Resolver() == nil {
 		panic("can only convert queries parsed with a resolver")
 	}
 
-	return nodeToElastic(env, query.Resolver(), query.Root())
+	return nodeToElastic(env, query.Resolver(), mapper, query.Root())
 }
 
-func nodeToElastic(env envs.Environment, resolver contactql.Resolver, node contactql.QueryNode) elastic.Query {
+func nodeToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, node contactql.QueryNode) elastic.Query {
 	switch n := node.(type) {
 	case *contactql.BoolCombination:
-		return boolCombinationToElastic(env, resolver, n)
+		return boolCombinationToElastic(env, resolver, mapper, n)
 	case *contactql.Condition:
-		return conditionToElastic(env, resolver, n)
+		return conditionToElastic(env, resolver, mapper, n)
 	default:
 		panic(fmt.Sprintf("unsupported node type: %T", n))
 	}
 }
 
-func boolCombinationToElastic(env envs.Environment, resolver contactql.Resolver, combination *contactql.BoolCombination) elastic.Query {
+func boolCombinationToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, combination *contactql.BoolCombination) elastic.Query {
 	queries := make([]elastic.Query, len(combination.Children()))
 	for i, child := range combination.Children() {
-		queries[i] = nodeToElastic(env, resolver, child)
+		queries[i] = nodeToElastic(env, resolver, mapper, child)
 	}
 
 	if combination.Operator() == contactql.BoolOperatorAnd {
@@ -45,12 +50,12 @@ func boolCombinationToElastic(env envs.Environment, resolver contactql.Resolver,
 	return elastic.NewBoolQuery().Should(queries...)
 }
 
-func conditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) elastic.Query {
+func conditionToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) elastic.Query {
 	switch c.PropertyType() {
 	case contactql.PropertyTypeField:
 		return fieldConditionToElastic(env, resolver, c)
 	case contactql.PropertyTypeAttribute:
-		return attributeConditionToElastic(env, resolver, c)
+		return attributeConditionToElastic(env, resolver, mapper, c)
 	case contactql.PropertyTypeScheme:
 		return schemeConditionToElastic(env, c)
 	default:
@@ -181,7 +186,7 @@ func fieldConditionToElastic(env envs.Environment, resolver contactql.Resolver, 
 	panic(fmt.Sprintf("unsupported field type: %s", fieldType))
 }
 
-func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) elastic.Query {
+func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) elastic.Query {
 	key := c.PropertyKey()
 	value := strings.ToLower(c.Value())
 	var query elastic.Query
@@ -312,7 +317,7 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 	case contactql.AttributeFlow:
 		// special case for set/unset
 		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
-			query = elastic.NewExistsQuery("flow")
+			query = elastic.NewExistsQuery("flow_id")
 			if c.Operator() == contactql.OpEqual {
 				query = not(query)
 			}
@@ -323,9 +328,9 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 
 		switch c.Operator() {
 		case contactql.OpEqual:
-			return elastic.NewTermQuery("flow", flow.UUID())
+			return elastic.NewTermQuery("flow_id", mapper.Flow(flow))
 		case contactql.OpNotEqual:
-			return not(elastic.NewTermQuery("flow", flow.UUID()))
+			return not(elastic.NewTermQuery("flow_id", mapper.Flow(flow)))
 		default:
 			panic(fmt.Sprintf("unsupported flow attribute operator: %s", c.Operator()))
 		}

@@ -19,6 +19,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type MockMapper struct {
+	flows map[assets.FlowUUID]int64
+}
+
+func (m *MockMapper) Flow(f assets.Flow) int64 {
+	return m.flows[f.UUID()]
+}
+
+func newMockMapper(flows map[assets.FlowUUID]int64) *MockMapper {
+	return &MockMapper{flows}
+}
+
 func newMockResolver() contactql.Resolver {
 	return contactql.NewMockResolver(
 		[]assets.Field{
@@ -67,7 +79,7 @@ func TestElasticQuery(t *testing.T) {
 		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
 		require.NoError(t, err)
 
-		query := es.ToElasticQuery(env, parsed)
+		query := es.ToElasticQuery(env, newMockMapper(map[assets.FlowUUID]int64{"c261165a-f5b0-40ba-b916-76fb49667a4f": 234}), parsed)
 		assert.NotNil(t, query, tc.Description)
 
 		source, err := query.Source()

@@ -1696,7 +1696,7 @@
         "query": "flow = \"registration\"",
         "elastic": {
             "term": {
-                "flow": "c261165a-f5b0-40ba-b916-76fb49667a4f"
+                "flow_id": 234
             }
         }
     },
@@ -1707,7 +1707,7 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "flow": "c261165a-f5b0-40ba-b916-76fb49667a4f"
+                        "flow_id": 234
                     }
                 }
             }
@@ -1718,7 +1718,7 @@
         "query": "flow != \"\"",
         "elastic": {
             "exists": {
-                "field": "flow"
+                "field": "flow_id"
             }
         }
     },
@@ -1729,7 +1729,7 @@
             "bool": {
                 "must_not": {
                     "exists": {
-                        "field": "flow"
+                        "field": "flow_id"
                     }
                 }
             }
