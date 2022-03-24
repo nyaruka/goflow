@@ -1,3 +1,7 @@
+v0.154.0
+----------
+ * Give errors returned from Session.Resume codes
+
 v0.153.0
 ----------
  * Add concat excellent function
