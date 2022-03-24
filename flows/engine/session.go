@@ -197,12 +197,12 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 	}
 
 	if s.status != flows.SessionStatusWaiting {
-		return sprint, errors.Errorf("only waiting sessions can be resumed")
+		return sprint, newError(ErrorResumeNonWaitingSession, "only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
 	if waitingRun == nil {
-		return sprint, errors.Errorf("session doesn't contain any runs which are waiting")
+		return sprint, newError(ErrorResumeNoWaitingRun, "session doesn't contain any runs which are waiting")
 	}
 
 	isFailure, err := s.tryToResume(sprint, waitingRun, resume)
@@ -258,7 +258,7 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows
 
 	// check that the wait accepts this resume - not a permanent error - caller can retry with different resume
 	if !node.Router().Wait().Accepts(resume) {
-		return false, errors.Errorf("resume of type %s not accepted by wait of type %s", resume.Type(), node.Router().Wait().Type())
+		return false, newError(ErrorResumeRejectedByWait, "resume of type %s not accepted by wait of type %s", resume.Type(), node.Router().Wait().Type())
 	}
 
 	s.status = flows.SessionStatusActive
