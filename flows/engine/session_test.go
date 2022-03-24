@@ -409,3 +409,21 @@ func TestFindStep(t *testing.T) {
 	assert.Nil(t, run)
 	assert.Nil(t, step)
 }
+
+func TestEngineErrors(t *testing.T) {
+	// create a completed session and try to resume it
+	session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/empty.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	require.Equal(t, flows.SessionStatusCompleted, session.Status())
+
+	_, err := session.Resume(nil)
+	assert.EqualError(t, err, "only waiting sessions can be resumed")
+	assert.Equal(t, engine.ErrorResumeNonWaitingSession, err.(*engine.Error).Code())
+
+	// create a session which is waiting for a message and try to resume it with a dial
+	session, _ = test.NewSessionBuilder().MustBuild()
+	require.Equal(t, flows.SessionStatusWaiting, session.Status())
+
+	_, err = session.Resume(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 10)))
+	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
+	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
+}
