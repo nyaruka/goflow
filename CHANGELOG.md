@@ -1,3 +1,7 @@
+v0.155.0
+----------
+ * Switch from flow to flow_id and groups to group_ids for ES queries
+
 v0.154.0
 ----------
  * Give errors returned from Session.Resume codes
