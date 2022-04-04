@@ -1674,7 +1674,7 @@
         "query": "group = \"U-Reporters\"",
         "elastic": {
             "term": {
-                "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
+                "group_ids": 345
             }
         }
     },
@@ -1685,7 +1685,7 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "groups": "8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf"
+                        "group_ids": 345
                     }
                 }
             }

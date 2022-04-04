@@ -15,6 +15,7 @@ import (
 // AssetMapper is used to map engine assets to however ES identifies them
 type AssetMapper interface {
 	Flow(assets.Flow) int64
+	Group(assets.Group) int64
 }
 
 // ToElasticQuery converts a contactql query to an Elastic query
@@ -308,9 +309,9 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 
 		switch c.Operator() {
 		case contactql.OpEqual:
-			return elastic.NewTermQuery("groups", group.UUID())
+			return elastic.NewTermQuery("group_ids", mapper.Group(group))
 		case contactql.OpNotEqual:
-			return not(elastic.NewTermQuery("groups", group.UUID()))
+			return not(elastic.NewTermQuery("group_ids", mapper.Group(group)))
 		default:
 			panic(fmt.Sprintf("unsupported group attribute operator: %s", c.Operator()))
 		}

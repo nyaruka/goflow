@@ -18,11 +18,11 @@ func TestParseQuery(t *testing.T) {
 			static.NewField("165def68-3216-4ebf-96bc-f6f1ee5bd966", "state", "State", assets.FieldTypeState),
 			static.NewField("85baf5e1-b57a-46dc-a726-a84e8c4229c7", "dob", "DOB", assets.FieldTypeDatetime),
 		},
-		[]assets.Group{
-			static.NewGroup("a9b5b0a0-1098-4bc2-8384-eea09ae43e6b", "U-Reporters", ""),
-		},
 		[]assets.Flow{
 			static.NewFlow("f87fd7cd-e501-4394-9cff-62309af85138", "Registration", []byte(`{}`)),
+		},
+		[]assets.Group{
+			static.NewGroup("a9b5b0a0-1098-4bc2-8384-eea09ae43e6b", "U-Reporters", ""),
 		},
 	)
 
@@ -358,8 +358,8 @@ func TestParsingErrors(t *testing.T) {
 			static.NewField("3810a485-3fda-4011-a589-7320c0b8dbef", "dob", "DOB", assets.FieldTypeDatetime),
 			static.NewField("d66a7823-eada-40e5-9a3a-57239d4690bf", "gender", "Gender", assets.FieldTypeText),
 		},
-		[]assets.Group{},
 		[]assets.Flow{},
+		[]assets.Group{},
 	)
 
 	for _, tc := range tests {

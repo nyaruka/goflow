@@ -19,10 +19,10 @@ func TestInspect(t *testing.T) {
 			static.NewField(assets.FieldUUID("3810a485-3fda-4011-a589-7320c0b8dbef"), "dob", "DOB", assets.FieldTypeDatetime),
 			static.NewField(assets.FieldUUID("d66a7823-eada-40e5-9a3a-57239d4690bf"), "gender", "Gender", assets.FieldTypeText),
 		},
+		[]assets.Flow{},
 		[]assets.Group{
 			static.NewGroup(assets.GroupUUID("4eeca453-f474-4767-bdd0-434b180223db"), "U-Reporters", ""),
 		},
-		[]assets.Flow{},
 	)
 
 	tests := []struct {

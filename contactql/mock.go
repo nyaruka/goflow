@@ -8,16 +8,16 @@ import (
 
 type mockResolver struct {
 	fields []assets.Field
-	groups []assets.Group
 	flows  []assets.Flow
+	groups []assets.Group
 }
 
 // NewMockResolver creates a new mock resolver for fields and groups
-func NewMockResolver(fields []assets.Field, groups []assets.Group, flows []assets.Flow) Resolver {
+func NewMockResolver(fields []assets.Field, flows []assets.Flow, groups []assets.Group) Resolver {
 	return &mockResolver{
 		fields: fields,
-		groups: groups,
 		flows:  flows,
+		groups: groups,
 	}
 }
 
