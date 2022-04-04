@@ -19,6 +19,23 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type MockMapper struct {
+	flows  map[assets.FlowUUID]int64
+	groups map[assets.GroupUUID]int64
+}
+
+func (m *MockMapper) Flow(f assets.Flow) int64 {
+	return m.flows[f.UUID()]
+}
+
+func (m *MockMapper) Group(g assets.Group) int64 {
+	return m.groups[g.UUID()]
+}
+
+func newMockMapper(flows map[assets.FlowUUID]int64, groups map[assets.GroupUUID]int64) *MockMapper {
+	return &MockMapper{flows, groups}
+}
+
 func newMockResolver() contactql.Resolver {
 	return contactql.NewMockResolver(
 		[]assets.Field{
@@ -29,18 +46,27 @@ func newMockResolver() contactql.Resolver {
 			static.NewField("54c72635-d747-4e45-883c-099d57dd998e", "district", "District", assets.FieldTypeDistrict),
 			static.NewField("fde8f740-c337-421b-8abb-83b954897c80", "ward", "Ward", assets.FieldTypeWard),
 		},
+		[]assets.Flow{
+			static.NewFlow("c261165a-f5b0-40ba-b916-76fb49667a4f", "Registration", []byte(`{}`)),
+		},
 		[]assets.Group{
 			static.NewGroup("8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf", "U-Reporters", ""),
 			static.NewGroup("cf51cf8d-94da-447a-b27e-a42a900c37a6", "Testers", ""),
-		},
-		[]assets.Flow{
-			static.NewFlow("c261165a-f5b0-40ba-b916-76fb49667a4f", "Registration", []byte(`{}`)),
 		},
 	)
 }
 
 func TestElasticQuery(t *testing.T) {
 	resolver := newMockResolver()
+	mapper := newMockMapper(
+		map[assets.FlowUUID]int64{
+			"c261165a-f5b0-40ba-b916-76fb49667a4f": 234, // Registration
+		},
+		map[assets.GroupUUID]int64{
+			"8de30b78-d9ef-4db2-b2e8-4f7b6aef64cf": 345, // U-Reporters
+			"cf51cf8d-94da-447a-b27e-a42a900c37a6": 456, // Testers
+		},
+	)
 
 	type testCase struct {
 		Description string          `json:"description"`
@@ -67,7 +93,7 @@ func TestElasticQuery(t *testing.T) {
 		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
 		require.NoError(t, err)
 
-		query := es.ToElasticQuery(env, parsed)
+		query := es.ToElasticQuery(env, mapper, parsed)
 		assert.NotNil(t, query, tc.Description)
 
 		source, err := query.Source()
