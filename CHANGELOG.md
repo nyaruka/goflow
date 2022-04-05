@@ -1,3 +1,7 @@
+v0.156.1
+----------
+ * SessionAssets implementation of contactql.Resolver methods should return pure assets
+
 v0.156.0
 ----------
  * Give flows.Flow a reference to their asset if they have one
