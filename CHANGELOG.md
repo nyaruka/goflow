@@ -1,3 +1,7 @@
+v0.156.0
+----------
+ * Give flows.Flow a reference to their asset if they have one
+
 v0.155.0
 ----------
  * Switch from flow to flow_id and groups to group_ids for ES queries
