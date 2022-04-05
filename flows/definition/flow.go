@@ -42,12 +42,15 @@ type flow struct {
 	// optional properties not used by engine itself
 	ui json.RawMessage
 
+	// flows can be loaded from a assets or just a definition
+	asset assets.Flow
+
 	// internal state
 	nodeMap map[flows.NodeUUID]flows.Node
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language envs.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language envs.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -60,6 +63,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language envs.Language, flowType
 		nodes:              nodes,
 		nodeMap:            make(map[flows.NodeUUID]flows.Node, len(nodes)),
 		ui:                 ui,
+		asset:              a,
 	}
 
 	for _, node := range f.nodes {
@@ -292,8 +296,8 @@ func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
 	return exitUUIDs
 }
 
-// Definition isn't used but allows us to implement assets.Flow
-func (f *flow) Definition() json.RawMessage { return jsonx.MustMarshal(f) }
+// Asset returns the asset from which this flow was created if there was one
+func (f *flow) Asset() assets.Flow { return f.asset }
 
 var _ flows.Flow = (*flow)(nil)
 
@@ -313,10 +317,19 @@ type flowEnvelope struct {
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
-// ReadFlow a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
-func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.Flow, error) {
+// ReadFlow reads a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
+func ReadFlow(data json.RawMessage, mc *migrations.Config) (flows.Flow, error) {
+	return readFlow(data, mc, nil)
+}
+
+// ReadAsset reads a flow definition from the passed in flow asset, migrating it to the spec version of the engine if necessary
+func ReadAsset(a assets.Flow, mc *migrations.Config) (flows.Flow, error) {
+	return readFlow(a.Definition(), mc, a)
+}
+
+func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows.Flow, error) {
 	var err error
-	data, err = migrations.MigrateToLatest(data, migrationConfig)
+	data, err = migrations.MigrateToLatest(data, mc)
 	if err != nil {
 		return nil, err
 	}
@@ -342,7 +355,7 @@ func ReadFlow(data json.RawMessage, migrationConfig *migrations.Config) (flows.F
 		e.Localization = make(localization)
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI)
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI, a)
 }
 
 // MarshalJSON marshals this flow into JSON
