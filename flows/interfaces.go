@@ -123,7 +123,6 @@ type Localizable interface {
 
 // Flow describes the ordered logic of actions and routers
 type Flow interface {
-	assets.Flow
 	Contextable
 
 	// spec properties
@@ -137,6 +136,8 @@ type Flow interface {
 	UI() json.RawMessage
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
+
+	Asset() assets.Flow
 	Reference() *assets.FlowReference
 
 	Inspect(sa SessionAssets) *Inspection

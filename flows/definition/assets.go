@@ -43,7 +43,7 @@ func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
 		return nil, err
 	}
 
-	flow, err = ReadFlow(asset.Definition(), a.migrationConfig)
+	flow, err = ReadAsset(asset, a.migrationConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (a *flowAssets) FindByName(name string) (flows.Flow, error) {
 		return nil, err
 	}
 
-	flow, err := ReadFlow(asset.Definition(), a.migrationConfig)
+	flow, err := ReadAsset(asset, a.migrationConfig)
 	if err != nil {
 		return nil, err
 	}

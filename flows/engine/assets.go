@@ -139,5 +139,5 @@ func (s *sessionAssets) ResolveFlow(name string) assets.Flow {
 	if f == nil {
 		return nil
 	}
-	return f
+	return f.Asset()
 }
