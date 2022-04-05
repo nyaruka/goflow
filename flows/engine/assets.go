@@ -123,7 +123,7 @@ func (s *sessionAssets) ResolveField(key string) assets.Field {
 	if f == nil {
 		return nil
 	}
-	return f
+	return f.Asset()
 }
 
 func (s *sessionAssets) ResolveGroup(name string) assets.Group {
@@ -131,7 +131,7 @@ func (s *sessionAssets) ResolveGroup(name string) assets.Group {
 	if g == nil {
 		return nil
 	}
-	return g
+	return g.Asset()
 }
 
 func (s *sessionAssets) ResolveFlow(name string) assets.Flow {
