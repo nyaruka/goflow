@@ -41,7 +41,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	case jsonparser.Number:
 		decimalVal, err := decimal.NewFromString(string(data))
 		if err == nil {
-			return NewXNumber(decimalVal)
+			return NewXNumberOrError(decimalVal)
 		}
 	case jsonparser.Boolean:
 		boolVal, err := jsonparser.ParseBoolean(data)

@@ -8,6 +8,7 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/shopspring/decimal"
 )
 
 // visitor which evaluates each part of an expression as a value
@@ -218,7 +219,7 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 
 // VisitNumberLiteral deals with numbers like 123 or 1.5
 func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
-	return &NumberLiteral{val: types.RequireXNumberFromString(ctx.GetText())}
+	return &NumberLiteral{val: decimal.RequireFromString(ctx.GetText())}
 }
 
 // VisitTrue deals with the `true` reserved word

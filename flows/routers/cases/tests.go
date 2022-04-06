@@ -851,10 +851,13 @@ func testNumber(env envs.Environment, str types.XText, testNum1 types.XNumber, t
 
 	// look for number like things in the input and use the first one that we can actually parse
 	for _, value := range pattern.FindAllString(str.Native(), -1) {
-		num, err := ParseDecimal(value, env.NumberFormat())
+		d, err := ParseDecimal(value, env.NumberFormat())
 		if err == nil {
-			if testFunc(num, testNum1.Native(), testNum2.Native()) {
-				return NewTrueResult(types.NewXNumber(num))
+			num, err := types.NewXNumber(d)
+			if err == nil {
+				if testFunc(num.Native(), testNum1.Native(), testNum2.Native()) {
+					return NewTrueResult(num)
+				}
 			}
 		}
 	}

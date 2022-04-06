@@ -373,6 +373,8 @@ func TestEvaluationErrors(t *testing.T) {
 		template string
 		errorMsg string
 	}{
+		{`@(1234567890123456789012345678901234567890)`, `error evaluating @(1234567890123456789012345678901234567890): number not in valid range`},
+
 		// parser errors
 		{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
 		{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},

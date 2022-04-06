@@ -59,12 +59,14 @@ func TestBinaryOperators(t *testing.T) {
 		{operators.Multiply, xi(2), xi(3), xi(6)},
 		{operators.Multiply, xn("1.5"), xn("2.3"), xn("3.45")},
 		{operators.Multiply, xs("2"), xs("3"), xi(6)},
+		{operators.Multiply, xn("1000000000000"), xn("1000000000000"), ERROR}, // overflow
 		{operators.Multiply, ERROR, xi(1), ERROR},
 		{operators.Multiply, xi(1), ERROR, ERROR},
 
 		{operators.Divide, xi(3), xi(2), xn("1.5")},
 		{operators.Divide, xs("3"), xs("2"), xn("1.5")},
 		{operators.Divide, xi(3), xi(0), ERROR},
+		{operators.Divide, xn("1000000000000"), xn("0.00000000001"), ERROR}, // overflow
 		{operators.Divide, ERROR, xi(1), ERROR},
 		{operators.Divide, xi(1), ERROR, ERROR},
 
@@ -73,6 +75,7 @@ func TestBinaryOperators(t *testing.T) {
 		{operators.Exponent, xn("2"), xn("32.000"), xn("4294967296")},
 		{operators.Exponent, xn("9"), xn("0.5"), xn("3")},
 		{operators.Exponent, xn("4"), xn("2.5"), xn("32")},
+		{operators.Exponent, xn("1000000000000"), xn("2"), ERROR}, // overflow
 		{operators.Exponent, ERROR, xi(1), ERROR},
 		{operators.Exponent, xi(1), ERROR, ERROR},
 

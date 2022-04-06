@@ -83,7 +83,7 @@ func TestFunctions(t *testing.T) {
 		{"char", dmy, []types.XValue{xn("33")}, xs("!")},
 		{"char", dmy, []types.XValue{xn("128513")}, xs("😁")},
 		{"char", dmy, []types.XValue{xs("not a number")}, ERROR},
-		{"char", dmy, []types.XValue{xn("12345678901234567890")}, ERROR},
+		{"char", dmy, []types.XValue{xs("12345678901234567890")}, ERROR},
 		{"char", dmy, []types.XValue{}, ERROR},
 
 		{"code", dmy, []types.XValue{xs(" ")}, xi(32)},

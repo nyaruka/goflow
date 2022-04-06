@@ -50,7 +50,7 @@ var NotEqual = textualBinary(func(env envs.Environment, text1 types.XText, text2
 //
 // @operator negate "- (unary)"
 var Negate = numericalUnary(func(env envs.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Neg())
+	return types.NewXNumberOrError(num.Native().Neg())
 })
 
 // Add adds two numbers.
@@ -60,7 +60,7 @@ var Negate = numericalUnary(func(env envs.Environment, num types.XNumber) types.
 //
 // @operator add "+"
 var Add = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Add(num2.Native()))
+	return types.NewXNumberOrError(num1.Native().Add(num2.Native()))
 })
 
 // Subtract subtracts two numbers.
@@ -70,7 +70,7 @@ var Add = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2 ty
 //
 // @operator subtract "- (binary)"
 var Subtract = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Sub(num2.Native()))
+	return types.NewXNumberOrError(num1.Native().Sub(num2.Native()))
 })
 
 // Multiply multiplies two numbers.
@@ -80,7 +80,7 @@ var Subtract = numericalBinary(func(env envs.Environment, num1 types.XNumber, nu
 //
 // @operator multiply "*"
 var Multiply = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Mul(num2.Native()))
+	return types.NewXNumberOrError(num1.Native().Mul(num2.Native()))
 })
 
 // Divide divides a number by another.
@@ -96,7 +96,7 @@ var Divide = numericalBinary(func(env envs.Environment, num1 types.XNumber, num2
 		return types.NewXErrorf("division by zero")
 	}
 
-	return types.NewXNumber(num1.Native().Div(num2.Native()))
+	return types.NewXNumberOrError(num1.Native().Div(num2.Native()))
 })
 
 // Exponent raises a number to the power of a another number.
@@ -113,13 +113,13 @@ var Exponent = numericalBinary(func(env envs.Environment, num1 types.XNumber, nu
 	// we can use the library function, otherwise fallback to float64 math.
 
 	if decimal.New(d2.IntPart(), 0).Equals(d2) {
-		return types.NewXNumber(d1.Pow(d2))
+		return types.NewXNumberOrError(d1.Pow(d2))
 	}
 
 	f1, _ := d1.Float64()
 	f2, _ := d2.Float64()
 
-	return types.NewXNumber(decimal.NewFromFloat(math.Pow(f1, f2)))
+	return types.NewXNumberOrError(decimal.NewFromFloat(math.Pow(f1, f2)))
 })
 
 // LessThan returns true if the first number is less than the second.

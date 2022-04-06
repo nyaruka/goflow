@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/shopspring/decimal"
 )
 
 // Expression is the base interface of all syntax elements
@@ -327,15 +328,15 @@ func (x *TextLiteral) String() string {
 
 // NumberLiteral is a literal number like 123 or 1.5
 type NumberLiteral struct {
-	val types.XNumber
+	val decimal.Decimal
 }
 
 func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return x.val
+	return types.NewXNumberOrError(x.val)
 }
 
 func (x *NumberLiteral) String() string {
-	return x.val.Describe()
+	return x.val.String()
 }
 
 // BooleanLiteral is a literal bool

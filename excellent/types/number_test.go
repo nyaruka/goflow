@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,6 +17,19 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt(123))
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt64(123))
 	assert.Panics(t, func() { types.RequireXNumberFromString("xxx") })
+
+	n, err := types.NewXNumber(decimal.RequireFromString(`123.45`))
+	assert.NoError(t, err)
+	assert.Equal(t, types.RequireXNumberFromString("123.45"), n)
+
+	n, err = types.NewXNumber(decimal.RequireFromString(`1234567890123456789012345678901234567890`))
+	assert.EqualError(t, err, "number not in valid range")
+
+	v := types.NewXNumberOrError(decimal.RequireFromString(`12345.67890`))
+	assert.Equal(t, types.RequireXNumberFromString(`12345.67890`), v)
+
+	v = types.NewXNumberOrError(decimal.RequireFromString(`1234567890123456789012345678901234567890`))
+	assert.Equal(t, types.NewXErrorf("number not in valid range"), v)
 
 	// test equality
 	assert.True(t, types.NewXNumberFromInt(123).Equals(types.NewXNumberFromInt(123)))
@@ -33,7 +47,7 @@ func TestXNumber(t *testing.T) {
 
 	// unmarshal with quotes
 	var num types.XNumber
-	err := jsonx.Unmarshal([]byte(`"23.45"`), &num)
+	err = jsonx.Unmarshal([]byte(`"23.45"`), &num)
 	assert.NoError(t, err)
 	assert.Equal(t, types.RequireXNumberFromString("23.45"), num)
 
@@ -48,39 +62,70 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, []byte(`23.45`), data)
 }
 
-func TestToXNumberAndInteger(t *testing.T) {
+func TestToXNumber(t *testing.T) {
 	var tests = []struct {
-		value     types.XValue
-		asNumber  types.XNumber
-		asInteger int
-		hasError  bool
+		value    types.XValue
+		asNumber types.XNumber
+		err      string
 	}{
-		{nil, types.XNumberZero, 0, true},
-		{types.NewXErrorf("Error"), types.XNumberZero, 0, true},
-		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 123, false},
-		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), 15, false},
-		{types.NewXText("  15.4  "), types.RequireXNumberFromString("15.4"), 15, false},
+		{nil, types.XNumberZero, "unable to convert null to a number"},
+		{types.NewXErrorf("Error"), types.XNumberZero, "Error"},
+		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), ""},
+		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), ""},
+		{types.NewXText("  15.4  "), types.RequireXNumberFromString("15.4"), ""},
 		{types.NewXObject(map[string]types.XValue{
 			"__default__": types.NewXNumberFromInt(123), // should use default
 			"foo":         types.NewXNumberFromInt(234),
-		}), types.NewXNumberFromInt(123), 123, false},
-		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
-		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
-		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
+		}), types.NewXNumberFromInt(123), ""},
+		{types.NewXText("12345678901234567890"), types.XNumberZero, `unable to convert "12345678901234567890" to a number`}, // out of range
+		{types.NewXText("1E100"), types.XNumberZero, `unable to convert "1E100" to a number`},                               // scientific notation not allowed
+		{types.NewXText("1e100"), types.XNumberZero, `unable to convert "1e100" to a number`},                               // scientific notation not allowed
 	}
 
 	env := envs.NewBuilder().Build()
 
-	for _, test := range tests {
-		number, _ := types.ToXNumber(env, test.value)
-		integer, err := types.ToInteger(env, test.value)
+	for _, tc := range tests {
+		number, err := types.ToXNumber(env, tc.value)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch for input %T{%s}", tc.value, tc.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
-			assert.Equal(t, test.asNumber.Native(), number.Native(), "number mismatch for input %T{%s}", test.value, test.value)
-			assert.Equal(t, test.asInteger, integer, "integer mismatch for input %T{%s}", test.value, test.value)
+			assert.NoError(t, err, "unexpected error for input %T{%s}", tc.value, tc.value)
+			assert.Equal(t, tc.asNumber.Native(), number.Native(), "number mismatch for input %T{%s}", tc.value, tc.value)
+		}
+	}
+}
+
+func TestToInteger(t *testing.T) {
+	var tests = []struct {
+		value     types.XValue
+		asInteger int
+		err       string
+	}{
+		{nil, 0, "unable to convert null to a number"},
+		{types.NewXErrorf("Error"), 0, "Error"},
+		{types.NewXNumberFromInt(123), 123, ""},
+		{types.NewXText("15.5"), 15, ""},
+		{types.NewXText("  15.4  "), 15, ""},
+		{types.NewXObject(map[string]types.XValue{
+			"__default__": types.NewXNumberFromInt(123), // should use default
+			"foo":         types.NewXNumberFromInt(234),
+		}), 123, ""},
+		{types.NewXText("12345678901234567890"), 0, `unable to convert "12345678901234567890" to a number`}, // out of range
+		{types.NewXText("1E100"), 0, `unable to convert "1E100" to a number`},                               // scientific notation not allowed
+		{types.NewXText("1e100"), 0, `unable to convert "1e100" to a number`},                               // scientific notation not allowed
+	}
+
+	env := envs.NewBuilder().Build()
+
+	for _, tc := range tests {
+		integer, err := types.ToInteger(env, tc.value)
+
+		if tc.err != "" {
+			assert.EqualError(t, err, tc.err, "error mismatch for input %T{%s}", tc.value, tc.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for input %T{%s}", tc.value, tc.value)
+			assert.Equal(t, tc.asInteger, integer, "integer mismatch for input %T{%s}", tc.value, tc.value)
 		}
 	}
 }

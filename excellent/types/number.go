@@ -30,26 +30,56 @@ type XNumber struct {
 	native decimal.Decimal
 }
 
-// NewXNumber creates a new XNumber
-func NewXNumber(value decimal.Decimal) XNumber {
-	return XNumber{native: value}
-}
-
 // NewXNumberFromInt creates a new XNumber from the given int
 func NewXNumberFromInt(value int) XNumber {
-	return NewXNumber(decimal.New(int64(value), 0))
+	return XNumber{native: decimal.New(int64(value), 0)}
 }
 
 // NewXNumberFromInt64 creates a new XNumber from the given int
 func NewXNumberFromInt64(value int64) XNumber {
-	return NewXNumber(decimal.New(value, 0))
+	return XNumber{native: decimal.New(value, 0)}
+}
+
+// NewXNumber creates a new XNumber from a decimal, or returns an error if it's out of our valid range
+func NewXNumber(value decimal.Decimal) (XNumber, error) {
+	if value.LessThan(XNumberMin.native) || value.GreaterThan(XNumberMax.native) {
+		return XNumberZero, errors.New("number not in valid range")
+	}
+
+	return newXNumber(value), nil
+}
+
+// NewXNumberFromString parses a number from a string
+func NewXNumberFromString(s string) (XNumber, error) {
+	s = strings.TrimSpace(s)
+
+	if !decimalRegexp.MatchString(s) {
+		return XNumberZero, errors.New("not a valid number format")
+	}
+
+	// we can assume anything that matched our regex is parseable as a decimal
+	d := decimal.RequireFromString(s)
+
+	return NewXNumber(d)
 }
 
 // RequireXNumberFromString creates a new XNumber from the given string or panics (used for tests)
 func RequireXNumberFromString(value string) XNumber {
-	num, err := newXNumberFromString(value)
+	num, err := NewXNumberFromString(value)
 	if err != nil {
 		panic(errors.Wrapf(err, "error parsing '%s' as number", value))
+	}
+	return num
+}
+
+func newXNumber(value decimal.Decimal) XNumber {
+	return XNumber{native: value}
+}
+
+func NewXNumberOrError(value decimal.Decimal) XValue {
+	num, err := NewXNumber(value)
+	if err != nil {
+		return NewXError(err)
 	}
 	return num
 }
@@ -131,22 +161,15 @@ func (x *XNumber) UnmarshalJSON(data []byte) error {
 }
 
 // XNumberZero is the zero number value
-var XNumberZero = NewXNumber(decimal.Zero)
+var XNumberZero = newXNumber(decimal.Zero)
+
+// XNumberMin is the minimum valid value (because of how these are stored as scaled_float in ES)
+var XNumberMin = newXNumber(decimal.RequireFromString("-922337203685477.5808"))
+
+// XNumberMax is the maximum valid value
+var XNumberMax = newXNumber(decimal.RequireFromString("922337203685477.5807"))
+
 var _ XValue = XNumberZero
-
-// parses a number from a string
-func newXNumberFromString(s string) (XNumber, error) {
-	s = strings.TrimSpace(s)
-
-	if !decimalRegexp.MatchString(s) {
-		return XNumberZero, errors.New("not a valid number format")
-	}
-
-	// we can assume anything that matched our regex is parseable
-	d := decimal.RequireFromString(s)
-
-	return NewXNumber(d), nil
-}
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
@@ -157,7 +180,7 @@ func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
 		case XNumber:
 			return typed, nil
 		case XText:
-			parsed, err := newXNumberFromString(typed.Native())
+			parsed, err := NewXNumberFromString(typed.Native())
 			if err == nil {
 				return parsed, nil
 			}

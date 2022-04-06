@@ -933,7 +933,7 @@ func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
 //
 // @function abs(number)
 func Abs(env envs.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Abs())
+	return types.NewXNumberOrError(num.Native().Abs())
 }
 
 // Round rounds `number` to the nearest value.
@@ -951,7 +951,7 @@ func Abs(env envs.Environment, num types.XNumber) types.XValue {
 //
 // @function round(number [,places])
 func Round(env envs.Environment, num types.XNumber, places int) types.XValue {
-	return types.NewXNumber(num.Native().Round(int32(places)))
+	return types.NewXNumberOrError(num.Native().Round(int32(places)))
 }
 
 // RoundUp rounds `number` up to the nearest integer value.
@@ -975,7 +975,7 @@ func RoundUp(env envs.Environment, num types.XNumber, places int) types.XValue {
 	halfPrecision := decimal.New(5, -int32(places)-1)
 	roundedDec := dec.Add(halfPrecision).Round(int32(places))
 
-	return types.NewXNumber(roundedDec)
+	return types.NewXNumberOrError(roundedDec)
 }
 
 // RoundDown rounds `number` down to the nearest integer value.
@@ -999,7 +999,7 @@ func RoundDown(env envs.Environment, num types.XNumber, places int) types.XValue
 	halfPrecision := decimal.New(5, -int32(places)-1)
 	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
 
-	return types.NewXNumber(roundedDec)
+	return types.NewXNumberOrError(roundedDec)
 }
 
 // Max returns the maximum value in `numbers`.
@@ -1072,7 +1072,7 @@ func Mean(env envs.Environment, args ...types.XValue) types.XValue {
 		sum = sum.Add(num.Native())
 	}
 
-	return types.NewXNumber(sum.Div(decimal.New(int64(len(args)), 0)))
+	return types.NewXNumberOrError(sum.Div(decimal.New(int64(len(args)), 0)))
 }
 
 // Mod returns the remainder of the division of `dividend` by `divisor`.
@@ -1083,7 +1083,7 @@ func Mean(env envs.Environment, args ...types.XValue) types.XValue {
 //
 // @function mod(dividend, divisor)
 func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Mod(num2.Native()))
+	return types.NewXNumberOrError(num1.Native().Mod(num2.Native()))
 }
 
 // Rand returns a single random number between [0.0-1.0).
@@ -1093,7 +1093,7 @@ func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XVa
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {
-	return types.NewXNumber(random.Decimal())
+	return types.NewXNumberOrError(random.Decimal())
 }
 
 // RandBetween a single random integer in the given inclusive range.
@@ -1107,7 +1107,7 @@ func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) typ
 
 	val := random.Decimal().Mul(span).Add(min.Native()).Floor()
 
-	return types.NewXNumber(val)
+	return types.NewXNumberOrError(val)
 }
 
 //------------------------------------------------------------------------------------------
@@ -1366,7 +1366,7 @@ func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
 // @function epoch(date)
 func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
 	nanos := decimal.New(date.Native().UnixNano(), 0)
-	return types.NewXNumber(nanos.Div(nanosPerSecond))
+	return types.NewXNumberOrError(nanos.Div(nanosPerSecond))
 }
 
 // Now returns the current date and time in the current timezone.
@@ -1599,7 +1599,7 @@ func Sum(env envs.Environment, array *types.XArray) types.XValue {
 		total = total.Add(itemAsNum.Native())
 	}
 
-	return types.NewXNumber(total)
+	return types.NewXNumberOrError(total)
 }
 
 // Unique returns the unique values in `array`.
@@ -2222,7 +2222,7 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 	}
 
 	// normal decimal addition
-	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
+	return types.NewXNumberOrError(dec1.Native().Add(dec2.Native()))
 }
 
 // ReadChars converts `text` into something that can be read by IVR systems.
