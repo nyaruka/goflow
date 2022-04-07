@@ -169,7 +169,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	// if existence check, disallow certain attributes
 	if (c.operator == OpEqual || c.operator == OpNotEqual) && c.value == "" {
 		switch c.propKey {
-		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeGroup, AttributeTickets:
+		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeTickets:
 			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	} else {
