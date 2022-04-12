@@ -1,3 +1,9 @@
+v0.157.0
+----------
+ * Update to latest gocommon
+ * Allow querying on whether group is set or not for consistency with other fields
+ * Support contact queries on flow history
+
 v0.156.1
 ----------
  * SessionAssets implementation of contactql.Resolver methods should return pure assets
