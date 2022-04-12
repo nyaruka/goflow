@@ -305,6 +305,15 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 			panic(fmt.Sprintf("unsupported URN attribute operator: %s", c.Operator()))
 		}
 	case contactql.AttributeGroup:
+		// special case for set/unset
+		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
+			query = elastic.NewExistsQuery("group_ids")
+			if c.Operator() == contactql.OpEqual {
+				query = not(query)
+			}
+			return query
+		}
+
 		group := c.ValueAsGroup(resolver)
 
 		switch c.Operator() {

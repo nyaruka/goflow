@@ -1692,6 +1692,28 @@
         }
     },
     {
+        "description": "group is set",
+        "query": "group != \"\"",
+        "elastic": {
+            "exists": {
+                "field": "group_ids"
+            }
+        }
+    },
+    {
+        "description": "group is not set",
+        "query": "group = \"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "group_ids"
+                    }
+                }
+            }
+        }
+    },
+    {
         "description": "flow equality",
         "query": "flow = \"registration\"",
         "elastic": {

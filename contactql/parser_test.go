@@ -178,12 +178,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `dob != 20-02-2020`, parsed: `dob != "20-02-2020"`, resolver: resolver},
 		{text: `state != Pichincha`, parsed: `state != "Pichincha"`, resolver: resolver},
 
-		// = "" supported for name, language, flow, fields, urns
+		// = "" supported for name, language, flow, groups, fields, urns
 		{text: `uuid = ""`, err: "can't check whether 'uuid' is set or not set", resolver: resolver},
 		{text: `id = ""`, err: "can't check whether 'id' is set or not set", resolver: resolver},
 		{text: `name = ""`, parsed: `name = ""`, resolver: resolver},
 		{text: `language = ""`, parsed: `language = ""`, resolver: resolver},
-		{text: `group = ""`, err: `can't check whether 'group' is set or not set`, resolver: resolver},
+		{text: `group = ""`, parsed: `group = ""`, resolver: resolver},
 		{text: `flow = ""`, parsed: `flow = ""`, resolver: resolver},
 		{text: `tickets = ""`, err: "can't check whether 'tickets' is set or not set", resolver: resolver},
 		{text: `created_on = ""`, err: "can't check whether 'created_on' is set or not set", resolver: resolver},
