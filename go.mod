@@ -8,7 +8,7 @@ require (
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/nyaruka/gocommon v1.17.1
+	github.com/nyaruka/gocommon v1.18.0
 	github.com/nyaruka/phonenumbers v1.0.71
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/pkg/errors v0.9.1
@@ -24,6 +24,7 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.0 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
