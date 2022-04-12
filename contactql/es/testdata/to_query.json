@@ -1758,6 +1758,50 @@
         }
     },
     {
+        "description": "history equality",
+        "query": "history = \"registration\"",
+        "elastic": {
+            "term": {
+                "flow_history_ids": 234
+            }
+        }
+    },
+    {
+        "description": "flow inequality",
+        "query": "history != \"registration\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "flow_history_ids": 234
+                    }
+                }
+            }
+        }
+    },
+    {
+        "description": "history is set",
+        "query": "history != \"\"",
+        "elastic": {
+            "exists": {
+                "field": "flow_history_ids"
+            }
+        }
+    },
+    {
+        "description": "history is not set",
+        "query": "history = \"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "flow_history_ids"
+                    }
+                }
+            }
+        }
+    },
+    {
         "description": "bool and",
         "query": "color=red and age>10",
         "elastic": {

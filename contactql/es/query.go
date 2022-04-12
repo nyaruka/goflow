@@ -324,10 +324,15 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 		default:
 			panic(fmt.Sprintf("unsupported group attribute operator: %s", c.Operator()))
 		}
-	case contactql.AttributeFlow:
+	case contactql.AttributeFlow, contactql.AttributeHistory:
+		fieldName := "flow_id"
+		if c.PropertyKey() == contactql.AttributeHistory {
+			fieldName = "flow_history_ids"
+		}
+
 		// special case for set/unset
 		if (c.Operator() == contactql.OpEqual || c.Operator() == contactql.OpNotEqual) && value == "" {
-			query = elastic.NewExistsQuery("flow_id")
+			query = elastic.NewExistsQuery(fieldName)
 			if c.Operator() == contactql.OpEqual {
 				query = not(query)
 			}
@@ -338,9 +343,9 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 
 		switch c.Operator() {
 		case contactql.OpEqual:
-			return elastic.NewTermQuery("flow_id", mapper.Flow(flow))
+			return elastic.NewTermQuery(fieldName, mapper.Flow(flow))
 		case contactql.OpNotEqual:
-			return not(elastic.NewTermQuery("flow_id", mapper.Flow(flow)))
+			return not(elastic.NewTermQuery(fieldName, mapper.Flow(flow)))
 		default:
 			panic(fmt.Sprintf("unsupported flow attribute operator: %s", c.Operator()))
 		}

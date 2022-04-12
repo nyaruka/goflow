@@ -190,7 +190,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if group == nil {
 				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
 			}
-		} else if c.propKey == AttributeFlow && resolver != nil {
+		} else if (c.propKey == AttributeFlow || c.propKey == AttributeHistory) && resolver != nil {
 			flow := c.ValueAsFlow(resolver)
 			if flow == nil {
 				return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
