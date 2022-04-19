@@ -1127,6 +1127,28 @@
         }
     },
     {
+        "description": "status equality",
+        "query": "status=active",
+        "elastic": {
+            "term": {
+                "status": "A"
+            }
+        }
+    },
+    {
+        "description": "status inequality",
+        "query": "status!=BLOCKED",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "status": "B"
+                    }
+                }
+            }
+        }
+    },
+    {
         "description": "language equality",
         "query": "language=spa",
         "elastic": {

@@ -28,6 +28,7 @@ const (
 	AttributeUUID       = "uuid"
 	AttributeID         = "id"
 	AttributeName       = "name"
+	AttributeStatus     = "status"
 	AttributeLanguage   = "language"
 	AttributeURN        = "urn"
 	AttributeGroup      = "group"
@@ -42,6 +43,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeUUID:       assets.FieldTypeText,
 	AttributeID:         assets.FieldTypeText,
 	AttributeName:       assets.FieldTypeText,
+	AttributeStatus:     assets.FieldTypeText,
 	AttributeLanguage:   assets.FieldTypeText,
 	AttributeURN:        assets.FieldTypeText,
 	AttributeGroup:      assets.FieldTypeText,
