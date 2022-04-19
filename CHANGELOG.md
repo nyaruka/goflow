@@ -1,3 +1,7 @@
+v0.158.0
+----------
+ * Add status as a contact query attribute, disallowed for smart groups
+
 v0.157.0
 ----------
  * Update to latest gocommon
