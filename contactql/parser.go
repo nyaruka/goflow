@@ -169,7 +169,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	// if existence check, disallow certain attributes
 	if (c.operator == OpEqual || c.operator == OpNotEqual) && c.value == "" {
 		switch c.propKey {
-		case AttributeUUID, AttributeID, AttributeCreatedOn, AttributeTickets:
+		case AttributeUUID, AttributeID, AttributeStatus, AttributeCreatedOn, AttributeTickets:
 			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	} else {
@@ -194,6 +194,11 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			flow := c.ValueAsFlow(resolver)
 			if flow == nil {
 				return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
+			}
+		} else if c.propKey == AttributeStatus {
+			val := strings.ToLower(c.value)
+			if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
+				return NewQueryError(ErrInvalidStatus, "'%s' is not a valid contact status", c.value).withExtra("value", c.value)
 			}
 		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {

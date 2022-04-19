@@ -12,6 +12,7 @@ const (
 	ErrUnexpectedToken       = "unexpected_token"       // `token` the unexpected token
 	ErrInvalidNumber         = "invalid_number"         // `value` the value we tried to parse as a number
 	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
+	ErrInvalidStatus         = "invalid_status"         // `value` the value we tried to parse as a contact status
 	ErrInvalidLanguage       = "invalid_language"       // `value` the value we tried to parse as a language code
 	ErrInvalidGroup          = "invalid_group"          // `value` the value we tried to parse as a group name
 	ErrInvalidFlow           = "invalid_flow"           // `value` the value we tried to parse as a flow name

@@ -18,6 +18,14 @@ type AssetMapper interface {
 	Group(assets.Group) int64
 }
 
+// we store contact status in elastic as single char codes
+var contactStatusCodes = map[string]string{
+	"active":   "A",
+	"blocked":  "B",
+	"stopped":  "S",
+	"archived": "V",
+}
+
 // ToElasticQuery converts a contactql query to an Elastic query
 func ToElasticQuery(env envs.Environment, mapper AssetMapper, query *contactql.ContactQuery) elastic.Query {
 	if query.Resolver() == nil {
@@ -210,7 +218,7 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 
 	switch c.PropertyKey() {
 	case contactql.AttributeUUID:
-		return textAttributeQuery(c, "uuid")
+		return textAttributeQuery(c, "uuid", strings.ToLower)
 	case contactql.AttributeID:
 		switch c.Operator() {
 		case contactql.OpEqual:
@@ -231,8 +239,12 @@ func attributeConditionToElastic(env envs.Environment, resolver contactql.Resolv
 		default:
 			panic(fmt.Sprintf("unsupported name attribute operator: %s", c.Operator()))
 		}
+	case contactql.AttributeStatus:
+		return textAttributeQuery(c, "status", func(v string) string {
+			return contactStatusCodes[strings.ToLower(v)]
+		})
 	case contactql.AttributeLanguage:
-		return textAttributeQuery(c, "language")
+		return textAttributeQuery(c, "language", strings.ToLower)
 	case contactql.AttributeCreatedOn:
 		value, _ := c.ValueAsDate(env)
 		start, end := dates.DayToUTCRange(value, value.Location())
@@ -394,8 +406,8 @@ func schemeConditionToElastic(env envs.Environment, c *contactql.Condition) elas
 	}
 }
 
-func textAttributeQuery(c *contactql.Condition, name string) elastic.Query {
-	value := strings.ToLower(c.Value())
+func textAttributeQuery(c *contactql.Condition, name string, tx func(string) string) elastic.Query {
+	value := tx(c.Value())
 
 	switch c.Operator() {
 	case contactql.OpEqual:
