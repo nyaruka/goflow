@@ -226,8 +226,8 @@
     ],
     "templates": [
         {
-            "name": "affirmation",
             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+            "name": "affirmation",
             "translations": [
                 {
                     "channel": {
@@ -249,8 +249,8 @@
             ]
         },
         {
-            "name": "wakeup",
             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+            "name": "wakeup",
             "translations": [
                 {
                     "channel": {

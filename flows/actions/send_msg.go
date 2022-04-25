@@ -97,10 +97,10 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 
 		// do we have a template defined?
 		if a.Templating != nil {
-			// looks for a translation in these locales
+			// looks for a translation in the contact locale or environment default
 			locales := []envs.Locale{
-				run.Contact().Locale(run.Environment()),
 				run.Environment().DefaultLocale(),
+				run.Session().Environment().DefaultLocale(),
 			}
 
 			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, locales)
