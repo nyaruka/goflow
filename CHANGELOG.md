@@ -1,3 +1,7 @@
+v0.158.1
+----------
+ * send_msg action should fallback to template trans in env default language if no trans found for contact language
+
 v0.158.0
 ----------
  * Add status as a contact query attribute, disallowed for smart groups
