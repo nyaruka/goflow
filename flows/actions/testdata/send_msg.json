@@ -621,6 +621,76 @@
         }
     },
     {
+        "description": "Use template translation in environment default language if no translation found for contact language",
+        "action": {
+            "type": "send_msg",
+            "uuid": "4f0510e9-7e41-4f83-aaa3-59b6e9a17e70",
+            "text": "Hi Ryan, wakeup!",
+            "templating": {
+                "uuid": "dce1ab9c-81d7-4e2f-b7d6-33e577c731ba",
+                "template": {
+                    "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                    "name": "wakeup"
+                },
+                "variables": null
+            }
+        },
+        "localization": {
+            "spa": {
+                "4f0510e9-7e41-4f83-aaa3-59b6e9a17e70": {
+                    "text": [
+                        "Hola Ryan, despierta!"
+                    ]
+                }
+            }
+        },
+        "events": [
+            {
+                "type": "msg_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "msg": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "text": "Hi there, it's time to get up!",
+                    "templating": {
+                        "template": {
+                            "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                            "name": "wakeup"
+                        },
+                        "language": "eng",
+                        "country": "",
+                        "namespace": ""
+                    }
+                }
+            }
+        ],
+        "templates": [
+            "Hi Ryan, wakeup!",
+            "Hola Ryan, despierta!"
+        ],
+        "localizables": [
+            "Hi Ryan, wakeup!"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                    "name": "wakeup",
+                    "type": "template"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
         "description": "Text, attachments and quick replies can be localized",
         "action": {
             "type": "send_msg",
