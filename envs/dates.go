@@ -159,7 +159,7 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 	str = strings.Trim(str, " \n\r\t")
 
 	// try to parse as ISO date
-	asISO, err := time.ParseInLocation(iso8601DateOnlyFormat, str[0:utils.MinInt(len(iso8601DateOnlyFormat), len(str))], env.Timezone())
+	asISO, err := time.ParseInLocation(iso8601DateOnlyFormat, str[0:utils.Min(len(iso8601DateOnlyFormat), len(str))], env.Timezone())
 	if err == nil {
 		return dates.ExtractDate(asISO), str[len(iso8601DateOnlyFormat):], nil
 	}
