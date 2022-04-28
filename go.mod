@@ -1,5 +1,7 @@
 module github.com/nyaruka/goflow
 
+go 1.18
+
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/antlr/antlr4 v0.0.0-20200701161529-3d9351f61e0f
@@ -34,5 +36,3 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
-
-go 1.17

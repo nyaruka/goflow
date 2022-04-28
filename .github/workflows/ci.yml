@@ -1,31 +1,31 @@
 name: CI
 on: [push, pull_request]
 env:
-  go-version: '1.17.x'
+  go-version: "1.18.x"
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v1
 
-    - name: Install Linux packages
-      run: sudo apt install -y --no-install-recommends pandoc gettext
+      - name: Install Linux packages
+        run: sudo apt install -y --no-install-recommends pandoc gettext
 
-    - name: Install Go
-      uses: actions/setup-go@v1
-      with:
-        go-version: ${{ env.go-version }}
+      - name: Install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ env.go-version }}
 
-    - name: Run tests
-      run: go test -p=1 -coverprofile=coverage.text -covermode=atomic ./...
+      - name: Run tests
+        run: go test -p=1 -coverprofile=coverage.text -covermode=atomic ./...
 
-    - name: Upload coverage
-      if: success()
-      uses: codecov/codecov-action@v1
-      with:
-        fail_ci_if_error: true
+      - name: Upload coverage
+        if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
 
   release:
     name: Release
@@ -33,40 +33,40 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v1
 
-    - name: Install Linux packages
-      run: sudo apt install -y --no-install-recommends pandoc gettext
+      - name: Install Linux packages
+        run: sudo apt install -y --no-install-recommends pandoc gettext
 
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ env.go-version }}
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go-version }}
 
-    - name: Build docs
-      run: |
-        go install github.com/nyaruka/goflow/cmd/docgen
-        docgen
-        tar -zcf docs.tar.gz docs
+      - name: Build docs
+        run: |
+          go install github.com/nyaruka/goflow/cmd/docgen
+          docgen
+          tar -zcf docs.tar.gz docs
 
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        draft: false
-        prerelease: false
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-    - name: Upload docs asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./docs.tar.gz
-        asset_name: docs.tar.gz
-        asset_content_type: application/gzip
+      - name: Upload docs asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./docs.tar.gz
+          asset_name: docs.tar.gz
+          asset_content_type: application/gzip
