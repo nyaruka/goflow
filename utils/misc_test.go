@@ -14,16 +14,20 @@ func TestIsNil(t *testing.T) {
 	assert.False(t, utils.IsNil(""))
 }
 
-func TestMaxInt(t *testing.T) {
-	assert.Equal(t, 1, utils.MaxInt(0, 1))
-	assert.Equal(t, 1, utils.MaxInt(1, 0))
-	assert.Equal(t, 1, utils.MaxInt(1, -1))
+func TestMax(t *testing.T) {
+	assert.Equal(t, 1, utils.Max(0, 1))
+	assert.Equal(t, 1, utils.Max(1, 0))
+	assert.Equal(t, 1, utils.Max(1, -1))
+
+	assert.Equal(t, uint16(1), utils.Max(uint16(0), uint16(1)))
 }
 
-func TestMinInt(t *testing.T) {
-	assert.Equal(t, 0, utils.MinInt(0, 1))
-	assert.Equal(t, 0, utils.MinInt(1, 0))
-	assert.Equal(t, -1, utils.MinInt(1, -1))
+func TestMin(t *testing.T) {
+	assert.Equal(t, 0, utils.Min(0, 1))
+	assert.Equal(t, 0, utils.Min(1, 0))
+	assert.Equal(t, -1, utils.Min(1, -1))
+
+	assert.Equal(t, uint16(0), utils.Min(uint16(0), uint16(1)))
 }
 
 func TestReadTypeFromJSON(t *testing.T) {

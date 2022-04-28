@@ -2,6 +2,8 @@ package utils
 
 import (
 	"reflect"
+
+	"golang.org/x/exp/constraints"
 )
 
 // IsNil returns whether the given object is nil or an interface to a nil
@@ -21,16 +23,16 @@ func IsNil(v interface{}) bool {
 	return false
 }
 
-// MaxInt returns the maximum of two integers
-func MaxInt(x, y int) int {
+// Max returns the maximum of two values
+func Max[T constraints.Ordered](x, y T) T {
 	if x > y {
 		return x
 	}
 	return y
 }
 
-// MinInt returns the minimum of two integers
-func MinInt(x, y int) int {
+// Min returns the minimum of two values
+func Min[T constraints.Ordered](x, y T) T {
 	if x < y {
 		return x
 	}

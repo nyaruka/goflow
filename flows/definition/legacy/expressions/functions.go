@@ -66,7 +66,7 @@ func asParamMigratorsWithDefaults(newName string, defaults []string, paramMigrat
 			return "", errors.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(oldParams))
 		}
 
-		newParams := make([]string, utils.MaxInt(len(oldParams), len(defaults)))
+		newParams := make([]string, utils.Max(len(oldParams), len(defaults)))
 
 		for i := range newParams {
 			var param string
