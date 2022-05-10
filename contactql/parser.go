@@ -267,11 +267,11 @@ func (b *BoolCombination) simplify() QueryNode {
 	for _, child := range b.children {
 		switch typed := child.(type) {
 		case *BoolCombination:
-			if typed.op != b.op {
-				// can't simplfy if grandchildren combined with different op
-				return b
+			if typed.op == b.op {
+				newChilden = append(newChilden, typed.children...)
+			} else {
+				newChilden = append(newChilden, typed)
 			}
-			newChilden = append(newChilden, typed.children...)
 		case *Condition:
 			newChilden = append(newChilden, typed)
 		}

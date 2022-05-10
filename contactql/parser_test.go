@@ -142,7 +142,7 @@ func TestParseQuery(t *testing.T) {
 		},
 		{
 			text:     `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60`,
-			parsed:   `((age > 10 AND age < 20) OR (age > 30 AND age < 40)) OR (age > 50 AND age < 60)`,
+			parsed:   `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60)`,
 			resolver: resolver,
 		},
 
@@ -383,5 +383,52 @@ func TestParsingErrors(t *testing.T) {
 		qerr := err.(*contactql.QueryError)
 		assert.Equal(t, tc.errCode, qerr.Code())
 		assert.Equal(t, tc.errExtra, qerr.Extra())
+	}
+}
+
+func TestSimplify(t *testing.T) {
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithDefaultCountry("US").Build()
+	resolver := contactql.NewMockResolver(
+		[]assets.Field{
+			static.NewField("f1b5aea6-6586-41c7-9020-1a6326cc6565", "age", "Age", assets.FieldTypeNumber),
+		},
+		[]assets.Flow{},
+		[]assets.Group{},
+	)
+
+	tests := []struct {
+		text   string
+		parsed string
+	}{
+		{
+			text:   `age > 10 and age < 20 and age < 40 and age < 60`,
+			parsed: `age > 10 AND age < 20 AND age < 40 AND age < 60`,
+		},
+		{
+			text:   `age > 10 and age < 20 and age < 40 or age < 60`,
+			parsed: `(age > 10 AND age < 20 AND age < 40) OR age < 60`,
+		},
+		{
+			text:   `age > 10 or age < 20 and age < 40 and age < 60`,
+			parsed: `age > 10 OR (age < 20 AND age < 40 AND age < 60)`,
+		},
+		{
+			text:   `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60`,
+			parsed: `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60)`,
+		},
+		{
+			text:   `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60 or age > 70 and age < 80`,
+			parsed: `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60) OR (age > 70 AND age < 80)`,
+		},
+		{
+			text:   `Jim McJim or Bob McBob or Ann McAnn`,
+			parsed: `(name ~ "Jim" AND name ~ "McJim") OR (name ~ "Bob" AND name ~ "McBob") OR (name ~ "Ann" AND name ~ "McAnn")`,
+		},
+	}
+
+	for _, tc := range tests {
+		parsed, err := contactql.ParseQuery(env, tc.text, resolver)
+		assert.NoError(t, err)
+		assert.Equal(t, tc.parsed, parsed.String(), "parsed mismatch for input '%s'", tc.text)
 	}
 }
