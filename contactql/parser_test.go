@@ -119,6 +119,7 @@ func TestParseQuery(t *testing.T) {
 
 		// explicit combinations...
 		{text: `will and felix`, parsed: `name ~ "will" AND name ~ "felix"`, resolver: resolver}, // explicit AND
+		{text: `will AND felix AND matt`, parsed: `name ~ "will" AND name ~ "felix" AND name ~ "matt"`, resolver: resolver},
 		{text: `will or felix or matt`, parsed: `name ~ "will" OR name ~ "felix" OR name ~ "matt"`, resolver: resolver},
 		{text: `name = will AND age > 18 AND tickets = 0`, parsed: `name = "will" AND age > 18 AND tickets = 0`, resolver: resolver},
 		{text: `name = will OR age > 18 AND tickets = 0`, parsed: `name = "will" OR (age > 18 AND tickets = 0)`, resolver: resolver},
@@ -130,12 +131,18 @@ func TestParseQuery(t *testing.T) {
 		{text: `will or Name ~ "felix"`, parsed: `name ~ "will" OR name ~ "felix"`, resolver: resolver},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
+		{text: `will and felix or matt and amber`, parsed: `(name ~ "will" AND name ~ "felix") OR (name ~ "matt" AND name ~ "amber")`, resolver: resolver},
 		{text: `will and felix or matt amber`, parsed: `(name ~ "will" AND name ~ "felix") OR (name ~ "matt" AND name ~ "amber")`, resolver: resolver},
 
 		// boolean combinations can themselves be combined
 		{
 			text:     `(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
 			parsed:   `(age < 18 AND gender = "male") OR (age > 18 AND gender = "female")`,
+			resolver: resolver,
+		},
+		{
+			text:     `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60`,
+			parsed:   `((age > 10 AND age < 20) OR (age > 30 AND age < 40)) OR (age > 50 AND age < 60)`,
 			resolver: resolver,
 		},
 
