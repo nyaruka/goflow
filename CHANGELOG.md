@@ -1,3 +1,9 @@
+v0.159.0
+----------
+ * Improve simplifying of contactql queries
+ * Update direct dependencies except ANTLR4
+ * Go 1.18
+
 v0.158.1
 ----------
  * send_msg action should fallback to template trans in env default language if no trans found for contact language
