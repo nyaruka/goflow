@@ -1,3 +1,7 @@
+v0.159.1
+----------
+ * Fix not equals conditions in contact queries on fields that aren't set
+
 v0.159.0
 ----------
  * Improve simplifying of contactql queries
