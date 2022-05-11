@@ -69,11 +69,6 @@ func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, qu
 		}
 	}
 
-	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
-	if len(vals) == 0 {
-		return false
-	}
-
 	// evaluate condition against each resolved value
 	anyTrue := false
 	allTrue := true
