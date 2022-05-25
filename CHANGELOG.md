@@ -1,3 +1,7 @@
+v0.159.2
+----------
+ * Trim URLs in call_webhook actions
+
 v0.159.1
 ----------
  * Fix not equals conditions in contact queries on fields that aren't set
