@@ -265,6 +265,53 @@
         }
     },
     {
+        "description": "URL trimmed if necessary",
+        "http_mocks": {
+            "http://temba.io/": [
+                {
+                    "status": 200,
+                    "body": "{ \"ok\": true }"
+                }
+            ]
+        },
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "  http://temba.io/  ",
+            "body": "Hi there!"
+        },
+        "events": [
+            {
+                "type": "webhook_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "url": "http://temba.io/",
+                "status_code": 200,
+                "status": "success",
+                "request": "POST / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{ \"ok\": true }",
+                "elapsed_ms": 0,
+                "retries": 0,
+                "extraction": "valid"
+            }
+        ],
+        "webhook": {
+            "ok": true
+        },
+        "templates": [
+            "  http://temba.io/  ",
+            "Hi there!"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
         "description": "Extra not set on result if not valid JSON",
         "http_mocks": {
             "http://temba.io/": [

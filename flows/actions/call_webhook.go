@@ -90,6 +90,9 @@ func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier 
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
+
+	url = strings.TrimSpace(url) // some servers don't like trailing spaces in HTTP requests
+
 	if url == "" {
 		logEvent(events.NewErrorf("webhook URL evaluated to empty string"))
 		return nil
