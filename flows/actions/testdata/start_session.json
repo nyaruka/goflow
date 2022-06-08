@@ -7,7 +7,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [],
         "inspection": {
@@ -38,7 +39,8 @@
             "flow": {
                 "uuid": "dede1e50-db55-4b50-8929-2116bfc56148",
                 "name": "Missing"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -94,7 +96,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -146,7 +149,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -175,7 +179,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -201,7 +206,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -218,6 +224,7 @@
                         "name": "Stavros"
                     }
                 ],
+                "exclusions": {},
                 "run_summary": {
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",
                     "flow": {
@@ -289,7 +296,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -313,6 +321,7 @@
                     }
                 ],
                 "contact_query": "age > 20 OR gender = \"Male\"",
+                "exclusions": {},
                 "urns": [
                     "tel:+1234567890",
                     "tel:+15129165834"
@@ -405,7 +414,8 @@
             "flow": {
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
-            }
+            },
+            "exclusions": {}
         },
         "events": [
             {
@@ -441,6 +451,7 @@
                 "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                 "name": "Collect Age"
             },
+            "exclusions": {},
             "create_contact": true
         },
         "events": [
@@ -452,6 +463,7 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age"
                 },
+                "exclusions": {},
                 "create_contact": true,
                 "run_summary": {
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",

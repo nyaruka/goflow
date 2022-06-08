@@ -717,6 +717,7 @@ func TestConstructors(t *testing.T) {
 					"name": "Testers"
 				}
 			],
+			"exclusions": {},
 			"create_contact": true
 		}`,
 		},

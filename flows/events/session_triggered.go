@@ -15,6 +15,10 @@ func init() {
 // TypeSessionTriggered is the type of our session triggered event
 const TypeSessionTriggered string = "session_triggered"
 
+type Exclusions struct {
+	InAFlow bool `json:"in_a_flow,omitempty"`
+}
+
 // SessionTriggeredEvent events are created when an action wants to start other people in a flow.
 //
 //   {
@@ -56,6 +60,7 @@ type SessionTriggeredEvent struct {
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	ContactQuery  string                    `json:"contact_query,omitempty"`
+	Exclusions    Exclusions                `json:"exclusions"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	RunSummary    json.RawMessage           `json:"run_summary"`
@@ -63,13 +68,14 @@ type SessionTriggeredEvent struct {
 }
 
 // NewSessionTriggered returns a new session triggered event
-func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
+func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, exclusions Exclusions, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,
 		Groups:        groups,
 		Contacts:      contacts,
 		ContactQuery:  contactQuery,
+		Exclusions:    exclusions,
 		CreateContact: createContact,
 		URNs:          urns,
 		RunSummary:    runSummary,

@@ -494,20 +494,21 @@ func TestEventMarshaling(t *testing.T) {
 					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
 				},
 				"age > 20",
+				events.Exclusions{InAFlow: true},
 				false,
 				[]urns.URN{urns.URN("tel:+12345678900")},
 				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
 				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 			),
 			`{
+				"type": "session_triggered",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"contacts": [
 					{
 						"name": "Jim",
 						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
 					}
 				],
-				"contact_query": "age > 20",
-				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"flow": {
 					"name": "Collect Age",
 					"uuid": "e4d441f0-24e3-4627-85fb-1e99e733baf0"
@@ -518,6 +519,11 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412"
 					}
 				],
+				"urns": [
+					"tel:+12345678900"
+				],
+				"contact_query": "age > 20",
+				"exclusions": {"in_a_flow": true},
 				"run_summary": {
 					"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"
 				},
@@ -525,11 +531,7 @@ func TestEventMarshaling(t *testing.T) {
 					"parent_uuid": "418a704c-f33e-4924-a00e-1763d1498a13",
 					"ancestors": 2,
 					"ancestors_since_input": 0
-				},
-				"type": "session_triggered",
-				"urns": [
-					"tel:+12345678900"
-				]
+				}
 			}`,
 		},
 		{
