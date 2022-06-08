@@ -27,7 +27,8 @@ const TypeStartSession string = "start_session"
 //     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Registration"},
 //     "groups": [
 //       {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
-//     ]
+//     ],
+//     "exclusions": {"in_a_flow": true}
 //   }
 //
 // @action start_session
@@ -37,6 +38,7 @@ type StartSessionAction struct {
 	otherContactsAction
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
+	Exclusions    events.Exclusions     `json:"exclusions"`
 	CreateContact bool                  `json:"create_contact,omitempty"`
 }
 
@@ -94,6 +96,6 @@ func (a *StartSessionAction) Execute(run flows.Run, step flows.Step, logModifier
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(flow.Reference(), groupRefs, contactRefs, contactQuery, a.CreateContact, urnList, runSnapshot, history))
+	logEvent(events.NewSessionTriggered(flow.Reference(), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }

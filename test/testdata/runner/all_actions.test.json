@@ -108,6 +108,7 @@
                         }
                     ],
                     "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "exclusions": {},
                     "flow": {
                         "name": "Registration Flow",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -582,6 +583,7 @@
                                     }
                                 ],
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "exclusions": {},
                                 "flow": {
                                     "name": "Registration Flow",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
