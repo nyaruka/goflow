@@ -1,3 +1,7 @@
+v0.160.0
+----------
+ * Add option to exclude contacts in a flow on start session action
+
 v0.159.2
 ----------
  * Trim URLs in call_webhook actions
