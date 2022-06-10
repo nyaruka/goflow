@@ -1,3 +1,7 @@
+v0.161.0
+----------
+ * Update to latest gocommon and phonenumbers
+
 v0.160.0
 ----------
  * Add option to exclude contacts in a flow on start session action
