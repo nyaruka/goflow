@@ -251,9 +251,9 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	session2, _, err := test.ResumeSession(session1, assetsWithoutChildFlow, "Hello")
 	require.NoError(t, err)
 
-	// should have a failed session
+	// should have a failed session (with no runs left was active/waiting)
 	assert.Equal(t, flows.SessionStatusFailed, session2.Status())
-	assert.Equal(t, flows.RunStatusActive, session2.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusFailed, session2.Runs()[0].Status())
 	assert.Equal(t, flows.RunStatusFailed, session2.Runs()[1].Status())
 
 	// change the UUID of the parent flow so it will effectively be missing
@@ -264,8 +264,8 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 
 	// should have an failed session
 	assert.Equal(t, flows.SessionStatusFailed, session3.Status())
-	assert.Equal(t, flows.RunStatusActive, session3.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusFailed, session3.Runs()[1].Status())
+	assert.Equal(t, flows.RunStatusFailed, session3.Runs()[0].Status())
+	assert.Equal(t, flows.RunStatusCompleted, session3.Runs()[1].Status())
 }
 
 func TestWaitTimeout(t *testing.T) {
