@@ -1,3 +1,7 @@
+v0.161.1
+----------
+ * Ensure that failing a session doesn't leave runs in active/waiting state
+
 v0.161.0
 ----------
  * Update to latest gocommon and phonenumbers
