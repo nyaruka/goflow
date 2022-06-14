@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -205,15 +206,8 @@ func (s *session) Resume(resume flows.Resume) (flows.Sprint, error) {
 		return sprint, newError(ErrorResumeNoWaitingRun, "session doesn't contain any runs which are waiting")
 	}
 
-	isFailure, err := s.tryToResume(sprint, waitingRun, resume)
-	if err != nil {
-		if isFailure {
-			failure(sprint, waitingRun, nil, err)
-
-			s.status = flows.SessionStatusFailed
-		} else {
-			return nil, err
-		}
+	if err := s.tryToResume(sprint, waitingRun, resume); err != nil {
+		return nil, err
 	}
 
 	return sprint, nil
@@ -236,29 +230,47 @@ func (s *session) prepareForSprint() error {
 }
 
 // tries to resume a waiting session with the given resume
-func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows.Resume) (bool, error) {
+func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows.Resume) error {
+	failSession := func(msg string, args ...any) {
+		// put failure event in waiting run
+		failRun(sprint, waitingRun, nil, errors.Errorf(msg, args...))
+
+		// but also fail any other non-exited runs
+		for _, r := range s.runs {
+			if r.Status() == flows.RunStatusActive || r.Status() == flows.RunStatusWaiting {
+				r.Exit(flows.RunStatusFailed)
+			}
+		}
+
+		s.status = flows.SessionStatusFailed
+	}
+
 	// if flow for this run is a missing asset, we have a problem
 	if waitingRun.Flow() == nil {
-		return true, errors.New("can't resume run with missing flow asset")
+		failSession("can't resume run with missing flow asset")
+		return nil
 	}
 
 	if s.countWaits() >= s.engine.MaxResumesPerSession() {
-		return true, errors.Errorf("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
+		failSession("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
+		return nil
 	}
 
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
-		return true, err
+		failSession(fmt.Sprintf("unable to find resume location: %s", err.Error()))
+		return nil
 	}
 
 	if node.Router() == nil || node.Router().Wait() == nil {
-		return true, errors.New("can't resume from node without a router or wait")
+		failSession("can't resume from node without a router or wait")
+		return nil
 	}
 
 	// check that the wait accepts this resume - not a permanent error - caller can retry with different resume
 	if !node.Router().Wait().Accepts(resume) {
-		return false, newError(ErrorResumeRejectedByWait, "resume of type %s not accepted by wait of type %s", resume.Type(), node.Router().Wait().Type())
+		return newError(ErrorResumeRejectedByWait, "resume of type %s not accepted by wait of type %s", resume.Type(), node.Router().Wait().Type())
 	}
 
 	s.status = flows.SessionStatusActive
@@ -279,11 +291,12 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {
-		return true, err
+		failSession(fmt.Sprintf("unable to resolve router exit: %s", err.Error()))
+		return nil
 	}
 
 	// off to the races again...
-	return true, s.continueUntilWait(sprint, waitingRun, node, exit, operand, step, nil)
+	return s.continueUntilWait(sprint, waitingRun, node, exit, operand, step, nil)
 }
 
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow
@@ -372,16 +385,16 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 				if childRun.Status() != flows.RunStatusFailed {
 					// if flow for this run is a missing asset, we have a problem
 					if currentRun.Flow() == nil {
-						return errors.New("can't resume parent run with missing flow asset")
-					}
-
-					if exit, operand, err = s.findResumeExit(sprint, currentRun, false); err != nil {
-						failure(sprint, currentRun, step, errors.Wrapf(err, "can't resume run as node no longer exists"))
+						failRun(sprint, currentRun, nil, errors.New("can't resume run with missing flow asset"))
+					} else {
+						if exit, operand, err = s.findResumeExit(sprint, currentRun, false); err != nil {
+							failRun(sprint, currentRun, nil, errors.Wrapf(err, "can't resume run as node no longer exists"))
+						}
 					}
 				} else {
 					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					failure(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					failRun(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -403,7 +416,7 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 
 			if numNewSteps > s.Engine().MaxStepsPerSprint() {
 				// we've hit the step limit - usually a sign of a loop
-				failure(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.Engine().MaxStepsPerSprint()))
+				failRun(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.Engine().MaxStepsPerSprint()))
 			} else {
 				node = currentRun.Flow().GetNode(destination)
 				if node == nil {
@@ -502,7 +515,7 @@ func (s *session) pickNodeExit(sprint *sprint, run flows.Run, node flows.Node, s
 		}
 		// router didn't error.. but it failed to pick a category
 		if exitUUID == "" {
-			failure(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			failRun(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
 			return nil, "", nil
 		}
 	} else if len(node.Exits()) > 0 {
@@ -548,13 +561,11 @@ func (s *session) countWaits() int {
 	return waits
 }
 
-// utility to fail the session and log a failure event
-func failure(sp *sprint, run flows.Run, step flows.Step, err error) {
+// utility to fail the current run and log a failRun event
+func failRun(sp *sprint, run flows.Run, step flows.Step, err error) {
 	event := events.NewFailure(err)
-	if run != nil {
-		run.Exit(flows.RunStatusFailed)
-		run.LogEvent(step, event)
-	}
+	run.Exit(flows.RunStatusFailed)
+	run.LogEvent(step, event)
 	sp.logEvent(event)
 }
 
