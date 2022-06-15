@@ -1,73 +1,94 @@
-// Code generated from ContactQL.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from ContactQL.g4 by ANTLR 4.10.1. DO NOT EDIT.
 
 package gen // ContactQL
 import (
 	"fmt"
-	"reflect"
 	"strconv"
+	"sync"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 // Suppress unused import errors
 var _ = fmt.Printf
-var _ = reflect.Copy
 var _ = strconv.Itoa
-
-var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 11, 40, 4,
-	2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 21, 10, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 31, 10, 3, 12, 3, 14, 3, 34, 11, 3, 3,
-	4, 3, 4, 5, 4, 38, 10, 4, 3, 4, 2, 3, 4, 5, 2, 4, 6, 2, 2, 2, 42, 2, 8,
-	3, 2, 2, 2, 4, 20, 3, 2, 2, 2, 6, 37, 3, 2, 2, 2, 8, 9, 5, 4, 3, 2, 9,
-	10, 7, 2, 2, 3, 10, 3, 3, 2, 2, 2, 11, 12, 8, 3, 1, 2, 12, 13, 7, 3, 2,
-	2, 13, 14, 5, 4, 3, 2, 14, 15, 7, 4, 2, 2, 15, 21, 3, 2, 2, 2, 16, 17,
-	7, 8, 2, 2, 17, 18, 7, 7, 2, 2, 18, 21, 5, 6, 4, 2, 19, 21, 5, 6, 4, 2,
-	20, 11, 3, 2, 2, 2, 20, 16, 3, 2, 2, 2, 20, 19, 3, 2, 2, 2, 21, 32, 3,
-	2, 2, 2, 22, 23, 12, 8, 2, 2, 23, 24, 7, 5, 2, 2, 24, 31, 5, 4, 3, 9, 25,
-	26, 12, 7, 2, 2, 26, 31, 5, 4, 3, 8, 27, 28, 12, 6, 2, 2, 28, 29, 7, 6,
-	2, 2, 29, 31, 5, 4, 3, 7, 30, 22, 3, 2, 2, 2, 30, 25, 3, 2, 2, 2, 30, 27,
-	3, 2, 2, 2, 31, 34, 3, 2, 2, 2, 32, 30, 3, 2, 2, 2, 32, 33, 3, 2, 2, 2,
-	33, 5, 3, 2, 2, 2, 34, 32, 3, 2, 2, 2, 35, 38, 7, 8, 2, 2, 36, 38, 7, 9,
-	2, 2, 37, 35, 3, 2, 2, 2, 37, 36, 3, 2, 2, 2, 38, 7, 3, 2, 2, 2, 6, 20,
-	30, 32, 37,
-}
-var deserializer = antlr.NewATNDeserializer(nil)
-var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
-
-var literalNames = []string{
-	"", "'('", "')'",
-}
-var symbolicNames = []string{
-	"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT", "STRING", "WS",
-	"ERROR",
-}
-
-var ruleNames = []string{
-	"parse", "expression", "literal",
-}
-var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
-
-func init() {
-	for index, ds := range deserializedATN.DecisionToState {
-		decisionToDFA[index] = antlr.NewDFA(ds, index)
-	}
-}
+var _ = sync.Once{}
 
 type ContactQLParser struct {
 	*antlr.BaseParser
 }
 
+var contactqlParserStaticData struct {
+	once                   sync.Once
+	serializedATN          []int32
+	literalNames           []string
+	symbolicNames          []string
+	ruleNames              []string
+	predictionContextCache *antlr.PredictionContextCache
+	atn                    *antlr.ATN
+	decisionToDFA          []*antlr.DFA
+}
+
+func contactqlParserInit() {
+	staticData := &contactqlParserStaticData
+	staticData.literalNames = []string{
+		"", "'('", "')'",
+	}
+	staticData.symbolicNames = []string{
+		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT", "STRING",
+		"WS", "ERROR",
+	}
+	staticData.ruleNames = []string{
+		"parse", "expression", "literal",
+	}
+	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.serializedATN = []int32{
+		4, 1, 9, 38, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 19, 8, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 29, 8, 1, 10, 1, 12, 1, 32,
+		9, 1, 1, 2, 1, 2, 3, 2, 36, 8, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4, 0, 0, 40,
+		0, 6, 1, 0, 0, 0, 2, 18, 1, 0, 0, 0, 4, 35, 1, 0, 0, 0, 6, 7, 3, 2, 1,
+		0, 7, 8, 5, 0, 0, 1, 8, 1, 1, 0, 0, 0, 9, 10, 6, 1, -1, 0, 10, 11, 5, 1,
+		0, 0, 11, 12, 3, 2, 1, 0, 12, 13, 5, 2, 0, 0, 13, 19, 1, 0, 0, 0, 14, 15,
+		5, 6, 0, 0, 15, 16, 5, 5, 0, 0, 16, 19, 3, 4, 2, 0, 17, 19, 3, 4, 2, 0,
+		18, 9, 1, 0, 0, 0, 18, 14, 1, 0, 0, 0, 18, 17, 1, 0, 0, 0, 19, 30, 1, 0,
+		0, 0, 20, 21, 10, 6, 0, 0, 21, 22, 5, 3, 0, 0, 22, 29, 3, 2, 1, 7, 23,
+		24, 10, 5, 0, 0, 24, 29, 3, 2, 1, 6, 25, 26, 10, 4, 0, 0, 26, 27, 5, 4,
+		0, 0, 27, 29, 3, 2, 1, 5, 28, 20, 1, 0, 0, 0, 28, 23, 1, 0, 0, 0, 28, 25,
+		1, 0, 0, 0, 29, 32, 1, 0, 0, 0, 30, 28, 1, 0, 0, 0, 30, 31, 1, 0, 0, 0,
+		31, 3, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 33, 36, 5, 6, 0, 0, 34, 36, 5, 7,
+		0, 0, 35, 33, 1, 0, 0, 0, 35, 34, 1, 0, 0, 0, 36, 5, 1, 0, 0, 0, 4, 18,
+		28, 30, 35,
+	}
+	deserializer := antlr.NewATNDeserializer(nil)
+	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
+	atn := staticData.atn
+	staticData.decisionToDFA = make([]*antlr.DFA, len(atn.DecisionToState))
+	decisionToDFA := staticData.decisionToDFA
+	for index, state := range atn.DecisionToState {
+		decisionToDFA[index] = antlr.NewDFA(state, index)
+	}
+}
+
+// ContactQLParserInit initializes any static state used to implement ContactQLParser. By default the
+// static state used to implement the parser is lazily initialized during the first call to
+// NewContactQLParser(). You can call this function if you wish to initialize the static state ahead
+// of time.
+func ContactQLParserInit() {
+	staticData := &contactqlParserStaticData
+	staticData.once.Do(contactqlParserInit)
+}
+
+// NewContactQLParser produces a new parser instance for the optional input antlr.TokenStream.
 func NewContactQLParser(input antlr.TokenStream) *ContactQLParser {
+	ContactQLParserInit()
 	this := new(ContactQLParser)
-
 	this.BaseParser = antlr.NewBaseParser(input)
-
-	this.Interpreter = antlr.NewParserATNSimulator(this, deserializedATN, decisionToDFA, antlr.NewPredictionContextCache())
-	this.RuleNames = ruleNames
-	this.LiteralNames = literalNames
-	this.SymbolicNames = symbolicNames
+	staticData := &contactqlParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
+	this.RuleNames = staticData.ruleNames
+	this.LiteralNames = staticData.literalNames
+	this.SymbolicNames = staticData.symbolicNames
 	this.GrammarFileName = "ContactQL.g4"
 
 	return this
@@ -133,7 +154,13 @@ func NewParseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoki
 func (s *ParseContext) GetParser() antlr.Parser { return s.parser }
 
 func (s *ParseContext) Expression() IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -177,6 +204,9 @@ func (s *ParseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *ContactQLParser) Parse() (localctx IParseContext) {
+	this := p
+	_ = this
+
 	localctx = NewParseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, ContactQLParserRULE_parse)
 
@@ -278,7 +308,13 @@ func (s *ImplicitConditionContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *ImplicitConditionContext) Literal() ILiteralContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILiteralContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -336,7 +372,13 @@ func (s *ConditionContext) COMPARATOR() antlr.TerminalNode {
 }
 
 func (s *ConditionContext) Literal() ILiteralContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILiteralContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -386,12 +428,20 @@ func (s *CombinationAndContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *CombinationAndContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -399,7 +449,17 @@ func (s *CombinationAndContext) AllExpression() []IExpressionContext {
 }
 
 func (s *CombinationAndContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -453,12 +513,20 @@ func (s *CombinationImpicitAndContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *CombinationImpicitAndContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -466,7 +534,17 @@ func (s *CombinationImpicitAndContext) AllExpression() []IExpressionContext {
 }
 
 func (s *CombinationImpicitAndContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -516,12 +594,20 @@ func (s *CombinationOrContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *CombinationOrContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -529,7 +615,17 @@ func (s *CombinationOrContext) AllExpression() []IExpressionContext {
 }
 
 func (s *CombinationOrContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -587,7 +683,13 @@ func (s *ExpressionGroupingContext) LPAREN() antlr.TerminalNode {
 }
 
 func (s *ExpressionGroupingContext) Expression() IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -627,6 +729,9 @@ func (p *ContactQLParser) Expression() (localctx IExpressionContext) {
 }
 
 func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
+	this := p
+	_ = this
+
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
 	_parentState := p.GetState()
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
@@ -913,6 +1018,9 @@ func (s *TextLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 func (p *ContactQLParser) Literal() (localctx ILiteralContext) {
+	this := p
+	_ = this
+
 	localctx = NewLiteralContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, ContactQLParserRULE_literal)
 
@@ -974,6 +1082,9 @@ func (p *ContactQLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predInd
 }
 
 func (p *ContactQLParser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
+	this := p
+	_ = this
+
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 6)

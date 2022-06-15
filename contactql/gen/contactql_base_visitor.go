@@ -1,4 +1,4 @@
-// Code generated from ContactQL.g4 by ANTLR 4.8. DO NOT EDIT.
+// Code generated from ContactQL.g4 by ANTLR 4.10.1. DO NOT EDIT.
 
 package gen // ContactQL
 import "github.com/antlr/antlr4/runtime/Go/antlr"
