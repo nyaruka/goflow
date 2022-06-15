@@ -8,15 +8,15 @@ require (
 	github.com/antlr/antlr4 v0.0.0-20200701161529-3d9351f61e0f
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.1.1
-	github.com/nyaruka/gocommon v1.22.1
+	github.com/nyaruka/gocommon v1.22.2
 	github.com/nyaruka/phonenumbers v1.0.75
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.2.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.7.2
-	golang.org/x/exp v0.0.0-20220426173459-3bcf042a4bf5
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
+	golang.org/x/net v0.0.0-20220614195744-fb05da6f9022
 	golang.org/x/text v0.3.7
 	gopkg.in/go-playground/validator.v9 v9.31.0
 )
@@ -27,7 +27,7 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/gofrs/uuid v3.3.0+incompatible // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
