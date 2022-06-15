@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/go-mail/mail"
+	"github.com/Shopify/gomail"
 	"github.com/pkg/errors"
 )
 
@@ -69,7 +69,7 @@ func NewClientFromURL(connectionURL string) (*Client, error) {
 // Send sends the given message
 func (c *Client) Send(m *Message) error {
 	// create MIME message
-	mm := mail.NewMessage()
+	mm := gomail.NewMessage()
 	mm.SetHeader("From", c.from)
 	mm.SetHeader("To", m.recipients...)
 	mm.SetHeader("Subject", m.subject)
@@ -78,6 +78,6 @@ func (c *Client) Send(m *Message) error {
 		mm.AddAlternative("text/html", m.html)
 	}
 
-	d := mail.NewDialer(c.host, c.port, c.username, c.password)
+	d := gomail.NewDialer(c.host, c.port, c.username, c.password)
 	return d.DialAndSend(mm)
 }
