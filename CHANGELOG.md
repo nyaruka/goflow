@@ -1,3 +1,8 @@
+v0.161.2
+----------
+ * Update ANTLR
+ * Update to better maintained fork of go-mail
+
 v0.161.1
 ----------
  * Ensure that failing a session doesn't leave runs in active/waiting state
