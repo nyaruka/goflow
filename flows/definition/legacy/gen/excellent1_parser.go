@@ -1,89 +1,109 @@
-// Code generated from Excellent1.g4 by ANTLR 4.7.2. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.10.1. DO NOT EDIT.
 
 package gen // Excellent1
 import (
 	"fmt"
-	"reflect"
 	"strconv"
+	"sync"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 // Suppress unused import errors
 var _ = fmt.Printf
-var _ = reflect.Copy
 var _ = strconv.Itoa
-
-var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 24, 68, 4,
-	2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 3, 2, 3, 2, 3, 2, 3, 3, 3,
-	3, 3, 3, 3, 3, 5, 3, 18, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 33, 10, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 7, 3, 53, 10, 3, 12, 3, 14, 3, 56, 11, 3, 3, 4, 3,
-	4, 3, 5, 3, 5, 3, 5, 7, 5, 63, 10, 5, 12, 5, 14, 5, 66, 11, 5, 3, 5, 2,
-	3, 4, 6, 2, 4, 6, 8, 2, 7, 3, 2, 8, 9, 3, 2, 6, 7, 3, 2, 13, 16, 3, 2,
-	11, 12, 3, 2, 20, 22, 2, 78, 2, 10, 3, 2, 2, 2, 4, 32, 3, 2, 2, 2, 6, 57,
-	3, 2, 2, 2, 8, 59, 3, 2, 2, 2, 10, 11, 5, 4, 3, 2, 11, 12, 7, 2, 2, 3,
-	12, 3, 3, 2, 2, 2, 13, 14, 8, 3, 1, 2, 14, 15, 5, 6, 4, 2, 15, 17, 7, 4,
-	2, 2, 16, 18, 5, 8, 5, 2, 17, 16, 3, 2, 2, 2, 17, 18, 3, 2, 2, 2, 18, 19,
-	3, 2, 2, 2, 19, 20, 7, 5, 2, 2, 20, 33, 3, 2, 2, 2, 21, 22, 7, 7, 2, 2,
-	22, 33, 5, 4, 3, 15, 23, 33, 7, 19, 2, 2, 24, 33, 7, 18, 2, 2, 25, 33,
-	7, 20, 2, 2, 26, 33, 7, 21, 2, 2, 27, 33, 7, 22, 2, 2, 28, 29, 7, 4, 2,
-	2, 29, 30, 5, 4, 3, 2, 30, 31, 7, 5, 2, 2, 31, 33, 3, 2, 2, 2, 32, 13,
-	3, 2, 2, 2, 32, 21, 3, 2, 2, 2, 32, 23, 3, 2, 2, 2, 32, 24, 3, 2, 2, 2,
-	32, 25, 3, 2, 2, 2, 32, 26, 3, 2, 2, 2, 32, 27, 3, 2, 2, 2, 32, 28, 3,
-	2, 2, 2, 33, 54, 3, 2, 2, 2, 34, 35, 12, 14, 2, 2, 35, 36, 7, 10, 2, 2,
-	36, 53, 5, 4, 3, 15, 37, 38, 12, 13, 2, 2, 38, 39, 9, 2, 2, 2, 39, 53,
-	5, 4, 3, 14, 40, 41, 12, 12, 2, 2, 41, 42, 9, 3, 2, 2, 42, 53, 5, 4, 3,
-	13, 43, 44, 12, 11, 2, 2, 44, 45, 9, 4, 2, 2, 45, 53, 5, 4, 3, 12, 46,
-	47, 12, 10, 2, 2, 47, 48, 9, 5, 2, 2, 48, 53, 5, 4, 3, 11, 49, 50, 12,
-	9, 2, 2, 50, 51, 7, 17, 2, 2, 51, 53, 5, 4, 3, 10, 52, 34, 3, 2, 2, 2,
-	52, 37, 3, 2, 2, 2, 52, 40, 3, 2, 2, 2, 52, 43, 3, 2, 2, 2, 52, 46, 3,
-	2, 2, 2, 52, 49, 3, 2, 2, 2, 53, 56, 3, 2, 2, 2, 54, 52, 3, 2, 2, 2, 54,
-	55, 3, 2, 2, 2, 55, 5, 3, 2, 2, 2, 56, 54, 3, 2, 2, 2, 57, 58, 9, 6, 2,
-	2, 58, 7, 3, 2, 2, 2, 59, 64, 5, 4, 3, 2, 60, 61, 7, 3, 2, 2, 61, 63, 5,
-	4, 3, 2, 62, 60, 3, 2, 2, 2, 63, 66, 3, 2, 2, 2, 64, 62, 3, 2, 2, 2, 64,
-	65, 3, 2, 2, 2, 65, 9, 3, 2, 2, 2, 66, 64, 3, 2, 2, 2, 7, 17, 32, 52, 54,
-	64,
-}
-var deserializer = antlr.NewATNDeserializer(nil)
-var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
-
-var literalNames = []string{
-	"", "','", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'='", "'<>'",
-	"'<='", "'<'", "'>='", "'>'", "'&'",
-}
-var symbolicNames = []string{
-	"", "COMMA", "LPAREN", "RPAREN", "PLUS", "MINUS", "TIMES", "DIVIDE", "EXPONENT",
-	"EQ", "NEQ", "LTE", "LT", "GTE", "GT", "AMPERSAND", "DECIMAL", "STRING",
-	"TRUE", "FALSE", "NAME", "WS", "ERROR",
-}
-
-var ruleNames = []string{
-	"parse", "expression", "fnname", "parameters",
-}
-var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
-
-func init() {
-	for index, ds := range deserializedATN.DecisionToState {
-		decisionToDFA[index] = antlr.NewDFA(ds, index)
-	}
-}
+var _ = sync.Once{}
 
 type Excellent1Parser struct {
 	*antlr.BaseParser
 }
 
+var excellent1ParserStaticData struct {
+	once                   sync.Once
+	serializedATN          []int32
+	literalNames           []string
+	symbolicNames          []string
+	ruleNames              []string
+	predictionContextCache *antlr.PredictionContextCache
+	atn                    *antlr.ATN
+	decisionToDFA          []*antlr.DFA
+}
+
+func excellent1ParserInit() {
+	staticData := &excellent1ParserStaticData
+	staticData.literalNames = []string{
+		"", "','", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'='", "'<>'",
+		"'<='", "'<'", "'>='", "'>'", "'&'",
+	}
+	staticData.symbolicNames = []string{
+		"", "COMMA", "LPAREN", "RPAREN", "PLUS", "MINUS", "TIMES", "DIVIDE",
+		"EXPONENT", "EQ", "NEQ", "LTE", "LT", "GTE", "GT", "AMPERSAND", "DECIMAL",
+		"STRING", "TRUE", "FALSE", "NAME", "WS", "ERROR",
+	}
+	staticData.ruleNames = []string{
+		"parse", "expression", "fnname", "parameters",
+	}
+	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.serializedATN = []int32{
+		4, 1, 22, 66, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 1, 0, 1,
+		0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 16, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 31, 8, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 51, 8, 1, 10, 1, 12, 1, 54, 9, 1,
+		1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 5, 3, 61, 8, 3, 10, 3, 12, 3, 64, 9, 3, 1,
+		3, 0, 1, 2, 4, 0, 2, 4, 6, 0, 5, 1, 0, 6, 7, 1, 0, 4, 5, 1, 0, 11, 14,
+		1, 0, 9, 10, 1, 0, 18, 20, 76, 0, 8, 1, 0, 0, 0, 2, 30, 1, 0, 0, 0, 4,
+		55, 1, 0, 0, 0, 6, 57, 1, 0, 0, 0, 8, 9, 3, 2, 1, 0, 9, 10, 5, 0, 0, 1,
+		10, 1, 1, 0, 0, 0, 11, 12, 6, 1, -1, 0, 12, 13, 3, 4, 2, 0, 13, 15, 5,
+		2, 0, 0, 14, 16, 3, 6, 3, 0, 15, 14, 1, 0, 0, 0, 15, 16, 1, 0, 0, 0, 16,
+		17, 1, 0, 0, 0, 17, 18, 5, 3, 0, 0, 18, 31, 1, 0, 0, 0, 19, 20, 5, 5, 0,
+		0, 20, 31, 3, 2, 1, 13, 21, 31, 5, 17, 0, 0, 22, 31, 5, 16, 0, 0, 23, 31,
+		5, 18, 0, 0, 24, 31, 5, 19, 0, 0, 25, 31, 5, 20, 0, 0, 26, 27, 5, 2, 0,
+		0, 27, 28, 3, 2, 1, 0, 28, 29, 5, 3, 0, 0, 29, 31, 1, 0, 0, 0, 30, 11,
+		1, 0, 0, 0, 30, 19, 1, 0, 0, 0, 30, 21, 1, 0, 0, 0, 30, 22, 1, 0, 0, 0,
+		30, 23, 1, 0, 0, 0, 30, 24, 1, 0, 0, 0, 30, 25, 1, 0, 0, 0, 30, 26, 1,
+		0, 0, 0, 31, 52, 1, 0, 0, 0, 32, 33, 10, 12, 0, 0, 33, 34, 5, 8, 0, 0,
+		34, 51, 3, 2, 1, 13, 35, 36, 10, 11, 0, 0, 36, 37, 7, 0, 0, 0, 37, 51,
+		3, 2, 1, 12, 38, 39, 10, 10, 0, 0, 39, 40, 7, 1, 0, 0, 40, 51, 3, 2, 1,
+		11, 41, 42, 10, 9, 0, 0, 42, 43, 7, 2, 0, 0, 43, 51, 3, 2, 1, 10, 44, 45,
+		10, 8, 0, 0, 45, 46, 7, 3, 0, 0, 46, 51, 3, 2, 1, 9, 47, 48, 10, 7, 0,
+		0, 48, 49, 5, 15, 0, 0, 49, 51, 3, 2, 1, 8, 50, 32, 1, 0, 0, 0, 50, 35,
+		1, 0, 0, 0, 50, 38, 1, 0, 0, 0, 50, 41, 1, 0, 0, 0, 50, 44, 1, 0, 0, 0,
+		50, 47, 1, 0, 0, 0, 51, 54, 1, 0, 0, 0, 52, 50, 1, 0, 0, 0, 52, 53, 1,
+		0, 0, 0, 53, 3, 1, 0, 0, 0, 54, 52, 1, 0, 0, 0, 55, 56, 7, 4, 0, 0, 56,
+		5, 1, 0, 0, 0, 57, 62, 3, 2, 1, 0, 58, 59, 5, 1, 0, 0, 59, 61, 3, 2, 1,
+		0, 60, 58, 1, 0, 0, 0, 61, 64, 1, 0, 0, 0, 62, 60, 1, 0, 0, 0, 62, 63,
+		1, 0, 0, 0, 63, 7, 1, 0, 0, 0, 64, 62, 1, 0, 0, 0, 5, 15, 30, 50, 52, 62,
+	}
+	deserializer := antlr.NewATNDeserializer(nil)
+	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
+	atn := staticData.atn
+	staticData.decisionToDFA = make([]*antlr.DFA, len(atn.DecisionToState))
+	decisionToDFA := staticData.decisionToDFA
+	for index, state := range atn.DecisionToState {
+		decisionToDFA[index] = antlr.NewDFA(state, index)
+	}
+}
+
+// Excellent1ParserInit initializes any static state used to implement Excellent1Parser. By default the
+// static state used to implement the parser is lazily initialized during the first call to
+// NewExcellent1Parser(). You can call this function if you wish to initialize the static state ahead
+// of time.
+func Excellent1ParserInit() {
+	staticData := &excellent1ParserStaticData
+	staticData.once.Do(excellent1ParserInit)
+}
+
+// NewExcellent1Parser produces a new parser instance for the optional input antlr.TokenStream.
 func NewExcellent1Parser(input antlr.TokenStream) *Excellent1Parser {
+	Excellent1ParserInit()
 	this := new(Excellent1Parser)
-
 	this.BaseParser = antlr.NewBaseParser(input)
-
-	this.Interpreter = antlr.NewParserATNSimulator(this, deserializedATN, decisionToDFA, antlr.NewPredictionContextCache())
-	this.RuleNames = ruleNames
-	this.LiteralNames = literalNames
-	this.SymbolicNames = symbolicNames
+	staticData := &excellent1ParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
+	this.RuleNames = staticData.ruleNames
+	this.LiteralNames = staticData.literalNames
+	this.SymbolicNames = staticData.symbolicNames
 	this.GrammarFileName = "Excellent1.g4"
 
 	return this
@@ -163,7 +183,13 @@ func NewParseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoki
 func (s *ParseContext) GetParser() antlr.Parser { return s.parser }
 
 func (s *ParseContext) Expression() IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -207,6 +233,9 @@ func (s *ParseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent1Parser) Parse() (localctx IParseContext) {
+	this := p
+	_ = this
+
 	localctx = NewParseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, Excellent1ParserRULE_parse)
 
@@ -356,7 +385,13 @@ func (s *ParenthesesContext) LPAREN() antlr.TerminalNode {
 }
 
 func (s *ParenthesesContext) Expression() IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -414,7 +449,13 @@ func (s *NegationContext) MINUS() antlr.TerminalNode {
 }
 
 func (s *NegationContext) Expression() IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -464,12 +505,20 @@ func (s *ExponentExpressionContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *ExponentExpressionContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -477,7 +526,17 @@ func (s *ExponentExpressionContext) AllExpression() []IExpressionContext {
 }
 
 func (s *ExponentExpressionContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -536,12 +595,20 @@ func (s *AdditionOrSubtractionExpressionContext) GetRuleContext() antlr.RuleCont
 }
 
 func (s *AdditionOrSubtractionExpressionContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -549,7 +616,17 @@ func (s *AdditionOrSubtractionExpressionContext) AllExpression() []IExpressionCo
 }
 
 func (s *AdditionOrSubtractionExpressionContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -700,12 +777,20 @@ func (s *ComparisonExpressionContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *ComparisonExpressionContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -713,7 +798,17 @@ func (s *ComparisonExpressionContext) AllExpression() []IExpressionContext {
 }
 
 func (s *ComparisonExpressionContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -779,12 +874,20 @@ func (s *ConcatenationContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *ConcatenationContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -792,7 +895,17 @@ func (s *ConcatenationContext) AllExpression() []IExpressionContext {
 }
 
 func (s *ConcatenationContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -890,7 +1003,13 @@ func (s *FunctionCallContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *FunctionCallContext) Fnname() IFnnameContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFnnameContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFnnameContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -908,7 +1027,13 @@ func (s *FunctionCallContext) RPAREN() antlr.TerminalNode {
 }
 
 func (s *FunctionCallContext) Parameters() IParametersContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IParametersContext)(nil)).Elem(), 0)
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IParametersContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -1007,12 +1132,20 @@ func (s *EqualityExpressionContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *EqualityExpressionContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -1020,7 +1153,17 @@ func (s *EqualityExpressionContext) AllExpression() []IExpressionContext {
 }
 
 func (s *EqualityExpressionContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -1083,12 +1226,20 @@ func (s *MultiplicationOrDivisionExpressionContext) GetRuleContext() antlr.RuleC
 }
 
 func (s *MultiplicationOrDivisionExpressionContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -1096,7 +1247,17 @@ func (s *MultiplicationOrDivisionExpressionContext) AllExpression() []IExpressio
 }
 
 func (s *MultiplicationOrDivisionExpressionContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -1140,6 +1301,9 @@ func (p *Excellent1Parser) Expression() (localctx IExpressionContext) {
 }
 
 func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
+	this := p
+	_ = this
+
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
 	_parentState := p.GetState()
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
@@ -1540,6 +1704,9 @@ func (s *FnnameContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent1Parser) Fnname() (localctx IFnnameContext) {
+	this := p
+	_ = this
+
 	localctx = NewFnnameContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, Excellent1ParserRULE_fnname)
 	var _la int
@@ -1645,12 +1812,20 @@ func (s *FunctionParametersContext) GetRuleContext() antlr.RuleContext {
 }
 
 func (s *FunctionParametersContext) AllExpression() []IExpressionContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExpressionContext)(nil)).Elem())
-	var tst = make([]IExpressionContext, len(ts))
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
 
-	for i, t := range ts {
-		if t != nil {
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
 			tst[i] = t.(IExpressionContext)
+			i++
 		}
 	}
 
@@ -1658,7 +1833,17 @@ func (s *FunctionParametersContext) AllExpression() []IExpressionContext {
 }
 
 func (s *FunctionParametersContext) Expression(i int) IExpressionContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExpressionContext)(nil)).Elem(), i)
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
 
 	if t == nil {
 		return nil
@@ -1698,6 +1883,9 @@ func (s *FunctionParametersContext) Accept(visitor antlr.ParseTreeVisitor) inter
 }
 
 func (p *Excellent1Parser) Parameters() (localctx IParametersContext) {
+	this := p
+	_ = this
+
 	localctx = NewParametersContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, Excellent1ParserRULE_parameters)
 	var _la int
@@ -1761,6 +1949,9 @@ func (p *Excellent1Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIn
 }
 
 func (p *Excellent1Parser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
+	this := p
+	_ = this
+
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 12)
