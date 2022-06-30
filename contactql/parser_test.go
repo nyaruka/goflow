@@ -459,6 +459,25 @@ func TestQueryBuilding(t *testing.T) {
 			),
 			query: `name = "bob" OR (age > 10 AND age < 20)`,
 		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+				contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+			),
+			query: "age > 10",
+		},
+		{
+			node:  contactql.NewBoolCombination(contactql.BoolOperatorAnd),
+			query: "",
+		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+				contactql.NewCondition("name", contactql.PropertyTypeField, "=", "bob"),
+				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+					contactql.NewBoolCombination(contactql.BoolOperatorAnd),
+				),
+			),
+			query: `name = "bob"`,
+		},
 	}
 
 	for _, tc := range tests {

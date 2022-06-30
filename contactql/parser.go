@@ -257,27 +257,40 @@ func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) erro
 }
 
 func (b *BoolCombination) Simplify() QueryNode {
-	for i, child := range b.children {
-		b.children[i] = child.Simplify()
-	}
+	simplifiedChildren := make([]QueryNode, 0, len(b.children))
 
-	newChilden := make([]QueryNode, 0, 2*len(b.children))
-
-	// simplify by promoting grand children to children if they're combined with same op
 	for _, child := range b.children {
-		switch typed := child.(type) {
-		case *BoolCombination:
-			if typed.op == b.op {
-				newChilden = append(newChilden, typed.children...)
-			} else {
-				newChilden = append(newChilden, typed)
-			}
-		case *Condition:
-			newChilden = append(newChilden, typed)
+		// let children remove themselves by simplifying to nil
+		sc := child.Simplify()
+		if sc != nil {
+			simplifiedChildren = append(simplifiedChildren, sc)
 		}
 	}
 
-	return &BoolCombination{op: b.op, children: newChilden}
+	newChildren := make([]QueryNode, 0, 2*len(simplifiedChildren))
+
+	// simplify by promoting grand children to children if they're combined with same op
+	for _, child := range simplifiedChildren {
+		switch typed := child.(type) {
+		case *BoolCombination:
+			if typed.op == b.op {
+				newChildren = append(newChildren, typed.children...)
+			} else {
+				newChildren = append(newChildren, typed)
+			}
+		case *Condition:
+			newChildren = append(newChildren, typed)
+		}
+	}
+
+	// you can't parse a boolean combination with less than 2 children but you can construct one
+	if len(newChildren) == 0 {
+		return nil
+	} else if len(newChildren) == 1 {
+		return newChildren[0]
+	}
+
+	return &BoolCombination{op: b.op, children: newChildren}
 }
 
 func (b *BoolCombination) String() string {
@@ -307,6 +320,11 @@ func (q *ContactQuery) String() string {
 
 // Stringify converts a query node to a string
 func Stringify(n QueryNode) string {
+	// since simplfying can remove nodes and potentially generate a nil query
+	if n == nil {
+		return ""
+	}
+
 	s := n.String()
 
 	// bool combinations are wrapped in parentheses but the top level doesn't need to be
