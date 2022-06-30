@@ -1,3 +1,7 @@
+v0.162.1
+----------
+ * Support simplifying of queries than can't be parsed but can be constructed
+
 v0.162.0
 ----------
  * Provide API for building contact queries programatically
