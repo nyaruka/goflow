@@ -66,7 +66,7 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 type QueryNode interface {
 	fmt.Stringer
 	validate(envs.Environment, Resolver) error
-	simplify() QueryNode
+	Simplify() QueryNode
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -77,7 +77,7 @@ type Condition struct {
 	value    string
 }
 
-func newCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
+func NewCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
 	return &Condition{
 		propKey:  propKey,
 		propType: propType,
@@ -213,7 +213,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	return nil
 }
 
-func (c *Condition) simplify() QueryNode {
+func (c *Condition) Simplify() QueryNode {
 	return c
 }
 
@@ -256,9 +256,9 @@ func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) erro
 	return nil
 }
 
-func (b *BoolCombination) simplify() QueryNode {
+func (b *BoolCombination) Simplify() QueryNode {
 	for i, child := range b.children {
-		b.children[i] = child.simplify()
+		b.children[i] = child.Simplify()
 	}
 
 	newChilden := make([]QueryNode, 0, 2*len(b.children))
@@ -302,9 +302,14 @@ func (q *ContactQuery) Resolver() Resolver { return q.resolver }
 
 // String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
-	s := q.root.String()
+	return Stringify(q.root)
+}
 
-	// strip extra parentheses if not needed
+// Stringify converts a query node to a string
+func Stringify(n QueryNode) string {
+	s := n.String()
+
+	// bool combinations are wrapped in parentheses but the top level doesn't need to be
 	if strings.HasPrefix(s, "(") && strings.HasSuffix(s, ")") {
 		s = s[1 : len(s)-1]
 	}
@@ -350,7 +355,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 		return nil, err
 	}
 
-	rootNode = rootNode.simplify()
+	rootNode = rootNode.Simplify()
 
 	return &ContactQuery{root: rootNode, resolver: resolver}, nil
 }
