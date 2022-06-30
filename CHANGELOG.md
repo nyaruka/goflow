@@ -1,3 +1,7 @@
+v0.162.0
+----------
+ * Provide API for building contact queries programatically
+
 v0.161.2
 ----------
  * Update ANTLR
