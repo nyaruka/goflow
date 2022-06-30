@@ -140,6 +140,7 @@ func TestEvaluateQuery(t *testing.T) {
 		{query: `age = 36 OR gender = female`, result: true},
 		{query: `age = 35 OR gender = female`, result: false},
 		{query: `(age = 36 OR gender = female) AND age > 35`, result: true},
+		{query: `age = 36 OR gender = male AND age = 34`, result: true}, // AND has precedence
 	}
 
 	resolver := contactql.NewMockResolver(
