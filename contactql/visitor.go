@@ -92,17 +92,17 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return newCondition(AttributeID, PropertyTypeAttribute, OpEqual, strconv.Itoa(num))
+			return NewCondition(AttributeID, PropertyTypeAttribute, OpEqual, strconv.Itoa(num))
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()
 
-		return newCondition(scheme, PropertyTypeScheme, OpEqual, path)
+		return NewCondition(scheme, PropertyTypeScheme, OpEqual, path)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return newCondition(urns.TelScheme, PropertyTypeScheme, OpContains, value)
+		return NewCondition(urns.TelScheme, PropertyTypeScheme, OpContains, value)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
@@ -111,7 +111,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) inte
 		operator = OpEqual
 	}
 
-	return newCondition(AttributeName, PropertyTypeAttribute, operator, value)
+	return NewCondition(AttributeName, PropertyTypeAttribute, operator, value)
 }
 
 // expression : TEXT COMPARATOR literal
@@ -147,7 +147,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		propType = PropertyTypeField
 	}
 
-	return newCondition(propKey, propType, operator, value)
+	return NewCondition(propKey, propType, operator, value)
 }
 
 // expression : expression AND expression
