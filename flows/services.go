@@ -122,6 +122,7 @@ type HTTPTrace struct {
 
 // trim request and response traces to 10K chars to avoid bloating serialized sessions
 const trimTracesTo = 10000
+const trimURLsTo = 2048
 
 // NewHTTPTrace creates a new HTTP log from a trace
 func NewHTTPTrace(trace *httpx.Trace, status CallStatus) *HTTPTrace {
@@ -189,7 +190,7 @@ func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.
 	}
 
 	return &HTTPTrace{
-		URL:        url,
+		URL:        utils.TruncateEllipsis(url, trimURLsTo),
 		StatusCode: statusCode,
 		Status:     status,
 		Request:    utils.TruncateEllipsis(request, trimTracesTo),
