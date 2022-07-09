@@ -22,6 +22,9 @@ func TestHTTPLogs(t *testing.T) {
 			httpx.NewMockResponse(400, nil, "is error"),
 			httpx.MockConnectionError,
 		},
+		"http://temba.io/?x=" + strings.Repeat("x", 3000): {
+			httpx.NewMockResponse(200, nil, "hello"),
+		},
 	}))
 
 	req1, err := httpx.NewRequest("GET", "http://temba.io/", nil, nil)
@@ -39,6 +42,11 @@ func TestHTTPLogs(t *testing.T) {
 	trace3, err := httpx.DoTrace(http.DefaultClient, req3, nil, nil, -1)
 	require.EqualError(t, err, "unable to connect to server")
 
+	req4, err := httpx.NewRequest("GET", "http://temba.io/?x="+strings.Repeat("x", 3000), nil, nil) // URL exceeds limit
+	require.NoError(t, err)
+	trace4, err := httpx.DoTrace(http.DefaultClient, req4, nil, nil, -1)
+	require.NoError(t, err)
+
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode, nil)
 	assert.Equal(t, flows.CallStatusSuccess, log1.Status)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 12\r\n\r\nhello �", log1.Response) // escaped null should have been replaced
@@ -48,6 +56,9 @@ func TestHTTPLogs(t *testing.T) {
 
 	log3 := flows.NewHTTPLog(trace3, flows.HTTPStatusFromCode, nil)
 	assert.Equal(t, flows.CallStatusConnectionError, log3.Status)
+
+	log4 := flows.NewHTTPLog(trace4, flows.HTTPStatusFromCode, nil)
+	assert.Equal(t, "http://temba.io/?x="+strings.Repeat("x", 2026)+"...", log4.URL) // trimmed
 }
 
 func TestHTTPLogsRedaction(t *testing.T) {
