@@ -1,3 +1,7 @@
+v0.163.0
+----------
+ * Always truncate URLs in HTTP logs to 2048 chars
+
 v0.162.1
 ----------
  * Support simplifying of queries than can't be parsed but can be constructed
