@@ -158,7 +158,7 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		svc, _ := session.Engine().Services().Webhook(session)
+		svc, _ := session.Engine().Services().Webhook()
 		c, err := svc.Call(request)
 
 		if tc.isError {
@@ -192,7 +192,7 @@ func TestRetries(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://temba.io/", strings.NewReader("BODY"))
 	require.NoError(t, err)
 
-	svc, _ := session.Engine().Services().Webhook(session)
+	svc, _ := session.Engine().Services().Webhook()
 	c, err := svc.Call(request)
 	require.NoError(t, err)
 
@@ -207,7 +207,7 @@ func TestAccessRestrictions(t *testing.T) {
 	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)}, nil)
 
 	factory := webhooks.NewServiceFactory(http.DefaultClient, retries, access, map[string]string{"User-Agent": "Foo"}, 12345)
-	svc, err := factory(nil)
+	svc, err := factory()
 	assert.NoError(t, err)
 
 	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)
@@ -235,7 +235,7 @@ func TestGzipEncoding(t *testing.T) {
 
 	request.Header.Set("Accept-Encoding", "gzip")
 
-	svc, _ := session.Engine().Services().Webhook(session)
+	svc, _ := session.Engine().Services().Webhook()
 	c, err := svc.Call(request)
 	require.NoError(t, err)
 

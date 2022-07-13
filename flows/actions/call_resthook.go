@@ -115,7 +115,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 
 		req.Header.Add("Content-Type", "application/json")
 
-		svc, err := run.Session().Engine().Services().Webhook(run.Session())
+		svc, err := run.Session().Engine().Services().Webhook()
 		if err != nil {
 			logEvent(events.NewError(err))
 			return nil
