@@ -90,7 +90,7 @@ func createEngine(witToken string) flows.Engine {
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
 	if witToken != "" {
-		builder.WithClassificationServiceFactory(func(classifier *flows.Classifier) (flows.ClassificationService, error) {
+		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
 			if classifier.Type() == "wit" {
 				return wit.NewService(http.DefaultClient, nil, classifier, witToken), nil
 			}

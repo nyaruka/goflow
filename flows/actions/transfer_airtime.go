@@ -81,7 +81,7 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, step flows.Step, logEven
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 
-	svc, err := run.Session().Engine().Services().Airtime()
+	svc, err := run.Session().Engine().Services().Airtime(run.Session())
 	if err != nil {
 		return nil, err
 	}

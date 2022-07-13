@@ -103,7 +103,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		return nil
 	}
 
-	svc, err := run.Session().Engine().Services().Ticket(ticketer)
+	svc, err := run.Session().Engine().Services().Ticket(run.Session(), ticketer)
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil

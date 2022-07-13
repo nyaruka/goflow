@@ -135,7 +135,7 @@ func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, bo
 		req.Header.Add(key, headerValue)
 	}
 
-	svc, err := run.Session().Engine().Services().Webhook()
+	svc, err := run.Session().Engine().Services().Webhook(run.Session())
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil

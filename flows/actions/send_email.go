@@ -100,7 +100,7 @@ func (a *SendEmailAction) Execute(run flows.Run, step flows.Step, logModifier fl
 		return nil
 	}
 
-	svc, err := run.Session().Engine().Services().Email()
+	svc, err := run.Session().Engine().Services().Email(run.Session())
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil

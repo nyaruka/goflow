@@ -216,20 +216,20 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// create an engine instance
 		eng := engine.NewBuilder().
-			WithEmailServiceFactory(func() (flows.EmailService, error) {
+			WithEmailServiceFactory(func(flows.Session) (flows.EmailService, error) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
-			WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
+			WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
 				if c.Type() == "wit" {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
 			}).
-			WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) {
+			WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) {
 				return test.NewTicketService(t), nil
 			}).
-			WithAirtimeServiceFactory(func() (flows.AirtimeService, error) {
+			WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 			}).
 			Build()
