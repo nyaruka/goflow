@@ -15,11 +15,11 @@ import (
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Email(Session) (EmailService, error)
-	Webhook(Session) (WebhookService, error)
-	Classification(Session, *Classifier) (ClassificationService, error)
-	Ticket(Session, *Ticketer) (TicketService, error)
-	Airtime(Session) (AirtimeService, error)
+	Email(SessionAssets) (EmailService, error)
+	Webhook(SessionAssets) (WebhookService, error)
+	Classification(*Classifier) (ClassificationService, error)
+	Ticket(*Ticketer) (TicketService, error)
+	Airtime(SessionAssets) (AirtimeService, error)
 }
 
 // EmailService provides email functionality to the engine

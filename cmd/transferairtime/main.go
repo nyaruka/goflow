@@ -58,7 +58,7 @@ func main() {
 
 	httpx.SetDebug(verbose)
 
-	svcFactory := func(flows.Session) (flows.AirtimeService, error) {
+	svcFactory := func(flows.SessionAssets) (flows.AirtimeService, error) {
 		return dtone.NewService(http.DefaultClient, nil, dtoneKey, dtoneSecret), nil
 	}
 
