@@ -11,15 +11,15 @@ func TestEmptyServices(t *testing.T) {
 	// default engine configation provides no services for anything
 	eng := engine.NewBuilder().Build()
 
-	webhookSvc, err := eng.Services().Webhook(nil)
+	webhookSvc, err := eng.Services().Webhook()
 	assert.EqualError(t, err, "no webhook service factory configured")
 	assert.Nil(t, webhookSvc)
 
-	classificationSvc, err := eng.Services().Classification(nil, nil)
+	classificationSvc, err := eng.Services().Classification(nil)
 	assert.EqualError(t, err, "no classification service factory configured")
 	assert.Nil(t, classificationSvc)
 
-	airtimeSvc, err := eng.Services().Airtime(nil)
+	airtimeSvc, err := eng.Services().Airtime()
 	assert.EqualError(t, err, "no airtime service factory configured")
 	assert.Nil(t, airtimeSvc)
 }

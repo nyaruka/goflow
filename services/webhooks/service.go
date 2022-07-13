@@ -21,7 +21,7 @@ type service struct {
 
 // NewServiceFactory creates a new webhook service factory
 func NewServiceFactory(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
-	return func(flows.Session) (flows.WebhookService, error) {
+	return func() (flows.WebhookService, error) {
 		return NewService(httpClient, httpRetries, httpAccess, defaultHeaders, maxBodyBytes), nil
 	}
 }

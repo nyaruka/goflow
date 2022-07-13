@@ -22,15 +22,15 @@ func NewEngine() flows.Engine {
 	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	return engine.NewBuilder().
-		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
+		WithEmailServiceFactory(func() (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
-		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
-		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
+		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
+		WithAirtimeServiceFactory(func() (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
 
