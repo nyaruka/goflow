@@ -141,7 +141,7 @@ func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, bo
 		return nil
 	}
 
-	call, err := svc.Call(run.Session(), req)
+	call, err := svc.Call(req)
 
 	if err != nil {
 		logEvent(events.NewError(err))

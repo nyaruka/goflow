@@ -41,7 +41,7 @@ func newEmailService() *emailService {
 	return &emailService{}
 }
 
-func (s *emailService) Send(session flows.Session, addresses []string, subject, body string) error {
+func (s *emailService) Send(addresses []string, subject, body string) error {
 	return nil
 }
 
@@ -54,7 +54,7 @@ func newClassificationService(classifier *flows.Classifier) *classificationServi
 	return &classificationService{classifier: classifier}
 }
 
-func (s *classificationService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *classificationService) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")

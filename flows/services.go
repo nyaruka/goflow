@@ -24,7 +24,7 @@ type Services interface {
 
 // EmailService provides email functionality to the engine
 type EmailService interface {
-	Send(session Session, addresses []string, subject, body string) error
+	Send(addresses []string, subject, body string) error
 }
 
 // CallStatus represents the status of a call to an external service
@@ -53,7 +53,7 @@ type WebhookCall struct {
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
-	Call(session Session, request *http.Request) (*WebhookCall, error)
+	Call(request *http.Request) (*WebhookCall, error)
 }
 
 // ExtractedIntent models an intent match
@@ -76,7 +76,7 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
+	Classify(env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // TicketService provides ticketing functionality to the engine

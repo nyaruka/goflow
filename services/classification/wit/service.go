@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -25,7 +26,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	response, trace, err := s.client.Message(input)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))

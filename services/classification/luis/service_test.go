@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/classification/luis"
 	"github.com/nyaruka/goflow/test"
@@ -16,8 +17,6 @@ import (
 )
 
 func TestService(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
-
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -80,9 +79,10 @@ func TestService(t *testing.T) {
 		"production",
 	)
 
+	env := envs.NewBuilder().Build()
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(session, "book flight to Quito", httpLogger.Log)
+	classification, err := svc.Classify(env, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		{Name: "Book Flight", Confidence: dec(`0.9106805`)},

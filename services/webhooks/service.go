@@ -37,7 +37,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	}
 }
 
-func (s *service) Call(session flows.Session, request *http.Request) (*flows.WebhookCall, error) {
+func (s *service) Call(request *http.Request) (*flows.WebhookCall, error) {
 	// set any headers with defaults
 	for k, v := range s.defaultHeaders {
 		if request.Header.Get(k) == "" {
