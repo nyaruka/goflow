@@ -1,3 +1,7 @@
+v0.164.0
+----------
+ * Rework services to not require sessions
+
 v0.163.0
 ----------
  * Always truncate URLs in HTTP logs to 2048 chars
