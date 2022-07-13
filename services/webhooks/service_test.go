@@ -159,7 +159,7 @@ func TestWebhookParsing(t *testing.T) {
 		require.NoError(t, err)
 
 		svc, _ := session.Engine().Services().Webhook(session)
-		c, err := svc.Call(session, request)
+		c, err := svc.Call(request)
 
 		if tc.isError {
 			assert.Error(t, err, "expected error for call %s", tc.call)
@@ -193,7 +193,7 @@ func TestRetries(t *testing.T) {
 	require.NoError(t, err)
 
 	svc, _ := session.Engine().Services().Webhook(session)
-	c, err := svc.Call(session, request)
+	c, err := svc.Call(request)
 	require.NoError(t, err)
 
 	assert.Equal(t, 200, c.Response.StatusCode)
@@ -211,7 +211,7 @@ func TestAccessRestrictions(t *testing.T) {
 	assert.NoError(t, err)
 
 	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 
 	// actual error becomes a call with a connection error
 	assert.NoError(t, err)
@@ -236,7 +236,7 @@ func TestGzipEncoding(t *testing.T) {
 	request.Header.Set("Accept-Encoding", "gzip")
 
 	svc, _ := session.Engine().Services().Webhook(session)
-	c, err := svc.Call(session, request)
+	c, err := svc.Call(request)
 	require.NoError(t, err)
 
 	// check that gzip decompression happens transparently

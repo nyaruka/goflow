@@ -642,7 +642,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
 
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 	require.NoError(t, err)
 
 	assert.Equal(t, 42, len(call.ResponseTrace))
@@ -669,7 +669,7 @@ func TestWebhookCalledEventValid(t *testing.T) {
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 	require.NoError(t, err)
 
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
@@ -692,7 +692,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 	require.NoError(t, err)
 
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")
@@ -716,7 +716,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
 	svc := webhooks.NewService(http.DefaultClient, nil, nil, nil, 1024*1024)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 	require.NoError(t, err)
 
 	event := events.NewWebhookCalled(call, flows.CallStatusSuccess, "")

@@ -121,7 +121,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 			return nil
 		}
 
-		call, err := svc.Call(run.Session(), req)
+		call, err := svc.Call(req)
 
 		if err != nil {
 			logEvent(events.NewError(err))

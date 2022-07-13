@@ -106,7 +106,7 @@ func (a *SendEmailAction) Execute(run flows.Run, step flows.Step, logModifier fl
 		return nil
 	}
 
-	err = svc.Send(run.Session(), evaluatedAddresses, evaluatedSubject, evaluatedBody)
+	err = svc.Send(evaluatedAddresses, evaluatedSubject, evaluatedBody)
 	if err != nil {
 		logEvent(events.NewError(errors.Wrap(err, "unable to send email")))
 	} else {

@@ -22,7 +22,7 @@ func NewService(smtpURL string, retries *smtpx.RetryConfig) (flows.EmailService,
 	return &service{client: c, retries: retries}, nil
 }
 
-func (s *service) Send(session flows.Session, addresses []string, subject, body string) error {
+func (s *service) Send(addresses []string, subject, body string) error {
 	// sending blank emails is a good way to get flagged as a spammer so use placeholder if body is empty
 	if strings.TrimSpace(body) == "" {
 		body = "(empty body)"
