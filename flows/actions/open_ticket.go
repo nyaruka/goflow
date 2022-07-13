@@ -111,7 +111,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), topic, body, assignee, httpLogger.Log)
+	ticket, err := svc.Open(run.Session().Runs()[0].Environment(), run.Session().Contact(), topic, body, assignee, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}

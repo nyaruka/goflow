@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -81,7 +82,7 @@ type ClassificationService interface {
 // TicketService provides ticketing functionality to the engine
 type TicketService interface {
 	// Open tries to open a new ticket
-	Open(session Session, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
+	Open(env envs.Environment, contact *Contact, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer

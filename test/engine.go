@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -99,7 +100,7 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
 			HTTPTrace: &flows.HTTPTrace{
