@@ -1,3 +1,7 @@
+v0.164.1
+----------
+ * Remove flow sessions from service factories
+
 v0.164.0
 ----------
  * Rework services to not require sessions
