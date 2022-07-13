@@ -145,7 +145,7 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
 		HTTPTrace: &flows.HTTPTrace{
 			URL:        "http://send.airtime.com",

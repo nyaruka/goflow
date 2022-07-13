@@ -107,7 +107,7 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
 // HTTPTrace describes an HTTP request/response
