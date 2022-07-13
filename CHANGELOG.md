@@ -1,3 +1,7 @@
+v0.164.2
+----------
+ * Pass session assets to service factories
+
 v0.164.1
 ----------
  * Remove flow sessions from service factories
