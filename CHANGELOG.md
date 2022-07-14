@@ -1,3 +1,8 @@
+v0.164.3
+----------
+ * Modifer.Apply should return if it made a modification and caller responsible for calling ReevaluateGroups if so
+ * Add Services param to Modifier.Apply
+
 v0.164.2
 ----------
  * Pass session assets to service factories
