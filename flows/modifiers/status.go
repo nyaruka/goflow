@@ -33,13 +33,13 @@ func NewStatus(status flows.ContactStatus) *StatusModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *StatusModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
-
+func (m *StatusModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Status() != m.Status {
 		contact.SetStatus(m.Status)
 		log(events.NewContactStatusChanged(m.Status))
-		ReevaluateGroups(env, assets, contact, log)
+		return true
 	}
+	return false
 }
 
 var _ flows.Modifier = (*StatusModifier)(nil)

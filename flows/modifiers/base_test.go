@@ -69,8 +69,10 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
+		env := envs.NewBuilder().WithMaxValueLength(256).Build()
+		svcs := engine.NewBuilder().Build().Services()
 		eventLog := test.NewEventLog()
-		modifier.Apply(envs.NewBuilder().WithMaxValueLength(256).Build(), sessionAssets, contact, eventLog.Log)
+		modifiers.Apply(env, svcs, sessionAssets, contact, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
