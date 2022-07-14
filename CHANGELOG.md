@@ -1,3 +1,20 @@
+v0.164.3
+----------
+ * Modifer.Apply should return if it made a modification and caller responsible for calling ReevaluateGroups if so
+ * Add Services param to Modifier.Apply
+
+v0.164.2
+----------
+ * Pass session assets to service factories
+
+v0.164.1
+----------
+ * Remove flow sessions from service factories
+
+v0.164.0
+----------
+ * Rework services to not require sessions
+
 v0.163.0
 ----------
  * Always truncate URLs in HTTP logs to 2048 chars

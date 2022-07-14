@@ -81,14 +81,14 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, step flows.Step, logEven
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 
-	svc, err := run.Session().Engine().Services().Airtime(run.Session())
+	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())
 	if err != nil {
 		return nil, err
 	}
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
 	if transfer != nil {
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}

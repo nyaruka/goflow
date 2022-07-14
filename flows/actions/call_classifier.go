@@ -84,7 +84,7 @@ func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input st
 		return nil, false
 	}
 
-	svc, err := run.Session().Engine().Services().Classification(run.Session(), classifier)
+	svc, err := run.Session().Engine().Services().Classification(classifier)
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil, false
@@ -92,7 +92,7 @@ func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input st
 
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(run.Session(), input, httpLogger.Log)
+	classification, err := svc.Classify(run.Environment(), input, httpLogger.Log)
 
 	if len(httpLogger.Logs) > 0 {
 		logEvent(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))

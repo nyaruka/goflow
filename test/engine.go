@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -21,15 +22,15 @@ func NewEngine() flows.Engine {
 	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	return engine.NewBuilder().
-		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
+		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
-		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
-		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
+		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
+		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
 
@@ -40,7 +41,7 @@ func newEmailService() *emailService {
 	return &emailService{}
 }
 
-func (s *emailService) Send(session flows.Session, addresses []string, subject, body string) error {
+func (s *emailService) Send(addresses []string, subject, body string) error {
 	return nil
 }
 
@@ -53,7 +54,7 @@ func newClassificationService(classifier *flows.Classifier) *classificationServi
 	return &classificationService{classifier: classifier}
 }
 
-func (s *classificationService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *classificationService) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -99,7 +100,7 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
 			HTTPTrace: &flows.HTTPTrace{
@@ -144,7 +145,7 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
 		HTTPTrace: &flows.HTTPTrace{
 			URL:        "http://send.airtime.com",

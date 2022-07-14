@@ -21,7 +21,7 @@ type service struct {
 
 // NewServiceFactory creates a new webhook service factory
 func NewServiceFactory(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAccess *httpx.AccessConfig, defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
-	return func(flows.Session) (flows.WebhookService, error) {
+	return func(flows.SessionAssets) (flows.WebhookService, error) {
 		return NewService(httpClient, httpRetries, httpAccess, defaultHeaders, maxBodyBytes), nil
 	}
 }
@@ -37,7 +37,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	}
 }
 
-func (s *service) Call(session flows.Session, request *http.Request) (*flows.WebhookCall, error) {
+func (s *service) Call(request *http.Request) (*flows.WebhookCall, error) {
 	// set any headers with defaults
 	for k, v := range s.defaultHeaders {
 		if request.Header.Get(k) == "" {

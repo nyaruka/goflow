@@ -103,7 +103,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		return nil
 	}
 
-	svc, err := run.Session().Engine().Services().Ticket(run.Session(), ticketer)
+	svc, err := run.Session().Engine().Services().Ticket(ticketer)
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil
@@ -111,7 +111,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), topic, body, assignee, httpLogger.Log)
+	ticket, err := svc.Open(run.Environment(), run.Session().Contact(), topic, body, assignee, httpLogger.Log)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
@@ -124,7 +124,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		run.Contact().Tickets().Add(ticket)
 
 		// need to re-evaluate groups since may have groups that query on tickets
-		modifiers.ReevaluateGroups(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
+		modifiers.ReevaluateGroups(run.Environment(), run.Contact(), logEvent)
 	}
 
 	return ticket

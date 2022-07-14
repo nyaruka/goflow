@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -14,16 +15,16 @@ import (
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Email(Session) (EmailService, error)
-	Webhook(Session) (WebhookService, error)
-	Classification(Session, *Classifier) (ClassificationService, error)
-	Ticket(Session, *Ticketer) (TicketService, error)
-	Airtime(Session) (AirtimeService, error)
+	Email(SessionAssets) (EmailService, error)
+	Webhook(SessionAssets) (WebhookService, error)
+	Classification(*Classifier) (ClassificationService, error)
+	Ticket(*Ticketer) (TicketService, error)
+	Airtime(SessionAssets) (AirtimeService, error)
 }
 
 // EmailService provides email functionality to the engine
 type EmailService interface {
-	Send(session Session, addresses []string, subject, body string) error
+	Send(addresses []string, subject, body string) error
 }
 
 // CallStatus represents the status of a call to an external service
@@ -52,7 +53,7 @@ type WebhookCall struct {
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
-	Call(session Session, request *http.Request) (*WebhookCall, error)
+	Call(request *http.Request) (*WebhookCall, error)
 }
 
 // ExtractedIntent models an intent match
@@ -75,13 +76,13 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
+	Classify(env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // TicketService provides ticketing functionality to the engine
 type TicketService interface {
 	// Open tries to open a new ticket
-	Open(session Session, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
+	Open(env envs.Environment, contact *Contact, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -106,7 +107,7 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
 // HTTPTrace describes an HTTP request/response
