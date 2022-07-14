@@ -33,11 +33,11 @@ func NewLanguage(language envs.Language) *LanguageModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *LanguageModifier) Apply(env envs.Environment, assets flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *LanguageModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)
 		log(events.NewContactLanguageChanged(m.Language))
-		ReevaluateGroups(env, assets, contact, log)
+		ReevaluateGroups(env, sa, contact, log)
 	}
 }
 
