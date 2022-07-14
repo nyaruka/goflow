@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeField, readTicketModifier)
+	registerType(TypeTicket, readTicketModifier)
 }
 
 // TypeTicket is the type of our ticket modifier
@@ -40,10 +40,17 @@ func NewTicket(ticketer *flows.Ticketer, topic *flows.Topic, body string, assign
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketModifier) Apply(env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *TicketModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	httpLogger := &flows.HTTPLogger{}
 
-	ticket, err := svc.Open(run.Session(), m.topic, m.body, m.assignee, httpLogger.Log)
+	// try to get a ticket service for this ticketer
+	svc, err := svcs.Ticket(m.ticketer)
+	if err != nil {
+		log(events.NewError(err))
+		return false
+	}
+
+	ticket, err := svc.Open(env, contact, m.topic, m.body, m.assignee, httpLogger.Log)
 	if err != nil {
 		log(events.NewError(err))
 	}
@@ -54,10 +61,10 @@ func (m *TicketModifier) Apply(env envs.Environment, sa flows.SessionAssets, con
 		log(events.NewTicketOpened(ticket))
 
 		contact.Tickets().Add(ticket)
-
-		// need to re-evaluate groups since may have groups that query on tickets
-		ReevaluateGroups(env, sa, contact, log)
+		return true
 	}
+
+	return false
 }
 
 func (m *TicketModifier) Ticketer() *flows.Ticketer {
@@ -112,7 +119,8 @@ func (m *TicketModifier) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketModifierEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Ticketer:      m.ticketer.Reference(),
-		Body:          m.body,
 		Topic:         m.topic.Reference(),
+		Body:          m.body,
+		Assignee:      m.assignee.Reference(),
 	})
 }
