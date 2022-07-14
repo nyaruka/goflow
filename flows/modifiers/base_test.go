@@ -72,7 +72,7 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		env := envs.NewBuilder().WithMaxValueLength(256).Build()
 		svcs := engine.NewBuilder().Build().Services()
 		eventLog := test.NewEventLog()
-		modifier.Apply(env, svcs, sessionAssets, contact, eventLog.Log)
+		modifiers.Apply(env, svcs, sessionAssets, contact, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc

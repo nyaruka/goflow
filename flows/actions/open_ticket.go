@@ -124,7 +124,7 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		run.Contact().Tickets().Add(ticket)
 
 		// need to re-evaluate groups since may have groups that query on tickets
-		modifiers.ReevaluateGroups(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
+		modifiers.ReevaluateGroups(run.Environment(), run.Contact(), logEvent)
 	}
 
 	return ticket

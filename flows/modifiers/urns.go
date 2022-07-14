@@ -46,7 +46,7 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNsModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNsModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *URNsModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
 	if m.Modification == URNsSet {
@@ -70,8 +70,9 @@ func (m *URNsModifier) Apply(env envs.Environment, svcs flows.Services, sa flows
 
 	if modified {
 		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
-		ReevaluateGroups(env, sa, contact, log)
+		return true
 	}
+	return false
 }
 
 var _ flows.Modifier = (*URNsModifier)(nil)

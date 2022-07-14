@@ -37,7 +37,7 @@ func NewField(field *flows.Field, value string) *FieldModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *FieldModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) {
+func (m *FieldModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	oldValue := contact.Fields().Get(m.field)
 
 	newValue := contact.Fields().Parse(env, sa.Fields(), m.field, m.value)
@@ -50,8 +50,9 @@ func (m *FieldModifier) Apply(env envs.Environment, svcs flows.Services, sa flow
 	if !newValue.Equals(oldValue) {
 		contact.Fields().Set(m.field, newValue)
 		log(events.NewContactFieldChanged(m.field, newValue))
-		ReevaluateGroups(env, sa, contact, log)
+		return true
 	}
+	return false
 }
 
 func (m *FieldModifier) Value() string {
