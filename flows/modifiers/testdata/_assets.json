@@ -95,8 +95,13 @@
     ],
     "ticketers": [
         {
-            "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-            "name": "Support Tickets",
+            "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+            "name": "TextIt",
+            "type": "internal"
+        },
+        {
+            "uuid": "d444ef20-0529-44af-966d-0e6be9cf584a",
+            "name": "Broken",
             "type": "mailgun"
         }
     ],

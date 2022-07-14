@@ -78,7 +78,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 		logEvent(events.NewError(err))
 	}
 
-	ticket := a.open(run, step, ticketer, topic, evaluatedBody, assignee, logEvent)
+	ticket := a.open(run, step, ticketer, topic, evaluatedBody, assignee, logModifier, logEvent)
 	if ticket != nil {
 		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
 	} else {
@@ -88,7 +88,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil
@@ -103,29 +103,12 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		return nil
 	}
 
-	svc, err := run.Session().Engine().Services().Ticket(ticketer)
-	if err != nil {
-		logEvent(events.NewError(err))
-		return nil
+	mod := modifiers.NewTicket(ticketer, topic, body, assignee)
+
+	if a.applyModifier(run, mod, logModifier, logEvent) {
+		// if we were able to open a ticket, it's the last in the list
+		tickets := run.Session().Contact().Tickets().All()
+		return tickets[len(tickets)-1]
 	}
-
-	httpLogger := &flows.HTTPLogger{}
-
-	ticket, err := svc.Open(run.Environment(), run.Session().Contact(), topic, body, assignee, httpLogger.Log)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
-	if len(httpLogger.Logs) > 0 {
-		logEvent(events.NewTicketerCalled(ticketer.Reference(), httpLogger.Logs))
-	}
-	if ticket != nil {
-		logEvent(events.NewTicketOpened(ticket))
-
-		run.Contact().Tickets().Add(ticket)
-
-		// need to re-evaluate groups since may have groups that query on tickets
-		modifiers.ReevaluateGroups(run.Environment(), run.Contact(), logEvent)
-	}
-
-	return ticket
+	return nil
 }

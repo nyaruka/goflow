@@ -11,8 +11,8 @@
         "modifier": {
             "type": "ticket",
             "ticketer": {
-                "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                "name": "Support Tickets"
+                "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                "name": "TextIt"
             },
             "topic": {
                 "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
@@ -33,8 +33,8 @@
                 {
                     "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
                     "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
+                        "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                        "name": "TextIt"
                     },
                     "topic": {
                         "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
@@ -55,8 +55,8 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "service": "ticketer",
                 "ticketer": {
-                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                    "name": "Support Tickets"
+                    "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                    "name": "TextIt"
                 },
                 "http_logs": [
                     {
@@ -77,8 +77,8 @@
                 "ticket": {
                     "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
                     "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
+                        "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                        "name": "TextIt"
                     },
                     "topic": {
                         "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
@@ -91,6 +91,42 @@
                         "name": "Bob"
                     }
                 }
+            }
+        ]
+    },
+    {
+        "description": "error event if ticket service instantiation fails",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "ticket",
+            "ticketer": {
+                "uuid": "d444ef20-0529-44af-966d-0e6be9cf584a",
+                "name": "Broken"
+            },
+            "topic": {
+                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                "name": "Computers"
+            },
+            "body": "Where are my keys?",
+            "assignee": null
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "can't load ticket service"
             }
         ]
     }

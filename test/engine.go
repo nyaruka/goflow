@@ -29,7 +29,12 @@ func NewEngine() flows.Engine {
 		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
+		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) {
+			if t.Name() == "Broken" {
+				return nil, errors.New("can't load ticket service")
+			}
+			return NewTicketService(t), nil
+		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
