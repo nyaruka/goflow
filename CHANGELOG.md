@@ -1,3 +1,7 @@
+v0.165.0
+----------
+ * Add modifier to open a ticket
+
 v0.164.3
 ----------
  * Modifer.Apply should return if it made a modification and caller responsible for calling ReevaluateGroups if so
