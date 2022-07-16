@@ -1,0 +1,190 @@
+[
+    {
+        "description": "ticket opened event if ticket opened",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "ticket",
+            "ticketer": {
+                "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                "name": "TextIt"
+            },
+            "topic": {
+                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                "name": "Computers"
+            },
+            "body": "Where are my keys?",
+            "assignee": {
+                "email": "bob@nyaruka.com",
+                "name": "Bob"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "tickets": [
+                {
+                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ticketer": {
+                        "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                        "name": "TextIt"
+                    },
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "body": "Where are my keys?",
+                    "external_id": "123456",
+                    "assignee": {
+                        "email": "bob@nyaruka.com",
+                        "name": "Bob"
+                    }
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                    "name": "TextIt"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 200,
+                        "status": "success",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Where are my keys?\"}",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
+                    }
+                ]
+            },
+            {
+                "type": "ticket_opened",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "ticket": {
+                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ticketer": {
+                        "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                        "name": "TextIt"
+                    },
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "body": "Where are my keys?",
+                    "external_id": "123456",
+                    "assignee": {
+                        "email": "bob@nyaruka.com",
+                        "name": "Bob"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "description": "error event if ticket service instantiation fails",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "ticket",
+            "ticketer": {
+                "uuid": "d444ef20-0529-44af-966d-0e6be9cf584a",
+                "name": "Broken"
+            },
+            "topic": {
+                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                "name": "Computers"
+            },
+            "body": "Where are my keys?",
+            "assignee": null
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "can't load ticket service"
+            }
+        ]
+    },
+    {
+        "description": "error event if ticket opening fails",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "ticket",
+            "ticketer": {
+                "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                "name": "TextIt"
+            },
+            "topic": {
+                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                "name": "Computers"
+            },
+            "body": "Should fail",
+            "assignee": null
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "text": "error calling ticket API"
+            },
+            {
+                "type": "service_called",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "service": "ticketer",
+                "ticketer": {
+                    "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                    "name": "TextIt"
+                },
+                "http_logs": [
+                    {
+                        "url": "http://nyaruka.tickets.com/tickets.json",
+                        "status_code": 400,
+                        "status": "response_error",
+                        "request": "POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"Should fail\"}",
+                        "response": "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+                        "elapsed_ms": 1,
+                        "retries": 0,
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
+                    }
+                ]
+            }
+        ]
+    }
+]

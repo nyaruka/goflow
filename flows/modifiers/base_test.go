@@ -25,15 +25,17 @@ import (
 
 func TestModifierTypes(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	assets, err := test.LoadSessionAssets(env, "testdata/_assets.json")
+	sa, err := test.LoadSessionAssets(env, "testdata/_assets.json")
 	require.NoError(t, err)
 
+	eng := test.NewEngine()
+
 	for typeName := range modifiers.RegisteredTypes {
-		testModifierType(t, assets, typeName)
+		testModifierType(t, eng.Services(), sa, typeName)
 	}
 }
 
-func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName string) {
+func testModifierType(t *testing.T, svcs flows.Services, sa flows.SessionAssets, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
@@ -60,19 +62,18 @@ func testModifierType(t *testing.T, sessionAssets flows.SessionAssets, typeName 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 
 		// read the modifier to be tested
-		modifier, err := modifiers.ReadModifier(sessionAssets, tc.Modifier, assets.PanicOnMissing)
+		modifier, err := modifiers.ReadModifier(sa, tc.Modifier, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading modifier in %s", testName)
 		assert.Equal(t, typeName, modifier.Type())
 
 		// read the initial contact state
-		contact, err := flows.ReadContact(sessionAssets, tc.ContactBefore, assets.PanicOnMissing)
+		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
 		env := envs.NewBuilder().WithMaxValueLength(256).Build()
-		svcs := engine.NewBuilder().Build().Services()
 		eventLog := test.NewEventLog()
-		modifiers.Apply(env, svcs, sessionAssets, contact, modifier, eventLog.Log)
+		modifiers.Apply(env, svcs, sa, contact, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc

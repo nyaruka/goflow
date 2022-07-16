@@ -162,9 +162,9 @@ func (a *baseAction) updateWebhook(run flows.Run, call *flows.WebhookCall) {
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
-	modifiers.Apply(run.Environment(), run.Session().Engine().Services(), run.Session().Assets(), run.Contact(), mod, logEvent)
+func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) bool {
 	logModifier(mod)
+	return modifiers.Apply(run.Environment(), run.Session().Engine().Services(), run.Session().Assets(), run.Contact(), mod, logEvent)
 }
 
 // helper to log a failure
