@@ -8,13 +8,13 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-03-08 11:09-0500\n"
+"POT-Creation-Date: 2022-07-19 11:20-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 msgid "A single random integer in the given inclusive range."
 msgstr "Un solo entero aleatorio en el rango inclusivo dado."
@@ -461,6 +461,9 @@ msgstr ""
 
 msgid "Returns the remainder of the division of `dividend` by `divisor`."
 msgstr "Devuelve el resto de la división de `dividend` por `divisor`."
+
+msgid "Returns the result of concatenating two arrays."
+msgstr "Devuelve el resultado de concatenar dos matrices."
 
 msgid "Returns the unique values in `array`."
 msgstr "Devuelve los valores únicos en `array`. "

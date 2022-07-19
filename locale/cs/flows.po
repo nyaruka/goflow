@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-03-08 11:09-0500\n"
+"POT-Creation-Date: 2022-07-19 11:20-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -444,6 +444,9 @@ msgstr "Vrací část `text` mezi `start` (včetně) a `end` (bez)."
 
 msgid "Returns the remainder of the division of `dividend` by `divisor`."
 msgstr "Vrací zbytek dělení čísla `dividend` číslem `divisor`."
+
+msgid "Returns the result of concatenating two arrays."
+msgstr ""
 
 msgid "Returns the unique values in `array`."
 msgstr "Vrátí jedinečné hodnoty v poli `array`."

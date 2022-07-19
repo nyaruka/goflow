@@ -7,13 +7,13 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-03-08 11:09-0500\n"
+"POT-Creation-Date: 2022-07-19 11:20-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 msgid "A single random integer in the given inclusive range."
 msgstr "Um número aleatório simples no intervalo fornecido."
@@ -395,6 +395,9 @@ msgstr ""
 
 msgid "Returns the remainder of the division of `dividend` by `divisor`."
 msgstr "Retorna o resto da divisão de `dividend` pelo `divisor`."
+
+msgid "Returns the result of concatenating two arrays."
+msgstr ""
 
 msgid "Returns the unique values in `array`."
 msgstr ""
