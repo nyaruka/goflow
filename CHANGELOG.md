@@ -1,3 +1,7 @@
+v0.165.1
+----------
+ * Updated translations from Transifex
+
 v0.165.0
 ----------
  * Add modifier to open a ticket
