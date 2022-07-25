@@ -1,3 +1,7 @@
+v0.165.4
+----------
+ * Another tweak to SessionBuilder so that it doesn't override assets
+
 v0.165.3
 ----------
  * More tweaks to SessionBuilder
