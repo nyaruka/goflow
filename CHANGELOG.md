@@ -1,3 +1,7 @@
+v0.165.5
+----------
+ * Update to latest gocommon which adds teams URNs
+
 v0.165.4
 ----------
  * Another tweak to SessionBuilder so that it doesn't override assets
