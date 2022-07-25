@@ -177,7 +177,7 @@ func TestWebhookParsing(t *testing.T) {
 }
 
 func TestRetries(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
@@ -222,7 +222,7 @@ func TestAccessRestrictions(t *testing.T) {
 }
 
 func TestGzipEncoding(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
@@ -287,7 +287,7 @@ func TestWebhookResponseWithEscapes(t *testing.T) {
 	})
 	httpx.SetRequestor(mocks)
 
-	session, _ := test.NewSessionBuilder().
+	_, session, _ := test.NewSessionBuilder().
 		WithAssetsPath("testdata/webhook_flow.json").
 		WithFlow("bb38eefb-3cd9-4f80-9867-9c84ae276f7a").MustBuild()
 

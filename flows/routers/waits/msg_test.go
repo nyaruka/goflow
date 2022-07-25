@@ -92,7 +92,7 @@ func TestMsgWait(t *testing.T) {
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
 	// a manual trigger will wait at the initial wait
-	session, sprint := test.NewSessionBuilder().WithAssetsJSON([]byte(initialWaitJSON)).
+	_, session, sprint := test.NewSessionBuilder().WithAssetsJSON([]byte(initialWaitJSON)).
 		WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").
 		MustBuild()
 
@@ -101,7 +101,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	assert.Equal(t, "msg_wait", sprint.Events()[0].Type())
 
 	// whereas a msg trigger will skip over it
-	session, sprint = test.NewSessionBuilder().WithAssetsJSON([]byte(initialWaitJSON)).
+	_, session, sprint = test.NewSessionBuilder().WithAssetsJSON([]byte(initialWaitJSON)).
 		WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").
 		WithTriggerMsg("Hi there").
 		MustBuild()
