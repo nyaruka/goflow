@@ -671,16 +671,18 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 	sa := b.assets
 	var err error
 
-	if b.assetsPath != "" {
-		b.assetsJSON, err = os.ReadFile(b.assetsPath)
-		if err != nil {
-			errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
+	if sa == nil {
+		if b.assetsPath != "" {
+			b.assetsJSON, err = os.ReadFile(b.assetsPath)
+			if err != nil {
+				errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
+			}
 		}
-	}
-	if b.assetsJSON != nil {
-		sa, err = CreateSessionAssets(b.assetsJSON, "")
-		if err != nil {
-			return nil, nil, nil, errors.Wrap(err, "error creating session assets")
+		if b.assetsJSON != nil {
+			sa, err = CreateSessionAssets(b.assetsJSON, "")
+			if err != nil {
+				return nil, nil, nil, errors.Wrap(err, "error creating session assets")
+			}
 		}
 	}
 
