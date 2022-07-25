@@ -132,6 +132,7 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
+		"teams":      nil,
 		"tel":        flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
 		"telegram":   nil,
 		"twitter":    flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
