@@ -216,7 +216,7 @@ func TestRunResuming(t *testing.T) {
 	assetsJSON, err := os.ReadFile("testdata/subflows.json")
 	require.NoError(t, err)
 
-	session, _ := test.NewSessionBuilder().WithAssets(assetsJSON).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
+	session, _ := test.NewSessionBuilder().WithAssetsJSON(assetsJSON).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
 
 	// each run should be marked as completed
 	assert.Equal(t, 3, len(session.Runs()))
@@ -227,7 +227,7 @@ func TestRunResuming(t *testing.T) {
 	// change the UUID of the third flow so the nter_flow in the second flow will error
 	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[2]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
 
-	session, _ = test.NewSessionBuilder().WithAssets(assetsWithoutChildFlow).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
+	session, _ = test.NewSessionBuilder().WithAssetsJSON(assetsWithoutChildFlow).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
 
 	// each run should be marked as failed
 	assert.Equal(t, 2, len(session.Runs()))
@@ -239,7 +239,7 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	assetsJSON, err := os.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
-	session1, _ := test.NewSessionBuilder().WithAssets(assetsJSON).WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	session1, _ := test.NewSessionBuilder().WithAssetsJSON(assetsJSON).WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	assert.Equal(t, flows.SessionStatusWaiting, session1.Status())
 	assert.Equal(t, flows.RunStatusActive, session1.Runs()[0].Status())
