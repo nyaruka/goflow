@@ -1,3 +1,7 @@
+v0.165.2
+----------
+ * Allow passing of a flows.SessionAssets to test.SessionBuilder
+
 v0.165.1
 ----------
  * Updated translations from Transifex
