@@ -1,3 +1,7 @@
+v0.166.0
+----------
+ * Add contact status to variable context
+
 v0.165.5
 ----------
  * Update to latest gocommon which adds teams URNs
