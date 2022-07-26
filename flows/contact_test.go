@@ -177,6 +177,7 @@ func TestContact(t *testing.T) {
 		"name":         types.NewXText("Joe Bloggs"),
 		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
+		"status":       types.NewXText(string(contact.Status())),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
 		"uuid":         types.NewXText(string(contact.UUID())),
