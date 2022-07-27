@@ -52,17 +52,19 @@ type TemplateTranslation struct {
 		Content       string                  `json:"content"         validate:"required"`
 		Language      envs.Language           `json:"language"        validate:"required"`
 		Namespace     string                  `json:"namespace"`
+		ExternalID    string                  `json:"external_id"     validate:"required"`
 		Country       envs.Country            `json:"country,omitempty"`
 		VariableCount int                     `json:"variable_count"`
 	}
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel assets.ChannelReference, language envs.Language, country envs.Country, content string, variableCount int, namespace string) *TemplateTranslation {
+func NewTemplateTranslation(channel assets.ChannelReference, language envs.Language, country envs.Country, content string, variableCount int, namespace string, externalID string) *TemplateTranslation {
 	t := &TemplateTranslation{}
 	t.t.Channel = channel
 	t.t.Content = content
 	t.t.Namespace = namespace
+	t.t.ExternalID = externalID
 	t.t.Language = language
 	t.t.Country = country
 	t.t.VariableCount = variableCount
@@ -74,6 +76,9 @@ func (t *TemplateTranslation) Content() string { return t.t.Content }
 
 // Namespace returns the namespace for this template
 func (t *TemplateTranslation) Namespace() string { return t.t.Namespace }
+
+// ExternalID returns the external_id for this template
+func (t *TemplateTranslation) ExternalID() string { return t.t.ExternalID }
 
 // Language returns the language this translation is in
 func (t *TemplateTranslation) Language() envs.Language { return t.t.Language }

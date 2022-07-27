@@ -149,11 +149,12 @@ func (m *MsgOut) Topic() MsgTopic { return m.Topic_ }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_  *assets.TemplateReference `json:"template"`
-	Language_  envs.Language             `json:"language"`
-	Country_   envs.Country              `json:"country"`
-	Variables_ []string                  `json:"variables,omitempty"`
-	Namespace_ string                    `json:"namespace"`
+	Template_   *assets.TemplateReference `json:"template"`
+	Language_   envs.Language             `json:"language"`
+	Country_    envs.Country              `json:"country"`
+	Variables_  []string                  `json:"variables,omitempty"`
+	Namespace_  string                    `json:"namespace"`
+	ExternalID_ string                    `json:"external_id"`
 }
 
 // Template returns the template this msg template is for
@@ -171,13 +172,17 @@ func (t MsgTemplating) Variables() []string { return t.Variables_ }
 // Namespace returns the namespace that should be for the template
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
+// ExternalID returns the external_id that should be for the template
+func (t MsgTemplating) ExternalID() string { return t.ExternalID_ }
+
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, country envs.Country, variables []string, namespace string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, country envs.Country, variables []string, namespace string, externalID string) *MsgTemplating {
 	return &MsgTemplating{
-		Template_:  template,
-		Language_:  language,
-		Country_:   country,
-		Variables_: variables,
-		Namespace_: namespace,
+		Template_:   template,
+		Language_:   language,
+		Country_:    country,
+		Variables_:  variables,
+		Namespace_:  namespace,
+		ExternalID_: externalID,
 	}
 }

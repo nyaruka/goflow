@@ -442,6 +442,7 @@
                             "name": "affirmation"
                         },
                         "language": "eng",
+                        "external_id": "external_1",
                         "country": "US",
                         "variables": [
                             "Ryan Lewis",
@@ -524,6 +525,7 @@
                             "name": "affirmation"
                         },
                         "language": "spa",
+                        "external_id": "external_2",
                         "country": "",
                         "variables": [
                             "Ryan Lewis",
@@ -594,6 +596,7 @@
                             "name": "wakeup"
                         },
                         "language": "eng",
+                        "external_id": "external_3",
                         "country": "",
                         "namespace": ""
                     }
@@ -663,6 +666,7 @@
                             "name": "wakeup"
                         },
                         "language": "eng",
+                        "external_id": "external_3",
                         "country": "",
                         "namespace": ""
                     }

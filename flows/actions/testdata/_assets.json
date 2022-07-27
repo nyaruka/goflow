@@ -236,6 +236,7 @@
                     },
                     "language": "eng",
                     "country": "US",
+                    "external_id": "external_1",
                     "content": "Hi {{1}}, who's an excellent {{2}}?"
                 },
                 {
@@ -244,6 +245,7 @@
                         "name": "My Android Phone"
                     },
                     "language": "spa",
+                    "external_id": "external_2",
                     "content": "Hola {{1}}, quien es un {{2}} excelente?"
                 }
             ]
@@ -258,6 +260,7 @@
                         "name": "My Android Phone"
                     },
                     "language": "eng",
+                    "external_id": "external_3",
                     "content": "Hi there, it's time to get up!"
                 }
             ]
