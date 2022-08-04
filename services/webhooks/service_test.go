@@ -183,8 +183,8 @@ func TestRetries(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(502, nil, "a"),
-			httpx.NewMockResponse(200, nil, "b"),
+			httpx.NewMockResponse(502, nil, []byte("a")),
+			httpx.NewMockResponse(200, nil, []byte("b")),
 		},
 	})
 	httpx.SetRequestor(mocks)
@@ -282,7 +282,7 @@ func TestWebhookResponseWithEscapes(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://cheapcontactlookups.com": {
-			httpx.NewMockResponse(200, nil, `{"name": "01\\02\\03", "joined": "04\\05\\06"}`),
+			httpx.NewMockResponse(200, nil, []byte(`{"name": "01\\02\\03", "joined": "04\\05\\06"}`)),
 		},
 	})
 	httpx.SetRequestor(mocks)

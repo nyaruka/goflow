@@ -17,9 +17,9 @@ func TestParse(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://nlp.bothub.it/parse": {
-			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
-			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
-			httpx.NewMockResponse(200, nil, `{
+			httpx.NewMockResponse(200, nil, []byte(`xx`)), // non-JSON response
+			httpx.NewMockResponse(200, nil, []byte(`{}`)), // invalid JSON response
+			httpx.NewMockResponse(200, nil, []byte(`{
 				"intent": {
 					"name": "book_flight",
 					"confidence": 0.8341536248216568
@@ -52,7 +52,7 @@ func TestParse(t *testing.T) {
 				"text": "book a flight to Quito",
 				"update_id": 4786,
 				"language": "pt_br"
-			}`),
+			}`)),
 		},
 	}))
 
