@@ -1,3 +1,7 @@
+v0.167.0
+----------
+ * Update to latest gocommon
+
 v0.166.0
 ----------
  * Add contact status to variable context
