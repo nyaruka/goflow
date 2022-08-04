@@ -345,14 +345,14 @@ func TestClient(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
-			httpx.NewMockResponse(200, nil, lookupNumberResponse), // successful mobile number lookup
-			httpx.MockConnectionError,                             // timeout
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)), // successful mobile number lookup
+			httpx.MockConnectionError,                                     // timeout
 		},
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
-			httpx.NewMockResponse(200, nil, productsResponse),
+			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 		},
 		"https://dvs-api.dtone.com/v1/sync/transactions": {
-			httpx.NewMockResponse(200, nil, transactionRejectedResponse),
+			httpx.NewMockResponse(200, nil, []byte(transactionRejectedResponse)),
 		},
 	})
 

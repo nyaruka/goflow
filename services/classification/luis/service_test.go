@@ -25,7 +25,7 @@ func TestService(t *testing.T) {
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://luismm2.cognitiveservices.azure.com/luis/prediction/v3.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02/slots/production/predict?subscription-key=3246231&verbose=true&show-all-intents=true&log=true&query=book+flight+to+Quito": {
-			httpx.NewMockResponse(200, nil, `{
+			httpx.NewMockResponse(200, nil, []byte(`{
 				"query": "book a flight to Quito",
 				"prediction": {
 					"topIntent": "Book Flight",
@@ -64,7 +64,7 @@ func TestService(t *testing.T) {
 						"score": 0.48264188
 					}
 				}
-			}`),
+			}`)),
 		},
 	}))
 

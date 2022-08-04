@@ -41,8 +41,8 @@ github.com/leodido/go-urn v1.2.1/go.mod h1:zt4jvISO2HfUBqxjfIshjdMTYS56ZS/qv49ic
 github.com/lib/pq v1.10.6 h1:jbk+ZieJ0D7EVGJYpL9QTz7/YW6UHbmdnZWYyK5cdBs=
 github.com/mailru/easyjson v0.7.7 h1:UGYAvKxe3sBsEDzO8ZeWOSlIQfWFlxbzLZe7hwFURr0=
 github.com/mailru/easyjson v0.7.7/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJJLY9Nlc=
-github.com/nyaruka/gocommon v1.22.5 h1:4QzDczkRrP/8ieiAGL2q8qHg2ZPEh01RDGHBWx275Pc=
-github.com/nyaruka/gocommon v1.22.5/go.mod h1:g6/d9drZXDUrtRSPe2Kf8lTUS+baHt/0G0dwHq3qeIU=
+github.com/nyaruka/gocommon v1.25.0 h1:/wi16Q9qUF3NOnRgM5q/c55dRtX0xLDHu7hDU0OTeWg=
+github.com/nyaruka/gocommon v1.25.0/go.mod h1:g6/d9drZXDUrtRSPe2Kf8lTUS+baHt/0G0dwHq3qeIU=
 github.com/nyaruka/phonenumbers v1.0.75 h1:OCwKXSjTi6IzuI4gVi8zfY+0s60DQUC6ks8Ll4j0eyU=
 github.com/nyaruka/phonenumbers v1.0.75/go.mod h1:cGaEsOrLjIL0iKGqJR5Rfywy86dSkbApEpXuM9KySNA=
 github.com/olivere/elastic/v7 v7.0.32 h1:R7CXvbu8Eq+WlsLgxmKVKPox0oOwAE/2T9Si5BnvK6E=

@@ -17,8 +17,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func errorResp(code int, message string) string {
-	return string(jsonx.MustMarshal(map[string]interface{}{"errors": []map[string]interface{}{{"code": code, "message": message}}}))
+func errorResp(code int, message string) []byte {
+	return jsonx.MustMarshal(map[string]interface{}{"errors": []map[string]interface{}{{"code": code, "message": message}}})
 }
 
 func TestServiceWithSuccessfulTranfer(t *testing.T) {
@@ -28,13 +28,13 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 
 	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
-			httpx.NewMockResponse(200, nil, lookupNumberResponse), // successful mobile number lookup
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)), // successful mobile number lookup
 		},
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
-			httpx.NewMockResponse(200, nil, productsResponse),
+			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 		},
 		"https://dvs-api.dtone.com/v1/sync/transactions": {
-			httpx.NewMockResponse(200, nil, transactionConfirmedResponse),
+			httpx.NewMockResponse(200, nil, []byte(transactionConfirmedResponse)),
 		},
 	})
 
@@ -80,21 +80,21 @@ func TestServiceFailedTransfers(t *testing.T) {
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
 			httpx.MockConnectionError, // timeout
 			httpx.NewMockResponse(400, nil, errorResp(1005003, "Credit party mobile number is invalid")),
-			httpx.NewMockResponse(200, nil, `[]`), // no matches
-			httpx.NewMockResponse(200, nil, lookupNumberResponse),
-			httpx.NewMockResponse(200, nil, lookupNumberResponse),
-			httpx.NewMockResponse(200, nil, lookupNumberResponse),
-			httpx.NewMockResponse(200, nil, lookupNumberResponse),
+			httpx.NewMockResponse(200, nil, []byte(`[]`)), // no matches
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
 		},
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
 			httpx.NewMockResponse(400, nil, errorResp(1003001, "Product is not available in your account")),
-			httpx.NewMockResponse(200, nil, `[]`), // no products
-			httpx.NewMockResponse(200, nil, productsResponse),
-			httpx.NewMockResponse(200, nil, productsResponse),
+			httpx.NewMockResponse(200, nil, []byte(`[]`)), // no products
+			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
+			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 		},
 		"https://dvs-api.dtone.com/v1/sync/transactions": {
 			httpx.NewMockResponse(400, nil, errorResp(1003001, "Something went wrong")),
-			httpx.NewMockResponse(200, nil, transactionRejectedResponse),
+			httpx.NewMockResponse(200, nil, []byte(transactionRejectedResponse)),
 		},
 	})
 

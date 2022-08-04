@@ -17,9 +17,9 @@ func TestMessage(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"https://api.wit.ai/message?v=20200513&q=Hello": {
-			httpx.NewMockResponse(200, nil, `xx`), // non-JSON response
-			httpx.NewMockResponse(200, nil, `{}`), // invalid JSON response
-			httpx.NewMockResponse(200, nil, `{
+			httpx.NewMockResponse(200, nil, []byte(`xx`)), // non-JSON response
+			httpx.NewMockResponse(200, nil, []byte(`{}`)), // invalid JSON response
+			httpx.NewMockResponse(200, nil, []byte(`{
 				"text": "I want to book a flight to Quito",
 				"intents": [
 				  {
@@ -53,7 +53,7 @@ func TestMessage(t *testing.T) {
 					}
 				  ]
 				}
-			}`),
+			}`)),
 		},
 	}))
 

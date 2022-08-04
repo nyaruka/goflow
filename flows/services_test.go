@@ -18,12 +18,12 @@ func TestHTTPLogs(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, nil, "hello \\u0000"),
-			httpx.NewMockResponse(400, nil, "is error"),
+			httpx.NewMockResponse(200, nil, []byte("hello \\u0000")),
+			httpx.NewMockResponse(400, nil, []byte("is error")),
 			httpx.MockConnectionError,
 		},
 		"http://temba.io/?x=" + strings.Repeat("x", 3000): {
-			httpx.NewMockResponse(200, nil, "hello"),
+			httpx.NewMockResponse(200, nil, []byte("hello")),
 		},
 	}))
 
@@ -66,8 +66,8 @@ func TestHTTPLogsRedaction(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/code/987654321/": {
-			httpx.NewMockResponse(200, nil, `{"value": "987654321", "secret": "43t34wf#@f3"}`),
-			httpx.NewMockResponse(400, nil, "The code is 987654321, I said 987654321"),
+			httpx.NewMockResponse(200, nil, []byte(`{"value": "987654321", "secret": "43t34wf#@f3"}`)),
+			httpx.NewMockResponse(400, nil, []byte("The code is 987654321, I said 987654321")),
 		},
 	}))
 

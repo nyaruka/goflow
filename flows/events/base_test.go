@@ -1,6 +1,7 @@
 package events_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -635,7 +636,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, nil, strings.Repeat("Y", 20000)),
+			httpx.NewMockResponse(200, nil, bytes.Repeat([]byte("Y"), 20000)),
 		},
 	}))
 
@@ -662,7 +663,7 @@ func TestWebhookCalledEventValid(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, map[string]string{"Header": "hello"}, "{\"foo\": \"bar\"}"),
+			httpx.NewMockResponse(200, map[string]string{"Header": "hello"}, []byte(`{"foo": "bar"}`)),
 		},
 	}))
 
@@ -685,7 +686,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, nil, "abc \x00 \\u0000 \\\u0000 \\\\u0000"),
+			httpx.NewMockResponse(200, nil, []byte("abc \x00 \\u0000 \\\u0000 \\\\u0000")),
 		},
 	}))
 
@@ -709,7 +710,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, "{\"foo\": \"\xa0\xa1\"}"),
+			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, []byte("{\"foo\": \"\xa0\xa1\"}")),
 		},
 	}))
 
