@@ -1,3 +1,8 @@
+v0.168.0
+----------
+ * Use HTTP log functionality from gocommon
+ * Update parsed docstrings to use codeblock formating (tab) for examples
+
 v0.167.0
 ----------
  * Update to latest gocommon
