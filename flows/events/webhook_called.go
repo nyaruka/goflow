@@ -24,18 +24,18 @@ const (
 // the URL and the status of the response, as well as a full dump of the
 // request and response.
 //
-//   {
-//     "type": "webhook_called",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "url": "http://localhost:49998/?cmd=success",
-//     "status": "success",
-//     "status_code": 200,
-//     "elapsed_ms": 123,
-//     "retries": 0,
-//     "request": "GET /?format=json HTTP/1.1",
-//     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
-//     "extraction": "valid"
-//   }
+//	{
+//	  "type": "webhook_called",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "url": "http://localhost:49998/?cmd=success",
+//	  "status": "success",
+//	  "status_code": 200,
+//	  "elapsed_ms": 123,
+//	  "retries": 0,
+//	  "request": "GET /?format=json HTTP/1.1",
+//	  "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
+//	  "extraction": "valid"
+//	}
 //
 // @event webhook_called
 type WebhookCalledEvent struct {

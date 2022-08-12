@@ -16,11 +16,11 @@ const serializeDefaultAs = "__default__"
 
 // XObject is an object with named properties.
 //
-//   @(object("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
-//   @(object("foo", 1, "bar", "x").bar) -> x
-//   @(object("foo", 1, "bar", "x")["bar"]) -> x
-//   @(count(object("foo", 1, "bar", "x"))) -> 2
-//   @(json(object("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
+//	@(object("foo", 1, "bar", "x")) -> {bar: x, foo: 1}
+//	@(object("foo", 1, "bar", "x").bar) -> x
+//	@(object("foo", 1, "bar", "x")["bar"]) -> x
+//	@(count(object("foo", 1, "bar", "x"))) -> 2
+//	@(json(object("foo", 1, "bar", "x"))) -> {"bar":"x","foo":1}
 //
 // @type object
 type XObject struct {

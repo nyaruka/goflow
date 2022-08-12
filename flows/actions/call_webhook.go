@@ -36,16 +36,16 @@ const TypeCallWebhook string = "call_webhook"
 // accessible through `extra` on the result. The last JSON response from a webhook call in the current
 // sprint will additionally be accessible in expressions as `@webhook` regardless of size.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "call_webhook",
-//     "method": "GET",
-//     "url": "http://localhost:49998/?cmd=success",
-//     "headers": {
-//       "Authorization": "Token AAFFZZHH"
-//     },
-//     "result_name": "webhook"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "call_webhook",
+//	  "method": "GET",
+//	  "url": "http://localhost:49998/?cmd=success",
+//	  "headers": {
+//	    "Authorization": "Token AAFFZZHH"
+//	  },
+//	  "result_name": "webhook"
+//	}
 //
 // @action call_webhook
 type CallWebhookAction struct {

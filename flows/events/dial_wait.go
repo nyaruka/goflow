@@ -16,12 +16,12 @@ const TypeDialWait string = "dial_wait"
 
 // DialWaitEvent events are created when a flow pauses waiting for an IVR dial to complete.
 //
-//   {
-//     "type": "dial_wait",
-//     "created_on": "2019-01-02T15:04:05Z",
-//     "urn": "tel:+593979123456",
-//     "expires_on": "2022-02-02T13:27:30Z"
-//   }
+//	{
+//	  "type": "dial_wait",
+//	  "created_on": "2019-01-02T15:04:05Z",
+//	  "urn": "tel:+593979123456",
+//	  "expires_on": "2022-02-02T13:27:30Z"
+//	}
 //
 // @event dial_wait
 type DialWaitEvent struct {

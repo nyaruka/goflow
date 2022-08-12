@@ -123,10 +123,10 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the name
-//   uuid:text -> the UUID of the flow
-//   name:text -> the name of the flow
-//   revision:text -> the revision number of the flow
+//	__default__:text -> the name
+//	uuid:text -> the UUID of the flow
+//	name:text -> the name of the flow
+//	revision:text -> the revision number of the flow
 //
 // @context flow
 func (f *flow) Context(env envs.Environment) map[string]types.XValue {

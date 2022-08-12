@@ -21,15 +21,15 @@ const TypeStartSession string = "start_session"
 // StartSessionAction can be used to trigger sessions for other contacts and groups. A [event:session_triggered] event
 // will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "start_session",
-//     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Registration"},
-//     "groups": [
-//       {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
-//     ],
-//     "exclusions": {"in_a_flow": true}
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "start_session",
+//	  "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Registration"},
+//	  "groups": [
+//	    {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+//	  ],
+//	  "exclusions": {"in_a_flow": true}
+//	}
 //
 // @action start_session
 type StartSessionAction struct {

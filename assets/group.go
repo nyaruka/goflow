@@ -17,11 +17,11 @@ type GroupUUID uuids.UUID
 
 // Group is a set of contacts which can be added to and removed from manually, or based on a query.
 //
-//   {
-//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
-//     "name": "Youth",
-//     "query": "age <= 18"
-//   }
+//	{
+//	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//	  "name": "Youth",
+//	  "query": "age <= 18"
+//	}
 //
 // @asset group
 type Group interface {

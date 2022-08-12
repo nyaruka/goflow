@@ -11,10 +11,10 @@ import (
 
 // XArray is an array of items.
 //
-//   @(array(1, "x", true)) -> [1, x, true]
-//   @(array(1, "x", true)[1]) -> x
-//   @(count(array(1, "x", true))) -> 3
-//   @(json(array(1, "x", true))) -> [1,"x",true]
+//	@(array(1, "x", true)) -> [1, x, true]
+//	@(array(1, "x", true)[1]) -> x
+//	@(count(array(1, "x", true))) -> 3
+//	@(json(array(1, "x", true))) -> [1,"x",true]
 //
 // @type array
 type XArray struct {

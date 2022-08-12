@@ -14,14 +14,14 @@ const TypeContactURNsChanged string = "contact_urns_changed"
 
 // ContactURNsChangedEvent events are created when a contact's URNs have changed.
 //
-//   {
-//     "type": "contact_urns_changed",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "urns": [
-//       "tel:+12345678900",
-//       "twitter:bob"
-//     ]
-//   }
+//	{
+//	  "type": "contact_urns_changed",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "urns": [
+//	    "tel:+12345678900",
+//	    "twitter:bob"
+//	  ]
+//	}
 //
 // @event contact_urns_changed
 type ContactURNsChangedEvent struct {

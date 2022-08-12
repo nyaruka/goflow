@@ -19,12 +19,12 @@ const TypeEnterFlow string = "enter_flow"
 //
 // A [event:flow_entered] event will be created to record that the flow was started.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "enter_flow",
-//     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"},
-//     "terminal": false
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "enter_flow",
+//	  "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"},
+//	  "terminal": false
+//	}
 //
 // @action enter_flow
 type EnterFlowAction struct {

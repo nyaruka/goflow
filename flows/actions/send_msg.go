@@ -22,22 +22,22 @@ const TypeSendMsg string = "send_msg"
 //
 // A [event:msg_created] event will be created with the evaluated text.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "send_msg",
-//     "text": "Hi @contact.name, are you ready to complete today's survey?",
-//     "attachments": [],
-//     "all_urns": false,
-//     "templating": {
-//       "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
-//       "template": {
-//         "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
-//         "name": "revive_issue"
-//       },
-//       "variables": ["@contact.name"]
-//     },
-//     "topic": "event"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "send_msg",
+//	  "text": "Hi @contact.name, are you ready to complete today's survey?",
+//	  "attachments": [],
+//	  "all_urns": false,
+//	  "templating": {
+//	    "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
+//	    "template": {
+//	      "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+//	      "name": "revive_issue"
+//	    },
+//	    "variables": ["@contact.name"]
+//	  },
+//	  "topic": "event"
+//	}
 //
 // @action send_msg
 type SendMsgAction struct {

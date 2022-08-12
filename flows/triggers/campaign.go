@@ -51,20 +51,20 @@ type CampaignEvent struct {
 
 // CampaignTrigger is used when a session was triggered by a campaign event
 //
-//   {
-//     "type": "campaign",
-//     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//     "contact": {
-//       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//       "name": "Bob",
-//       "created_on": "2018-01-01T12:00:00.000000Z"
-//     },
-//     "event": {
-//         "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
-//         "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "New Mothers"}
-//     },
-//     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
-//   }
+//	{
+//	  "type": "campaign",
+//	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
+//	  "contact": {
+//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+//	    "name": "Bob",
+//	    "created_on": "2018-01-01T12:00:00.000000Z"
+//	  },
+//	  "event": {
+//	      "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
+//	      "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "New Mothers"}
+//	  },
+//	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+//	}
 //
 // @trigger campaign
 type CampaignTrigger struct {

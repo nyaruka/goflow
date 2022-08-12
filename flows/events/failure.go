@@ -13,11 +13,11 @@ const TypeFailure string = "failure"
 
 // FailureEvent events are created when an error occurs during flow execution which prevents continuation of the session.
 //
-//   {
-//     "type": "failure",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "text": "unable to read flow"
-//   }
+//	{
+//	  "type": "failure",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "text": "unable to read flow"
+//	}
 //
 // @event failure
 type FailureEvent struct {

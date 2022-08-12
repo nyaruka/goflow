@@ -17,10 +17,10 @@ type LabelUUID uuids.UUID
 
 // Label is an organizational tag that can be applied to a message.
 //
-//   {
-//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
-//     "name": "Spam"
-//   }
+//	{
+//	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//	  "name": "Spam"
+//	}
 //
 // @asset label
 type Label interface {

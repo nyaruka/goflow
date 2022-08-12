@@ -129,7 +129,7 @@ func parseTaggedItem(doc string, typeName string) *TaggedItem {
 	for _, l := range lines {
 		trimmed := strings.TrimSpace(l)
 
-		if strings.HasPrefix(l, "  ") { // examples are indented by at least two spaces
+		if strings.HasPrefix(l, "\t") { // examples are formatted as code blocks, i.e. start with tab
 			trimmed = strings.Replace(trimmed, "->", "→", -1)
 			examples = append(examples, trimmed)
 		} else {

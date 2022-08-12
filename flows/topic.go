@@ -31,9 +31,9 @@ func (t *Topic) Reference() *assets.TopicReference {
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the name
-//   uuid:text -> the UUID of the topic
-//   name:text -> the name of the topic
+//	__default__:text -> the name
+//	uuid:text -> the UUID of the topic
+//	name:text -> the name of the topic
 //
 // @context topic
 func (t *Topic) Context(env envs.Environment) map[string]types.XValue {

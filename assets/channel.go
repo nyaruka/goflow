@@ -24,14 +24,14 @@ const (
 
 // Channel is something that can send/receive messages.
 //
-//   {
-//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
-//     "name": "My Android",
-//     "address": "+593979011111",
-//     "schemes": ["tel"],
-//     "roles": ["send", "receive"],
-//     "country": "EC"
-//   }
+//	{
+//	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//	  "name": "My Android",
+//	  "address": "+593979011111",
+//	  "schemes": ["tel"],
+//	  "roles": ["send", "receive"],
+//	  "country": "EC"
+//	}
 //
 // @asset channel
 type Channel interface {
