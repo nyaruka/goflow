@@ -15,7 +15,7 @@ import (
 func TestMessage(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://api.wit.ai/message?v=20200513&q=Hello": {
 			httpx.NewMockResponse(200, nil, []byte(`xx`)), // non-JSON response
 			httpx.NewMockResponse(200, nil, []byte(`{}`)), // invalid JSON response

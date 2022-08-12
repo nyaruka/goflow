@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -110,15 +110,11 @@ type AirtimeService interface {
 	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
-// HTTPTrace describes an HTTP request/response
+// HTTPTrace is an HTTP log with status added
 type HTTPTrace struct {
-	URL        string     `json:"url" validate:"required"`
-	StatusCode int        `json:"status_code,omitempty"`
-	Status     CallStatus `json:"status" validate:"required"`
-	Request    string     `json:"request" validate:"required"`
-	Response   string     `json:"response,omitempty"`
-	ElapsedMS  int        `json:"elapsed_ms"`
-	Retries    int        `json:"retries"`
+	*httpx.LogWithoutTime
+
+	Status CallStatus `json:"status" validate:"required"`
 }
 
 // trim request and response traces to 10K chars to avoid bloating serialized sessions
@@ -126,8 +122,11 @@ const trimTracesTo = 10000
 const trimURLsTo = 2048
 
 // NewHTTPTrace creates a new HTTP log from a trace
-func NewHTTPTrace(trace *httpx.Trace, status CallStatus) *HTTPTrace {
-	return newHTTPTraceWithStatus(trace, status, nil)
+func NewHTTPTrace(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPTrace {
+	return &HTTPTrace{
+		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
+		Status:         status,
+	}
 }
 
 // HTTPLog describes an HTTP request/response
@@ -166,37 +165,9 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 const RedactionMask = "****************"
 
 // NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact utils.Redactor) *HTTPLog {
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact stringsx.Redactor) *HTTPLog {
 	return &HTTPLog{
-		newHTTPTraceWithStatus(trace, statusFn(trace), redact),
-		trace.StartTime,
-	}
-}
-
-// creates a new HTTPTrace from a trace with an explicit status
-func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPTrace {
-	url := trace.Request.URL.String()
-	request := string(trace.RequestTrace)
-	response := string(utils.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
-
-	statusCode := 0
-	if trace.Response != nil {
-		statusCode = trace.Response.StatusCode
-	}
-
-	if redact != nil {
-		url = redact(url)
-		request = redact(request)
-		response = redact(response)
-	}
-
-	return &HTTPTrace{
-		URL:        utils.TruncateEllipsis(url, trimURLsTo),
-		StatusCode: statusCode,
-		Status:     status,
-		Request:    utils.TruncateEllipsis(request, trimTracesTo),
-		Response:   utils.TruncateEllipsis(response, trimTracesTo),
-		ElapsedMS:  int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
-		Retries:    trace.Retries,
+		HTTPTrace: NewHTTPTrace(trace, statusFn(trace), redact),
+		CreatedOn: trace.StartTime,
 	}
 }

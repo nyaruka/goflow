@@ -24,7 +24,7 @@ func TestService(t *testing.T) {
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://nlp.bothub.it/parse": {
 			httpx.NewMockResponse(200, nil, []byte(`{
 				"intent": {

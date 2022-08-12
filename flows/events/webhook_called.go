@@ -64,7 +64,7 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 
 	return &WebhookCalledEvent{
 		BaseEvent:  NewBaseEvent(TypeWebhookCalled),
-		HTTPTrace:  flows.NewHTTPTrace(call.Trace, status),
+		HTTPTrace:  flows.NewHTTPTrace(call.Trace, status, nil),
 		Resthook:   resthook,
 		Extraction: extraction,
 	}

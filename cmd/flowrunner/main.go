@@ -13,6 +13,7 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -302,7 +303,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 	case *events.WaitTimedOutEvent:
 		msg = "⏲️ resuming due to wait timeout"
 	case *events.WebhookCalledEvent:
-		url := utils.TruncateEllipsis(typed.URL, 50)
+		url := stringsx.TruncateEllipsis(typed.URL, 50)
 		msg = fmt.Sprintf("☁️ called %s", url)
 	default:
 		msg = fmt.Sprintf("❓ %s event", typed.Type())

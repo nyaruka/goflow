@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -75,7 +76,7 @@ func (r *flowRun) Events() []flows.Event                { return r.events }
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
 	// truncate value if necessary
-	result.Value = utils.Truncate(result.Value, r.Environment().MaxValueLength())
+	result.Value = stringsx.Truncate(result.Value, r.Environment().MaxValueLength())
 
 	r.results.Save(result)
 	r.modifiedOn = dates.Now()
@@ -321,7 +322,7 @@ func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escap
 
 	value, err := excellent.EvaluateTemplate(r.Environment(), ctx, template, escaping)
 	if truncate {
-		value = utils.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
+		value = stringsx.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
 	}
 	return value, err
 }

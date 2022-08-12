@@ -5,16 +5,16 @@ import (
 	"sort"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // a classification service implementation for a LUIS app
 type service struct {
 	client     *Client
 	classifier *flows.Classifier
-	redactor   utils.Redactor
+	redactor   stringsx.Redactor
 }
 
 // NewService creates a new classification service
@@ -22,7 +22,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	return &service{
 		client:     NewClient(httpClient, httpRetries, httpAccess, endpoint, appID, key, slot),
 		classifier: classifier,
-		redactor:   utils.NewRedactor(flows.RedactionMask, key),
+		redactor:   stringsx.NewRedactor(flows.RedactionMask, key),
 	}
 }
 

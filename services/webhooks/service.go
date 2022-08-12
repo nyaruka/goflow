@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/utils"
 )
 
 type service struct {
@@ -78,7 +77,7 @@ func ExtractJSON(body []byte) ([]byte, bool) {
 	//  3. escaped null chars (\u0000)
 	cleaned := bytes.ToValidUTF8(body, nil)
 	cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
-	cleaned = utils.ReplaceEscapedNulls(cleaned, nil)
+	cleaned = httpx.ReplaceEscapedNulls(cleaned, nil)
 
 	if json.Valid(cleaned) {
 		changed := !bytes.Equal(body, cleaned)

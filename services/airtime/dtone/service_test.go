@@ -26,7 +26,7 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
 			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)), // successful mobile number lookup
 		},
@@ -76,7 +76,7 @@ func TestServiceFailedTransfers(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
 			httpx.MockConnectionError, // timeout
 			httpx.NewMockResponse(400, nil, errorResp(1005003, "Credit party mobile number is invalid")),

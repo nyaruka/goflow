@@ -159,39 +159,3 @@ func TestStringSetKeys(t *testing.T) {
 	assert.Equal(t, []string{}, utils.StringSetKeys(map[string]bool{}))
 	assert.Equal(t, []string{"a", "x", "y"}, utils.StringSetKeys(map[string]bool{"x": true, "y": true, "a": true}))
 }
-
-func TestTruncateEllipsis(t *testing.T) {
-	assert.Equal(t, "", utils.TruncateEllipsis("", 100))
-	assert.Equal(t, "1234567890", utils.TruncateEllipsis("1234567890", 100))
-	assert.Equal(t, "1234567890", utils.TruncateEllipsis("1234567890", 10))
-	assert.Equal(t, "1234...", utils.TruncateEllipsis("1234567890", 7))
-	assert.Equal(t, "你喜欢我当然喜欢的电", utils.TruncateEllipsis("你喜欢我当然喜欢的电", 100))
-	assert.Equal(t, "你喜欢我当然喜欢的电", utils.TruncateEllipsis("你喜欢我当然喜欢的电", 10))
-	assert.Equal(t, "你喜欢我...", utils.TruncateEllipsis("你喜欢我当然喜欢的电", 7))
-}
-
-func TestTruncate(t *testing.T) {
-	assert.Equal(t, "", utils.Truncate("", 100))
-	assert.Equal(t, "1234567890", utils.Truncate("1234567890", 100))
-	assert.Equal(t, "1234567890", utils.Truncate("1234567890", 10))
-	assert.Equal(t, "1234567", utils.Truncate("1234567890", 7))
-	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 100))
-	assert.Equal(t, "你喜欢我当然喜欢的电", utils.Truncate("你喜欢我当然喜欢的电", 10))
-	assert.Equal(t, "你喜欢我当然喜", utils.Truncate("你喜欢我当然喜欢的电", 7))
-}
-
-func TestRedactor(t *testing.T) {
-	assert.Equal(t, "hello world", utils.NewRedactor("****")("hello world"))                         // nothing to redact
-	assert.Equal(t, "", utils.NewRedactor("****", "abc")(""))                                        // empty input
-	assert.Equal(t, "**** def **** def", utils.NewRedactor("****", "abc")("abc def abc def"))        // all instances redacted
-	assert.Equal(t, "**** def **** jkl", utils.NewRedactor("****", "abc", "ghi")("abc def ghi jkl")) // all values redacted
-}
-
-func TestReplaceEscapedNulls(t *testing.T) {
-	assert.Equal(t, []byte(nil), utils.ReplaceEscapedNulls(nil, []byte(`?`)))
-	assert.Equal(t, []byte(`abcdef`), utils.ReplaceEscapedNulls([]byte(`abc\u0000def`), nil))
-	assert.Equal(t, []byte(`abc?def`), utils.ReplaceEscapedNulls([]byte(`abc\u0000def`), []byte(`?`)))
-	assert.Equal(t, []byte(`�ɇ�ɇ`), utils.ReplaceEscapedNulls([]byte(`\u0000\u0000`), []byte(`�ɇ`)))
-	assert.Equal(t, []byte(`abc  \\u0000 \\ \\\\u0000 def`), utils.ReplaceEscapedNulls([]byte(`abc \u0000 \\u0000 \\\u0000 \\\\u0000 def`), nil))
-	assert.Equal(t, []byte(`0000`), utils.ReplaceEscapedNulls([]byte(`\u00000000`), nil))
-}

@@ -181,7 +181,7 @@ func TestRetries(t *testing.T) {
 
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(502, nil, []byte("a")),
 			httpx.NewMockResponse(200, nil, []byte("b")),
@@ -280,7 +280,7 @@ func TestExtractJSON(t *testing.T) {
 func TestWebhookResponseWithEscapes(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://cheapcontactlookups.com": {
 			httpx.NewMockResponse(200, nil, []byte(`{"name": "01\\02\\03", "joined": "04\\05\\06"}`)),
 		},
