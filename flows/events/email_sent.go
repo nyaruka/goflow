@@ -13,13 +13,13 @@ const TypeEmailSent string = "email_sent"
 
 // EmailSentEvent events are created when an action has sent an email.
 //
-//   {
-//     "type": "email_sent",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "to": ["foo@bar.com"],
-//     "subject": "Your activation token",
-//     "body": "Your activation token is AAFFKKEE"
-//   }
+//	{
+//	  "type": "email_sent",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "to": ["foo@bar.com"],
+//	  "subject": "Your activation token",
+//	  "body": "Your activation token is AAFFKKEE"
+//	}
 //
 // @event email_sent
 type EmailSentEvent struct {

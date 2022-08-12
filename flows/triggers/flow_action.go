@@ -20,35 +20,35 @@ const TypeFlowAction string = "flow_action"
 
 // FlowActionTrigger is used when another session triggered this run using a trigger_flow action.
 //
-//   {
-//     "type": "flow_action",
-//     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
-//     "history": {
-//       "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
-//       "ancestors": 3,
-//       "ancestors_since_input": 1
-//     },
-//     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-//     "run_summary": {
-//       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//       "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//       "contact": {
-//         "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
-//         "name": "Bob",
-//         "fields": {"gender": {"text": "Male"}},
-//         "created_on": "2018-01-01T12:00:00.000000000-00:00"
-//       },
-//       "status": "active",
-//       "results": {
-//         "age": {
-//           "result_name": "Age",
-//           "value": "33",
-//           "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-//           "created_on": "2018-01-01T12:00:00.000000000-00:00"
-//         }
-//       }
-//     }
-//   }
+//	{
+//	  "type": "flow_action",
+//	  "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
+//	  "history": {
+//	    "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
+//	    "ancestors": 3,
+//	    "ancestors_since_input": 1
+//	  },
+//	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+//	  "run_summary": {
+//	    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//	    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
+//	    "contact": {
+//	      "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
+//	      "name": "Bob",
+//	      "fields": {"gender": {"text": "Male"}},
+//	      "created_on": "2018-01-01T12:00:00.000000000-00:00"
+//	    },
+//	    "status": "active",
+//	    "results": {
+//	      "age": {
+//	        "result_name": "Age",
+//	        "value": "33",
+//	        "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+//	        "created_on": "2018-01-01T12:00:00.000000000-00:00"
+//	      }
+//	    }
+//	  }
+//	}
 //
 // @trigger flow_action
 type FlowActionTrigger struct {

@@ -14,10 +14,10 @@ func init() {
 
 // User is an person who can trigger flows or be assigned tickets etc.
 //
-//   {
-//     "email": "bob@nyaruka.com",
-//     "name": "Bob"
-//   }
+//	{
+//	  "email": "bob@nyaruka.com",
+//	  "name": "Bob"
+//	}
 //
 // @asset user
 type User interface {

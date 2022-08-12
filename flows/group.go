@@ -60,8 +60,8 @@ func (g *Group) Reference() *assets.GroupReference {
 
 // ToXValue returns a representation of this object for use in expressions
 //
-//   uuid:text -> the UUID of the group
-//   name:text -> the name of the group
+//	uuid:text -> the UUID of the group
+//	name:text -> the name of the group
 //
 // @context group
 func (g *Group) ToXValue(env envs.Environment) types.XValue {

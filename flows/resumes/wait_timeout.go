@@ -20,18 +20,18 @@ const TypeWaitTimeout string = "wait_timeout"
 
 // WaitTimeoutResume is used when a session is resumed because a wait has timed out
 //
-//   {
-//     "type": "wait_timeout",
-//     "contact": {
-//       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//       "name": "Bob",
-//       "created_on": "2018-01-01T12:00:00.000000Z",
-//       "language": "fra",
-//       "fields": {"gender": {"text": "Male"}},
-//       "groups": []
-//     },
-//     "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
-//   }
+//	{
+//	  "type": "wait_timeout",
+//	  "contact": {
+//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+//	    "name": "Bob",
+//	    "created_on": "2018-01-01T12:00:00.000000Z",
+//	    "language": "fra",
+//	    "fields": {"gender": {"text": "Male"}},
+//	    "groups": []
+//	  },
+//	  "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+//	}
 //
 // @resume wait_timeout
 type WaitTimeoutResume struct {

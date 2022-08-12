@@ -19,11 +19,11 @@ const TypeSetContactName string = "set_contact_name"
 // template and white space is trimmed from the final value. An empty string clears the name.
 // A [event:contact_name_changed] event will be created with the corresponding value.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "set_contact_name",
-//     "name": "Bob Smith"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "set_contact_name",
+//	  "name": "Bob Smith"
+//	}
 //
 // @action set_contact_name
 type SetContactNameAction struct {

@@ -20,10 +20,10 @@ func init() {
 
 // XNumber is a whole or fractional number.
 //
-//   @(1234) -> 1234
-//   @(1234.5678) -> 1234.5678
-//   @(format_number(1234.5670)) -> 1,234.567
-//   @(json(1234.5678)) -> 1234.5678
+//	@(1234) -> 1234
+//	@(1234.5678) -> 1234.5678
+//	@(format_number(1234.5670)) -> 1,234.567
+//	@(json(1234.5678)) -> 1234.5678
 //
 // @type number
 type XNumber struct {
