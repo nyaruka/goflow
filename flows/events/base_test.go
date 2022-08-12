@@ -64,12 +64,14 @@ func TestEventMarshaling(t *testing.T) {
 				[]*flows.HTTPLog{
 					{
 						HTTPTrace: &flows.HTTPTrace{
-							URL:        "https://send.money.com/topup",
-							StatusCode: 200,
-							Status:     flows.CallStatusSuccess,
-							Request:    "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
-							ElapsedMS:  12,
+							LogWithoutTime: &httpx.LogWithoutTime{
+								URL:        "https://send.money.com/topup",
+								StatusCode: 200,
+								Request:    "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+								ElapsedMS:  12,
+							},
+							Status: flows.CallStatusSuccess,
 						},
 						CreatedOn: dates.Now(),
 					},
@@ -147,12 +149,14 @@ func TestEventMarshaling(t *testing.T) {
 				[]*flows.HTTPLog{
 					{
 						HTTPTrace: &flows.HTTPTrace{
-							URL:        "https://api.wit.ai/message?v=20200513&q=hello",
-							StatusCode: 200,
-							Status:     flows.CallStatusSuccess,
-							Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-							ElapsedMS:  12,
+							LogWithoutTime: &httpx.LogWithoutTime{
+								URL:        "https://api.wit.ai/message?v=20200513&q=hello",
+								StatusCode: 200,
+								Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+								ElapsedMS:  12,
+							},
+							Status: flows.CallStatusSuccess,
 						},
 						CreatedOn: dates.Now(),
 					},
@@ -565,12 +569,14 @@ func TestEventMarshaling(t *testing.T) {
 				[]*flows.HTTPLog{
 					{
 						HTTPTrace: &flows.HTTPTrace{
-							URL:        "https://tickets.com",
-							StatusCode: 200,
-							Status:     flows.CallStatusSuccess,
-							Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-							Response:   "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
-							ElapsedMS:  12,
+							LogWithoutTime: &httpx.LogWithoutTime{
+								URL:        "https://tickets.com",
+								StatusCode: 200,
+								Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
+								ElapsedMS:  12,
+							},
+							Status: flows.CallStatusSuccess,
 						},
 						CreatedOn: dates.Now(),
 					},

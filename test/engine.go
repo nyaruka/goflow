@@ -70,13 +70,15 @@ func (s *classificationService) Classify(env envs.Environment, input string, log
 
 	logHTTP(&flows.HTTPLog{
 		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://test.acme.ai?classify",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-			ElapsedMS:  1000,
-			Retries:    0,
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://test.acme.ai?classify",
+				StatusCode: 200,
+				Request:    "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+				ElapsedMS:  1000,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -109,13 +111,15 @@ func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
 			HTTPTrace: &flows.HTTPTrace{
-				URL:        "http://nyaruka.tickets.com/tickets.json",
-				StatusCode: 400,
-				Status:     flows.CallStatusResponseError,
-				Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-				Response:   "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
-				ElapsedMS:  1,
-				Retries:    0,
+				LogWithoutTime: &httpx.LogWithoutTime{
+					URL:        "http://nyaruka.tickets.com/tickets.json",
+					StatusCode: 400,
+					Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+					Response:   "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+					ElapsedMS:  1,
+					Retries:    0,
+				},
+				Status: flows.CallStatusResponseError,
 			},
 			CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 		})
@@ -125,13 +129,15 @@ func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic
 
 	logHTTP(&flows.HTTPLog{
 		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://nyaruka.tickets.com/tickets.json",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-			ElapsedMS:  1,
-			Retries:    0,
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://nyaruka.tickets.com/tickets.json",
+				StatusCode: 200,
+				Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+				ElapsedMS:  1,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -153,13 +159,15 @@ func newAirtimeService(currency string) *airtimeService {
 func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
 		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://send.airtime.com",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-			ElapsedMS:  0,
-			Retries:    0,
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://send.airtime.com",
+				StatusCode: 200,
+				Request:    "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+				ElapsedMS:  0,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
