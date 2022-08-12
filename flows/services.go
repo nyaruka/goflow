@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -166,7 +166,7 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 const RedactionMask = "****************"
 
 // NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact utils.Redactor) *HTTPLog {
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact stringsx.Redactor) *HTTPLog {
 	return &HTTPLog{
 		newHTTPTraceWithStatus(trace, statusFn(trace), redact),
 		trace.StartTime,
@@ -174,10 +174,10 @@ func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact utils
 }
 
 // creates a new HTTPTrace from a trace with an explicit status
-func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPTrace {
+func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPTrace {
 	url := trace.Request.URL.String()
 	request := string(trace.RequestTrace)
-	response := string(utils.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
+	response := string(httpx.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
 
 	statusCode := 0
 	if trace.Response != nil {
@@ -191,11 +191,11 @@ func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.
 	}
 
 	return &HTTPTrace{
-		URL:        utils.TruncateEllipsis(url, trimURLsTo),
+		URL:        stringsx.TruncateEllipsis(url, trimURLsTo),
 		StatusCode: statusCode,
 		Status:     status,
-		Request:    utils.TruncateEllipsis(request, trimTracesTo),
-		Response:   utils.TruncateEllipsis(response, trimTracesTo),
+		Request:    stringsx.TruncateEllipsis(request, trimTracesTo),
+		Response:   stringsx.TruncateEllipsis(response, trimTracesTo),
 		ElapsedMS:  int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
 		Retries:    trace.Retries,
 	}

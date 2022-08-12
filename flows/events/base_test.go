@@ -634,7 +634,7 @@ func TestReadEvent(t *testing.T) {
 func TestWebhookCalledEventTrimming(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, bytes.Repeat([]byte("Y"), 20000)),
 		},
@@ -661,7 +661,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 func TestWebhookCalledEventValid(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, map[string]string{"Header": "hello"}, []byte(`{"foo": "bar"}`)),
 		},
@@ -684,7 +684,7 @@ func TestWebhookCalledEventValid(t *testing.T) {
 func TestWebhookCalledEventNullChar(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, []byte("abc \x00 \\u0000 \\\u0000 \\\\u0000")),
 		},
@@ -708,7 +708,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, []byte("{\"foo\": \"\xa0\xa1\"}")),
 		},

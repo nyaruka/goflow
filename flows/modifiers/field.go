@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -44,7 +45,7 @@ func (m *FieldModifier) Apply(env envs.Environment, svcs flows.Services, sa flow
 
 	// truncate text value if necessary
 	if newValue != nil {
-		newValue.Text = types.NewXText(utils.Truncate(newValue.Text.Native(), env.MaxValueLength()))
+		newValue.Text = types.NewXText(stringsx.Truncate(newValue.Text.Native(), env.MaxValueLength()))
 	}
 
 	if !newValue.Equals(oldValue) {

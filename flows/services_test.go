@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -16,7 +16,7 @@ import (
 func TestHTTPLogs(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, []byte("hello \\u0000")),
 			httpx.NewMockResponse(400, nil, []byte("is error")),
@@ -64,7 +64,7 @@ func TestHTTPLogs(t *testing.T) {
 func TestHTTPLogsRedaction(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/code/987654321/": {
 			httpx.NewMockResponse(200, nil, []byte(`{"value": "987654321", "secret": "43t34wf#@f3"}`)),
 			httpx.NewMockResponse(400, nil, []byte("The code is 987654321, I said 987654321")),
@@ -83,7 +83,7 @@ func TestHTTPLogsRedaction(t *testing.T) {
 	trace2, err := httpx.DoTrace(http.DefaultClient, req2, nil, nil, -1)
 	require.NoError(t, err)
 
-	redactor := utils.NewRedactor(flows.RedactionMask, "987654321", "43t34wf#@f3")
+	redactor := stringsx.NewRedactor(flows.RedactionMask, "987654321", "43t34wf#@f3")
 
 	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode, redactor)
 	assert.Equal(t, "GET /code/****************/ HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: Go-http-client/1.1\r\nX-Code: ****************\r\nAccept-Encoding: gzip\r\n\r\n", log1.Request)

@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -15,14 +15,14 @@ import (
 
 type service struct {
 	client   *Client
-	redactor utils.Redactor
+	redactor stringsx.Redactor
 }
 
 // NewService creates a new DTOne airtime service
 func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, secret string) flows.AirtimeService {
 	return &service{
 		client:   NewClient(httpClient, httpRetries, key, secret),
-		redactor: utils.NewRedactor(flows.RedactionMask, secret),
+		redactor: stringsx.NewRedactor(flows.RedactionMask, secret),
 	}
 }
 

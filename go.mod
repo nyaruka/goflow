@@ -8,7 +8,7 @@ require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220527190237-ee62e23da966
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.1.1
-	github.com/nyaruka/gocommon v1.25.0
+	github.com/nyaruka/gocommon v1.26.0
 	github.com/nyaruka/phonenumbers v1.0.75
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1

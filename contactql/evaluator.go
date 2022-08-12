@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
 )
 
@@ -172,8 +172,8 @@ func tokenizedPrefixMatch(objectVal string, queryVal string, length int) bool {
 
 	for _, objectToken := range objectTokens {
 		for _, queryToken := range queryTokens {
-			objectTokenVal := utils.Truncate(objectToken, length)
-			queryTokenVal := utils.Truncate(queryToken, length)
+			objectTokenVal := stringsx.Truncate(objectToken, length)
+			queryTokenVal := stringsx.Truncate(queryToken, length)
 
 			if strings.HasPrefix(objectTokenVal, queryTokenVal) {
 				return true

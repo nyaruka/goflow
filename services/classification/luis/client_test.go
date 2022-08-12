@@ -15,7 +15,7 @@ import (
 var dec = decimal.RequireFromString
 
 func TestPredict(t *testing.T) {
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://luismm2.cognitiveservices.azure.com/luis/prediction/v3.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02/slots/production/predict?subscription-key=3246231&verbose=true&show-all-intents=true&log=true&query=book+flight+to+Quito": {
 			httpx.NewMockResponse(200, nil, []byte(`xx`)), // non-JSON response
 			httpx.NewMockResponse(200, nil, []byte(`{}`)), // invalid JSON response

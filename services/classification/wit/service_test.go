@@ -24,7 +24,7 @@ func TestService(t *testing.T) {
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://api.wit.ai/message?v=20200513&q=book+flight+to+Quito": {
 			httpx.NewMockResponse(200, nil, []byte(`{
 				"text": "I want to book a flight to Quito",
