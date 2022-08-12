@@ -11,10 +11,10 @@ type TopicUUID uuids.UUID
 
 // Topic categorizes tickets
 //
-//   {
-//     "uuid": "cd48bd11-08b9-44e3-9778-8e26adf08a7a",
-//     "name": "Weather"
-//   }
+//	{
+//	  "uuid": "cd48bd11-08b9-44e3-9778-8e26adf08a7a",
+//	  "name": "Weather"
+//	}
 //
 // @asset topic
 type Topic interface {

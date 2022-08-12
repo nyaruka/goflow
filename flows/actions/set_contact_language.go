@@ -20,11 +20,11 @@ const TypeSetContactLanguage string = "set_contact_language"
 // template and white space is trimmed from the final value. An empty string clears the language.
 // A [event:contact_language_changed] event will be created with the corresponding value.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "set_contact_language",
-//     "language": "eng"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "set_contact_language",
+//	  "language": "eng"
+//	}
 //
 // @action set_contact_language
 type SetContactLanguageAction struct {

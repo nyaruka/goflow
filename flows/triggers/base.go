@@ -139,12 +139,12 @@ func (t *baseTrigger) context() *Context {
 
 // Context returns the properties available in expressions
 //
-//   type:text -> the type of trigger that started this session
-//   params:any -> the parameters passed to the trigger
-//   keyword:text -> the keyword match if this is a keyword trigger
-//   user:user -> the user who started this session if this is a manual trigger
-//   origin:text -> the origin of this session if this is a manual trigger
-//   ticket:ticket -> the ticket if this is a ticket trigger
+//	type:text -> the type of trigger that started this session
+//	params:any -> the parameters passed to the trigger
+//	keyword:text -> the keyword match if this is a keyword trigger
+//	user:user -> the user who started this session if this is a manual trigger
+//	origin:text -> the origin of this session if this is a manual trigger
+//	ticket:ticket -> the ticket if this is a ticket trigger
 //
 // @context trigger
 func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {

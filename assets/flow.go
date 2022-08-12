@@ -12,13 +12,13 @@ type FlowUUID uuids.UUID
 
 // Flow is graph of nodes with actions and routers.
 //
-//   {
-//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
-//     "name": "Registration",
-//     "definition": {
-//       "nodes": []
-//     }
-//   }
+//	{
+//	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//	  "name": "Registration",
+//	  "definition": {
+//	    "nodes": []
+//	  }
+//	}
 //
 // @asset flow
 type Flow interface {

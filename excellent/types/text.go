@@ -12,10 +12,10 @@ import (
 
 // XText is a string of characters.
 //
-//   @("abc") -> abc
-//   @(text_length("abc")) -> 3
-//   @(upper("abc")) -> ABC
-//   @(json("abc")) -> "abc"
+//	@("abc") -> abc
+//	@(text_length("abc")) -> 3
+//	@(upper("abc")) -> ABC
+//	@(json("abc")) -> "abc"
 //
 // @type text
 type XText struct {

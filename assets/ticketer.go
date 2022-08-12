@@ -11,11 +11,11 @@ type TicketerUUID uuids.UUID
 
 // Ticketer is a system which can open or close tickets
 //
-//   {
-//     "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
-//     "name": "Support Tickets",
-//     "type": "mailgun"
-//   }
+//	{
+//	  "uuid": "37657cf7-5eab-4286-9cb0-bbf270587bad",
+//	  "name": "Support Tickets",
+//	  "type": "mailgun"
+//	}
 //
 // @asset ticketer
 type Ticketer interface {

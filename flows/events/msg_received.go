@@ -14,17 +14,17 @@ const TypeMsgReceived string = "msg_received"
 // MsgReceivedEvent events are sent by the caller to tell the engine that a message was received from
 // the contact and that it should try to resume the session.
 //
-//   {
-//     "type": "msg_received",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "msg": {
-//       "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-//       "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//       "urn": "tel:+12065551212",
-//       "text": "hi there",
-//       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
-//     }
-//   }
+//	{
+//	  "type": "msg_received",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "msg": {
+//	    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+//	    "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
+//	    "urn": "tel:+12065551212",
+//	    "text": "hi there",
+//	    "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
+//	  }
+//	}
 //
 // @event msg_received
 type MsgReceivedEvent struct {

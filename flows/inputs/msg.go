@@ -50,14 +50,14 @@ func NewMsg(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) *
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the text and attachments
-//   uuid:text -> the UUID of the input
-//   created_on:datetime -> the creation date of the input
-//   channel:channel -> the channel that the input was received on
-//   urn:text -> the contact URN that the input was received on
-//   text:text -> the text part of the input
-//   attachments:[]text -> any attachments on the input
-//   external_id:text -> the external ID of the input
+//	__default__:text -> the text and attachments
+//	uuid:text -> the UUID of the input
+//	created_on:datetime -> the creation date of the input
+//	channel:channel -> the channel that the input was received on
+//	urn:text -> the contact URN that the input was received on
+//	text:text -> the text part of the input
+//	attachments:[]text -> any attachments on the input
+//	external_id:text -> the external ID of the input
 //
 // @context input
 func (i *MsgInput) Context(env envs.Environment) map[string]types.XValue {

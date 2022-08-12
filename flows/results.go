@@ -41,15 +41,15 @@ func NewResult(name string, value string, category string, categoryLocalized str
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the value
-//   name:text -> the name of the result
-//   value:text -> the value of the result
-//   category:text -> the category of the result
-//   category_localized:text -> the localized category of the result
-//   input:text -> the input of the result
-//   extra:any -> the extra data of the result such as a webhook response
-//   node_uuid:text -> the UUID of the node in the flow that generated the result
-//   created_on:datetime -> the creation date of the result
+//	__default__:text -> the value
+//	name:text -> the name of the result
+//	value:text -> the value of the result
+//	category:text -> the category of the result
+//	category_localized:text -> the localized category of the result
+//	input:text -> the input of the result
+//	extra:any -> the extra data of the result such as a webhook response
+//	node_uuid:text -> the UUID of the node in the flow that generated the result
+//	created_on:datetime -> the creation date of the result
 //
 // @context result
 func (r *Result) Context(env envs.Environment) map[string]types.XValue {

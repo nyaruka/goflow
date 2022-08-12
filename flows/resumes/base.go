@@ -99,7 +99,7 @@ func (r *baseResume) context() *Context {
 
 // Context returns the properties available in expressions
 //
-//   type:text -> the type of resume that resumed this session
+//	type:text -> the type of resume that resumed this session
 //
 // @context resume
 func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {

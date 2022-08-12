@@ -195,20 +195,20 @@ func (r *flowRun) ExitedOn() *time.Time  { return r.exitedOn }
 
 // RootContext returns the root context for expression evaluation
 //
-//   contact:contact -> the contact
-//   fields:fields -> the custom field values of the contact
-//   urns:urns -> the URN values of the contact
-//   results:results -> the current run results
-//   input:input -> the current input from the contact
-//   run:run -> the current run
-//   child:related_run -> the last child run
-//   parent:related_run -> the parent of the run
-//   ticket:ticket -> the last opened ticket for the contact
-//   webhook:any -> the parsed JSON response of the last webhook call
-//   node:node -> the current node
-//   globals:globals -> the global values
-//   trigger:trigger -> the trigger that started this session
-//   resume:resume -> the current resume that continued this session
+//	contact:contact -> the contact
+//	fields:fields -> the custom field values of the contact
+//	urns:urns -> the URN values of the contact
+//	results:results -> the current run results
+//	input:input -> the current input from the contact
+//	run:run -> the current run
+//	child:related_run -> the last child run
+//	parent:related_run -> the parent of the run
+//	ticket:ticket -> the last opened ticket for the contact
+//	webhook:any -> the parsed JSON response of the last webhook call
+//	node:node -> the current node
+//	globals:globals -> the global values
+//	trigger:trigger -> the trigger that started this session
+//	resume:resume -> the current resume that continued this session
 //
 // @context root
 func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
@@ -258,14 +258,14 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 
 // Context returns the properties available in expressions
 //
-//   __default__:text -> the contact name and flow UUID
-//   uuid:text -> the UUID of the run
-//   contact:contact -> the contact of the run
-//   flow:flow -> the flow of the run
-//   status:text -> the current status of the run
-//   results:results -> the results saved by the run
-//   created_on:datetime -> the creation date of the run
-//   exited_on:datetime -> the exit date of the run
+//	__default__:text -> the contact name and flow UUID
+//	uuid:text -> the UUID of the run
+//	contact:contact -> the contact of the run
+//	flow:flow -> the flow of the run
+//	status:text -> the current status of the run
+//	results:results -> the results saved by the run
+//	created_on:datetime -> the creation date of the run
+//	exited_on:datetime -> the exit date of the run
 //
 // @context run
 func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
@@ -289,8 +289,8 @@ func (r *flowRun) Context(env envs.Environment) map[string]types.XValue {
 
 // returns the context representation of the current node
 //
-//   uuid:text -> the UUID of the node
-//   visit_count:number -> the count of visits to the node in this run
+//	uuid:text -> the UUID of the node
+//	visit_count:number -> the count of visits to the node in this run
 //
 // @context node
 func (r *flowRun) nodeContext(env envs.Environment) map[string]types.XValue {
