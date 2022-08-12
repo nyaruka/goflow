@@ -110,8 +110,8 @@ type AirtimeService interface {
 	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
-// HTTPTrace is an HTTP log with status added
-type HTTPTrace struct {
+// HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
+type HTTPLogWithoutTime struct {
 	*httpx.LogWithoutTime
 
 	Status CallStatus `json:"status" validate:"required"`
@@ -121,9 +121,9 @@ type HTTPTrace struct {
 const trimTracesTo = 10000
 const trimURLsTo = 2048
 
-// NewHTTPTrace creates a new HTTP log from a trace
-func NewHTTPTrace(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPTrace {
-	return &HTTPTrace{
+// NewHTTPLogWithoutTime creates a new HTTP log from a trace
+func NewHTTPLogWithoutTime(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPLogWithoutTime {
+	return &HTTPLogWithoutTime{
 		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
 		Status:         status,
 	}
@@ -131,7 +131,7 @@ func NewHTTPTrace(trace *httpx.Trace, status CallStatus, redact stringsx.Redacto
 
 // HTTPLog describes an HTTP request/response
 type HTTPLog struct {
-	*HTTPTrace
+	*HTTPLogWithoutTime
 	CreatedOn time.Time `json:"created_on" validate:"required"`
 }
 
@@ -167,7 +167,7 @@ const RedactionMask = "****************"
 // NewHTTPLog creates a new HTTP log from a trace
 func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact stringsx.Redactor) *HTTPLog {
 	return &HTTPLog{
-		HTTPTrace: NewHTTPTrace(trace, statusFn(trace), redact),
-		CreatedOn: trace.StartTime,
+		HTTPLogWithoutTime: NewHTTPLogWithoutTime(trace, statusFn(trace), redact),
+		CreatedOn:          trace.StartTime,
 	}
 }

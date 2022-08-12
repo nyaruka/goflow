@@ -41,7 +41,7 @@ const (
 type WebhookCalledEvent struct {
 	BaseEvent
 
-	*flows.HTTPTrace
+	*flows.HTTPLogWithoutTime
 
 	Resthook   string     `json:"resthook,omitempty"`
 	Extraction Extraction `json:"extraction"`
@@ -63,9 +63,9 @@ func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook
 	}
 
 	return &WebhookCalledEvent{
-		BaseEvent:  NewBaseEvent(TypeWebhookCalled),
-		HTTPTrace:  flows.NewHTTPTrace(call.Trace, status, nil),
-		Resthook:   resthook,
-		Extraction: extraction,
+		BaseEvent:          NewBaseEvent(TypeWebhookCalled),
+		HTTPLogWithoutTime: flows.NewHTTPLogWithoutTime(call.Trace, status, nil),
+		Resthook:           resthook,
+		Extraction:         extraction,
 	}
 }

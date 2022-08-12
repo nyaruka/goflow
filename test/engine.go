@@ -69,7 +69,7 @@ func (s *classificationService) Classify(env envs.Environment, input string, log
 	}
 
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
 				URL:        "http://test.acme.ai?classify",
 				StatusCode: 200,
@@ -110,7 +110,7 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
-			HTTPTrace: &flows.HTTPTrace{
+			HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 				LogWithoutTime: &httpx.LogWithoutTime{
 					URL:        "http://nyaruka.tickets.com/tickets.json",
 					StatusCode: 400,
@@ -128,7 +128,7 @@ func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic
 	}
 
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
 				URL:        "http://nyaruka.tickets.com/tickets.json",
 				StatusCode: 200,
@@ -158,7 +158,7 @@ func newAirtimeService(currency string) *airtimeService {
 
 func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
 				URL:        "http://send.airtime.com",
 				StatusCode: 200,

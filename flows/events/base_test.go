@@ -63,7 +63,7 @@ func TestEventMarshaling(t *testing.T) {
 				},
 				[]*flows.HTTPLog{
 					{
-						HTTPTrace: &flows.HTTPTrace{
+						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 							LogWithoutTime: &httpx.LogWithoutTime{
 								URL:        "https://send.money.com/topup",
 								StatusCode: 200,
@@ -148,7 +148,7 @@ func TestEventMarshaling(t *testing.T) {
 				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
 				[]*flows.HTTPLog{
 					{
-						HTTPTrace: &flows.HTTPTrace{
+						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 							LogWithoutTime: &httpx.LogWithoutTime{
 								URL:        "https://api.wit.ai/message?v=20200513&q=hello",
 								StatusCode: 200,
@@ -568,7 +568,7 @@ func TestEventMarshaling(t *testing.T) {
 				assets.NewTicketerReference(assets.TicketerUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Support"),
 				[]*flows.HTTPLog{
 					{
-						HTTPTrace: &flows.HTTPTrace{
+						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 							LogWithoutTime: &httpx.LogWithoutTime{
 								URL:        "https://tickets.com",
 								StatusCode: 200,
