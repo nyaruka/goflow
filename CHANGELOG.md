@@ -1,3 +1,7 @@
+v0.168.1
+----------
+ * Update to latest gocommon
+
 v0.168.0
 ----------
  * Use HTTP log functionality from gocommon
