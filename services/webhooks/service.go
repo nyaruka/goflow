@@ -77,7 +77,7 @@ func ExtractJSON(body []byte) ([]byte, bool) {
 	//  3. escaped null chars (\u0000)
 	cleaned := bytes.ToValidUTF8(body, nil)
 	cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
-	cleaned = httpx.ReplaceEscapedNulls(cleaned, nil)
+	cleaned = []byte(httpx.ReplaceEscapedNulls(string(cleaned), ""))
 
 	if json.Valid(cleaned) {
 		changed := !bytes.Equal(body, cleaned)
