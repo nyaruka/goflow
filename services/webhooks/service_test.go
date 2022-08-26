@@ -225,7 +225,6 @@ func TestGzipEncoding(t *testing.T) {
 	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
-
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 
 	server := test.NewTestHTTPServer(52025)
@@ -244,7 +243,9 @@ func TestGzipEncoding(t *testing.T) {
 	assert.Equal(t, "GET /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n", string(c.RequestTrace))
 	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n", string(c.ResponseTrace))
 	assert.Equal(t, "Hello", string(c.ResponseBody))
-	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nHello", string(c.SanitizedResponse("...")))
+
+	assert.Equal(t, "GET /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n", c.SanitizedRequest("..."))
+	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nHello", c.SanitizedResponse("..."))
 }
 
 func TestExtractJSON(t *testing.T) {
