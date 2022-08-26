@@ -1,3 +1,7 @@
+v0.168.2
+----------
+ * Update to latest gocommon
+
 v0.168.1
 ----------
  * Update to latest gocommon
