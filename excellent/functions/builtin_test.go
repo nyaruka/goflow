@@ -277,6 +277,22 @@ func TestFunctions(t *testing.T) {
 		{"foreach_value", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), ERROR}, ERROR},
 		{"foreach_value", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
 
+		{
+			"keys",
+			dmy,
+			[]types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y"), "c": xs("z")})},
+			xa(xs("a"), xs("b"), xs("c")),
+		},
+		{"keys", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{
+			"foo": types.NewXText("x"),
+			"bar": nil,
+			"sub": types.NewXObject(map[string]types.XValue{
+				"x": types.NewXNumberFromInt(3),
+			})})}, xa(xs("bar"), xs("foo"), xs("sub"))},
+		{"keys", dmy, []types.XValue{ERROR}, ERROR},
+		{"keys", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c"))}, ERROR},
+		{"keys", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
+
 		{"format", dmy, []types.XValue{xn("1234")}, xs("1,234")},
 		{"format", dmy, []types.XValue{xd(dates.NewDate(2017, 6, 12))}, xs("12-06-2017")},
 		{"format", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xs("12-06-2017 16:56")},

@@ -80,6 +80,18 @@ func jsonToArray(data []byte) *XArray {
 	})
 }
 
+// JSONToKeysXValue returns an X type from the given JSON
+func JSONToKeysXValue(x *XObject) *XArray {
+	properties := x.Properties()
+	return NewXLazyArray(func() []XValue {
+		items := make([]XValue, 0)
+		for _, prop := range properties {
+			items = append(items, NewXText(prop))
+		}
+		return items
+	})
+}
+
 // ToXJSON converts the given value to a JSON string
 func ToXJSON(x XValue) (XText, XError) {
 	if utils.IsNil(x) {

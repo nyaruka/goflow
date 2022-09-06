@@ -116,6 +116,7 @@ func init() {
 		// json functions
 		"json":       OneArgFunction(JSON),
 		"parse_json": OneTextFunction(ParseJSON),
+		"keys":       OneArgFunction(Keys),
 
 		// formatting functions
 		"format":          OneArgFunction(Format),
@@ -1720,6 +1721,24 @@ func JSON(env envs.Environment, value types.XValue) types.XValue {
 		return xerr
 	}
 	return asJSON
+}
+
+// Keys takes an object and extracts the keys of the object.
+//
+//  If given an object, return the keys of JSON
+//
+//  @(keys(object("a", "x", "b", "y"))) -> ["a", "b"]
+//  @(keys("string")) -> ERROR
+//  @(keys(10)) -> ERROR
+//  @(keys(null)) -> ERROR
+//
+// @function keys(object)
+func Keys(env envs.Environment, value types.XValue) types.XValue {
+	object, xerr := types.ToXObject(env, value)
+	if xerr != nil {
+		return xerr
+	}
+	return types.JSONToKeysXValue(object)
 }
 
 //----------------------------------------------------------------------------------------
