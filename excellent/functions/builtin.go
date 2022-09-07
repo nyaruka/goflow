@@ -2104,17 +2104,32 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 // ForEach creates a new array by applying `func` to each value in `values`.
 //
 // If the given function takes more than one argument, you can pass additional arguments after the function.
+// If the first argument is an object, creates a new array by applying `func` to each key in the object.
 //
 //	@(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//	@(foreach(object("a", 123, "b", "hello", "c", "world"), upper)) -> [A, B, C]
 //	@(foreach(array("a", "b", "c"), (x) => x & "1")) -> [a1, b1, c1]
 //	@(foreach(array("a", "b", "c"), (x) => object("v", x))) -> [{v: a}, {v: b}, {v: c}]
 //	@(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
 // @function foreach(values, func, [args...])
 func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, args[0])
-	if xerr != nil {
-		return xerr
+	var array *types.XArray
+
+	object, xerr := types.ToXObject(env, args[0])
+	if xerr == nil {
+		properties := object.Properties()
+		items := make([]types.XValue, 0)
+		for _, prop := range properties {
+			items = append(items, types.NewXText(prop))
+		}
+		array = types.NewXArray(items...)
+
+	} else {
+		array, xerr = types.ToXArray(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
 	}
 
 	function, isFunction := args[1].(*types.XFunction)
