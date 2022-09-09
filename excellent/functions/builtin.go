@@ -137,7 +137,7 @@ func init() {
 		"foreach":        MinArgsCheck(2, ForEach),
 		"foreach_value":  MinArgsCheck(2, ForEachValue),
 
-		"properties": OneArgFunction(Properties),
+		"keys": OneObjectFunction(Keys),
 	}
 
 	for name, fn := range builtin {
@@ -2103,27 +2103,23 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 	return types.NewXObject(result)
 }
 
-// Properties takes an object and returns its properties
+// Keys takes an object and returns its properties
 //
-//	@(properties(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
-//	@(properties(null)) -> []
-//	@(properties("string")) -> ERROR
-//	@(properties(10)) -> ERROR
+//	@(keys(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
+//	@(keys("string")) -> ERROR
+//	@(keys(10)) -> ERROR
+//	@(keys(null)) -> ERROR
 //
-// @function properties(object)
-func Properties(env envs.Environment, arg types.XValue) types.XValue {
+// @function keys(object)
+func Keys(env envs.Environment, object *types.XObject) types.XValue {
 
-	// if utils.IsNil(arg) {
-	// 	return types.NewXErrorf("requires a not nil object as its argument")
-	// }
-
-	object, xerr := types.ToXObject(env, arg)
-	if xerr != nil {
-		return xerr
+	if object == types.XObjectEmpty {
+		return types.NewXErrorf("requires a not nil object as its argument")
 	}
-	properties := object.Properties()
+
+	keys := object.Properties()
 	items := make([]types.XValue, 0)
-	for _, prop := range properties {
+	for _, prop := range keys {
 		items = append(items, types.NewXText(prop))
 	}
 	return types.NewXArray(items...)
