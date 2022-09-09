@@ -136,6 +136,8 @@ func init() {
 		"extract_object": MinArgsCheck(2, ExtractObject),
 		"foreach":        MinArgsCheck(2, ForEach),
 		"foreach_value":  MinArgsCheck(2, ForEachValue),
+
+		"properties": OneArgFunction(Properties),
 	}
 
 	for name, fn := range builtin {
@@ -2099,6 +2101,32 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXObject(result)
+}
+
+// Properties takes an object and returns its properties
+//
+//	@(properties(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
+//	@(properties(null)) -> []
+//	@(properties("string")) -> ERROR
+//	@(properties(10)) -> ERROR
+//
+// @function properties(object)
+func Properties(env envs.Environment, arg types.XValue) types.XValue {
+
+	// if utils.IsNil(arg) {
+	// 	return types.NewXErrorf("requires a not nil object as its argument")
+	// }
+
+	object, xerr := types.ToXObject(env, arg)
+	if xerr != nil {
+		return xerr
+	}
+	properties := object.Properties()
+	items := make([]types.XValue, 0)
+	for _, prop := range properties {
+		items = append(items, types.NewXText(prop))
+	}
+	return types.NewXArray(items...)
 }
 
 // ForEach creates a new array by applying `func` to each value in `values`.
