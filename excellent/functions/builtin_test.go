@@ -26,6 +26,7 @@ var xdt = types.NewXDateTime
 var xd = types.NewXDate
 var xt = types.NewXTime
 var xa = types.NewXArray
+var xo = types.NewXObject
 var xf = functions.Lookup
 var ERROR = types.NewXErrorf("any error")
 
@@ -266,6 +267,20 @@ func TestFunctions(t *testing.T) {
 		{"foreach", dmy, []types.XValue{ERROR, xf("upper")}, ERROR},
 		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), ERROR}, ERROR},
 		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xf("abs")}, ERROR},
+
+		{"keys", dmy, []types.XValue{xo(map[string]types.XValue{"a": xs("x"), "b": xs("y"), "c": xs("z")})}, xa(xs("a"), xs("b"), xs("c"))},
+		{
+			"keys",
+			dmy,
+			[]types.XValue{xo(map[string]types.XValue{"foo": xs("x"), "bar": nil, "sub": xo(map[string]types.XValue{"x": xi(3)})})},
+			xa(xs("bar"), xs("foo"), xs("sub")),
+		},
+		{"keys", dmy, []types.XValue{nil}, xa()},
+		{"keys", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c"))}, ERROR},
+		{"keys", dmy, []types.XValue{ERROR}, ERROR},
+		{"keys", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
+		{"keys", dmy, []types.XValue{xs("a")}, ERROR},
+		{"keys", dmy, []types.XValue{xi(10)}, ERROR},
 
 		{
 			"foreach_value",
