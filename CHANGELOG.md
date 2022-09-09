@@ -1,3 +1,9 @@
+v0.169.0
+----------
+ * Update to latest gocommon
+ * Add keys function to get object properties
+ * Use go 1.19
+
 v0.168.2
 ----------
  * Update to latest gocommon
