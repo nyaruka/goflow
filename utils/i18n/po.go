@@ -337,12 +337,10 @@ func EncodePOString(text string) string {
 		return `""`
 	}
 
-	runes := []rune(text)
-
 	b := strings.Builder{}
 	lineCount := 0
 	insideLine := false
-	for _, r := range runes {
+	for _, r := range text {
 		if !insideLine {
 			lineCount++
 			if lineCount > 1 {
@@ -396,7 +394,7 @@ func DecodePOString(s string) string {
 		line = line[1 : len(line)-1] // strip quotes
 
 		unescaping := false
-		for _, r := range []rune(line) {
+		for _, r := range line {
 			if unescaping {
 				switch r {
 				case '\\':
