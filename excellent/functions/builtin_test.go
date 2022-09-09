@@ -275,13 +275,13 @@ func TestFunctions(t *testing.T) {
 			[]types.XValue{xo(map[string]types.XValue{"foo": xs("x"), "bar": nil, "sub": xo(map[string]types.XValue{"x": xi(3)})})},
 			xa(xs("bar"), xs("foo"), xs("sub")),
 		},
-		{"keys", dmy, []types.XValue{xo(nil)}, xa()},
+		{"keys", dmy, []types.XValue{types.XObjectEmpty}, xa()},
+		{"keys", dmy, []types.XValue{nil}, xa()},
 		{"keys", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c"))}, ERROR},
 		{"keys", dmy, []types.XValue{ERROR}, ERROR},
 		{"keys", dmy, []types.XValue{types.NewXObject(map[string]types.XValue{"a": xs("x"), "b": xs("y")}), xf("abs")}, ERROR},
 		{"keys", dmy, []types.XValue{xs("a")}, ERROR},
 		{"keys", dmy, []types.XValue{xi(10)}, ERROR},
-		{"keys", dmy, []types.XValue{nil}, ERROR},
 
 		{
 			"foreach_value",

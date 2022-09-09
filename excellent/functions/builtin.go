@@ -2103,20 +2103,15 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 	return types.NewXObject(result)
 }
 
-// Keys takes an object and returns its properties
+// Keys returns an array containing the property keys of `object`.
 //
 //	@(keys(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
+//	@(keys(null)) -> []
 //	@(keys("string")) -> ERROR
 //	@(keys(10)) -> ERROR
-//	@(keys(null)) -> ERROR
 //
 // @function keys(object)
 func Keys(env envs.Environment, object *types.XObject) types.XValue {
-
-	if object == types.XObjectEmpty {
-		return types.NewXErrorf("requires a not nil object as its argument")
-	}
-
 	keys := object.Properties()
 	items := make([]types.XValue, 0)
 	for _, prop := range keys {
