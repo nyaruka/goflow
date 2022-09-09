@@ -136,6 +136,8 @@ func init() {
 		"extract_object": MinArgsCheck(2, ExtractObject),
 		"foreach":        MinArgsCheck(2, ForEach),
 		"foreach_value":  MinArgsCheck(2, ForEachValue),
+
+		"keys": OneObjectFunction(Keys),
 	}
 
 	for name, fn := range builtin {
@@ -2099,6 +2101,23 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXObject(result)
+}
+
+// Keys returns an array containing the property keys of `object`.
+//
+//	@(keys(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
+//	@(keys(null)) -> []
+//	@(keys("string")) -> ERROR
+//	@(keys(10)) -> ERROR
+//
+// @function keys(object)
+func Keys(env envs.Environment, object *types.XObject) types.XValue {
+	keys := object.Properties()
+	items := make([]types.XValue, 0)
+	for _, prop := range keys {
+		items = append(items, types.NewXText(prop))
+	}
+	return types.NewXArray(items...)
 }
 
 // ForEach creates a new array by applying `func` to each value in `values`.

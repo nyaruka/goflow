@@ -305,6 +305,18 @@ func ObjectAndTextsFunction(f func(envs.Environment, *types.XObject, ...types.XT
 	})
 }
 
+// OneObjectFunction creates an XFunc from a single object function
+func OneObjectFunction(f func(envs.Environment, *types.XObject) types.XValue) types.XFunc {
+	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {
+		object, xerr := types.ToXObject(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, object)
+	})
+}
+
 // OneArrayFunction creates an XFunc from a single array function
 func OneArrayFunction(f func(envs.Environment, *types.XArray) types.XValue) types.XFunc {
 	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {

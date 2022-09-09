@@ -92,4 +92,10 @@ func TestWrappers(t *testing.T) {
 	test.AssertXEqual(t, result, f(env, obj, text, text, text))
 	test.AssertXEqual(t, xe("unable to convert 1 to an object"), f(env, num, text))
 	test.AssertXEqual(t, xe("error"), f(env, obj, xe("error")))
+
+	f = functions.OneObjectFunction(func(envs.Environment, *types.XObject) types.XValue { return result })
+	test.AssertXEqual(t, xe("need 1 argument(s), got 0"), f(env))
+	test.AssertXEqual(t, result, f(env, obj))
+	test.AssertXEqual(t, xe("unable to convert 1 to an object"), f(env, num))
+	test.AssertXEqual(t, xe("error"), f(env, xe("error")))
 }
