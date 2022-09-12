@@ -1,3 +1,7 @@
+v0.170.0
+----------
+ * Add unsendable reason to MsgOut and set when contact status is not active
+
 v0.169.0
 ----------
  * Update to latest gocommon
