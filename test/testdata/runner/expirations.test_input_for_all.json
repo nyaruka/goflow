@@ -28,6 +28,7 @@
                     "created_on": "2018-07-06T12:30:10.123456789Z",
                     "msg": {
                         "text": "What's your first name?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                     },
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -150,6 +151,7 @@
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "msg": {
                                     "text": "What's your first name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -253,6 +255,7 @@
                     "created_on": "2018-07-06T12:30:28.123456789Z",
                     "msg": {
                         "text": "What's your middle name?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -370,6 +373,7 @@
                                 "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -418,6 +422,7 @@
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "msg": {
                                     "text": "What's your first name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -551,6 +556,7 @@
                     "created_on": "2018-07-06T12:30:46.123456789Z",
                     "msg": {
                         "text": "What's your last name?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -637,6 +643,7 @@
                                 "created_on": "2018-07-06T12:30:46.123456789Z",
                                 "msg": {
                                     "text": "What's your last name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -695,6 +702,7 @@
                                 "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -773,6 +781,7 @@
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "msg": {
                                     "text": "What's your first name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
@@ -961,6 +970,7 @@
                                 "created_on": "2018-07-06T12:30:46.123456789Z",
                                 "msg": {
                                     "text": "What's your last name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -1049,6 +1059,7 @@
                                 "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "text": "What's your middle name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -1127,6 +1138,7 @@
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "msg": {
                                     "text": "What's your first name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",

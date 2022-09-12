@@ -6,6 +6,7 @@
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "text": "Enter command: name or exit",
+                        "unsendable_reason": "no_destination",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -65,6 +66,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -178,6 +180,7 @@
                     "created_on": "2018-07-06T12:30:24.123456789Z",
                     "msg": {
                         "text": "Clearing name",
+                        "unsendable_reason": "no_destination",
                         "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                     },
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -204,6 +207,7 @@
                     "created_on": "2018-07-06T12:30:38.123456789Z",
                     "msg": {
                         "text": "Enter command: name or exit",
+                        "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -292,6 +296,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -379,6 +384,7 @@
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                                 },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -438,6 +444,7 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -552,6 +559,7 @@
                     "created_on": "2018-07-06T12:31:02.123456789Z",
                     "msg": {
                         "text": "Clearing name",
+                        "unsendable_reason": "no_destination",
                         "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                     },
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
@@ -572,6 +580,7 @@
                     "created_on": "2018-07-06T12:31:16.123456789Z",
                     "msg": {
                         "text": "Enter command: name or exit",
+                        "unsendable_reason": "no_destination",
                         "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                     },
                     "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
@@ -660,6 +669,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -747,6 +757,7 @@
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                                 },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -806,6 +817,7 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -894,6 +906,7 @@
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                                 },
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
@@ -947,6 +960,7 @@
                                 "created_on": "2018-07-06T12:31:16.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                                 },
                                 "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
@@ -1093,6 +1107,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
@@ -1180,6 +1195,7 @@
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                                 },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
@@ -1239,6 +1255,7 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -1327,6 +1344,7 @@
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "msg": {
                                     "text": "Clearing name",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                                 },
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
@@ -1380,6 +1398,7 @@
                                 "created_on": "2018-07-06T12:31:16.123456789Z",
                                 "msg": {
                                     "text": "Enter command: name or exit",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                                 },
                                 "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",

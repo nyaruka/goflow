@@ -23,6 +23,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
 
 	"github.com/stretchr/testify/assert"
@@ -428,28 +429,84 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			events.NewIVRCreated(
-				flows.NewMsgOut(
+				flows.NewIVRMsgOut(
 					urns.URN("tel:+12345678900"),
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 					"Hi there",
-					nil,
-					nil,
-					nil,
-					flows.NilMsgTopic,
+					"eng",
+					"http://example.com/hi.mp3",
 				),
 			),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
+					"uuid": "20cc4181-48cf-4344-9751-99419796decd",
+					"urn": "tel:+12345678900",
 					"channel": {
 						"name": "My Android Phone",
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"text": "Hi there",
-					"urn": "tel:+12345678900",
-					"uuid": "20cc4181-48cf-4344-9751-99419796decd"
+					"text_language": "eng",
+					"attachments": ["audio:http://example.com/hi.mp3"]
 				},
 				"type": "ivr_created"
+			}`,
+		},
+		{
+			events.NewMsgCreated(
+				flows.NewMsgOut(
+					urns.URN("tel:+12345678900"),
+					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+					"Hi there",
+					nil, nil, nil,
+					flows.NilMsgTopic,
+					flows.NilUnsendableReason,
+				),
+			),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"msg": {
+					"uuid": "04e910a5-d2e3-448b-958a-630e35c62431",
+					"urn": "tel:+12345678900",
+					"channel": {
+						"name": "My Android Phone",
+						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+					},
+					"text": "Hi there"
+				},
+				"type": "msg_created"
+			}`,
+		},
+		{
+			events.NewMsgCreated(
+				flows.NewMsgOut(
+					urns.URN("tel:+12345678900"),
+					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+					"Hi there",
+					[]utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
+					[]string{"yes", "no"},
+					nil,
+					flows.MsgTopicAgent,
+					flows.UnsendableReasonContactStatus,
+				),
+			),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"msg": {
+					"uuid": "94f0e964-be11-4d7b-866b-323926b4c6a0",
+					"urn": "tel:+12345678900",
+					"channel": {
+						"name": "My Android Phone",
+						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+					},
+					"text": "Hi there",
+					"attachments": ["image/jpeg:http://s3.amazon.com/bucket/test.jpg"],
+					"quick_replies": ["yes", "no"],
+					"topic": "agent",
+					"unsendable_reason": "contact_status"
+				},
+				"type": "msg_created"
 			}`,
 		},
 		{

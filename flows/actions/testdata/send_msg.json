@@ -328,7 +328,8 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "msg": {
                     "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "text": "Hi there"
+                    "text": "Hi there",
+                    "unsendable_reason": "no_destination"
                 }
             }
         ]
