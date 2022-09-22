@@ -14,14 +14,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestConnection(t *testing.T) {
-	connection := flows.NewConnection(
+func TestCall(t *testing.T) {
+	call := flows.NewCall(
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		urns.URN("tel:+1234567890"),
 	)
 
-	// test marshaling our connection
-	marshaled, err := jsonx.Marshal(connection)
+	// test marshaling our call
+	marshaled, err := jsonx.Marshal(call)
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
@@ -30,9 +30,9 @@ func TestConnection(t *testing.T) {
 	}`), marshaled, "JSON mismatch")
 
 	// test unmarshaling
-	connection = &flows.Connection{}
-	err = utils.UnmarshalAndValidate(marshaled, connection)
+	call = &flows.Call{}
+	err = utils.UnmarshalAndValidate(marshaled, call)
 	require.NoError(t, err)
-	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), connection.Channel().UUID)
-	assert.Equal(t, urns.URN("tel:+1234567890"), connection.URN())
+	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), call.Channel().UUID)
+	assert.Equal(t, urns.URN("tel:+1234567890"), call.URN())
 }

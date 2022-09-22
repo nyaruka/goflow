@@ -58,11 +58,11 @@ func (a *PlayAudioAction) Execute(run flows.Run, step flows.Step, logModifier fl
 		return nil
 	}
 
-	// an IVR flow must have been started with a connection
-	connection := run.Session().Trigger().Connection()
+	// an IVR flow must have been started with a call
+	call := run.Session().Trigger().Call()
 
 	// if we have an audio URL, turn it into a message
-	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), "", envs.NilLanguage, evaluatedAudioURL)
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), "", envs.NilLanguage, evaluatedAudioURL)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

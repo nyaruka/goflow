@@ -85,9 +85,9 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 	}
 }
 
-// WithConnection sets the channel connection for the trigger
-func (b *FlowActionBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *FlowActionBuilder {
-	b.t.connection = flows.NewConnection(channel, urn)
+// WithCall sets the call for the trigger
+func (b *FlowActionBuilder) WithCall(channel *assets.ChannelReference, urn urns.URN) *FlowActionBuilder {
+	b.t.call = flows.NewCall(channel, urn)
 	return b
 }
 
