@@ -218,7 +218,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Channel(channel, triggers.ChannelEventTypeIncomingCall).
-				WithConnection(urns.URN("tel:+12065551212")).
+				WithCall(urns.URN("tel:+12065551212")).
 				Build(),
 			"channel_incoming_call",
 		},
@@ -238,7 +238,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
-				WithConnection(channel, "tel:+12065551212").
+				WithCall(channel, "tel:+12065551212").
 				AsBatch().
 				Build(),
 			"flow_action_ivr",
@@ -256,7 +256,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Manual().
-				WithConnection(channel, "tel:+12065551212").
+				WithCall(channel, "tel:+12065551212").
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				AsBatch().
 				Build(),
@@ -312,6 +312,54 @@ func TestReadTrigger(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+
+	// can load call from connection for backwards compatibility
+	trigger, err := triggers.ReadTrigger(sessionAssets, []byte(`{
+		"type": "channel",
+		"environment": {
+			"date_format": "YYYY-MM-DD",
+			"time_format": "tt:mm",
+			"timezone": "UTC",
+			"number_format": {
+				"decimal_symbol": ".",
+				"digit_grouping_symbol": ","
+			},
+			"redaction_policy": "none",
+			"max_value_length": 640
+		},
+		"flow": {
+			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+			"name": "Registration"
+		},
+		"contact": {
+			"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b",
+			"name": "Bob",
+			"language": "eng",
+			"status": "active",
+			"created_on": "2018-10-20T09:49:31.23456789Z",
+			"urns": [
+				"tel:+12065551212"
+			]
+		},
+		"connection": {
+			"channel": {
+				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+				"name": "Nexmo"
+			},
+			"urn": "tel:+12065551212"
+		},
+		"triggered_on": "2018-10-20T09:49:31.23456789Z",
+		"event": {
+			"type": "incoming_call",
+			"channel": {
+				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+				"name": "Nexmo"
+			}
+		}
+	}`), missing)
+	assert.NoError(t, err)
+	assert.NotNil(t, trigger.Call())
+	assert.Equal(t, "Nexmo", trigger.Call().Channel().Name)
 }
 
 func TestTriggerSessionInitialization(t *testing.T) {
@@ -337,7 +385,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Equal(t, triggers.TypeManual, trigger.Type())
 	assert.Equal(t, env, trigger.Environment())
 	assert.Equal(t, contact, trigger.Contact())
-	assert.Nil(t, trigger.Connection())
+	assert.Nil(t, trigger.Call())
 	assert.Equal(t, params, trigger.Params())
 
 	eng := engine.NewBuilder().Build()

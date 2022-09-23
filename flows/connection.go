@@ -6,35 +6,35 @@ import (
 	"github.com/nyaruka/goflow/assets"
 )
 
-// Connection represents a connection to a specific channel using a specific URN
-type Connection struct {
+// Call represents a call over a specific channel and URN
+type Call struct {
 	channel *assets.ChannelReference
 	urn     urns.URN
 }
 
-// NewConnection creates a new connection
-func NewConnection(channel *assets.ChannelReference, urn urns.URN) *Connection {
-	return &Connection{channel: channel, urn: urn}
+// NewCall creates a new call
+func NewCall(channel *assets.ChannelReference, urn urns.URN) *Call {
+	return &Call{channel: channel, urn: urn}
 }
 
 // Channel returns a reference to the channel
-func (c *Connection) Channel() *assets.ChannelReference { return c.channel }
+func (c *Call) Channel() *assets.ChannelReference { return c.channel }
 
 // URN returns the URN
-func (c *Connection) URN() urns.URN { return c.urn }
+func (c *Call) URN() urns.URN { return c.urn }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type connectionEnvelope struct {
+type callEnvelope struct {
 	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
 	URN     urns.URN                 `json:"urn" validate:"required,urn"`
 }
 
-// UnmarshalJSON unmarshals a connection from JSON
-func (c *Connection) UnmarshalJSON(data []byte) error {
-	e := &connectionEnvelope{}
+// UnmarshalJSON unmarshals a call from JSON
+func (c *Call) UnmarshalJSON(data []byte) error {
+	e := &callEnvelope{}
 	if err := jsonx.Unmarshal(data, e); err != nil {
 		return err
 	}
@@ -44,9 +44,9 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals this connection into JSON
-func (c *Connection) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&connectionEnvelope{
+// MarshalJSON marshals this call into JSON
+func (c *Call) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&callEnvelope{
 		Channel: c.channel,
 		URN:     c.urn,
 	})

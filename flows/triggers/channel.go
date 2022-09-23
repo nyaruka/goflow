@@ -79,9 +79,9 @@ func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEve
 	}
 }
 
-// WithConnection sets the channel connection for the trigger
-func (b *ChannelBuilder) WithConnection(urn urns.URN) *ChannelBuilder {
-	b.t.connection = flows.NewConnection(b.t.event.Channel, urn)
+// WithCall sets the call for the trigger
+func (b *ChannelBuilder) WithCall(urn urns.URN) *ChannelBuilder {
+	b.t.call = flows.NewCall(b.t.event.Channel, urn)
 	return b
 }
 

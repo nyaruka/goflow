@@ -121,7 +121,7 @@ func (b *MsgBuilder) WithMatch(match *KeywordMatch) *MsgBuilder {
 
 // WithConnection sets the channel connection for the trigger
 func (b *MsgBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *MsgBuilder {
-	b.t.connection = flows.NewConnection(channel, urn)
+	b.t.call = flows.NewCall(channel, urn)
 	return b
 }
 

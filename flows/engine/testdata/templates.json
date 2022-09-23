@@ -856,12 +856,12 @@
                     "state": null
                 },
                 "first_name": "Jasmine",
-                "status": "active",
                 "groups": [],
                 "id": "0",
                 "language": "spa",
                 "last_seen_on": null,
                 "name": "Jasmine",
+                "status": "active",
                 "tickets": [],
                 "timezone": null,
                 "urn": "tel:+12024562222",

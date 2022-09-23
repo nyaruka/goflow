@@ -36,7 +36,7 @@ type baseTrigger struct {
 	environment envs.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
-	connection  *flows.Connection
+	call        *flows.Call
 	batch       bool
 	params      *types.XObject
 	history     *flows.SessionHistory
@@ -44,13 +44,13 @@ type baseTrigger struct {
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, connection *flows.Connection, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, call *flows.Call, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		environment: env,
 		flow:        flow,
 		contact:     contact,
-		connection:  connection,
+		call:        call,
 		batch:       batch,
 		history:     history,
 		triggeredOn: dates.Now(),
@@ -63,7 +63,7 @@ func (t *baseTrigger) Type() string { return t.type_ }
 func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
-func (t *baseTrigger) Connection() *flows.Connection  { return t.connection }
+func (t *baseTrigger) Call() *flows.Call              { return t.call }
 func (t *baseTrigger) Batch() bool                    { return t.batch }
 func (t *baseTrigger) Params() *types.XObject         { return t.params }
 func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
@@ -77,8 +77,8 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 		return errors.Wrapf(err, "unable to load %s", t.Flow())
 	}
 
-	if flow.Type() == flows.FlowTypeVoice && t.connection == nil {
-		return errors.New("unable to trigger voice flow without connection")
+	if flow.Type() == flows.FlowTypeVoice && t.call == nil {
+		return errors.New("unable to trigger voice flow without call")
 	}
 
 	session.SetType(flow.Type())
@@ -180,7 +180,8 @@ type baseTriggerEnvelope struct {
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
-	Connection  *flows.Connection     `json:"connection,omitempty"`
+	Call        *flows.Call           `json:"call,omitempty"`
+	Connection  *flows.Call           `json:"connection,omitempty"` // backwards compatibility
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
@@ -206,7 +207,10 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 
 	t.type_ = e.Type
 	t.flow = e.Flow
-	t.connection = e.Connection
+	t.call = e.Call
+	if e.Connection != nil {
+		t.call = e.Connection
+	}
 	t.batch = e.Batch
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
@@ -234,7 +238,8 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	var err error
 	e.Type = t.type_
 	e.Flow = t.flow
-	e.Connection = t.connection
+	e.Call = t.call
+	e.Connection = t.call
 	e.Batch = t.batch
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn

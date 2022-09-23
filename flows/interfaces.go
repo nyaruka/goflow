@@ -246,7 +246,7 @@ type Trigger interface {
 	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
-	Connection() *Connection
+	Call() *Call
 	Batch() bool
 	Params() *types.XObject
 	History() *SessionHistory
