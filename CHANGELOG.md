@@ -1,3 +1,7 @@
+v0.171.0
+----------
+ * Rename connection to call in IVR context
+
 v0.170.0
 ----------
  * Add unsendable reason to MsgOut and set when contact status is not active
