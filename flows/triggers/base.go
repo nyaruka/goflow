@@ -239,6 +239,7 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.Type = t.type_
 	e.Flow = t.flow
 	e.Call = t.call
+	e.Connection = t.call
 	e.Batch = t.batch
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
