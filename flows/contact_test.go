@@ -132,6 +132,7 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
+		"teams":      nil,
 		"tel":        flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
 		"telegram":   nil,
 		"twitter":    flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
@@ -177,6 +178,7 @@ func TestContact(t *testing.T) {
 		"name":         types.NewXText("Joe Bloggs"),
 		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
+		"status":       types.NewXText(string(contact.Status())),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
 		"uuid":         types.NewXText(string(contact.UUID())),
@@ -351,7 +353,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 }
 
 func TestContactEqual(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	contact1JSON := []byte(`{
 		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -390,7 +392,7 @@ func TestContactEqual(t *testing.T) {
 }
 
 func TestContactQuery(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	contactJSON := []byte(`{
 		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",

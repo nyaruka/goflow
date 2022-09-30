@@ -15,11 +15,11 @@ const TypeContactTimezoneChanged string = "contact_timezone_changed"
 
 // ContactTimezoneChangedEvent events are created when the timezone of the contact has been changed.
 //
-//   {
-//     "type": "contact_timezone_changed",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "timezone": "Africa/Kigali"
-//   }
+//	{
+//	  "type": "contact_timezone_changed",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "timezone": "Africa/Kigali"
+//	}
 //
 // @event contact_timezone_changed
 type ContactTimezoneChangedEvent struct {

@@ -6,6 +6,7 @@
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "text": "What's your favorite color?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -63,6 +64,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -167,6 +169,7 @@
                     "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "text": "What's your favorite beer?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -240,6 +243,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -278,6 +282,7 @@
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -404,6 +409,7 @@
                     "created_on": "2018-07-06T12:30:36.123456789Z",
                     "msg": {
                         "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
+                        "unsendable_reason": "no_destination",
                         "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                     },
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
@@ -464,6 +470,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite color?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -502,6 +509,7 @@
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "text": "What's your favorite beer?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -540,6 +548,7 @@
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "msg": {
                                     "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                                 },
                                 "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",

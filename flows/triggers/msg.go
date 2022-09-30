@@ -23,27 +23,27 @@ const TypeMsg string = "msg"
 
 // MsgTrigger is used when a session was triggered by a message being received by the caller
 //
-//   {
-//     "type": "msg",
-//     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//     "contact": {
-//       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//       "name": "Bob",
-//       "created_on": "2018-01-01T12:00:00.000000Z"
-//     },
-//     "msg": {
-//       "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-//       "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//       "urn": "tel:+12065551212",
-//       "text": "hi there",
-//       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
-//     },
-//     "keyword_match": {
-//       "type": "first_word",
-//       "keyword": "start"
-//     },
-//     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
-//   }
+//	{
+//	  "type": "msg",
+//	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
+//	  "contact": {
+//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+//	    "name": "Bob",
+//	    "created_on": "2018-01-01T12:00:00.000000Z"
+//	  },
+//	  "msg": {
+//	    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+//	    "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
+//	    "urn": "tel:+12065551212",
+//	    "text": "hi there",
+//	    "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
+//	  },
+//	  "keyword_match": {
+//	    "type": "first_word",
+//	    "keyword": "start"
+//	  },
+//	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+//	}
 //
 // @trigger msg
 type MsgTrigger struct {
@@ -121,7 +121,7 @@ func (b *MsgBuilder) WithMatch(match *KeywordMatch) *MsgBuilder {
 
 // WithConnection sets the channel connection for the trigger
 func (b *MsgBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *MsgBuilder {
-	b.t.connection = flows.NewConnection(channel, urn)
+	b.t.call = flows.NewCall(channel, urn)
 	return b
 }
 

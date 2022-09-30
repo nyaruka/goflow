@@ -6,6 +6,7 @@
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
                         "text": "Hi there. What is your name?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -65,6 +66,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Hi there. What is your name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -173,6 +175,7 @@
                     "created_on": "2018-07-06T12:30:21.123456789Z",
                     "msg": {
                         "text": "Ok Bobby, what age are you?",
+                        "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -248,6 +251,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Hi there. What is your name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -288,6 +292,7 @@
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
                                     "text": "Ok Bobby, what age are you?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -412,6 +417,7 @@
                     "created_on": "2018-07-06T12:30:38.123456789Z",
                     "msg": {
                         "text": "Are you sure you're 123... maybe try again",
+                        "unsendable_reason": "no_destination",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                     },
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -487,6 +493,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Hi there. What is your name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -527,6 +534,7 @@
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
                                     "text": "Ok Bobby, what age are you?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -561,6 +569,7 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "text": "Are you sure you're 123... maybe try again",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -705,6 +714,7 @@
                     "created_on": "2018-07-06T12:30:55.123456789Z",
                     "msg": {
                         "text": "Great, you are 18 years old",
+                        "unsendable_reason": "no_destination",
                         "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                     },
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
@@ -808,6 +818,7 @@
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
                                     "text": "Hi there. What is your name?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
@@ -848,6 +859,7 @@
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
                                     "text": "Ok Bobby, what age are you?",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
@@ -882,6 +894,7 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
                                     "text": "Are you sure you're 123... maybe try again",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
@@ -916,6 +929,7 @@
                                 "created_on": "2018-07-06T12:30:55.123456789Z",
                                 "msg": {
                                     "text": "Great, you are 18 years old",
+                                    "unsendable_reason": "no_destination",
                                     "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                                 },
                                 "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",

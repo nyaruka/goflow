@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"bytes"
 	"regexp"
 	"sort"
 	"strings"
@@ -117,50 +116,3 @@ func Indent(s string, prefix string) string {
 	}
 	return output.String()
 }
-
-// Truncate truncates the given string to ensure it's less than limit characters
-func Truncate(s string, limit int) string {
-	return truncate(s, limit, "")
-}
-
-// TruncateEllipsis truncates the given string and adds ellipsis where the input is cut
-func TruncateEllipsis(s string, limit int) string {
-	return truncate(s, limit, "...")
-}
-
-func truncate(s string, limit int, ending string) string {
-	runes := []rune(s)
-	if len(runes) <= limit {
-		return s
-	}
-	return string(runes[:limit-len(ending)]) + ending
-}
-
-// Redactor is a function which can redact the given string
-type Redactor func(s string) string
-
-// NewRedactor creates a new redaction function which replaces the given values
-func NewRedactor(mask string, values ...string) Redactor {
-	// convert list of redaction values to list of replacements with mask
-	replacements := make([]string, len(values)*2)
-	for i := range values {
-		replacements[i*2] = values[i]
-		replacements[i*2+1] = mask
-	}
-	return strings.NewReplacer(replacements...).Replace
-}
-
-// replaces any `\u0000` sequences with the given replacement sequence which may be empty.
-// A sequence such as `\\u0000` is preserved as it is an escaped slash followed by the sequence `u0000`
-func ReplaceEscapedNulls(data []byte, repl []byte) []byte {
-	return nullEscapeRegex.ReplaceAllFunc(data, func(m []byte) []byte {
-		slashes := bytes.Count(m, []byte(`\`))
-		if slashes%2 == 0 {
-			return m
-		}
-
-		return append(bytes.Repeat([]byte(`\`), slashes-1), repl...)
-	})
-}
-
-var nullEscapeRegex = regexp.MustCompile(`\\+u0{4}`)

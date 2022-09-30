@@ -16,15 +16,15 @@ const TypeContactRefreshed string = "contact_refreshed"
 
 // ContactRefreshedEvent events are generated when the resume has a contact with differences to the current session contact.
 //
-//   {
-//     "type": "contact_refreshed",
-//     "created_on": "2006-01-02T15:04:05Z",
-//     "contact": {
-//       "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
-//       "name": "Bob",
-//       "urns": ["tel:+11231234567"]
-//     }
-//   }
+//	{
+//	  "type": "contact_refreshed",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "contact": {
+//	    "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+//	    "name": "Bob",
+//	    "urns": ["tel:+11231234567"]
+//	  }
+//	}
 //
 // @event contact_refreshed
 type ContactRefreshedEvent struct {

@@ -20,11 +20,11 @@ const TypePlayAudio string = "play_audio"
 // [event:ivr_created] event if there is a valid audio URL. This will contain a message which
 // the caller should handle as an IVR play command using the audio attachment.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "play_audio",
-//     "audio_url": "http://uploads.temba.io/2353262.m4a"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "play_audio",
+//	  "audio_url": "http://uploads.temba.io/2353262.m4a"
+//	}
 //
 // @action play_audio
 type PlayAudioAction struct {
@@ -58,11 +58,11 @@ func (a *PlayAudioAction) Execute(run flows.Run, step flows.Step, logModifier fl
 		return nil
 	}
 
-	// an IVR flow must have been started with a connection
-	connection := run.Session().Trigger().Connection()
+	// an IVR flow must have been started with a call
+	call := run.Session().Trigger().Call()
 
 	// if we have an audio URL, turn it into a message
-	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), "", envs.NilLanguage, evaluatedAudioURL)
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), "", envs.NilLanguage, evaluatedAudioURL)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

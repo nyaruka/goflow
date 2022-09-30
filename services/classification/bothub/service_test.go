@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/classification/bothub"
 	"github.com/nyaruka/goflow/test"
@@ -17,17 +18,15 @@ import (
 )
 
 func TestService(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
-
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://nlp.bothub.it/parse": {
-			httpx.NewMockResponse(200, nil, `{
+			httpx.NewMockResponse(200, nil, []byte(`{
 				"intent": {
 				  "name": "book_flight",
 				  "confidence": 0.9224673593230207
@@ -60,11 +59,9 @@ func TestService(t *testing.T) {
 				"text": "book my flight to Quito",
 				"update_id": 13158,
 				"language": "en"
-			  }`),
+			  }`)),
 		},
 	}))
-
-	session.Contact().SetLanguage("spa")
 
 	svc := bothub.NewService(
 		http.DefaultClient,
@@ -73,9 +70,10 @@ func TestService(t *testing.T) {
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 	)
 
+	env := envs.NewBuilder().WithAllowedLanguages([]envs.Language{"spa"}).WithDefaultCountry("US").Build()
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(session, "book my flight to Quito", httpLogger.Log)
+	classification, err := svc.Classify(env, "book my flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		{Name: "book_flight", Confidence: decimal.RequireFromString(`0.9224673593230207`)},

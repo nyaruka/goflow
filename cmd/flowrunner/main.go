@@ -13,6 +13,7 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -90,7 +91,7 @@ func createEngine(witToken string) flows.Engine {
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
 
 	if witToken != "" {
-		builder.WithClassificationServiceFactory(func(session flows.Session, classifier *flows.Classifier) (flows.ClassificationService, error) {
+		builder.WithClassificationServiceFactory(func(classifier *flows.Classifier) (flows.ClassificationService, error) {
 			if classifier.Type() == "wit" {
 				return wit.NewService(http.DefaultClient, nil, classifier, witToken), nil
 			}
@@ -151,10 +152,10 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	} else {
 		tb := triggers.NewBuilder(env, flow.Reference(), contact).Manual()
 
-		// if we're starting a voice flow we need a channel connection
+		// if we're starting a voice flow we need a call
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().GetForURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil), assets.ChannelRoleCall)
-			tb = tb.WithConnection(channel.Reference(), urns.URN("tel:+12065551212"))
+			tb = tb.WithCall(channel.Reference(), urns.URN("tel:+12065551212"))
 		}
 
 		repro.Trigger = tb.Build()
@@ -302,7 +303,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 	case *events.WaitTimedOutEvent:
 		msg = "⏲️ resuming due to wait timeout"
 	case *events.WebhookCalledEvent:
-		url := utils.TruncateEllipsis(typed.URL, 50)
+		url := stringsx.TruncateEllipsis(typed.URL, 50)
 		msg = fmt.Sprintf("☁️ called %s", url)
 	default:
 		msg = fmt.Sprintf("❓ %s event", typed.Type())

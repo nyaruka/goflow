@@ -22,12 +22,12 @@ const TypeTransferAirtime string = "transfer_airtime"
 //
 // An [event:airtime_transferred] event will be created if the airtime could be sent.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "transfer_airtime",
-//     "amounts": {"RWF": 500, "USD": 0.5},
-//     "result_name": "Reward Transfer"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "transfer_airtime",
+//	  "amounts": {"RWF": 500, "USD": 0.5},
+//	  "result_name": "Reward Transfer"
+//	}
 //
 // @action transfer_airtime
 type TransferAirtimeAction struct {
@@ -81,14 +81,14 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, step flows.Step, logEven
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 
-	svc, err := run.Session().Engine().Services().Airtime(run.Session())
+	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())
 	if err != nil {
 		return nil, err
 	}
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(run.Session(), sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
 	if transfer != nil {
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}

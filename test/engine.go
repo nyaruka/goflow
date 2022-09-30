@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -21,15 +22,20 @@ func NewEngine() flows.Engine {
 	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	return engine.NewBuilder().
-		WithEmailServiceFactory(func(s flows.Session) (flows.EmailService, error) {
+		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
-		WithClassificationServiceFactory(func(s flows.Session, c *flows.Classifier) (flows.ClassificationService, error) {
+		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
 			return newClassificationService(c), nil
 		}).
-		WithTicketServiceFactory(func(s flows.Session, t *flows.Ticketer) (flows.TicketService, error) { return NewTicketService(t), nil }).
-		WithAirtimeServiceFactory(func(flows.Session) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
+		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) {
+			if t.Name() == "Broken" {
+				return nil, errors.New("can't load ticket service")
+			}
+			return NewTicketService(t), nil
+		}).
+		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) { return newAirtimeService("RWF"), nil }).
 		Build()
 }
 
@@ -40,7 +46,7 @@ func newEmailService() *emailService {
 	return &emailService{}
 }
 
-func (s *emailService) Send(session flows.Session, addresses []string, subject, body string) error {
+func (s *emailService) Send(addresses []string, subject, body string) error {
 	return nil
 }
 
@@ -53,7 +59,7 @@ func newClassificationService(classifier *flows.Classifier) *classificationServi
 	return &classificationService{classifier: classifier}
 }
 
-func (s *classificationService) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *classificationService) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")
@@ -63,14 +69,16 @@ func (s *classificationService) Classify(session flows.Session, input string, lo
 	}
 
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://test.acme.ai?classify",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-			ElapsedMS:  1000,
-			Retries:    0,
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://test.acme.ai?classify",
+				StatusCode: 200,
+				Request:    "GET /?classify HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+				ElapsedMS:  1000,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -99,17 +107,19 @@ func NewTicketService(ticketer *flows.Ticketer) flows.TicketService {
 	return &ticketService{ticketer: ticketer}
 }
 
-func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
+func (s *ticketService) Open(env envs.Environment, contact *flows.Contact, topic *flows.Topic, body string, assignee *flows.User, logHTTP flows.HTTPLogCallback) (*flows.Ticket, error) {
 	if strings.Contains(body, "fail") {
 		logHTTP(&flows.HTTPLog{
-			HTTPTrace: &flows.HTTPTrace{
-				URL:        "http://nyaruka.tickets.com/tickets.json",
-				StatusCode: 400,
-				Status:     flows.CallStatusResponseError,
-				Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-				Response:   "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
-				ElapsedMS:  1,
-				Retries:    0,
+			HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+				LogWithoutTime: &httpx.LogWithoutTime{
+					URL:        "http://nyaruka.tickets.com/tickets.json",
+					StatusCode: 400,
+					Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+					Response:   "HTTP/1.0 400 OK\r\nContent-Length: 17\r\n\r\n{\"status\":\"fail\"}",
+					ElapsedMS:  1,
+					Retries:    0,
+				},
+				Status: flows.CallStatusResponseError,
 			},
 			CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 		})
@@ -118,14 +128,16 @@ func (s *ticketService) Open(session flows.Session, topic *flows.Topic, body str
 	}
 
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://nyaruka.tickets.com/tickets.json",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-			ElapsedMS:  1,
-			Retries:    0,
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://nyaruka.tickets.com/tickets.json",
+				StatusCode: 200,
+				Request:    fmt.Sprintf("POST /tickets.json HTTP/1.1\r\nAccept-Encoding: gzip\r\n\r\n{\"body\":\"%s\"}", body),
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+				ElapsedMS:  1,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -144,16 +156,18 @@ func newAirtimeService(currency string) *airtimeService {
 	return &airtimeService{fixedCurrency: currency}
 }
 
-func (s *airtimeService) Transfer(session flows.Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
-		HTTPTrace: &flows.HTTPTrace{
-			URL:        "http://send.airtime.com",
-			StatusCode: 200,
-			Status:     flows.CallStatusSuccess,
-			Request:    "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-			Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
-			ElapsedMS:  0,
-			Retries:    0,
+		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+			LogWithoutTime: &httpx.LogWithoutTime{
+				URL:        "http://send.airtime.com",
+				StatusCode: 200,
+				Request:    "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
+				ElapsedMS:  0,
+				Retries:    0,
+			},
+			Status: flows.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})

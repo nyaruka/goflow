@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/modifiers"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -161,9 +162,9 @@ func (a *baseAction) updateWebhook(run flows.Run, call *flows.WebhookCall) {
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) {
-	mod.Apply(run.Environment(), run.Session().Assets(), run.Contact(), logEvent)
+func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) bool {
 	logModifier(mod)
+	return modifiers.Apply(run.Environment(), run.Session().Engine().Services(), run.Session().Assets(), run.Contact(), mod, logEvent)
 }
 
 // helper to log a failure

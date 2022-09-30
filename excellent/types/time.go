@@ -11,9 +11,9 @@ import (
 
 // XTime is a time of day.
 //
-//   @(time_from_parts(16, 30, 45)) -> 16:30:45.000000
-//   @(format_time(time_from_parts(16, 30, 45))) -> 16:30
-//   @(json(time_from_parts(16, 30, 45))) -> "16:30:45.000000"
+//	@(time_from_parts(16, 30, 45)) -> 16:30:45.000000
+//	@(format_time(time_from_parts(16, 30, 45))) -> 16:30
+//	@(json(time_from_parts(16, 30, 45))) -> "16:30:45.000000"
 //
 // @type time
 type XTime struct {

@@ -432,3 +432,55 @@ func TestSimplify(t *testing.T) {
 		assert.Equal(t, tc.parsed, parsed.String(), "parsed mismatch for input '%s'", tc.text)
 	}
 }
+
+func TestQueryBuilding(t *testing.T) {
+	tests := []struct {
+		node  contactql.QueryNode
+		query string
+	}{
+		{
+			node:  contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+			query: "age > 10",
+		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+				contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+				contactql.NewCondition("age", contactql.PropertyTypeField, "<", "20"),
+			),
+			query: "age > 10 AND age < 20",
+		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorOr,
+				contactql.NewCondition("name", contactql.PropertyTypeField, "=", "bob"),
+				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+					contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+					contactql.NewCondition("age", contactql.PropertyTypeField, "<", "20"),
+				),
+			),
+			query: `name = "bob" OR (age > 10 AND age < 20)`,
+		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+				contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+			),
+			query: "age > 10",
+		},
+		{
+			node:  contactql.NewBoolCombination(contactql.BoolOperatorAnd),
+			query: "",
+		},
+		{
+			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+				contactql.NewCondition("name", contactql.PropertyTypeField, "=", "bob"),
+				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
+					contactql.NewBoolCombination(contactql.BoolOperatorAnd),
+				),
+			),
+			query: `name = "bob"`,
+		},
+	}
+
+	for _, tc := range tests {
+		assert.Equal(t, tc.query, contactql.Stringify(tc.node.Simplify()))
+	}
+}

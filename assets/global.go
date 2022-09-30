@@ -4,11 +4,11 @@ import "fmt"
 
 // Global is a named constant.
 //
-//   {
-//     "key": "organization_name",
-//     "name": "Organization Name",
-//     "value": "U-Report"
-//   }
+//	{
+//	  "key": "organization_name",
+//	  "name": "Organization Name",
+//	  "value": "U-Report"
+//	}
 //
 // @asset global
 type Global interface {

@@ -22,22 +22,22 @@ const TypeSendMsg string = "send_msg"
 //
 // A [event:msg_created] event will be created with the evaluated text.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "send_msg",
-//     "text": "Hi @contact.name, are you ready to complete today's survey?",
-//     "attachments": [],
-//     "all_urns": false,
-//     "templating": {
-//       "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
-//       "template": {
-//         "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
-//         "name": "revive_issue"
-//       },
-//       "variables": ["@contact.name"]
-//     },
-//     "topic": "event"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "send_msg",
+//	  "text": "Hi @contact.name, are you ready to complete today's survey?",
+//	  "attachments": [],
+//	  "all_urns": false,
+//	  "templating": {
+//	    "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
+//	    "template": {
+//	      "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+//	      "name": "revive_issue"
+//	    },
+//	    "variables": ["@contact.name"]
+//	  },
+//	  "topic": "event"
+//	}
 //
 // @action send_msg
 type SendMsgAction struct {
@@ -80,6 +80,12 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		return nil
 	}
 
+	// a message to a non-active contact is unsendable but can still be created
+	unsendableReason := flows.NilUnsendableReason
+	if run.Contact().Status() != flows.ContactStatusActive {
+		unsendableReason = flows.UnsendableReasonContactStatus
+	}
+
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 
 	destinations := run.Contact().ResolveDestinations(a.AllURNs)
@@ -88,14 +94,11 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
-		var channelRef *assets.ChannelReference
-		if dest.Channel != nil {
-			channelRef = assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
-		}
-
-		var templating *flows.MsgTemplating
+		urn := dest.URN.URN()
+		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
 
 		// do we have a template defined?
+		var templating *flows.MsgTemplating
 		if a.Templating != nil {
 			// looks for a translation in the contact locale or environment default
 			locales := []envs.Locale{
@@ -122,14 +125,14 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 			}
 		}
 
-		msg := flows.NewMsgOut(dest.URN.URN(), channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic)
+		msg := flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic, unsendableReason)
 		logEvent(events.NewMsgCreated(msg))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, flows.NilMsgTopic)
+		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, a.Topic, flows.UnsendableReasonNoDestination)
 		logEvent(events.NewMsgCreated(msg))
 	}
 

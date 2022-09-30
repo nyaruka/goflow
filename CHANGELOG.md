@@ -1,3 +1,91 @@
+v0.171.0
+----------
+ * Rename connection to call in IVR context
+
+v0.170.0
+----------
+ * Add unsendable reason to MsgOut and set when contact status is not active
+
+v0.169.0
+----------
+ * Update to latest gocommon
+ * Add keys function to get object properties
+ * Use go 1.19
+
+v0.168.2
+----------
+ * Update to latest gocommon
+
+v0.168.1
+----------
+ * Update to latest gocommon
+
+v0.168.0
+----------
+ * Use HTTP log functionality from gocommon
+ * Update parsed docstrings to use codeblock formating (tab) for examples
+
+v0.167.0
+----------
+ * Update to latest gocommon
+
+v0.166.0
+----------
+ * Add contact status to variable context
+
+v0.165.5
+----------
+ * Update to latest gocommon which adds teams URNs
+
+v0.165.4
+----------
+ * Another tweak to SessionBuilder so that it doesn't override assets
+
+v0.165.3
+----------
+ * More tweaks to SessionBuilder
+
+v0.165.2
+----------
+ * Allow passing of a flows.SessionAssets to test.SessionBuilder
+
+v0.165.1
+----------
+ * Updated translations from Transifex
+
+v0.165.0
+----------
+ * Add modifier to open a ticket
+
+v0.164.3
+----------
+ * Modifer.Apply should return if it made a modification and caller responsible for calling ReevaluateGroups if so
+ * Add Services param to Modifier.Apply
+
+v0.164.2
+----------
+ * Pass session assets to service factories
+
+v0.164.1
+----------
+ * Remove flow sessions from service factories
+
+v0.164.0
+----------
+ * Rework services to not require sessions
+
+v0.163.0
+----------
+ * Always truncate URLs in HTTP logs to 2048 chars
+
+v0.162.1
+----------
+ * Support simplifying of queries than can't be parsed but can be constructed
+
+v0.162.0
+----------
+ * Provide API for building contact queries programatically
+
 v0.161.2
 ----------
  * Update ANTLR

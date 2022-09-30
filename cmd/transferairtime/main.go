@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -22,14 +21,11 @@ import (
 
 const usage = `usage: transferairtime [flags] <destnumber> <amount> <currency>`
 
-var verbose bool
-
 func main() {
 	var dtoneKey, dtoneSecret string
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&dtoneKey, "dtone.key", "", "API key for DTOne service")
 	flags.StringVar(&dtoneSecret, "dtone.secret", "", "API secret for DTOne service")
-	flags.BoolVar(&verbose, "v", false, "enable verbose logging")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
@@ -56,9 +52,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	httpx.SetDebug(verbose)
-
-	svcFactory := func(flows.Session) (flows.AirtimeService, error) {
+	svcFactory := func(flows.SessionAssets) (flows.AirtimeService, error) {
 		return dtone.NewService(http.DefaultClient, nil, dtoneKey, dtoneSecret), nil
 	}
 

@@ -246,7 +246,7 @@ type Trigger interface {
 	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
-	Connection() *Connection
+	Call() *Call
 	Batch() bool
 	Params() *types.XObject
 	History() *SessionHistory
@@ -276,7 +276,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(envs.Environment, SessionAssets, *Contact, EventCallback)
+	Apply(envs.Environment, Services, SessionAssets, *Contact, EventCallback) bool
 }
 
 // ModifierCallback is a callback invoked when a modifier has been generated

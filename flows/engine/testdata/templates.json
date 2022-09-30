@@ -102,7 +102,7 @@
     },
     {
         "template": "@urns",
-        "output": "{discord: , ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }"
+        "output": "{discord: , ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , teams: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }"
     },
     {
         "template": "@urns.tel",
@@ -431,6 +431,7 @@
             "language": "eng",
             "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
             "name": "Ryan Lewis",
+            "status": "active",
             "tickets": [
                 {
                     "assignee": null,
@@ -515,6 +516,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
+                "status": "active",
                 "tickets": [
                     {
                         "assignee": null,
@@ -740,6 +742,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:10.035757-02:00",
                 "name": "Ryan Lewis",
+                "status": "active",
                 "tickets": [
                     {
                         "assignee": null,
@@ -820,6 +823,7 @@
                 "mailto": "mailto:foo@bar.com",
                 "rocketchat": null,
                 "slack": null,
+                "teams": null,
                 "tel": "tel:+12024561111",
                 "telegram": null,
                 "twitter": null,
@@ -857,6 +861,7 @@
                 "language": "spa",
                 "last_seen_on": null,
                 "name": "Jasmine",
+                "status": "active",
                 "tickets": [],
                 "timezone": null,
                 "urn": "tel:+12024562222",
@@ -915,6 +920,7 @@
                 "mailto": null,
                 "rocketchat": null,
                 "slack": null,
+                "teams": null,
                 "tel": "tel:+12024562222",
                 "telegram": null,
                 "twitter": null,

@@ -158,8 +158,8 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		svc, _ := session.Engine().Services().Webhook(session)
-		c, err := svc.Call(session, request)
+		svc, _ := session.Engine().Services().Webhook(session.Assets())
+		c, err := svc.Call(request)
 
 		if tc.isError {
 			assert.Error(t, err, "expected error for call %s", tc.call)
@@ -177,14 +177,14 @@ func TestWebhookParsing(t *testing.T) {
 }
 
 func TestRetries(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
-			httpx.NewMockResponse(502, nil, "a"),
-			httpx.NewMockResponse(200, nil, "b"),
+			httpx.NewMockResponse(502, nil, []byte("a")),
+			httpx.NewMockResponse(200, nil, []byte("b")),
 		},
 	})
 	httpx.SetRequestor(mocks)
@@ -192,8 +192,8 @@ func TestRetries(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://temba.io/", strings.NewReader("BODY"))
 	require.NoError(t, err)
 
-	svc, _ := session.Engine().Services().Webhook(session)
-	c, err := svc.Call(session, request)
+	svc, _ := session.Engine().Services().Webhook(session.Assets())
+	c, err := svc.Call(request)
 	require.NoError(t, err)
 
 	assert.Equal(t, 200, c.Response.StatusCode)
@@ -211,7 +211,7 @@ func TestAccessRestrictions(t *testing.T) {
 	assert.NoError(t, err)
 
 	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)
-	call, err := svc.Call(nil, request)
+	call, err := svc.Call(request)
 
 	// actual error becomes a call with a connection error
 	assert.NoError(t, err)
@@ -222,10 +222,9 @@ func TestAccessRestrictions(t *testing.T) {
 }
 
 func TestGzipEncoding(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
-
 	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
 
 	server := test.NewTestHTTPServer(52025)
@@ -235,8 +234,8 @@ func TestGzipEncoding(t *testing.T) {
 
 	request.Header.Set("Accept-Encoding", "gzip")
 
-	svc, _ := session.Engine().Services().Webhook(session)
-	c, err := svc.Call(session, request)
+	svc, _ := session.Engine().Services().Webhook(session.Assets())
+	c, err := svc.Call(request)
 	require.NoError(t, err)
 
 	// check that gzip decompression happens transparently
@@ -244,7 +243,9 @@ func TestGzipEncoding(t *testing.T) {
 	assert.Equal(t, "GET /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n", string(c.RequestTrace))
 	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n", string(c.ResponseTrace))
 	assert.Equal(t, "Hello", string(c.ResponseBody))
-	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nHello", string(c.SanitizedResponse("...")))
+
+	assert.Equal(t, "GET /?cmd=gzipped&content=Hello HTTP/1.1\r\nHost: 127.0.0.1:52025\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n", c.SanitizedRequest("..."))
+	assert.Equal(t, "HTTP/1.1 200 OK\r\nContent-Type: application/x-gzip\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\nHello", c.SanitizedResponse("..."))
 }
 
 func TestExtractJSON(t *testing.T) {
@@ -280,14 +281,14 @@ func TestExtractJSON(t *testing.T) {
 func TestWebhookResponseWithEscapes(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	mocks := httpx.NewMockRequestor(map[string][]httpx.MockResponse{
+	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"http://cheapcontactlookups.com": {
-			httpx.NewMockResponse(200, nil, `{"name": "01\\02\\03", "joined": "04\\05\\06"}`),
+			httpx.NewMockResponse(200, nil, []byte(`{"name": "01\\02\\03", "joined": "04\\05\\06"}`)),
 		},
 	})
 	httpx.SetRequestor(mocks)
 
-	session, _ := test.NewSessionBuilder().
+	_, session, _ := test.NewSessionBuilder().
 		WithAssetsPath("testdata/webhook_flow.json").
 		WithFlow("bb38eefb-3cd9-4f80-9867-9c84ae276f7a").MustBuild()
 

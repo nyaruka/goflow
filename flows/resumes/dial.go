@@ -21,14 +21,14 @@ const TypeDial string = "dial"
 
 // DialResume is used when a session is resumed after a number was dialed.
 //
-//   {
-//     "type": "dial",
-//     "resumed_on": "2021-01-20T12:18:30Z",
-//     "dial": {
-//       "status": "answered",
-//       "duration": 15
-//     }
-//   }
+//	{
+//	  "type": "dial",
+//	  "resumed_on": "2021-01-20T12:18:30Z",
+//	  "dial": {
+//	    "status": "answered",
+//	    "duration": 15
+//	  }
+//	}
 //
 // @resume dial
 type DialResume struct {

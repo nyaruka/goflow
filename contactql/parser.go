@@ -66,7 +66,7 @@ var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
 type QueryNode interface {
 	fmt.Stringer
 	validate(envs.Environment, Resolver) error
-	simplify() QueryNode
+	Simplify() QueryNode
 }
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
@@ -77,7 +77,7 @@ type Condition struct {
 	value    string
 }
 
-func newCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
+func NewCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
 	return &Condition{
 		propKey:  propKey,
 		propType: propType,
@@ -213,7 +213,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	return nil
 }
 
-func (c *Condition) simplify() QueryNode {
+func (c *Condition) Simplify() QueryNode {
 	return c
 }
 
@@ -256,28 +256,41 @@ func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) erro
 	return nil
 }
 
-func (b *BoolCombination) simplify() QueryNode {
-	for i, child := range b.children {
-		b.children[i] = child.simplify()
-	}
+func (b *BoolCombination) Simplify() QueryNode {
+	simplifiedChildren := make([]QueryNode, 0, len(b.children))
 
-	newChilden := make([]QueryNode, 0, 2*len(b.children))
-
-	// simplify by promoting grand children to children if they're combined with same op
 	for _, child := range b.children {
-		switch typed := child.(type) {
-		case *BoolCombination:
-			if typed.op == b.op {
-				newChilden = append(newChilden, typed.children...)
-			} else {
-				newChilden = append(newChilden, typed)
-			}
-		case *Condition:
-			newChilden = append(newChilden, typed)
+		// let children remove themselves by simplifying to nil
+		sc := child.Simplify()
+		if sc != nil {
+			simplifiedChildren = append(simplifiedChildren, sc)
 		}
 	}
 
-	return &BoolCombination{op: b.op, children: newChilden}
+	newChildren := make([]QueryNode, 0, 2*len(simplifiedChildren))
+
+	// simplify by promoting grand children to children if they're combined with same op
+	for _, child := range simplifiedChildren {
+		switch typed := child.(type) {
+		case *BoolCombination:
+			if typed.op == b.op {
+				newChildren = append(newChildren, typed.children...)
+			} else {
+				newChildren = append(newChildren, typed)
+			}
+		case *Condition:
+			newChildren = append(newChildren, typed)
+		}
+	}
+
+	// you can't parse a boolean combination with less than 2 children but you can construct one
+	if len(newChildren) == 0 {
+		return nil
+	} else if len(newChildren) == 1 {
+		return newChildren[0]
+	}
+
+	return &BoolCombination{op: b.op, children: newChildren}
 }
 
 func (b *BoolCombination) String() string {
@@ -302,9 +315,19 @@ func (q *ContactQuery) Resolver() Resolver { return q.resolver }
 
 // String returns the pretty formatted version of this query
 func (q *ContactQuery) String() string {
-	s := q.root.String()
+	return Stringify(q.root)
+}
 
-	// strip extra parentheses if not needed
+// Stringify converts a query node to a string
+func Stringify(n QueryNode) string {
+	// since simplfying can remove nodes and potentially generate a nil query
+	if n == nil {
+		return ""
+	}
+
+	s := n.String()
+
+	// bool combinations are wrapped in parentheses but the top level doesn't need to be
 	if strings.HasPrefix(s, "(") && strings.HasSuffix(s, ")") {
 		s = s[1 : len(s)-1]
 	}
@@ -350,7 +373,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 		return nil, err
 	}
 
-	rootNode = rootNode.simplify()
+	rootNode = rootNode.Simplify()
 
 	return &ContactQuery{root: rootNode, resolver: resolver}, nil
 }

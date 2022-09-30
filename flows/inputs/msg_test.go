@@ -17,7 +17,7 @@ import (
 )
 
 func TestMsgInput(t *testing.T) {
-	session, _ := test.NewSessionBuilder().MustBuild()
+	_, session, _ := test.NewSessionBuilder().MustBuild()
 	env := session.Environment()
 
 	channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")

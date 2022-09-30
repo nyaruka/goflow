@@ -5,25 +5,26 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
 )
 
 // Services groups together interfaces for several services whose implementation is provided outside of the flow engine.
 type Services interface {
-	Email(Session) (EmailService, error)
-	Webhook(Session) (WebhookService, error)
-	Classification(Session, *Classifier) (ClassificationService, error)
-	Ticket(Session, *Ticketer) (TicketService, error)
-	Airtime(Session) (AirtimeService, error)
+	Email(SessionAssets) (EmailService, error)
+	Webhook(SessionAssets) (WebhookService, error)
+	Classification(*Classifier) (ClassificationService, error)
+	Ticket(*Ticketer) (TicketService, error)
+	Airtime(SessionAssets) (AirtimeService, error)
 }
 
 // EmailService provides email functionality to the engine
 type EmailService interface {
-	Send(session Session, addresses []string, subject, body string) error
+	Send(addresses []string, subject, body string) error
 }
 
 // CallStatus represents the status of a call to an external service
@@ -52,7 +53,7 @@ type WebhookCall struct {
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
-	Call(session Session, request *http.Request) (*WebhookCall, error)
+	Call(request *http.Request) (*WebhookCall, error)
 }
 
 // ExtractedIntent models an intent match
@@ -75,13 +76,13 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(session Session, input string, logHTTP HTTPLogCallback) (*Classification, error)
+	Classify(env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // TicketService provides ticketing functionality to the engine
 type TicketService interface {
 	// Open tries to open a new ticket
-	Open(session Session, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
+	Open(env envs.Environment, contact *Contact, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
 // AirtimeTransferStatus is a status of a airtime transfer
@@ -106,31 +107,31 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(session Session, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
-// HTTPTrace describes an HTTP request/response
-type HTTPTrace struct {
-	URL        string     `json:"url" validate:"required"`
-	StatusCode int        `json:"status_code,omitempty"`
-	Status     CallStatus `json:"status" validate:"required"`
-	Request    string     `json:"request" validate:"required"`
-	Response   string     `json:"response,omitempty"`
-	ElapsedMS  int        `json:"elapsed_ms"`
-	Retries    int        `json:"retries"`
+// HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
+type HTTPLogWithoutTime struct {
+	*httpx.LogWithoutTime
+
+	Status CallStatus `json:"status" validate:"required"`
 }
 
 // trim request and response traces to 10K chars to avoid bloating serialized sessions
 const trimTracesTo = 10000
+const trimURLsTo = 2048
 
-// NewHTTPTrace creates a new HTTP log from a trace
-func NewHTTPTrace(trace *httpx.Trace, status CallStatus) *HTTPTrace {
-	return newHTTPTraceWithStatus(trace, status, nil)
+// NewHTTPLogWithoutTime creates a new HTTP log from a trace
+func NewHTTPLogWithoutTime(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPLogWithoutTime {
+	return &HTTPLogWithoutTime{
+		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
+		Status:         status,
+	}
 }
 
 // HTTPLog describes an HTTP request/response
 type HTTPLog struct {
-	*HTTPTrace
+	*HTTPLogWithoutTime
 	CreatedOn time.Time `json:"created_on" validate:"required"`
 }
 
@@ -164,37 +165,9 @@ func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
 const RedactionMask = "****************"
 
 // NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact utils.Redactor) *HTTPLog {
+func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact stringsx.Redactor) *HTTPLog {
 	return &HTTPLog{
-		newHTTPTraceWithStatus(trace, statusFn(trace), redact),
-		trace.StartTime,
-	}
-}
-
-// creates a new HTTPTrace from a trace with an explicit status
-func newHTTPTraceWithStatus(trace *httpx.Trace, status CallStatus, redact utils.Redactor) *HTTPTrace {
-	url := trace.Request.URL.String()
-	request := string(trace.RequestTrace)
-	response := string(utils.ReplaceEscapedNulls(trace.SanitizedResponse("..."), []byte(`�`)))
-
-	statusCode := 0
-	if trace.Response != nil {
-		statusCode = trace.Response.StatusCode
-	}
-
-	if redact != nil {
-		url = redact(url)
-		request = redact(request)
-		response = redact(response)
-	}
-
-	return &HTTPTrace{
-		URL:        url,
-		StatusCode: statusCode,
-		Status:     status,
-		Request:    utils.TruncateEllipsis(request, trimTracesTo),
-		Response:   utils.TruncateEllipsis(response, trimTracesTo),
-		ElapsedMS:  int((trace.EndTime.Sub(trace.StartTime)) / time.Millisecond),
-		Retries:    trace.Retries,
+		HTTPLogWithoutTime: NewHTTPLogWithoutTime(trace, statusFn(trace), redact),
+		CreatedOn:          trace.StartTime,
 	}
 }

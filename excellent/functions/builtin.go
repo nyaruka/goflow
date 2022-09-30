@@ -136,6 +136,8 @@ func init() {
 		"extract_object": MinArgsCheck(2, ExtractObject),
 		"foreach":        MinArgsCheck(2, ForEach),
 		"foreach_value":  MinArgsCheck(2, ForEachValue),
+
+		"keys": OneObjectFunction(Keys),
 	}
 
 	for name, fn := range builtin {
@@ -151,9 +153,9 @@ func init() {
 //
 // An error is returned if the value can't be converted.
 //
-//   @(text(3 = 3)) -> true
-//   @(json(text(123.45))) -> "123.45"
-//   @(text(1 / 0)) -> ERROR
+//	@(text(3 = 3)) -> true
+//	@(json(text(123.45))) -> "123.45"
+//	@(text(1 / 0)) -> ERROR
 //
 // @function text(value)
 func Text(env envs.Environment, value types.XValue) types.XValue {
@@ -168,9 +170,9 @@ func Text(env envs.Environment, value types.XValue) types.XValue {
 //
 // An error is returned if the value can't be converted.
 //
-//   @(boolean(array(1, 2))) -> true
-//   @(boolean("FALSE")) -> false
-//   @(boolean(1 / 0)) -> ERROR
+//	@(boolean(array(1, 2))) -> true
+//	@(boolean("FALSE")) -> false
+//	@(boolean(1 / 0)) -> ERROR
 //
 // @function boolean(value)
 func Boolean(env envs.Environment, value types.XValue) types.XValue {
@@ -185,9 +187,9 @@ func Boolean(env envs.Environment, value types.XValue) types.XValue {
 //
 // An error is returned if the value can't be converted.
 //
-//   @(number(10)) -> 10
-//   @(number("123.45000")) -> 123.45
-//   @(number("what?")) -> ERROR
+//	@(number(10)) -> 10
+//	@(number("123.45000")) -> 123.45
+//	@(number("what?")) -> ERROR
 //
 // @function number(value)
 func Number(env envs.Environment, value types.XValue) types.XValue {
@@ -203,10 +205,10 @@ func Number(env envs.Environment, value types.XValue) types.XValue {
 // If it is text then it will be parsed into a date using the default date format.
 // An error is returned if the value can't be converted.
 //
-//   @(date("1979-07-18")) -> 1979-07-18
-//   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18
-//   @(date("10/05/2010")) -> 2010-05-10
-//   @(date("NOT DATE")) -> ERROR
+//	@(date("1979-07-18")) -> 1979-07-18
+//	@(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18
+//	@(date("10/05/2010")) -> 2010-05-10
+//	@(date("NOT DATE")) -> ERROR
 //
 // @function date(value)
 func Date(env envs.Environment, value types.XValue) types.XValue {
@@ -222,10 +224,10 @@ func Date(env envs.Environment, value types.XValue) types.XValue {
 // If it is text then it will be parsed into a datetime using the default date
 // and time formats. An error is returned if the value can't be converted.
 //
-//   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
-//   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
-//   @(datetime("10/05/2010")) -> 2010-05-10T00:00:00.000000-05:00
-//   @(datetime("NOT DATE")) -> ERROR
+//	@(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
+//	@(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
+//	@(datetime("10/05/2010")) -> 2010-05-10T00:00:00.000000-05:00
+//	@(datetime("NOT DATE")) -> ERROR
 //
 // @function datetime(value)
 func DateTime(env envs.Environment, value types.XValue) types.XValue {
@@ -241,10 +243,10 @@ func DateTime(env envs.Environment, value types.XValue) types.XValue {
 // If it is text then it will be parsed into a time using the default time format.
 // An error is returned if the value can't be converted.
 //
-//   @(time("10:30")) -> 10:30:00.000000
-//   @(time("10:30:45 PM")) -> 22:30:45.000000
-//   @(time(datetime("1979-07-18T10:30:45.123456Z"))) -> 10:30:45.123456
-//   @(time("what?")) -> ERROR
+//	@(time("10:30")) -> 10:30:00.000000
+//	@(time("10:30:45 PM")) -> 22:30:45.000000
+//	@(time(datetime("1979-07-18T10:30:45.123456Z"))) -> 10:30:45.123456
+//	@(time("what?")) -> ERROR
 //
 // @function time(value)
 func Time(env envs.Environment, value types.XValue) types.XValue {
@@ -257,10 +259,10 @@ func Time(env envs.Environment, value types.XValue) types.XValue {
 
 // Array takes multiple `values` and returns them as an array.
 //
-//   @(array("a", "b", 356)[1]) -> b
-//   @(join(array("a", "b", "c"), "|")) -> a|b|c
-//   @(count(array())) -> 0
-//   @(count(array("a", "b"))) -> 2
+//	@(array("a", "b", 356)[1]) -> b
+//	@(join(array("a", "b", "c"), "|")) -> a|b|c
+//	@(count(array())) -> 0
+//	@(count(array("a", "b"))) -> 2
 //
 // @function array(values...)
 func Array(env envs.Environment, values ...types.XValue) types.XValue {
@@ -276,9 +278,9 @@ func Array(env envs.Environment, values ...types.XValue) types.XValue {
 
 // Object takes property name value pairs and returns them as a new object.
 //
-//   @(object()) -> {}
-//   @(object("a", 123, "b", "hello")) -> {a: 123, b: hello}
-//   @(object("a")) -> ERROR
+//	@(object()) -> {}
+//	@(object("a", 123, "b", "hello")) -> {a: 123, b: hello}
+//	@(object("a")) -> ERROR
 //
 // @function object(pairs...)
 func Object(env envs.Environment, pairs ...types.XValue) types.XValue {
@@ -316,8 +318,8 @@ func Object(env envs.Environment, pairs ...types.XValue) types.XValue {
 
 // And returns whether all the given `values` are truthy.
 //
-//   @(and(true)) -> true
-//   @(and(true, false, true)) -> false
+//	@(and(true)) -> true
+//	@(and(true, false, true)) -> false
 //
 // @function and(values...)
 func And(env envs.Environment, values ...types.XValue) types.XValue {
@@ -335,8 +337,8 @@ func And(env envs.Environment, values ...types.XValue) types.XValue {
 
 // Or returns whether if any of the given `values` are truthy.
 //
-//   @(or(true)) -> true
-//   @(or(true, false, true)) -> true
+//	@(or(true)) -> true
+//	@(or(true, false, true)) -> true
 //
 // @function or(values...)
 func Or(env envs.Environment, values ...types.XValue) types.XValue {
@@ -356,8 +358,8 @@ func Or(env envs.Environment, values ...types.XValue) types.XValue {
 //
 // If the first argument is an error that error is returned.
 //
-//   @(if(1 = 1, "foo", "bar")) -> foo
-//   @(if("foo" > "bar", "foo", "bar")) -> ERROR
+//	@(if(1 = 1, "foo", "bar")) -> foo
+//	@(if("foo" > "bar", "foo", "bar")) -> ERROR
 //
 // @function if(test, value1, value2)
 func If(env envs.Environment, test types.XValue, value1 types.XValue, value2 types.XValue) types.XValue {
@@ -380,12 +382,12 @@ func If(env envs.Environment, test types.XValue, value1 types.XValue, value2 typ
 //
 // It is the inverse of [function:char].
 //
-//   @(code("a")) -> 97
-//   @(code("abc")) -> 97
-//   @(code("😀")) -> 128512
-//   @(code("15")) -> 49
-//   @(code(15)) -> 49
-//   @(code("")) -> ERROR
+//	@(code("a")) -> 97
+//	@(code("abc")) -> 97
+//	@(code("😀")) -> 128512
+//	@(code("15")) -> 49
+//	@(code(15)) -> 49
+//	@(code("")) -> ERROR
 //
 // @function code(text)
 func Code(env envs.Environment, text types.XText) types.XValue {
@@ -402,11 +404,11 @@ func Code(env envs.Environment, text types.XText) types.XValue {
 // Empty values are removed from the returned list. There is an optional final parameter `delimiters` which
 // is string of characters used to split the text into words.
 //
-//   @(split("a b c")) -> [a, b, c]
-//   @(split("a", " ")) -> [a]
-//   @(split("abc..d", ".")) -> [abc, d]
-//   @(split("a.b.c.", ".")) -> [a, b, c]
-//   @(split("a|b,c  d", " .|,")) -> [a, b, c, d]
+//	@(split("a b c")) -> [a, b, c]
+//	@(split("a", " ")) -> [a]
+//	@(split("abc..d", ".")) -> [abc, d]
+//	@(split("a.b.c.", ".")) -> [a, b, c]
+//	@(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
 // @function split(text, [,delimiters])
 func Split(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
@@ -423,8 +425,8 @@ func Split(env envs.Environment, text types.XText, delimiters types.XText) types
 //
 // There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
 //
-//   @(trim(" hello world    ")) -> hello world
-//   @(trim("+123157568", "+")) -> 123157568
+//	@(trim(" hello world    ")) -> hello world
+//	@(trim("+123157568", "+")) -> 123157568
 //
 // @function trim(text, [,chars])
 func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValue {
@@ -439,8 +441,8 @@ func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValu
 //
 // There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
 //
-//   @("*" & trim_left(" hello world   ") & "*") -> *hello world   *
-//   @(trim_left("+12345+", "+")) -> 12345+
+//	@("*" & trim_left(" hello world   ") & "*") -> *hello world   *
+//	@(trim_left("+12345+", "+")) -> 12345+
 //
 // @function trim_left(text, [,chars])
 func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.XValue {
@@ -455,8 +457,8 @@ func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.X
 //
 // There is an optional final parameter `chars` which is string of characters to be removed instead of whitespace.
 //
-//   @("*" & trim_right(" hello world   ") & "*") -> * hello world*
-//   @(trim_right("+12345+", "+")) -> +12345
+//	@("*" & trim_right(" hello world   ") & "*") -> * hello world*
+//	@(trim_right("+12345+", "+")) -> +12345
 //
 // @function trim_right(text, [,chars])
 func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.XValue {
@@ -471,9 +473,9 @@ func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.
 //
 // It is the inverse of [function:code].
 //
-//   @(char(33)) -> !
-//   @(char(128512)) -> 😀
-//   @(char("foo")) -> ERROR
+//	@(char(33)) -> !
+//	@(char(128512)) -> 😀
+//	@(char("foo")) -> ERROR
 //
 // @function char(code)
 func Char(env envs.Environment, num types.XNumber) types.XValue {
@@ -487,10 +489,10 @@ func Char(env envs.Environment, num types.XNumber) types.XValue {
 
 // Title capitalizes each word in `text`.
 //
-//   @(title("foo")) -> Foo
-//   @(title("ryan lewis")) -> Ryan Lewis
-//   @(title("RYAN LEWIS")) -> Ryan Lewis
-//   @(title(123)) -> 123
+//	@(title("foo")) -> Foo
+//	@(title("ryan lewis")) -> Ryan Lewis
+//	@(title("RYAN LEWIS")) -> Ryan Lewis
+//	@(title(123)) -> 123
 //
 // @function title(text)
 func Title(env envs.Environment, text types.XText) types.XValue {
@@ -502,14 +504,14 @@ func Title(env envs.Environment, text types.XText) types.XValue {
 // Indexes start at zero. There is an optional final parameter `delimiters` which
 // is string of characters used to split the text into words.
 //
-//   @(word("bee cat dog", 0)) -> bee
-//   @(word("bee.cat,dog", 0)) -> bee
-//   @(word("bee.cat,dog", 1)) -> cat
-//   @(word("bee.cat,dog", 2)) -> dog
-//   @(word("bee.cat,dog", -1)) -> dog
-//   @(word("bee.cat,dog", -2)) -> cat
-//   @(word("bee.*cat,dog", 1, ".*=|")) -> cat,dog
-//   @(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
+//	@(word("bee cat dog", 0)) -> bee
+//	@(word("bee.cat,dog", 0)) -> bee
+//	@(word("bee.cat,dog", 1)) -> cat
+//	@(word("bee.cat,dog", 2)) -> dog
+//	@(word("bee.cat,dog", -1)) -> dog
+//	@(word("bee.cat,dog", -2)) -> cat
+//	@(word("bee.*cat,dog", 1, ".*=|")) -> cat,dog
+//	@(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
 //
 // @function word(text, index [,delimiters])
 func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -542,8 +544,8 @@ func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XV
 
 // RemoveFirstWord removes the first word of `text`.
 //
-//   @(remove_first_word("foo bar")) -> bar
-//   @(remove_first_word("Hi there. I'm a flow!")) -> there. I'm a flow!
+//	@(remove_first_word("foo bar")) -> bar
+//	@(remove_first_word("Hi there. I'm a flow!")) -> there. I'm a flow!
 //
 // @function remove_first_word(text)
 func RemoveFirstWord(env envs.Environment, text types.XText) types.XValue {
@@ -570,14 +572,14 @@ func RemoveFirstWord(env envs.Environment, text types.XText) types.XValue {
 // end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
 // which is string of characters used to split the text into words.
 //
-//   @(word_slice("bee cat dog", 0, 1)) -> bee
-//   @(word_slice("bee cat dog", 0, 2)) -> bee cat
-//   @(word_slice("bee cat dog", 1, -1)) -> cat dog
-//   @(word_slice("bee cat dog", 1)) -> cat dog
-//   @(word_slice("bee cat dog", 2, 3)) -> dog
-//   @(word_slice("bee cat dog", 3, 10)) ->
-//   @(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) -> cat dog
-//   @(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
+//	@(word_slice("bee cat dog", 0, 1)) -> bee
+//	@(word_slice("bee cat dog", 0, 2)) -> bee cat
+//	@(word_slice("bee cat dog", 1, -1)) -> cat dog
+//	@(word_slice("bee cat dog", 1)) -> cat dog
+//	@(word_slice("bee cat dog", 2, 3)) -> dog
+//	@(word_slice("bee cat dog", 3, 10)) ->
+//	@(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) -> cat dog
+//	@(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
 //
 // @function word_slice(text, start, end [,delimiters])
 func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -627,12 +629,12 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 // There is an optional final parameter `delimiters` which is string of characters used
 // to split the text into words.
 //
-//   @(word_count("foo bar")) -> 2
-//   @(word_count(10)) -> 1
-//   @(word_count("")) -> 0
-//   @(word_count("😀😃😄😁")) -> 4
-//   @(word_count("bee.*cat,dog", ".*=|")) -> 2
-//   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
+//	@(word_count("foo bar")) -> 2
+//	@(word_count(10)) -> 1
+//	@(word_count("")) -> 0
+//	@(word_count("😀😃😄😁")) -> 4
+//	@(word_count("bee.*cat,dog", ".*=|")) -> 2
+//	@(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
 // @function word_count(text [,delimiters])
 func WordCount(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
@@ -645,12 +647,12 @@ func WordCount(env envs.Environment, text types.XText, delimiters types.XText) t
 //
 // The index starts at zero. When splitting with a space, the delimiter is considered to be all whitespace.
 //
-//   @(field("a,b,c", 1, ",")) -> b
-//   @(field("a,,b,c", 1, ",")) ->
-//   @(field("a   b c", 1, " ")) -> b
-//   @(field("a		b	c	d", 1, "	")) ->
-//   @(field("a\t\tb\tc\td", 1, " ")) ->
-//   @(field("a,b,c", "foo", ",")) -> ERROR
+//	@(field("a,b,c", 1, ",")) -> b
+//	@(field("a,,b,c", 1, ",")) ->
+//	@(field("a   b c", 1, " ")) -> b
+//	@(field("a		b	c	d", 1, "	")) ->
+//	@(field("a\t\tb\tc\td", 1, " ")) ->
+//	@(field("a,b,c", "foo", ",")) -> ERROR
 //
 // @function field(text, index, delimiter)
 func Field(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -690,8 +692,8 @@ func Field(env envs.Environment, text types.XText, args ...types.XValue) types.X
 
 // Clean removes any non-printable characters from `text`.
 //
-//   @(clean("😃 Hello \nwo\tr\rld")) -> 😃 Hello world
-//   @(clean(123)) -> 123
+//	@(clean("😃 Hello \nwo\tr\rld")) -> 😃 Hello world
+//	@(clean(123)) -> 123
 //
 // @function clean(text)
 func Clean(env envs.Environment, text types.XText) types.XValue {
@@ -703,10 +705,10 @@ func Clean(env envs.Environment, text types.XText) types.XValue {
 // If `end` is not specified then the entire rest of `text` will be included. Negative values
 // for `start` or `end` start at the end of `text`.
 //
-//   @(text_slice("hello", 2)) -> llo
-//   @(text_slice("hello", 1, 3)) -> el
-//   @(text_slice("hello😁", -3, -1)) -> lo
-//   @(text_slice("hello", 7)) ->
+//	@(text_slice("hello", 2)) -> llo
+//	@(text_slice("hello", 1, 3)) -> el
+//	@(text_slice("hello😁", -3, -1)) -> lo
+//	@(text_slice("hello", 7)) ->
 //
 // @function text_slice(text, start [, end])
 func TextSlice(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -744,10 +746,10 @@ func TextSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 
 // Lower converts `text` to lowercase.
 //
-//   @(lower("HellO")) -> hello
-//   @(lower("hello")) -> hello
-//   @(lower("123")) -> 123
-//   @(lower("😀")) -> 😀
+//	@(lower("HellO")) -> hello
+//	@(lower("hello")) -> hello
+//	@(lower("123")) -> 123
+//	@(lower("😀")) -> 😀
 //
 // @function lower(text)
 func Lower(env envs.Environment, text types.XText) types.XValue {
@@ -758,11 +760,11 @@ func Lower(env envs.Environment, text types.XText) types.XValue {
 //
 // An optional third parameter `group` determines which matching group will be returned.
 //
-//   @(regex_match("sda34dfddg67", "\d+")) -> 34
-//   @(regex_match("Bob Smith", "(\w+) (\w+)", 1)) -> Bob
-//   @(regex_match("Bob Smith", "(\w+) (\w+)", 2)) -> Smith
-//   @(regex_match("Bob Smith", "(\w+) (\w+)", 5)) -> ERROR
-//   @(regex_match("abc", "[\.")) -> ERROR
+//	@(regex_match("sda34dfddg67", "\d+")) -> 34
+//	@(regex_match("Bob Smith", "(\w+) (\w+)", 1)) -> Bob
+//	@(regex_match("Bob Smith", "(\w+) (\w+)", 2)) -> Smith
+//	@(regex_match("Bob Smith", "(\w+) (\w+)", 5)) -> ERROR
+//	@(regex_match("abc", "[\.")) -> ERROR
 //
 // @function regex_match(text, pattern [,group])
 func RegexMatch(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -795,8 +797,8 @@ func RegexMatch(env envs.Environment, text types.XText, args ...types.XValue) ty
 
 // TextLength returns the length (number of characters) of `value` when converted to text.
 //
-//   @(text_length("abc")) -> 3
-//   @(text_length(array(2, 3))) -> 6
+//	@(text_length("abc")) -> 3
+//	@(text_length(array(2, 3))) -> 6
 //
 // @function text_length(value)
 func TextLength(env envs.Environment, value types.XText) types.XValue {
@@ -808,9 +810,9 @@ func TextLength(env envs.Environment, value types.XText) types.XValue {
 // The return value will be -1 if `text1` comes before `text2`, 0 if they are equal
 // and 1 if `text1` comes after `text2`.
 //
-//   @(text_compare("abc", "abc")) -> 0
-//   @(text_compare("abc", "def")) -> -1
-//   @(text_compare("zzz", "aaa")) -> 1
+//	@(text_compare("abc", "abc")) -> 0
+//	@(text_compare("abc", "def")) -> -1
+//	@(text_compare("zzz", "aaa")) -> 1
 //
 // @function text_compare(text1, text2)
 func TextCompare(env envs.Environment, text1 types.XText, text2 types.XText) types.XValue {
@@ -819,8 +821,8 @@ func TextCompare(env envs.Environment, text1 types.XText, text2 types.XText) typ
 
 // Repeat returns `text` repeated `count` number of times.
 //
-//   @(repeat("*", 8)) -> ********
-//   @(repeat("*", "foo")) -> ERROR
+//	@(repeat("*", 8)) -> ********
+//	@(repeat("*", "foo")) -> ERROR
 //
 // @function repeat(text, count)
 func Repeat(env envs.Environment, text types.XText, count int) types.XValue {
@@ -840,9 +842,9 @@ func Repeat(env envs.Environment, text types.XText, count int) types.XValue {
 //
 // If `count` is omitted or is less than 0 then all occurrences are replaced.
 //
-//   @(replace("foo bar foo", "foo", "zap")) -> zap bar zap
-//   @(replace("foo bar foo", "foo", "zap", 1)) -> zap bar foo
-//   @(replace("foo bar", "baz", "zap")) -> foo bar
+//	@(replace("foo bar foo", "foo", "zap")) -> zap bar zap
+//	@(replace("foo bar foo", "foo", "zap", 1)) -> zap bar foo
+//	@(replace("foo bar", "baz", "zap")) -> foo bar
 //
 // @function replace(text, needle, replacement [, count])
 func Replace(env envs.Environment, args ...types.XValue) types.XValue {
@@ -872,8 +874,8 @@ func Replace(env envs.Environment, args ...types.XValue) types.XValue {
 
 // Upper converts `text` to uppercase.
 //
-//   @(upper("Asdf")) -> ASDF
-//   @(upper(123)) -> 123
+//	@(upper("Asdf")) -> ASDF
+//	@(upper(123)) -> 123
 //
 // @function upper(text)
 func Upper(env envs.Environment, text types.XText) types.XValue {
@@ -882,9 +884,9 @@ func Upper(env envs.Environment, text types.XText) types.XValue {
 
 // Percent formats `number` as a percentage.
 //
-//   @(percent(0.54234)) -> 54%
-//   @(percent(1.2)) -> 120%
-//   @(percent("foo")) -> ERROR
+//	@(percent(0.54234)) -> 54%
+//	@(percent(1.2)) -> 120%
+//	@(percent("foo")) -> ERROR
 //
 // @function percent(number)
 func Percent(env envs.Environment, num types.XNumber) types.XValue {
@@ -897,8 +899,8 @@ func Percent(env envs.Environment, num types.XNumber) types.XValue {
 
 // URLEncode encodes `text` for use as a URL parameter.
 //
-//   @(url_encode("two & words")) -> two%20%26%20words
-//   @(url_encode(10)) -> 10
+//	@(url_encode("two & words")) -> two%20%26%20words
+//	@(url_encode(10)) -> 10
 //
 // @function url_encode(text)
 func URLEncode(env envs.Environment, text types.XText) types.XValue {
@@ -909,8 +911,8 @@ func URLEncode(env envs.Environment, text types.XText) types.XValue {
 
 // HTMLDecode HTML decodes `text`
 //
-//   @(html_decode("Red &amp; Blue")) -> Red & Blue
-//   @(html_decode("5 + 10")) -> 5 + 10
+//	@(html_decode("Red &amp; Blue")) -> Red & Blue
+//	@(html_decode("5 + 10")) -> 5 + 10
 //
 // @function html_decode(text)
 func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
@@ -927,9 +929,9 @@ func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
 
 // Abs returns the absolute value of `number`.
 //
-//   @(abs(-10)) -> 10
-//   @(abs(10.5)) -> 10.5
-//   @(abs("foo")) -> ERROR
+//	@(abs(-10)) -> 10
+//	@(abs(10.5)) -> 10.5
+//	@(abs("foo")) -> ERROR
 //
 // @function abs(number)
 func Abs(env envs.Environment, num types.XNumber) types.XValue {
@@ -941,13 +943,13 @@ func Abs(env envs.Environment, num types.XNumber) types.XValue {
 // You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,
 // it will round the integer part to the nearest 10^(-places).
 //
-//   @(round(12)) -> 12
-//   @(round(12.141)) -> 12
-//   @(round(12.6)) -> 13
-//   @(round(12.141, 2)) -> 12.14
-//   @(round(12.146, 2)) -> 12.15
-//   @(round(12.146, -1)) -> 10
-//   @(round("notnum", 2)) -> ERROR
+//	@(round(12)) -> 12
+//	@(round(12.141)) -> 12
+//	@(round(12.6)) -> 13
+//	@(round(12.141, 2)) -> 12.14
+//	@(round(12.146, 2)) -> 12.15
+//	@(round(12.146, -1)) -> 10
+//	@(round("notnum", 2)) -> ERROR
 //
 // @function round(number [,places])
 func Round(env envs.Environment, num types.XNumber, places int) types.XValue {
@@ -958,12 +960,12 @@ func Round(env envs.Environment, num types.XNumber, places int) types.XValue {
 //
 // You can optionally pass in the number of decimal places to round to as `places`.
 //
-//   @(round_up(12)) -> 12
-//   @(round_up(12.141)) -> 13
-//   @(round_up(12.6)) -> 13
-//   @(round_up(12.141, 2)) -> 12.15
-//   @(round_up(12.146, 2)) -> 12.15
-//   @(round_up("foo")) -> ERROR
+//	@(round_up(12)) -> 12
+//	@(round_up(12.141)) -> 13
+//	@(round_up(12.6)) -> 13
+//	@(round_up(12.141, 2)) -> 12.15
+//	@(round_up(12.146, 2)) -> 12.15
+//	@(round_up("foo")) -> ERROR
 //
 // @function round_up(number [,places])
 func RoundUp(env envs.Environment, num types.XNumber, places int) types.XValue {
@@ -982,12 +984,12 @@ func RoundUp(env envs.Environment, num types.XNumber, places int) types.XValue {
 //
 // You can optionally pass in the number of decimal places to round to as `places`.
 //
-//   @(round_down(12)) -> 12
-//   @(round_down(12.141)) -> 12
-//   @(round_down(12.6)) -> 12
-//   @(round_down(12.141, 2)) -> 12.14
-//   @(round_down(12.146, 2)) -> 12.14
-//   @(round_down("foo")) -> ERROR
+//	@(round_down(12)) -> 12
+//	@(round_down(12.141)) -> 12
+//	@(round_down(12.6)) -> 12
+//	@(round_down(12.141, 2)) -> 12.14
+//	@(round_down(12.146, 2)) -> 12.14
+//	@(round_down("foo")) -> ERROR
 //
 // @function round_down(number [,places])
 func RoundDown(env envs.Environment, num types.XNumber, places int) types.XValue {
@@ -1004,9 +1006,9 @@ func RoundDown(env envs.Environment, num types.XNumber, places int) types.XValue
 
 // Max returns the maximum value in `numbers`.
 //
-//   @(max(1, 2)) -> 2
-//   @(max(1, -1, 10)) -> 10
-//   @(max(1, 10, "foo")) -> ERROR
+//	@(max(1, 2)) -> 2
+//	@(max(1, -1, 10)) -> 10
+//	@(max(1, 10, "foo")) -> ERROR
 //
 // @function max(numbers...)
 func Max(env envs.Environment, values ...types.XValue) types.XValue {
@@ -1030,9 +1032,9 @@ func Max(env envs.Environment, values ...types.XValue) types.XValue {
 
 // Min returns the minimum value in `numbers`.
 //
-//   @(min(1, 2)) -> 1
-//   @(min(2, 2, -10)) -> -10
-//   @(min(1, 2, "foo")) -> ERROR
+//	@(min(1, 2)) -> 1
+//	@(min(2, 2, -10)) -> -10
+//	@(min(1, 2, "foo")) -> ERROR
 //
 // @function min(numbers...)
 func Min(env envs.Environment, values ...types.XValue) types.XValue {
@@ -1056,9 +1058,9 @@ func Min(env envs.Environment, values ...types.XValue) types.XValue {
 
 // Mean returns the arithmetic mean of `numbers`.
 //
-//   @(mean(1, 2)) -> 1.5
-//   @(mean(1, 2, 6)) -> 3
-//   @(mean(1, "foo")) -> ERROR
+//	@(mean(1, 2)) -> 1.5
+//	@(mean(1, 2, 6)) -> 3
+//	@(mean(1, "foo")) -> ERROR
 //
 // @function mean(numbers...)
 func Mean(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1077,9 +1079,9 @@ func Mean(env envs.Environment, args ...types.XValue) types.XValue {
 
 // Mod returns the remainder of the division of `dividend` by `divisor`.
 //
-//   @(mod(5, 2)) -> 1
-//   @(mod(4, 2)) -> 0
-//   @(mod(5, "foo")) -> ERROR
+//	@(mod(5, 2)) -> 1
+//	@(mod(4, 2)) -> 0
+//	@(mod(5, "foo")) -> ERROR
 //
 // @function mod(dividend, divisor)
 func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
@@ -1088,8 +1090,8 @@ func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XVa
 
 // Rand returns a single random number between [0.0-1.0).
 //
-//   @(rand()) -> 0.6075520156746239
-//   @(rand()) -> 0.48467757094734026
+//	@(rand()) -> 0.6075520156746239
+//	@(rand()) -> 0.48467757094734026
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {
@@ -1098,8 +1100,8 @@ func Rand(env envs.Environment) types.XValue {
 
 // RandBetween a single random integer in the given inclusive range.
 //
-//   @(rand_between(1, 10)) -> 10
-//   @(rand_between(1, 10)) -> 2
+//	@(rand_between(1, 10)) -> 10
+//	@(rand_between(1, 10)) -> 2
 //
 // @function rand_between()
 func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) types.XValue {
@@ -1151,10 +1153,10 @@ func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) typ
 //
 // parse_datetime will return an error if it is unable to convert the text to a datetime.
 //
-//   @(parse_datetime("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000-05:00
-//   @(parse_datetime("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000-05:00
-//   @(parse_datetime("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
-//   @(parse_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//	@(parse_datetime("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000-05:00
+//	@(parse_datetime("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000-05:00
+//	@(parse_datetime("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
+//	@(parse_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function parse_datetime(text, format [,timezone])
 func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1194,8 +1196,8 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 
 // DateTimeFromEpoch converts the UNIX epoch time `seconds` into a new date.
 //
-//   @(datetime_from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
-//   @(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
+//	@(datetime_from_epoch(1497286619)) -> 2017-06-12T11:56:59.000000-05:00
+//	@(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
 //
 // @function datetime_from_epoch(seconds)
 func DateTimeFromEpoch(env envs.Environment, num types.XNumber) types.XValue {
@@ -1208,11 +1210,11 @@ func DateTimeFromEpoch(env envs.Environment, num types.XNumber) types.XValue {
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds.
 //
-//   @(datetime_diff("2017-01-15", "2017-01-17", "D")) -> 2
-//   @(datetime_diff("2017-01-15", "2017-05-15", "W")) -> 17
-//   @(datetime_diff("2017-01-15", "2017-05-15", "M")) -> 4
-//   @(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> 1
-//   @(datetime_diff("2017-01-17", "2015-12-17", "Y")) -> -2
+//	@(datetime_diff("2017-01-15", "2017-01-17", "D")) -> 2
+//	@(datetime_diff("2017-01-15", "2017-05-15", "W")) -> 17
+//	@(datetime_diff("2017-01-15", "2017-05-15", "M")) -> 4
+//	@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> 1
+//	@(datetime_diff("2017-01-17", "2015-12-17", "Y")) -> -2
 //
 // @function datetime_diff(date1, date2, unit)
 func DateTimeDiff(env envs.Environment, arg1 types.XValue, arg2 types.XValue, arg3 types.XValue) types.XValue {
@@ -1260,8 +1262,8 @@ func DateTimeDiff(env envs.Environment, arg1 types.XValue, arg2 types.XValue, ar
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(datetime_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000-05:00
-//   @(datetime_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000-05:00
+//	@(datetime_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000-05:00
+//	@(datetime_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000-05:00
 //
 // @function datetime_add(datetime, offset, unit)
 func DateTimeAdd(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1306,9 +1308,9 @@ func DateTimeAdd(env envs.Environment, args ...types.XValue) types.XValue {
 
 // ReplaceTime returns a new datetime with the time part replaced by the `time`.
 //
-//   @(replace_time(now(), "10:30")) -> 2018-04-11T10:30:00.000000-05:00
-//   @(replace_time("2017-01-15", "10:30")) -> 2017-01-15T10:30:00.000000-05:00
-//   @(replace_time("foo", "10:30")) -> ERROR
+//	@(replace_time(now(), "10:30")) -> 2018-04-11T10:30:00.000000-05:00
+//	@(replace_time("2017-01-15", "10:30")) -> 2017-01-15T10:30:00.000000-05:00
+//	@(replace_time("foo", "10:30")) -> ERROR
 //
 // @function replace_time(datetime)
 func ReplaceTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -1328,10 +1330,10 @@ func ReplaceTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) typ
 //
 // If no timezone information is present in the date, then the current timezone will be returned.
 //
-//   @(tz("2017-01-15T02:15:18.123456Z")) -> UTC
-//   @(tz("2017-01-15 02:15:18PM")) -> America/Guayaquil
-//   @(tz("2017-01-15")) -> America/Guayaquil
-//   @(tz("foo")) -> ERROR
+//	@(tz("2017-01-15T02:15:18.123456Z")) -> UTC
+//	@(tz("2017-01-15 02:15:18PM")) -> America/Guayaquil
+//	@(tz("2017-01-15")) -> America/Guayaquil
+//	@(tz("foo")) -> ERROR
 //
 // @function tz(date)
 func TZ(env envs.Environment, date types.XDateTime) types.XValue {
@@ -1343,10 +1345,10 @@ func TZ(env envs.Environment, date types.XDateTime) types.XValue {
 // The offset is returned in the format `[+/-]HH:MM`. If no timezone information is present in the date,
 // then the current timezone offset will be returned.
 //
-//   @(tz_offset("2017-01-15T02:15:18.123456Z")) -> +0000
-//   @(tz_offset("2017-01-15 02:15:18PM")) -> -0500
-//   @(tz_offset("2017-01-15")) -> -0500
-//   @(tz_offset("foo")) -> ERROR
+//	@(tz_offset("2017-01-15T02:15:18.123456Z")) -> +0000
+//	@(tz_offset("2017-01-15 02:15:18PM")) -> -0500
+//	@(tz_offset("2017-01-15")) -> -0500
+//	@(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
 func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
@@ -1358,10 +1360,10 @@ func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
 //
 // The returned number can contain fractional seconds.
 //
-//   @(epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619
-//   @(epoch("2017-06-12T18:56:59.000000+02:00")) -> 1497286619
-//   @(epoch("2017-06-12T16:56:59.123456Z")) -> 1497286619.123456
-//   @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) -> 1497286619
+//	@(epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619
+//	@(epoch("2017-06-12T18:56:59.000000+02:00")) -> 1497286619
+//	@(epoch("2017-06-12T16:56:59.123456Z")) -> 1497286619.123456
+//	@(round_down(epoch("2017-06-12T16:56:59.123456Z"))) -> 1497286619
 //
 // @function epoch(date)
 func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
@@ -1371,7 +1373,7 @@ func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
 
 // Now returns the current date and time in the current timezone.
 //
-//   @(now()) -> 2018-04-11T13:24:30.123456-05:00
+//	@(now()) -> 2018-04-11T13:24:30.123456-05:00
 //
 // @function now()
 func Now(env envs.Environment) types.XValue {
@@ -1384,9 +1386,9 @@ func Now(env envs.Environment) types.XValue {
 
 // DateFromParts creates a date from `year`, `month` and `day`.
 //
-//   @(date_from_parts(2017, 1, 15)) -> 2017-01-15
-//   @(date_from_parts(2017, 2, 31)) -> 2017-03-03
-//   @(date_from_parts(2017, 13, 15)) -> ERROR
+//	@(date_from_parts(2017, 1, 15)) -> 2017-01-15
+//	@(date_from_parts(2017, 2, 31)) -> 2017-03-03
+//	@(date_from_parts(2017, 13, 15)) -> ERROR
 //
 // @function date_from_parts(year, month, day)
 func DateFromParts(env envs.Environment, year, month, day int) types.XValue {
@@ -1401,8 +1403,8 @@ func DateFromParts(env envs.Environment, year, month, day int) types.XValue {
 //
 // The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.
 //
-//   @(weekday("2017-01-15")) -> 0
-//   @(weekday("foo")) -> ERROR
+//	@(weekday("2017-01-15")) -> 0
+//	@(weekday("foo")) -> ERROR
 //
 // @function weekday(date)
 func Weekday(env envs.Environment, date types.XDate) types.XValue {
@@ -1413,9 +1415,9 @@ func Weekday(env envs.Environment, date types.XDate) types.XValue {
 //
 // The week is considered to start on Sunday and week containing Jan 1st is week number 1.
 //
-//   @(week_number("2019-01-01")) -> 1
-//   @(week_number("2019-07-23T16:56:59.000000Z")) -> 30
-//   @(week_number("xx")) -> ERROR
+//	@(week_number("2019-01-01")) -> 1
+//	@(week_number("2019-07-23T16:56:59.000000Z")) -> 30
+//	@(week_number("xx")) -> ERROR
 //
 // @function week_number(date)
 func WeekNumber(env envs.Environment, date types.XDate) types.XValue {
@@ -1424,7 +1426,7 @@ func WeekNumber(env envs.Environment, date types.XDate) types.XValue {
 
 // Today returns the current date in the environment timezone.
 //
-//   @(today()) -> 2018-04-11
+//	@(today()) -> 2018-04-11
 //
 // @function today()
 func Today(env envs.Environment) types.XValue {
@@ -1460,9 +1462,9 @@ func Today(env envs.Environment) types.XValue {
 //
 // parse_time will return an error if it is unable to convert the text to a time.
 //
-//   @(parse_time("15:28", "tt:mm")) -> 15:28:00.000000
-//   @(parse_time("2:40 pm", "h:mm aa")) -> 14:40:00.000000
-//   @(parse_time("NOT TIME", "tt:mm")) -> ERROR
+//	@(parse_time("15:28", "tt:mm")) -> 15:28:00.000000
+//	@(parse_time("2:40 pm", "h:mm aa")) -> 14:40:00.000000
+//	@(parse_time("NOT TIME", "tt:mm")) -> ERROR
 //
 // @function parse_time(text, format)
 func ParseTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -1487,9 +1489,9 @@ func ParseTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 
 // TimeFromParts creates a time from `hour`, `minute` and `second`
 //
-//   @(time_from_parts(14, 40, 15)) -> 14:40:15.000000
-//   @(time_from_parts(8, 10, 0)) -> 08:10:00.000000
-//   @(time_from_parts(25, 0, 0)) -> ERROR
+//	@(time_from_parts(14, 40, 15)) -> 14:40:15.000000
+//	@(time_from_parts(8, 10, 0)) -> 08:10:00.000000
+//	@(time_from_parts(25, 0, 0)) -> ERROR
 //
 // @function time_from_parts(hour, minute, second)
 func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue {
@@ -1512,8 +1514,8 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 
 // Join joins the given `array` of strings with `separator` to make text.
 //
-//   @(join(array("a", "b", "c"), "|")) -> a|b|c
-//   @(join(split("a.b.c", "."), " ")) -> a b c
+//	@(join(array("a", "b", "c"), "|")) -> a|b|c
+//	@(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
 func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -1545,8 +1547,8 @@ func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XVal
 
 // Reverse returns a new array with the values of `array` reversed.
 //
-//   @(reverse(array(3, 1, 2))) -> [2, 1, 3]
-//   @(reverse(array("C", "A", "B"))) -> [B, A, C]
+//	@(reverse(array(3, 1, 2))) -> [2, 1, 3]
+//	@(reverse(array("C", "A", "B"))) -> [B, A, C]
 //
 // @function reverse(array)
 func Reverse(env envs.Environment, array *types.XArray) types.XValue {
@@ -1559,8 +1561,8 @@ func Reverse(env envs.Environment, array *types.XArray) types.XValue {
 
 // Sort returns a new array with the values of `array` sorted.
 //
-//   @(sort(array(3, 1, 2))) -> [1, 2, 3]
-//   @(sort(array("C", "A", "B"))) -> [A, B, C]
+//	@(sort(array(3, 1, 2))) -> [1, 2, 3]
+//	@(sort(array("C", "A", "B"))) -> [A, B, C]
 //
 // @function sort(array)
 func Sort(env envs.Environment, array *types.XArray) types.XValue {
@@ -1585,7 +1587,7 @@ func Sort(env envs.Environment, array *types.XArray) types.XValue {
 
 // Sum sums the items in the given `array`.
 //
-//   @(sum(array(1, 2, "3"))) -> 6
+//	@(sum(array(1, 2, "3"))) -> 6
 //
 // @function sum(array)
 func Sum(env envs.Environment, array *types.XArray) types.XValue {
@@ -1604,8 +1606,8 @@ func Sum(env envs.Environment, array *types.XArray) types.XValue {
 
 // Unique returns the unique values in `array`.
 //
-//   @(unique(array(1, 3, 2, 3))) -> [1, 3, 2]
-//   @(unique(array("hi", "there", "hi"))) -> [hi, there]
+//	@(unique(array(1, 3, 2, 3))) -> [1, 3, 2]
+//	@(unique(array("hi", "there", "hi"))) -> [hi, there]
 //
 // @function unique(array)
 func Unique(env envs.Environment, array *types.XArray) types.XValue {
@@ -1631,8 +1633,8 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 
 // Concat returns the result of concatenating two arrays.
 //
-//   @(concat(array("a", "b"), array("c", "d"))) -> [a, b, c, d]
-//   @(unique(concat(array(1, 2, 3), array(3, 4)))) -> [1, 2, 3, 4]
+//	@(concat(array("a", "b"), array("c", "d"))) -> [a, b, c, d]
+//	@(unique(concat(array(1, 2, 3), array(3, 4)))) -> [1, 2, 3, 4]
 //
 // @function concat(array1, array2)
 func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) types.XValue {
@@ -1654,9 +1656,9 @@ func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) ty
 
 // URNParts parses a URN into its different parts
 //
-//   @(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
-//   @(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
-//   @(urn_parts("not a urn")) -> ERROR
+//	@(urn_parts("tel:+593979012345")) -> {display: , path: +593979012345, scheme: tel}
+//	@(urn_parts("twitterid:3263621177#bobby")) -> {display: bobby, path: 3263621177, scheme: twitterid}
+//	@(urn_parts("not a urn")) -> ERROR
 //
 // @function urn_parts(urn)
 func URNParts(env envs.Environment, urn types.XText) types.XValue {
@@ -1676,7 +1678,7 @@ func URNParts(env envs.Environment, urn types.XText) types.XValue {
 
 // AttachmentParts parses an attachment into its different parts
 //
-//   @(attachment_parts("image/jpeg:https://example.com/test.jpg")) -> {content_type: image/jpeg, url: https://example.com/test.jpg}
+//	@(attachment_parts("image/jpeg:https://example.com/test.jpg")) -> {content_type: image/jpeg, url: https://example.com/test.jpg}
 //
 // @function attachment_parts(attachment)
 func AttachmentParts(env envs.Environment, attachment types.XText) types.XValue {
@@ -1697,9 +1699,9 @@ func AttachmentParts(env envs.Environment, attachment types.XText) types.XValue 
 //
 // If the given `text` is not valid JSON, then an error is returned
 //
-//   @(parse_json("{\"foo\": \"bar\"}").foo) -> bar
-//   @(parse_json("[1,2,3,4]")[2]) -> 3
-//   @(parse_json("invalid json")) -> ERROR
+//	@(parse_json("{\"foo\": \"bar\"}").foo) -> bar
+//	@(parse_json("[1,2,3,4]")[2]) -> 3
+//	@(parse_json("invalid json")) -> ERROR
 //
 // @function parse_json(text)
 func ParseJSON(env envs.Environment, text types.XText) types.XValue {
@@ -1708,10 +1710,10 @@ func ParseJSON(env envs.Environment, text types.XText) types.XValue {
 
 // JSON returns the JSON representation of `value`.
 //
-//   @(json("string")) -> "string"
-//   @(json(10)) -> 10
-//   @(json(null)) -> null
-//   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+//	@(json("string")) -> "string"
+//	@(json(10)) -> 10
+//	@(json(null)) -> null
+//	@(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
 // @function json(value)
 func JSON(env envs.Environment, value types.XValue) types.XValue {
@@ -1728,9 +1730,9 @@ func JSON(env envs.Environment, value types.XValue) types.XValue {
 
 // Format formats `value` according to its type.
 //
-//   @(format(1234.5670)) -> 1,234.567
-//   @(format(now())) -> 11-04-2018 13:24
-//   @(format(today())) -> 11-04-2018
+//	@(format(1234.5670)) -> 1,234.567
+//	@(format(now())) -> 11-04-2018 13:24
+//	@(format(today())) -> 11-04-2018
 //
 // @function format(value)
 func Format(env envs.Environment, value types.XValue) types.XValue {
@@ -1757,12 +1759,12 @@ func Format(env envs.Environment, value types.XValue) types.XValue {
 // * `EEE`       - day of week Mon-Sun (localized)
 // * `EEEE`      - day of week Monday-Sunday (localized)
 //
-//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD")) -> 2010 5 10
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
-//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
-//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//	@(format_date("1979-07-18T15:00:00.000000Z")) -> 18-07-1979
+//	@(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//	@(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD")) -> 2010 5 10
+//	@(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//	@(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
+//	@(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function format_date(date, [,format])
 func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1824,13 +1826,13 @@ func FormatDate(env envs.Environment, args ...types.XValue) types.XValue {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified, the current timezone
 // will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 18-07-1979 10:00
-//   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
-//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
-//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD hh:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
-//   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
-//   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
-//   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//	@(format_datetime("1979-07-18T15:00:00.000000Z")) -> 18-07-1979 10:00
+//	@(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//	@(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
+//	@(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD hh:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//	@(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//	@(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
+//	@(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function format_datetime(datetime [,format [,timezone]])
 func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1892,10 +1894,10 @@ func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 // * `aa`        - am or pm (localized)
 // * `AA`        - AM or PM (localized)
 //
-//   @(format_time("14:50:30.000000")) -> 14:50
-//   @(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
-//   @(format_time("15:00:27.000000", "s")) -> 27
-//   @(format_time("NOT TIME", "hh:mm")) -> ERROR
+//	@(format_time("14:50:30.000000")) -> 14:50
+//	@(format_time("14:50:30.000000", "h:mm aa")) -> 2:50 pm
+//	@(format_time("15:00:27.000000", "s")) -> 27
+//	@(format_time("NOT TIME", "hh:mm")) -> ERROR
 //
 // @function format_time(time [,format])
 func FormatTime(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1925,11 +1927,11 @@ func FormatTime(env envs.Environment, args ...types.XValue) types.XValue {
 //
 // An optional third argument `humanize` can be false to disable the use of thousand separators.
 //
-//   @(format_number(1234)) -> 1,234
-//   @(format_number(1234.5670)) -> 1,234.567
-//   @(format_number(1234.5670, 2, true)) -> 1,234.57
-//   @(format_number(1234.5678, 0, false)) -> 1235
-//   @(format_number("foo", 2, false)) -> ERROR
+//	@(format_number(1234)) -> 1,234
+//	@(format_number(1234.5670)) -> 1,234.567
+//	@(format_number(1234.5670, 2, true)) -> 1,234.57
+//	@(format_number(1234.5678, 0, false)) -> 1235
+//	@(format_number("foo", 2, false)) -> ERROR
 //
 // @function format_number(number, places [, humanize])
 func FormatNumber(env envs.Environment, args ...types.XValue) types.XValue {
@@ -1960,8 +1962,8 @@ func FormatNumber(env envs.Environment, args ...types.XValue) types.XValue {
 
 // FormatLocation formats the given `location` as its name.
 //
-//   @(format_location("Rwanda")) -> Rwanda
-//   @(format_location("Rwanda > Kigali")) -> Kigali
+//	@(format_location("Rwanda")) -> Rwanda
+//	@(format_location("Rwanda > Kigali")) -> Kigali
 //
 // @function format_location(location)
 func FormatLocation(env envs.Environment, path types.XText) types.XValue {
@@ -1971,12 +1973,12 @@ func FormatLocation(env envs.Environment, path types.XText) types.XValue {
 
 // FormatURN formats `urn` into human friendly text.
 //
-//   @(format_urn("tel:+250781234567")) -> 0781 234 567
-//   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
-//   @(format_urn(contact.urn)) -> (202) 456-1111
-//   @(format_urn(urns.tel)) -> (202) 456-1111
-//   @(format_urn(urns.mailto)) -> foo@bar.com
-//   @(format_urn("NOT URN")) -> ERROR
+//	@(format_urn("tel:+250781234567")) -> 0781 234 567
+//	@(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
+//	@(format_urn(contact.urn)) -> (202) 456-1111
+//	@(format_urn(urns.tel)) -> (202) 456-1111
+//	@(format_urn(urns.mailto)) -> foo@bar.com
+//	@(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)
 func FormatURN(env envs.Environment, arg types.XText) types.XValue {
@@ -1994,9 +1996,9 @@ func FormatURN(env envs.Environment, arg types.XText) types.XValue {
 
 // IsError returns whether `value` is an error
 //
-//   @(is_error(datetime("foo"))) -> true
-//   @(is_error(run.not.existing)) -> true
-//   @(is_error("hello")) -> false
+//	@(is_error(datetime("foo"))) -> true
+//	@(is_error(run.not.existing)) -> true
+//	@(is_error("hello")) -> false
 //
 // @function is_error(value)
 func IsError(env envs.Environment, value types.XValue) types.XValue {
@@ -2007,10 +2009,10 @@ func IsError(env envs.Environment, value types.XValue) types.XValue {
 //
 // It will return an error if it is passed an item which isn't countable.
 //
-//   @(count(contact.fields)) -> 6
-//   @(count(array())) -> 0
-//   @(count(array("a", "b", "c"))) -> 3
-//   @(count(1234)) -> ERROR
+//	@(count(contact.fields)) -> 6
+//	@(count(array())) -> 0
+//	@(count(array("a", "b", "c"))) -> 3
+//	@(count(1234)) -> ERROR
 //
 // @function count(value)
 func Count(env envs.Environment, value types.XValue) types.XValue {
@@ -2030,12 +2032,12 @@ func Count(env envs.Environment, value types.XValue) types.XValue {
 
 // Default returns `value` if is not empty or an error, otherwise it returns `default`.
 //
-//   @(default(undeclared.var, "default_value")) -> default_value
-//   @(default("10", "20")) -> 10
-//   @(default("", "value")) -> value
-//   @(default("  ", "value")) -> \x20\x20
-//   @(default(datetime("invalid-date"), "today")) -> today
-//   @(default(format_urn("invalid-urn"), "ok")) -> ok
+//	@(default(undeclared.var, "default_value")) -> default_value
+//	@(default("10", "20")) -> 10
+//	@(default("", "value")) -> value
+//	@(default("  ", "value")) -> \x20\x20
+//	@(default(datetime("invalid-date"), "today")) -> today
+//	@(default(format_urn("invalid-urn"), "ok")) -> ok
 //
 // @function default(value, default)
 func Default(env envs.Environment, value types.XValue, def types.XValue) types.XValue {
@@ -2053,8 +2055,8 @@ func Default(env envs.Environment, value types.XValue, def types.XValue) types.X
 
 // Extract takes an object and extracts the named property.
 //
-//   @(extract(contact, "name")) -> Ryan Lewis
-//   @(extract(contact.groups[0], "name")) -> Testers
+//	@(extract(contact, "name")) -> Ryan Lewis
+//	@(extract(contact.groups[0], "name")) -> Testers
 //
 // @function extract(object, properties)
 func Extract(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
@@ -2074,7 +2076,7 @@ func Extract(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.X
 
 // ExtractObject takes an object and returns a new object by extracting only the named properties.
 //
-//   @(extract_object(contact.groups[0], "name")) -> {name: Testers}
+//	@(extract_object(contact.groups[0], "name")) -> {name: Testers}
 //
 // @function extract_object(object, properties...)
 func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
@@ -2101,14 +2103,31 @@ func ExtractObject(env envs.Environment, args ...types.XValue) types.XValue {
 	return types.NewXObject(result)
 }
 
+// Keys returns an array containing the property keys of `object`.
+//
+//	@(keys(object("a", 123, "b", "hello", "c", "world"))) -> [a, b, c]
+//	@(keys(null)) -> []
+//	@(keys("string")) -> ERROR
+//	@(keys(10)) -> ERROR
+//
+// @function keys(object)
+func Keys(env envs.Environment, object *types.XObject) types.XValue {
+	keys := object.Properties()
+	items := make([]types.XValue, 0)
+	for _, prop := range keys {
+		items = append(items, types.NewXText(prop))
+	}
+	return types.NewXArray(items...)
+}
+
 // ForEach creates a new array by applying `func` to each value in `values`.
 //
 // If the given function takes more than one argument, you can pass additional arguments after the function.
 //
-//   @(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
-//   @(foreach(array("a", "b", "c"), (x) => x & "1")) -> [a1, b1, c1]
-//   @(foreach(array("a", "b", "c"), (x) => object("v", x))) -> [{v: a}, {v: b}, {v: c}]
-//   @(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
+//	@(foreach(array("a", "b", "c"), upper)) -> [A, B, C]
+//	@(foreach(array("a", "b", "c"), (x) => x & "1")) -> [a1, b1, c1]
+//	@(foreach(array("a", "b", "c"), (x) => object("v", x))) -> [{v: a}, {v: b}, {v: c}]
+//	@(foreach(array("the man", "fox", "jumped up"), word, 0)) -> [the, fox, jumped]
 //
 // @function foreach(values, func, [args...])
 func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
@@ -2144,8 +2163,8 @@ func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
 //
 // If the given function takes more than one argument, you can pass additional arguments after the function.
 //
-//   @(foreach_value(object("a", "x", "b", "y"), upper)) -> {a: X, b: Y}
-//   @(foreach_value(object("a", "hi there", "b", "good bye"), word, 1)) -> {a: there, b: bye}
+//	@(foreach_value(object("a", "x", "b", "y"), upper)) -> {a: X, b: Y}
+//	@(foreach_value(object("a", "hi there", "b", "good bye"), word, 1)) -> {a: there, b: bye}
 //
 // @function foreach_value(object, func, [args...])
 func ForEachValue(env envs.Environment, args ...types.XValue) types.XValue {
@@ -2230,9 +2249,9 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 // ReadChars will split the numbers such as they are easier to understand. This includes
 // splitting in 3s or 4s if appropriate.
 //
-//   @(read_chars("1234")) -> 1 2 3 4
-//   @(read_chars("abc")) -> a b c
-//   @(read_chars("abcdef")) -> a b c , d e f
+//	@(read_chars("1234")) -> 1 2 3 4
+//	@(read_chars("abc")) -> a b c
+//	@(read_chars("abcdef")) -> a b c , d e f
 //
 // @function read_chars(text)
 func ReadChars(env envs.Environment, val types.XText) types.XValue {

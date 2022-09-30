@@ -1,6 +1,6 @@
 module github.com/nyaruka/goflow
 
-go 1.18
+go 1.19
 
 require (
 	github.com/Masterminds/semver v1.5.0
@@ -8,7 +8,7 @@ require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220527190237-ee62e23da966
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.1.1
-	github.com/nyaruka/gocommon v1.22.2
+	github.com/nyaruka/gocommon v1.30.0
 	github.com/nyaruka/phonenumbers v1.0.75
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1

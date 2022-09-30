@@ -11,9 +11,9 @@ type XFunc func(env envs.Environment, args ...XValue) XValue
 
 // XFunction is a callable function.
 //
-//   @(upper) -> upper
-//   @(array(upper)[0]("abc")) -> ABC
-//   @(json(upper)) -> null
+//	@(upper) -> upper
+//	@(array(upper)[0]("abc")) -> ABC
+//	@(json(upper)) -> null
 //
 // @type function
 type XFunction struct {

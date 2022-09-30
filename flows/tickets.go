@@ -49,9 +49,9 @@ func (t *Ticket) Assignee() *User         { return t.assignee }
 
 // Context returns the properties available in expressions
 //
-//   uuid:text -> the UUID of the ticket
-//   subject:text -> the subject of the ticket
-//   body:text -> the body of the ticket
+//	uuid:text -> the UUID of the ticket
+//	subject:text -> the subject of the ticket
+//	body:text -> the body of the ticket
 //
 // @context ticket
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {

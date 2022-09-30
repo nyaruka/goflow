@@ -216,7 +216,7 @@ func TestRunResuming(t *testing.T) {
 	assetsJSON, err := os.ReadFile("testdata/subflows.json")
 	require.NoError(t, err)
 
-	session, _ := test.NewSessionBuilder().WithAssets(assetsJSON).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
+	_, session, _ := test.NewSessionBuilder().WithAssetsJSON(assetsJSON).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
 
 	// each run should be marked as completed
 	assert.Equal(t, 3, len(session.Runs()))
@@ -227,7 +227,7 @@ func TestRunResuming(t *testing.T) {
 	// change the UUID of the third flow so the nter_flow in the second flow will error
 	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[2]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
 
-	session, _ = test.NewSessionBuilder().WithAssets(assetsWithoutChildFlow).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
+	_, session, _ = test.NewSessionBuilder().WithAssetsJSON(assetsWithoutChildFlow).WithFlow("72162f46-dce3-4798-9f19-384a2447efc5").MustBuild()
 
 	// each run should be marked as failed
 	assert.Equal(t, 2, len(session.Runs()))
@@ -239,7 +239,7 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	assetsJSON, err := os.ReadFile("../../test/testdata/runner/subflow.json")
 	require.NoError(t, err)
 
-	session1, _ := test.NewSessionBuilder().WithAssets(assetsJSON).WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	_, session1, _ := test.NewSessionBuilder().WithAssetsJSON(assetsJSON).WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	assert.Equal(t, flows.SessionStatusWaiting, session1.Status())
 	assert.Equal(t, flows.RunStatusActive, session1.Runs()[0].Status())
@@ -248,7 +248,10 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	// change the UUID of the child flow so it will effectively be missing
 	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[1]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
 
-	session2, _, err := test.ResumeSession(session1, assetsWithoutChildFlow, "Hello")
+	sa, err := test.CreateSessionAssets(assetsWithoutChildFlow, "")
+	require.NoError(t, err)
+
+	session2, _, err := test.ResumeSession(session1, sa, "Hello")
 	require.NoError(t, err)
 
 	// should have a failed session (with no runs left was active/waiting)
@@ -259,7 +262,10 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	// change the UUID of the parent flow so it will effectively be missing
 	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
 
-	session3, _, err := test.ResumeSession(session1, assetsWithoutParentFlow, "Hello")
+	sa, err = test.CreateSessionAssets(assetsWithoutParentFlow, "")
+	require.NoError(t, err)
+
+	session3, _, err := test.ResumeSession(session1, sa, "Hello")
 	require.NoError(t, err)
 
 	// should have an failed session
@@ -274,7 +280,7 @@ func TestWaitTimeout(t *testing.T) {
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
 	dates.SetNowSource(dates.NewFixedNowSource(t1))
 
-	session, sprint := test.NewSessionBuilder().WithAssetsPath("testdata/timeout_test.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	_, session, sprint := test.NewSessionBuilder().WithAssetsPath("testdata/timeout_test.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
 	run := session.Runs()[0]
@@ -301,7 +307,7 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
-	session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/subflow_loop_with_wait.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/subflow_loop_with_wait.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	assert.Equal(t, string(flows.SessionStatusWaiting), string(session.Status()))
 
@@ -377,7 +383,7 @@ func TestSessionHistory(t *testing.T) {
 }
 
 func TestMaxResumesPerSession(t *testing.T) {
-	session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/two_questions.json").WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").MustBuild()
+	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/two_questions.json").WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
 	numResumes := 0
@@ -398,7 +404,7 @@ func TestMaxResumesPerSession(t *testing.T) {
 }
 
 func TestFindStep(t *testing.T) {
-	session, sprint := test.NewSessionBuilder().MustBuild()
+	_, session, sprint := test.NewSessionBuilder().MustBuild()
 	evts := sprint.Events()
 
 	run, step := session.FindStep(evts[0].StepUUID())
@@ -412,7 +418,7 @@ func TestFindStep(t *testing.T) {
 
 func TestEngineErrors(t *testing.T) {
 	// create a completed session and try to resume it
-	session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/empty.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
+	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/empty.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
 
 	_, err := session.Resume(nil)
@@ -420,7 +426,7 @@ func TestEngineErrors(t *testing.T) {
 	assert.Equal(t, engine.ErrorResumeNonWaitingSession, err.(*engine.Error).Code())
 
 	// create a session which is waiting for a message and try to resume it with a dial
-	session, _ = test.NewSessionBuilder().MustBuild()
+	_, session, _ = test.NewSessionBuilder().MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
 	_, err = session.Resume(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 10)))

@@ -21,12 +21,12 @@ const TypeSayMsg string = "say_msg"
 // the caller should handle as an IVR play command if it has an audio attachment, or otherwise
 // an IVR say command using the message text.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "say_msg",
-//     "audio_url": "http://uploads.temba.io/2353262.m4a",
-//     "text": "Hi @contact.name, are you ready to complete today's survey?"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "say_msg",
+//	  "audio_url": "http://uploads.temba.io/2353262.m4a",
+//	  "text": "Hi @contact.name, are you ready to complete today's survey?"
+//	}
 //
 // @action say_msg
 type SayMsgAction struct {
@@ -66,7 +66,7 @@ func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows
 	}
 
 	// an IVR flow must have been started with a connection
-	connection := run.Session().Trigger().Connection()
+	connection := run.Session().Trigger().Call()
 
 	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), evaluatedText, textLanguage, localizedAudioURL)
 	logEvent(events.NewIVRCreated(msg))

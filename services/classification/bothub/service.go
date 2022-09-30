@@ -5,15 +5,16 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // a classification service implementation for a bothub.it bot
 type service struct {
 	client     *Client
 	classifier *flows.Classifier
-	redactor   utils.Redactor
+	redactor   stringsx.Redactor
 }
 
 // NewService creates a new classification service
@@ -21,13 +22,12 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 	return &service{
 		client:     NewClient(httpClient, httpRetries, accessToken),
 		classifier: classifier,
-		redactor:   utils.NewRedactor(flows.RedactionMask, accessToken),
+		redactor:   stringsx.NewRedactor(flows.RedactionMask, accessToken),
 	}
 }
 
-func (s *service) Classify(session flows.Session, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	locale := session.Runs()[0].Environment().DefaultLocale()
-	localeStr := strings.ReplaceAll(strings.ToLower(locale.ToBCP47()), "-", "_") // en-US -> en_us
+func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+	localeStr := strings.ReplaceAll(strings.ToLower(env.DefaultLocale().ToBCP47()), "-", "_") // en-US -> en_us
 
 	response, trace, err := s.client.Parse(input, localeStr)
 	if trace != nil {

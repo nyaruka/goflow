@@ -592,9 +592,12 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 }
 
 type SessionBuilder struct {
-	env         envs.Environment
-	assetsJSON  []byte
-	assetsPath  string
+	env envs.Environment
+
+	assets     flows.SessionAssets
+	assetsJSON []byte
+	assetsPath string
+
 	flowUUID    assets.FlowUUID
 	engine      flows.Engine
 	contactUUID flows.ContactUUID
@@ -630,12 +633,17 @@ func (b *SessionBuilder) WithEnvironment(env envs.Environment) *SessionBuilder {
 	return b
 }
 
+func (b *SessionBuilder) WithAssets(sa flows.SessionAssets) *SessionBuilder {
+	b.assets = sa
+	return b
+}
+
 func (b *SessionBuilder) WithAssetsPath(path string) *SessionBuilder {
 	b.assetsPath = path
 	return b
 }
 
-func (b *SessionBuilder) WithAssets(assetsJSON []byte) *SessionBuilder {
+func (b *SessionBuilder) WithAssetsJSON(assetsJSON []byte) *SessionBuilder {
 	b.assetsJSON = assetsJSON
 	return b
 }
@@ -659,23 +667,28 @@ func (b *SessionBuilder) WithTriggerMsg(text string) *SessionBuilder {
 	return b
 }
 
-func (b *SessionBuilder) Build() (flows.Session, flows.Sprint, error) {
+func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Sprint, error) {
+	sa := b.assets
 	var err error
-	if b.assetsPath != "" {
-		b.assetsJSON, err = os.ReadFile(b.assetsPath)
-		if err != nil {
-			errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
-		}
-	}
 
-	sa, err := CreateSessionAssets(b.assetsJSON, "")
-	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating session assets")
+	if sa == nil {
+		if b.assetsPath != "" {
+			b.assetsJSON, err = os.ReadFile(b.assetsPath)
+			if err != nil {
+				errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
+			}
+		}
+		if b.assetsJSON != nil {
+			sa, err = CreateSessionAssets(b.assetsJSON, "")
+			if err != nil {
+				return nil, nil, nil, errors.Wrap(err, "error creating session assets")
+			}
+		}
 	}
 
 	flow, err := sa.Flows().Get(b.flowUUID)
 	if err != nil {
-		return nil, nil, errors.Wrapf(err, "error getting flow %s from assets", b.flowUUID)
+		return nil, nil, nil, errors.Wrapf(err, "error getting flow %s from assets", b.flowUUID)
 	}
 
 	var urnz []urns.URN
@@ -699,7 +712,7 @@ func (b *SessionBuilder) Build() (flows.Session, flows.Sprint, error) {
 		assets.PanicOnMissing,
 	)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating contact")
+		return nil, nil, nil, errors.Wrap(err, "error creating contact")
 	}
 
 	var trigger flows.Trigger
@@ -710,26 +723,22 @@ func (b *SessionBuilder) Build() (flows.Session, flows.Sprint, error) {
 		trigger = triggers.NewBuilder(b.env, flow.Reference(), contact).Manual().Build()
 	}
 
-	return b.engine.NewSession(sa, trigger)
+	s, sp, err := b.engine.NewSession(sa, trigger)
+	return sa, s, sp, err
 }
 
-func (b *SessionBuilder) MustBuild() (flows.Session, flows.Sprint) {
-	session, sprint, err := b.Build()
+func (b *SessionBuilder) MustBuild() (flows.SessionAssets, flows.Session, flows.Sprint) {
+	sa, s, sp, err := b.Build()
 	if err != nil {
 		panic(err)
 	}
-	return session, sprint
+	return sa, s, sp
 }
 
 // ResumeSession resumes the given session with potentially different assets
-func ResumeSession(session flows.Session, assetsJSON json.RawMessage, msgText string) (flows.Session, flows.Sprint, error) {
+func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string) (flows.Session, flows.Sprint, error) {
 	// reload session with new assets
 	sessionJSON, err := jsonx.Marshal(session)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	sa, err := CreateSessionAssets(assetsJSON, "")
 	if err != nil {
 		return nil, nil, err
 	}

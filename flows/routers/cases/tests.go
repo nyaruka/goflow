@@ -114,14 +114,14 @@ var FalseResult = types.NewXObject(map[string]types.XValue{
 // HasOnlyText returns whether two text values are equal (case sensitive). In the case that they
 // are, it will return the text as the match.
 //
-//   @(has_only_text("foo", "foo")) -> true
-//   @(has_only_text("foo", "foo").match) -> foo
-//   @(has_only_text("foo", "FOO")) -> false
-//   @(has_only_text("foo", "bar")) -> false
-//   @(has_only_text("foo", " foo ")) -> false
-//   @(has_only_text(run.status, "completed").match) -> completed
-//   @(has_only_text(results.webhook.category, "Success").match) -> Success
-//   @(has_only_text(results.webhook.category, "Failure")) -> false
+//	@(has_only_text("foo", "foo")) -> true
+//	@(has_only_text("foo", "foo").match) -> foo
+//	@(has_only_text("foo", "FOO")) -> false
+//	@(has_only_text("foo", "bar")) -> false
+//	@(has_only_text("foo", " foo ")) -> false
+//	@(has_only_text(run.status, "completed").match) -> completed
+//	@(has_only_text(results.webhook.category, "Success").match) -> Success
+//	@(has_only_text(results.webhook.category, "Failure")) -> false
 //
 // @test has_only_text(text1, text2)
 func HasOnlyText(env envs.Environment, text1 types.XText, text2 types.XText) types.XValue {
@@ -134,11 +134,11 @@ func HasOnlyText(env envs.Environment, text1 types.XText, text2 types.XText) typ
 
 // HasError returns whether `value` is an error
 //
-//   @(has_error(datetime("foo"))) -> true
-//   @(has_error(datetime("foo")).match) -> error calling datetime(...): unable to convert "foo" to a datetime
-//   @(has_error(run.not.existing).match) -> object has no property 'not'
-//   @(has_error(contact.fields.unset).match) -> object has no property 'unset'
-//   @(has_error("hello")) -> false
+//	@(has_error(datetime("foo"))) -> true
+//	@(has_error(datetime("foo")).match) -> error calling datetime(...): unable to convert "foo" to a datetime
+//	@(has_error(run.not.existing).match) -> object has no property 'not'
+//	@(has_error(contact.fields.unset).match) -> object has no property 'unset'
+//	@(has_error("hello")) -> false
 //
 // @test has_error(value)
 func HasError(env envs.Environment, value types.XValue) types.XValue {
@@ -151,8 +151,8 @@ func HasError(env envs.Environment, value types.XValue) types.XValue {
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
-//   @(has_group(contact.groups, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) -> {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}
-//   @(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
+//	@(has_group(contact.groups, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) -> {name: Testers, uuid: b7cf0d83-f1c9-411c-96fd-c511a4cfa86d}
+//	@(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact, group_uuid)
 func HasGroup(env envs.Environment, args ...types.XValue) types.XValue {
@@ -192,10 +192,10 @@ func HasGroup(env envs.Environment, args ...types.XValue) types.XValue {
 // The words in the test phrase must appear in the same order with no other words
 // in between.
 //
-//   @(has_phrase("the quick brown fox", "brown fox")) -> true
-//   @(has_phrase("the quick brown fox", "brown fox").match) -> brown fox
-//   @(has_phrase("the Quick Brown fox", "quick fox")) -> false
-//   @(has_phrase("the Quick Brown fox", "").match) ->
+//	@(has_phrase("the quick brown fox", "brown fox")) -> true
+//	@(has_phrase("the quick brown fox", "brown fox").match) -> brown fox
+//	@(has_phrase("the Quick Brown fox", "quick fox")) -> false
+//	@(has_phrase("the Quick Brown fox", "").match) ->
 //
 // @test has_phrase(text, phrase)
 func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
@@ -206,9 +206,9 @@ func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.X
 //
 // The words can be in any order and may appear more than once.
 //
-//   @(has_all_words("the quick brown FOX", "the fox")) -> true
-//   @(has_all_words("the quick brown FOX", "the fox").match) -> the FOX
-//   @(has_all_words("the quick brown fox", "red fox")) -> false
+//	@(has_all_words("the quick brown FOX", "the fox")) -> true
+//	@(has_all_words("the quick brown FOX", "the fox").match) -> the FOX
+//	@(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(text, words)
 func HasAllWords(env envs.Environment, text types.XText, test types.XText) types.XValue {
@@ -219,9 +219,9 @@ func HasAllWords(env envs.Environment, text types.XText, test types.XText) types
 //
 // Only one of the words needs to match and it may appear more than once.
 //
-//   @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
-//   @(has_any_word("The Quick Brown Fox", "fox quick").match) -> Quick Fox
-//   @(has_any_word("The Quick Brown Fox", "red fox").match) -> Fox
+//	@(has_any_word("The Quick Brown Fox", "fox quick")) -> true
+//	@(has_any_word("The Quick Brown Fox", "fox quick").match) -> Quick Fox
+//	@(has_any_word("The Quick Brown Fox", "red fox").match) -> Fox
 //
 // @test has_any_word(text, words)
 func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.XValue {
@@ -232,12 +232,12 @@ func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.
 //
 // The phrase must be the only text in the text to match
 //
-//   @(has_only_phrase("Quick Brown", "quick brown")) -> true
-//   @(has_only_phrase("Quick Brown", "quick brown").match) -> Quick Brown
-//   @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
-//   @(has_only_phrase("the Quick Brown fox", "")) -> false
-//   @(has_only_phrase("", "").match) ->
-//   @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
+//	@(has_only_phrase("Quick Brown", "quick brown")) -> true
+//	@(has_only_phrase("Quick Brown", "quick brown").match) -> Quick Brown
+//	@(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
+//	@(has_only_phrase("the Quick Brown fox", "")) -> false
+//	@(has_only_phrase("", "").match) ->
+//	@(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(text, phrase)
 func HasOnlyPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
@@ -246,12 +246,12 @@ func HasOnlyPhrase(env envs.Environment, text types.XText, test types.XText) typ
 
 // HasText tests whether there the text has any characters in it
 //
-//   @(has_text("quick brown")) -> true
-//   @(has_text("quick brown").match) -> quick brown
-//   @(has_text("")) -> false
-//   @(has_text(" \n")) -> false
-//   @(has_text(123).match) -> 123
-//   @(has_text(contact.fields.not_set)) -> false
+//	@(has_text("quick brown")) -> true
+//	@(has_text("quick brown").match) -> quick brown
+//	@(has_text("")) -> false
+//	@(has_text(" \n")) -> false
+//	@(has_text(123).match) -> 123
+//	@(has_text(contact.fields.not_set)) -> false
 //
 // @test has_text(text)
 func HasText(env envs.Environment, text types.XText) types.XValue {
@@ -271,10 +271,10 @@ func HasText(env envs.Environment, text types.XText) types.XValue {
 // Both text values are trimmed of surrounding whitespace, but otherwise matching is strict
 // without any tokenization.
 //
-//   @(has_beginning("The Quick Brown", "the quick")) -> true
-//   @(has_beginning("The Quick Brown", "the quick").match) -> The Quick
-//   @(has_beginning("The Quick Brown", "the   quick")) -> false
-//   @(has_beginning("The Quick Brown", "quick brown")) -> false
+//	@(has_beginning("The Quick Brown", "the quick")) -> true
+//	@(has_beginning("The Quick Brown", "the quick").match) -> The Quick
+//	@(has_beginning("The Quick Brown", "the   quick")) -> false
+//	@(has_beginning("The Quick Brown", "quick brown")) -> false
 //
 // @test has_beginning(text, beginning)
 func HasBeginning(env envs.Environment, text types.XText, beginning types.XText) types.XValue {
@@ -304,10 +304,10 @@ func HasBeginning(env envs.Environment, text types.XText, beginning types.XText)
 //
 // Both text values are trimmed of surrounding whitespace and matching is case-insensitive.
 //
-//   @(has_pattern("Buy cheese please", "buy (\w+)")) -> true
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> Buy cheese
-//   @(has_pattern("Buy cheese please", "buy (\w+)").extra) -> {0: Buy cheese, 1: cheese}
-//   @(has_pattern("Sell cheese please", "buy (\w+)")) -> false
+//	@(has_pattern("Buy cheese please", "buy (\w+)")) -> true
+//	@(has_pattern("Buy cheese please", "buy (\w+)").match) -> Buy cheese
+//	@(has_pattern("Buy cheese please", "buy (\w+)").extra) -> {0: Buy cheese, 1: cheese}
+//	@(has_pattern("Sell cheese please", "buy (\w+)")) -> false
 //
 // @test has_pattern(text, pattern)
 func HasPattern(env envs.Environment, text types.XText, pattern types.XText) types.XValue {
@@ -331,10 +331,10 @@ func HasPattern(env envs.Environment, text types.XText, pattern types.XText) typ
 
 // HasNumber tests whether `text` contains a number
 //
-//   @(has_number("the number is 42")) -> true
-//   @(has_number("the number is 42").match) -> 42
-//   @(has_number("العدد ٤٢").match) -> 42
-//   @(has_number("the number is forty two")) -> false
+//	@(has_number("the number is 42")) -> true
+//	@(has_number("the number is 42").match) -> 42
+//	@(has_number("العدد ٤٢").match) -> 42
+//	@(has_number("the number is forty two")) -> false
 //
 // @test has_number(text)
 func HasNumber(env envs.Environment, text types.XText) types.XValue {
@@ -343,11 +343,11 @@ func HasNumber(env envs.Environment, text types.XText) types.XValue {
 
 // HasNumberBetween tests whether `text` contains a number between `min` and `max` inclusive
 //
-//   @(has_number_between("the number is 42", 40, 44)) -> true
-//   @(has_number_between("the number is 42", 40, 44).match) -> 42
-//   @(has_number_between("the number is 42", 50, 60)) -> false
-//   @(has_number_between("the number is not there", 50, 60)) -> false
-//   @(has_number_between("the number is not there", "foo", 60)) -> ERROR
+//	@(has_number_between("the number is 42", 40, 44)) -> true
+//	@(has_number_between("the number is 42", 40, 44).match) -> 42
+//	@(has_number_between("the number is 42", 50, 60)) -> false
+//	@(has_number_between("the number is not there", 50, 60)) -> false
+//	@(has_number_between("the number is not there", "foo", 60)) -> ERROR
 //
 // @test has_number_between(text, min, max)
 func HasNumberBetween(env envs.Environment, arg1 types.XValue, arg2 types.XValue, arg3 types.XValue) types.XValue {
@@ -369,11 +369,11 @@ func HasNumberBetween(env envs.Environment, arg1 types.XValue, arg2 types.XValue
 
 // HasNumberLT tests whether `text` contains a number less than `max`
 //
-//   @(has_number_lt("the number is 42", 44)) -> true
-//   @(has_number_lt("the number is 42", 44).match) -> 42
-//   @(has_number_lt("the number is 42", 40)) -> false
-//   @(has_number_lt("the number is not there", 40)) -> false
-//   @(has_number_lt("the number is not there", "foo")) -> ERROR
+//	@(has_number_lt("the number is 42", 44)) -> true
+//	@(has_number_lt("the number is 42", 44).match) -> 42
+//	@(has_number_lt("the number is 42", 40)) -> false
+//	@(has_number_lt("the number is not there", 40)) -> false
+//	@(has_number_lt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lt(text, max)
 func HasNumberLT(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
@@ -382,11 +382,11 @@ func HasNumberLT(env envs.Environment, text types.XText, num types.XNumber) type
 
 // HasNumberLTE tests whether `text` contains a number less than or equal to `max`
 //
-//   @(has_number_lte("the number is 42", 42)) -> true
-//   @(has_number_lte("the number is 42", 42).match) -> 42
-//   @(has_number_lte("the number is 42", 40)) -> false
-//   @(has_number_lte("the number is not there", 40)) -> false
-//   @(has_number_lte("the number is not there", "foo")) -> ERROR
+//	@(has_number_lte("the number is 42", 42)) -> true
+//	@(has_number_lte("the number is 42", 42).match) -> 42
+//	@(has_number_lte("the number is 42", 40)) -> false
+//	@(has_number_lte("the number is not there", 40)) -> false
+//	@(has_number_lte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lte(text, max)
 func HasNumberLTE(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
@@ -395,11 +395,11 @@ func HasNumberLTE(env envs.Environment, text types.XText, num types.XNumber) typ
 
 // HasNumberEQ tests whether `text` contains a number equal to the `value`
 //
-//   @(has_number_eq("the number is 42", 42)) -> true
-//   @(has_number_eq("the number is 42", 42).match) -> 42
-//   @(has_number_eq("the number is 42", 40)) -> false
-//   @(has_number_eq("the number is not there", 40)) -> false
-//   @(has_number_eq("the number is not there", "foo")) -> ERROR
+//	@(has_number_eq("the number is 42", 42)) -> true
+//	@(has_number_eq("the number is 42", 42).match) -> 42
+//	@(has_number_eq("the number is 42", 40)) -> false
+//	@(has_number_eq("the number is not there", 40)) -> false
+//	@(has_number_eq("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_eq(text, value)
 func HasNumberEQ(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
@@ -408,11 +408,11 @@ func HasNumberEQ(env envs.Environment, text types.XText, num types.XNumber) type
 
 // HasNumberGTE tests whether `text` contains a number greater than or equal to `min`
 //
-//   @(has_number_gte("the number is 42", 42)) -> true
-//   @(has_number_gte("the number is 42", 42).match) -> 42
-//   @(has_number_gte("the number is 42", 45)) -> false
-//   @(has_number_gte("the number is not there", 40)) -> false
-//   @(has_number_gte("the number is not there", "foo")) -> ERROR
+//	@(has_number_gte("the number is 42", 42)) -> true
+//	@(has_number_gte("the number is 42", 42).match) -> 42
+//	@(has_number_gte("the number is 42", 45)) -> false
+//	@(has_number_gte("the number is not there", 40)) -> false
+//	@(has_number_gte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gte(text, min)
 func HasNumberGTE(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
@@ -421,11 +421,11 @@ func HasNumberGTE(env envs.Environment, text types.XText, num types.XNumber) typ
 
 // HasNumberGT tests whether `text` contains a number greater than `min`
 //
-//   @(has_number_gt("the number is 42", 40)) -> true
-//   @(has_number_gt("the number is 42", 40).match) -> 42
-//   @(has_number_gt("the number is 42", 42)) -> false
-//   @(has_number_gt("the number is not there", 40)) -> false
-//   @(has_number_gt("the number is not there", "foo")) -> ERROR
+//	@(has_number_gt("the number is 42", 40)) -> true
+//	@(has_number_gt("the number is 42", 40).match) -> 42
+//	@(has_number_gt("the number is 42", 42)) -> false
+//	@(has_number_gt("the number is not there", 40)) -> false
+//	@(has_number_gt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gt(text, min)
 func HasNumberGT(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
@@ -434,9 +434,9 @@ func HasNumberGT(env envs.Environment, text types.XText, num types.XNumber) type
 
 // HasDate tests whether `text` contains a date formatted according to our environment
 //
-//   @(has_date("the date is 15/01/2017")) -> true
-//   @(has_date("the date is 15/01/2017").match) -> 2017-01-15T13:24:30.123456-05:00
-//   @(has_date("there is no date here, just a year 2017")) -> false
+//	@(has_date("the date is 15/01/2017")) -> true
+//	@(has_date("the date is 15/01/2017").match) -> 2017-01-15T13:24:30.123456-05:00
+//	@(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(text)
 func HasDate(env envs.Environment, text types.XText) types.XValue {
@@ -445,10 +445,10 @@ func HasDate(env envs.Environment, text types.XText) types.XValue {
 
 // HasDateLT tests whether `text` contains a date before the date `max`
 //
-//   @(has_date_lt("the date is 15/01/2017", "2017-06-01")) -> true
-//   @(has_date_lt("the date is 15/01/2017", "2017-06-01").match) -> 2017-01-15T13:24:30.123456-05:00
-//   @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) -> false
-//   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
+//	@(has_date_lt("the date is 15/01/2017", "2017-06-01")) -> true
+//	@(has_date_lt("the date is 15/01/2017", "2017-06-01").match) -> 2017-01-15T13:24:30.123456-05:00
+//	@(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) -> false
+//	@(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_lt(text, max)
 func HasDateLT(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
@@ -457,11 +457,11 @@ func HasDateLT(env envs.Environment, text types.XText, date types.XDateTime) typ
 
 // HasDateEQ tests whether `text` a date equal to `date`
 //
-//   @(has_date_eq("the date is 15/01/2017", "2017-01-15")) -> true
-//   @(has_date_eq("the date is 15/01/2017", "2017-01-15").match) -> 2017-01-15T13:24:30.123456-05:00
-//   @(has_date_eq("the date is 15/01/2017 15:00", "2017-01-15").match) -> 2017-01-15T15:00:00.000000-05:00
-//   @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) -> false
-//   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
+//	@(has_date_eq("the date is 15/01/2017", "2017-01-15")) -> true
+//	@(has_date_eq("the date is 15/01/2017", "2017-01-15").match) -> 2017-01-15T13:24:30.123456-05:00
+//	@(has_date_eq("the date is 15/01/2017 15:00", "2017-01-15").match) -> 2017-01-15T15:00:00.000000-05:00
+//	@(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) -> false
+//	@(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_eq(text, date)
 func HasDateEQ(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
@@ -470,11 +470,11 @@ func HasDateEQ(env envs.Environment, text types.XText, date types.XDateTime) typ
 
 // HasDateGT tests whether `text` a date after the date `min`
 //
-//   @(has_date_gt("the date is 15/01/2017", "2017-01-01")) -> true
-//   @(has_date_gt("the date is 15/01/2017", "2017-01-01").match) -> 2017-01-15T13:24:30.123456-05:00
-//   @(has_date_gt("the date is 15/01/2017", "2017-03-15")) -> false
-//   @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) -> false
-//   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
+//	@(has_date_gt("the date is 15/01/2017", "2017-01-01")) -> true
+//	@(has_date_gt("the date is 15/01/2017", "2017-01-01").match) -> 2017-01-15T13:24:30.123456-05:00
+//	@(has_date_gt("the date is 15/01/2017", "2017-03-15")) -> false
+//	@(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) -> false
+//	@(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_gt(text, min)
 func HasDateGT(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
@@ -483,11 +483,11 @@ func HasDateGT(env envs.Environment, text types.XText, date types.XDateTime) typ
 
 // HasTime tests whether `text` contains a time.
 //
-//   @(has_time("the time is 10:30")) -> true
-//   @(has_time("the time is 10:30").match) -> 10:30:00.000000
-//   @(has_time("the time is 10 PM").match) -> 22:00:00.000000
-//   @(has_time("the time is 10:30:45").match) -> 10:30:45.000000
-//   @(has_time("there is no time here, just the number 25")) -> false
+//	@(has_time("the time is 10:30")) -> true
+//	@(has_time("the time is 10:30").match) -> 10:30:00.000000
+//	@(has_time("the time is 10 PM").match) -> 22:00:00.000000
+//	@(has_time("the time is 10:30:45").match) -> 10:30:45.000000
+//	@(has_time("there is no time here, just the number 25")) -> false
 //
 // @test has_time(text)
 func HasTime(env envs.Environment, text types.XText) types.XValue {
@@ -503,10 +503,10 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_+$~.\pL\pN]*)@([\pL\pN][-_\
 
 // HasEmail tests whether an email is contained in `text`
 //
-//   @(has_email("my email is foo1@bar.com, please respond")) -> true
-//   @(has_email("my email is foo1@bar.com, please respond").match) -> foo1@bar.com
-//   @(has_email("my email is <foo@bar2.com>").match) -> foo@bar2.com
-//   @(has_email("i'm not sharing my email")) -> false
+//	@(has_email("my email is foo1@bar.com, please respond")) -> true
+//	@(has_email("my email is foo1@bar.com, please respond").match) -> foo1@bar.com
+//	@(has_email("my email is <foo@bar2.com>").match) -> foo@bar2.com
+//	@(has_email("i'm not sharing my email")) -> false
 //
 // @test has_email(text)
 func HasEmail(env envs.Environment, text types.XText) types.XValue {
@@ -522,11 +522,11 @@ func HasEmail(env envs.Environment, text types.XText) types.XValue {
 // HasPhone tests whether `text` contains a phone number. The optional `country_code` argument specifies
 // the country to use for parsing.
 //
-//   @(has_phone("my number is +12067799294 thanks")) -> true
-//   @(has_phone("my number is +12067799294").match) -> +12067799294
-//   @(has_phone("my number is 2067799294", "US").match) -> +12067799294
-//   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
-//   @(has_phone("my number is none of your business", "US")) -> false
+//	@(has_phone("my number is +12067799294 thanks")) -> true
+//	@(has_phone("my number is +12067799294").match) -> +12067799294
+//	@(has_phone("my number is 2067799294", "US").match) -> +12067799294
+//	@(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
+//	@(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(text, country_code)
 func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -552,9 +552,9 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 
 // HasCategory tests whether the category of a result on of the passed in `categories`
 //
-//   @(has_category(results.webhook, "Success", "Failure")) -> true
-//   @(has_category(results.webhook, "Success", "Failure").match) -> Success
-//   @(has_category(results.webhook, "Failure")) -> false
+//	@(has_category(results.webhook, "Success", "Failure")) -> true
+//	@(has_category(results.webhook, "Success", "Failure").match) -> Success
+//	@(has_category(results.webhook, "Failure")) -> false
 //
 // @test has_category(result, categories...)
 func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...types.XText) types.XValue {
@@ -576,8 +576,8 @@ func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...t
 
 // HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
 //
-//   @(has_intent(results.intent, "book_flight", 0.5)) -> true
-//   @(has_intent(results.intent, "book_hotel", 0.2)) -> true
+//	@(has_intent(results.intent, "book_flight", 0.5)) -> true
+//	@(has_intent(results.intent, "book_hotel", 0.2)) -> true
 //
 // @test has_intent(result, name, confidence)
 func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
@@ -586,8 +586,8 @@ func HasIntent(env envs.Environment, result *types.XObject, name types.XText, co
 
 // HasTopIntent tests whether the top intent in a classification result has `name` and minimum `confidence`
 //
-//   @(has_top_intent(results.intent, "book_flight", 0.5)) -> true
-//   @(has_top_intent(results.intent, "book_hotel", 0.5)) -> false
+//	@(has_top_intent(results.intent, "book_flight", 0.5)) -> true
+//	@(has_top_intent(results.intent, "book_hotel", 0.5)) -> false
 //
 // @test has_top_intent(result, name, confidence)
 func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
@@ -596,10 +596,10 @@ func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText,
 
 // HasState tests whether a state name is contained in the `text`
 //
-//   @(has_state("Kigali").match) -> Rwanda > Kigali City
-//   @(has_state("¡Kigali!").match) -> Rwanda > Kigali City
-//   @(has_state("I live in Kigali").match) -> Rwanda > Kigali City
-//   @(has_state("Boston")) -> false
+//	@(has_state("Kigali").match) -> Rwanda > Kigali City
+//	@(has_state("¡Kigali!").match) -> Rwanda > Kigali City
+//	@(has_state("I live in Kigali").match) -> Rwanda > Kigali City
+//	@(has_state("Boston")) -> false
 //
 // @test has_state(text)
 func HasState(env envs.Environment, text types.XText) types.XValue {
@@ -618,10 +618,10 @@ func HasState(env envs.Environment, text types.XText) types.XValue {
 // HasDistrict tests whether a district name is contained in the `text`. If `state` is also provided
 // then the returned district must be within that state.
 //
-//   @(has_district("Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo
-//   @(has_district("I live in Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo
-//   @(has_district("Gasabo", "Boston")) -> false
-//   @(has_district("Gasabo").match) -> Rwanda > Kigali City > Gasabo
+//	@(has_district("Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo
+//	@(has_district("I live in Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo
+//	@(has_district("Gasabo", "Boston")) -> false
+//	@(has_district("Gasabo").match) -> Rwanda > Kigali City > Gasabo
 //
 // @test has_district(text, state)
 func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
@@ -664,13 +664,13 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 
 // HasWard tests whether a ward name is contained in the `text`
 //
-//   @(has_ward("Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
-//   @(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
-//   @(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
-//   @(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
-//   @(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
-//   @(has_ward("Gasabo")) -> false
-//   @(has_ward("Gisozi").match) -> Rwanda > Kigali City > Gasabo > Gisozi
+//	@(has_ward("Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
+//	@(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
+//	@(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
+//	@(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
+//	@(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
+//	@(has_ward("Gasabo")) -> false
+//	@(has_ward("Gisozi").match) -> Rwanda > Kigali City > Gasabo > Gisozi
 //
 // @test has_ward(text, district, state)
 func HasWard(env envs.Environment, args ...types.XValue) types.XValue {

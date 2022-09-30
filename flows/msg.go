@@ -18,6 +18,14 @@ func init() {
 	})
 }
 
+type UnsendableReason string
+
+const (
+	NilUnsendableReason           UnsendableReason = ""
+	UnsendableReasonNoDestination UnsendableReason = "no_destination" // no sendable channel+URN pair
+	UnsendableReasonContactStatus UnsendableReason = "contact_status" // contact is blocked or stopped or archived
+)
+
 // MsgTopic is the topic, as required by some channel types
 type MsgTopic string
 
@@ -51,10 +59,11 @@ type MsgIn struct {
 type MsgOut struct {
 	BaseMsg
 
-	QuickReplies_ []string       `json:"quick_replies,omitempty"`
-	Templating_   *MsgTemplating `json:"templating,omitempty"`
-	Topic_        MsgTopic       `json:"topic,omitempty"`
-	TextLanguage  envs.Language  `json:"text_language,omitempty"`
+	QuickReplies_     []string         `json:"quick_replies,omitempty"`
+	Templating_       *MsgTemplating   `json:"templating,omitempty"`
+	Topic_            MsgTopic         `json:"topic,omitempty"`
+	TextLanguage      envs.Language    `json:"text_language,omitempty"`
+	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -71,7 +80,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(uuids.New()),
@@ -80,9 +89,10 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 			Text_:        text,
 			Attachments_: attachments,
 		},
-		QuickReplies_: quickReplies,
-		Templating_:   templating,
-		Topic_:        topic,
+		QuickReplies_:     quickReplies,
+		Templating_:       templating,
+		Topic_:            topic,
+		UnsendableReason_: reason,
 	}
 }
 
@@ -146,6 +156,9 @@ func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 
 // Topic returns the topic to use to send this message (if any)
 func (m *MsgOut) Topic() MsgTopic { return m.Topic_ }
+
+// UnsendableReason returns the reason this message can't be sent (if any)
+func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {

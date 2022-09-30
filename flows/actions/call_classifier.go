@@ -20,16 +20,16 @@ const TypeCallClassifier string = "call_classifier"
 // saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
 // and entities were.
 //
-//   {
-//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "call_classifier",
-//     "classifier": {
-//       "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-//       "name": "Booking"
-//     },
-//     "input": "@input.text",
-//     "result_name": "Intent"
-//   }
+//	{
+//	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//	  "type": "call_classifier",
+//	  "classifier": {
+//	    "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+//	    "name": "Booking"
+//	  },
+//	  "input": "@input.text",
+//	  "result_name": "Intent"
+//	}
 //
 // @action call_classifier
 type CallClassifierAction struct {
@@ -84,7 +84,7 @@ func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input st
 		return nil, false
 	}
 
-	svc, err := run.Session().Engine().Services().Classification(run.Session(), classifier)
+	svc, err := run.Session().Engine().Services().Classification(classifier)
 	if err != nil {
 		logEvent(events.NewError(err))
 		return nil, false
@@ -92,7 +92,7 @@ func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input st
 
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(run.Session(), input, httpLogger.Log)
+	classification, err := svc.Classify(run.Environment(), input, httpLogger.Log)
 
 	if len(httpLogger.Logs) > 0 {
 		logEvent(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))
