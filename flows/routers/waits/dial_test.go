@@ -2,6 +2,7 @@ package waits_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -24,9 +25,19 @@ func TestDialWait(t *testing.T) {
 	_, err = waits.ReadWait([]byte(`{"type": "dial"}`))
 	assert.EqualError(t, err, "field 'phone' is required")
 
-	wait, err := waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"+\" & \"593979123456\")", "dial_limit_seconds": 10, "call_limit_seconds": 120}`))
+	// time limits will default if not provided
+	wait, err := waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"+\" & \"593979123456\")"}`))
 	assert.NoError(t, err)
 	assert.Equal(t, waits.TypeDial, wait.Type())
+	assert.Equal(t, 60*time.Second, wait.(*waits.DialWait).DialLimit())
+	assert.Equal(t, 2*time.Hour, wait.(*waits.DialWait).CallLimit())
+
+	// or can be provided explicitly
+	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"+\" & \"593979123456\")", "dial_limit_seconds": 10, "call_limit_seconds": 120}`))
+	assert.NoError(t, err)
+	assert.Equal(t, waits.TypeDial, wait.Type())
+	assert.Equal(t, 10*time.Second, wait.(*waits.DialWait).DialLimit())
+	assert.Equal(t, 120*time.Second, wait.(*waits.DialWait).CallLimit())
 
 	// test marsalling definition wait
 	marshaled, err := jsonx.Marshal(wait)

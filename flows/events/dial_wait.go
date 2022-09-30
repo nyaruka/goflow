@@ -30,8 +30,8 @@ type DialWaitEvent struct {
 	BaseEvent
 
 	URN              urns.URN `json:"urn" validate:"required,urn"`
-	DialLimitSeconds int      `json:"dial_limit_seconds,omitempty"`
-	CallLimitSeconds int      `json:"call_limit_seconds,omitempty"`
+	DialLimitSeconds int      `json:"dial_limit_seconds"`
+	CallLimitSeconds int      `json:"call_limit_seconds"`
 
 	// when this wait expires and the whole run can be expired
 	ExpiresOn *time.Time `json:"expires_on,omitempty"`

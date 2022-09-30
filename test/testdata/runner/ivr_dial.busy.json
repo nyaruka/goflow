@@ -3,7 +3,9 @@
         {
             "events": [
                 {
+                    "call_limit_seconds": 7200,
                     "created_on": "2018-07-06T12:30:02.123456789Z",
+                    "dial_limit_seconds": 60,
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "dial_wait",
                     "urn": "tel:+12065551212"
@@ -50,7 +52,9 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
+                                "call_limit_seconds": 7200,
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "dial_limit_seconds": 60,
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "dial_wait",
                                 "urn": "tel:+12065551212"
@@ -196,7 +200,9 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
+                                "call_limit_seconds": 7200,
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "dial_limit_seconds": 60,
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "dial_wait",
                                 "urn": "tel:+12065551212"
