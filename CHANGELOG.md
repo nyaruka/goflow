@@ -1,3 +1,7 @@
+v0.172.1
+----------
+ * Set defaults for dial wait time limits
+
 v0.172.0
 ----------
  * Add time limits to dial waits
