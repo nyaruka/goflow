@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
@@ -71,7 +72,11 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 		return false
 	}
 
-	log(events.NewDialWait(urn, int(w.dialLimit/time.Second), int(w.callLimit/time.Second), w.expiresOn(run)))
+	// we don't want to expire the flow whilst the contact is in the forwarded call and appearing "inactive" in the
+	// flow so calculate an expiry guaranteed to be after the wait returns
+	expiresOn := dates.Now().Add(w.dialLimit + w.callLimit + time.Second*30)
+
+	log(events.NewDialWait(urn, int(w.dialLimit/time.Second), int(w.callLimit/time.Second), &expiresOn))
 
 	return true
 }
