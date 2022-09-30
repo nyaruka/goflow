@@ -1,3 +1,7 @@
+v0.172.0
+----------
+ * Add time limits to dial waits
+
 v0.171.0
 ----------
  * Rename connection to call in IVR context
