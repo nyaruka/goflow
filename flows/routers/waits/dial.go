@@ -22,14 +22,18 @@ const TypeDial string = "dial"
 type DialWait struct {
 	baseWait
 
-	phone string
+	phone            string
+	dialLimitSeconds int
+	callLimitSeconds int
 }
 
 // NewDialWait creates a new Dial wait
-func NewDialWait(phone string) *DialWait {
+func NewDialWait(phone string, dialLimitSeconds, callLimitSeconds int) *DialWait {
 	return &DialWait{
-		baseWait: newBaseWait(TypeDial, nil),
-		phone:    phone,
+		baseWait:         newBaseWait(TypeDial, nil),
+		phone:            phone,
+		dialLimitSeconds: dialLimitSeconds,
+		callLimitSeconds: callLimitSeconds,
 	}
 }
 
@@ -51,7 +55,7 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 		return false
 	}
 
-	log(events.NewDialWait(urn, w.expiresOn(run)))
+	log(events.NewDialWait(urn, w.dialLimitSeconds, w.callLimitSeconds, w.expiresOn(run)))
 
 	return true
 }
@@ -70,7 +74,9 @@ var _ flows.Wait = (*DialWait)(nil)
 type dialWaitEnvelope struct {
 	baseWaitEnvelope
 
-	Phone string `json:"phone" validate:"required"`
+	Phone            string `json:"phone" validate:"required"`
+	DialLimitSeconds int    `json:"dial_limit_seconds,omitempty"`
+	CallLimitSeconds int    `json:"call_limit_seconds,omitempty"`
 }
 
 func readDialWait(data json.RawMessage) (flows.Wait, error) {
@@ -79,14 +85,14 @@ func readDialWait(data json.RawMessage) (flows.Wait, error) {
 		return nil, err
 	}
 
-	w := &DialWait{phone: e.Phone}
+	w := &DialWait{phone: e.Phone, dialLimitSeconds: e.DialLimitSeconds, callLimitSeconds: e.CallLimitSeconds}
 
 	return w, w.unmarshal(&e.baseWaitEnvelope)
 }
 
 // MarshalJSON marshals this wait into JSON
 func (w *DialWait) MarshalJSON() ([]byte, error) {
-	e := &dialWaitEnvelope{Phone: w.phone}
+	e := &dialWaitEnvelope{Phone: w.phone, DialLimitSeconds: w.dialLimitSeconds, CallLimitSeconds: w.callLimitSeconds}
 
 	if err := w.marshal(&e.baseWaitEnvelope); err != nil {
 		return nil, err

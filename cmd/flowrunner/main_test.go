@@ -77,7 +77,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewContactRefreshed(session.Contact()), `👤 contact refreshed on resume`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
 		{events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
-		{events.NewDialWait(urns.URN(`tel:+1234567890`), nil), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
+		{events.NewDialWait(urns.URN(`tel:+1234567890`), 20, 120, nil), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewEnvironmentRefreshed(session.Environment()), `⚙️ environment refreshed on resume`},
 		{events.NewErrorf("this didn't work"), `⚠️ this didn't work`},
