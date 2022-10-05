@@ -1,3 +1,7 @@
+v0.172.3
+----------
+ * Update dependencies
+
 v0.172.2
 ----------
  * Dial wait expiry should be based on the maximum time the forwarded call might take
