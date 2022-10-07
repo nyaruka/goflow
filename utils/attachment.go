@@ -1,21 +1,29 @@
 package utils
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 // Attachment is a media attachment on a message in the format <content-type>:<url>. Content type may be a full
 // media type or may omit the subtype when it is unknown.
 //
 // Examples:
-//  - image/jpeg:http://s3.amazon.com/bucket/test.jpg
-//  - image:http://s3.amazon.com/bucket/test.jpg
-//
+//   - image/jpeg:http://s3.amazon.com/bucket/test.jpg
+//   - image:http://s3.amazon.com/bucket/test.jpg
 type Attachment string
+
+// we allow outgoing attachments to have types like "image"
+var contentTypeRegex = regexp.MustCompile(`^(image|audio|video|application|(\w+/[-+.\w]+))$`)
 
 // ToParts splits an attachment string into content-type and URL
 func (a Attachment) ToParts() (string, string) {
 	offset := strings.Index(string(a), ":")
 	if offset >= 0 {
-		return string(a[:offset]), string(a[offset+1:])
+		t, u := strings.ToLower(string(a[:offset])), string(a[offset+1:])
+		if contentTypeRegex.MatchString(t) {
+			return t, u
+		}
 	}
 	return "", string(a)
 }
