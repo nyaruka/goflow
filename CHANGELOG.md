@@ -1,3 +1,7 @@
+v0.172.4
+----------
+ * Make utils.Attachment smarter about parsing raw URLs
+
 v0.172.3
 ----------
  * Update dependencies
