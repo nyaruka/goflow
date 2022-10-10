@@ -23,8 +23,11 @@ func TestAttachment(t *testing.T) {
 	assertParse("audio:http://test.m4a", "audio", "http://test.m4a")
 	assertParse("audio/mp4:http://test.m4a", "audio/mp4", "http://test.m4a")
 	assertParse("audio:/file/path", "audio", "/file/path")
+
 	assertParse("application:http://test.pdf", "application", "http://test.pdf")
 	assertParse("application/pdf:http://test.pdf", "application/pdf", "http://test.pdf")
+
+	assertParse("geo:-2.90875,-79.0117686", "geo", "-2.90875,-79.0117686")
 
 	// be lenient with invalid attachments
 	assertParse("foo", "", "foo")

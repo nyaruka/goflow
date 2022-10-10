@@ -14,7 +14,7 @@ import (
 type Attachment string
 
 // we allow outgoing attachments to have types like "image"
-var contentTypeRegex = regexp.MustCompile(`^(image|audio|video|application|(\w+/[-+.\w]+))$`)
+var contentTypeRegex = regexp.MustCompile(`^(image|audio|video|application|geo|(\w+/[-+.\w]+))$`)
 
 // ToParts splits an attachment string into content-type and URL
 func (a Attachment) ToParts() (string, string) {
