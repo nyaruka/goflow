@@ -1,3 +1,7 @@
+v0.172.5
+----------
+ * Fix parsing of geo type attachments
+
 v0.172.4
 ----------
  * Make utils.Attachment smarter about parsing raw URLs
