@@ -34,4 +34,5 @@ func TestAttachment(t *testing.T) {
 	assertParse("http://test.jpg", "", "http://test.jpg")
 	assertParse("https://test.jpg", "", "https://test.jpg")
 	assertParse("HTTPS://test.jpg", "", "HTTPS://test.jpg")
+	assertParse(":http://test.jpg", "", ":http://test.jpg")
 }
