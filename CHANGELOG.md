@@ -1,3 +1,7 @@
+v0.172.6
+----------
+ * Fix bubbling failing runs in case of missing flow
+
 v0.172.5
 ----------
  * Fix parsing of geo type attachments
