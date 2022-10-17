@@ -394,7 +394,7 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 				} else {
 					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					failRun(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					failRun(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.FlowReference().UUID))
 				}
 
 			} else {
