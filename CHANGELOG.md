@@ -1,3 +1,7 @@
+v0.173.2
+----------
+ * Also fix case where translation just has different number of args
+
 v0.173.1
 ----------
  * Ignore empty string translations in flow localization sections
