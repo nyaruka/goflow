@@ -34,6 +34,19 @@
                             "si"
                         ]
                     }
+                },
+                "fra": {
+                    "0a8467eb-911a-41db-8101-ccf415c48e6a": {
+                        "text": [
+                            "Bonjour"
+                        ],
+                        "attachments": [
+                            ""
+                        ],
+                        "quick_replies": [
+                            ""
+                        ]
+                    }
                 }
             },
             "nodes": [
