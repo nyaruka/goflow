@@ -1,0 +1,56 @@
+{
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Telegram",
+            "address": "345765375445",
+            "schemes": [
+                "telegram"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ],
+    "flows": [
+        {
+            "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+            "name": "Translation Test",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "localization": {
+                "spa": {
+                    "0a8467eb-911a-41db-8101-ccf415c48e6a": {
+                        "text": [
+                            "Hola"
+                        ],
+                        "attachments": [
+                            "audio/mp4:http://media.com/hola.m4a"
+                        ],
+                        "quick_replies": [
+                            "si"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
+                    "actions": [
+                        {
+                            "testing": "action replaced dynamically in test"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "bbaaec87-a646-435d-bade-e0a8ac09beb8"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
