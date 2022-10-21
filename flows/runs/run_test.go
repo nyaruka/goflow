@@ -404,6 +404,18 @@ func TestTranslation(t *testing.T) {
 			},
 			expectedQuickReplies: []string{"si"},
 		},
+		{
+			description:  "attachments and quick replies translations are single empty strings and should be ignored",
+			envLangs:     []envs.Language{"eng", "fra"},
+			contactLang:  "fra",
+			msgAction:    msgAction1,
+			expectedText: "Bonjour",
+			expectedAttachments: []utils.Attachment{
+				"image/jpeg:http://media.com/hello.jpg",
+				"audio/mp4:http://media.com/hello.m4a",
+			},
+			expectedQuickReplies: []string{"yes", "no"},
+		},
 	}
 
 	for _, tc := range tcs {

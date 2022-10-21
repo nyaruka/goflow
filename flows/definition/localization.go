@@ -10,20 +10,22 @@ import (
 )
 
 // holds all property translations for a specific item, e.g.
-// {
-//   "text": "Do you like cheese?"
-//	 "quick_replies": ["Yes", "No"]
-// }
+//
+//	{
+//	  "text": "Do you like cheese?"
+//	  "quick_replies": ["Yes", "No"]
+//	}
 type itemTranslation map[string][]string
 
 // holds all the item translations for a specific language, e.g.
-// {
-//   "f3368070-8db8-4549-872a-e69a9d060612": {
-//	   "text": "Do you like cheese?"
-//	   "quick_replies": ["Yes", "No"]
-//   },
-//   "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
-// }
+//
+//	{
+//	  "f3368070-8db8-4549-872a-e69a9d060612": {
+//	    "text": "Do you like cheese?"
+//	    "quick_replies": ["Yes", "No"]
+//	  },
+//	  "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
+//	}
 type languageTranslation map[uuids.UUID]itemTranslation
 
 // returns the requested item translation
@@ -32,6 +34,12 @@ func (t languageTranslation) getTextArray(uuid uuids.UUID, property string) []st
 	if found {
 		translation, found := item[property]
 		if found {
+			// TODO editor sometimes saves empty rule translations as [""] which we should fix in a flow migration
+			// but for now need to ignore
+			if len(translation) == 0 || (len(translation) == 1 && translation[0] == "") {
+				return nil
+			}
+
 			return translation
 		}
 	}
