@@ -1,3 +1,7 @@
+v0.173.1
+----------
+ * Ignore empty string translations in flow localization sections
+
 v0.173.0
 ----------
  * Remove merging translation text arrays as it never makes sense
