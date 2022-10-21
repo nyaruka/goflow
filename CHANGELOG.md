@@ -1,3 +1,7 @@
+v0.173.0
+----------
+ * Remove merging translation text arrays as it never makes sense
+
 v0.172.6
 ----------
  * Fix bubbling failing runs in case of missing flow
