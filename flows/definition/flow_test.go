@@ -339,7 +339,7 @@ func TestEmptyFlow(t *testing.T) {
 	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
-		"revision": 0,
+		"revision": 345,
 		"spec_version": "%s",
 		"type": "messaging",
 		"expire_after_minutes": 0,
@@ -359,6 +359,15 @@ func TestEmptyFlow(t *testing.T) {
 		"results": [],
 		"waiting_exits": []
 	}`), infoJSON, "inspection mismatch")
+}
+
+func TestReferences(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	flow, err := test.LoadFlowFromAssets(env, "../../test/testdata/runner/empty.json", "76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	require.NoError(t, err)
+
+	assert.Equal(t, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"), flow.Reference(false))
+	assert.Equal(t, assets.NewFlowReferenceWithRevision("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow", 345), flow.Reference(true))
 }
 
 func TestReadFlow(t *testing.T) {

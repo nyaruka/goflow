@@ -44,6 +44,7 @@
                         "exited_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Empty Flow",
+                            "revision": 345,
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
                         "modified_on": "2018-07-06T12:30:01.123456789Z",
