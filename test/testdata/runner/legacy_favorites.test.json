@@ -80,6 +80,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Favorites",
+                            "revision": 30,
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
                         "modified_on": "2018-07-06T12:30:09.123456789Z",
@@ -298,6 +299,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Favorites",
+                            "revision": 30,
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
                         "modified_on": "2018-07-06T12:30:26.123456789Z",
@@ -558,6 +560,7 @@
                         "exited_on": "2018-07-06T12:30:38.123456789Z",
                         "flow": {
                             "name": "Favorites",
+                            "revision": 30,
                             "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
                         },
                         "modified_on": "2018-07-06T12:30:38.123456789Z",

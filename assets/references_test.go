@@ -50,9 +50,15 @@ func TestReferences(t *testing.T) {
 	assert.Equal(t, "flow[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Registration]", flowRef.String())
 	assert.False(t, flowRef.Variable())
 	assert.NoError(t, utils.Validate(flowRef))
+	assert.JSONEq(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Registration"}`, string(jsonx.MustMarshal(flowRef)))
 
 	// flow references must always be concrete
 	assert.EqualError(t, utils.Validate(assets.NewFlowReference("", "Registration")), "field 'uuid' is required")
+
+	// flow references can include revision
+	flowRef = assets.NewFlowReferenceWithRevision("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Registration", 123)
+	assert.NoError(t, utils.Validate(flowRef))
+	assert.JSONEq(t, `{"uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf","name":"Registration","revision":123}`, string(jsonx.MustMarshal(flowRef)))
 
 	globalRef := assets.NewGlobalReference("org_name", "Org Name")
 	assert.Equal(t, "global", globalRef.Type())

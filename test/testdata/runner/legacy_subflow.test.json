@@ -82,6 +82,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Subflow Child",
+                            "revision": 10,
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
                         "modified_on": "2018-07-06T12:30:09.123456789Z",
@@ -296,6 +297,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Subflow Child",
+                            "revision": 10,
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
                         "modified_on": "2018-07-06T12:30:26.123456789Z",
@@ -519,6 +521,7 @@
                         "exited_on": "2018-07-06T12:30:34.123456789Z",
                         "flow": {
                             "name": "Subflow Child",
+                            "revision": 10,
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
                         "modified_on": "2018-07-06T12:30:34.123456789Z",

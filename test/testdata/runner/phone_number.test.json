@@ -90,6 +90,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Phone Numbers",
+                            "revision": 18,
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
                         "modified_on": "2018-07-06T12:30:09.123456789Z",
@@ -316,6 +317,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Phone Numbers",
+                            "revision": 18,
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
                         "modified_on": "2018-07-06T12:30:26.123456789Z",
@@ -635,6 +637,7 @@
                         "exited_on": "2018-07-06T12:30:42.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
+                            "revision": 18,
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
                         "modified_on": "2018-07-06T12:30:42.123456789Z",

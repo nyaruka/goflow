@@ -120,6 +120,7 @@
                         "exited_on": "2018-07-06T12:30:06.123456789Z",
                         "flow": {
                             "name": "Stopper",
+                            "revision": 2,
                             "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
                         },
                         "modified_on": "2018-07-06T12:30:06.123456789Z",

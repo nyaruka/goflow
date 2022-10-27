@@ -163,11 +163,11 @@
                     {
                         "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
                         "status_code": 200,
-                        "status": "success",
                         "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 240\r\n\r\n{\"text\":\"Hi everyone\",\"intents\":[{\"id\":\"754569408690533\",\"name\":\"book_flight\",\"confidence\":\"0.9024\"}],\"entities\":{\"Destination:Location\":[{\"id\":\"285857329187179\",\"name\":\"Destination\",\"role\":\"Location\",\"value\":\"Quito\",\"confidence\":0.9648}]}}",
                         "elapsed_ms": 0,
                         "retries": 0,
+                        "status": "success",
                         "created_on": "2018-10-18T14:20:30.000123456Z"
                     }
                 ]
@@ -262,11 +262,11 @@
                     {
                         "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
                         "status_code": 400,
-                        "status": "response_error",
                         "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 11\r\n\r\nnot working",
                         "elapsed_ms": 0,
                         "retries": 0,
+                        "status": "response_error",
                         "created_on": "2018-10-18T14:20:30.000123456Z"
                     }
                 ]
@@ -350,10 +350,10 @@
                 "http_logs": [
                     {
                         "url": "https://api.wit.ai/message?v=20200513&q=Hi+everybody",
-                        "status": "connection_error",
                         "request": "GET /message?v=20200513&q=Hi+everybody HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ****************\r\nAccept-Encoding: gzip\r\n\r\n",
                         "elapsed_ms": 0,
                         "retries": 0,
+                        "status": "connection_error",
                         "created_on": "2018-10-18T14:20:30.000123456Z"
                     }
                 ]

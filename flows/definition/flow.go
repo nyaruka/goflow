@@ -143,7 +143,7 @@ func (f *flow) Reference() *assets.FlowReference {
 	if f == nil {
 		return nil
 	}
-	return assets.NewFlowReference(f.uuid, f.name)
+	return assets.NewFlowReferenceWithRevision(f.uuid, f.name, f.revision)
 }
 
 // ExtractTemplates extracts all non-empty templates
