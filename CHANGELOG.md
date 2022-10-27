@@ -1,3 +1,7 @@
+v0.174.0
+----------
+ * Add optional revision number to flow refs, use on run.flow
+
 v0.173.2
 ----------
  * Also fix case where translation just has different number of args
