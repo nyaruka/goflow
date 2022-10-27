@@ -90,6 +90,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Number Test",
+                            "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
                         "modified_on": "2018-07-06T12:30:09.123456789Z",
@@ -324,6 +325,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Number Test",
+                            "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
                         "modified_on": "2018-07-06T12:30:28.123456789Z",
@@ -625,6 +627,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Number Test",
+                            "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
                         "modified_on": "2018-07-06T12:30:47.123456789Z",
@@ -964,6 +967,7 @@
                         "exited_on": "2018-07-06T12:31:01.123456789Z",
                         "flow": {
                             "name": "Number Test",
+                            "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
                         "modified_on": "2018-07-06T12:31:01.123456789Z",

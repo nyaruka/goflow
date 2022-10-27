@@ -29,13 +29,19 @@ type Flow interface {
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {
-	UUID FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name string   `json:"name"`
+	UUID     FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name     string   `json:"name"`
+	Revision int      `json:"revision,omitempty"`
 }
 
 // NewFlowReference creates a new flow reference with the given UUID and name
 func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
+}
+
+// NewFlowReferenceWithRevision creates a new flow reference with the given UUID, name and revision number
+func NewFlowReferenceWithRevision(uuid FlowUUID, name string, revision int) *FlowReference {
+	return &FlowReference{UUID: uuid, Name: name, Revision: revision}
 }
 
 // Type returns the name of the asset type

@@ -48,7 +48,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run 
 		uuid:       flows.RunUUID(uuids.New()),
 		session:    session,
 		flow:       flow,
-		flowRef:    flow.Reference(),
+		flowRef:    flow.Reference(true),
 		parent:     parent,
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,

@@ -96,6 +96,6 @@ func (a *StartSessionAction) Execute(run flows.Run, step flows.Step, logModifier
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(flow.Reference(), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
+	logEvent(events.NewSessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }

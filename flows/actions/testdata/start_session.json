@@ -229,7 +229,8 @@
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",
                     "flow": {
                         "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                        "name": "Action Tester"
+                        "name": "Action Tester",
+                        "revision": 123
                     },
                     "contact": {
                         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -330,7 +331,8 @@
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",
                     "flow": {
                         "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                        "name": "Action Tester"
+                        "name": "Action Tester",
+                        "revision": 123
                     },
                     "contact": {
                         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -469,7 +471,8 @@
                     "uuid": "e7187099-7d38-4f60-955c-325957214c42",
                     "flow": {
                         "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                        "name": "Action Tester"
+                        "name": "Action Tester",
+                        "revision": 123
                     },
                     "contact": {
                         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",

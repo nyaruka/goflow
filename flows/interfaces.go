@@ -138,7 +138,7 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 
 	Asset() assets.Flow
-	Reference() *assets.FlowReference
+	Reference(bool) *assets.FlowReference
 
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string

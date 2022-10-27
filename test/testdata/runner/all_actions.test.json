@@ -92,7 +92,7 @@
                 {
                     "created_on": "2018-07-06T12:30:15.123456789Z",
                     "flow": {
-                        "name": "Collect Language",
+                        "name": "Registration Flow",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
                     "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -567,7 +567,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "flow": {
-                                    "name": "Collect Language",
+                                    "name": "Registration Flow",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                                 },
                                 "parent_run_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",

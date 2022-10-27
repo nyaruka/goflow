@@ -99,6 +99,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
+                            "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
                         "modified_on": "2018-07-06T12:30:03.123456789Z",
@@ -130,6 +131,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test B",
+                            "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
                         "modified_on": "2018-07-06T12:30:07.123456789Z",
@@ -167,6 +169,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test C",
+                            "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
                         "modified_on": "2018-07-06T12:30:17.123456789Z",
@@ -342,6 +345,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
+                            "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
                         "modified_on": "2018-07-06T12:30:03.123456789Z",
@@ -389,6 +393,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test B",
+                            "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
                         "modified_on": "2018-07-06T12:30:35.123456789Z",
@@ -457,6 +462,7 @@
                         "exited_on": "2018-07-06T12:30:25.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
+                            "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
                         "modified_on": "2018-07-06T12:30:25.123456789Z",
@@ -659,6 +665,7 @@
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
+                            "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
                         "modified_on": "2018-07-06T12:30:53.123456789Z",
@@ -737,6 +744,7 @@
                         "exited_on": "2018-07-06T12:30:43.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
+                            "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
                         "modified_on": "2018-07-06T12:30:43.123456789Z",
@@ -816,6 +824,7 @@
                         "exited_on": "2018-07-06T12:30:25.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
+                            "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
                         "modified_on": "2018-07-06T12:30:25.123456789Z",
@@ -1005,6 +1014,7 @@
                         "exited_on": "2018-07-06T12:31:01.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
+                            "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
                         "modified_on": "2018-07-06T12:31:01.123456789Z",
@@ -1094,6 +1104,7 @@
                         "exited_on": "2018-07-06T12:30:43.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
+                            "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
                         "modified_on": "2018-07-06T12:30:43.123456789Z",
@@ -1173,6 +1184,7 @@
                         "exited_on": "2018-07-06T12:30:25.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
+                            "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
                         "modified_on": "2018-07-06T12:30:25.123456789Z",
