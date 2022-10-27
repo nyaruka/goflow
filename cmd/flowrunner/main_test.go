@@ -82,7 +82,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewEnvironmentRefreshed(session.Environment()), `⚙️ environment refreshed on resume`},
 		{events.NewErrorf("this didn't work"), `⚠️ this didn't work`},
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
-		{events.NewFlowEntered(flow.Reference(), "", false), `↪️ entered flow 'Registration'`},
+		{events.NewFlowEntered(flow.Reference(false), "", false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, nil, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, &expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},

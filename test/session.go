@@ -718,9 +718,9 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
 		msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil)
-		trigger = triggers.NewBuilder(b.env, flow.Reference(), contact).Msg(msg).Build()
+		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Msg(msg).Build()
 	} else {
-		trigger = triggers.NewBuilder(b.env, flow.Reference(), contact).Manual().Build()
+		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
 	}
 
 	s, sp, err := b.engine.NewSession(sa, trigger)

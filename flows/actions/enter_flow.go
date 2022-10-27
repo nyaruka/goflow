@@ -55,11 +55,11 @@ func (a *EnterFlowAction) Execute(run flows.Run, step flows.Step, logModifier fl
 	}
 
 	if run.Session().Type() != flow.Type() {
-		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(), flow.Type(), run.Session().Type()), logEvent)
+		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), logEvent)
 		return nil
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	logEvent(events.NewFlowEntered(a.Flow, run.UUID(), a.Terminal))
+	logEvent(events.NewFlowEntered(flow.Reference(false), run.UUID(), a.Terminal))
 	return nil
 }

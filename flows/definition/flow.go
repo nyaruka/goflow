@@ -139,11 +139,14 @@ func (f *flow) Context(env envs.Environment) map[string]types.XValue {
 }
 
 // Reference returns a reference to this flow asset
-func (f *flow) Reference() *assets.FlowReference {
+func (f *flow) Reference(withRevision bool) *assets.FlowReference {
 	if f == nil {
 		return nil
 	}
-	return assets.NewFlowReferenceWithRevision(f.uuid, f.name, f.revision)
+	if withRevision {
+		return assets.NewFlowReferenceWithRevision(f.uuid, f.name, f.revision)
+	}
+	return assets.NewFlowReference(f.uuid, f.name)
 }
 
 // ExtractTemplates extracts all non-empty templates

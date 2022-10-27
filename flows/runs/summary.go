@@ -27,7 +27,7 @@ func newRunSummaryFromRun(run flows.Run) flows.RunSummary {
 	return &runSummary{
 		uuid:    run.UUID(),
 		flow:    run.Flow(),
-		flowRef: run.Flow().Reference(),
+		flowRef: run.Flow().Reference(true),
 		contact: run.Contact().Clone(),
 		status:  run.Status(),
 		results: run.Results().Clone(),

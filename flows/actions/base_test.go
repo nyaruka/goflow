@@ -191,7 +191,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		var trigger flows.Trigger
 		ignoreEventCount := 0
 		if tc.NoInput || tc.AsBatch {
-			tb := triggers.NewBuilder(env, flow.Reference(), contact).Manual().AsBatch()
+			tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual().AsBatch()
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
@@ -210,7 +210,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 			)
-			trigger = triggers.NewBuilder(env, flow.Reference(), contact).Msg(msg).Build()
+			trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(msg).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 

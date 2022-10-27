@@ -129,7 +129,7 @@ func TestRun(t *testing.T) {
 		assert.Equal(t, string(flows.RunUUID("e7187099-7d38-4f60-955c-325957214c42")), string(r.UUID()))
 		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
 		assert.Equal(t, flow, r.Flow())
-		assert.Equal(t, flow.Reference(), r.FlowReference())
+		assert.Equal(t, flow.Reference(true), r.FlowReference())
 		assert.Equal(t, 10, len(r.Events()))
 		assert.Equal(t, "Parent", r.Parent().Flow().Name())
 		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
