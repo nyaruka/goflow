@@ -8,16 +8,16 @@ require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220527190237-ee62e23da966
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.1.1
-	github.com/nyaruka/gocommon v1.31.0
-	github.com/nyaruka/phonenumbers v1.1.1
+	github.com/nyaruka/gocommon v1.32.2
+	github.com/nyaruka/phonenumbers v1.1.2
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.2.0
 	github.com/shopspring/decimal v1.3.1
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	golang.org/x/exp v0.0.0-20221004215720-b9f4876ce741
-	golang.org/x/net v0.0.0-20221004154528-8021a29435af
-	golang.org/x/text v0.3.7
+	golang.org/x/net v0.1.0
+	golang.org/x/text v0.4.0
 	gopkg.in/go-playground/validator.v9 v9.31.0
 )
 
