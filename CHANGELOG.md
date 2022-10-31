@@ -1,3 +1,7 @@
+v0.174.1
+----------
+ * Update to latest gocommon
+
 v0.174.0
 ----------
  * Add optional revision number to flow refs, use on run.flow
