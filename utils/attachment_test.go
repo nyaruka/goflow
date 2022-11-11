@@ -29,6 +29,8 @@ func TestAttachment(t *testing.T) {
 
 	assertParse("geo:-2.90875,-79.0117686", "geo", "-2.90875,-79.0117686")
 
+	assertParse("unavailable:http://bad.link", "unavailable", "http://bad.link")
+
 	// be lenient with invalid attachments
 	assertParse("foo", "", "foo")
 	assertParse("http://test.jpg", "", "http://test.jpg")
