@@ -13,8 +13,11 @@ import (
 //   - image:http://s3.amazon.com/bucket/test.jpg
 type Attachment string
 
+// UnavailableType is the pseudo content type we use for attachments that couldn't be fetched
+const UnavailableType = "unavailable"
+
 // we allow outgoing attachments to have types like "image"
-var contentTypeRegex = regexp.MustCompile(`^(image|audio|video|application|geo|(\w+/[-+.\w]+))$`)
+var contentTypeRegex = regexp.MustCompile(`^(image|audio|video|application|geo|unavailable|(\w+/[-+.\w]+))$`)
 
 // ToParts splits an attachment string into content-type and URL
 func (a Attachment) ToParts() (string, string) {
