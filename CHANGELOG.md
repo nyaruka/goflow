@@ -1,3 +1,7 @@
+v0.174.3 (2022-11-18)
+----------
+ * Update to latest gocommon
+
 v0.174.2
 ----------
  * Add support for parsing attachments with unavailable: prefixes
