@@ -399,7 +399,17 @@
                     "type": "flow"
                 }
             ],
-            "issues": [],
+            "issues": [
+                {
+                    "type": "legacy_vars",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "use of expressions instead of contact query",
+                    "vars": [
+                        "@(\"5129165834\")"
+                    ]
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []
@@ -438,7 +448,17 @@
                     "type": "flow"
                 }
             ],
-            "issues": [],
+            "issues": [
+                {
+                    "type": "legacy_vars",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "use of expressions instead of contact query",
+                    "vars": [
+                        "oui"
+                    ]
+                }
+            ],
             "results": [],
             "waiting_exits": [],
             "parent_refs": []

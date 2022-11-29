@@ -1,0 +1,49 @@
+[
+    {
+        "description": "flow with invalid regexes in router case and localization of that case",
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "start_session",
+                            "flow": {
+                                "uuid": "3aa23697-009b-4231-8914-4011f9aa4c5b",
+                                "name": "Empty"
+                            },
+                            "legacy_vars": [
+                                "@contact.uuid",
+                                "@fields.friend_tel"
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2f42b942-bf32-4e81-8ff3-f946b5e68dd8"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": [
+            {
+                "action_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                "description": "use of expressions instead of contact query",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "type": "legacy_vars",
+                "vars": [
+                    "@contact.uuid",
+                    "@fields.friend_tel"
+                ]
+            }
+        ]
+    }
+]

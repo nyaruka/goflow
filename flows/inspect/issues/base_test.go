@@ -40,8 +40,7 @@ func testIssueType(t *testing.T, sa flows.SessionAssets, typeName string) {
 		Issues json.RawMessage `json:"issues"`
 	}{}
 
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	for i, tc := range tests {
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)

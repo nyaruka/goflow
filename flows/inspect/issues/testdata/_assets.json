@@ -38,6 +38,17 @@
             ]
         }
     ],
+    "flows": [
+        {
+            "uuid": "3aa23697-009b-4231-8914-4011f9aa4c5b",
+            "name": "Empty",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        }
+    ],
     "fields": [
         {
             "uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf",
@@ -50,6 +61,12 @@
             "key": "age",
             "name": "Age",
             "type": "number"
+        },
+        {
+            "uuid": "f1f06e67-8b00-4b5c-a32c-f578d87e3ef9",
+            "key": "friend_tel",
+            "name": "Friend Telephone",
+            "type": "text"
         }
     ],
     "groups": [
