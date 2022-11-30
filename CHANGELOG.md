@@ -1,3 +1,7 @@
+v0.175.0 (2022-11-30)
+-------------------------
+ * Add a new issue type for use of legacy vars in start_session actions
+
 v0.174.4 (2022-11-28)
 -------------------------
  * Update deps
