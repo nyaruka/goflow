@@ -143,6 +143,11 @@
                         "Red",
                         "Blue"
                     ]
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ]
@@ -185,6 +190,11 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ]
@@ -222,6 +232,11 @@
                     "attachments": [
                         "image/jpeg:http://exacmple.com/test.jpg"
                     ]
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ]
@@ -246,6 +261,11 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ],
@@ -295,6 +315,11 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             },
             {
@@ -309,6 +334,11 @@
                         "name": "Twitter Channel"
                     },
                     "text": "Hi there"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ]
@@ -365,6 +395,11 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi Ryan Lewis, who's a good boy?"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ],
@@ -451,6 +486,11 @@
                         "namespace": ""
                     },
                     "topic": "account"
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ],
@@ -532,6 +572,11 @@
                         ],
                         "namespace": ""
                     }
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ],
@@ -598,6 +643,11 @@
                         "country": "",
                         "namespace": ""
                     }
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "eng"
                 }
             }
         ],
@@ -667,6 +717,11 @@
                         "country": "",
                         "namespace": ""
                     }
+                },
+                "localization": {
+                    "attachments": "eng",
+                    "quick_replies": "eng",
+                    "text": "spa"
                 }
             }
         ],
@@ -741,6 +796,11 @@
                         "Si",
                         "No"
                     ]
+                },
+                "localization": {
+                    "attachments": "spa",
+                    "quick_replies": "spa",
+                    "text": "spa"
                 }
             }
         ],

@@ -86,6 +86,9 @@
                     "attachments": [
                         "audio:http://uploads.temba.io/welcome/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a"
                     ]
+                },
+                "localization": {
+                    "audio_url": "eng"
                 }
             }
         ],
@@ -134,6 +137,9 @@
                     "attachments": [
                         "audio:http://uploads.temba.io/bienvenido/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a"
                     ]
+                },
+                "localization": {
+                    "audio_url": "spa"
                 }
             }
         ],

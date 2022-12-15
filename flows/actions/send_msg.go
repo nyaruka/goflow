@@ -86,7 +86,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		unsendableReason = flows.UnsendableReasonContactStatus
 	}
 
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies, l10n := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 
 	destinations := run.Contact().ResolveDestinations(a.AllURNs)
 
@@ -126,7 +126,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		}
 
 		msg := flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic, unsendableReason)
-		logEvent(events.NewMsgCreated(msg, nil))
+		logEvent(events.NewMsgCreated(msg, l10n))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
