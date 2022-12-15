@@ -433,11 +433,12 @@ func TestEventMarshaling(t *testing.T) {
 					urns.URN("tel:+12345678900"),
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 					"Hi there",
-					"eng",
 					"http://example.com/hi.mp3",
 				),
+				map[string]envs.Language{"text": "eng"},
 			),
 			`{
+				"type": "ivr_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
 					"uuid": "20cc4181-48cf-4344-9751-99419796decd",
@@ -447,10 +448,9 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"text": "Hi there",
-					"text_language": "eng",
 					"attachments": ["audio:http://example.com/hi.mp3"]
 				},
-				"type": "ivr_created"
+				"localization": {"text": "eng"}
 			}`,
 		},
 		{
@@ -463,8 +463,10 @@ func TestEventMarshaling(t *testing.T) {
 					flows.NilMsgTopic,
 					flows.NilUnsendableReason,
 				),
+				nil,
 			),
 			`{
+				"type": "msg_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
 					"uuid": "04e910a5-d2e3-448b-958a-630e35c62431",
@@ -474,8 +476,7 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"text": "Hi there"
-				},
-				"type": "msg_created"
+				}
 			}`,
 		},
 		{
@@ -490,8 +491,10 @@ func TestEventMarshaling(t *testing.T) {
 					flows.MsgTopicAgent,
 					flows.UnsendableReasonContactStatus,
 				),
+				map[string]envs.Language{"text": "eng", "attachments": "spa"},
 			),
 			`{
+				"type": "msg_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
 					"uuid": "94f0e964-be11-4d7b-866b-323926b4c6a0",
@@ -506,7 +509,7 @@ func TestEventMarshaling(t *testing.T) {
 					"topic": "agent",
 					"unsendable_reason": "contact_status"
 				},
-				"type": "msg_created"
+				"localization": {"text": "eng", "attachments": "spa"}
 			}`,
 		},
 		{

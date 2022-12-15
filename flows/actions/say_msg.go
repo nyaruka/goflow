@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -68,8 +69,8 @@ func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows
 	// an IVR flow must have been started with a call
 	call := run.Session().Trigger().Call()
 
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, textLanguage, localizedAudioURL)
-	logEvent(events.NewIVRCreated(msg))
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, localizedAudioURL)
+	logEvent(events.NewIVRCreated(msg, map[string]envs.Language{"text": textLanguage}))
 
 	return nil
 }

@@ -62,7 +62,6 @@ type MsgOut struct {
 	QuickReplies_     []string         `json:"quick_replies,omitempty"`
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
 	Topic_            MsgTopic         `json:"topic,omitempty"`
-	TextLanguage      envs.Language    `json:"text_language,omitempty"`
 	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
 }
 
@@ -97,7 +96,7 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 }
 
 // NewIVRMsgOut creates a new outgoing message for IVR
-func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, textLanguage envs.Language, audioURL string) *MsgOut {
+func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, audioURL string) *MsgOut {
 	var attachments []utils.Attachment
 	if audioURL != "" {
 		attachments = []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", audioURL))}
@@ -114,7 +113,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, t
 		QuickReplies_: nil,
 		Templating_:   nil,
 		Topic_:        NilMsgTopic,
-		TextLanguage:  textLanguage,
 	}
 }
 

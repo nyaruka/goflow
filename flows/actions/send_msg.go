@@ -126,14 +126,14 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		}
 
 		msg := flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic, unsendableReason)
-		logEvent(events.NewMsgCreated(msg))
+		logEvent(events.NewMsgCreated(msg, nil))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
 		msg := flows.NewMsgOut(urns.NilURN, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, a.Topic, flows.UnsendableReasonNoDestination)
-		logEvent(events.NewMsgCreated(msg))
+		logEvent(events.NewMsgCreated(msg, nil))
 	}
 
 	return nil
