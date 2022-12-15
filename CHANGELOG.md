@@ -1,3 +1,8 @@
+v0.176.0 (2022-12-15)
+-------------------------
+ * Add localization outcome object to msg/ivr_created events to replace msg_out.text_language field
+ * Simplify getting text translations in flow actions
+
 v0.175.0 (2022-11-30)
 -------------------------
  * Add a new issue type for use of legacy vars in start_session actions
