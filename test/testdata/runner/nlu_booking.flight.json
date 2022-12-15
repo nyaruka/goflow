@@ -5,7 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "Hi! What can I help you with?",
                         "unsendable_reason": "no_destination",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -65,7 +65,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -232,7 +232,7 @@
                 {
                     "created_on": "2018-07-06T12:30:30.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "So you'd like to book a flight in Quito?",
                         "unsendable_reason": "no_destination",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -304,7 +304,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -402,7 +402,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "So you'd like to book a flight in Quito?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"

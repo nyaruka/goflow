@@ -5,7 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "Hi there. What is your name?",
                         "unsendable_reason": "no_destination",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -66,7 +66,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi there. What is your name?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -177,7 +177,7 @@
                 {
                     "created_on": "2018-07-06T12:30:21.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "Ok Bobby, what age are you?",
                         "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -254,7 +254,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi there. What is your name?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -296,7 +296,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Ok Bobby, what age are you?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -423,7 +423,7 @@
                 {
                     "created_on": "2018-07-06T12:30:38.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "Are you sure you're 123... maybe try again",
                         "unsendable_reason": "no_destination",
                         "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -500,7 +500,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi there. What is your name?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -542,7 +542,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Ok Bobby, what age are you?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -578,7 +578,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Are you sure you're 123... maybe try again",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -725,7 +725,7 @@
                 {
                     "created_on": "2018-07-06T12:30:55.123456789Z",
                     "msg": {
-                        "locale": "eng-",
+                        "locale": "eng-US",
                         "text": "Great, you are 18 years old",
                         "unsendable_reason": "no_destination",
                         "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -830,7 +830,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Hi there. What is your name?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -872,7 +872,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Ok Bobby, what age are you?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -908,7 +908,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Are you sure you're 123... maybe try again",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
@@ -944,7 +944,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:55.123456789Z",
                                 "msg": {
-                                    "locale": "eng-",
+                                    "locale": "eng-US",
                                     "text": "Great, you are 18 years old",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"

@@ -158,8 +158,13 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
 	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, envs.Language("eng"), clone.Language())
-	assert.Equal(t, android, contact.PreferredChannel())
+	assert.Equal(t, envs.Country("US"), clone.Country())
+	assert.Equal(t, android, clone.PreferredChannel())
 	assert.Equal(t, 1, clone.Tickets().Count())
+
+	// country can be resolved from tel urns if there's no preferred channel
+	clone.UpdatePreferredChannel(nil)
+	assert.Equal(t, envs.Country("US"), clone.Country())
 
 	// can also clone a null contact!
 	mrNil := (*flows.Contact)(nil)
