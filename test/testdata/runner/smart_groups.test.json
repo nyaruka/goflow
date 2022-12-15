@@ -79,16 +79,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:13.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -120,16 +116,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:19.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -169,16 +161,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -328,16 +316,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -369,16 +353,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -418,16 +398,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"

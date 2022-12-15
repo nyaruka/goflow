@@ -1,7 +1,6 @@
 package events
 
 import (
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -30,15 +29,13 @@ const TypeMsgCreated string = "msg_created"
 type MsgCreatedEvent struct {
 	BaseEvent
 
-	Msg          *flows.MsgOut            `json:"msg" validate:"required,dive"`
-	Localization map[string]envs.Language `json:"localization,omitempty"`
+	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 
 // NewMsgCreated creates a new outgoing msg event to a single contact
-func NewMsgCreated(msg *flows.MsgOut, l10n map[string]envs.Language) *MsgCreatedEvent {
+func NewMsgCreated(msg *flows.MsgOut) *MsgCreatedEvent {
 	return &MsgCreatedEvent{
-		BaseEvent:    NewBaseEvent(TypeMsgCreated),
-		Msg:          msg,
-		Localization: l10n,
+		BaseEvent: NewBaseEvent(TypeMsgCreated),
+		Msg:       msg,
 	}
 }

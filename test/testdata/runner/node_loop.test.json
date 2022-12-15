@@ -4,16 +4,12 @@
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -23,16 +19,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -42,16 +34,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -61,16 +49,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -80,16 +64,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
@@ -99,16 +79,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -118,16 +94,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -137,16 +109,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
@@ -156,16 +124,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -175,16 +139,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -194,16 +154,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -213,16 +169,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
@@ -232,16 +184,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "2a6725ab-4f62-4c5a-9014-2c868db4022e"
@@ -251,16 +199,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
@@ -270,16 +214,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -289,16 +229,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e"
@@ -308,16 +244,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
@@ -327,16 +259,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
@@ -346,16 +274,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
@@ -365,16 +289,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a"
@@ -384,16 +304,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
@@ -403,16 +319,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
@@ -422,16 +334,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
@@ -441,16 +349,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "4a910999-828a-4886-9504-776e7d151101"
@@ -460,16 +364,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "cd712d62-8c56-4900-87bc-209e78511534"
@@ -479,16 +379,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d"
@@ -498,16 +394,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "5861c68a-8201-4d77-9e14-020037f6ddea"
@@ -517,16 +409,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "e3895066-303a-4b1f-be22-6e6983962829"
@@ -536,16 +424,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f"
@@ -555,16 +439,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8"
@@ -574,16 +454,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba"
@@ -593,16 +469,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "5189120b-9ee3-4977-956a-5bc98156b0ad"
@@ -612,16 +484,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "049bfc71-1486-4e35-a2d8-44b4f9caf25c"
@@ -631,16 +499,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa"
@@ -650,16 +514,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "126a745b-b2f6-4dd2-88da-b2056ae679d2"
@@ -669,16 +529,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b"
@@ -688,16 +544,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "368c31c2-e333-4f4c-851c-386828964858"
@@ -707,16 +559,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "7dcc445a-83cf-432b-8188-76dd971a6205"
@@ -726,16 +574,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "c62762c3-d95c-477b-9869-2c286badfdad"
@@ -745,16 +589,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "54e86e97-a008-4b6c-9ea1-dbfb3ec798f1"
@@ -764,16 +604,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
@@ -783,16 +619,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
@@ -802,16 +634,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
@@ -821,16 +649,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
@@ -840,16 +664,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:32:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "92ca859f-acf5-4e09-8742-c1eff0201012"
@@ -859,16 +679,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "4623fb77-4f69-4c9d-8048-98e1606ea811"
@@ -878,16 +694,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "c98266e9-cba2-44f6-a1e8-f3d011def86a"
@@ -897,16 +709,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8"
@@ -916,16 +724,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "1265aa33-e472-440a-b4b7-2e34e644276e"
@@ -935,16 +739,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "72e90234-071d-4188-9676-22cd6062f002"
@@ -954,16 +754,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "a637470b-3245-44de-94b4-ef0c4720292f"
@@ -973,16 +769,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100"
@@ -992,16 +784,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "4e4a3fcf-97f7-4cc8-b09a-ec8aca1372ed"
@@ -1011,16 +799,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "2ff14e28-184d-45df-962a-76fbcac8bf7f"
@@ -1030,16 +814,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "91572113-cb8a-4686-b038-6776a9290118"
@@ -1049,16 +829,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "936fea74-7589-4322-aac5-484f64970a84"
@@ -1068,16 +844,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "ec106945-47e1-47e8-85ee-f261b5a4c5a1"
@@ -1087,16 +859,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "03530137-9309-4b09-b1f8-3d29c913263a"
@@ -1106,16 +874,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "2e69f97c-4e50-408f-93ca-b93dc25ffd65"
@@ -1125,16 +889,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:33:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "1028f324-f9fe-4cf2-82ae-81542083c6c6"
@@ -1144,16 +904,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "b41974b9-a0ef-40d2-8c6f-7b85c24bcbca"
@@ -1163,16 +919,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "b5982db1-04d8-497b-bdc4-de873c294fa4"
@@ -1182,16 +934,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "f57752aa-b326-49dc-a261-a8a7a2e749fe"
@@ -1201,16 +949,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "73a7c5ee-0f13-419d-a679-1ed579b6107a"
@@ -1220,16 +964,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "6268d946-2d93-4eca-b7c0-f8febf09c836"
@@ -1239,16 +979,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "14eb92a8-0cfe-44ea-953f-02873e472264"
@@ -1258,16 +994,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "2d31c592-561e-477f-90ee-12dde5710639"
@@ -1277,16 +1009,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "1767490e-85d8-43b5-bf6a-1226b912128e"
@@ -1296,16 +1024,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "78c892da-0d90-438e-84d9-5a7f32b0df10"
@@ -1315,16 +1039,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "83ee78a0-a7f7-4411-bce7-327cd204f237"
@@ -1334,16 +1054,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "27864ee5-4e98-49a1-940a-7f5d5b936ff6"
@@ -1353,16 +1069,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "78b224c6-b6b3-49fa-b4be-130fc41c2e01"
@@ -1372,16 +1084,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "41d4cc3d-6455-4a7e-9ae4-8f981e14e81c"
@@ -1391,16 +1099,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "6611fbfe-84b0-4854-9284-8f296bccbc6f"
@@ -1410,16 +1114,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:34:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "eae8c49f-ed21-4c4d-8f4a-ef8ecd0530ea"
@@ -1429,16 +1129,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "a12056ac-5d97-424a-9036-10d878f7fb4b"
@@ -1448,16 +1144,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "fcc1c621-ac53-4a43-b19a-4bd9d238b1cc"
@@ -1467,16 +1159,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "0868f73a-0480-44de-882d-141eef7b838f"
@@ -1486,16 +1174,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "10e306e9-0d0b-4425-9335-8897fc44d8a1"
@@ -1505,16 +1189,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "cc971c50-7fd1-4353-9837-3fc5ba0d14d9"
@@ -1524,16 +1204,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "856fc8fc-9ac6-4923-8cbe-2c85e2683e7b"
@@ -1543,16 +1219,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "aaf5aa66-8121-4cd2-90d1-cdd90e7922b5"
@@ -1562,16 +1234,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "34b9ca95-9d9b-4340-b7a4-4570ce108b83"
@@ -1581,16 +1249,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "c1bfd8e5-5c97-41a0-aba1-501a64e22c55"
@@ -1600,16 +1264,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "1fddec71-4d9d-4fc5-aa7c-54a1aeb512e8"
@@ -1619,16 +1279,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "df716135-5ed9-4498-a91f-655632268298"
@@ -1638,16 +1294,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:46.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "28e7c6a7-f58a-436f-acc9-6718b565b0f7"
@@ -1657,16 +1309,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:50.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "d2acae70-0457-4b78-b046-5d86ca3ccb3d"
@@ -1676,16 +1324,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:54.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "93af3d08-1f02-49bd-97d4-0be64772394d"
@@ -1695,16 +1339,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:35:58.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "eb46ec55-42a0-4d86-a67c-d0bf481b0273"
@@ -1714,16 +1354,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "4b24af0c-9bcb-4428-8e17-03c6453a7a7d"
@@ -1733,16 +1369,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:06.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "9291a557-6957-414f-8c1b-b2200caa5fcd"
@@ -1752,16 +1384,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "d8f41af1-7626-4aac-b16e-61b2b6cfcc8e"
@@ -1771,16 +1399,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:14.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "013a5be9-11a3-4508-b81f-eec65230f9b0"
@@ -1790,16 +1414,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:18.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8a2761a1-6d64-4c44-a67f-391232aae904"
@@ -1809,16 +1429,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "8e75f301-045b-414e-8669-e3ef5ce1dbe0"
@@ -1828,16 +1444,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "07e4c05b-1775-4bb1-aad7-1cd74ed6e67b"
@@ -1847,16 +1459,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:30.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "6658ebab-b746-4391-a292-9b65879f729e"
@@ -1866,16 +1474,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:34.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "47a5fedf-6cf9-457c-9995-de5ff20a1717"
@@ -1885,16 +1489,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:36:38.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212",
                         "uuid": "de384f50-395f-4c4a-b5c7-259f428a465e"
@@ -2655,16 +2255,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -2674,16 +2270,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -2693,16 +2285,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -2712,16 +2300,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -2731,16 +2315,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
@@ -2750,16 +2330,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -2769,16 +2345,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -2788,16 +2360,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
@@ -2807,16 +2375,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -2826,16 +2390,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -2845,16 +2405,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -2864,16 +2420,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
@@ -2883,16 +2435,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "2a6725ab-4f62-4c5a-9014-2c868db4022e"
@@ -2902,16 +2450,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
@@ -2921,16 +2465,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -2940,16 +2480,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e"
@@ -2959,16 +2495,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
@@ -2978,16 +2510,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
@@ -2997,16 +2525,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
@@ -3016,16 +2540,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a"
@@ -3035,16 +2555,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
@@ -3054,16 +2570,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
@@ -3073,16 +2585,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
@@ -3092,16 +2600,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "4a910999-828a-4886-9504-776e7d151101"
@@ -3111,16 +2615,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "cd712d62-8c56-4900-87bc-209e78511534"
@@ -3130,16 +2630,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d"
@@ -3149,16 +2645,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5861c68a-8201-4d77-9e14-020037f6ddea"
@@ -3168,16 +2660,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "e3895066-303a-4b1f-be22-6e6983962829"
@@ -3187,16 +2675,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f"
@@ -3206,16 +2690,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8"
@@ -3225,16 +2705,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "dde64b44-09cf-4e6f-a52e-e58736ac73ba"
@@ -3244,16 +2720,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5189120b-9ee3-4977-956a-5bc98156b0ad"
@@ -3263,16 +2735,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "049bfc71-1486-4e35-a2d8-44b4f9caf25c"
@@ -3282,16 +2750,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa"
@@ -3301,16 +2765,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "126a745b-b2f6-4dd2-88da-b2056ae679d2"
@@ -3320,16 +2780,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b"
@@ -3339,16 +2795,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "368c31c2-e333-4f4c-851c-386828964858"
@@ -3358,16 +2810,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "7dcc445a-83cf-432b-8188-76dd971a6205"
@@ -3377,16 +2825,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c62762c3-d95c-477b-9869-2c286badfdad"
@@ -3396,16 +2840,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "54e86e97-a008-4b6c-9ea1-dbfb3ec798f1"
@@ -3415,16 +2855,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
@@ -3434,16 +2870,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
@@ -3453,16 +2885,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
@@ -3472,16 +2900,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
@@ -3491,16 +2915,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:32:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "92ca859f-acf5-4e09-8742-c1eff0201012"
@@ -3510,16 +2930,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "4623fb77-4f69-4c9d-8048-98e1606ea811"
@@ -3529,16 +2945,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c98266e9-cba2-44f6-a1e8-f3d011def86a"
@@ -3548,16 +2960,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8"
@@ -3567,16 +2975,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1265aa33-e472-440a-b4b7-2e34e644276e"
@@ -3586,16 +2990,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "72e90234-071d-4188-9676-22cd6062f002"
@@ -3605,16 +3005,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "a637470b-3245-44de-94b4-ef0c4720292f"
@@ -3624,16 +3020,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100"
@@ -3643,16 +3035,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "4e4a3fcf-97f7-4cc8-b09a-ec8aca1372ed"
@@ -3662,16 +3050,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "2ff14e28-184d-45df-962a-76fbcac8bf7f"
@@ -3681,16 +3065,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "91572113-cb8a-4686-b038-6776a9290118"
@@ -3700,16 +3080,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "936fea74-7589-4322-aac5-484f64970a84"
@@ -3719,16 +3095,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "ec106945-47e1-47e8-85ee-f261b5a4c5a1"
@@ -3738,16 +3110,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "03530137-9309-4b09-b1f8-3d29c913263a"
@@ -3757,16 +3125,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "2e69f97c-4e50-408f-93ca-b93dc25ffd65"
@@ -3776,16 +3140,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:33:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1028f324-f9fe-4cf2-82ae-81542083c6c6"
@@ -3795,16 +3155,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "b41974b9-a0ef-40d2-8c6f-7b85c24bcbca"
@@ -3814,16 +3170,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "b5982db1-04d8-497b-bdc4-de873c294fa4"
@@ -3833,16 +3185,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f57752aa-b326-49dc-a261-a8a7a2e749fe"
@@ -3852,16 +3200,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "73a7c5ee-0f13-419d-a679-1ed579b6107a"
@@ -3871,16 +3215,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "6268d946-2d93-4eca-b7c0-f8febf09c836"
@@ -3890,16 +3230,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "14eb92a8-0cfe-44ea-953f-02873e472264"
@@ -3909,16 +3245,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "2d31c592-561e-477f-90ee-12dde5710639"
@@ -3928,16 +3260,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1767490e-85d8-43b5-bf6a-1226b912128e"
@@ -3947,16 +3275,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "78c892da-0d90-438e-84d9-5a7f32b0df10"
@@ -3966,16 +3290,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "83ee78a0-a7f7-4411-bce7-327cd204f237"
@@ -3985,16 +3305,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "27864ee5-4e98-49a1-940a-7f5d5b936ff6"
@@ -4004,16 +3320,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "78b224c6-b6b3-49fa-b4be-130fc41c2e01"
@@ -4023,16 +3335,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "41d4cc3d-6455-4a7e-9ae4-8f981e14e81c"
@@ -4042,16 +3350,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "6611fbfe-84b0-4854-9284-8f296bccbc6f"
@@ -4061,16 +3365,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:34:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "eae8c49f-ed21-4c4d-8f4a-ef8ecd0530ea"
@@ -4080,16 +3380,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "a12056ac-5d97-424a-9036-10d878f7fb4b"
@@ -4099,16 +3395,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "fcc1c621-ac53-4a43-b19a-4bd9d238b1cc"
@@ -4118,16 +3410,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "0868f73a-0480-44de-882d-141eef7b838f"
@@ -4137,16 +3425,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "10e306e9-0d0b-4425-9335-8897fc44d8a1"
@@ -4156,16 +3440,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "cc971c50-7fd1-4353-9837-3fc5ba0d14d9"
@@ -4175,16 +3455,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "856fc8fc-9ac6-4923-8cbe-2c85e2683e7b"
@@ -4194,16 +3470,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "aaf5aa66-8121-4cd2-90d1-cdd90e7922b5"
@@ -4213,16 +3485,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "34b9ca95-9d9b-4340-b7a4-4570ce108b83"
@@ -4232,16 +3500,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c1bfd8e5-5c97-41a0-aba1-501a64e22c55"
@@ -4251,16 +3515,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1fddec71-4d9d-4fc5-aa7c-54a1aeb512e8"
@@ -4270,16 +3530,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "df716135-5ed9-4498-a91f-655632268298"
@@ -4289,16 +3545,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:46.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "28e7c6a7-f58a-436f-acc9-6718b565b0f7"
@@ -4308,16 +3560,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:50.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "d2acae70-0457-4b78-b046-5d86ca3ccb3d"
@@ -4327,16 +3575,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:54.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "93af3d08-1f02-49bd-97d4-0be64772394d"
@@ -4346,16 +3590,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:35:58.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "eb46ec55-42a0-4d86-a67c-d0bf481b0273"
@@ -4365,16 +3605,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "4b24af0c-9bcb-4428-8e17-03c6453a7a7d"
@@ -4384,16 +3620,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:06.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "9291a557-6957-414f-8c1b-b2200caa5fcd"
@@ -4403,16 +3635,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "d8f41af1-7626-4aac-b16e-61b2b6cfcc8e"
@@ -4422,16 +3650,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:14.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "013a5be9-11a3-4508-b81f-eec65230f9b0"
@@ -4441,16 +3665,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:18.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8a2761a1-6d64-4c44-a67f-391232aae904"
@@ -4460,16 +3680,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8e75f301-045b-414e-8669-e3ef5ce1dbe0"
@@ -4479,16 +3695,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "07e4c05b-1775-4bb1-aad7-1cd74ed6e67b"
@@ -4498,16 +3710,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:30.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "6658ebab-b746-4391-a292-9b65879f729e"
@@ -4517,16 +3725,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:34.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "47a5fedf-6cf9-457c-9995-de5ff20a1717"
@@ -4536,16 +3740,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:36:38.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi! What is your name?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "de384f50-395f-4c4a-b5c7-259f428a465e"

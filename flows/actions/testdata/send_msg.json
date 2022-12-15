@@ -142,12 +142,8 @@
                     "quick_replies": [
                         "Red",
                         "Blue"
-                    ]
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    ],
+                    "language": "eng"
                 }
             }
         ]
@@ -189,12 +185,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi there"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "text": "Hi there",
+                    "language": "eng"
                 }
             }
         ]
@@ -231,12 +223,8 @@
                     "text": "Hi there",
                     "attachments": [
                         "image/jpeg:http://exacmple.com/test.jpg"
-                    ]
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    ],
+                    "language": "eng"
                 }
             }
         ]
@@ -260,12 +248,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef",
+                    "language": "eng"
                 }
             }
         ],
@@ -314,12 +298,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi there"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "text": "Hi there",
+                    "language": "eng"
                 }
             },
             {
@@ -333,12 +313,8 @@
                         "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
                         "name": "Twitter Channel"
                     },
-                    "text": "Hi there"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "text": "Hi there",
+                    "language": "eng"
                 }
             }
         ]
@@ -359,6 +335,7 @@
                 "msg": {
                     "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "text": "Hi there",
+                    "language": "eng",
                     "unsendable_reason": "no_destination"
                 }
             }
@@ -394,12 +371,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi Ryan Lewis, who's a good boy?"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "text": "Hi Ryan Lewis, who's a good boy?",
+                    "language": "eng"
                 }
             }
         ],
@@ -485,12 +458,8 @@
                         ],
                         "namespace": ""
                     },
-                    "topic": "account"
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    "topic": "account",
+                    "language": "eng"
                 }
             }
         ],
@@ -571,12 +540,8 @@
                             "niño"
                         ],
                         "namespace": ""
-                    }
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    },
+                    "language": "eng"
                 }
             }
         ],
@@ -642,12 +607,8 @@
                         "language": "eng",
                         "country": "",
                         "namespace": ""
-                    }
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "eng"
+                    },
+                    "language": "eng"
                 }
             }
         ],
@@ -716,12 +677,8 @@
                         "language": "eng",
                         "country": "",
                         "namespace": ""
-                    }
-                },
-                "localization": {
-                    "attachments": "eng",
-                    "quick_replies": "eng",
-                    "text": "spa"
+                    },
+                    "language": "spa"
                 }
             }
         ],
@@ -795,12 +752,8 @@
                     "quick_replies": [
                         "Si",
                         "No"
-                    ]
-                },
-                "localization": {
-                    "attachments": "spa",
-                    "quick_replies": "spa",
-                    "text": "spa"
+                    ],
+                    "language": "spa"
                 }
             }
         ],

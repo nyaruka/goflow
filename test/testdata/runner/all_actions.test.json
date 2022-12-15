@@ -253,16 +253,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:29.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -272,16 +268,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:31.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -291,16 +283,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:33.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Facebook Channel",
                             "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648"
                         },
+                        "language": "eng",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "facebook:1122334455667788",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -310,16 +298,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:35.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Twitter Channel",
                             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
                         },
+                        "language": "eng",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "twitter:ben_haggerty",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -329,11 +313,6 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:37.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "attachments": [
                             "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
@@ -342,6 +321,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "quick_replies": [
                             "Yes",
                             "No"
@@ -753,16 +733,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -772,16 +748,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:31.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -791,16 +763,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:33.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Facebook Channel",
                                         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648"
                                     },
+                                    "language": "eng",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "facebook:1122334455667788",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -810,16 +778,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:35.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Twitter Channel",
                                         "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
                                     },
+                                    "language": "eng",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "twitter:ben_haggerty",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -829,11 +793,6 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:37.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "attachments": [
                                         "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
@@ -842,6 +801,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "quick_replies": [
                                         "Yes",
                                         "No"

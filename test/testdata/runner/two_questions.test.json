@@ -12,16 +12,12 @@
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "quick_replies": [
                             "Red",
                             "Blue"
@@ -82,16 +78,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -255,16 +247,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:22.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "fra"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "fra",
                         "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -345,16 +333,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -451,16 +435,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "fra"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "fra",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -595,16 +575,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:40.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "fra"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "fra",
                         "text": "Parfait, vous avez finis et tu aimes Coke",
                         "urn": "tel:+12065551212",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -680,16 +656,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -786,16 +758,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "fra"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "fra",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -847,16 +815,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:40.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "fra"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "fra",
                                     "text": "Parfait, vous avez finis et tu aimes Coke",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"

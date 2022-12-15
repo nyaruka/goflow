@@ -80,7 +80,7 @@ func (a *baseAction) Validate() error { return nil }
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, map[string]envs.Language) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, envs.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
 	evaluatedText, err := run.EvaluateTemplate(localizedText[0])
@@ -122,7 +122,18 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, a
 		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
 	}
 
-	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies, map[string]envs.Language{"text": txtLang, "attachments": attLang, "quick_replies": qrsLang}
+	// although it's possible for the different parts of the message to have different languages, we want to resolve
+	// a single language based on what the user actually provided for this message
+	var lang envs.Language
+	if localizedText[0] != "" {
+		lang = txtLang
+	} else if len(translatedAttachments) > 0 {
+		lang = attLang
+	} else if len(translatedQuickReplies) > 0 {
+		lang = qrsLang
+	}
+
+	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies, lang
 }
 
 // helper to save a run result and log it as an event

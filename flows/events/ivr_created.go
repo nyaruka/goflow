@@ -1,7 +1,6 @@
 package events
 
 import (
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -22,24 +21,22 @@ const TypeIVRCreated string = "ivr_created"
 //	    "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
 //	    "urn": "tel:+12065551212",
 //	    "text": "hi there",
-//	    "attachments": ["audio:https://s3.amazon.com/mybucket/attachment.m4a"]
-//	  },
-//	  "localization": {"text": "eng"}
+//	    "attachments": ["audio:https://s3.amazon.com/mybucket/attachment.m4a"],
+//	    "language": "eng"
+//	  }
 //	}
 //
 // @event ivr_created
 type IVRCreatedEvent struct {
 	BaseEvent
 
-	Msg          *flows.MsgOut            `json:"msg" validate:"required,dive"`
-	Localization map[string]envs.Language `json:"localization,omitempty"`
+	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 
 // NewIVRCreated creates a new IVR created event
-func NewIVRCreated(msg *flows.MsgOut, l10n map[string]envs.Language) *IVRCreatedEvent {
+func NewIVRCreated(msg *flows.MsgOut) *IVRCreatedEvent {
 	return &IVRCreatedEvent{
-		BaseEvent:    NewBaseEvent(TypeIVRCreated),
-		Msg:          msg,
-		Localization: l10n,
+		BaseEvent: NewBaseEvent(TypeIVRCreated),
+		Msg:       msg,
 	}
 }

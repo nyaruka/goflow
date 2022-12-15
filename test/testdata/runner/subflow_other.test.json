@@ -4,16 +4,12 @@
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hi there, let's go to the child.",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -34,16 +30,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:10.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Welcome to the child, say yes or no!",
                         "urn": "tel:+12065551212",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -117,16 +109,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -173,16 +161,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -297,16 +281,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:26.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Nope, that's neither.",
                         "urn": "tel:+12065551212",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -393,16 +373,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -449,16 +425,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -496,16 +468,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -642,16 +610,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:42.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "You said yes",
                         "urn": "tel:+12065551212",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -661,16 +625,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:47.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Hooray, you did it and said yes. Say yes or no!",
                         "urn": "tel:+12065551212",
                         "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -765,16 +725,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -795,16 +751,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:47.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -857,16 +809,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -904,16 +852,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -951,16 +895,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -1099,16 +1039,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:03.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "Nope, that's neither",
                         "urn": "tel:+12065551212",
                         "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1195,16 +1131,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -1225,16 +1157,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:47.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -1272,16 +1200,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:03.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1356,16 +1280,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -1403,16 +1323,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -1450,16 +1366,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -1598,16 +1510,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:19.123456789Z",
-                    "localization": {
-                        "attachments": "eng",
-                        "quick_replies": "eng",
-                        "text": "eng"
-                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
+                        "language": "eng",
                         "text": "All Done! You said yes in the child and no here.",
                         "urn": "tel:+12065551212",
                         "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -1682,16 +1590,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -1712,16 +1616,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:47.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -1759,16 +1659,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:03.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1806,16 +1702,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:19.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "All Done! You said yes in the child and no here.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -1892,16 +1784,12 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -1939,16 +1827,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -1986,16 +1870,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:42.123456789Z",
-                                "localization": {
-                                    "attachments": "eng",
-                                    "quick_replies": "eng",
-                                    "text": "eng"
-                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
+                                    "language": "eng",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
