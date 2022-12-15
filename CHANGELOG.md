@@ -1,3 +1,7 @@
+v0.177.0 (2022-12-15)
+-------------------------
+ * Reduce msg/ivr_created localization blobs to a single language
+
 v0.176.0 (2022-12-15)
 -------------------------
  * Add localization outcome object to msg/ivr_created events to replace msg_out.text_language field
