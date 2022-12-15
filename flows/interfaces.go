@@ -417,7 +417,7 @@ type Run interface {
 	EvaluateTemplate(string) (string, error)
 	RootContext(envs.Environment) map[string]types.XValue
 
-	GetText(uuids.UUID, string, string) string
+	GetText(uuids.UUID, string, string) (string, envs.Language)
 	GetTextArray(uuids.UUID, string, []string, []envs.Language) ([]string, envs.Language)
 
 	Snapshot() RunSummary

@@ -177,7 +177,7 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 	// save result if we have a result name
 	if r.resultName != "" {
 		// localize the category name
-		localizedCategory := run.GetText(uuids.UUID(category.UUID()), "name", "")
+		localizedCategory, _ := run.GetText(uuids.UUID(category.UUID()), "name", "")
 
 		var extraJSON json.RawMessage
 		if extra != nil {

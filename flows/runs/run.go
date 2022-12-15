@@ -353,16 +353,18 @@ func (r *flowRun) getLanguages() []envs.Language {
 	return append(languages, r.flow.Language())
 }
 
-func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) string {
-	textArray, _ := r.GetTextArray(uuid, key, []string{native}, nil)
-	return textArray[0]
+// GetText is a convenience version of GetTextArray for a single text values
+func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) (string, envs.Language) {
+	textArray, lang := r.getText(uuid, key, []string{native}, nil)
+	return textArray[0], lang
 }
 
+// GetTextArray returns the localized value for the given flow definition value
 func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
-	return r.getTranslatedText(uuid, key, native, languages)
+	return r.getText(uuid, key, native, languages)
 }
 
-func (r *flowRun) getTranslatedText(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
+func (r *flowRun) getText(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
 	nativeLang := r.Flow().Language()
 
 	// if a preferred language list wasn't provided, default to the run preferred languages
