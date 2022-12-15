@@ -38,8 +38,10 @@ func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []envs.Lo
 	for _, tr := range t.Template.Translations() {
 		if tr.Channel().UUID == channel {
 			tt := NewTemplateTranslation(tr)
+			lang, _ := tt.Locale().ToParts()
+
 			candidatesByLocale[tt.Locale()] = tt
-			candidatesByLang[tt.Language()] = tt
+			candidatesByLang[lang] = tt
 		}
 	}
 
@@ -72,9 +74,6 @@ type TemplateTranslation struct {
 func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
 	return &TemplateTranslation{TemplateTranslation: t}
 }
-
-// Locale returns the locale
-func (t *TemplateTranslation) Locale() envs.Locale { return envs.NewLocale(t.Language(), t.Country()) }
 
 // Asset returns the underlying asset
 func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }

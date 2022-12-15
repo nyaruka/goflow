@@ -167,20 +167,12 @@ func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
 	Template_  *assets.TemplateReference `json:"template"`
-	Language_  envs.Language             `json:"language"`
-	Country_   envs.Country              `json:"country"`
 	Variables_ []string                  `json:"variables,omitempty"`
 	Namespace_ string                    `json:"namespace"`
 }
 
 // Template returns the template this msg template is for
 func (t MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
-
-// Language returns the language that should be used for the template
-func (t MsgTemplating) Language() envs.Language { return t.Language_ }
-
-// Country returns the country that should be used for the template
-func (t MsgTemplating) Country() envs.Country { return t.Country_ }
 
 // Variables returns the variables that should be substituted in the template
 func (t MsgTemplating) Variables() []string { return t.Variables_ }
@@ -189,11 +181,9 @@ func (t MsgTemplating) Variables() []string { return t.Variables_ }
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, language envs.Language, country envs.Country, variables []string, namespace string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
-		Language_:  language,
-		Country_:   country,
 		Variables_: variables,
 		Namespace_: namespace,
 	}

@@ -1,94 +1,72 @@
 package static
 
 import (
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 )
 
 // Template is a JSON serializable implementation of a template asset
 type Template struct {
-	t struct {
-		UUID         assets.TemplateUUID    `json:"uuid"         validate:"required,uuid"`
-		Name         string                 `json:"name"`
-		Translations []*TemplateTranslation `json:"translations"`
-	}
+	UUID_         assets.TemplateUUID    `json:"uuid"         validate:"required,uuid"`
+	Name_         string                 `json:"name"`
+	Translations_ []*TemplateTranslation `json:"translations"`
 }
 
 // NewTemplate creates a new template
 func NewTemplate(uuid assets.TemplateUUID, name string, translations []*TemplateTranslation) *Template {
-	t := &Template{}
-	t.t.UUID = uuid
-	t.t.Name = name
-	t.t.Translations = translations
-	return t
+	return &Template{
+		UUID_:         uuid,
+		Name_:         name,
+		Translations_: translations,
+	}
 }
 
 // UUID returns the UUID of this template
-func (t *Template) UUID() assets.TemplateUUID { return t.t.UUID }
+func (t *Template) UUID() assets.TemplateUUID { return t.UUID_ }
 
 // Name returns the name of this template
-func (t *Template) Name() string { return t.t.Name }
+func (t *Template) Name() string { return t.Name_ }
 
 // Translations returns the translations for this template
 func (t *Template) Translations() []assets.TemplateTranslation {
-	trs := make([]assets.TemplateTranslation, len(t.t.Translations))
-	for i := range t.t.Translations {
-		trs[i] = t.t.Translations[i]
+	trs := make([]assets.TemplateTranslation, len(t.Translations_))
+	for i := range t.Translations_ {
+		trs[i] = t.Translations_[i]
 	}
 	return trs
 }
 
-// UnmarshalJSON is our unmarshaller for json data
-func (t *Template) UnmarshalJSON(data []byte) error { return jsonx.Unmarshal(data, &t.t) }
-
-// MarshalJSON is our marshaller for json data
-func (t *Template) MarshalJSON() ([]byte, error) { return jsonx.Marshal(t.t) }
-
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	t struct {
-		Channel       assets.ChannelReference `json:"channel"         validate:"required"`
-		Content       string                  `json:"content"         validate:"required"`
-		Language      envs.Language           `json:"language"        validate:"required"`
-		Namespace     string                  `json:"namespace"`
-		Country       envs.Country            `json:"country,omitempty"`
-		VariableCount int                     `json:"variable_count"`
-	}
+	Channel_       assets.ChannelReference `json:"channel"         validate:"required"`
+	Content_       string                  `json:"content"         validate:"required"`
+	Locale_        envs.Locale             `json:"locale"          validate:"required"`
+	Namespace_     string                  `json:"namespace"`
+	VariableCount_ int                     `json:"variable_count"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel assets.ChannelReference, language envs.Language, country envs.Country, content string, variableCount int, namespace string) *TemplateTranslation {
-	t := &TemplateTranslation{}
-	t.t.Channel = channel
-	t.t.Content = content
-	t.t.Namespace = namespace
-	t.t.Language = language
-	t.t.Country = country
-	t.t.VariableCount = variableCount
-	return t
+func NewTemplateTranslation(channel assets.ChannelReference, locale envs.Locale, content string, variableCount int, namespace string) *TemplateTranslation {
+	return &TemplateTranslation{
+		Channel_:       channel,
+		Content_:       content,
+		Namespace_:     namespace,
+		Locale_:        locale,
+		VariableCount_: variableCount,
+	}
 }
 
 // Content returns the translated content for this template
-func (t *TemplateTranslation) Content() string { return t.t.Content }
+func (t *TemplateTranslation) Content() string { return t.Content_ }
 
 // Namespace returns the namespace for this template
-func (t *TemplateTranslation) Namespace() string { return t.t.Namespace }
+func (t *TemplateTranslation) Namespace() string { return t.Namespace_ }
 
-// Language returns the language this translation is in
-func (t *TemplateTranslation) Language() envs.Language { return t.t.Language }
-
-// Country returns the country this translation is for if any
-func (t *TemplateTranslation) Country() envs.Country { return t.t.Country }
+// Language returns the locale this translation is in
+func (t *TemplateTranslation) Locale() envs.Locale { return t.Locale_ }
 
 // VariableCount returns the number of variables in this template
-func (t *TemplateTranslation) VariableCount() int { return t.t.VariableCount }
+func (t *TemplateTranslation) VariableCount() int { return t.VariableCount_ }
 
 // Channel returns the channel this template translation is for
-func (t *TemplateTranslation) Channel() assets.ChannelReference { return t.t.Channel }
-
-// UnmarshalJSON is our unmarshaller for json data
-func (t *TemplateTranslation) UnmarshalJSON(data []byte) error { return jsonx.Unmarshal(data, &t.t) }
-
-// MarshalJSON is our marshaller for json data
-func (t *TemplateTranslation) MarshalJSON() ([]byte, error) { return jsonx.Marshal(t.t) }
+func (t *TemplateTranslation) Channel() assets.ChannelReference { return t.Channel_ }
