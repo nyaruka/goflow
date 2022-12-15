@@ -84,7 +84,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -121,7 +121,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -166,7 +166,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -321,7 +321,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -358,7 +358,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -403,7 +403,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"

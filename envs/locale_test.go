@@ -4,9 +4,22 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 )
+
+func TestLocale(t *testing.T) {
+	assert.Equal(t, envs.Locale(""), envs.NewLocale("", ""))
+	assert.Equal(t, envs.Locale(""), envs.NewLocale("", "US")) // invalid without language
+	assert.Equal(t, envs.Locale("eng-US"), envs.NewLocale("eng", "US"))
+
+	l, c := envs.Locale("eng-US").ToParts()
+	assert.Equal(t, envs.Language("eng"), l)
+	assert.Equal(t, envs.Country("US"), c)
+
+	l, c = envs.NilLocale.ToParts()
+	assert.Equal(t, envs.NilLanguage, l)
+	assert.Equal(t, envs.NilCountry, c)
+}
 
 func TestToBCP47(t *testing.T) {
 	tests := []struct {

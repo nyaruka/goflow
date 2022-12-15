@@ -168,12 +168,23 @@ func (c *Contact) Language() envs.Language { return c.language }
 
 // Country gets the country for this contact..
 //
-// TODO: currently this is taken from their preferred channel but probably should become an explicit field at some point
+// TODO: currently this is derived from their preferred channel or any tel URNs but probably should become an explicit
+// field at some point
 func (c *Contact) Country() envs.Country {
 	ch := c.PreferredChannel()
 	if ch != nil && ch.Country() != envs.NilCountry {
 		return ch.Country()
 	}
+
+	for _, u := range c.urns {
+		if u.urn.Scheme() == urns.TelScheme {
+			c := envs.DeriveCountryFromTel(u.urn.Path())
+			if c != envs.NilCountry {
+				return c
+			}
+		}
+	}
+
 	return envs.NilCountry
 }
 

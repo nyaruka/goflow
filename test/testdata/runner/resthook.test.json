@@ -99,7 +99,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Resthook: {\"errors\":[\"bad_request\"]}",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -229,7 +229,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Resthook: {\"errors\":[\"bad_request\"]}",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"

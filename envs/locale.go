@@ -1,16 +1,22 @@
 package envs
 
-import "golang.org/x/text/language"
+import (
+	"fmt"
+	"strings"
 
-// Locale is the combination of a language and country, e.g. US English, Brazilian Portuguese
-type Locale struct {
-	Language Language
-	Country  Country
-}
+	"golang.org/x/text/language"
+)
+
+// Locale is the combination of a language and country, e.g. US English, Brazilian Portuguese, encoded as the language
+// code followed by the country code, e.g. eng-US, por-BR
+type Locale string
 
 // NewLocale creates a new locale
-func NewLocale(language Language, country Country) Locale {
-	return Locale{Language: language, Country: country}
+func NewLocale(l Language, c Country) Locale {
+	if l == NilLanguage {
+		return NilLocale
+	}
+	return Locale(fmt.Sprintf("%s-%s", l, c))
 }
 
 // ToBCP47 returns the BCP47 code, e.g. en-US, pt, pt-BR
@@ -19,21 +25,38 @@ func (l Locale) ToBCP47() string {
 		return ""
 	}
 
-	lang, err := language.ParseBase(string(l.Language))
+	lang, country := l.ToParts()
+
+	base, err := language.ParseBase(string(lang))
 	if err != nil {
 		return ""
 	}
-	code := lang.String()
+	code := base.String()
 
 	// not all languages have a 2-letter code
 	if len(code) != 2 {
 		return ""
 	}
 
-	if l.Country != NilCountry {
-		code += "-" + string(l.Country)
+	if country != NilCountry {
+		code += "-" + string(country)
 	}
 	return code
 }
 
-var NilLocale = Locale{}
+func (l Locale) ToParts() (Language, Country) {
+	if l == NilLocale || len(l) < 3 {
+		return NilLanguage, NilCountry
+	}
+
+	parts := strings.SplitN(string(l), "-", 2)
+	lang := Language(parts[0])
+	country := NilCountry
+	if len(parts) > 1 {
+		country = Country(parts[1])
+	}
+
+	return lang, country
+}
+
+var NilLocale = Locale("")

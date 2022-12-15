@@ -62,7 +62,7 @@ type MsgOut struct {
 	QuickReplies_     []string         `json:"quick_replies,omitempty"`
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
 	Topic_            MsgTopic         `json:"topic,omitempty"`
-	Language_         envs.Language    `json:"language,omitempty"`
+	Locale_           envs.Locale      `json:"locale,omitempty"`
 	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
 }
 
@@ -80,7 +80,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic, lang envs.Language, reason UnsendableReason) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic, locale envs.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(uuids.New()),
@@ -92,13 +92,13 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 		QuickReplies_:     quickReplies,
 		Templating_:       templating,
 		Topic_:            topic,
-		Language_:         lang,
+		Locale_:           locale,
 		UnsendableReason_: reason,
 	}
 }
 
 // NewIVRMsgOut creates a new outgoing message for IVR
-func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, audioURL string, lang envs.Language) *MsgOut {
+func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, audioURL string, locale envs.Locale) *MsgOut {
 	var attachments []utils.Attachment
 	if audioURL != "" {
 		attachments = []utils.Attachment{utils.Attachment(fmt.Sprintf("audio:%s", audioURL))}
@@ -115,7 +115,7 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 		QuickReplies_: nil,
 		Templating_:   nil,
 		Topic_:        NilMsgTopic,
-		Language_:     lang,
+		Locale_:       locale,
 	}
 }
 
@@ -158,8 +158,8 @@ func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
 // Topic returns the topic to use to send this message (if any)
 func (m *MsgOut) Topic() MsgTopic { return m.Topic_ }
 
-// Language returns the language of this message (if any)
-func (m *MsgOut) Language() envs.Language { return m.Language_ }
+// Locale returns the locale of this message (if any)
+func (m *MsgOut) Locale() envs.Locale { return m.Locale_ }
 
 // UnsendableReason returns the reason this message can't be sent (if any)
 func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }

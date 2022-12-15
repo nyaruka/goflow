@@ -143,7 +143,7 @@
                         "Red",
                         "Blue"
                     ],
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ]
@@ -186,7 +186,7 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ]
@@ -224,7 +224,7 @@
                     "attachments": [
                         "image/jpeg:http://exacmple.com/test.jpg"
                     ],
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ]
@@ -249,7 +249,7 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ],
@@ -299,7 +299,7 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi there",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             },
             {
@@ -314,7 +314,7 @@
                         "name": "Twitter Channel"
                     },
                     "text": "Hi there",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ]
@@ -335,7 +335,7 @@
                 "msg": {
                     "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                     "text": "Hi there",
-                    "language": "eng",
+                    "locale": "eng-RW",
                     "unsendable_reason": "no_destination"
                 }
             }
@@ -372,7 +372,7 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hi Ryan Lewis, who's a good boy?",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ],
@@ -459,7 +459,7 @@
                         "namespace": ""
                     },
                     "topic": "account",
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ],
@@ -541,7 +541,7 @@
                         ],
                         "namespace": ""
                     },
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ],
@@ -608,7 +608,7 @@
                         "country": "",
                         "namespace": ""
                     },
-                    "language": "eng"
+                    "locale": "eng-US"
                 }
             }
         ],
@@ -678,7 +678,7 @@
                         "country": "",
                         "namespace": ""
                     },
-                    "language": "spa"
+                    "locale": "spa-US"
                 }
             }
         ],
@@ -753,7 +753,7 @@
                         "Si",
                         "No"
                     ],
-                    "language": "spa"
+                    "locale": "spa-US"
                 }
             }
         ],

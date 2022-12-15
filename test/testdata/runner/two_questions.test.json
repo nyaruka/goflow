@@ -17,7 +17,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "quick_replies": [
                             "Red",
                             "Blue"
@@ -83,7 +83,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -252,7 +252,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "fra",
+                        "locale": "fra-US",
                         "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -338,7 +338,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -440,7 +440,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "fra",
+                                    "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -580,7 +580,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "fra",
+                        "locale": "fra-US",
                         "text": "Parfait, vous avez finis et tu aimes Coke",
                         "urn": "tel:+12065551212",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -661,7 +661,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "quick_replies": [
                                         "Red",
                                         "Blue"
@@ -763,7 +763,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "fra",
+                                    "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -820,7 +820,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "fra",
+                                    "locale": "fra-US",
                                     "text": "Parfait, vous avez finis et tu aimes Coke",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"

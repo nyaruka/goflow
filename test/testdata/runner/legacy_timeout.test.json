@@ -5,7 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Hi there. Do you want to take part?",
                         "unsendable_reason": "no_destination",
                         "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
@@ -71,7 +71,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there. Do you want to take part?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
@@ -232,7 +232,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there. Do you want to take part?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"

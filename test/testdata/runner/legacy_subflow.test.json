@@ -5,7 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "You're in the subflow now. Pick a number!",
                         "unsendable_reason": "no_destination",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -66,7 +66,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You're in the subflow now. Pick a number!",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -171,7 +171,7 @@
                 {
                     "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "That's not a number.. try again",
                         "unsendable_reason": "no_destination",
                         "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -248,7 +248,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You're in the subflow now. Pick a number!",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -284,7 +284,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "That's not a number.. try again",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -455,7 +455,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You're in the subflow now. Pick a number!",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -491,7 +491,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "That's not a number.. try again",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "b88ce93d-4360-4455-a691-235cbe720980"

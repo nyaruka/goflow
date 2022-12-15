@@ -53,7 +53,8 @@ func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []envs.Lo
 
 	// if that fails look for language match
 	for _, locale := range locales {
-		tt := candidatesByLang[locale.Language]
+		lang, _ := locale.ToParts()
+		tt := candidatesByLang[lang]
 		if tt != nil {
 			return tt
 		}
