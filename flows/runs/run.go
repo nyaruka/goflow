@@ -354,22 +354,18 @@ func (r *flowRun) getLanguages() []envs.Language {
 }
 
 func (r *flowRun) GetText(uuid uuids.UUID, key string, native string) string {
-	textArray, _ := r.GetTextArray(uuid, key, []string{native})
+	textArray, _ := r.GetTextArray(uuid, key, []string{native}, nil)
 	return textArray[0]
 }
 
-func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string) ([]string, envs.Language) {
-	return r.getTranslatedText(uuid, key, native, r.getLanguages())
-}
-
-func (r *flowRun) GetTranslatedTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) []string {
-	texts, _ := r.getTranslatedText(uuid, key, native, languages)
-	return texts
+func (r *flowRun) GetTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
+	return r.getTranslatedText(uuid, key, native, languages)
 }
 
 func (r *flowRun) getTranslatedText(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
 	nativeLang := r.Flow().Language()
 
+	// if a preferred language list wasn't provided, default to the run preferred languages
 	if languages == nil {
 		languages = r.getLanguages()
 	}

@@ -418,8 +418,7 @@ type Run interface {
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) string
-	GetTextArray(uuids.UUID, string, []string) ([]string, envs.Language)
-	GetTranslatedTextArray(uuids.UUID, string, []string, []envs.Language) []string
+	GetTextArray(uuids.UUID, string, []string, []envs.Language) ([]string, envs.Language)
 
 	Snapshot() RunSummary
 	Parent() RunSummary
