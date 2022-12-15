@@ -168,7 +168,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 		// build our argument list which starts with the operand
 		args := []types.XValue{operand}
 
-		localizedArgs, _ := run.GetTextArray(c.UUID, "arguments", c.Arguments)
+		localizedArgs, _ := run.GetTextArray(c.UUID, "arguments", c.Arguments, nil)
 
 		// this shouldn't happen but if the number of localized args doesn't match the base arguments, ignore them
 		if len(localizedArgs) != len(c.Arguments) {

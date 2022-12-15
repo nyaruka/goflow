@@ -49,15 +49,15 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 // Execute runs this action
 func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
-	localizedTexts, textLanguage := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{a.Text})
-	evaluatedText, err := run.EvaluateTemplate(localizedTexts[0])
+	localizedText, textLanguage := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
+	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
 	// localize the audio URL
-	localizedAudioURL := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
+	localizedAudioURL, _ := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 
 	// if we have neither an audio URL or backdown text, skip
 	if evaluatedText == "" && localizedAudioURL == "" {
@@ -65,10 +65,10 @@ func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows
 		return nil
 	}
 
-	// an IVR flow must have been started with a connection
-	connection := run.Session().Trigger().Call()
+	// an IVR flow must have been started with a call
+	call := run.Session().Trigger().Call()
 
-	msg := flows.NewIVRMsgOut(connection.URN(), connection.Channel(), evaluatedText, textLanguage, localizedAudioURL)
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, textLanguage, localizedAudioURL)
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

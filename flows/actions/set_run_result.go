@@ -59,7 +59,7 @@ func (a *SetRunResultAction) Execute(run flows.Run, step flows.Step, logModifier
 		return nil
 	}
 
-	categoryLocalized := run.GetText(uuids.UUID(a.UUID()), "category", a.Category)
+	categoryLocalized, _ := run.GetText(uuids.UUID(a.UUID()), "category", a.Category)
 	if a.Category == categoryLocalized {
 		categoryLocalized = ""
 	}

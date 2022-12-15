@@ -45,7 +45,7 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudioAction {
 // Execute runs this action
 func (a *PlayAudioAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
-	localizedAudioURL := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
+	localizedAudioURL, _ := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, err := run.EvaluateTemplate(localizedAudioURL)
 	if err != nil {
 		logEvent(events.NewError(err))
