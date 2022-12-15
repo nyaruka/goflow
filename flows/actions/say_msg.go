@@ -68,7 +68,7 @@ func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows
 	// an IVR flow must have been started with a call
 	call := run.Session().Trigger().Call()
 
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, localizedAudioURL, textLang)
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

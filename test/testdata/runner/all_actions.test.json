@@ -258,7 +258,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -273,7 +273,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -288,7 +288,7 @@
                             "name": "Facebook Channel",
                             "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "facebook:1122334455667788",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -303,7 +303,7 @@
                             "name": "Twitter Channel",
                             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "This is a message to each of Ben Haggerty's urns.",
                         "urn": "twitter:ben_haggerty",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -321,7 +321,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "quick_replies": [
                             "Yes",
                             "No"
@@ -738,7 +738,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -753,7 +753,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -768,7 +768,7 @@
                                         "name": "Facebook Channel",
                                         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "facebook:1122334455667788",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -783,7 +783,7 @@
                                         "name": "Twitter Channel",
                                         "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "This is a message to each of Ben Haggerty's urns.",
                                     "urn": "twitter:ben_haggerty",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -801,7 +801,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "quick_replies": [
                                         "Yes",
                                         "No"

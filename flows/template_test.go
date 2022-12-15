@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,42 +48,42 @@ func TestTemplates(t *testing.T) {
 		{
 			"c520cbda-e118-440f-aaf6-c0485088384f",
 			channel1,
-			[]envs.Locale{{Language: "eng", Country: "US"}, {Language: "spa", Country: "CO"}},
+			[]envs.Locale{"eng-US", "spa-CO"},
 			[]string{"Chef"},
 			"Hello Chef",
 		},
 		{
 			"c520cbda-e118-440f-aaf6-c0485088384f",
 			channel1,
-			[]envs.Locale{{Language: "eng", Country: ""}, {Language: "spa", Country: "CO"}},
+			[]envs.Locale{"eng", "spa-CO"},
 			[]string{"Chef"},
 			"Hello Chef",
 		},
 		{
 			"c520cbda-e118-440f-aaf6-c0485088384f",
 			channel1,
-			[]envs.Locale{{Language: "deu", Country: "DE"}, {Language: "spa", Country: "ES"}},
+			[]envs.Locale{"deu-DE", "spa-ES"},
 			[]string{"Chef"},
 			"Hola Chef",
 		},
 		{
 			"c520cbda-e118-440f-aaf6-c0485088384f",
 			nil,
-			[]envs.Locale{{Language: "deu", Country: "DE"}, {Language: "spa", Country: "ES"}},
+			[]envs.Locale{"deu-DE", "spa-ES"},
 			[]string{"Chef"},
 			"",
 		},
 		{
 			"c520cbda-e118-440f-aaf6-c0485088384f",
 			channel1,
-			[]envs.Locale{{Language: "deu", Country: "DE"}},
+			[]envs.Locale{"deu-DE"},
 			[]string{"Chef"},
 			"",
 		},
 		{
 			"8c5d4910-114a-4521-ba1d-bde8b024865a",
 			channel1,
-			[]envs.Locale{{Language: "eng", Country: "US"}, {Language: "spa", Country: "ES"}},
+			[]envs.Locale{"eng-US", "spa-ES"},
 			[]string{"Chef"},
 			"",
 		},

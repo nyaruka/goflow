@@ -9,7 +9,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Hi there, let's go to the child.",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -35,7 +35,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Welcome to the child, say yes or no!",
                         "urn": "tel:+12065551212",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -114,7 +114,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -166,7 +166,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -286,7 +286,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Nope, that's neither.",
                         "urn": "tel:+12065551212",
                         "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -378,7 +378,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -430,7 +430,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -473,7 +473,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -615,7 +615,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "You said yes",
                         "urn": "tel:+12065551212",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -630,7 +630,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Hooray, you did it and said yes. Say yes or no!",
                         "urn": "tel:+12065551212",
                         "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -730,7 +730,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -756,7 +756,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -814,7 +814,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -857,7 +857,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -900,7 +900,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -1044,7 +1044,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "Nope, that's neither",
                         "urn": "tel:+12065551212",
                         "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1136,7 +1136,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -1162,7 +1162,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -1205,7 +1205,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1285,7 +1285,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -1328,7 +1328,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -1371,7 +1371,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -1515,7 +1515,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "language": "eng",
+                        "locale": "eng-US",
                         "text": "All Done! You said yes in the child and no here.",
                         "urn": "tel:+12065551212",
                         "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -1595,7 +1595,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hi there, let's go to the child.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -1621,7 +1621,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Hooray, you did it and said yes. Say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
@@ -1664,7 +1664,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither",
                                     "urn": "tel:+12065551212",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1707,7 +1707,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "All Done! You said yes in the child and no here.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
@@ -1789,7 +1789,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Welcome to the child, say yes or no!",
                                     "urn": "tel:+12065551212",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -1832,7 +1832,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "Nope, that's neither.",
                                     "urn": "tel:+12065551212",
                                     "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -1875,7 +1875,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "language": "eng",
+                                    "locale": "eng-US",
                                     "text": "You said yes",
                                     "urn": "tel:+12065551212",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"

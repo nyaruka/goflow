@@ -449,7 +449,7 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"text": "Hi there",
 					"attachments": ["audio:http://example.com/hi.mp3"],
-					"language": "eng"
+					"locale": "eng"
 				}
 			}`,
 		},
@@ -461,7 +461,7 @@ func TestEventMarshaling(t *testing.T) {
 					"Hi there",
 					nil, nil, nil,
 					flows.NilMsgTopic,
-					envs.NilLanguage,
+					envs.NilLocale,
 					flows.NilUnsendableReason,
 				),
 			),
@@ -489,7 +489,7 @@ func TestEventMarshaling(t *testing.T) {
 					[]string{"yes", "no"},
 					nil,
 					flows.MsgTopicAgent,
-					"eng",
+					"eng-US",
 					flows.UnsendableReasonContactStatus,
 				),
 			),
@@ -507,7 +507,7 @@ func TestEventMarshaling(t *testing.T) {
 					"attachments": ["image/jpeg:http://s3.amazon.com/bucket/test.jpg"],
 					"quick_replies": ["yes", "no"],
 					"topic": "agent",
-					"language": "eng",
+					"locale": "eng-US",
 					"unsendable_reason": "contact_status"
 				}
 			}`,

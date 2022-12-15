@@ -5,7 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
-                        "language": "eng",
+                        "locale": "eng-",
                         "text": "Hi! What can I help you with?",
                         "unsendable_reason": "no_destination",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -73,7 +73,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -324,7 +324,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
-                                    "language": "eng",
+                                    "locale": "eng-",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"

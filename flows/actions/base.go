@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 
@@ -390,6 +389,10 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 	}
 
 	return user
+}
+
+func currentLocale(run flows.Run, lang envs.Language) envs.Locale {
+	return envs.NewLocale(lang, run.Environment().DefaultCountry())
 }
 
 //------------------------------------------------------------------------------------------
