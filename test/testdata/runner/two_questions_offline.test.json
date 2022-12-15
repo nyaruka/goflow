@@ -5,6 +5,7 @@
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
                     "msg": {
+                        "language": "eng",
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
                         "unsendable_reason": "no_destination",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -61,6 +62,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -162,6 +164,7 @@
                 {
                     "created_on": "2018-07-06T12:30:16.123456789Z",
                     "msg": {
+                        "language": "eng",
                         "text": "Red it is! What is your favorite soda? (pepsi/coke)",
                         "unsendable_reason": "no_destination",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -235,6 +238,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -269,6 +273,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -386,6 +391,7 @@
                 {
                     "created_on": "2018-07-06T12:30:30.123456789Z",
                     "msg": {
+                        "language": "eng",
                         "text": "Great, you like pepsi. Finish by sending us a selfie!",
                         "unsendable_reason": "no_destination",
                         "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -462,6 +468,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -496,6 +503,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -530,6 +538,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -710,6 +719,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -744,6 +754,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
@@ -778,6 +789,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "msg": {
+                                    "language": "eng",
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"

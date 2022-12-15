@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -50,7 +49,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 // Execute runs this action
 func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
-	localizedText, textLanguage := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
+	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplate(localizedText)
 	if err != nil {
 		logEvent(events.NewError(err))
@@ -69,8 +68,8 @@ func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows
 	// an IVR flow must have been started with a call
 	call := run.Session().Trigger().Call()
 
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, localizedAudioURL)
-	logEvent(events.NewIVRCreated(msg, map[string]envs.Language{"text": textLanguage}))
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), evaluatedText, localizedAudioURL, textLang)
+	logEvent(events.NewIVRCreated(msg))
 
 	return nil
 }

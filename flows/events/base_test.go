@@ -434,8 +434,8 @@ func TestEventMarshaling(t *testing.T) {
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 					"Hi there",
 					"http://example.com/hi.mp3",
+					"eng",
 				),
-				map[string]envs.Language{"text": "eng"},
 			),
 			`{
 				"type": "ivr_created",
@@ -448,9 +448,9 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
 					},
 					"text": "Hi there",
-					"attachments": ["audio:http://example.com/hi.mp3"]
-				},
-				"localization": {"text": "eng"}
+					"attachments": ["audio:http://example.com/hi.mp3"],
+					"language": "eng"
+				}
 			}`,
 		},
 		{
@@ -461,9 +461,9 @@ func TestEventMarshaling(t *testing.T) {
 					"Hi there",
 					nil, nil, nil,
 					flows.NilMsgTopic,
+					envs.NilLanguage,
 					flows.NilUnsendableReason,
 				),
-				nil,
 			),
 			`{
 				"type": "msg_created",
@@ -489,9 +489,9 @@ func TestEventMarshaling(t *testing.T) {
 					[]string{"yes", "no"},
 					nil,
 					flows.MsgTopicAgent,
+					"eng",
 					flows.UnsendableReasonContactStatus,
 				),
-				map[string]envs.Language{"text": "eng", "attachments": "spa"},
 			),
 			`{
 				"type": "msg_created",
@@ -507,9 +507,9 @@ func TestEventMarshaling(t *testing.T) {
 					"attachments": ["image/jpeg:http://s3.amazon.com/bucket/test.jpg"],
 					"quick_replies": ["yes", "no"],
 					"topic": "agent",
+					"language": "eng",
 					"unsendable_reason": "contact_status"
-				},
-				"localization": {"text": "eng", "attachments": "spa"}
+				}
 			}`,
 		},
 		{

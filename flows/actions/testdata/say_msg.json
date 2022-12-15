@@ -42,10 +42,8 @@
                     "text": "Hi there Ryan Lewis",
                     "attachments": [
                         "audio:http://uploads.temba.io/welcome.m4a"
-                    ]
-                },
-                "localization": {
-                    "text": "eng"
+                    ],
+                    "language": "eng"
                 }
             }
         ],
@@ -84,10 +82,8 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hi there Ryan Lewis"
-                },
-                "localization": {
-                    "text": "eng"
+                    "text": "Hi there Ryan Lewis",
+                    "language": "eng"
                 }
             }
         ]
@@ -129,10 +125,8 @@
                     "text": "Hola Ryan Lewis",
                     "attachments": [
                         "audio:http://uploads.temba.io/bienvenido.m4a"
-                    ]
-                },
-                "localization": {
-                    "text": "spa"
+                    ],
+                    "language": "spa"
                 }
             }
         ],
