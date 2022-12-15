@@ -80,16 +80,16 @@ func (a *baseAction) Validate() error { return nil }
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, map[string]envs.Language) {
 	// localize and evaluate the message text
-	localizedText, _ := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
+	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
 	evaluatedText, err := run.EvaluateTemplate(localizedText[0])
 	if err != nil {
 		logEvent(events.NewError(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments, _ := run.GetTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
+	translatedAttachments, attLang := run.GetTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for _, a := range translatedAttachments {
 		evaluatedAttachment, err := run.EvaluateTemplate(a)
@@ -108,7 +108,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, a
 	}
 
 	// localize and evaluate the quick replies
-	translatedQuickReplies, _ := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
+	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, err := run.EvaluateTemplate(qr)
@@ -122,7 +122,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, a
 		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
 	}
 
-	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
+	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies, map[string]envs.Language{"text": txtLang, "attachments": attLang, "quick_replies": qrsLang}
 }
 
 // helper to save a run result and log it as an event

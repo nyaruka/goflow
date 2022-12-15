@@ -4,6 +4,11 @@
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:02.123456789Z",
+                    "localization": {
+                        "attachments": "eng",
+                        "quick_replies": "eng",
+                        "text": "eng"
+                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -67,6 +72,11 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "localization": {
+                                    "attachments": "eng",
+                                    "quick_replies": "eng",
+                                    "text": "eng"
+                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -192,6 +202,11 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "localization": {
+                        "attachments": "eng",
+                        "quick_replies": "eng",
+                        "text": "eng"
+                    },
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -275,6 +290,11 @@
                         "events": [
                             {
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "localization": {
+                                    "attachments": "eng",
+                                    "quick_replies": "eng",
+                                    "text": "eng"
+                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -330,6 +350,11 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "localization": {
+                                    "attachments": "eng",
+                                    "quick_replies": "eng",
+                                    "text": "eng"
+                                },
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",

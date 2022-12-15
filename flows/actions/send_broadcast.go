@@ -74,7 +74,7 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 	for _, language := range languages {
 		languages := []envs.Language{language, run.Flow().Language()}
 
-		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
+		evaluatedText, evaluatedAttachments, evaluatedQuickReplies, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
 		translations[language] = &events.BroadcastTranslation{
 			Text:         evaluatedText,
 			Attachments:  evaluatedAttachments,

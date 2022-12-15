@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -99,7 +98,6 @@ func TestIVRMsgOut(t *testing.T) {
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
-		envs.Language("eng"),
 		"https://example.com/test.mp3",
 	)
 
@@ -112,7 +110,6 @@ func TestIVRMsgOut(t *testing.T) {
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
-		"attachments": ["audio:https://example.com/test.mp3"],
-		"text_language": "eng"
+		"attachments": ["audio:https://example.com/test.mp3"]
 	}`), marshaled, "JSON mismatch")
 }
