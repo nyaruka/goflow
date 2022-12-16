@@ -450,8 +450,6 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
-                        "language": "eng",
-                        "country": "US",
                         "variables": [
                             "Ryan Lewis",
                             "boy"
@@ -533,15 +531,13 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
-                        "language": "spa",
-                        "country": "",
                         "variables": [
                             "Ryan Lewis",
                             "niño"
                         ],
                         "namespace": ""
                     },
-                    "locale": "eng-US"
+                    "locale": "spa"
                 }
             }
         ],
@@ -604,11 +600,9 @@
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
                         },
-                        "language": "eng",
-                        "country": "",
                         "namespace": ""
                     },
-                    "locale": "eng-US"
+                    "locale": "eng"
                 }
             }
         ],
@@ -674,11 +668,9 @@
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
                         },
-                        "language": "eng",
-                        "country": "",
                         "namespace": ""
                     },
-                    "locale": "spa-US"
+                    "locale": "eng"
                 }
             }
         ],

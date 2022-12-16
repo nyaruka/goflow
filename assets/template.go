@@ -17,7 +17,7 @@ type TemplateUUID uuids.UUID
 //	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
 //	  "translations": [
 //	    {
-//	       "language": "eng",
+//	       "locale": "eng-US",
 //	       "content": "Hi {{1}}, are you still experiencing your issue?",
 //	       "channel": {
 //	         "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
@@ -25,7 +25,7 @@ type TemplateUUID uuids.UUID
 //	       }
 //	    },
 //	    {
-//	       "language": "fra",
+//	       "locale": "fra",
 //	       "content": "Bonjour {{1}}",
 //	       "channel": {
 //	         "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
@@ -45,8 +45,7 @@ type Template interface {
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
-	Language() envs.Language
-	Country() envs.Country
+	Locale() envs.Locale
 	Namespace() string
 	VariableCount() int
 	Channel() ChannelReference
