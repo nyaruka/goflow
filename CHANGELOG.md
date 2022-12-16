@@ -1,3 +1,9 @@
+v0.178.0 (2022-12-16)
+-------------------------
+ * Replace TemplateTranslation.language and country fields with single locale field and also don't duplicate locale on MsgTemplating since it's now on the message itself
+ * Derive contact country from tel urns if no preferred channel
+ * Change msg_out.language to locale
+
 v0.177.0 (2022-12-15)
 -------------------------
  * Reduce msg/ivr_created localization blobs to a single language
