@@ -1,3 +1,7 @@
+v0.178.1 (2022-12-16)
+-------------------------
+ * Tweak envs.NewLocale(..) to allow passing NilCountry
+
 v0.178.0 (2022-12-16)
 -------------------------
  * Replace TemplateTranslation.language and country fields with single locale field and also don't duplicate locale on MsgTemplating since it's now on the message itself
