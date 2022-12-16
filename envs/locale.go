@@ -7,8 +7,8 @@ import (
 	"golang.org/x/text/language"
 )
 
-// Locale is the combination of a language and country, e.g. US English, Brazilian Portuguese, encoded as the language
-// code followed by the country code, e.g. eng-US, por-BR
+// Locale is the combination of a language and optional country, e.g. US English, Brazilian Portuguese, encoded as the
+// language code followed by the country code, e.g. eng-US, por-BR
 type Locale string
 
 // NewLocale creates a new locale
@@ -16,7 +16,10 @@ func NewLocale(l Language, c Country) Locale {
 	if l == NilLanguage {
 		return NilLocale
 	}
-	return Locale(fmt.Sprintf("%s-%s", l, c))
+	if c == NilCountry {
+		return Locale(l) // e.g. "eng", "por"
+	}
+	return Locale(fmt.Sprintf("%s-%s", l, c)) // e.g. "eng-US", "por-BR"
 }
 
 // ToBCP47 returns the BCP47 code, e.g. en-US, pt, pt-BR
