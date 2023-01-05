@@ -311,7 +311,7 @@ var _ flows.Flow = (*flow)(nil)
 type flowEnvelope struct {
 	migrations.Header13
 
-	Language           envs.Language   `json:"language" validate:"required"`
+	Language           envs.Language   `json:"language" validate:"required,language"`
 	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
 	ExpireAfterMinutes int             `json:"expire_after_minutes"`

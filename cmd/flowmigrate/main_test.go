@@ -79,7 +79,7 @@ func TestMigrate(t *testing.T) {
 	for _, tc := range testCases {
 		input := strings.NewReader(tc.input)
 
-		migrated, err := main.Migrate(input, nil, "http://temba.io/", true)
+		migrated, err := main.Migrate(input, nil, "http://temba.io/", "eng", true)
 		require.NoError(t, err)
 
 		test.AssertEqualJSON(t, []byte(tc.output), migrated, "Migrated flow mismatch")

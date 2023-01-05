@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	utils.RegisterValidatorAlias("language", "eq=base|len=3", func(validator.FieldError) string {
+	utils.RegisterValidatorAlias("language", "len=3", func(validator.FieldError) string {
 		return "is not a valid language code"
 	})
 }
