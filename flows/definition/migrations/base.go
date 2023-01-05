@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
 
@@ -15,7 +16,7 @@ import (
 )
 
 // MigrationFunc is a function that can migrate a flow definition from one version to another
-type MigrationFunc func(Flow) (Flow, error)
+type MigrationFunc func(Flow, *Config) (Flow, error)
 
 var registered = map[*semver.Version]MigrationFunc{}
 
@@ -38,16 +39,19 @@ type Header13 struct {
 
 // Config configures how flow migrations are handled
 type Config struct {
-	BaseMediaURL string
+	BaseMediaURL    string
+	DefaultLanguage envs.Language
 }
 
+var DefaultConfig = &Config{DefaultLanguage: "eng"}
+
 // MigrateToLatest migrates the given flow definition to the latest version
-func MigrateToLatest(data []byte, config *Config) ([]byte, error) {
-	return MigrateToVersion(data, nil, config)
+func MigrateToLatest(data []byte, cfg *Config) ([]byte, error) {
+	return MigrateToVersion(data, nil, cfg)
 }
 
 // MigrateToVersion migrates the given flow definition to the given version
-func MigrateToVersion(data []byte, to *semver.Version, config *Config) ([]byte, error) {
+func MigrateToVersion(data []byte, to *semver.Version, cfg *Config) ([]byte, error) {
 	// try to read new style header (uuid, name, spec_version)
 	header := &Header13{}
 	err := utils.UnmarshalAndValidate(data, header)
@@ -55,13 +59,9 @@ func MigrateToVersion(data []byte, to *semver.Version, config *Config) ([]byte, 
 	if err != nil {
 		// could this be a legacy definition?
 		if legacy.IsPossibleDefinition(data) {
-			if config == nil {
-				return nil, errors.New("unable to migrate what appears to be a legacy definition without a migration config")
-			}
-
 			// try to migrate it forwards to 13.0.0
 			var err error
-			data, err = legacy.MigrateDefinition(data, config.BaseMediaURL)
+			data, err = legacy.MigrateDefinition(data, cfg.BaseMediaURL)
 			if err != nil {
 				return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
 			}
@@ -75,10 +75,10 @@ func MigrateToVersion(data []byte, to *semver.Version, config *Config) ([]byte, 
 		return nil, errors.Wrap(err, "unable to read flow header")
 	}
 
-	return migrate(data, header.SpecVersion, to)
+	return migrate(data, header.SpecVersion, to, cfg)
 }
 
-func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, error) {
+func migrate(data []byte, from *semver.Version, to *semver.Version, cfg *Config) ([]byte, error) {
 	// get all newer versions than this version
 	versions := make([]*semver.Version, 0)
 	for v := range registered {
@@ -101,7 +101,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version) ([]byte, err
 	}
 
 	for _, version := range versions {
-		migrated, err = registered[version](migrated)
+		migrated, err = registered[version](migrated, cfg)
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to migrate to version %s", version.String())
 		}

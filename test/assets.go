@@ -24,7 +24,7 @@ func LoadSessionAssets(env envs.Environment, path string) (flows.SessionAssets, 
 		return nil, err
 	}
 
-	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
+	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/", DefaultLanguage: "eng"}
 
 	return engine.NewSessionAssets(env, source, mconfig)
 }

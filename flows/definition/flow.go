@@ -19,7 +19,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.1.0")
+var CurrentSpecVersion = semver.MustParse("13.2.0")
 
 // IsVersionSupported checks the given version is supported
 func IsVersionSupported(v *semver.Version) bool {
@@ -331,6 +331,10 @@ func ReadAsset(a assets.Flow, mc *migrations.Config) (flows.Flow, error) {
 }
 
 func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows.Flow, error) {
+	if mc == nil {
+		mc = migrations.DefaultConfig
+	}
+
 	var err error
 	data, err = migrations.MigrateToLatest(data, mc)
 	if err != nil {

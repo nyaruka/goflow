@@ -3,6 +3,14 @@ package migrations
 // Flow holds a flow definition
 type Flow map[string]interface{}
 
+// Localization returns the localization of this flow
+func (f Flow) Localization() Localization {
+	d, _ := f["localization"].(map[string]interface{})
+	return Localization(d)
+}
+
+type Localization map[string]interface{}
+
 // Nodes returns the nodes in this flow
 func (f Flow) Nodes() []Node {
 	d, _ := f["nodes"].([]interface{})
@@ -29,9 +37,6 @@ func (n Node) Actions() []Action {
 // Router returns the router on this node
 func (n Node) Router() Router {
 	d, _ := n["router"].(map[string]interface{})
-	if d == nil {
-		return nil
-	}
 	return Router(d)
 }
 
