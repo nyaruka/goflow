@@ -29,7 +29,7 @@
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Test Flow",
             "spec_version": "13.2.0",
-            "language": "eng",
+            "language": "und",
             "type": "messaging",
             "nodes": [
                 {
@@ -51,7 +51,7 @@
         }
     },
     {
-        "description": "flow with base language and localization including default language",
+        "description": "flow with base language and localization including und",
         "original": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Test Flow",
@@ -59,7 +59,7 @@
             "language": "base",
             "type": "messaging",
             "localization": {
-                "eng": {
+                "und": {
                     "8eebd020-1af5-431c-b943-aa670fc74da9": {
                         "text": [
                             "Hello"
@@ -96,7 +96,7 @@
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Test Flow",
             "spec_version": "13.2.0",
-            "language": "eng",
+            "language": "und",
             "type": "messaging",
             "localization": {
                 "spa": {

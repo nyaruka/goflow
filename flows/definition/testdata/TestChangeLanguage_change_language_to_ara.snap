@@ -171,14 +171,14 @@
                 "type": "execute_actions"
             },
             "51ad5add-269f-439a-a251-a8e14c6099e2": {
-                "config": {
-                    "cases": {}
-                },
+                "type": "wait_for_response",
                 "position": {
                     "left": 160,
                     "top": 160
                 },
-                "type": "wait_for_response"
+                "config": {
+                    "cases": {}
+                }
             }
         }
     }

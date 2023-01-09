@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
 
@@ -39,11 +38,10 @@ type Header13 struct {
 
 // Config configures how flow migrations are handled
 type Config struct {
-	BaseMediaURL    string
-	DefaultLanguage envs.Language
+	BaseMediaURL string
 }
 
-var DefaultConfig = &Config{DefaultLanguage: "eng"}
+var DefaultConfig = &Config{}
 
 // MigrateToLatest migrates the given flow definition to the latest version
 func MigrateToLatest(data []byte, cfg *Config) ([]byte, error) {

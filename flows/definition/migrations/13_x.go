@@ -11,16 +11,16 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate13_2 replaces "base" as an allowed flow language
+// Migrate13_2 replaces "base" as a flow language with "und" (Undetermined)
 func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
 	language, _ := f["language"].(string)
 	localization := f.Localization()
 
-	// if we don't have a valid language, replace it with the default
+	// if we don't have a valid language, replace it
 	if len(language) != 3 {
-		f["language"] = cfg.DefaultLanguage
+		f["language"] = "und"
 		if localization != nil {
-			delete(localization, string(cfg.DefaultLanguage))
+			delete(localization, "und")
 		}
 	}
 

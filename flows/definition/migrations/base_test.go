@@ -31,7 +31,7 @@ func TestMigrateToVersion(t *testing.T) {
 	}
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
-	cfg := &migrations.Config{DefaultLanguage: "eng"}
+	cfg := &migrations.Config{}
 
 	for _, version := range versions {
 		testsJSON, err := os.ReadFile(fmt.Sprintf("testdata/migrations/%s.json", version.String()))
@@ -82,7 +82,7 @@ func TestMigrateToLatest(t *testing.T) {
 	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"spec_version": "%s",
-		"language": "eng"
+		"language": "und"
 	}`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 

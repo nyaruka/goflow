@@ -180,7 +180,7 @@
                 {
                     "created_on": "2018-07-06T12:30:24.123456789Z",
                     "msg": {
-                        "locale": "eng-US",
+                        "locale": "und-US",
                         "text": "Clearing name",
                         "unsendable_reason": "no_destination",
                         "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -387,7 +387,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
-                                    "locale": "eng-US",
+                                    "locale": "und-US",
                                     "text": "Clearing name",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -565,7 +565,7 @@
                 {
                     "created_on": "2018-07-06T12:31:02.123456789Z",
                     "msg": {
-                        "locale": "eng-US",
+                        "locale": "und-US",
                         "text": "Clearing name",
                         "unsendable_reason": "no_destination",
                         "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -766,7 +766,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
-                                    "locale": "eng-US",
+                                    "locale": "und-US",
                                     "text": "Clearing name",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -919,7 +919,7 @@
                             {
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-US",
+                                    "locale": "und-US",
                                     "text": "Clearing name",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
@@ -1212,7 +1212,7 @@
                             {
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
-                                    "locale": "eng-US",
+                                    "locale": "und-US",
                                     "text": "Clearing name",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -1365,7 +1365,7 @@
                             {
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "msg": {
-                                    "locale": "eng-US",
+                                    "locale": "und-US",
                                     "text": "Clearing name",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
