@@ -1,10 +1,5 @@
 package mobile
 
-// To build an Android Archive:
-//
-// go get golang.org/x/mobile/cmd/gomobile
-// gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
-
 import (
 	"encoding/json"
 	"time"
