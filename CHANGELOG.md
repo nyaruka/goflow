@@ -1,3 +1,7 @@
+v0.178.2 (2023-01-11)
+-------------------------
+ * Fix and improve mobile bindings to work without wait objects on sessions
+
 v0.178.1 (2022-12-16)
 -------------------------
  * Tweak envs.NewLocale(..) to allow passing NilCountry
