@@ -221,7 +221,10 @@ type MsgWaitEvent struct {
 }
 
 func (e *MsgWaitEvent) Hint() *Hint {
-	return &Hint{target: e.target.Hint}
+	if e.target.Hint != nil {
+		return &Hint{target: e.target.Hint}
+	}
+	return nil
 }
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session

@@ -67,6 +67,7 @@ func TestMobileBindings(t *testing.T) {
 
 	waitEvent := sprint.MsgWaitEvent()
 	assert.NotNil(t, waitEvent)
+	assert.Nil(t, waitEvent.Hint())
 
 	attachments := mobile.NewStringSlice(1)
 	attachments.Add("content://io.rapidpro.surveyor/files/selfie.jpg")
