@@ -65,6 +65,10 @@ func TestMobileBindings(t *testing.T) {
 	modifiers := sprint.Modifiers()
 	assert.Equal(t, 0, modifiers.Length())
 
+	waitEvent := sprint.MsgWaitEvent()
+	assert.NotNil(t, waitEvent)
+	assert.Nil(t, waitEvent.Hint())
+
 	attachments := mobile.NewStringSlice(1)
 	attachments.Add("content://io.rapidpro.surveyor/files/selfie.jpg")
 	msg := mobile.NewMsgIn("8e6f0213-a122-4c50-a430-442085754c16", "Hi there", attachments)
