@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -207,6 +208,22 @@ func (m *Modifier) Payload() string {
 	return m.payload
 }
 
+type Hint struct {
+	target flows.Hint
+}
+
+func (h *Hint) Type() string {
+	return string(h.target.Type())
+}
+
+type MsgWaitEvent struct {
+	target *events.MsgWaitEvent
+}
+
+func (e *MsgWaitEvent) Hint() *Hint {
+	return &Hint{target: e.target.Hint}
+}
+
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
 type Sprint struct {
 	target flows.Sprint
@@ -230,6 +247,17 @@ func (s *Sprint) Events() *EventSlice {
 		events.Add(&Event{type_: event.Type(), payload: string(marshaled)})
 	}
 	return events
+}
+
+// MsgWaitEvent returns the first msg wait event if there is one
+func (s *Sprint) MsgWaitEvent() *MsgWaitEvent {
+	for _, event := range s.target.Events() {
+		switch typed := event.(type) {
+		case *events.MsgWaitEvent:
+			return &MsgWaitEvent{target: typed}
+		}
+	}
+	return nil
 }
 
 // Session represents a session with the flow engine
@@ -263,14 +291,6 @@ func (s *Session) ToJSON() (string, error) {
 		return "", err
 	}
 	return string(data), nil
-}
-
-type Hint struct {
-	target flows.Hint
-}
-
-func (h *Hint) Type() string {
-	return string(h.target.Type())
 }
 
 type Engine struct {
