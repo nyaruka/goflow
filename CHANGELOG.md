@@ -1,3 +1,7 @@
+v0.179.1 (2023-01-18)
+-------------------------
+ * Add migration versions to auto-generated docs
+
 v0.179.0 (2023-01-18)
 -------------------------
  * Add 13.2.0 flow migration to replace "base" as flow language with "und"
