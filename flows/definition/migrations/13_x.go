@@ -11,7 +11,7 @@ func init() {
 }
 
 // Migrate13_2 replaces `base` as a flow language with `und` which indicates text with undetermined language
-// in ISO-639-3.
+// in the ISO-639-3 standard.
 //
 // @version 13_2 "13.2"
 func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
@@ -29,7 +29,7 @@ func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_1 adds a `UUID` property to templating objects [action:send_msg] actions.
+// Migrate13_1 adds a `uuid` property to templating objects in [action:send_msg] actions.
 //
 // @version 13_1 "13.1"
 func Migrate13_1(f Flow, cfg *Config) (Flow, error) {
