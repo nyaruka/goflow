@@ -1,3 +1,7 @@
+v0.179.0 (2023-01-18)
+-------------------------
+ * Add 13.2.0 flow migration to replace "base" as flow language with "und"
+
 v0.178.2 (2023-01-11)
 -------------------------
  * Fix and improve mobile bindings to work without wait objects on sessions
