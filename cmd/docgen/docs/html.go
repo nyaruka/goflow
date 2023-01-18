@@ -35,14 +35,15 @@ var Templates = []struct {
 	Title         string
 	Path          string
 	ContainsTypes []string // used for resolving links
+	TOC           bool
 }{
-	{"Flow Specification", "index.md", nil},
-	{"Flows", "flows.md", []string{"action", "router", "wait"}},
-	{"Expressions", "expressions.md", []string{"type", "operator", "function"}},
-	{"Context", "context.md", []string{"context"}},
-	{"Routing", "routing.md", []string{"test"}},
-	{"Sessions", "sessions.md", []string{"event", "trigger", "resume"}},
-	{"Assets", "assets.md", []string{"asset"}},
+	{"Flow Specification", "index.md", []string{"version"}, false},
+	{"Flows", "flows.md", []string{"action", "router", "wait"}, true},
+	{"Expressions", "expressions.md", []string{"type", "operator", "function"}, true},
+	{"Context", "context.md", []string{"context"}, true},
+	{"Routing", "routing.md", []string{"test"}, true},
+	{"Sessions", "sessions.md", []string{"event", "trigger", "resume"}, true},
+	{"Assets", "assets.md", []string{"asset"}, true},
 }
 
 // ContextFunc is a function which produces values to put the template context
@@ -107,7 +108,7 @@ func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*Ta
 		htmlTemplate := path.Join(baseDir, "cmd/docgen/templates/template.html")
 		htmlContext := map[string]string{"title": template.Title}
 
-		if err := renderHTML(renderedPath, htmlPath, htmlTemplate, htmlContext); err != nil {
+		if err := renderHTML(renderedPath, htmlPath, htmlTemplate, template.TOC, htmlContext); err != nil {
 			return errors.Wrapf(err, "error rendering HTML from %s to %s", renderedPath, htmlPath)
 		}
 
@@ -136,15 +137,17 @@ func renderTemplate(src, dst string, context map[string]string, resolver urlReso
 }
 
 // converts a markdown file to HTML
-func renderHTML(src, dst, htmlTemplate string, variables map[string]string) error {
+func renderHTML(src, dst, htmlTemplate string, toc bool, variables map[string]string) error {
 	panDocArgs := []string{
 		"--from=markdown",
 		"--to=html",
 		"-o", dst,
 		"--standalone",
 		"--template=" + htmlTemplate,
-		"--toc",
-		"--toc-depth=1",
+	}
+
+	if toc {
+		panDocArgs = append(panDocArgs, "--toc", "--toc-depth=1")
 	}
 
 	for k, v := range variables {

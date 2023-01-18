@@ -1,9 +1,8 @@
 package migrations
 
 import (
-	"github.com/nyaruka/gocommon/uuids"
-
 	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/uuids"
 )
 
 func init() {
@@ -11,7 +10,10 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate13_2 replaces "base" as a flow language with "und" (Undetermined)
+// Migrate13_2 replaces `base` as a flow language with `und` which indicates text with undetermined language
+// in ISO-639-3.
+//
+// @version 13_2 "13.2"
 func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
 	language, _ := f["language"].(string)
 	localization := f.Localization()
@@ -27,7 +29,9 @@ func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_1 adds UUID to send_msg templating
+// Migrate13_1 adds a `UUID` property to templating objects [action:send_msg] actions.
+//
+// @version 13_1 "13.1"
 func Migrate13_1(f Flow, cfg *Config) (Flow, error) {
 	for _, node := range f.Nodes() {
 		for _, action := range node.Actions() {

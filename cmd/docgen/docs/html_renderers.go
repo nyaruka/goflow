@@ -37,6 +37,7 @@ func init() {
 	registerContextFunc(createItemListContextFunc("event", renderEventDoc))
 	registerContextFunc(createItemListContextFunc("trigger", renderTriggerDoc))
 	registerContextFunc(createItemListContextFunc("resume", renderResumeDoc))
+	registerContextFunc(createItemListContextFunc("version", renderVersionDoc))
 	registerContextFunc(renderRootContext)
 }
 
@@ -370,6 +371,14 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
 	output.WriteString("```\n")
+	output.WriteString("\n")
+
+	return nil
+}
+
+func renderVersionDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
+	output.WriteString(renderItemTitle(item))
+	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 
 	return nil

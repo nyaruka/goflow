@@ -8,6 +8,8 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/Masterminds/semver"
 )
 
 var searchDirs = []string{
@@ -18,6 +20,7 @@ var searchDirs = []string{
 	"flows",
 	"flows/actions",
 	"flows/definition",
+	"flows/definition/migrations",
 	"flows/events",
 	"flows/inputs",
 	"flows/resumes",
@@ -61,9 +64,17 @@ func FindAllTaggedItems(baseDir string) (map[string][]*TaggedItem, error) {
 		}
 	}
 
-	for _, v := range items {
-		// sort items by their tag value
-		sort.SliceStable(v, func(i, j int) bool { return v[i].tagValue < v[j].tagValue })
+	for t, v := range items {
+		if t == "version" {
+			sort.SliceStable(v, func(i, j int) bool {
+				iv := semver.MustParse(v[i].tagTitle)
+				jv := semver.MustParse(v[j].tagTitle)
+				return jv.LessThan(iv)
+			})
+		} else {
+			// sort items by their tag value
+			sort.SliceStable(v, func(i, j int) bool { return v[i].tagValue < v[j].tagValue })
+		}
 	}
 
 	return items, nil
@@ -89,6 +100,9 @@ func findTaggedItems(baseDir string, searchDir string, callback func(item *Tagge
 		for _, t := range p.Types {
 			tryToParse(t.Doc, t.Name)
 			for _, m := range t.Methods {
+				tryToParse(m.Doc, m.Name)
+			}
+			for _, m := range t.Funcs {
 				tryToParse(m.Doc, m.Name)
 			}
 		}
