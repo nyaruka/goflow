@@ -45,12 +45,12 @@ func Migrate(reader io.Reader, toVersion *semver.Version, baseMediaURL string, p
 		return nil, err
 	}
 
-	var migConfig *migrations.Config
+	var mCfg *migrations.Config
 	if baseMediaURL != "" {
-		migConfig = &migrations.Config{BaseMediaURL: baseMediaURL}
+		mCfg = &migrations.Config{BaseMediaURL: baseMediaURL}
 	}
 
-	migrated, err := migrations.MigrateToVersion(data, toVersion, migConfig)
+	migrated, err := migrations.MigrateToVersion(data, toVersion, mCfg)
 	if err != nil {
 		return nil, err
 	}

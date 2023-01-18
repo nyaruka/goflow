@@ -31,6 +31,8 @@ func TestMigrateToVersion(t *testing.T) {
 	}
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
+	cfg := &migrations.Config{}
+
 	for _, version := range versions {
 		testsJSON, err := os.ReadFile(fmt.Sprintf("testdata/migrations/%s.json", version.String()))
 		require.NoError(t, err)
@@ -49,7 +51,7 @@ func TestMigrateToVersion(t *testing.T) {
 
 			uuids.SetGenerator(uuids.NewSeededGenerator(123456))
 
-			actual, err := migrations.MigrateToVersion(tc.Original, version, nil)
+			actual, err := migrations.MigrateToVersion(tc.Original, version, cfg)
 			assert.NoError(t, err, "unexpected error in %s", testName)
 
 			test.AssertEqualJSON(t, tc.Migrated, actual, "migration mismatch in %s", testName)
@@ -64,22 +66,23 @@ func TestMigrateToVersion(t *testing.T) {
 func TestMigrateToLatest(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	migrated, err := migrations.MigrateToLatest([]byte(`[]`), nil)
+	migrated, err := migrations.MigrateToLatest([]byte(`[]`), migrations.DefaultConfig)
 	assert.EqualError(t, err, "unable to read flow header: json: cannot unmarshal array into Go value of type migrations.Header13")
 	assert.Nil(t, migrated)
 
-	_, err = migrations.MigrateToLatest([]byte(`{}`), nil)
+	_, err = migrations.MigrateToLatest([]byte(`{}`), migrations.DefaultConfig)
 	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'spec_version' is required")
 
 	migrated, err = migrations.MigrateToLatest([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"spec_version": "13.0"
-	}`), nil)
+	}`), migrations.DefaultConfig)
 	require.NoError(t, err)
 
 	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"spec_version": "%s"
+		"spec_version": "%s",
+		"language": "und"
 	}`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 
@@ -91,7 +94,7 @@ func TestMigrateToLatest(t *testing.T) {
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []
-	}`), nil)
+	}`), migrations.DefaultConfig)
 
 	require.NoError(t, err)
 
@@ -115,7 +118,7 @@ func TestMigrateToLatest(t *testing.T) {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "Test Flow"
 		}
-	}`), &migrations.Config{})
+	}`), migrations.DefaultConfig)
 
 	require.NoError(t, err)
 
@@ -135,19 +138,6 @@ func TestMigrateToLatest(t *testing.T) {
 		}
 	}`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
-
-	// try to migrate legacy definition without migration config
-	_, err = migrations.MigrateToLatest([]byte(`{
-		"base_language": "eng",
-		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
-		"flow_type": "M",
-		"action_sets": [],
-		"metadata": {
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-			"name": "Test Flow"
-		}
-	}`), nil)
-	assert.EqualError(t, err, "unable to migrate what appears to be a legacy definition without a migration config")
 }
 
 func TestClone(t *testing.T) {
