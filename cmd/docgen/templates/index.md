@@ -5,3 +5,9 @@
  * [Routing](routing.html)
  * [Sessions](sessions.html)
  * [Assets](assets.html)
+
+# Versions
+
+<div class="versions">
+{{ .versionDocs }}
+</div>
