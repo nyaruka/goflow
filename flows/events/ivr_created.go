@@ -22,7 +22,7 @@ const TypeIVRCreated string = "ivr_created"
 //	    "urn": "tel:+12065551212",
 //	    "text": "hi there",
 //	    "attachments": ["audio:https://s3.amazon.com/mybucket/attachment.m4a"],
-//	    "language": "eng"
+//	    "locale": "eng-US"
 //	  }
 //	}
 //
