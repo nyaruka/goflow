@@ -1,8 +1,10 @@
 package envs
 
 import (
-	"github.com/nyaruka/goflow/utils"
+	"database/sql/driver"
 
+	"github.com/nyaruka/gocommon/dbutil"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/phonenumbers"
 	validator "gopkg.in/go-playground/validator.v9"
 )
@@ -27,3 +29,7 @@ func DeriveCountryFromTel(number string) Country {
 	}
 	return Country(phonenumbers.GetRegionCodeForNumber(parsed))
 }
+
+// Place nicely with NULLs if persisting to a database
+func (c *Country) Scan(v any) error            { return dbutil.ScanNullString(v, c) }
+func (c Country) Value() (driver.Value, error) { return dbutil.NullStringValue(c) }
