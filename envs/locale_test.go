@@ -20,6 +20,21 @@ func TestLocale(t *testing.T) {
 	l, c = envs.NilLocale.ToParts()
 	assert.Equal(t, envs.NilLanguage, l)
 	assert.Equal(t, envs.NilCountry, c)
+
+	v, err := envs.NewLocale("eng", "US").Value()
+	assert.NoError(t, err)
+	assert.Equal(t, "eng-US", v)
+
+	v, err = envs.NilLanguage.Value()
+	assert.NoError(t, err)
+	assert.Nil(t, v)
+
+	var lc envs.Locale
+	assert.NoError(t, lc.Scan("eng-US"))
+	assert.Equal(t, envs.Locale("eng-US"), lc)
+
+	assert.NoError(t, lc.Scan(nil))
+	assert.Equal(t, envs.NilLocale, lc)
 }
 
 func TestToBCP47(t *testing.T) {

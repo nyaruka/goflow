@@ -18,4 +18,19 @@ func TestLanguage(t *testing.T) {
 
 	_, err = envs.ParseLanguage("xzx")
 	assert.EqualError(t, err, "unrecognized language code: xzx")
+
+	v, err := envs.Language("eng").Value()
+	assert.NoError(t, err)
+	assert.Equal(t, "eng", v)
+
+	v, err = envs.NilLanguage.Value()
+	assert.NoError(t, err)
+	assert.Nil(t, v)
+
+	var l envs.Language
+	assert.NoError(t, l.Scan("eng"))
+	assert.Equal(t, envs.Language("eng"), l)
+
+	assert.NoError(t, l.Scan(nil))
+	assert.Equal(t, envs.NilLanguage, l)
 }

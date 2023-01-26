@@ -1,9 +1,11 @@
 package envs
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/dbutil"
 	"golang.org/x/text/language"
 )
 
@@ -63,3 +65,7 @@ func (l Locale) ToParts() (Language, Country) {
 }
 
 var NilLocale = Locale("")
+
+// Place nicely with NULLs if persisting to a database
+func (l *Locale) Scan(v any) error            { return dbutil.ScanNullString(v, l) }
+func (l Locale) Value() (driver.Value, error) { return dbutil.NullStringValue(l) }
