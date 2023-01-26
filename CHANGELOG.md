@@ -1,3 +1,9 @@
+v0.180.0 (2023-01-26)
+-------------------------
+ * Make envs.Language, envs.Country and envs.Locale play nice with NULLs when persisting
+ * Fix docstring on ivr_created event
+ * Fix wording in spec migration comments
+
 v0.179.1 (2023-01-18)
 -------------------------
  * Add migration versions to auto-generated docs
