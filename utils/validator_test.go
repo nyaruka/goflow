@@ -6,11 +6,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/go-playground/validator/v10"
 	_ "github.com/nyaruka/goflow/envs"
 	_ "github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-	"gopkg.in/go-playground/validator.v9"
-
 	"github.com/stretchr/testify/assert"
 )
 

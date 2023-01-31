@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 var redacted = "********"
@@ -38,10 +37,9 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 // ContactURN represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3
 // components: scheme, path, and display (optional). For example:
 //
-//  - _tel:+16303524567_
-//  - _twitterid:54784326227#nyaruka_
-//  - _telegram:34642632786#bobby_
-//
+//   - _tel:+16303524567_
+//   - _twitterid:54784326227#nyaruka_
+//   - _telegram:34642632786#bobby_
 type ContactURN struct {
 	urn     urns.URN
 	channel *Channel

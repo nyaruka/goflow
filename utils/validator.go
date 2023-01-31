@@ -6,10 +6,9 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/jsonx"
-
 	"github.com/pkg/errors"
-	"gopkg.in/go-playground/validator.v9"
 )
 
 // our system validator, it can be shared across threads
@@ -92,7 +91,6 @@ func (e ValidationErrors) Error() string {
 // field <fieldname> <tag specific message>
 //
 // For example: "field 'flows' is required"
-//
 func Validate(obj interface{}) error {
 	var err error
 

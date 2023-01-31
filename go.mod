@@ -5,10 +5,11 @@ go 1.19
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
-	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220527190237-ee62e23da966
+	github.com/antlr/antlr4/runtime/Go/antlr v1.4.10
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
-	github.com/nyaruka/gocommon v1.34.0
+	github.com/go-playground/validator/v10 v10.11.2
+	github.com/nyaruka/gocommon v1.34.1
 	github.com/nyaruka/null/v2 v2.0.0
 	github.com/nyaruka/phonenumbers v1.1.5
 	github.com/olivere/elastic/v7 v7.0.32
@@ -19,7 +20,6 @@ require (
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 	golang.org/x/net v0.5.0
 	golang.org/x/text v0.6.0
-	gopkg.in/go-playground/validator.v9 v9.31.0
 )
 
 require (
@@ -34,8 +34,9 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/crypto v0.5.0 // indirect
+	golang.org/x/sys v0.4.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
