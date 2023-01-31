@@ -9,13 +9,14 @@ require (
 	github.com/blevesearch/segment v0.9.0
 	github.com/buger/jsonparser v1.1.1
 	github.com/nyaruka/gocommon v1.34.0
+	github.com/nyaruka/null/v2 v2.0.0
 	github.com/nyaruka/phonenumbers v1.1.4
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.2.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9
+	golang.org/x/exp v0.0.0-20230129154200-a960b3787bd2
 	golang.org/x/net v0.2.0
 	golang.org/x/text v0.4.0
 	gopkg.in/go-playground/validator.v9 v9.31.0
@@ -29,10 +30,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/gofrs/uuid v4.3.1+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/lib/pq v1.10.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

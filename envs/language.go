@@ -3,8 +3,8 @@ package envs
 import (
 	"database/sql/driver"
 
-	"github.com/nyaruka/gocommon/dbutil"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/null/v2"
 	"github.com/pkg/errors"
 	"golang.org/x/text/language"
 	"gopkg.in/go-playground/validator.v9"
@@ -36,6 +36,8 @@ func ParseLanguage(lang string) (Language, error) {
 	return Language(base.ISO3()), nil
 }
 
-// Place nicely with NULLs if persisting to a database
-func (l *Language) Scan(v any) error            { return dbutil.ScanNullString(v, l) }
-func (l Language) Value() (driver.Value, error) { return dbutil.NullStringValue(l) }
+// Place nicely with NULLs if persisting to a database or JSON
+func (l *Language) Scan(value any) error         { return null.ScanString(value, l) }
+func (l Language) Value() (driver.Value, error)  { return null.StringValue(l) }
+func (l Language) MarshalJSON() ([]byte, error)  { return null.MarshalString(l) }
+func (l *Language) UnmarshalJSON(b []byte) error { return null.UnmarshalString(b, l) }
