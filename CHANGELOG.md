@@ -1,3 +1,8 @@
+v0.181.0 (2023-02-01)
+-------------------------
+ * Update to validator v10
+ * Update to nyaruka/null v2
+
 v0.180.0 (2023-01-26)
 -------------------------
  * Make envs.Language, envs.Country and envs.Locale play nice with NULLs when persisting
