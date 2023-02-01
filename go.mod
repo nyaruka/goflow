@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
-	github.com/antlr/antlr4/runtime/Go/antlr v1.4.10
+	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220527190237-ee62e23da966
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.11.2
