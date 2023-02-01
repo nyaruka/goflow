@@ -7,11 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {

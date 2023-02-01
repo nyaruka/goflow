@@ -3,10 +3,10 @@ package envs
 import (
 	"database/sql/driver"
 
-	"github.com/nyaruka/gocommon/dbutil"
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/null/v2"
 	"github.com/nyaruka/phonenumbers"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {
@@ -30,6 +30,8 @@ func DeriveCountryFromTel(number string) Country {
 	return Country(phonenumbers.GetRegionCodeForNumber(parsed))
 }
 
-// Place nicely with NULLs if persisting to a database
-func (c *Country) Scan(v any) error            { return dbutil.ScanNullString(v, c) }
-func (c Country) Value() (driver.Value, error) { return dbutil.NullStringValue(c) }
+// Place nicely with NULLs if persisting to a database or JSON
+func (c *Country) Scan(value any) error         { return null.ScanString(value, c) }
+func (c Country) Value() (driver.Value, error)  { return null.StringValue(c) }
+func (c Country) MarshalJSON() ([]byte, error)  { return null.MarshalString(c) }
+func (c *Country) UnmarshalJSON(b []byte) error { return null.UnmarshalString(b, c) }

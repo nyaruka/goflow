@@ -3,9 +3,9 @@ package assets
 import (
 	"fmt"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/utils"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {

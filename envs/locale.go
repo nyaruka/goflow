@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nyaruka/gocommon/dbutil"
+	"github.com/nyaruka/null/v2"
 	"golang.org/x/text/language"
 )
 
@@ -66,6 +66,8 @@ func (l Locale) ToParts() (Language, Country) {
 
 var NilLocale = Locale("")
 
-// Place nicely with NULLs if persisting to a database
-func (l *Locale) Scan(v any) error            { return dbutil.ScanNullString(v, l) }
-func (l Locale) Value() (driver.Value, error) { return dbutil.NullStringValue(l) }
+// Place nicely with NULLs if persisting to a database or JSON
+func (l *Locale) Scan(value any) error         { return null.ScanString(value, l) }
+func (l Locale) Value() (driver.Value, error)  { return null.StringValue(l) }
+func (l Locale) MarshalJSON() ([]byte, error)  { return null.MarshalString(l) }
+func (l *Locale) UnmarshalJSON(b []byte) error { return null.UnmarshalString(b, l) }

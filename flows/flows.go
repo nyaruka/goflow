@@ -1,9 +1,8 @@
 package flows
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/goflow/utils"
-
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {
