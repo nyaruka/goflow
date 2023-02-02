@@ -1,3 +1,9 @@
+v0.182.0 (2023-02-02)
+-------------------------
+ * Reorganize ANTLR generated code as per recommendations in ANTLR README
+ * Upgrade to latest ANTLR and rebuild grammars
+ * Add support for contact queries in broadcasts
+
 v0.181.0 (2023-02-01)
 -------------------------
  * Update to validator v10
