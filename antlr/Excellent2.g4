@@ -1,7 +1,5 @@
 grammar Excellent2;
 
-// kept for historical records
-
 import LexUnicode;
 
 COMMA: ',';

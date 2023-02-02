@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
-	"github.com/nyaruka/goflow/excellent/gen"
+	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
