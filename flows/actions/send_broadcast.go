@@ -56,13 +56,13 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	groupRefs, contactRefs, _, urnList, err := a.resolveRecipients(run, logEvent)
+	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
 	}
 
 	// footgun prevention
-	if run.Session().BatchStart() && len(groupRefs) > 0 {
+	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
 		logEvent(events.NewErrorf("can't send broadcasts to groups during batch starts"))
 		return nil
 	}
@@ -82,10 +82,11 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 		}
 	}
 
-	// if we have any recipients, log an event
-	if len(urnList) > 0 || len(contactRefs) > 0 || len(groupRefs) > 0 {
-		logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, urnList))
+	// if we don't have any recipients, noop
+	if !(len(urnList) > 0 || len(groupRefs) > 0 || len(contactRefs) > 0 || a.ContactQuery != "") {
+		return nil
 	}
 
+	logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList))
 	return nil
 }
