@@ -1,4 +1,4 @@
-// Code generated from Excellent1.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
 
 package gen // Excellent1
 import (
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -104,7 +104,7 @@ func NewExcellent1Parser(input antlr.TokenStream) *Excellent1Parser {
 	this.RuleNames = staticData.ruleNames
 	this.LiteralNames = staticData.literalNames
 	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "Excellent1.g4"
+	this.GrammarFileName = "java-escape"
 
 	return this
 }
@@ -1352,7 +1352,7 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
-		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent1ParserLPAREN)|(1<<Excellent1ParserMINUS)|(1<<Excellent1ParserDECIMAL)|(1<<Excellent1ParserSTRING)|(1<<Excellent1ParserTRUE)|(1<<Excellent1ParserFALSE)|(1<<Excellent1ParserNAME))) != 0 {
+		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&2031652) != 0 {
 			{
 				p.SetState(14)
 				p.Parameters()
@@ -1550,7 +1550,7 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 
 					_la = p.GetTokenStream().LA(1)
 
-					if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent1ParserLTE)|(1<<Excellent1ParserLT)|(1<<Excellent1ParserGTE)|(1<<Excellent1ParserGT))) != 0) {
+					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&30720) != 0) {
 						var _ri = p.GetErrorHandler().RecoverInline(p)
 
 						localctx.(*ComparisonExpressionContext).op = _ri
@@ -1732,7 +1732,7 @@ func (p *Excellent1Parser) Fnname() (localctx IFnnameContext) {
 		p.SetState(55)
 		_la = p.GetTokenStream().LA(1)
 
-		if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent1ParserTRUE)|(1<<Excellent1ParserFALSE)|(1<<Excellent1ParserNAME))) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1835008) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)

@@ -1,4 +1,4 @@
-// Code generated from Excellent3.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
 
 package gen // Excellent3
 import (
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -119,7 +119,7 @@ func NewExcellent3Parser(input antlr.TokenStream) *Excellent3Parser {
 	this.RuleNames = staticData.ruleNames
 	this.LiteralNames = staticData.literalNames
 	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "Excellent3.g4"
+	this.GrammarFileName = "java-escape"
 
 	return this
 }
@@ -1568,7 +1568,7 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 
 					_la = p.GetTokenStream().LA(1)
 
-					if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent3ParserLTE)|(1<<Excellent3ParserLT)|(1<<Excellent3ParserGTE)|(1<<Excellent3ParserGT))) != 0) {
+					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&491520) != 0) {
 						var _ri = p.GetErrorHandler().RecoverInline(p)
 
 						localctx.(*ComparisonContext).op = _ri
@@ -2127,7 +2127,7 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 				p.GetErrorHandler().Sync(p)
 				_la = p.GetTokenStream().LA(1)
 
-				if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent3ParserLPAREN)|(1<<Excellent3ParserMINUS)|(1<<Excellent3ParserTEXT)|(1<<Excellent3ParserINTEGER)|(1<<Excellent3ParserDECIMAL)|(1<<Excellent3ParserTRUE)|(1<<Excellent3ParserFALSE)|(1<<Excellent3ParserNULL)|(1<<Excellent3ParserNAME))) != 0 {
+				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&133169668) != 0 {
 					{
 						p.SetState(63)
 						p.Parameters()

@@ -1,7 +1,5 @@
 grammar Excellent1;
 
-// rebuild with % antlr -Dlanguage=Go Excellent1.g4 -o ../flows/definition/legacy/gen -package gen -visitor
-
 import LexUnicode;
 
 COMMA: ',';
