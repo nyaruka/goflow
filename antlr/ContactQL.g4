@@ -1,7 +1,5 @@
 grammar ContactQL;
 
-// rebuild with % antlr -Dlanguage=Go ContactQL.g4 -o ../contactql/gen -package gen -visitor
-
 import LexUnicode;
 
 fragment HAS: [Hh][Aa][Ss];

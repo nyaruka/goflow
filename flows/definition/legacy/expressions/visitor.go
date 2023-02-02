@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	gen "github.com/nyaruka/goflow/antlr/gen/excellent1"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/flows/definition/legacy/gen"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 type legacyVisitor struct {

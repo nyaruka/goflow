@@ -3,9 +3,9 @@ package excellent
 import (
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 

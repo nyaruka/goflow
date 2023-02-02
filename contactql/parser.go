@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"

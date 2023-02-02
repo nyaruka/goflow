@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	"github.com/nyaruka/gocommon/urns"
+	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/envs"
 )
 

@@ -91,3 +91,9 @@ If you've made changes to the flow engine output, regenerate the test files with
 ```
 % go test github.com/nyaruka/goflow/test -update
 ```
+
+If you need to rebuild the ANTLR grammar files:
+
+```
+go generate ./...
+```
