@@ -52,17 +52,19 @@ type BroadcastCreatedEvent struct {
 	BaseLanguage envs.Language                           `json:"base_language" validate:"required"`
 	Groups       []*assets.GroupReference                `json:"groups,omitempty" validate:"dive"`
 	Contacts     []*flows.ContactReference               `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery string                                  `json:"contact_query,omitempty"`
 	URNs         []urns.URN                              `json:"urns,omitempty" validate:"dive,urn"`
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations map[envs.Language]*BroadcastTranslation, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, urns []urns.URN) *BroadcastCreatedEvent {
+func NewBroadcastCreated(translations map[envs.Language]*BroadcastTranslation, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
 	return &BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
 		Translations: translations,
 		BaseLanguage: baseLanguage,
 		Groups:       groups,
 		Contacts:     contacts,
+		ContactQuery: contactQuery,
 		URNs:         urns,
 	}
 }

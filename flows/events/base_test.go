@@ -113,23 +113,13 @@ func TestEventMarshaling(t *testing.T) {
 				[]*flows.ContactReference{
 					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
 				},
+				"name = \"Bob\"",
 				[]urns.URN{urns.URN("tel:+12345678900")},
 			),
 			`{
-				"base_language": "eng",
-				"contacts": [
-					{
-						"name": "Jim",
-						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
-					}
-				],
+				"type": "broadcast_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"groups": [
-					{
-						"name": "Supervisors",
-						"uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412"
-					}
-				],
+				"base_language": "eng",
 				"translations": {
 					"eng": {
 						"text": "Hello"
@@ -138,7 +128,19 @@ func TestEventMarshaling(t *testing.T) {
 						"text": "Hola"
 					}
 				},
-				"type": "broadcast_created",
+				"groups": [
+					{
+						"name": "Supervisors",
+						"uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412"
+					}
+				],
+				"contacts": [
+					{
+						"name": "Jim",
+						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
+					}
+				],
+				"contact_query": "name = \"Bob\"",
 				"urns": [
 					"tel:+12345678900"
 				]
