@@ -2,7 +2,6 @@ package utils
 
 import (
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/blevesearch/segment"
@@ -81,25 +80,6 @@ func StringSliceContains(slice []string, str string, caseSensitive bool) bool {
 		}
 	}
 	return false
-}
-
-// StringSet converts a slice of strings to a set (a string > bool map)
-func StringSet(s []string) map[string]bool {
-	m := make(map[string]bool, len(s))
-	for _, v := range s {
-		m[v] = true
-	}
-	return m
-}
-
-// StringSetKeys returns the keys of string set in lexical order
-func StringSetKeys(m map[string]bool) []string {
-	vals := make([]string, 0, len(m))
-	for v := range m {
-		vals = append(vals, v)
-	}
-	sort.Strings(vals)
-	return vals
 }
 
 // Indent indents each non-empty line in the given string

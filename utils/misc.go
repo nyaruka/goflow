@@ -4,6 +4,8 @@ import (
 	"reflect"
 
 	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/maps"
+	"golang.org/x/exp/slices"
 )
 
 // IsNil returns whether the given object is nil or an interface to a nil
@@ -37,6 +39,22 @@ func Min[T constraints.Ordered](x, y T) T {
 		return x
 	}
 	return y
+}
+
+// Set converts a slice to a set (a K > bool map)
+func Set[K constraints.Ordered](s []K) map[K]bool {
+	m := make(map[K]bool, len(s))
+	for _, v := range s {
+		m[v] = true
+	}
+	return m
+}
+
+// SortedKeys returns the keys of a set in lexical order
+func SortedKeys[K constraints.Ordered](m map[K]bool) []K {
+	keys := maps.Keys(m)
+	slices.Sort(keys)
+	return keys
 }
 
 // Typed is an interface of objects that are marshalled as typed envelopes

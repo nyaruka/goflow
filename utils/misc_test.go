@@ -30,6 +30,18 @@ func TestMin(t *testing.T) {
 	assert.Equal(t, uint16(0), utils.Min(uint16(0), uint16(1)))
 }
 
+func TestSortedKeys(t *testing.T) {
+	assert.Equal(t, []string{}, utils.SortedKeys(map[string]bool{}))
+	assert.Equal(t, []string{"a", "x", "y"}, utils.SortedKeys(map[string]bool{"x": true, "y": true, "a": true}))
+	assert.Equal(t, []int{3, 5, 6}, utils.SortedKeys(map[int]bool{6: true, 3: true, 5: true}))
+}
+
+func TestSet(t *testing.T) {
+	assert.Equal(t, map[string]bool{}, utils.Set[string](nil))
+	assert.Equal(t, map[string]bool{}, utils.Set([]string{}))
+	assert.Equal(t, map[string]bool{"x": true, "y": true, "a": true}, utils.Set([]string{"a", "x", "y"}))
+}
+
 func TestReadTypeFromJSON(t *testing.T) {
 	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
 	assert.EqualError(t, err, "field 'type' is required")

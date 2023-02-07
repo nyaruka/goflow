@@ -69,8 +69,8 @@ func Inspect(query *ContactQuery) *Inspection {
 	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeStatus] || attributes[AttributeGroup] || attributes[AttributeFlow] || attributes[AttributeHistory])
 
 	return &Inspection{
-		Attributes:   utils.StringSetKeys(attributes),
-		Schemes:      utils.StringSetKeys(schemes),
+		Attributes:   utils.SortedKeys(attributes),
+		Schemes:      utils.SortedKeys(schemes),
 		Fields:       fieldRefs,
 		Groups:       groupRefs,
 		AllowAsGroup: allowAsGroup,

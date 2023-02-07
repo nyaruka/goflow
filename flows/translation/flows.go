@@ -73,7 +73,7 @@ func ExtractFromFlows(initialComment string, translationsLanguage envs.Language,
 }
 
 func findLocalizedText(translationsLanguage envs.Language, excludeProperties []string, sources []flows.Flow) []*localizedText {
-	exclude := utils.StringSet(excludeProperties)
+	exclude := utils.Set(excludeProperties)
 	extracted := make([]*localizedText, 0)
 
 	for _, flow := range sources {
