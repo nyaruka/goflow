@@ -268,7 +268,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 		})
 	}
 
-	return templates, assetRefs, utils.StringSetKeys(parentRefs)
+	return templates, assetRefs, utils.SortedKeys(parentRefs)
 }
 
 // extracts all result specs
