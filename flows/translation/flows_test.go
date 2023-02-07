@@ -159,13 +159,18 @@ func TestImportIntoFlows(t *testing.T) {
 		MsgStr:     "Rosada",
 	})
 
-	updates := translation.CalculateFlowUpdates(po, envs.Language("spa"), flow)
+	updates := translation.CalculateFlowUpdates(po, envs.Language("spa"), []string{"quick_replies"}, flow)
+	assert.Equal(t, 2, len(updates))
+	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
+	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[1].String())
+
+	updates = translation.CalculateFlowUpdates(po, envs.Language("spa"), []string{}, flow)
 	assert.Equal(t, 3, len(updates))
 	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
 	assert.Equal(t, `Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1 "Azul" -> "Azul clara"`, updates[1].String())
 	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[2].String())
 
-	err = translation.ImportIntoFlows(po, envs.Language("spa"), flow)
+	err = translation.ImportIntoFlows(po, envs.Language("spa"), []string{}, flow)
 	require.NoError(t, err)
 
 	localJSON := jsonx.MustMarshal(flow.Localization())
@@ -222,7 +227,7 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 	po, err := i18n.ReadPO(bytes.NewReader(poData))
 	require.NoError(t, err)
 
-	err = translation.ImportIntoFlows(po, "spa", flow)
+	err = translation.ImportIntoFlows(po, "spa", []string{"arguments"}, flow)
 	require.NoError(t, err)
 
 	localJSON := jsonx.MustMarshal(flow.Localization())
@@ -244,12 +249,6 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 		"78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
 			"name": ["Otros"]
 		},
-		"98503572-25bf-40ce-ad72-8836b6549a38": {
-			"arguments": ["rojo roja"]
-		},
-		"a51e5c8c-c891-401d-9c62-15fc37278c94": {
-			"arguments": ["azul"]
-		},
 		"c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e": {
 			"name": ["Azul"]
 		},
@@ -270,10 +269,10 @@ func TestImportIntoFlowsWithDiffLanguages(t *testing.T) {
 	engFlow, _ := sa.Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	spaFlow, _ := sa.Flows().Get("e9e1d54f-f213-44ca-883a-eb96d15151aa")
 
-	err = translation.ImportIntoFlows(nil, "fra", engFlow, spaFlow)
+	err = translation.ImportIntoFlows(nil, "fra", []string{}, engFlow, spaFlow)
 	assert.EqualError(t, err, "can't import into flows with differing base languages")
 
 	// also can't import in same language as the flow base language
-	err = translation.ImportIntoFlows(nil, "eng", engFlow)
+	err = translation.ImportIntoFlows(nil, "eng", []string{}, engFlow)
 	assert.EqualError(t, err, "can't import as the flow base language")
 }
