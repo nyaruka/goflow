@@ -228,7 +228,7 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang envs.Lang
 }
 
 // ImportIntoFlows imports translations from the given PO into the given flows
-func ImportIntoFlows(po *i18n.PO, translationsLanguage envs.Language, targets ...flows.Flow) error {
+func ImportIntoFlows(po *i18n.PO, translationsLanguage envs.Language, excludeProperties []string, targets ...flows.Flow) error {
 	baseLanguage := getBaseLanguage(targets)
 	if baseLanguage == envs.NilLanguage {
 		return errors.New("can't import into flows with differing base languages")
@@ -236,7 +236,7 @@ func ImportIntoFlows(po *i18n.PO, translationsLanguage envs.Language, targets ..
 		return errors.New("can't import as the flow base language")
 	}
 
-	updates := CalculateFlowUpdates(po, translationsLanguage, targets...)
+	updates := CalculateFlowUpdates(po, translationsLanguage, excludeProperties, targets...)
 
 	applyUpdates(updates, translationsLanguage)
 
@@ -256,8 +256,8 @@ func (u *TranslationUpdate) String() string {
 }
 
 // CalculateFlowUpdates calculates what updates should be made to translations in the given flows
-func CalculateFlowUpdates(po *i18n.PO, translationsLanguage envs.Language, targets ...flows.Flow) []*TranslationUpdate {
-	localized := findLocalizedText(translationsLanguage, nil, targets)
+func CalculateFlowUpdates(po *i18n.PO, translationsLanguage envs.Language, excludeProperties []string, targets ...flows.Flow) []*TranslationUpdate {
+	localized := findLocalizedText(translationsLanguage, excludeProperties, targets)
 	localizedByContext := make(map[string][]*localizedText)
 	localizedByMsgID := make(map[string][]*localizedText)
 
