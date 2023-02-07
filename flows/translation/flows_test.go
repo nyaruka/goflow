@@ -244,9 +244,6 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 		"78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
 			"name": ["Otros"]
 		},
-		"98503572-25bf-40ce-ad72-8836b6549a38": {
-			"arguments": ["rojo roja"]
-		},
 		"a51e5c8c-c891-401d-9c62-15fc37278c94": {
 			"arguments": ["azul"]
 		},

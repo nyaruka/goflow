@@ -40,6 +40,7 @@ msgid "Red"
 msgstr "Rojo"
 
 #: Two+Questions/a51e5c8c-c891-401d-9c62-15fc37278c94/arguments:0
+msgctxt "a51e5c8c-c891-401d-9c62-15fc37278c94/arguments:0"
 msgid "blue"
 msgstr "azul"
 

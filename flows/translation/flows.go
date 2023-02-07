@@ -284,6 +284,9 @@ func CalculateFlowUpdates(po *i18n.PO, translationsLanguage envs.Language, targe
 	for _, entry := range po.Entries {
 		if entry.MsgContext == "" {
 			for _, lt := range localizedByMsgID[entry.MsgID] {
+				if lt.Locations[0].Property == "arguments" {
+					continue
+				}
 				addUpdate(lt, entry)
 			}
 		}
