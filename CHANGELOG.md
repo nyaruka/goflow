@@ -1,3 +1,7 @@
+v0.184.1 (2023-02-08)
+-------------------------
+ * Tweak BroadcastTranslations.ForContact to also return language
+
 v0.184.0 (2023-02-08)
 -------------------------
  * Truncate quick replies that are too long
