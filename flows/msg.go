@@ -202,23 +202,23 @@ type BroadcastTranslation struct {
 type BroadcastTranslations map[envs.Language]*BroadcastTranslation
 
 // ForContact is a utility to help callers select the translation for a contact
-func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage envs.Language) *BroadcastTranslation {
+func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage envs.Language) (*BroadcastTranslation, envs.Language) {
 	// first try the contact language if it is valid
 	if c.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), c.Language()) {
 		t := b[c.Language()]
 		if t != nil {
-			return t
+			return t, c.Language()
 		}
 	}
 
 	// second try the default flow language
 	t := b[e.DefaultLanguage()]
 	if t != nil {
-		return t
+		return t, e.DefaultLanguage()
 	}
 
 	// finally return the base language
-	return b[baseLanguage]
+	return b[baseLanguage], baseLanguage
 }
 
 // Scan supports reading translation values from JSON in database

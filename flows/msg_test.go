@@ -128,21 +128,23 @@ func TestBroadcastTranslations(t *testing.T) {
 	}
 	baseLanguage := envs.Language("eng")
 
-	assertTranslation := func(contactLanguage envs.Language, allowedLanguages []envs.Language, expected string) {
+	assertTranslation := func(contactLanguage envs.Language, allowedLanguages []envs.Language, expectedText string, expectedLang envs.Language) {
 		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages).Build()
 		sa, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 		require.NoError(t, err)
 
 		contact := flows.NewEmptyContact(sa, "Bob", contactLanguage, nil)
+		trans, lang := bcastTrans.ForContact(env, contact, baseLanguage)
 
-		assert.Equal(t, expected, bcastTrans.ForContact(env, contact, baseLanguage).Text)
+		assert.Equal(t, expectedText, trans.Text)
+		assert.Equal(t, expectedLang, lang)
 	}
 
-	assertTranslation("eng", []envs.Language{"eng"}, "Hello")          // uses contact language
-	assertTranslation("fra", []envs.Language{"eng", "fra"}, "Bonjour") // uses contact language
-	assertTranslation("kin", []envs.Language{"eng", "spa"}, "Hello")   // uses default flow language
-	assertTranslation("kin", []envs.Language{"spa", "eng"}, "Hola")    // uses default flow language
-	assertTranslation("kin", []envs.Language{"kin"}, "Hello")          // uses base language
+	assertTranslation("eng", []envs.Language{"eng"}, "Hello", "eng")          // uses contact language
+	assertTranslation("fra", []envs.Language{"eng", "fra"}, "Bonjour", "fra") // uses contact language
+	assertTranslation("kin", []envs.Language{"eng", "spa"}, "Hello", "eng")   // uses default flow language
+	assertTranslation("kin", []envs.Language{"spa", "eng"}, "Hola", "spa")    // uses default flow language
+	assertTranslation("kin", []envs.Language{"kin"}, "Hello", "eng")          // uses base language
 
 	val, err := bcastTrans.Value()
 	assert.NoError(t, err)
