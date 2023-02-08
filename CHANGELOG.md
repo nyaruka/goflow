@@ -1,3 +1,8 @@
+v0.184.0 (2023-02-08)
+-------------------------
+ * Truncate quick replies that are too long
+ * Add support for resolving broadcast translations for different contacts
+
 v0.183.0 (2023-02-07)
 -------------------------
  * Ignore importing split arguments translations
