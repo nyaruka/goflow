@@ -7,10 +7,12 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -116,4 +118,38 @@ func TestIVRMsgOut(t *testing.T) {
 		"attachments": ["audio:https://example.com/test.mp3"],
 		"locale": "eng-US"
 	}`), marshaled, "JSON mismatch")
+}
+
+func TestBroadcastTranslations(t *testing.T) {
+	bcastTrans := flows.BroadcastTranslations{
+		"eng": &flows.BroadcastTranslation{Text: "Hello"},
+		"fra": &flows.BroadcastTranslation{Text: "Bonjour"},
+		"spa": &flows.BroadcastTranslation{Text: "Hola"},
+	}
+	baseLanguage := envs.Language("eng")
+
+	assertTranslation := func(contactLanguage envs.Language, allowedLanguages []envs.Language, expected string) {
+		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages).Build()
+		sa, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+		require.NoError(t, err)
+
+		contact := flows.NewEmptyContact(sa, "Bob", contactLanguage, nil)
+
+		assert.Equal(t, expected, bcastTrans.ForContact(env, contact, baseLanguage).Text)
+	}
+
+	assertTranslation("eng", []envs.Language{"eng"}, "Hello")          // uses contact language
+	assertTranslation("fra", []envs.Language{"eng", "fra"}, "Bonjour") // uses contact language
+	assertTranslation("kin", []envs.Language{"eng", "spa"}, "Hello")   // uses default flow language
+	assertTranslation("kin", []envs.Language{"spa", "eng"}, "Hola")    // uses default flow language
+	assertTranslation("kin", []envs.Language{"kin"}, "Hello")          // uses base language
+
+	val, err := bcastTrans.Value()
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"eng": {"text": "Hello"}, "fra": {"text": "Bonjour"}, "spa": {"text": "Hola"}}`, string(val.([]byte)))
+
+	var bt flows.BroadcastTranslations
+	err = bt.Scan([]byte(`{"spa": {"text": "Adios"}}`))
+	assert.NoError(t, err)
+	assert.Equal(t, flows.BroadcastTranslations{"spa": {Text: "Adios"}}, bt)
 }

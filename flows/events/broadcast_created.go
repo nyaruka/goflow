@@ -5,7 +5,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -14,13 +13,6 @@ func init() {
 
 // TypeBroadcastCreated is a constant for outgoing message events
 const TypeBroadcastCreated string = "broadcast_created"
-
-// BroadcastTranslation is the broadcast content in a particular language
-type BroadcastTranslation struct {
-	Text         string             `json:"text"`
-	Attachments  []utils.Attachment `json:"attachments,omitempty"`
-	QuickReplies []string           `json:"quick_replies,omitempty"`
-}
 
 // BroadcastCreatedEvent events are created when an action wants to send a message to other contacts.
 //
@@ -48,16 +40,16 @@ type BroadcastTranslation struct {
 type BroadcastCreatedEvent struct {
 	BaseEvent
 
-	Translations map[envs.Language]*BroadcastTranslation `json:"translations" validate:"min=1,dive"`
-	BaseLanguage envs.Language                           `json:"base_language" validate:"required"`
-	Groups       []*assets.GroupReference                `json:"groups,omitempty" validate:"dive"`
-	Contacts     []*flows.ContactReference               `json:"contacts,omitempty" validate:"dive"`
-	ContactQuery string                                  `json:"contact_query,omitempty"`
-	URNs         []urns.URN                              `json:"urns,omitempty" validate:"dive,urn"`
+	Translations flows.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
+	BaseLanguage envs.Language               `json:"base_language" validate:"required"`
+	Groups       []*assets.GroupReference    `json:"groups,omitempty" validate:"dive"`
+	Contacts     []*flows.ContactReference   `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery string                      `json:"contact_query,omitempty"`
+	URNs         []urns.URN                  `json:"urns,omitempty" validate:"dive,urn"`
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations map[envs.Language]*BroadcastTranslation, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
+func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
 	return &BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
 		Translations: translations,

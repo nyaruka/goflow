@@ -1,6 +1,9 @@
 package flows
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
@@ -9,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"golang.org/x/exp/slices"
 )
 
 func init() {
@@ -187,3 +191,43 @@ func NewMsgTemplating(template *assets.TemplateReference, variables []string, na
 		Namespace_: namespace,
 	}
 }
+
+// BroadcastTranslation is the broadcast content in a particular language
+type BroadcastTranslation struct {
+	Text         string             `json:"text"`
+	Attachments  []utils.Attachment `json:"attachments,omitempty"`
+	QuickReplies []string           `json:"quick_replies,omitempty"`
+}
+
+type BroadcastTranslations map[envs.Language]*BroadcastTranslation
+
+// ForContact is a utility to help callers select the translation for a contact
+func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage envs.Language) *BroadcastTranslation {
+	// first try the contact language if it is valid
+	if c.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), c.Language()) {
+		t := b[c.Language()]
+		if t != nil {
+			return t
+		}
+	}
+
+	// second try the default flow language
+	t := b[e.DefaultLanguage()]
+	if t != nil {
+		return t
+	}
+
+	// finally return the base language
+	return b[baseLanguage]
+}
+
+// Scan supports reading translation values from JSON in database
+func (t *BroadcastTranslations) Scan(value any) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("failed type assertion to []byte")
+	}
+	return json.Unmarshal(b, &t)
+}
+
+func (t BroadcastTranslations) Value() (driver.Value, error) { return json.Marshal(t) }

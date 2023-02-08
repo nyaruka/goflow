@@ -67,7 +67,7 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 		return nil
 	}
 
-	translations := make(map[envs.Language]*events.BroadcastTranslation)
+	translations := make(flows.BroadcastTranslations)
 	languages := append([]envs.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for
@@ -75,7 +75,7 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 		languages := []envs.Language{language, run.Flow().Language()}
 
 		evaluatedText, evaluatedAttachments, evaluatedQuickReplies, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
-		translations[language] = &events.BroadcastTranslation{
+		translations[language] = &flows.BroadcastTranslation{
 			Text:         evaluatedText,
 			Attachments:  evaluatedAttachments,
 			QuickReplies: evaluatedQuickReplies,

@@ -102,7 +102,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			events.NewBroadcastCreated(
-				map[envs.Language]*events.BroadcastTranslation{
+				flows.BroadcastTranslations{
 					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
 					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
 				},
