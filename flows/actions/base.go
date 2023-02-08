@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -25,6 +26,9 @@ const resultExtraMaxBytes = 10000
 
 // max length of a message attachment (type:url)
 const maxAttachmentLength = 2048
+
+// max length of a quick reply
+const maxQuickReplyLength = 64
 
 // common category names
 const (
@@ -118,7 +122,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, a
 			logEvent(events.NewErrorf("quick reply text evaluated to empty string, skipping"))
 			continue
 		}
-		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
+		evaluatedQuickReplies = append(evaluatedQuickReplies, stringsx.TruncateEllipsis(evaluatedQuickReply, maxQuickReplyLength))
 	}
 
 	// although it's possible for the different parts of the message to have different languages, we want to resolve
