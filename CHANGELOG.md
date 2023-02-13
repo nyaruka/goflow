@@ -1,3 +1,7 @@
+v0.184.2 (2023-02-13)
+-------------------------
+ * Remove matching legacy vars against group names for start_session and send_broadcast actions
+
 v0.184.1 (2023-02-08)
 -------------------------
  * Tweak BroadcastTranslations.ForContact to also return language
