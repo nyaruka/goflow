@@ -229,8 +229,6 @@ type otherContactsAction struct {
 }
 
 func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
-	groupSet := run.Session().Assets().Groups()
-
 	// copy URNs
 	urnList := make([]urns.URN, 0, len(a.URNs))
 	urnList = append(urnList, a.URNs...)
@@ -259,9 +257,6 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 			// if variable evaluates to a UUID, we assume it's a contact UUID
 			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
 
-		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
-			// next up we look for a group with a matching name
-			groupRefs = append(groupRefs, groupByName.Reference())
 		} else {
 			// next up try it as a URN
 			urn := urns.URN(evaluatedLegacyVar)
