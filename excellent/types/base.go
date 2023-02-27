@@ -74,7 +74,7 @@ func Compare(x1 XValue, x2 XValue) int {
 	}
 
 	// different types can't be compared
-	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
+	if !SameType(x1, x2) {
 		panic(fmt.Sprintf("can't compare a %T with a %T", x1, x2))
 	}
 
@@ -84,6 +84,11 @@ func Compare(x1 XValue, x2 XValue) int {
 	}
 
 	return this.Compare(x2)
+}
+
+// SameType returns whether two values are of the same type
+func SameType(x1 XValue, x2 XValue) bool {
+	return reflect.TypeOf(x1) == reflect.TypeOf(x2)
 }
 
 // Describe returns a representation of the given value for use in error messages

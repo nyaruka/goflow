@@ -570,7 +570,10 @@ func TestFunctions(t *testing.T) {
 		{"round_up", dmy, []types.XValue{}, ERROR},
 
 		{"sort", dmy, []types.XValue{xa()}, xa()},
+		{"sort", dmy, []types.XValue{xa(xn("3"))}, xa(xn("3"))},
 		{"sort", dmy, []types.XValue{xa(xn("3"), xn("1"), xn("2"))}, xa(xn("1"), xn("2"), xn("3"))},
+		{"sort", dmy, []types.XValue{xa(xs("C"), xs("B"), xs("A"))}, xa(xs("A"), xs("B"), xs("C"))},
+		{"sort", dmy, []types.XValue{xa(xs("X"), xn("4"))}, ERROR}, // different types
 		{"sort", dmy, []types.XValue{xa(xs("X"), nil)}, ERROR},
 		{"sort", dmy, []types.XValue{ERROR}, ERROR},
 		{"sort", dmy, []types.XValue{}, ERROR},

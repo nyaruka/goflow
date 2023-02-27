@@ -1561,18 +1561,32 @@ func Reverse(env envs.Environment, array *types.XArray) types.XValue {
 
 // Sort returns a new array with the values of `array` sorted.
 //
+// Values in `array` must be a sortable type and be of the same type.
+//
 //	@(sort(array(3, 1, 2))) -> [1, 2, 3]
 //	@(sort(array("C", "A", "B"))) -> [A, B, C]
 //
 // @function sort(array)
 func Sort(env envs.Environment, array *types.XArray) types.XValue {
 	sorted := make([]types.XValue, array.Count())
+
+	if array.Count() < 2 { // nothing to do if less than 2 values
+		return array
+	}
+
+	// to check that all values are of same type, compare with first value
+	firstVal := array.Get(0)
+
 	for i := 0; i < array.Count(); i++ {
 		val := array.Get(i)
 
 		_, isComparable := val.(types.XComparable)
 		if !isComparable {
 			return types.NewXErrorf("%s isn't a comparable type", types.Describe(val))
+		}
+
+		if !types.SameType(firstVal, val) {
+			return types.NewXErrorf("can't sort array of different types")
 		}
 
 		sorted[i] = val
