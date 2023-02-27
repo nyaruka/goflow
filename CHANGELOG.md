@@ -1,3 +1,7 @@
+v0.184.4 (2023-02-27)
+-------------------------
+ * Sort should return error (instead of panic) if array has mixed types
+
 v0.184.3 (2023-02-22)
 -------------------------
  * Re-add matching by group name in start_session actions
