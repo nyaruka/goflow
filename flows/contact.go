@@ -56,7 +56,7 @@ type Contact struct {
 	urns       URNList
 	groups     *GroupList
 	fields     FieldValues
-	tickets    *TicketList
+	ticket     *Ticket
 
 	// transient fields
 	assets SessionAssets
@@ -76,7 +76,7 @@ func NewContact(
 	urns []urns.URN,
 	groups []*assets.GroupReference,
 	fields map[string]*Value,
-	tickets []*Ticket,
+	ticket *Ticket,
 	missing assets.MissingCallback) (*Contact, error) {
 
 	urnList, err := ReadURNList(sa, urns, missing)
@@ -86,7 +86,6 @@ func NewContact(
 
 	groupList := NewGroupList(sa, groups, missing)
 	fieldValues := NewFieldValues(sa, fields, missing)
-	ticketList := NewTicketList(tickets)
 
 	return &Contact{
 		uuid:       uuid,
@@ -100,7 +99,7 @@ func NewContact(
 		urns:       urnList,
 		groups:     groupList,
 		fields:     fieldValues,
-		tickets:    ticketList,
+		ticket:     ticket,
 		assets:     sa,
 	}, nil
 }
@@ -118,7 +117,7 @@ func NewEmptyContact(sa SessionAssets, name string, language envs.Language, time
 		urns:       URNList{},
 		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:     make(FieldValues),
-		tickets:    NewTicketList([]*Ticket{}),
+		ticket:     nil,
 		assets:     sa,
 	}
 }
@@ -141,7 +140,7 @@ func (c *Contact) Clone() *Contact {
 		urns:       c.urns.clone(),
 		groups:     c.groups.clone(),
 		fields:     c.fields.clone(),
-		tickets:    c.tickets.clone(),
+		ticket:     c.ticket,
 		assets:     c.assets,
 	}
 }
@@ -203,9 +202,7 @@ func (c *Contact) Status() ContactStatus { return c.status }
 func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
-func (c *Contact) SetTimezone(tz *time.Location) {
-	c.timezone = tz
-}
+func (c *Contact) SetTimezone(tz *time.Location) { c.timezone = tz }
 
 // Timezone returns the timezone of this contact
 func (c *Contact) Timezone() *time.Location { return c.timezone }
@@ -280,8 +277,11 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 // Groups returns the groups that this contact belongs to
 func (c *Contact) Groups() *GroupList { return c.groups }
 
-// Tickets returns the tickets that this contact has open
-func (c *Contact) Tickets() *TicketList { return c.tickets }
+// Tickets returns the open ticket for this contact if they have one
+func (c *Contact) Ticket() *Ticket { return c.ticket }
+
+// SetTicket sets the ticket of this contact
+func (c *Contact) SetTicket(t *Ticket) { c.ticket = t }
 
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference {
@@ -325,7 +325,6 @@ func (c *Contact) Format(env envs.Environment) string {
 //	groups:[]group -> the groups the contact belongs to
 //	fields:fields -> the custom field values of the contact
 //	channel:channel -> the preferred channel of the contact
-//	tickets:[]ticket -> the open tickets of the contact
 //
 // @context contact
 func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
@@ -349,6 +348,11 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		lastSeenOn = types.NewXDateTime(*c.lastSeenOn)
 	}
 
+	tickets := types.XArrayEmpty
+	if c.ticket != nil {
+		tickets = types.NewXArray(Context(env, c.ticket))
+	}
+
 	return map[string]types.XValue{
 		"__default__":  types.NewXText(c.Format(env)),
 		"uuid":         types.NewXText(string(c.uuid)),
@@ -365,7 +369,7 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		"groups":       c.groups.ToXValue(env),
 		"fields":       Context(env, c.Fields()),
 		"channel":      Context(env, c.PreferredChannel()),
-		"tickets":      c.tickets.ToXValue(env),
+		"tickets":      tickets, // backwards compatibility
 	}
 }
 
@@ -504,7 +508,10 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return vals
 		case contactql.AttributeTickets:
-			return []interface{}{decimal.NewFromInt(int64(c.tickets.Count()))}
+			if c.ticket != nil {
+				return []interface{}{decimal.NewFromInt(1)}
+			}
+			return []interface{}{decimal.NewFromInt(0)}
 		case contactql.AttributeCreatedOn:
 			return []interface{}{c.createdOn}
 		case contactql.AttributeLastSeenOn:
@@ -585,7 +592,7 @@ type contactEnvelope struct {
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Tickets    []json.RawMessage        `json:"tickets,omitempty"`
+	Ticket     json.RawMessage          `json:"ticket,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -630,29 +637,18 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	c.groups = NewGroupList(sa, envelope.Groups, missing)
 	c.fields = NewFieldValues(sa, envelope.Fields, missing)
 
-	tickets := make([]*Ticket, len(envelope.Tickets))
-	for i := range envelope.Tickets {
-		tickets[i], err = ReadTicket(sa, envelope.Tickets[i], missing)
+	if envelope.Ticket != nil {
+		c.ticket, err = ReadTicket(sa, envelope.Ticket, missing)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to read ticket")
 		}
 	}
-	c.tickets = NewTicketList(tickets)
 
 	return c, nil
 }
 
 // MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
-	var err error
-	tickets := make([]json.RawMessage, len(c.tickets.tickets))
-	for i, ticket := range c.tickets.tickets {
-		tickets[i], err = jsonx.Marshal(ticket)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	ce := &contactEnvelope{
 		Name:       c.name,
 		UUID:       c.uuid,
@@ -663,7 +659,14 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		LastSeenOn: c.lastSeenOn,
 		URNs:       c.urns.RawURNs(),
 		Groups:     c.groups.references(),
-		Tickets:    tickets,
+	}
+
+	if c.ticket != nil {
+		var err error
+		ce.Ticket, err = jsonx.Marshal(c.ticket)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if c.timezone != nil {

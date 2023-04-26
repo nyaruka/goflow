@@ -278,25 +278,23 @@
                     "text": "Male"
                 }
             },
-            "tickets": [
-                {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
-                    },
-                    "topic": {
-                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                        "name": "Weather"
-                    },
-                    "body": "Last message: Hi everybody",
-                    "external_id": "123456",
-                    "assignee": {
-                        "email": "bob@nyaruka.com",
-                        "name": "Bob"
-                    }
+            "ticket": {
+                "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "topic": {
+                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                    "name": "Weather"
+                },
+                "body": "Last message: Hi everybody",
+                "external_id": "123456",
+                "assignee": {
+                    "email": "bob@nyaruka.com",
+                    "name": "Bob"
                 }
-            ]
+            }
         },
         "templates": [
             "Last message: @input.text"
@@ -431,21 +429,19 @@
                     "text": "Male"
                 }
             },
-            "tickets": [
-                {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
-                    },
-                    "topic": {
-                        "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
-                        "name": "General"
-                    },
-                    "body": "Last message: Hi everybody",
-                    "external_id": "123456"
-                }
-            ]
+            "ticket": {
+                "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "topic": {
+                    "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
+                    "name": "General"
+                },
+                "body": "Last message: Hi everybody",
+                "external_id": "123456"
+            }
         },
         "templates": [
             "Last message: @input.text"
@@ -579,25 +575,23 @@
                     "text": "Male"
                 }
             },
-            "tickets": [
-                {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
-                    },
-                    "topic": {
-                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                        "name": "Weather"
-                    },
-                    "body": "Last message: Hi everybody",
-                    "external_id": "123456",
-                    "assignee": {
-                        "email": "jim@nyaruka.com",
-                        "name": "Jim"
-                    }
+            "ticket": {
+                "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "topic": {
+                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                    "name": "Weather"
+                },
+                "body": "Last message: Hi everybody",
+                "external_id": "123456",
+                "assignee": {
+                    "email": "jim@nyaruka.com",
+                    "name": "Jim"
                 }
-            ]
+            }
         },
         "templates": [
             "Last message: @input.text",
@@ -739,21 +733,19 @@
                     "text": "Male"
                 }
             },
-            "tickets": [
-                {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "ticketer": {
-                        "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-                        "name": "Support Tickets"
-                    },
-                    "topic": {
-                        "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                        "name": "Weather"
-                    },
-                    "body": "Last message: Hi everybody",
-                    "external_id": "123456"
-                }
-            ]
+            "ticket": {
+                "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "ticketer": {
+                    "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
+                    "name": "Support Tickets"
+                },
+                "topic": {
+                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                    "name": "Weather"
+                },
+                "body": "Last message: Hi everybody",
+                "external_id": "123456"
+            }
         },
         "templates": [
             "Last message: @input.text",

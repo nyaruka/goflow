@@ -94,11 +94,6 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 		return nil
 	}
 
-	// if contact already has an open ticket, don't open another
-	if run.Contact().Tickets().Count() > 0 {
-		return nil
-	}
-
 	if ticketer == nil {
 		logEvent(events.NewDependencyError(a.Ticketer))
 		return nil
@@ -111,9 +106,8 @@ func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.
 	mod := modifiers.NewTicket(ticketer, topic, body, assignee)
 
 	if a.applyModifier(run, mod, logModifier, logEvent) {
-		// if we were able to open a ticket, it's the last in the list
-		tickets := run.Session().Contact().Tickets().All()
-		return tickets[len(tickets)-1]
+		// if we were able to open a ticket, return it
+		return run.Session().Contact().Ticket()
 	}
 	return nil
 }
