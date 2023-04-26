@@ -14,7 +14,7 @@ func init() {
 // TypeOpenTicket is the type for the open ticket action
 const TypeOpenTicket string = "open_ticket"
 
-// OpenTicketAction is used to open a ticket for the contact.
+// OpenTicketAction is used to open a ticket for the contact if they don't already have an open ticket.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -91,6 +91,11 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
+		return nil
+	}
+
+	// if contact already has an open ticket, don't open another
+	if run.Contact().Tickets().Count() > 0 {
 		return nil
 	}
 
