@@ -323,31 +323,20 @@ var sessionTrigger = `{
                 "text": "AACC55"
             }
         },
-        "tickets": [
-            {
-                "uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
-                "subject": "Old ticket",
-                "body": "I have a problem",
-                "ticketer": {
-                    "name": "Support Tickets",
-                    "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-                }
+        "ticket": {
+            "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+            "subject": "Question",
+            "body": "What day is it?",
+            "ticketer": {
+                "name": "Support Tickets",
+                "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
             },
-            {
-                "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
-                "subject": "Question",
-                "body": "What day is it?",
-                "ticketer": {
-                    "name": "Support Tickets",
-                    "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-                },
-                "topic": {
-                    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                    "name": "Weather"
-                },
-                "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
-            }
-        ]
+            "topic": {
+                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                "name": "Weather"
+            },
+            "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
+        }
     },
     "run_summary": {
         "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",

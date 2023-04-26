@@ -175,7 +175,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			if tc.HasTicket {
 				ticketer := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 				topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-				contact.Tickets().Add(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", ticketer, topic, "Help", "", nil))
+				contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", ticketer, topic, "Help", "", nil))
 			}
 
 			// and switch their language

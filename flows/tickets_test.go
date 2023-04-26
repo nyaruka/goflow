@@ -123,11 +123,6 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "Support Tickets", ticket2.Ticketer().Name())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
-	tickets := flows.NewTicketList([]*flows.Ticket{ticket1, ticket2})
-	assert.Equal(t, 2, tickets.Count())
-	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), tickets.All()[0].UUID())
-	assert.Equal(t, flows.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"), tickets.All()[1].UUID())
-
 	ticket3 := flows.OpenTicket(mailgun, weather, "Where are my pants?", bob)
 	ticket3.SetExternalID("24567")
 
@@ -137,7 +132,4 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, "Where are my pants?", ticket3.Body())
 	assert.Equal(t, "24567", ticket3.ExternalID())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
-
-	tickets.Add(ticket3)
-	assert.Equal(t, 3, tickets.Count())
 }

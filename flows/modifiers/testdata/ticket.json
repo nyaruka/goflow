@@ -29,25 +29,23 @@
             "name": "Bob",
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
-            "tickets": [
-                {
-                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
-                    "ticketer": {
-                        "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
-                        "name": "TextIt"
-                    },
-                    "topic": {
-                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                        "name": "Computers"
-                    },
-                    "body": "Where are my keys?",
-                    "external_id": "123456",
-                    "assignee": {
-                        "email": "bob@nyaruka.com",
-                        "name": "Bob"
-                    }
+            "ticket": {
+                "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                "ticketer": {
+                    "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
+                    "name": "TextIt"
+                },
+                "topic": {
+                    "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                    "name": "Computers"
+                },
+                "body": "Where are my keys?",
+                "external_id": "123456",
+                "assignee": {
+                    "email": "bob@nyaruka.com",
+                    "name": "Bob"
                 }
-            ]
+            }
         },
         "events": [
             {

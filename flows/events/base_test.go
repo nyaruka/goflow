@@ -303,33 +303,22 @@ func TestEventMarshaling(t *testing.T) {
 					"last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
 					"name": "Ryan Lewis",
 					"status": "active",
-					"tickets": [
-						{
-							"body": "I have a problem",
-							"ticketer": {
-								"name": "Support Tickets",
-								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-							},
-							"topic": null,
-							"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52"
+					"ticket": {
+						"assignee": {
+							"email": "bob@nyaruka.com",
+							"name": "Bob"
 						},
-						{
-							"assignee": {
-								"email": "bob@nyaruka.com",
-								"name": "Bob"
-							},
-							"body": "What day is it?",
-							"ticketer": {
-								"name": "Support Tickets",
-								"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-							},
-							"topic": {
-								"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                    			"name": "Weather"
-							},
-							"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
-						}
-					],
+						"body": "What day is it?",
+						"ticketer": {
+							"name": "Support Tickets",
+							"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
+						},
+						"topic": {
+							"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+							"name": "Weather"
+						},
+						"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
+					},
 					"timezone": "America/Guayaquil",
 					"urns": [
 						"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",

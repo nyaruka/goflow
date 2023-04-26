@@ -2,7 +2,6 @@ package flows_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -144,14 +143,14 @@ func TestContact(t *testing.T) {
 		"whatsapp":   nil,
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
-	assert.Equal(t, 0, contact.Tickets().Count())
+	assert.Nil(t, contact.Ticket())
 
 	mailgun := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	ticket := flows.OpenTicket(mailgun, weather, "I have issues", nil)
-	contact.Tickets().Add(ticket)
+	contact.SetTicket(ticket)
 
-	assert.Equal(t, 1, contact.Tickets().Count())
+	assert.NotNil(t, contact.Ticket())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -160,7 +159,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, envs.Language("eng"), clone.Language())
 	assert.Equal(t, envs.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
-	assert.Equal(t, 1, clone.Tickets().Count())
+	assert.NotNil(t, contact.Ticket())
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
@@ -181,7 +180,7 @@ func TestContact(t *testing.T) {
 		"id":           types.NewXText("12345"),
 		"language":     types.NewXText("eng"),
 		"name":         types.NewXText("Joe Bloggs"),
-		"tickets":      contact.Tickets().ToXValue(env),
+		"tickets":      types.NewXArray(flows.Context(env, contact.Ticket())),
 		"timezone":     types.NewXText("America/Bogota"),
 		"status":       types.NewXText(string(contact.Status())),
 		"urn":          contact.URNs()[0].ToXValue(env),
@@ -195,8 +194,6 @@ func TestContact(t *testing.T) {
 
 	marshaled, err := jsonx.Marshal(contact)
 	require.NoError(t, err)
-
-	fmt.Println(string(marshaled))
 
 	unmarshaled, err := flows.ReadContact(sa, marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
@@ -411,18 +408,16 @@ func TestContactQuery(t *testing.T) {
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
 			{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
 		],
-		"tickets": [
-			{
-				"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
-				"ticketer": {
-					"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-					"name": "Support Tickets"
-				},
-				"subject": "Old ticket",
-				"body": "I have a problem",
-				"assignee": null
-			}
-		],
+		"ticket": {
+			"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
+			"ticketer": {
+				"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
+				"name": "Support Tickets"
+			},
+			"subject": "Old ticket",
+			"body": "I have a problem",
+			"assignee": null
+		},
 		"language": "eng",
 		"timezone": "America/Guayaquil",
 		"urns": [

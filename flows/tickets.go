@@ -143,47 +143,6 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// TicketList defines a contact's list of tickets
-type TicketList struct {
-	tickets []*Ticket
-}
-
-// NewTicketList creates a new ticket list
-func NewTicketList(tickets []*Ticket) *TicketList {
-	return &TicketList{tickets: tickets}
-}
-
-// returns a clone of this ticket list
-func (l *TicketList) clone() *TicketList {
-	tickets := make([]*Ticket, len(l.tickets))
-	copy(tickets, l.tickets)
-	return &TicketList{tickets: tickets}
-}
-
-// Adds adds the given ticket to this ticket list
-func (l *TicketList) Add(ticket *Ticket) {
-	l.tickets = append(l.tickets, ticket)
-}
-
-// All returns all tickets in this ticket list
-func (l *TicketList) All() []*Ticket {
-	return l.tickets
-}
-
-// Count returns the number of tickets
-func (l *TicketList) Count() int {
-	return len(l.tickets)
-}
-
-// ToXValue returns a representation of this object for use in expressions
-func (l TicketList) ToXValue(env envs.Environment) types.XValue {
-	array := make([]types.XValue, len(l.tickets))
-	for i, ticket := range l.tickets {
-		array[i] = Context(env, ticket)
-	}
-	return types.NewXArray(array...)
-}
-
 // Ticketer represents a ticket issuing system.
 type Ticketer struct {
 	assets.Ticketer

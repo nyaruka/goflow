@@ -41,6 +41,11 @@ func NewTicket(ticketer *flows.Ticketer, topic *flows.Topic, body string, assign
 
 // Apply applies this modification to the given contact
 func (m *TicketModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+	// if there's already an open ticket, nothing to do
+	if contact.Ticket() != nil {
+		return false
+	}
+
 	httpLogger := &flows.HTTPLogger{}
 
 	// try to get a ticket service for this ticketer
@@ -60,7 +65,7 @@ func (m *TicketModifier) Apply(env envs.Environment, svcs flows.Services, sa flo
 	if ticket != nil {
 		log(events.NewTicketOpened(ticket))
 
-		contact.Tickets().Add(ticket)
+		contact.SetTicket(ticket)
 		return true
 	}
 

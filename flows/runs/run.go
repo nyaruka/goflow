@@ -204,7 +204,7 @@ func (r *flowRun) ExitedOn() *time.Time  { return r.exitedOn }
 //	run:run -> the current run
 //	child:related_run -> the last child run
 //	parent:related_run -> the parent of the run
-//	ticket:ticket -> the last opened ticket for the contact
+//	ticket:ticket -> the open ticket for the contact
 //	webhook:any -> the parsed JSON response of the last webhook call
 //	node:node -> the current node
 //	globals:globals -> the global values
@@ -218,10 +218,8 @@ func (r *flowRun) RootContext(env envs.Environment) map[string]types.XValue {
 		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
 		fields = flows.Context(env, r.Contact().Fields())
 
-		tickets := r.Contact().Tickets()
-
-		if tickets.Count() > 0 {
-			ticket = flows.Context(env, tickets.All()[tickets.Count()-1])
+		if r.Contact().Ticket() != nil {
+			ticket = flows.Context(env, r.Contact().Ticket())
 		}
 	}
 
