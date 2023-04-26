@@ -1,3 +1,8 @@
+v0.185.0 (2023-04-26)
+-------------------------
+ * Contacts only have one (open) ticket
+ * Bump golang.org/x/net from 0.5.0 to 0.7.0
+
 v0.184.4 (2023-02-27)
 -------------------------
  * Sort should return error (instead of panic) if array has mixed types
