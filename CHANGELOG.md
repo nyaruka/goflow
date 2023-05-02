@@ -1,3 +1,7 @@
+v0.185.1 (2023-05-02)
+-------------------------
+ * Fix matching location name with diacritics
+
 v0.185.0 (2023-04-26)
 -------------------------
  * Contacts only have one (open) ticket
