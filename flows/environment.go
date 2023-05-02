@@ -41,10 +41,10 @@ func (r *assetLocationResolver) FindLocations(name string, level envs.LocationLe
 
 // FindLocationsFuzzy returns matching locations like FindLocations but attempts the following strategies
 // to find locations:
-//   1. Exact match
-//   2. Match with punctuation removed
-//   3. Split input into words and try to match each word
-//   4. Try to match pairs of words
+//  1. Exact match
+//  2. Match with punctuation removed
+//  3. Split input into words and try to match each word
+//  4. Try to match pairs of words
 func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.LocationLevel, parent *envs.Location) []*envs.Location {
 	// try matching name exactly
 	if locations := r.FindLocations(text, level, parent); len(locations) > 0 {
@@ -52,13 +52,13 @@ func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.Locat
 	}
 
 	// try with punctuation removed
-	stripped := strings.TrimSpace(regexp.MustCompile(`\W+`).ReplaceAllString(text, ""))
+	stripped := strings.TrimSpace(regexp.MustCompile(`[\s\p{P}]+`).ReplaceAllString(text, ""))
 	if locations := r.FindLocations(stripped, level, parent); len(locations) > 0 {
 		return locations
 	}
 
 	// try on each tokenized word
-	words := regexp.MustCompile(`\W+`).Split(text, -1)
+	words := regexp.MustCompile(`[\s\p{P}]+`).Split(text, -1)
 	for _, word := range words {
 		if locations := r.FindLocations(word, level, parent); len(locations) > 0 {
 			return locations
