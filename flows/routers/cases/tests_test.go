@@ -57,6 +57,11 @@ var locationHierarchyJSON = `{
 			]
 		},
 		{
+			"name": "Québec",
+			"aliases": ["Q.C", "Le Québec", "Quebec", "Que,", "Que", "Qc", "Québec"],
+			"children": []
+		},
+		{
 			"name": "Paktika",
 			"aliases": ["Janikhel", "Terwa", "Yahyakhel", "Yusufkhel", "\u067e\u06a9\u062a\u06cc\u06a9\u0627", "\u062a\u0631\u0648\u0648", "\u06cc\u062d\u06cc\u06cc \u062e\u06cc\u0644", "\u06cc\u0648\u0633\u0641 \u062e\u06cc\u0644"],
 			"children": []
@@ -69,6 +74,7 @@ var testTests = []struct {
 	args     []types.XValue
 	expected types.XValue
 }{
+
 	{"has_error", []types.XValue{xs("hello")}, falseResult},
 	{"has_error", []types.XValue{nil}, falseResult},
 	{"has_error", []types.XValue{types.NewXErrorf("I am error")}, result(xs("I am error"))},
@@ -290,7 +296,13 @@ var testTests = []struct {
 	{"has_group", []types.XValue{xa(), ERROR}, ERROR},
 	{"has_group", []types.XValue{}, ERROR},
 
+	{"has_state", []types.XValue{xs("Quebec")}, result(xs("Rwanda > Québec"))},
+	{"has_state", []types.XValue{xs("Québec")}, result(xs("Rwanda > Québec"))},
+	{"has_state", []types.XValue{xs("Je suis dans la province du Québec")}, result(xs("Rwanda > Québec"))},
+
 	{"has_state", []types.XValue{xs("kigali city")}, result(xs("Rwanda > Kigali City"))},
+	{"has_state", []types.XValue{xs("¡Kigali!")}, result(xs("Rwanda > Kigali City"))},
+
 	{"has_state", []types.XValue{xs("kigari")}, result(xs("Rwanda > Kigali City"))},
 	{"has_state", []types.XValue{xs("تروو")}, result(xs("Rwanda > Paktika"))},
 	{"has_state", []types.XValue{xs("غم ځپلې هلمند")}, falseResult},
