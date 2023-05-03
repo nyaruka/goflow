@@ -58,7 +58,8 @@ func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.Locat
 	}
 
 	// try on each tokenized word
-	words := regexp.MustCompile(`[\s\p{P}]+`).Split(text, -1)
+	re := regexp.MustCompile(`[\p{L}\d]+(-[\p{L}\d]+)*`)
+	words := re.FindAllString(text, -1)
 	for _, word := range words {
 		if locations := r.FindLocations(word, level, parent); len(locations) > 0 {
 			return locations
