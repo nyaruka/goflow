@@ -1,3 +1,7 @@
+v0.185.2 (2023-05-03)
+-------------------------
+ * Support hyphen in locations name as one word
+
 v0.185.1 (2023-05-02)
 -------------------------
  * Fix matching location name with diacritics
