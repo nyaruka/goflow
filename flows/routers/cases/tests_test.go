@@ -62,6 +62,11 @@ var locationHierarchyJSON = `{
 			"children": []
 		},
 		{
+			"name": "Île-de-France",
+			"aliases": [],
+			"children": []
+		},
+		{
 			"name": "Paktika",
 			"aliases": ["Janikhel", "Terwa", "Yahyakhel", "Yusufkhel", "\u067e\u06a9\u062a\u06cc\u06a9\u0627", "\u062a\u0631\u0648\u0648", "\u06cc\u062d\u06cc\u06cc \u062e\u06cc\u0644", "\u06cc\u0648\u0633\u0641 \u062e\u06cc\u0644"],
 			"children": []
@@ -299,6 +304,8 @@ var testTests = []struct {
 	{"has_state", []types.XValue{xs("Quebec")}, result(xs("Rwanda > Québec"))},
 	{"has_state", []types.XValue{xs("Québec")}, result(xs("Rwanda > Québec"))},
 	{"has_state", []types.XValue{xs("Je suis dans la province du Québec")}, result(xs("Rwanda > Québec"))},
+
+	{"has_state", []types.XValue{xs("Je suis dans la province de l'Île-de-France")}, result(xs("Rwanda > Île-de-France"))},
 
 	{"has_state", []types.XValue{xs("kigali city")}, result(xs("Rwanda > Kigali City"))},
 	{"has_state", []types.XValue{xs("¡Kigali!")}, result(xs("Rwanda > Kigali City"))},
