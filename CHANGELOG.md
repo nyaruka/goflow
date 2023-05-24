@@ -1,3 +1,7 @@
+v0.186.0 (2023-05-24)
+-------------------------
+ * Add contains function
+
 v0.185.2 (2023-05-03)
 -------------------------
  * Support hyphen in locations name as one word
