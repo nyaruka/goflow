@@ -26,7 +26,7 @@ var Concatenate = textualBinary(func(env envs.Environment, text1 types.XText, te
 //
 //	@("hello" = "hello") -> true
 //	@("hello" = "bar") -> false
-//	@(1 = 1) -> true
+//	@(1 = "1") -> true
 //
 // @operator equal "="
 var Equal = textualBinary(func(env envs.Environment, text1 types.XText, text2 types.XText) types.XValue {

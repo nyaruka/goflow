@@ -102,12 +102,13 @@ func init() {
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// array functions
-		"join":    TwoArgFunction(Join),
-		"reverse": OneArrayFunction(Reverse),
-		"sort":    OneArrayFunction(Sort),
-		"sum":     OneArrayFunction(Sum),
-		"unique":  OneArrayFunction(Unique),
-		"concat":  TwoArrayFunction(Concat),
+		"contains": TwoArgFunction(Contains),
+		"join":     TwoArgFunction(Join),
+		"reverse":  OneArrayFunction(Reverse),
+		"sort":     OneArrayFunction(Sort),
+		"sum":      OneArrayFunction(Sum),
+		"unique":   OneArrayFunction(Unique),
+		"concat":   TwoArrayFunction(Concat),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1512,6 +1513,30 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 // Array Functions
 //------------------------------------------------------------------------------------------
 
+// Contains returns whether `array` contains `value`.
+//
+//	@(contains(array("a", "b", "c"), "a")) -> true
+//	@(contains(array(1, 2, 3), 4)) -> false
+//
+// @function contains(array, value)
+func Contains(env envs.Environment, arg1 types.XValue, value types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, arg1)
+	if xerr != nil {
+		return xerr
+	}
+	if types.IsXError(value) {
+		return value
+	}
+
+	for i := 0; i < array.Count(); i++ {
+		if types.Equals(array.Get(i), value) {
+			return types.XBooleanTrue
+		}
+	}
+
+	return types.XBooleanFalse
+}
+
 // Join joins the given `array` of strings with `separator` to make text.
 //
 //	@(join(array("a", "b", "c"), "|")) -> a|b|c
@@ -1631,7 +1656,7 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 
 		seen := false
 		for j := 0; j < len(unique); j++ {
-			if (val == nil && unique[j] == nil) || types.Equals(val, unique[j]) {
+			if types.Equals(val, unique[j]) {
 				seen = true
 				break
 			}

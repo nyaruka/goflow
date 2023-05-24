@@ -87,12 +87,30 @@ func TestFunctions(t *testing.T) {
 		{"char", dmy, []types.XValue{xn("12345678901234567890")}, ERROR},
 		{"char", dmy, []types.XValue{}, ERROR},
 
+		{"clean", dmy, []types.XValue{xs("hello")}, xs("hello")},
+		{"clean", dmy, []types.XValue{xs("😃 Hello \nwo\tr\rld")}, xs("😃 Hello world")},
+		{"clean", dmy, []types.XValue{xs("")}, xs("")},
+		{"clean", dmy, []types.XValue{}, ERROR},
+
 		{"code", dmy, []types.XValue{xs(" ")}, xi(32)},
 		{"code", dmy, []types.XValue{xs("😁")}, xi(128513)},
 		{"code", dmy, []types.XValue{xs("abc")}, xi(97)},
 		{"code", dmy, []types.XValue{xs("")}, ERROR},
 		{"code", dmy, []types.XValue{ERROR}, ERROR},
 		{"code", dmy, []types.XValue{}, ERROR},
+
+		{"concat", dmy, []types.XValue{xa(xi(1), xi(2)), xa(xi(3), xi(4))}, xa(xi(1), xi(2), xi(3), xi(4))},
+		{"concat", dmy, []types.XValue{xa(), xa()}, xa()},
+		{"concat", dmy, []types.XValue{xa()}, ERROR},
+		{"concat", dmy, []types.XValue{xa(), ERROR}, ERROR},
+		{"concat", dmy, []types.XValue{ERROR, xa()}, ERROR},
+
+		{"contains", dmy, []types.XValue{xa(xi(1), xi(2), xi(3)), xi(2)}, types.XBooleanTrue},
+		{"contains", dmy, []types.XValue{xa(xi(1), xi(2), xi(3)), xi(4)}, types.XBooleanFalse},
+		{"contains", dmy, []types.XValue{xa(xi(1), xi(2), xi(3)), xs("2")}, types.XBooleanFalse},
+		{"contains", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xs("c")}, types.XBooleanTrue},
+		{"contains", dmy, []types.XValue{ERROR, xs("c")}, ERROR},
+		{"contains", dmy, []types.XValue{xa(xi(1), xi(2), xi(3)), ERROR}, ERROR},
 
 		{
 			"count",
@@ -106,17 +124,6 @@ func TestFunctions(t *testing.T) {
 		{"count", dmy, []types.XValue{xi(1234)}, ERROR},
 		{"count", dmy, []types.XValue{ERROR}, ERROR},
 		{"count", dmy, []types.XValue{}, ERROR},
-
-		{"clean", dmy, []types.XValue{xs("hello")}, xs("hello")},
-		{"clean", dmy, []types.XValue{xs("😃 Hello \nwo\tr\rld")}, xs("😃 Hello world")},
-		{"clean", dmy, []types.XValue{xs("")}, xs("")},
-		{"clean", dmy, []types.XValue{}, ERROR},
-
-		{"concat", dmy, []types.XValue{xa(xi(1), xi(2)), xa(xi(3), xi(4))}, xa(xi(1), xi(2), xi(3), xi(4))},
-		{"concat", dmy, []types.XValue{xa(), xa()}, xa()},
-		{"concat", dmy, []types.XValue{xa()}, ERROR},
-		{"concat", dmy, []types.XValue{xa(), ERROR}, ERROR},
-		{"concat", dmy, []types.XValue{ERROR, xa()}, ERROR},
 
 		{"date", dmy, []types.XValue{xs("01-12-2017")}, xd(dates.NewDate(2017, 12, 1))},
 		{"date", mdy, []types.XValue{xs("12-01-2017")}, xd(dates.NewDate(2017, 12, 1))},
