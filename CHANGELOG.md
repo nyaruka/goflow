@@ -1,3 +1,7 @@
+v0.186.1 (2023-07-10)
+-------------------------
+ * Fix has_ward argument ordering
+
 v0.186.0 (2023-05-24)
 -------------------------
  * Add contains function
