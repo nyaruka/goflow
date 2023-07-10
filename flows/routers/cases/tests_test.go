@@ -323,10 +323,10 @@ var testTests = []struct {
 	{"has_district", []types.XValue{xs("xyz"), xs("kigali")}, falseResult},
 	{"has_district", []types.XValue{ERROR}, ERROR},
 
-	{"has_ward", []types.XValue{xs("Gisozi"), xs("Gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
-	{"has_ward", []types.XValue{xs("I live in gisozi"), xs("Gasabo"), xs("kigali")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
+	{"has_ward", []types.XValue{xs("Gisozi"), xs("kigali"), xs("Gasabo")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
+	{"has_ward", []types.XValue{xs("I live in gisozi"), xs("kigali"), xs("Gasabo")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
 	{"has_ward", []types.XValue{xs("Gisozi")}, result(xs("Rwanda > Kigali City > Gasabo > Gisozi"))},
-	{"has_ward", []types.XValue{xs("xyz"), xs("Gasabo"), xs("kigali")}, falseResult},
+	{"has_ward", []types.XValue{xs("xyz"), xs("kigali"), xs("Gasabo")}, falseResult},
 	{"has_ward", []types.XValue{ERROR}, ERROR},
 
 	{

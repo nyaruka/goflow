@@ -664,11 +664,11 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 
 // HasWard tests whether a ward name is contained in the `text`
 //
-//	@(has_ward("Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
-//	@(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
-//	@(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
-//	@(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
-//	@(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
+//	@(has_ward("Gisozi", "Kigali", "Gasabo").match) -> Rwanda > Kigali City > Gasabo > Gisozi
+//	@(has_ward("I live in Gisozi", "Kigali", "Gasabo").match) -> Rwanda > Kigali City > Gasabo > Gisozi
+//	@(has_ward("Gisozi", "Brooklyn" , "Gasabo")) -> false
+//	@(has_ward("Gisozi", "Kigali", "Brooklyn")) -> false
+//	@(has_ward("Brooklyn", "Kigali", "Gasabo")) -> false
 //	@(has_ward("Gasabo")) -> false
 //	@(has_ward("Gisozi").match) -> Rwanda > Kigali City > Gasabo > Gisozi
 //
@@ -691,10 +691,11 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 	if len(args) == 3 {
-		if districtText, xerr = types.ToXText(env, args[1]); xerr != nil {
+		if stateText, xerr = types.ToXText(env, args[1]); xerr != nil {
 			return xerr
 		}
-		if stateText, xerr = types.ToXText(env, args[2]); xerr != nil {
+
+		if districtText, xerr = types.ToXText(env, args[2]); xerr != nil {
 			return xerr
 		}
 	}
