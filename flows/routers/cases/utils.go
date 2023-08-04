@@ -9,7 +9,7 @@ import (
 )
 
 var altNumerals = map[rune]rune{
-	// Eastern Arabic
+	// Arabic-Indic digits
 	'٠': '0',
 	'١': '1',
 	'٢': '2',
@@ -20,6 +20,18 @@ var altNumerals = map[rune]rune{
 	'٧': '7',
 	'٨': '8',
 	'٩': '9',
+
+	// Eastern Arabic-Indic digits (Persian and Urdu)
+	'۰': '0',
+	'۱': '1',
+	'۲': '2',
+	'۳': '3',
+	'۴': '4',
+	'۵': '5',
+	'۶': '6',
+	'۷': '7',
+	'۸': '8',
+	'۹': '9',
 
 	// Bengali
 	'০': '0',
