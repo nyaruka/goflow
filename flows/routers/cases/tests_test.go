@@ -173,7 +173,8 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("hi.51")}, result(xn("51"))},
 	{"has_number", []types.XValue{xs("hi .51")}, result(xn("0.51"))},
 	{"has_number", []types.XValue{xs(".51")}, result(xn("0.51"))},
-	{"has_number", []types.XValue{xs("١٢٣٤")}, result(xn("1234"))},
+	{"has_number", []types.XValue{xs("١٢٣٤")}, result(xn("1234"))}, // Arabic
+	{"has_number", []types.XValue{xs("۱۲۳۴")}, result(xn("1234"))}, // Eastern Arabic
 	{"has_number", []types.XValue{xs("٠.٥")}, result(xn("0.5"))},
 	{"has_number", []types.XValue{xs("nothing here")}, falseResult},
 	{"has_number", []types.XValue{xs("lOO")}, falseResult}, // no longer do substitutions
