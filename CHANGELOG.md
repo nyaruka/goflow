@@ -1,3 +1,8 @@
+v0.188.0 (2023-08-09)
+-------------------------
+ * Update go to 1.20
+ * Make numerical router tests work with Eastern Arabic digits
+
 v0.187.0 (2023-07-20)
 -------------------------
  * Update deps
