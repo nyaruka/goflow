@@ -44,6 +44,7 @@
                     ],
                     "date_format": "YYYY-MM-DD",
                     "default_country": "US",
+                    "input_matching": "ignore_case",
                     "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
@@ -140,6 +141,7 @@
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_country": "US",
+                        "input_matching": "ignore_case",
                         "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",

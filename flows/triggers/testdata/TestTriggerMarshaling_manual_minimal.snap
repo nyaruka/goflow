@@ -9,6 +9,7 @@
             "digit_grouping_symbol": ","
         },
         "redaction_policy": "none",
+        "input_matching": "ignore_case",
         "max_value_length": 640
     },
     "flow": {

@@ -2,18 +2,13 @@ package envs
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/utils"
-)
-
-type RedactionPolicy string
-
-const (
-	RedactionPolicyNone RedactionPolicy = "none"
-	RedactionPolicyURNs RedactionPolicy = "urns"
 )
 
 // NumberFormat describes how numbers should be parsed and formatted
@@ -21,6 +16,22 @@ type NumberFormat struct {
 	DecimalSymbol       string `json:"decimal_symbol"`
 	DigitGroupingSymbol string `json:"digit_grouping_symbol"`
 }
+
+// RedactionPolicy describes how logs should be redacted
+type RedactionPolicy string
+
+const (
+	RedactionPolicyNone RedactionPolicy = "none"
+	RedactionPolicyURNs RedactionPolicy = "urns"
+)
+
+// InputMatching describes how human input should be matched
+type InputMatching string
+
+const (
+	InputMatchingIgnoreCase  = "ignore_case"
+	InputMatchingConfusables = "confusables"
+)
 
 // DefaultNumberFormat is the default number formatting, e.g. 1,234.567
 var DefaultNumberFormat = &NumberFormat{DecimalSymbol: `.`, DigitGroupingSymbol: `,`}
@@ -35,6 +46,7 @@ type Environment interface {
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
+	InputMatching() InputMatching
 	MaxValueLength() int
 
 	DefaultLanguage() Language
@@ -56,7 +68,9 @@ type environment struct {
 	defaultCountry   Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
-	maxValueLength   int
+	inputMatching    InputMatching
+
+	maxValueLength int
 }
 
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
@@ -66,6 +80,7 @@ func (e *environment) AllowedLanguages() []Language     { return e.allowedLangua
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
+func (e *environment) InputMatching() InputMatching     { return e.inputMatching }
 func (e *environment) MaxValueLength() int              { return e.maxValueLength }
 
 // DefaultLanguage is the first allowed language
@@ -93,6 +108,14 @@ func (e *environment) Equal(other Environment) bool {
 	return string(asJSON1) == string(asJSON2)
 }
 
+// InputMatch matches human input against a test string
+func InputMatch(env Environment, s, t string) bool {
+	if env.InputMatching() == InputMatchingConfusables {
+		return stringsx.Confusable(s, t)
+	}
+	return strings.EqualFold(s, t)
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -105,6 +128,7 @@ type envEnvelope struct {
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
 	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
+	InputMatching    InputMatching   `json:"input_matching" validate:"omitempty,eq=ignore_case|eq=confusables"`
 	MaxValuelength   int             `json:"max_value_length"`
 }
 
@@ -124,6 +148,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultCountry = envelope.DefaultCountry
 	env.numberFormat = envelope.NumberFormat
 	env.redactionPolicy = envelope.RedactionPolicy
+	env.inputMatching = envelope.InputMatching
 	env.maxValueLength = envelope.MaxValuelength
 
 	tz, err := time.LoadLocation(envelope.Timezone)
@@ -144,6 +169,7 @@ func (e *environment) toEnvelope() *envEnvelope {
 		DefaultCountry:   e.defaultCountry,
 		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
+		InputMatching:    e.inputMatching,
 		MaxValuelength:   e.maxValueLength,
 	}
 }
@@ -172,8 +198,9 @@ func NewBuilder() *EnvironmentBuilder {
 			allowedLanguages: nil,
 			defaultCountry:   NilCountry,
 			numberFormat:     DefaultNumberFormat,
-			maxValueLength:   640,
 			redactionPolicy:  RedactionPolicyNone,
+			inputMatching:    InputMatchingIgnoreCase,
+			maxValueLength:   640,
 		},
 	}
 }
@@ -212,6 +239,11 @@ func (b *EnvironmentBuilder) WithNumberFormat(numberFormat *NumberFormat) *Envir
 
 func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy) *EnvironmentBuilder {
 	b.env.redactionPolicy = redactionPolicy
+	return b
+}
+
+func (b *EnvironmentBuilder) WithInputMatching(inputMatching InputMatching) *EnvironmentBuilder {
+	b.env.inputMatching = inputMatching
 	return b
 }
 

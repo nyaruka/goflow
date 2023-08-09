@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/shopspring/decimal"
 )
 
@@ -293,7 +292,7 @@ func HasBeginning(env envs.Environment, text types.XText, beginning types.XText)
 	}
 
 	segment := hayStack[:len(pinCushion)]
-	if strings.EqualFold(segment, pinCushion) {
+	if envs.InputMatch(env, segment, pinCushion) {
 		return NewTrueResult(types.NewXText(segment))
 	}
 
@@ -726,20 +725,19 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 // Text Test Functions
 //------------------------------------------------------------------------------------------
 
-type stringTokenTest func(origHayTokens []string, hayTokens []string, pinTokens []string) types.XValue
+type stringTokenTest func(env envs.Environment, hayTokens []string, pinTokens []string) types.XValue
 
 func testStringTokens(env envs.Environment, str types.XText, testStr types.XText, testFunc stringTokenTest) types.XValue {
 	hayStack := strings.TrimSpace(str.Native())
 	needle := strings.TrimSpace(testStr.Native())
 
-	origHays := utils.TokenizeString(hayStack)
-	hays := utils.TokenizeString(strings.ToLower(hayStack))
-	needles := utils.TokenizeString(strings.ToLower(needle))
+	hays := utils.TokenizeString(hayStack)
+	needles := utils.TokenizeString(needle)
 
-	return testFunc(origHays, hays, needles)
+	return testFunc(env, hays, needles)
 }
 
-func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasPhraseTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	if len(pins) == 0 {
 		return NewTrueResult(types.XTextEmpty)
 	}
@@ -747,8 +745,8 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue
 	pinIdx := 0
 	matches := make([]string, len(pins))
 	for i, hay := range hays {
-		if hay == pins[pinIdx] {
-			matches[pinIdx] = origHays[i]
+		if envs.InputMatch(env, hay, pins[pinIdx]) {
+			matches[pinIdx] = hays[i]
 			pinIdx++
 			if pinIdx == len(pins) {
 				break
@@ -765,21 +763,21 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue
 	return FalseResult
 }
 
-func hasAllWordsTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasAllWordsTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	matches := make([]string, 0, len(pins))
 	pinMatches := make([]int, len(pins))
 
 	for i, hay := range hays {
 		matched := false
 		for j, pin := range pins {
-			if hay == pin {
+			if envs.InputMatch(env, hay, pin) {
 				matched = true
 				pinMatches[j]++
 			}
 		}
 
 		if matched {
-			matches = append(matches, origHays[i])
+			matches = append(matches, hays[i])
 		}
 	}
 
@@ -799,18 +797,18 @@ func hasAllWordsTest(origHays []string, hays []string, pins []string) types.XVal
 	return FalseResult
 }
 
-func hasAnyWordTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasAnyWordTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	matches := make([]string, 0, len(pins))
 	for i, hay := range hays {
 		matched := false
 		for _, pin := range pins {
-			if hay == pin {
+			if envs.InputMatch(env, hay, pin) {
 				matched = true
 				break
 			}
 		}
 		if matched {
-			matches = append(matches, origHays[i])
+			matches = append(matches, hays[i])
 		}
 
 	}
@@ -822,7 +820,7 @@ func hasAnyWordTest(origHays []string, hays []string, pins []string) types.XValu
 	return FalseResult
 }
 
-func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasOnlyPhraseTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	// must be same length
 	if len(hays) != len(pins) {
 		return FalseResult
@@ -831,10 +829,10 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) types.XV
 	// and every token must match
 	matches := make([]string, 0, len(pins))
 	for i := range hays {
-		if hays[i] != pins[i] {
+		if !envs.InputMatch(env, hays[i], pins[i]) {
 			return FalseResult
 		}
-		matches = append(matches, origHays[i])
+		matches = append(matches, hays[i])
 	}
 
 	return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
