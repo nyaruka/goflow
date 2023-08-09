@@ -1,6 +1,6 @@
 module github.com/nyaruka/goflow
 
-go 1.19
+go 1.20
 
 require (
 	github.com/Masterminds/semver v1.5.0
@@ -9,17 +9,17 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/nyaruka/gocommon v1.37.0
+	github.com/nyaruka/gocommon v1.38.2
 	github.com/nyaruka/null/v2 v2.0.3
-	github.com/nyaruka/phonenumbers v1.1.7
+	github.com/nyaruka/phonenumbers v1.1.8
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.3.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
-	golang.org/x/net v0.12.0
-	golang.org/x/text v0.11.0
+	golang.org/x/exp v0.0.0-20230809150735-7b3493d9a819
+	golang.org/x/net v0.14.0
+	golang.org/x/text v0.12.0
 )
 
 require (
@@ -34,8 +34,8 @@ require (
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
