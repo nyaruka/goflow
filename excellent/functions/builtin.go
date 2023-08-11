@@ -109,6 +109,7 @@ func init() {
 		"sum":      OneArrayFunction(Sum),
 		"unique":   OneArrayFunction(Unique),
 		"concat":   TwoArrayFunction(Concat),
+		"filter":   TwoArgFunction(Filter),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1689,6 +1690,39 @@ func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) ty
 	return types.NewXArray(both...)
 }
 
+// Filter returns a new array with the items from `array` that when passed to `func` return true.
+//
+//	@(filter(array(1, 0, 2), boolean)) -> [1, 2]
+//	@(filter(array("a", "b", "c"), (x) => x != "c")) -> [a, b]
+//
+// @function filter(array, func)
+func Filter(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	array, xerr := types.ToXArray(env, arg1)
+	if xerr != nil {
+		return xerr
+	}
+	function, xerr := types.ToXFunction(arg2)
+	if xerr != nil {
+		return xerr
+	}
+
+	result := make([]types.XValue, 0, array.Count())
+
+	for i := 0; i < array.Count(); i++ {
+		item := array.Get(i)
+		keep := function.Call(env, []types.XValue{item})
+		asBool, xerr := types.ToXBoolean(keep)
+		if xerr != nil {
+			return xerr
+		}
+		if asBool.Native() {
+			result = append(result, item)
+		}
+	}
+
+	return types.NewXArray(result...)
+}
+
 //------------------------------------------------------------------------------------------
 // Encoded Text Functions
 //------------------------------------------------------------------------------------------
@@ -2174,14 +2208,12 @@ func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
 	if xerr != nil {
 		return xerr
 	}
-
-	function, isFunction := args[1].(*types.XFunction)
-	if !isFunction {
-		return types.NewXErrorf("requires an function as its second argument")
+	function, xerr := types.ToXFunction(args[1])
+	if xerr != nil {
+		return xerr
 	}
 
 	otherArgs := args[2:]
-
 	result := make([]types.XValue, array.Count())
 
 	for i := 0; i < array.Count(); i++ {
@@ -2211,14 +2243,12 @@ func ForEachValue(env envs.Environment, args ...types.XValue) types.XValue {
 	if xerr != nil {
 		return xerr
 	}
-
-	function, isFunction := args[1].(*types.XFunction)
-	if !isFunction {
-		return types.NewXErrorf("requires an function as its second argument")
+	function, xerr := types.ToXFunction(args[1])
+	if xerr != nil {
+		return xerr
 	}
 
 	otherArgs := args[2:]
-
 	props := object.Properties()
 	result := make(map[string]types.XValue, len(props))
 

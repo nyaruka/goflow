@@ -47,3 +47,32 @@ func TestXFunction(t *testing.T) {
 	assert.False(t, types.Equals(anon1, anon1))
 	assert.False(t, types.Equals(anon1, anon2))
 }
+
+func TestToXFunction(t *testing.T) {
+	foo := types.NewXFunction("foo", func(env envs.Environment, args ...types.XValue) types.XValue { return types.NewXText("foo") })
+	anon := types.NewXFunction("", func(env envs.Environment, args ...types.XValue) types.XValue { return types.NewXText("bar") })
+
+	types.ToXFunction(types.NewXText("hello"))
+
+	var tests = []struct {
+		value    types.XValue
+		asFunc   *types.XFunction
+		hasError bool
+	}{
+		{nil, nil, true},
+		{types.NewXText("hi"), nil, true},
+		{foo, foo, false},
+		{anon, anon, false},
+	}
+
+	for _, test := range tests {
+		fun, err := types.ToXFunction(test.value)
+
+		if test.hasError {
+			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.Equal(t, test.asFunc, fun, "array mismatch for input %T{%s}", test.value, test.value)
+		}
+	}
+}
