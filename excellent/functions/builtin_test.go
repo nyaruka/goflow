@@ -269,6 +269,11 @@ func TestFunctions(t *testing.T) {
 		{"field", dmy, []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
 		{"field", dmy, []types.XValue{}, ERROR},
 
+		{"filter", dmy, []types.XValue{xa(xi(1), xi(0), xi(2)), xf("boolean")}, xa(xi(1), xi(2))},
+		{"filter", dmy, []types.XValue{xa(), xf("boolean")}, xa()},
+		{"filter", dmy, []types.XValue{ERROR, xf("boolean")}, ERROR},
+		{"filter", dmy, []types.XValue{xa(xi(1), xi(0), xi(2)), ERROR}, ERROR},
+
 		{"foreach", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xf("upper")}, xa(xs("A"), xs("B"), xs("C"))},
 		{"foreach", dmy, []types.XValue{xa(xs("the man"), xs("fox"), xs("jumped up")), xf("word"), xi(0)}, xa(xs("the"), xs("fox"), xs("jumped"))},
 		{"foreach", dmy, []types.XValue{ERROR, xf("upper")}, ERROR},
