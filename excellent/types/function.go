@@ -82,3 +82,12 @@ func (x *XFunction) Equals(o XValue) bool {
 }
 
 var _ XValue = (*XFunction)(nil)
+
+// ToXFunction converts the given value to a function returns an error if that isn't possible
+func ToXFunction(x XValue) (*XFunction, XError) {
+	function, isFunction := x.(*XFunction)
+	if !isFunction {
+		return nil, NewXErrorf("%s is not a function", Describe(x))
+	}
+	return function, nil
+}
