@@ -1,3 +1,8 @@
+v0.190.1 (2023-08-15)
+-------------------------
+ * Merge pull request #1176 from nyaruka/split_env_types
+ * Split flows.Environment into AssetsEnvironment and SessionEnvironment
+
 v0.190.0 (2023-08-15)
 -------------------------
  * Replace max_value_length on env with new engine options for max field and result chars
