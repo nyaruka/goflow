@@ -103,7 +103,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		if a.Templating != nil {
 			// looks for a translation in the contact locale or environment default
 			locales := []envs.Locale{
-				run.Environment().DefaultLocale(),
+				run.Session().MergedEnvironment().DefaultLocale(),
 				run.Session().Environment().DefaultLocale(),
 			}
 

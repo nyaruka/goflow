@@ -354,6 +354,7 @@ type Session interface {
 
 	Environment() envs.Environment
 	SetEnvironment(envs.Environment)
+	MergedEnvironment() envs.Environment
 
 	Contact() *Contact
 	SetContact(*Contact)
@@ -396,7 +397,6 @@ type Run interface {
 	RunSummary
 	FlowReference() *assets.FlowReference
 
-	Environment() envs.Environment
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)

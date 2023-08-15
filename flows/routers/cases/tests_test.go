@@ -7,11 +7,14 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers/cases"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -31,45 +34,59 @@ var ERROR = types.NewXErrorf("any error")
 
 var kgl, _ = time.LoadLocation("Africa/Kigali")
 
-var locationHierarchyJSON = `{
-	"name": "Rwanda",
-	"aliases": ["Ruanda"],		
-	"children": [
+var assetsJSON = `{
+	"flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        }
+	],
+    "locations": [
 		{
-			"name": "Kigali City",
-			"aliases": ["Kigali", "Kigari"],
+			"name": "Rwanda",
+			"aliases": ["Ruanda"],		
 			"children": [
 				{
-					"name": "Gasabo",
+					"name": "Kigali City",
+					"aliases": ["Kigali", "Kigari"],
 					"children": [
 						{
-							"name": "Gisozi"
+							"name": "Gasabo",
+							"children": [
+								{
+									"name": "Gisozi"
+								},
+								{
+									"name": "Ndera"
+								}
+							]
 						},
 						{
-							"name": "Ndera"
+							"name": "Nyarugenge",
+							"children": []
 						}
 					]
 				},
 				{
-					"name": "Nyarugenge",
+					"name": "Québec",
+					"aliases": ["Q.C", "Le Québec", "Quebec", "Que,", "Que", "Qc", "Québec"],
+					"children": []
+				},
+				{
+					"name": "Île-de-France",
+					"aliases": [],
+					"children": []
+				},
+				{
+					"name": "Paktika",
+					"aliases": ["Janikhel", "Terwa", "Yahyakhel", "Yusufkhel", "\u067e\u06a9\u062a\u06cc\u06a9\u0627", "\u062a\u0631\u0648\u0648", "\u06cc\u062d\u06cc\u06cc \u062e\u06cc\u0644", "\u06cc\u0648\u0633\u0641 \u062e\u06cc\u0644"],
 					"children": []
 				}
 			]
-		},
-		{
-			"name": "Québec",
-			"aliases": ["Q.C", "Le Québec", "Quebec", "Que,", "Que", "Qc", "Québec"],
-			"children": []
-		},
-		{
-			"name": "Île-de-France",
-			"aliases": [],
-			"children": []
-		},
-		{
-			"name": "Paktika",
-			"aliases": ["Janikhel", "Terwa", "Yahyakhel", "Yusufkhel", "\u067e\u06a9\u062a\u06cc\u06a9\u0627", "\u062a\u0631\u0648\u0648", "\u06cc\u062d\u06cc\u06cc \u062e\u06cc\u0644", "\u06cc\u0648\u0633\u0641 \u062e\u06cc\u0644"],
-			"children": []
 		}
 	]
 }`
@@ -490,10 +507,21 @@ func TestTests(t *testing.T) {
 		WithDefaultCountry(envs.Country("RW")).
 		Build()
 
-	locations, err := envs.ReadLocationHierarchy([]byte(locationHierarchyJSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	env = flows.NewEnvironment(env, flows.NewLocationAssets([]assets.LocationHierarchy{locations}))
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	contact := flows.NewEmptyContact(sa, "", envs.NilLanguage, nil)
+
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
+	eng := engine.NewBuilder().Build()
+
+	session, _, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+
+	env = session.MergedEnvironment()
 
 	for _, tc := range testTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)

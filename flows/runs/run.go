@@ -20,9 +20,8 @@ import (
 )
 
 type flowRun struct {
-	uuid        flows.RunUUID
-	session     flows.Session
-	environment envs.Environment
+	uuid    flows.RunUUID
+	session flows.Session
 
 	flow    flows.Flow
 	flowRef *assets.FlowReference
@@ -57,16 +56,14 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run 
 		modifiedOn: now,
 	}
 
-	r.environment = newRunEnvironment(session.Environment(), r)
 	r.webhook = types.XObjectEmpty
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
 }
 
-func (r *flowRun) UUID() flows.RunUUID           { return r.uuid }
-func (r *flowRun) Session() flows.Session        { return r.session }
-func (r *flowRun) Environment() envs.Environment { return r.environment }
+func (r *flowRun) UUID() flows.RunUUID    { return r.uuid }
+func (r *flowRun) Session() flows.Session { return r.session }
 
 func (r *flowRun) Flow() flows.Flow                     { return r.flow }
 func (r *flowRun) FlowReference() *assets.FlowReference { return r.flowRef }
@@ -76,7 +73,7 @@ func (r *flowRun) Events() []flows.Event                { return r.events }
 func (r *flowRun) Results() flows.Results { return r.results }
 func (r *flowRun) SaveResult(result *flows.Result) {
 	// truncate value if necessary
-	result.Value = stringsx.Truncate(result.Value, r.Environment().MaxValueLength())
+	result.Value = stringsx.Truncate(result.Value, r.session.MergedEnvironment().MaxValueLength())
 
 	r.results.Save(result)
 	r.modifiedOn = dates.Now()
@@ -309,16 +306,16 @@ func (r *flowRun) nodeContext(env envs.Environment) map[string]types.XValue {
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplateValue(template string) (types.XValue, error) {
-	ctx := types.NewXObject(r.RootContext(r.Environment()))
+	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	return excellent.EvaluateTemplateValue(r.Environment(), ctx, template)
+	return excellent.EvaluateTemplateValue(r.session.MergedEnvironment(), ctx, template)
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
 func (r *flowRun) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
-	ctx := types.NewXObject(r.RootContext(r.Environment()))
+	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, err := excellent.EvaluateTemplate(r.Environment(), ctx, template, escaping)
+	value, err := excellent.EvaluateTemplate(r.session.MergedEnvironment(), ctx, template, escaping)
 	if truncate {
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
 	}
@@ -335,13 +332,13 @@ func (r *flowRun) getLanguages() []envs.Language {
 	languages := make([]envs.Language, 0, 3)
 
 	// if contact has an allowed language, it takes priority
-	contactLanguage := r.Environment().DefaultLanguage()
+	contactLanguage := r.session.MergedEnvironment().DefaultLanguage()
 	if contactLanguage != envs.NilLanguage {
 		languages = append(languages, contactLanguage)
 	}
 
 	// next we include the default language if it's different to the contact language
-	defaultLanguage := r.Session().Environment().DefaultLanguage()
+	defaultLanguage := r.session.Environment().DefaultLanguage()
 	if defaultLanguage != envs.NilLanguage && defaultLanguage != contactLanguage {
 		languages = append(languages, defaultLanguage)
 	}
@@ -462,8 +459,7 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 		}
 	}
 
-	// create a run specific environment and context
-	r.environment = newRunEnvironment(session.Environment(), r)
+	// create context
 	r.webhook = lastWebhookSavedAsExtra(r)
 	r.legacyExtra = newLegacyExtra(r)
 

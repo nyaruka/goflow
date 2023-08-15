@@ -61,6 +61,7 @@ func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
 
 func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) SetEnvironment(env envs.Environment) { s.env = env }
+func (s *session) MergedEnvironment() envs.Environment { return flows.NewEnvironment(s) }
 
 func (s *session) Contact() *flows.Contact           { return s.contact }
 func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }

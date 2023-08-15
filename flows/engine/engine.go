@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -20,6 +21,7 @@ type engine struct {
 func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
 	s := &session{
 		uuid:       flows.SessionUUID(uuids.New()),
+		env:        envs.NewBuilder().Build(),
 		engine:     e,
 		assets:     sa,
 		trigger:    trigger,

@@ -118,7 +118,7 @@ func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 
 // Route determines which exit to take from a node
 func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, string, error) {
-	env := run.Environment()
+	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand
 	operand, err := run.EvaluateTemplateValue(r.operand)
@@ -184,7 +184,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 		}
 
 		// call our function
-		result := xtest.Call(run.Environment(), args)
+		result := xtest.Call(run.Session().MergedEnvironment(), args)
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {
@@ -205,7 +205,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 				run.LogError(step, errors.Errorf("test %s returned non-object extra", strings.ToUpper(test)))
 			}
 
-			resultAsStr, xerr := types.ToXText(run.Environment(), match)
+			resultAsStr, xerr := types.ToXText(run.Session().MergedEnvironment(), match)
 			if xerr != nil {
 				return "", "", nil, xerr
 			}
