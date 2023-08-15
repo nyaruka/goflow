@@ -66,7 +66,7 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 		log(events.NewError(err))
 	}
 
-	urn, err := urns.NewTelURNForCountry(phone, string(run.Environment().DefaultCountry()))
+	urn, err := urns.NewTelURNForCountry(phone, string(run.Session().MergedEnvironment().DefaultCountry()))
 	if err != nil {
 		log(events.NewError(err))
 		return false

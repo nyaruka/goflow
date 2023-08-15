@@ -397,7 +397,6 @@ type Run interface {
 	RunSummary
 	FlowReference() *assets.FlowReference
 
-	Environment() envs.Environment
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)

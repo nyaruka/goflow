@@ -81,7 +81,7 @@ func TestFieldValueParse(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		actual := session.Contact().Fields().Parse(session.Runs()[0].Environment(), fields, tc.field, tc.value)
+		actual := session.Contact().Fields().Parse(session.MergedEnvironment(), fields, tc.field, tc.value)
 
 		assert.Equal(t, tc.expected, actual, "parse mismatch for field %s and value '%s'", tc.field.Key(), tc.value)
 	}

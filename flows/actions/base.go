@@ -178,7 +178,7 @@ func (a *baseAction) updateWebhook(run flows.Run, call *flows.WebhookCall) {
 // helper to apply a contact modifier
 func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) bool {
 	logModifier(mod)
-	return modifiers.Apply(run.Environment(), run.Session().Engine().Services(), run.Session().Assets(), run.Contact(), mod, logEvent)
+	return modifiers.Apply(run.Session().MergedEnvironment(), run.Session().Engine().Services(), run.Session().Assets(), run.Contact(), mod, logEvent)
 }
 
 // helper to log a failure
@@ -266,11 +266,11 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 			// next up try it as a URN
 			urn := urns.URN(evaluatedLegacyVar)
 			if urn.Validate() == nil {
-				urn = urn.Normalize(string(run.Environment().DefaultCountry()))
+				urn = urn.Normalize(string(run.Session().MergedEnvironment().DefaultCountry()))
 				urnList = append(urnList, urn)
 			} else {
 				// if that fails, try to parse as phone number
-				parsedTel := utils.ParsePhoneNumber(evaluatedLegacyVar, string(run.Environment().DefaultCountry()))
+				parsedTel := utils.ParsePhoneNumber(evaluatedLegacyVar, string(run.Session().MergedEnvironment().DefaultCountry()))
 				if parsedTel != "" {
 					urn, _ := urns.NewURNFromParts(urns.TelScheme, parsedTel, "", "")
 					urnList = append(urnList, urn)
@@ -396,7 +396,7 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 }
 
 func currentLocale(run flows.Run, lang envs.Language) envs.Locale {
-	return envs.NewLocale(lang, run.Environment().DefaultCountry())
+	return envs.NewLocale(lang, run.Session().MergedEnvironment().DefaultCountry())
 }
 
 //------------------------------------------------------------------------------------------
