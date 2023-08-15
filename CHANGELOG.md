@@ -1,3 +1,8 @@
+v0.190.0 (2023-08-15)
+-------------------------
+ * Replace max_value_length on env with new engine options for max field and result chars
+ * Simplify how we create a merged environment with properties from the contact
+
 v0.189.0 (2023-08-11)
 -------------------------
  * Add filter expression function
