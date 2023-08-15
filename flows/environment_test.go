@@ -66,7 +66,7 @@ var assetsJSON = `{
     ]
 }`
 
-func TestEnvironmentLocationResolving(t *testing.T) {
+func TestAssetsEnvironment(t *testing.T) {
 	env := envs.NewBuilder().WithDefaultCountry("RW").Build()
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
@@ -82,14 +82,14 @@ func TestEnvironmentLocationResolving(t *testing.T) {
 	session, _, err := eng.NewSession(sa, trigger)
 	require.NoError(t, err)
 
-	senv := session.MergedEnvironment()
-	assert.Equal(t, envs.Country("RW"), senv.DefaultCountry())
-	require.NotNil(t, senv.LocationResolver())
+	aenv := flows.NewAssetsEnvironment(env, session.Assets().Locations())
+	assert.Equal(t, envs.Country("RW"), aenv.DefaultCountry())
+	require.NotNil(t, aenv.LocationResolver())
 
-	kigali := senv.LocationResolver().LookupLocation("Rwanda > Kigali City")
+	kigali := aenv.LocationResolver().LookupLocation("Rwanda > Kigali City")
 	assert.Equal(t, "Kigali City", kigali.Name())
 
-	matches := senv.LocationResolver().FindLocationsFuzzy("gisozi town", flows.LocationLevelWard, nil)
+	matches := aenv.LocationResolver().FindLocationsFuzzy("gisozi town", flows.LocationLevelWard, nil)
 	assert.Equal(t, 1, len(matches))
 	assert.Equal(t, "Gisozi", matches[0].Name())
 }
@@ -107,7 +107,7 @@ const contactJSON = `{
 	]
 }`
 
-func TestEnvironmentMerging(t *testing.T) {
+func TestSessionEnvironment(t *testing.T) {
 	tzRW, _ := time.LoadLocation("Africa/Kigali")
 	tzEC, _ := time.LoadLocation("America/Guayaquil")
 	tzUK, _ := time.LoadLocation("Europe/London")
