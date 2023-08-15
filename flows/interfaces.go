@@ -354,6 +354,7 @@ type Session interface {
 
 	Environment() envs.Environment
 	SetEnvironment(envs.Environment)
+	MergedEnvironment() envs.Environment
 
 	Contact() *Contact
 	SetContact(*Contact)

@@ -3,9 +3,11 @@ package flows
 import (
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"golang.org/x/exp/slices"
 )
 
 type environment struct {
@@ -79,4 +81,56 @@ func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.Locat
 
 func (r *assetLocationResolver) LookupLocation(path envs.LocationPath) *envs.Location {
 	return r.locations.FindByPath(path)
+}
+
+// an extended environment which takes some values from a contact if there is one and if the have those values.
+type mergedEnvironment struct {
+	envs.Environment
+
+	session Session
+}
+
+// NewMergedEnvironment creates a new merged environment from a session's base environment and its contact
+func NewMergedEnvironment(s Session) envs.Environment {
+	return &mergedEnvironment{
+		NewEnvironment(s.Environment(), s.Assets().Locations()),
+		s,
+	}
+}
+
+func (e *mergedEnvironment) Timezone() *time.Location {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a timezone that overrides the base enviroment's timezone
+	if contact != nil && contact.Timezone() != nil {
+		return contact.Timezone()
+	}
+	return e.Environment.Timezone()
+}
+
+func (e *mergedEnvironment) DefaultLanguage() envs.Language {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a language and it's an allowed language that overrides the base environment's languuage
+	if contact != nil && contact.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), contact.Language()) {
+		return contact.Language()
+	}
+	return e.Environment.DefaultLanguage()
+}
+
+func (e *mergedEnvironment) DefaultCountry() envs.Country {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a preferred channel with a country that overrides the base environment's country
+	if contact != nil {
+		cc := contact.Country()
+		if cc != envs.NilCountry {
+			return cc
+		}
+	}
+	return e.Environment.DefaultCountry()
+}
+
+func (e *mergedEnvironment) DefaultLocale() envs.Locale {
+	return envs.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
