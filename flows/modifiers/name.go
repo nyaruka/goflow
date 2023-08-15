@@ -34,10 +34,10 @@ func NewName(name string) *NameModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *NameModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *NameModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Name() != m.Name {
 		// truncate value if necessary
-		name := stringsx.Truncate(m.Name, env.MaxValueLength())
+		name := stringsx.Truncate(m.Name, eng.Options().MaxFieldChars)
 
 		contact.SetName(name)
 		log(events.NewContactNameChanged(name))

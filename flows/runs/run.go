@@ -72,7 +72,7 @@ func (r *run) Events() []flows.Event                { return r.events }
 func (r *run) Results() flows.Results { return r.results }
 func (r *run) SaveResult(result *flows.Result) {
 	// truncate value if necessary
-	result.Value = stringsx.Truncate(result.Value, r.session.MergedEnvironment().MaxValueLength())
+	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 
 	r.results.Save(result)
 	r.modifiedOn = dates.Now()
@@ -316,7 +316,7 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 
 	value, err := excellent.EvaluateTemplate(r.session.MergedEnvironment(), ctx, template, escaping)
 	if truncate {
-		value = stringsx.TruncateEllipsis(value, r.Session().Engine().MaxTemplateChars())
+		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)
 	}
 	return value, err
 }

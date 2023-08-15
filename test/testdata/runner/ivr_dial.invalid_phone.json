@@ -44,7 +44,6 @@
                     ],
                     "date_format": "YYYY-MM-DD",
                     "default_country": "US",
-                    "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -140,7 +139,6 @@
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_country": "US",
-                        "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","
@@ -195,7 +193,6 @@
             ],
             "date_format": "YYYY-MM-DD",
             "default_country": "US",
-            "max_value_length": 640,
             "number_format": {
                 "decimal_symbol": ".",
                 "digit_grouping_symbol": ","

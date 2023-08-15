@@ -35,7 +35,6 @@ type Environment interface {
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
-	MaxValueLength() int
 
 	DefaultLanguage() Language
 	DefaultLocale() Locale
@@ -56,7 +55,6 @@ type environment struct {
 	defaultCountry   Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
-	maxValueLength   int
 }
 
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
@@ -66,7 +64,6 @@ func (e *environment) AllowedLanguages() []Language     { return e.allowedLangua
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
-func (e *environment) MaxValueLength() int              { return e.maxValueLength }
 
 // DefaultLanguage is the first allowed language
 func (e *environment) DefaultLanguage() Language {
@@ -105,7 +102,6 @@ type envEnvelope struct {
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
 	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
-	MaxValuelength   int             `json:"max_value_length"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
@@ -124,7 +120,6 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultCountry = envelope.DefaultCountry
 	env.numberFormat = envelope.NumberFormat
 	env.redactionPolicy = envelope.RedactionPolicy
-	env.maxValueLength = envelope.MaxValuelength
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -144,7 +139,6 @@ func (e *environment) toEnvelope() *envEnvelope {
 		DefaultCountry:   e.defaultCountry,
 		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
-		MaxValuelength:   e.maxValueLength,
 	}
 }
 
@@ -172,7 +166,6 @@ func NewBuilder() *EnvironmentBuilder {
 			allowedLanguages: nil,
 			defaultCountry:   NilCountry,
 			numberFormat:     DefaultNumberFormat,
-			maxValueLength:   640,
 			redactionPolicy:  RedactionPolicyNone,
 		},
 	}
@@ -212,11 +205,6 @@ func (b *EnvironmentBuilder) WithNumberFormat(numberFormat *NumberFormat) *Envir
 
 func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy) *EnvironmentBuilder {
 	b.env.redactionPolicy = redactionPolicy
-	return b
-}
-
-func (b *EnvironmentBuilder) WithMaxValueLength(maxValueLength int) *EnvironmentBuilder {
-	b.env.maxValueLength = maxValueLength
 	return b
 }
 

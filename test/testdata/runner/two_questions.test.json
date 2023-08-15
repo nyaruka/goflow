@@ -63,7 +63,6 @@
                         "fra"
                     ],
                     "date_format": "YYYY-MM-DD",
-                    "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -146,7 +145,6 @@
                             "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
-                        "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","
@@ -176,7 +174,6 @@
                             "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
-                        "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","
@@ -307,7 +304,6 @@
                         "fra"
                     ],
                     "date_format": "YYYY-MM-DD",
-                    "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -364,7 +360,6 @@
                                         "fra"
                                     ],
                                     "date_format": "YYYY-MM-DD",
-                                    "max_value_length": 640,
                                     "number_format": {
                                         "decimal_symbol": ".",
                                         "digit_grouping_symbol": ","
@@ -514,7 +509,6 @@
                             "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
-                        "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","
@@ -630,7 +624,6 @@
                         "fra"
                     ],
                     "date_format": "YYYY-MM-DD",
-                    "max_value_length": 640,
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -687,7 +680,6 @@
                                         "fra"
                                     ],
                                     "date_format": "YYYY-MM-DD",
-                                    "max_value_length": 640,
                                     "number_format": {
                                         "decimal_symbol": ".",
                                         "digit_grouping_symbol": ","
@@ -905,7 +897,6 @@
                             "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
-                        "max_value_length": 640,
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","

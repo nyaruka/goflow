@@ -252,8 +252,8 @@ func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows
 		return nil
 	}
 
-	if s.countWaits() >= s.engine.MaxResumesPerSession() {
-		failSession("reached maximum number of resumes per session (%d)", s.Engine().MaxResumesPerSession())
+	if s.countWaits() >= s.engine.Options().MaxResumesPerSession {
+		failSession("reached maximum number of resumes per session (%d)", s.engine.Options().MaxResumesPerSession)
 		return nil
 	}
 
@@ -415,9 +415,9 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 		if destination != "" {
 			numNewSteps++
 
-			if numNewSteps > s.Engine().MaxStepsPerSprint() {
+			if numNewSteps > s.engine.Options().MaxStepsPerSprint {
 				// we've hit the step limit - usually a sign of a loop
-				failRun(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.Engine().MaxStepsPerSprint()))
+				failRun(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.engine.Options().MaxStepsPerSprint))
 			} else {
 				node = currentRun.Flow().GetNode(destination)
 				if node == nil {
