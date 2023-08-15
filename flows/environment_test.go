@@ -10,12 +10,11 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-var assets1JSON = `{
+var assetsJSON = `{
     "flows": [
         {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
@@ -67,77 +66,33 @@ var assets1JSON = `{
     ]
 }`
 
-func TestEnvironment(t *testing.T) {
+func TestEnvironmentLocationResolving(t *testing.T) {
 	env := envs.NewBuilder().WithDefaultCountry("RW").Build()
-	source, err := static.NewSource([]byte(assets1JSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	fenv := flows.NewEnvironment(env, sa.Locations())
-	assert.Equal(t, envs.Country("RW"), fenv.DefaultCountry())
-	require.NotNil(t, fenv.LocationResolver())
+	contact := flows.NewEmptyContact(sa, "", envs.NilLanguage, nil)
 
-	kigali := fenv.LocationResolver().LookupLocation("Rwanda > Kigali City")
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
+	eng := engine.NewBuilder().Build()
+
+	session, _, err := eng.NewSession(sa, trigger)
+	require.NoError(t, err)
+
+	senv := session.MergedEnvironment()
+	assert.Equal(t, envs.Country("RW"), senv.DefaultCountry())
+	require.NotNil(t, senv.LocationResolver())
+
+	kigali := senv.LocationResolver().LookupLocation("Rwanda > Kigali City")
 	assert.Equal(t, "Kigali City", kigali.Name())
 
-	matches := fenv.LocationResolver().FindLocationsFuzzy("gisozi town", flows.LocationLevelWard, nil)
+	matches := senv.LocationResolver().FindLocationsFuzzy("gisozi town", flows.LocationLevelWard, nil)
 	assert.Equal(t, 1, len(matches))
 	assert.Equal(t, "Gisozi", matches[0].Name())
 }
-
-var assets2JSON = `{
-    "flows": [
-        {
-            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-            "name": "Test",
-            "spec_version": "13.1.0",
-            "language": "eng",
-            "type": "messaging",
-            "nodes": []
-        }
-	],
-	"channels": [
-    	{
-			"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-			"name": "Android Channel",
-			"address": "+17036975131",
-			"schemes": ["tel"],
-			"roles": ["send", "receive"],
-			"country": "US"
-    	}
-	  ],
-	  "locations": [
-        {
-            "name": "Rwanda",
-            "aliases": ["Ruanda"],		
-            "children": [
-                {
-                    "name": "Kigali City",
-                    "aliases": ["Kigali", "Kigari"],
-                    "children": [
-                        {
-                            "name": "Gasabo",
-                            "children": [
-                                {
-                                    "name": "Gisozi"
-                                },
-                                {
-                                    "name": "Ndera"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Nyarugenge",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}`
 
 const contactJSON = `{
 	"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -152,7 +107,7 @@ const contactJSON = `{
 	]
 }`
 
-func TestMergedEnvironment(t *testing.T) {
+func TestEnvironmentMerging(t *testing.T) {
 	tzRW, _ := time.LoadLocation("Africa/Kigali")
 	tzEC, _ := time.LoadLocation("America/Guayaquil")
 	tzUK, _ := time.LoadLocation("Europe/London")
@@ -162,7 +117,7 @@ func TestMergedEnvironment(t *testing.T) {
 		WithDefaultCountry("RW").
 		WithTimezone(tzRW).
 		Build()
-	source, err := static.NewSource([]byte(assets2JSON))
+	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
 	sa, err := engine.NewSessionAssets(env, source, nil)
