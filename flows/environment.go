@@ -10,68 +10,26 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-type environment struct {
+type assetsEnvironment struct {
 	envs.Environment
 
-	session          Session
 	locationResolver envs.LocationResolver
 }
 
-// NewEnvironment creates a new environment from a session's base environment that merges some properties with
-// those from the contact, and adds support for location resolving using the session's locations assets.
-func NewEnvironment(s Session) envs.Environment {
+// NewAssetsEnvironment creates a new environment from a base environment and adds support for location resolving using
+// location assets.
+func NewAssetsEnvironment(e envs.Environment, la *LocationAssets) envs.Environment {
 	var locationResolver envs.LocationResolver
 
-	hierarchies := s.Assets().Locations().Hierarchies()
+	hierarchies := la.Hierarchies()
 	if len(hierarchies) > 0 {
 		locationResolver = &assetLocationResolver{hierarchies[0]}
 	}
 
-	return &environment{
-		Environment:      s.Environment(),
-		session:          s,
-		locationResolver: locationResolver,
-	}
+	return &assetsEnvironment{Environment: e, locationResolver: locationResolver}
 }
 
-func (e *environment) Timezone() *time.Location {
-	contact := e.session.Contact()
-
-	// if we have a contact and they have a timezone that overrides the base enviroment's timezone
-	if contact != nil && contact.Timezone() != nil {
-		return contact.Timezone()
-	}
-	return e.Environment.Timezone()
-}
-
-func (e *environment) DefaultLanguage() envs.Language {
-	contact := e.session.Contact()
-
-	// if we have a contact and they have a language and it's an allowed language that overrides the base environment's languuage
-	if contact != nil && contact.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), contact.Language()) {
-		return contact.Language()
-	}
-	return e.Environment.DefaultLanguage()
-}
-
-func (e *environment) DefaultCountry() envs.Country {
-	contact := e.session.Contact()
-
-	// if we have a contact and they have a preferred channel with a country that overrides the base environment's country
-	if contact != nil {
-		cc := contact.Country()
-		if cc != envs.NilCountry {
-			return cc
-		}
-	}
-	return e.Environment.DefaultCountry()
-}
-
-func (e *environment) DefaultLocale() envs.Locale {
-	return envs.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
-}
-
-func (e *environment) LocationResolver() envs.LocationResolver {
+func (e *assetsEnvironment) LocationResolver() envs.LocationResolver {
 	return e.locationResolver
 }
 
@@ -124,4 +82,56 @@ func (r *assetLocationResolver) FindLocationsFuzzy(text string, level envs.Locat
 
 func (r *assetLocationResolver) LookupLocation(path envs.LocationPath) *envs.Location {
 	return r.locations.FindByPath(path)
+}
+
+type sessionEnvironment struct {
+	envs.Environment
+
+	session Session
+}
+
+// NewSessionEnvironment creates a new environment from a session's base environment that merges some properties with
+// those from the contact.
+func NewSessionEnvironment(s Session) envs.Environment {
+	return &sessionEnvironment{
+		Environment: NewAssetsEnvironment(s.Environment(), s.Assets().Locations()),
+		session:     s,
+	}
+}
+
+func (e *sessionEnvironment) Timezone() *time.Location {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a timezone that overrides the base enviroment's timezone
+	if contact != nil && contact.Timezone() != nil {
+		return contact.Timezone()
+	}
+	return e.Environment.Timezone()
+}
+
+func (e *sessionEnvironment) DefaultLanguage() envs.Language {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a language and it's an allowed language that overrides the base environment's languuage
+	if contact != nil && contact.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), contact.Language()) {
+		return contact.Language()
+	}
+	return e.Environment.DefaultLanguage()
+}
+
+func (e *sessionEnvironment) DefaultCountry() envs.Country {
+	contact := e.session.Contact()
+
+	// if we have a contact and they have a preferred channel with a country that overrides the base environment's country
+	if contact != nil {
+		cc := contact.Country()
+		if cc != envs.NilCountry {
+			return cc
+		}
+	}
+	return e.Environment.DefaultCountry()
+}
+
+func (e *sessionEnvironment) DefaultLocale() envs.Locale {
+	return envs.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
