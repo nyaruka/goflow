@@ -134,13 +134,13 @@ func (s *session) CurrentContext() *types.XObject {
 
 // looks through this session's run for the one that was last modified
 func (s *session) currentRun() flows.Run {
-	var lastRun flows.Run
-	for _, run := range s.runs {
-		if lastRun == nil || run.ModifiedOn().After(lastRun.ModifiedOn()) {
-			lastRun = run
+	var last flows.Run
+	for _, r := range s.runs {
+		if last == nil || r.ModifiedOn().After(last.ModifiedOn()) {
+			last = r
 		}
 	}
-	return lastRun
+	return last
 }
 
 // looks through this session's run for the one that is waiting
@@ -220,11 +220,11 @@ func (s *session) prepareForSprint() error {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
 		if hasRun {
-			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
+			r, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
 			if err != nil {
 				return errors.Wrap(err, "error reading parent run from trigger")
 			}
-			s.parentRun = run
+			s.parentRun = r
 		}
 	}
 	return nil

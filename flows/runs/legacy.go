@@ -98,7 +98,7 @@ func arrayToObject(array *types.XArray) *types.XObject {
 }
 
 // finds the last webhook response that was saved as extra on a result
-func lastWebhookSavedAsExtra(r *flowRun) types.XValue {
+func lastWebhookSavedAsExtra(r *run) types.XValue {
 	for i := len(r.events) - 1; i >= 0; i-- {
 		switch typed := r.events[i].(type) {
 		case *events.WebhookCalledEvent:
