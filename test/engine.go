@@ -22,6 +22,7 @@ func NewEngine() flows.Engine {
 	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
 
 	return engine.NewBuilder().
+		WithMaxFieldChars(256).
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return newEmailService(), nil
 		}).

@@ -45,7 +45,6 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.NilLanguage, env.DefaultLanguage())
 	assert.Nil(t, env.AllowedLanguages())
 	assert.Equal(t, envs.NilCountry, env.DefaultCountry())
-	assert.Equal(t, 640, env.MaxValueLength())
 	assert.Nil(t, env.LocationResolver())
 
 	// can create with valid values
@@ -68,7 +67,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 
 	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none","max_value_length":640}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none"}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {
@@ -106,7 +105,6 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDefaultCountry(envs.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
-		WithMaxValueLength(1024).
 		Build()
 
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
@@ -116,6 +114,5 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
-	assert.Equal(t, 1024, env.MaxValueLength())
 	assert.Nil(t, env.LocationResolver())
 }

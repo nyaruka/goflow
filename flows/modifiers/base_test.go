@@ -31,11 +31,11 @@ func TestModifierTypes(t *testing.T) {
 	eng := test.NewEngine()
 
 	for typeName := range modifiers.RegisteredTypes {
-		testModifierType(t, eng.Services(), sa, typeName)
+		testModifierType(t, eng, env, sa, typeName)
 	}
 }
 
-func testModifierType(t *testing.T, svcs flows.Services, sa flows.SessionAssets, typeName string) {
+func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
@@ -71,9 +71,8 @@ func testModifierType(t *testing.T, svcs flows.Services, sa flows.SessionAssets,
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
-		env := envs.NewBuilder().WithMaxValueLength(256).Build()
 		eventLog := test.NewEventLog()
-		modifiers.Apply(env, svcs, sa, contact, modifier, eventLog.Log)
+		modifiers.Apply(eng, env, sa, contact, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc

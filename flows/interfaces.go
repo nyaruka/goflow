@@ -276,7 +276,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(envs.Environment, Services, SessionAssets, *Contact, EventCallback) bool
+	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) bool
 }
 
 // ModifierCallback is a callback invoked when a modifier has been generated
@@ -316,15 +316,21 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
+type EngineOptions struct {
+	MaxStepsPerSprint    int
+	MaxResumesPerSession int
+	MaxTemplateChars     int
+	MaxFieldChars        int
+	MaxResultChars       int
+}
+
 // Engine provides callers with session starting and resuming
 type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
 	Services() Services
-	MaxStepsPerSprint() int
-	MaxResumesPerSession() int
-	MaxTemplateChars() int
+	Options() *EngineOptions
 }
 
 // Segment is a movement on the flow graph from an exit to another node

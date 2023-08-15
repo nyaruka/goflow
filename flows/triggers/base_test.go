@@ -324,8 +324,7 @@ func TestReadTrigger(t *testing.T) {
 				"decimal_symbol": ".",
 				"digit_grouping_symbol": ","
 			},
-			"redaction_policy": "none",
-			"max_value_length": 640
+			"redaction_policy": "none"
 		},
 		"flow": {
 			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",

@@ -11,10 +11,8 @@ import (
 
 // an instance of the engine
 type engine struct {
-	services             *services
-	maxStepsPerSprint    int
-	maxResumesPerSession int
-	maxTemplateChars     int
+	services *services
+	options  *flows.EngineOptions
 }
 
 // NewSession creates a new session
@@ -40,10 +38,8 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) Services() flows.Services  { return e.services }
-func (e *engine) MaxStepsPerSprint() int    { return e.maxStepsPerSprint }
-func (e *engine) MaxResumesPerSession() int { return e.maxResumesPerSession }
-func (e *engine) MaxTemplateChars() int     { return e.maxTemplateChars }
+func (e *engine) Services() flows.Services      { return e.services }
+func (e *engine) Options() *flows.EngineOptions { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -60,10 +56,14 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			services:             newEmptyServices(),
-			maxStepsPerSprint:    100,
-			maxResumesPerSession: 500,
-			maxTemplateChars:     10000,
+			services: newEmptyServices(),
+			options: &flows.EngineOptions{
+				MaxStepsPerSprint:    100,
+				MaxResumesPerSession: 500,
+				MaxTemplateChars:     10000,
+				MaxFieldChars:        640,
+				MaxResultChars:       640,
+			},
 		},
 	}
 }
@@ -100,19 +100,31 @@ func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
 
 // WithMaxStepsPerSprint sets the maximum number of steps allowed in a single sprint
 func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
-	b.eng.maxStepsPerSprint = max
+	b.eng.options.MaxStepsPerSprint = max
 	return b
 }
 
 // WithMaxResumesPerSession sets the maximum number of resumes allowed in a single session
 func (b *Builder) WithMaxResumesPerSession(max int) *Builder {
-	b.eng.maxResumesPerSession = max
+	b.eng.options.MaxResumesPerSession = max
 	return b
 }
 
 // WithMaxTemplateChars sets the maximum number of characters allowed from an evaluated template
 func (b *Builder) WithMaxTemplateChars(max int) *Builder {
-	b.eng.maxTemplateChars = max
+	b.eng.options.MaxTemplateChars = max
+	return b
+}
+
+// WithMaxFieldChars sets the maximum number of characters allowed in a contact field value
+func (b *Builder) WithMaxFieldChars(max int) *Builder {
+	b.eng.options.MaxFieldChars = max
+	return b
+}
+
+// WithMaxResultChars sets the maximum number of characters allowed in a result value
+func (b *Builder) WithMaxResultChars(max int) *Builder {
+	b.eng.options.MaxResultChars = max
 	return b
 }
 

@@ -46,7 +46,7 @@ func NewURN(urn urns.URN, modification URNModification) *URNModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNModifier) Apply(env envs.Environment, svcs flows.Services, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *URNModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	urn := m.URN.Normalize(string(env.DefaultCountry()))
 	modified := false
 
