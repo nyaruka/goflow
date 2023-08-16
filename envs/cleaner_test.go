@@ -19,10 +19,12 @@ func TestCleaners(t *testing.T) {
 		{envs.CleanConfusables, "", ""},
 		{envs.CleanConfusables, "𝕟𝔂𝛼𝐫ᴜ𝞳𝕒", "nyaruka"},
 		{envs.CleanFarsiToArabic, "۰۱۲۳۴۵۶۷۸۹", "٠١٢٣٤٥٦۷٨٩"},
-		{envs.CleanFarsiToArabic, "بلی", "بلي"}, // ends with farsi yeh
+		{envs.CleanFarsiToArabic, "بلی", "\u0628\u0644\u064A"}, // ends with farsi yeh
+		{envs.CleanFarsiToArabic, "بلي", "\u0628\u0644\u064A"}, // ends with arabic yeh
 		{envs.CleanArabicToFarsi, "٠١٢٣٤٥٦۷٨٩", "۰۱۲۳۴۵۶۷۸۹"},
-		{envs.CleanArabicToFarsi, "بلى", "بلی"}, // ends with alef maksura
-		{envs.CleanArabicToFarsi, "بلي", "بلی"}, // ends with arabic yeh
+		{envs.CleanArabicToFarsi, "بلى", "\u0628\u0644\u06CC"}, // ends with farsi yeh (unchanged)
+		{envs.CleanArabicToFarsi, "بلى", "\u0628\u0644\u06CC"}, // ends with alef maksura
+		{envs.CleanArabicToFarsi, "بلي", "\u0628\u0644\u06CC"}, // ends with arabic yeh
 	}
 
 	for _, tc := range tcs {
