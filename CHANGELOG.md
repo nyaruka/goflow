@@ -1,3 +1,7 @@
+v0.191.0 (2023-08-17)
+-------------------------
+ * Add input cleaners
+
 v0.190.1 (2023-08-15)
 -------------------------
  * Merge pull request #1176 from nyaruka/split_env_types
