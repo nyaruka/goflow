@@ -42,7 +42,7 @@ func NewMsg(s flows.Session, msg *flows.MsgIn, createdOn time.Time) *MsgInput {
 	return &MsgInput{
 		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(msg.UUID()), channel, createdOn),
 		urn:         flows.NewContactURN(msg.URN(), nil),
-		text:        envs.CleanInput(s.Environment(), msg.Text()),
+		text:        msg.Text(),
 		attachments: msg.Attachments(),
 		externalID:  msg.ExternalID(),
 	}

@@ -35,7 +35,7 @@ type Environment interface {
 	DefaultCountry() Country
 	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
-	InputCleaners() []Cleaner
+	InputCollation() Collation
 
 	DefaultLanguage() Language
 	DefaultLocale() Locale
@@ -56,7 +56,7 @@ type environment struct {
 	defaultCountry   Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
-	inputCleaners    []Cleaner
+	inputCollation   Collation
 }
 
 func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
@@ -66,7 +66,7 @@ func (e *environment) AllowedLanguages() []Language     { return e.allowedLangua
 func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
 func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
-func (e *environment) InputCleaners() []Cleaner         { return e.inputCleaners }
+func (e *environment) InputCollation() Collation        { return e.inputCollation }
 
 // DefaultLanguage is the first allowed language
 func (e *environment) DefaultLanguage() Language {
@@ -105,7 +105,7 @@ type envEnvelope struct {
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
 	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
-	InputCleaners    []Cleaner       `json:"input_cleaners,omitempty"`
+	InputCollation   Collation       `json:"input_collation,omitempty"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
@@ -124,7 +124,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultCountry = envelope.DefaultCountry
 	env.numberFormat = envelope.NumberFormat
 	env.redactionPolicy = envelope.RedactionPolicy
-	env.inputCleaners = envelope.InputCleaners
+	env.inputCollation = envelope.InputCollation
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -144,7 +144,7 @@ func (e *environment) toEnvelope() *envEnvelope {
 		DefaultCountry:   e.defaultCountry,
 		NumberFormat:     e.numberFormat,
 		RedactionPolicy:  e.redactionPolicy,
-		InputCleaners:    e.inputCleaners,
+		InputCollation:   e.inputCollation,
 	}
 }
 
@@ -173,7 +173,7 @@ func NewBuilder() *EnvironmentBuilder {
 			defaultCountry:   NilCountry,
 			numberFormat:     DefaultNumberFormat,
 			redactionPolicy:  RedactionPolicyNone,
-			inputCleaners:    nil,
+			inputCollation:   CollationDefault,
 		},
 	}
 }
@@ -215,8 +215,8 @@ func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy
 	return b
 }
 
-func (b *EnvironmentBuilder) WithInputCleaners(cs ...Cleaner) *EnvironmentBuilder {
-	b.env.inputCleaners = cs
+func (b *EnvironmentBuilder) WithInputCollation(col Collation) *EnvironmentBuilder {
+	b.env.inputCollation = col
 	return b
 }
 

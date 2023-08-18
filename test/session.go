@@ -602,7 +602,7 @@ func NewSessionBuilder() *SessionBuilder {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithDefaultCountry("US").
 		WithAllowedLanguages([]envs.Language{"eng", "spa"}).
-		WithInputCleaners(envs.CleanConfusables).
+		WithInputCollation(envs.CollationConfusables).
 		Build()
 
 	return &SessionBuilder{
