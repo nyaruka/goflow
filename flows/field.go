@@ -233,15 +233,15 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 			if field.Type() == assets.FieldTypeWard {
 				parent := f.getFirstLocationValue(env, fields, assets.FieldTypeDistrict)
 				if parent != nil {
-					matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
+					matchingLocations = locations.FindLocationsFuzzy(env, rawValue, LocationLevelWard, parent)
 				}
 			} else if field.Type() == assets.FieldTypeDistrict {
 				parent := f.getFirstLocationValue(env, fields, assets.FieldTypeState)
 				if parent != nil {
-					matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
+					matchingLocations = locations.FindLocationsFuzzy(env, rawValue, LocationLevelDistrict, parent)
 				}
 			} else if field.Type() == assets.FieldTypeState {
-				matchingLocations = locations.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
+				matchingLocations = locations.FindLocationsFuzzy(env, rawValue, LocationLevelState, nil)
 			}
 
 			if len(matchingLocations) > 0 {

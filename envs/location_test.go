@@ -57,7 +57,9 @@ var locationHierarchyJSON = `
 }`
 
 func TestLocationHierarchy(t *testing.T) {
-	hierarchy, err := envs.ReadLocationHierarchy(json.RawMessage(locationHierarchyJSON))
+	env := envs.NewBuilder().Build()
+
+	hierarchy, err := envs.ReadLocationHierarchy(env, json.RawMessage(locationHierarchyJSON))
 	assert.NoError(t, err)
 
 	rwanda := hierarchy.Root()
@@ -90,18 +92,18 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, gasabo, ndera.Parent())
 	assert.Equal(t, 0, len(ndera.Children()))
 
-	assert.Equal(t, []*envs.Location{rwanda}, hierarchy.FindByName("RWaNdA", envs.LocationLevel(0), nil))
-	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("kigari", envs.LocationLevel(1), nil))
-	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("rwanda > kigali city", envs.LocationLevel(1), nil))
-	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName("kigari", envs.LocationLevel(1), rwanda))
-	assert.Equal(t, []*envs.Location{gasabo}, hierarchy.FindByName("GASABO", envs.LocationLevel(2), nil))
-	assert.Equal(t, []*envs.Location{gasabo}, hierarchy.FindByName("GASABO", envs.LocationLevel(2), kigali))
-	assert.Equal(t, []*envs.Location{ndera}, hierarchy.FindByName("RWANDA > kigali city > gasabo > ndera", envs.LocationLevel(3), nil))
+	assert.Equal(t, []*envs.Location{rwanda}, hierarchy.FindByName(env, "RWaNdA", envs.LocationLevel(0), nil))
+	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName(env, "kigari", envs.LocationLevel(1), nil))
+	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName(env, "rwanda > kigali city", envs.LocationLevel(1), nil))
+	assert.Equal(t, []*envs.Location{kigali}, hierarchy.FindByName(env, "kigari", envs.LocationLevel(1), rwanda))
+	assert.Equal(t, []*envs.Location{gasabo}, hierarchy.FindByName(env, "GASABO", envs.LocationLevel(2), nil))
+	assert.Equal(t, []*envs.Location{gasabo}, hierarchy.FindByName(env, "GASABO", envs.LocationLevel(2), kigali))
+	assert.Equal(t, []*envs.Location{ndera}, hierarchy.FindByName(env, "RWANDA > kigali city > gasabo > ndera", envs.LocationLevel(3), nil))
 
-	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName("boston", envs.LocationLevel(1), nil))    // no such name
-	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName("kigari", envs.LocationLevel(8), nil))    // no such level
-	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName("kigari", envs.LocationLevel(2), nil))    // wrong level
-	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName("kigari", envs.LocationLevel(2), gasabo)) // wrong parent
+	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName(env, "boston", envs.LocationLevel(1), nil))    // no such name
+	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName(env, "kigari", envs.LocationLevel(8), nil))    // no such level
+	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName(env, "kigari", envs.LocationLevel(2), nil))    // wrong level
+	assert.Equal(t, []*envs.Location{}, hierarchy.FindByName(env, "kigari", envs.LocationLevel(2), gasabo)) // wrong parent
 
 	assert.Equal(t, rwanda, hierarchy.FindByPath(envs.LocationPath("RWANDA")))
 	assert.Equal(t, kigali, hierarchy.FindByPath("RWANDA > KIGALI 	 CITY"))
