@@ -63,11 +63,13 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
 	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, "en-RW", env.DefaultLocale().ToBCP47())
+	assert.Equal(t, envs.CollationDefault, env.InputCollation())
+	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
 	assert.Nil(t, env.LocationResolver())
 
 	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","redaction_policy":"none"}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","input_collation":"default","redaction_policy":"none"}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {

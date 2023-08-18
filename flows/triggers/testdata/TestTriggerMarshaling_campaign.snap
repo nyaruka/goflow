@@ -8,6 +8,7 @@
             "decimal_symbol": ".",
             "digit_grouping_symbol": ","
         },
+        "input_collation": "default",
         "redaction_policy": "none"
     },
     "flow": {
