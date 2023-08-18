@@ -1,3 +1,7 @@
+v0.192.0 (2023-08-18)
+-------------------------
+ * Replace input cleaning with input collation
+
 v0.191.0 (2023-08-17)
 -------------------------
  * Add input cleaners
