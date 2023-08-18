@@ -16,8 +16,8 @@ type LocationPath string
 
 // LocationResolver is used to resolve locations from names or hierarchical paths
 type LocationResolver interface {
-	FindLocations(string, LocationLevel, *Location) []*Location
-	FindLocationsFuzzy(string, LocationLevel, *Location) []*Location
+	FindLocations(Environment, string, LocationLevel, *Location) []*Location
+	FindLocationsFuzzy(Environment, string, LocationLevel, *Location) []*Location
 	LookupLocation(LocationPath) *Location
 }
 
@@ -118,12 +118,14 @@ func (p locationPathLookup) lookup(path LocationPath) *Location { return p[path.
 // location names aren't always unique in a given level - i.e. you can have two wards with the same name, but different parents
 type locationNameLookup map[string][]*Location
 
-func (n locationNameLookup) addLookup(name string, location *Location) {
-	name = strings.ToLower(name)
+func (n locationNameLookup) addLookup(env Environment, name string, location *Location) {
+	name = CollateTransform(env, name)
 	n[name] = append(n[name], location)
 }
 
-func (n locationNameLookup) lookup(name string) []*Location { return n[strings.ToLower(name)] }
+func (n locationNameLookup) lookup(env Environment, name string) []*Location {
+	return n[CollateTransform(env, name)]
+}
 
 // LocationHierarchy is a hierarical tree of locations
 type LocationHierarchy struct {
@@ -135,14 +137,14 @@ type LocationHierarchy struct {
 }
 
 // NewLocationHierarchy cretes a new location hierarchy
-func NewLocationHierarchy(root *Location, numLevels int) *LocationHierarchy {
+func NewLocationHierarchy(env Environment, root *Location, numLevels int) *LocationHierarchy {
 	h := &LocationHierarchy{}
-	h.initializeFromRoot(root, numLevels)
+	h.initializeFromRoot(env, root, numLevels)
 	return h
 }
 
 // NewLocationHierarchy cretes a new location hierarchy
-func (h *LocationHierarchy) initializeFromRoot(root *Location, numLevels int) {
+func (h *LocationHierarchy) initializeFromRoot(env Environment, root *Location, numLevels int) {
 	h.root = root
 	h.levelLookups = make([]locationNameLookup, numLevels)
 	h.pathLookup = make(locationPathLookup)
@@ -160,17 +162,17 @@ func (h *LocationHierarchy) initializeFromRoot(root *Location, numLevels int) {
 		}
 
 		h.pathLookup.addLookup(location.path, location)
-		h.addNameLookups(location)
+		h.addNameLookups(env, location)
 	})
 }
 
-func (h *LocationHierarchy) addNameLookups(location *Location) {
+func (h *LocationHierarchy) addNameLookups(env Environment, location *Location) {
 	lookups := h.levelLookups[int(location.level)]
-	lookups.addLookup(location.name, location)
+	lookups.addLookup(env, location.name, location)
 
 	// include any aliases as names too
 	for _, alias := range location.aliases {
-		lookups.addLookup(alias, location)
+		lookups.addLookup(env, alias, location)
 	}
 }
 
@@ -180,7 +182,7 @@ func (h *LocationHierarchy) Root() *Location {
 }
 
 // FindByName looks for all locations in the hierarchy with the given level and name or alias
-func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent *Location) []*Location {
+func (h *LocationHierarchy) FindByName(env Environment, name string, level LocationLevel, parent *Location) []*Location {
 
 	// try it as a path first if it looks possible
 	if level == 0 || IsPossibleLocationPath(name) {
@@ -191,7 +193,7 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 	}
 
 	if int(level) < len(h.levelLookups) {
-		matches := h.levelLookups[int(level)].lookup(name)
+		matches := h.levelLookups[int(level)].lookup(env, name)
 		if matches != nil {
 			// if a parent is specified, filter the matches by it
 			if parent != nil {
@@ -221,8 +223,11 @@ func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	// TODO this method is only used to load static assets and they're only used for testing.. but this isn't ideal
+	env := NewBuilder().Build()
+
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
-	h.initializeFromRoot(root, 4)
+	h.initializeFromRoot(env, root, 4)
 	return nil
 }
 
@@ -253,7 +258,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 }
 
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
-func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
+func ReadLocationHierarchy(env Environment, data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
 	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
 		return nil, err
@@ -261,5 +266,5 @@ func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
 
-	return NewLocationHierarchy(root, 4), nil
+	return NewLocationHierarchy(env, root, 4), nil
 }

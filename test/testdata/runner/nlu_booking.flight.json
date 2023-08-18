@@ -49,6 +49,7 @@
                         "eng"
                     ],
                     "date_format": "YYYY-MM-DD",
+                    "input_collation": "default",
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -123,6 +124,7 @@
                             "eng"
                         ],
                         "date_format": "YYYY-MM-DD",
+                        "input_collation": "default",
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","
@@ -279,6 +281,7 @@
                         "eng"
                     ],
                     "date_format": "YYYY-MM-DD",
+                    "input_collation": "default",
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -515,6 +518,7 @@
                             "eng"
                         ],
                         "date_format": "YYYY-MM-DD",
+                        "input_collation": "default",
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","

@@ -44,6 +44,7 @@
                     ],
                     "date_format": "YYYY-MM-DD",
                     "default_country": "US",
+                    "input_collation": "default",
                     "number_format": {
                         "decimal_symbol": ".",
                         "digit_grouping_symbol": ","
@@ -139,6 +140,7 @@
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_country": "US",
+                        "input_collation": "default",
                         "number_format": {
                             "decimal_symbol": ".",
                             "digit_grouping_symbol": ","

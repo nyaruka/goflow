@@ -40,5 +40,5 @@ import "github.com/nyaruka/goflow/envs"
 // @asset location
 type LocationHierarchy interface {
 	FindByPath(path envs.LocationPath) *envs.Location
-	FindByName(name string, level envs.LocationLevel, parent *envs.Location) []*envs.Location
+	FindByName(env envs.Environment, name string, level envs.LocationLevel, parent *envs.Location) []*envs.Location
 }

@@ -89,7 +89,7 @@ func TestAssetsEnvironment(t *testing.T) {
 	kigali := aenv.LocationResolver().LookupLocation("Rwanda > Kigali City")
 	assert.Equal(t, "Kigali City", kigali.Name())
 
-	matches := aenv.LocationResolver().FindLocationsFuzzy("gisozi town", flows.LocationLevelWard, nil)
+	matches := aenv.LocationResolver().FindLocationsFuzzy(env, "gisozi town", flows.LocationLevelWard, nil)
 	assert.Equal(t, 1, len(matches))
 	assert.Equal(t, "Gisozi", matches[0].Name())
 }

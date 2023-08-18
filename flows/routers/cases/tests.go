@@ -199,7 +199,7 @@ func HasGroup(env envs.Environment, args ...types.XValue) types.XValue {
 //
 // @test has_phrase(text, phrase)
 func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
-	return testStringTokens(env, text, test, hasPhraseTest)
+	return testTextTokens(env, text, test, hasPhraseTest)
 }
 
 // HasAllWords tests whether all the `words` are contained in `text`
@@ -212,7 +212,7 @@ func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.X
 //
 // @test has_all_words(text, words)
 func HasAllWords(env envs.Environment, text types.XText, test types.XText) types.XValue {
-	return testStringTokens(env, text, test, hasAllWordsTest)
+	return testTextTokens(env, text, test, hasAllWordsTest)
 }
 
 // HasAnyWord tests whether any of the `words` are contained in the `text`
@@ -225,7 +225,7 @@ func HasAllWords(env envs.Environment, text types.XText, test types.XText) types
 //
 // @test has_any_word(text, words)
 func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.XValue {
-	return testStringTokens(env, text, test, hasAnyWordTest)
+	return testTextTokens(env, text, test, hasAnyWordTest)
 }
 
 // HasOnlyPhrase tests whether the `text` contains only `phrase`
@@ -241,7 +241,7 @@ func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.
 //
 // @test has_only_phrase(text, phrase)
 func HasOnlyPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
-	return testStringTokens(env, text, test, hasOnlyPhraseTest)
+	return testTextTokens(env, text, test, hasOnlyPhraseTest)
 }
 
 // HasText tests whether there the text has any characters in it
@@ -608,7 +608,7 @@ func HasState(env envs.Environment, text types.XText) types.XValue {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
 	}
 
-	states := locations.FindLocationsFuzzy(text.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelState, nil)
 	if len(states) > 0 {
 		return NewTrueResult(types.NewXText(string(states[0].Path())))
 	}
@@ -643,9 +643,9 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	states := locations.FindLocationsFuzzy(stateText.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
 	if len(states) > 0 {
-		districts := locations.FindLocationsFuzzy(text.Native(), flows.LocationLevelDistrict, states[0])
+		districts := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelDistrict, states[0])
 		if len(districts) > 0 {
 			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
@@ -653,7 +653,7 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText.Empty() {
-		districts := locations.FindLocationsFuzzy(text.Native(), flows.LocationLevelDistrict, nil)
+		districts := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelDistrict, nil)
 		if len(districts) == 1 {
 			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
@@ -700,11 +700,11 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	states := locations.FindLocationsFuzzy(stateText.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
 	if len(states) > 0 {
-		districts := locations.FindLocationsFuzzy(districtText.Native(), flows.LocationLevelDistrict, states[0])
+		districts := locations.FindLocationsFuzzy(env, districtText.Native(), flows.LocationLevelDistrict, states[0])
 		if len(districts) > 0 {
-			wards := locations.FindLocationsFuzzy(text.Native(), flows.LocationLevelWard, districts[0])
+			wards := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelWard, districts[0])
 			if len(wards) > 0 {
 				return NewTrueResult(types.NewXText(string(wards[0].Path())))
 			}
@@ -713,7 +713,7 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText.Empty() {
-		wards := locations.FindLocationsFuzzy(text.Native(), flows.LocationLevelWard, nil)
+		wards := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelWard, nil)
 		if len(wards) == 1 {
 			return NewTrueResult(types.NewXText(string(wards[0].Path())))
 		}
@@ -726,20 +726,16 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 // Text Test Functions
 //------------------------------------------------------------------------------------------
 
-type stringTokenTest func(origHayTokens []string, hayTokens []string, pinTokens []string) types.XValue
+type stringTokenTest func(env envs.Environment, hayTokens []string, pinTokens []string) types.XValue
 
-func testStringTokens(env envs.Environment, str types.XText, testStr types.XText, testFunc stringTokenTest) types.XValue {
-	hayStack := strings.TrimSpace(str.Native())
-	needle := strings.TrimSpace(testStr.Native())
+func testTextTokens(env envs.Environment, str types.XText, testStr types.XText, testFunc stringTokenTest) types.XValue {
+	hays := utils.TokenizeString(strings.TrimSpace(str.Native()))
+	needles := utils.TokenizeString(strings.TrimSpace(testStr.Native()))
 
-	origHays := utils.TokenizeString(hayStack)
-	hays := utils.TokenizeString(strings.ToLower(hayStack))
-	needles := utils.TokenizeString(strings.ToLower(needle))
-
-	return testFunc(origHays, hays, needles)
+	return testFunc(env, hays, needles)
 }
 
-func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasPhraseTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	if len(pins) == 0 {
 		return NewTrueResult(types.XTextEmpty)
 	}
@@ -747,8 +743,8 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue
 	pinIdx := 0
 	matches := make([]string, len(pins))
 	for i, hay := range hays {
-		if hay == pins[pinIdx] {
-			matches[pinIdx] = origHays[i]
+		if envs.CollateEquals(env, hay, pins[pinIdx]) {
+			matches[pinIdx] = hays[i]
 			pinIdx++
 			if pinIdx == len(pins) {
 				break
@@ -765,21 +761,21 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) types.XValue
 	return FalseResult
 }
 
-func hasAllWordsTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasAllWordsTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	matches := make([]string, 0, len(pins))
 	pinMatches := make([]int, len(pins))
 
 	for i, hay := range hays {
 		matched := false
 		for j, pin := range pins {
-			if hay == pin {
+			if envs.CollateEquals(env, hay, pin) {
 				matched = true
 				pinMatches[j]++
 			}
 		}
 
 		if matched {
-			matches = append(matches, origHays[i])
+			matches = append(matches, hays[i])
 		}
 	}
 
@@ -799,18 +795,18 @@ func hasAllWordsTest(origHays []string, hays []string, pins []string) types.XVal
 	return FalseResult
 }
 
-func hasAnyWordTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasAnyWordTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	matches := make([]string, 0, len(pins))
 	for i, hay := range hays {
 		matched := false
 		for _, pin := range pins {
-			if hay == pin {
+			if envs.CollateEquals(env, hay, pin) {
 				matched = true
 				break
 			}
 		}
 		if matched {
-			matches = append(matches, origHays[i])
+			matches = append(matches, hays[i])
 		}
 
 	}
@@ -822,7 +818,7 @@ func hasAnyWordTest(origHays []string, hays []string, pins []string) types.XValu
 	return FalseResult
 }
 
-func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) types.XValue {
+func hasOnlyPhraseTest(env envs.Environment, hays []string, pins []string) types.XValue {
 	// must be same length
 	if len(hays) != len(pins) {
 		return FalseResult
@@ -831,10 +827,10 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) types.XV
 	// and every token must match
 	matches := make([]string, 0, len(pins))
 	for i := range hays {
-		if hays[i] != pins[i] {
+		if !envs.CollateEquals(env, hays[i], pins[i]) {
 			return FalseResult
 		}
-		matches = append(matches, origHays[i])
+		matches = append(matches, hays[i])
 	}
 
 	return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
