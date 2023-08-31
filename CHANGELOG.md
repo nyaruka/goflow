@@ -1,3 +1,8 @@
+v0.192.1 (2023-08-31)
+-------------------------
+ * Update to latest gocommon
+ * Replace interface{} with any
+
 v0.192.0 (2023-08-18)
 -------------------------
  * Replace input cleaning with input collation
