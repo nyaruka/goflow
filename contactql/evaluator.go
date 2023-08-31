@@ -14,7 +14,7 @@ import (
 
 // Queryable is the interface objects must implement queried
 type Queryable interface {
-	QueryProperty(envs.Environment, string, PropertyType) []interface{}
+	QueryProperty(envs.Environment, string, PropertyType) []any
 }
 
 // EvaluateQuery evaluates the given query against the given queryable. That query must have been parsed
@@ -89,7 +89,7 @@ func evaluateCondition(env envs.Environment, resolver Resolver, c *Condition, qu
 	return anyTrue
 }
 
-func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Condition, val interface{}) bool {
+func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Condition, val any) bool {
 	valueType := c.resolveValueType(resolver)
 
 	switch valueType {

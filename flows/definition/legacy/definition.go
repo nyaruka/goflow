@@ -832,13 +832,13 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[uuids.UU
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, localization migratedLocalization) (migratedCase, map[string]interface{}, error) {
+func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, localization migratedLocalization) (migratedCase, map[string]any, error) {
 	newType := testTypeMappings[r.Test.Type]
 	var arguments []string
 	var err error
 
 	caseUUID := uuids.New()
-	var caseUI map[string]interface{}
+	var caseUI map[string]any
 
 	switch r.Test.Type {
 
@@ -907,7 +907,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 
 		arguments = []string{migratedTest}
 
-		caseUI = map[string]interface{}{
+		caseUI = map[string]any{
 			"arguments": []string{strconv.Itoa(delta)},
 		}
 
@@ -1103,7 +1103,7 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 		name = f.Name
 	}
 
-	migrated := map[string]interface{}{
+	migrated := map[string]any{
 		"uuid":                 uuid,
 		"name":                 name,
 		"spec_version":         "13.0.0",

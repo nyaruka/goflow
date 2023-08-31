@@ -110,12 +110,12 @@ func TestWalk(t *testing.T) {
 			Slice:        []subType{},
 		})
 
-	values := make([]interface{}, 0)
+	values := make([]any, 0)
 	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		values = append(values, fv.Interface())
 	})
 
-	assert.Equal(t, []interface{}{"Hello", "World", subType{Zed: "Now"}, "Now", []subType{}}, values)
+	assert.Equal(t, []any{"Hello", "World", subType{Zed: "Now"}, "Now", []subType{}}, values)
 
 	// or a slice of structs
 	v = reflect.ValueOf([]containerStruct{
@@ -133,12 +133,12 @@ func TestWalk(t *testing.T) {
 		},
 	})
 
-	values = make([]interface{}, 0)
+	values = make([]any, 0)
 	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		values = append(values, fv.Interface())
 	})
 
-	assert.Equal(t, []interface{}{
+	assert.Equal(t, []any{
 		"Hello",
 		"World",
 		subType{Zed: "Now"}, "Now",

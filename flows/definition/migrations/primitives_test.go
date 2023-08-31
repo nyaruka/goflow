@@ -9,38 +9,38 @@ import (
 )
 
 func TestMigrationPrimitives(t *testing.T) {
-	f := migrations.Flow(map[string]interface{}{}) // nodes not set
+	f := migrations.Flow(map[string]any{}) // nodes not set
 	assert.Equal(t, []migrations.Node{}, f.Nodes())
 
-	f = migrations.Flow(map[string]interface{}{"nodes": nil}) // nodes is nil
+	f = migrations.Flow(map[string]any{"nodes": nil}) // nodes is nil
 	assert.Equal(t, []migrations.Node{}, f.Nodes())
 
-	f = migrations.Flow(map[string]interface{}{"nodes": []interface{}{}}) // nodes is empty
+	f = migrations.Flow(map[string]any{"nodes": []any{}}) // nodes is empty
 	assert.Equal(t, []migrations.Node{}, f.Nodes())
 
-	f = migrations.Flow(map[string]interface{}{"nodes": []interface{}{
-		map[string]interface{}{},
+	f = migrations.Flow(map[string]any{"nodes": []any{
+		map[string]any{},
 	}})
-	assert.Equal(t, []migrations.Node{migrations.Node(map[string]interface{}{})}, f.Nodes())
+	assert.Equal(t, []migrations.Node{migrations.Node(map[string]any{})}, f.Nodes())
 
-	n := migrations.Node(map[string]interface{}{}) // actions and router are not set
+	n := migrations.Node(map[string]any{}) // actions and router are not set
 	assert.Equal(t, []migrations.Action{}, n.Actions())
 	assert.Nil(t, n.Router())
 
-	n = migrations.Node(map[string]interface{}{"actions": nil, "router": nil}) // actions and router are nil
+	n = migrations.Node(map[string]any{"actions": nil, "router": nil}) // actions and router are nil
 	assert.Equal(t, []migrations.Action{}, n.Actions())
 	assert.Nil(t, n.Router())
 
-	n = migrations.Node(map[string]interface{}{
-		"actions": []interface{}{},
-		"router":  map[string]interface{}{},
+	n = migrations.Node(map[string]any{
+		"actions": []any{},
+		"router":  map[string]any{},
 	})
 	assert.Equal(t, []migrations.Action{}, n.Actions())
-	assert.Equal(t, migrations.Router(map[string]interface{}{}), n.Router())
+	assert.Equal(t, migrations.Router(map[string]any{}), n.Router())
 
-	a := migrations.Action(map[string]interface{}{}) // type not set
+	a := migrations.Action(map[string]any{}) // type not set
 	assert.Equal(t, "", a.Type())
 
-	a = migrations.Action(map[string]interface{}{"type": "foo"}) // type set
+	a = migrations.Action(map[string]any{"type": "foo"}) // type set
 	assert.Equal(t, "foo", a.Type())
 }

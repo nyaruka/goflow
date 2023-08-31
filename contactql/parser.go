@@ -391,7 +391,7 @@ func (l *errorListener) Error() error {
 	return nil
 }
 
-func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol any, line, column int, msg string, e antlr.RecognitionException) {
 	var err *QueryError
 	switch typed := e.(type) {
 	case *antlr.InputMisMatchException:

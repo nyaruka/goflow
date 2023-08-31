@@ -60,17 +60,17 @@ type Position struct {
 }
 
 // NodeUIConfig holds node type specific configuration
-type NodeUIConfig map[string]interface{}
+type NodeUIConfig map[string]any
 
 // AddCaseConfig adds a case specific UI configuration
-func (c NodeUIConfig) AddCaseConfig(uuid uuids.UUID, config map[string]interface{}) {
-	var caseMap map[uuids.UUID]interface{}
+func (c NodeUIConfig) AddCaseConfig(uuid uuids.UUID, config map[string]any) {
+	var caseMap map[uuids.UUID]any
 	cases, hasCases := c["cases"]
 	if !hasCases {
-		caseMap = make(map[uuids.UUID]interface{})
+		caseMap = make(map[uuids.UUID]any)
 		c["cases"] = caseMap
 	} else {
-		caseMap = cases.(map[uuids.UUID]interface{})
+		caseMap = cases.(map[uuids.UUID]any)
 	}
 	caseMap[uuid] = config
 }

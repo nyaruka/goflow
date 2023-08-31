@@ -12,30 +12,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type TestQueryable map[string][]interface{}
+type TestQueryable map[string][]any
 
-func (t TestQueryable) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
+func (t TestQueryable) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []any {
 	return t[key]
 }
 
 func TestEvaluateQuery(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	var testObj = TestQueryable{
-		"uuid":     []interface{}{"c7d9bece-6bbd-4b3b-8a86-eb0cf1ac9d05"},
-		"id":       []interface{}{"12345"},
-		"name":     []interface{}{"Bob Smithwick"},
-		"flow":     []interface{}{"Registration"},
-		"tel":      []interface{}{"+59313145145"},
-		"twitter":  []interface{}{"bob_smith"},
-		"whatsapp": []interface{}{},
-		"gender":   []interface{}{"male"},
-		"age":      []interface{}{decimal.NewFromFloat(36)},
-		"dob":      []interface{}{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)},
-		"state":    []interface{}{"Kigali"},
-		"district": []interface{}{"Gasabo"},
-		"ward":     []interface{}{"Ndera"},
-		"empty":    []interface{}{""},
-		"nope":     []interface{}{envs.NewBuilder().Build()},
+		"uuid":     []any{"c7d9bece-6bbd-4b3b-8a86-eb0cf1ac9d05"},
+		"id":       []any{"12345"},
+		"name":     []any{"Bob Smithwick"},
+		"flow":     []any{"Registration"},
+		"tel":      []any{"+59313145145"},
+		"twitter":  []any{"bob_smith"},
+		"whatsapp": []any{},
+		"gender":   []any{"male"},
+		"age":      []any{decimal.NewFromFloat(36)},
+		"dob":      []any{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)},
+		"state":    []any{"Kigali"},
+		"district": []any{"Gasabo"},
+		"ward":     []any{"Ndera"},
+		"empty":    []any{""},
+		"nope":     []any{envs.NewBuilder().Build()},
 	}
 
 	tests := []struct {

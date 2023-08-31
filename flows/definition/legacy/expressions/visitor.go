@@ -22,27 +22,27 @@ func newLegacyVisitor(env envs.Environment, options *MigrateOptions) *legacyVisi
 // ---------------------------------------------------------------
 
 // Visit the top level parse tree
-func (v *legacyVisitor) Visit(tree antlr.ParseTree) interface{} {
+func (v *legacyVisitor) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(v)
 }
 
 // VisitParse handles our top level parser
-func (v *legacyVisitor) VisitParse(ctx *gen.ParseContext) interface{} {
+func (v *legacyVisitor) VisitParse(ctx *gen.ParseContext) any {
 	return v.Visit(ctx.Expression())
 }
 
 // VisitDecimalLiteral deals with decimals like 1.5
-func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{} {
+func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) any {
 	return ctx.GetText()
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
-func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} {
+func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) any {
 	return MigrateStringLiteral(ctx.GetText())
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
-func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
+func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) any {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
 
 	var params []string
@@ -55,32 +55,32 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 }
 
 // VisitTrue deals with the "true" literal
-func (v *legacyVisitor) VisitTrue(ctx *gen.TrueContext) interface{} {
+func (v *legacyVisitor) VisitTrue(ctx *gen.TrueContext) any {
 	return "true"
 }
 
 // VisitFalse deals with the "false" literal
-func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
+func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) any {
 	return "false"
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
-func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) any {
 	return MigrateContextReference(ctx.GetText(), v.options.RawDates)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
-func (v *legacyVisitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
+func (v *legacyVisitor) VisitParentheses(ctx *gen.ParenthesesContext) any {
 	return fmt.Sprintf("(%s)", v.Visit(ctx.Expression()))
 }
 
 // VisitNegation deals with negations such as -5
-func (v *legacyVisitor) VisitNegation(ctx *gen.NegationContext) interface{} {
+func (v *legacyVisitor) VisitNegation(ctx *gen.NegationContext) any {
 	return fmt.Sprintf("-%s", v.Visit(ctx.Expression()))
 }
 
 // VisitExponentExpression deals with exponenets such as 5^5
-func (v *legacyVisitor) VisitExponentExpression(ctx *gen.ExponentExpressionContext) interface{} {
+func (v *legacyVisitor) VisitExponentExpression(ctx *gen.ExponentExpressionContext) any {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
@@ -88,7 +88,7 @@ func (v *legacyVisitor) VisitExponentExpression(ctx *gen.ExponentExpressionConte
 }
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
-func (v *legacyVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} {
+func (v *legacyVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) any {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
@@ -96,7 +96,7 @@ func (v *legacyVisitor) VisitConcatenation(ctx *gen.ConcatenationContext) interf
 }
 
 // VisitAdditionOrSubtractionExpression deals with addition and subtraction like 5+5 and 5-3
-func (v *legacyVisitor) VisitAdditionOrSubtractionExpression(ctx *gen.AdditionOrSubtractionExpressionContext) interface{} {
+func (v *legacyVisitor) VisitAdditionOrSubtractionExpression(ctx *gen.AdditionOrSubtractionExpressionContext) any {
 	arg1 := v.Visit(ctx.Expression(0)).(string)
 	arg2 := v.Visit(ctx.Expression(1)).(string)
 
@@ -162,7 +162,7 @@ func (v *legacyVisitor) VisitAdditionOrSubtractionExpression(ctx *gen.AdditionOr
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
-func (v *legacyVisitor) VisitEqualityExpression(ctx *gen.EqualityExpressionContext) interface{} {
+func (v *legacyVisitor) VisitEqualityExpression(ctx *gen.EqualityExpressionContext) any {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
@@ -174,7 +174,7 @@ func (v *legacyVisitor) VisitEqualityExpression(ctx *gen.EqualityExpressionConte
 }
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
-func (v *legacyVisitor) VisitMultiplicationOrDivisionExpression(ctx *gen.MultiplicationOrDivisionExpressionContext) interface{} {
+func (v *legacyVisitor) VisitMultiplicationOrDivisionExpression(ctx *gen.MultiplicationOrDivisionExpressionContext) any {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
@@ -186,7 +186,7 @@ func (v *legacyVisitor) VisitMultiplicationOrDivisionExpression(ctx *gen.Multipl
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
-func (v *legacyVisitor) VisitComparisonExpression(ctx *gen.ComparisonExpressionContext) interface{} {
+func (v *legacyVisitor) VisitComparisonExpression(ctx *gen.ComparisonExpressionContext) any {
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
@@ -194,7 +194,7 @@ func (v *legacyVisitor) VisitComparisonExpression(ctx *gen.ComparisonExpressionC
 }
 
 // VisitFunctionParameters deals with the parameters to a function call
-func (v *legacyVisitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
+func (v *legacyVisitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) any {
 	expressions := ctx.AllExpression()
 	params := make([]string, len(expressions))
 

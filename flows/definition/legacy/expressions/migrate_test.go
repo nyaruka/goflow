@@ -264,7 +264,7 @@ func BenchmarkMigrateTemplate(b *testing.B) {
 	}
 }
 
-type legacyVariables map[string]interface{}
+type legacyVariables map[string]any
 
 func (v legacyVariables) Context(env envs.Environment) *types.XObject {
 	entries := make(map[string]types.XValue, len(v))
@@ -275,7 +275,7 @@ func (v legacyVariables) Context(env envs.Environment) *types.XObject {
 	return types.NewXObject(entries)
 }
 
-func toXType(env envs.Environment, val interface{}) types.XValue {
+func toXType(env envs.Environment, val any) types.XValue {
 	if utils.IsNil(val) {
 		return nil
 	}
@@ -285,25 +285,25 @@ func toXType(env envs.Environment, val interface{}) types.XValue {
 		return types.NewXText(typed)
 	case json.Number:
 		return types.RequireXNumberFromString(string(typed))
-	case map[string]interface{}:
+	case map[string]any:
 		return legacyVariables(typed).Context(env)
 	}
 	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
 }
 
 func (v legacyVariables) Migrate() legacyVariables {
-	migrated := map[string]interface{}{
-		"fields":  map[string]interface{}{},
-		"results": map[string]interface{}{},
+	migrated := map[string]any{
+		"fields":  map[string]any{},
+		"results": map[string]any{},
 	}
 
 	for key, val := range v {
 		key = strings.ToLower(key)
 		switch key {
 		case "flow":
-			migrated["run"] = map[string]interface{}{"results": val}
+			migrated["run"] = map[string]any{"results": val}
 		case "contact":
-			asMap, isMap := val.(map[string]interface{})
+			asMap, isMap := val.(map[string]any)
 			if isMap {
 				migrated["contact"] = migrateContact(asMap)
 			} else {
@@ -316,9 +316,9 @@ func (v legacyVariables) Migrate() legacyVariables {
 	return migrated
 }
 
-func migrateContact(contact map[string]interface{}) map[string]interface{} {
-	fields := make(map[string]interface{})
-	migrated := map[string]interface{}{"fields": fields}
+func migrateContact(contact map[string]any) map[string]any {
+	fields := make(map[string]any)
+	migrated := map[string]any{"fields": fields}
 	for key, val := range contact {
 		key = strings.ToLower(key)
 		if key == "*" || key == "name" {

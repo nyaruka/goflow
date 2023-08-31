@@ -67,7 +67,7 @@ func (l *ErrorListener) Errors() []error {
 }
 
 // SyntaxError handles a new syntax error encountered by the recognizer
-func (l *ErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+func (l *ErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol any, line, column int, msg string, e antlr.RecognitionException) {
 	// extract the part of the original expression where this error has occurred
 	lines := strings.Split(l.expression, "\n")
 	lineOfError := lines[line-1]

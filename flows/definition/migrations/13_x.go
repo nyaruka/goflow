@@ -36,7 +36,7 @@ func Migrate13_1(f Flow, cfg *Config) (Flow, error) {
 	for _, node := range f.Nodes() {
 		for _, action := range node.Actions() {
 			if action.Type() == "send_msg" {
-				templating, _ := action["templating"].(map[string]interface{})
+				templating, _ := action["templating"].(map[string]any)
 				if templating != nil {
 					templating["uuid"] = uuids.New()
 				}

@@ -12,7 +12,7 @@ import (
 )
 
 // Templates extracts template values by reading engine tags on a struct
-func Templates(s interface{}, localization flows.Localization, include func(envs.Language, string)) {
+func Templates(s any, localization flows.Localization, include func(envs.Language, string)) {
 	templateValues(reflect.ValueOf(s), localization, include)
 }
 

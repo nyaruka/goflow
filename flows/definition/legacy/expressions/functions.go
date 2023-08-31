@@ -38,7 +38,7 @@ func asTemplate(template string) callMigrator {
 			return "", errors.Errorf("expecting %d params whilst migrating call to %s but got %d", numParamPlaceholders, funcName, len(params))
 		}
 
-		paramsAsInterfaces := make([]interface{}, len(params))
+		paramsAsInterfaces := make([]any, len(params))
 		for i := range params {
 			paramsAsInterfaces[i] = params[i]
 		}
