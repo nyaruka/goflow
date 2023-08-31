@@ -9,7 +9,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/nyaruka/gocommon v1.38.2
+	github.com/nyaruka/gocommon v1.39.1
 	github.com/nyaruka/null/v2 v2.0.3
 	github.com/nyaruka/phonenumbers v1.1.8
 	github.com/olivere/elastic/v7 v7.0.32
@@ -17,7 +17,7 @@ require (
 	github.com/sergi/go-diff v1.3.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20230809150735-7b3493d9a819
+	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 	golang.org/x/net v0.14.0
 	golang.org/x/text v0.12.0
 )
