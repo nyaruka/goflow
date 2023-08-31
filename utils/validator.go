@@ -71,7 +71,7 @@ func RegisterValidatorAlias(alias, tags string, message ErrorMessageFunc) {
 }
 
 // RegisterStructValidator registers a struct level validator
-func RegisterStructValidator(fn validator.StructLevelFunc, types ...interface{}) {
+func RegisterStructValidator(fn validator.StructLevelFunc, types ...any) {
 	valx.RegisterStructValidation(fn, types...)
 }
 
@@ -91,7 +91,7 @@ func (e ValidationErrors) Error() string {
 // field <fieldname> <tag specific message>
 //
 // For example: "field 'flows' is required"
-func Validate(obj interface{}) error {
+func Validate(obj any) error {
 	var err error
 
 	// gets the value stored in the interface var, and if it's a pointer, dereferences it
@@ -148,7 +148,7 @@ func Validate(obj interface{}) error {
 }
 
 // UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
-func UnmarshalAndValidate(data []byte, obj interface{}) error {
+func UnmarshalAndValidate(data []byte, obj any) error {
 	err := jsonx.Unmarshal(data, obj)
 	if err != nil {
 		return err
@@ -158,7 +158,7 @@ func UnmarshalAndValidate(data []byte, obj interface{}) error {
 }
 
 // UnmarshalAndValidateWithLimit unmarshals a struct with a limit on how many bytes can be read from the given reader
-func UnmarshalAndValidateWithLimit(reader io.ReadCloser, s interface{}, limit int64) error {
+func UnmarshalAndValidateWithLimit(reader io.ReadCloser, s any, limit int64) error {
 	if err := jsonx.UnmarshalWithLimit(reader, s, limit); err != nil {
 		return err
 	}

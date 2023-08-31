@@ -35,7 +35,7 @@ func NewError(err error) *ErrorEvent {
 }
 
 // NewErrorf returns a new error event for the passed in format string and args
-func NewErrorf(format string, a ...interface{}) *ErrorEvent {
+func NewErrorf(format string, a ...any) *ErrorEvent {
 	return &ErrorEvent{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      fmt.Sprintf(format, a...),

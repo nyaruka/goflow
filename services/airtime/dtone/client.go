@@ -172,7 +172,7 @@ func (c *Client) TransactionSync(externalID string, productID int, mobileNumber 
 	return response, trace, nil
 }
 
-func (c *Client) request(method, endpoint string, payload interface{}, response interface{}) (*httpx.Trace, error) {
+func (c *Client) request(method, endpoint string, payload any, response any) (*httpx.Trace, error) {
 	url := apiURL + endpoint
 	headers := map[string]string{}
 	var body io.Reader

@@ -13,7 +13,7 @@ type Error struct {
 	msg  string
 }
 
-func newError(code int, msg string, args ...interface{}) error {
+func newError(code int, msg string, args ...any) error {
 	return &Error{code, fmt.Sprintf(msg, args...)}
 }
 

@@ -115,7 +115,7 @@ func (v *FieldValue) ToXValue(env envs.Environment) types.XValue {
 }
 
 // QueryValue returns the value for use in contact queries
-func (v *FieldValue) QueryValue() interface{} {
+func (v *FieldValue) QueryValue() any {
 	// the typed value of no value is nil
 	if v == nil {
 		return nil

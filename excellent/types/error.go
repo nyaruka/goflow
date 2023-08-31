@@ -24,7 +24,7 @@ func NewXError(err error) XError {
 }
 
 // NewXErrorf creates a new XError
-func NewXErrorf(format string, a ...interface{}) XError {
+func NewXErrorf(format string, a ...any) XError {
 	return NewXError(fmt.Errorf(format, a...))
 }
 

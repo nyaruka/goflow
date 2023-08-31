@@ -132,7 +132,7 @@ func readFlow(data []byte) (Flow, error) {
 		return nil, err
 	}
 
-	d, _ := g.(map[string]interface{})
+	d, _ := g.(map[string]any)
 	if d == nil {
 		return nil, errors.New("flow definition isn't an object")
 	}
@@ -141,7 +141,7 @@ func readFlow(data []byte) (Flow, error) {
 }
 
 // remap all UUIDs in the flow
-func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUID) {
+func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 	// copy in the dependency mappings into a master mapping of all UUIDs
 	mapping := make(map[uuids.UUID]uuids.UUID)
 	for k, v := range depMapping {
@@ -160,7 +160,7 @@ func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUI
 		return mapped
 	}
 
-	objectCallback := func(obj map[string]interface{}) {
+	objectCallback := func(obj map[string]any) {
 		props := objectProperties(obj)
 
 		for _, p := range props {
@@ -179,7 +179,7 @@ func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUI
 		}
 	}
 
-	arrayCallback := func(arr []interface{}) {
+	arrayCallback := func(arr []any) {
 		for i, v := range arr {
 			asString, isString := v.(string)
 			if isString && uuids.IsV4(asString) {
@@ -192,7 +192,7 @@ func remapUUIDs(data map[string]interface{}, depMapping map[uuids.UUID]uuids.UUI
 }
 
 // extract the property names from a generic JSON object, sorted A-Z
-func objectProperties(obj map[string]interface{}) []string {
+func objectProperties(obj map[string]any) []string {
 	props := make([]string, 0, len(obj))
 	for k := range obj {
 		props = append(props, k)
@@ -202,15 +202,15 @@ func objectProperties(obj map[string]interface{}) []string {
 }
 
 // walks the given generic JSON invoking the given callbacks for each thing found
-func walk(j interface{}, objectCallback func(map[string]interface{}), arrayCallback func([]interface{})) {
+func walk(j any, objectCallback func(map[string]any), arrayCallback func([]any)) {
 	switch typed := j.(type) {
-	case map[string]interface{}:
+	case map[string]any:
 		objectCallback(typed)
 
 		for _, p := range objectProperties(typed) {
 			walk(typed[p], objectCallback, arrayCallback)
 		}
-	case []interface{}:
+	case []any:
 		arrayCallback(typed)
 
 		for _, v := range typed {

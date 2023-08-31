@@ -8,7 +8,7 @@ import (
 )
 
 // LocalizableText extracts localizable text by reading engine tags on a struct
-func LocalizableText(s interface{}, include func(uuids.UUID, string, []string, func([]string))) {
+func LocalizableText(s any, include func(uuids.UUID, string, []string, func([]string))) {
 	localizableText(reflect.ValueOf(s), include)
 }
 

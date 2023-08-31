@@ -102,7 +102,7 @@ type DependencyContainer interface {
 }
 
 // Dependencies extracts dependencies
-func Dependencies(s interface{}, localization flows.Localization, include func(envs.Language, assets.Reference)) {
+func Dependencies(s any, localization flows.Localization, include func(envs.Language, assets.Reference)) {
 	dependencies(reflect.ValueOf(s), localization, include)
 }
 

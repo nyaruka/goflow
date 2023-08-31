@@ -18,7 +18,7 @@ import (
 )
 
 func errorResp(code int, message string) []byte {
-	return jsonx.MustMarshal(map[string]interface{}{"errors": []map[string]interface{}{{"code": code, "message": message}}})
+	return jsonx.MustMarshal(map[string]any{"errors": []map[string]any{{"code": code, "message": message}}})
 }
 
 func TestServiceWithSuccessfulTranfer(t *testing.T) {

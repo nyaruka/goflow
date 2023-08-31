@@ -32,22 +32,22 @@ func (v *visitor) context(part string, reset bool) {
 }
 
 // Visit the top level parse tree
-func (v *visitor) Visit(tree antlr.ParseTree) interface{} {
+func (v *visitor) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(v)
 }
 
 // VisitParse handles our top level parser
-func (v *visitor) VisitParse(ctx *gen.ParseContext) interface{} {
+func (v *visitor) VisitParse(ctx *gen.ParseContext) any {
 	return v.Visit(ctx.Expression())
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
-func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} {
+func (v *visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) any {
 	return v.Visit(ctx.Atom())
 }
 
 // VisitContextReference deals with identifiers which are function names or root variables in the context
-func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
+func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) any {
 	name := ctx.GetText()
 	v.context(name, true)
 
@@ -55,7 +55,7 @@ func (v *visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interf
 }
 
 // VisitDotLookup deals with property lookups like foo.bar
-func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
+func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) any {
 	container := toExpression(v.Visit(ctx.Atom()))
 	var lookup string
 
@@ -71,7 +71,7 @@ func (v *visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
-func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
+func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) any {
 	container := toExpression(v.Visit(ctx.Atom()))
 	lookup := toExpression(v.Visit(ctx.Expression()))
 
@@ -84,7 +84,7 @@ func (v *visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
-func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
+func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) any {
 	function := toExpression(v.Visit(ctx.Atom()))
 
 	var params []Expression
@@ -96,7 +96,7 @@ func (v *visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 }
 
 // VisitFunctionParameters deals with the parameters to a function call
-func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
+func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) any {
 	expressions := ctx.AllExpression()
 	params := make([]Expression, len(expressions))
 
@@ -107,14 +107,14 @@ func (v *visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) in
 }
 
 // VisitAnonFunction deals with anonymous functions, e.g. (x) => 2 * x
-func (v *visitor) VisitAnonFunction(ctx *gen.AnonFunctionContext) interface{} {
+func (v *visitor) VisitAnonFunction(ctx *gen.AnonFunctionContext) any {
 	return &AnonFunction{
 		args: v.Visit(ctx.NameList()).([]string),
 		body: toExpression(v.Visit(ctx.Expression())),
 	}
 }
 
-func (v *visitor) VisitNameList(ctx *gen.NameListContext) interface{} {
+func (v *visitor) VisitNameList(ctx *gen.NameListContext) any {
 	names := ctx.AllNAME()
 	args := make([]string, len(names))
 
@@ -125,7 +125,7 @@ func (v *visitor) VisitNameList(ctx *gen.NameListContext) interface{} {
 }
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
-func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} {
+func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) any {
 	return &Concatenation{
 		exp1: toExpression(v.Visit(ctx.Expression(0))),
 		exp2: toExpression(v.Visit(ctx.Expression(1))),
@@ -133,7 +133,7 @@ func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
-func (v *visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
+func (v *visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) any {
 	exp1 := toExpression(v.Visit(ctx.Expression(0)))
 	exp2 := toExpression(v.Visit(ctx.Expression(1)))
 
@@ -144,7 +144,7 @@ func (v *visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 }
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
-func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
+func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) any {
 	exp1 := toExpression(v.Visit(ctx.Expression(0)))
 	exp2 := toExpression(v.Visit(ctx.Expression(1)))
 
@@ -155,7 +155,7 @@ func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 }
 
 // VisitExponent deals with exponenets such as 5^5
-func (v *visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
+func (v *visitor) VisitExponent(ctx *gen.ExponentContext) any {
 	return &Exponent{
 		expression: toExpression(v.Visit(ctx.Expression(0))),
 		exponent:   toExpression(v.Visit(ctx.Expression(1))),
@@ -163,12 +163,12 @@ func (v *visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
 }
 
 // VisitNegation deals with negations such as -5
-func (v *visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
+func (v *visitor) VisitNegation(ctx *gen.NegationContext) any {
 	return &Negation{exp: toExpression(v.Visit(ctx.Expression()))}
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
-func (v *visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
+func (v *visitor) VisitEquality(ctx *gen.EqualityContext) any {
 	exp1 := toExpression(v.Visit(ctx.Expression(0)))
 	exp2 := toExpression(v.Visit(ctx.Expression(1)))
 
@@ -179,7 +179,7 @@ func (v *visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
-func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
+func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) any {
 	exp1 := toExpression(v.Visit(ctx.Expression(0)))
 	exp2 := toExpression(v.Visit(ctx.Expression(1)))
 
@@ -196,12 +196,12 @@ func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
-func (v *visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
+func (v *visitor) VisitParentheses(ctx *gen.ParenthesesContext) any {
 	return &Parentheses{exp: toExpression(v.Visit(ctx.Expression()))}
 }
 
 // VisitTextLiteral deals with string literals such as "asdf"
-func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
+func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) any {
 	value := ctx.GetText()
 
 	// unquote, this takes care of escape sequences as well
@@ -217,27 +217,27 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 }
 
 // VisitNumberLiteral deals with numbers like 123 or 1.5
-func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
+func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) any {
 	return &NumberLiteral{val: types.RequireXNumberFromString(ctx.GetText())}
 }
 
 // VisitTrue deals with the `true` reserved word
-func (v *visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
+func (v *visitor) VisitTrue(ctx *gen.TrueContext) any {
 	return &BooleanLiteral{val: types.XBooleanTrue}
 }
 
 // VisitFalse deals with the `false` reserved word
-func (v *visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
+func (v *visitor) VisitFalse(ctx *gen.FalseContext) any {
 	return &BooleanLiteral{val: types.XBooleanFalse}
 }
 
 // VisitNull deals with the `null` reserved word
-func (v *visitor) VisitNull(ctx *gen.NullContext) interface{} {
+func (v *visitor) VisitNull(ctx *gen.NullContext) any {
 	return &NullLiteral{}
 }
 
 // convenience utility to convert the given value to an Expression
-func toExpression(val interface{}) Expression {
+func toExpression(val any) Expression {
 	asExp, isExp := val.(Expression)
 	if !isExp && val != nil {
 		panic(fmt.Sprintf("attempt to convert a %T to an Expression", val))

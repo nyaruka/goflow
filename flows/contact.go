@@ -486,37 +486,37 @@ func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []
 //
 // Note that this method excludes id, group and flow search attributes as those are disallowed
 // query based groups.
-func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []interface{} {
+func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []any {
 	if propType == contactql.PropertyTypeAttribute {
 		switch key {
 		case contactql.AttributeUUID:
-			return []interface{}{string(c.uuid)}
+			return []any{string(c.uuid)}
 		case contactql.AttributeName:
 			if c.name != "" {
-				return []interface{}{c.name}
+				return []any{c.name}
 			}
 			return nil
 		case contactql.AttributeLanguage:
 			if c.language != envs.NilLanguage {
-				return []interface{}{string(c.language)}
+				return []any{string(c.language)}
 			}
 			return nil
 		case contactql.AttributeURN:
-			vals := make([]interface{}, len(c.URNs()))
+			vals := make([]any, len(c.URNs()))
 			for i, urn := range c.URNs() {
 				vals[i] = urn.URN().Path()
 			}
 			return vals
 		case contactql.AttributeTickets:
 			if c.ticket != nil {
-				return []interface{}{decimal.NewFromInt(1)}
+				return []any{decimal.NewFromInt(1)}
 			}
-			return []interface{}{decimal.NewFromInt(0)}
+			return []any{decimal.NewFromInt(0)}
 		case contactql.AttributeCreatedOn:
-			return []interface{}{c.createdOn}
+			return []any{c.createdOn}
 		case contactql.AttributeLastSeenOn:
 			if c.lastSeenOn != nil {
-				return []interface{}{*c.lastSeenOn}
+				return []any{*c.lastSeenOn}
 			}
 			return nil
 		default:
@@ -524,7 +524,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 		}
 	} else if propType == contactql.PropertyTypeScheme {
 		urnsWithScheme := c.urns.WithScheme(key)
-		vals := make([]interface{}, len(urnsWithScheme))
+		vals := make([]any, len(urnsWithScheme))
 		for i := range urnsWithScheme {
 			vals[i] = urnsWithScheme[i].URN().Path()
 		}
@@ -537,7 +537,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 		return nil
 	}
 
-	return []interface{}{nativeValue}
+	return []any{nativeValue}
 }
 
 var _ contactql.Queryable = (*Contact)(nil)

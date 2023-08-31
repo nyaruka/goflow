@@ -12,7 +12,7 @@ type ResultContainer interface {
 }
 
 // Results extracts result infos
-func Results(s interface{}, include func(*flows.ResultInfo)) {
+func Results(s any, include func(*flows.ResultInfo)) {
 	results(reflect.ValueOf(s), include)
 }
 

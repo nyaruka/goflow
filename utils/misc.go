@@ -9,7 +9,7 @@ import (
 )
 
 // IsNil returns whether the given object is nil or an interface to a nil
-func IsNil(v interface{}) bool {
+func IsNil(v any) bool {
 	// if v doesn't have a type or value then v == nil
 	if v == nil {
 		return true

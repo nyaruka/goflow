@@ -200,7 +200,7 @@ func TestClone(t *testing.T) {
 			clonedUI, err := jsonx.DecodeGeneric(clone.UI())
 			require.NoError(t, err)
 
-			nodeMap := clonedUI.(map[string]interface{})["nodes"].(map[string]interface{})
+			nodeMap := clonedUI.(map[string]any)["nodes"].(map[string]any)
 
 			for nodeUUID := range nodeMap {
 				assert.NotNil(t, clone.GetNode(flows.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)

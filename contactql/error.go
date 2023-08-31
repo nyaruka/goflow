@@ -33,7 +33,7 @@ type QueryError struct {
 }
 
 // NewQueryError creates a new query error
-func NewQueryError(code, err string, args ...interface{}) *QueryError {
+func NewQueryError(code, err string, args ...any) *QueryError {
 	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
 }
 

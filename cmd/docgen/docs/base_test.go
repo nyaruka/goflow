@@ -36,23 +36,23 @@ func TestGenerateDocs(t *testing.T) {
 	require.NoError(t, err)
 
 	// check other outputs
-	completion := readJSONOutput(t, outputDir, "en-us", "editor.json").(map[string]interface{})
+	completion := readJSONOutput(t, outputDir, "en-us", "editor.json").(map[string]any)
 	assert.Contains(t, completion, "functions")
 	assert.Contains(t, completion, "context")
 
-	context := completion["context"].(map[string]interface{})
-	functions := completion["functions"].([]interface{})
+	context := completion["context"].(map[string]any)
+	functions := completion["functions"].([]any)
 
 	assert.Equal(t, 88, len(functions))
 
-	types := context["types"].([]interface{})
+	types := context["types"].([]any)
 	assert.Equal(t, 18, len(types))
 
-	root := context["root"].([]interface{})
+	root := context["root"].([]any)
 	assert.Equal(t, 14, len(root))
 }
 
-func readJSONOutput(t *testing.T, file ...string) interface{} {
+func readJSONOutput(t *testing.T, file ...string) any {
 	output, err := os.ReadFile(path.Join(file...))
 	require.NoError(t, err)
 
