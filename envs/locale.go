@@ -24,29 +24,29 @@ func NewLocale(l Language, c Country) Locale {
 	return Locale(fmt.Sprintf("%s-%s", l, c)) // e.g. "eng-US", "por-BR"
 }
 
+func (l Locale) ToTag() language.Tag {
+	return language.MustParse(string(l))
+}
+
 // ToBCP47 returns the BCP47 code, e.g. en-US, pt, pt-BR
+// deprecated
 func (l Locale) ToBCP47() string {
 	if l == NilLocale {
 		return ""
 	}
 
 	lang, country := l.ToParts()
-
-	base, err := language.ParseBase(string(lang))
-	if err != nil {
-		return ""
-	}
-	code := base.String()
+	lang2 := lang.ISO639_1()
 
 	// not all languages have a 2-letter code
-	if len(code) != 2 {
+	if lang2 == "" {
 		return ""
 	}
 
 	if country != NilCountry {
-		code += "-" + string(country)
+		lang2 += "-" + string(country)
 	}
-	return code
+	return lang2
 }
 
 func (l Locale) ToParts() (Language, Country) {
@@ -71,3 +71,29 @@ func (l *Locale) Scan(value any) error         { return null.ScanString(value, l
 func (l Locale) Value() (driver.Value, error)  { return null.StringValue(l) }
 func (l Locale) MarshalJSON() ([]byte, error)  { return null.MarshalString(l) }
 func (l *Locale) UnmarshalJSON(b []byte) error { return null.UnmarshalString(b, l) }
+
+// BCP47Matcher helps find best matching locale from a set of available locales
+type BCP47Matcher struct {
+	codes   []string
+	matcher language.Matcher
+}
+
+// NewBCP47Matcher creates a new BCP47 matcher from the set of available locales which must be valid BCP47 tags.
+func NewBCP47Matcher(codes ...string) *BCP47Matcher {
+	tags := make([]language.Tag, len(codes))
+	for i := range codes {
+		tags[i] = language.MustParse(codes[i])
+	}
+	return &BCP47Matcher{codes: codes, matcher: language.NewMatcher(tags)}
+}
+
+func (m *BCP47Matcher) ForLocales(preferred ...Locale) string {
+	prefTags := make([]language.Tag, len(preferred))
+	for i := range preferred {
+		prefTags[i] = preferred[i].ToTag()
+	}
+
+	// see https://github.com/golang/go/issues/24211
+	_, idx, _ := m.matcher.Match(prefTags...)
+	return m.codes[idx]
+}

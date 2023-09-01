@@ -70,3 +70,27 @@ func TestToBCP47(t *testing.T) {
 		assert.Equal(t, tc.bcp47, tc.locale.ToBCP47())
 	}
 }
+
+func TesBCP47Matcher(t *testing.T) {
+	tests := []struct {
+		preferred []envs.Locale
+		available []string
+		best      string
+	}{
+		{preferred: []envs.Locale{"eng-US"}, available: []string{"es_EC", "en-US"}, best: "en-US"},
+		{preferred: []envs.Locale{"eng-US"}, available: []string{"es", "en"}, best: "en"},
+		{preferred: []envs.Locale{"eng"}, available: []string{"es-US", "en-UK"}, best: "en-UK"},
+		{preferred: []envs.Locale{"eng", "fra"}, available: []string{"fr-CA", "en-RW"}, best: "en-RW"},
+		{preferred: []envs.Locale{"eng", "fra"}, available: []string{"fra-CA", "eng-RW"}, best: "eng-RW"},
+		{preferred: []envs.Locale{"fra", "eng"}, available: []string{"fra-CA", "eng-RW"}, best: "fra-CA"},
+		{preferred: []envs.Locale{"spa"}, available: []string{"es-EC", "es-MX", "es-ES"}, best: "es-ES"},
+		{preferred: []envs.Locale{}, available: []string{"es_EC", "en-US"}, best: "es_EC"},
+	}
+
+	for _, tc := range tests {
+		m := envs.NewBCP47Matcher(tc.available...)
+		best := m.ForLocales(tc.preferred...)
+
+		assert.Equal(t, tc.best, best, "locale mismatch for preferred=%v available=%s", tc.preferred, tc.available)
+	}
+}

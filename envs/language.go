@@ -19,6 +19,21 @@ func init() {
 // Language is our internal representation of a language
 type Language string
 
+// ISO639_1 returns the 639-1 2-letter code for this language if it has one
+func (l Language) ISO639_1() string {
+	base, err := language.ParseBase(string(l))
+	if err != nil {
+		return ""
+	}
+	code := base.String()
+
+	// not all languages have a 2-letter code
+	if len(code) != 2 {
+		return ""
+	}
+	return code
+}
+
 // NilLanguage represents our nil, or unknown language
 var NilLanguage = Language("")
 
