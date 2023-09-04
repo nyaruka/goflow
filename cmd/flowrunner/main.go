@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/buger/jsonparser"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
@@ -72,7 +73,7 @@ func main() {
 
 	engine := createEngine(witToken)
 
-	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, envs.Language(contactLang), os.Stdin, os.Stdout)
+	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, i18n.Language(contactLang), os.Stdin, os.Stdout)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -103,7 +104,7 @@ func createEngine(witToken string) flows.Engine {
 }
 
 // RunFlow steps through a flow
-func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang envs.Language, in io.Reader, out io.Writer) (*Repro, error) {
+func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang i18n.Language, in io.Reader, out io.Writer) (*Repro, error) {
 	assetsJSON, err := os.ReadFile(assetsPath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading assets file '%s'", assetsPath)
@@ -141,7 +142,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	languages := []envs.Language{flow.Language(), contact.Language()}
+	languages := []i18n.Language{flow.Language(), contact.Language()}
 	env := envs.NewBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
 
 	repro := &Repro{}

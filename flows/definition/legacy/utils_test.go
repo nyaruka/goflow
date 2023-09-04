@@ -3,8 +3,8 @@ package legacy_test
 import (
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 
 	"github.com/stretchr/testify/assert"
@@ -33,7 +33,7 @@ func TestTranslations(t *testing.T) {
 		{"eng": "Maybe"},
 		{"eng": "Never", "fra": "Jamas"},
 	}
-	assert.Equal(t, map[envs.Language][]string{
+	assert.Equal(t, map[i18n.Language][]string{
 		"eng": {"Yes", "No", "Maybe", "Never"},
 		"fra": {"Oui", "Non", "", "Jamas"},
 	}, legacy.TransformTranslations(translationSet))

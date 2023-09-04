@@ -8,11 +8,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
@@ -28,7 +28,7 @@ import (
 
 // Flow is a flow in the legacy format
 type Flow struct {
-	BaseLanguage envs.Language `json:"base_language"`
+	BaseLanguage i18n.Language `json:"base_language"`
 	FlowType     string        `json:"flow_type"`
 	RuleSets     []RuleSet     `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet   `json:"action_sets" validate:"dive"`
@@ -205,7 +205,7 @@ type Action struct {
 	Label string `json:"label"`
 
 	// set language
-	Language envs.Language `json:"lang"`
+	Language i18n.Language `json:"lang"`
 
 	// add label action
 	Labels []LabelReference `json:"labels"`
@@ -309,7 +309,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage envs.Language, a Action, localization migratedLocalization, baseMediaURL string) (migratedAction, error) {
+func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLocalization, baseMediaURL string) (migratedAction, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*assets.LabelReference, len(a.Labels))
@@ -372,7 +372,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization migratedLo
 		return newStartSessionAction(a.UUID, flowRef, []urns.URN{}, contacts, groups, variables, createContact), nil
 	case "reply", "send":
 		media := make(Translations)
-		var quickReplies map[envs.Language][]string
+		var quickReplies map[i18n.Language][]string
 
 		msg, err := ReadTranslations(a.Msg)
 		if err != nil {
@@ -512,7 +512,7 @@ func migrateAction(baseLanguage envs.Language, a Action, localization migratedLo
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang envs.Language, r RuleSet, validDests map[uuids.UUID]bool, localization migratedLocalization) (migratedNode, UINodeType, NodeUIConfig, error) {
+func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]bool, localization migratedLocalization) (migratedNode, UINodeType, NodeUIConfig, error) {
 	var newActions []migratedAction
 	var router migratedRouter
 	var wait migratedWait
@@ -753,7 +753,7 @@ type categoryAndExit struct {
 }
 
 // migrates a set of legacy rules to sets of categories, cases and exits
-func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[uuids.UUID]bool, localization migratedLocalization, uiConfig NodeUIConfig) ([]migratedCase, []migratedCategory, uuids.UUID, uuids.UUID, []migratedExit, error) {
+func migrateRules(baseLanguage i18n.Language, r RuleSet, validDests map[uuids.UUID]bool, localization migratedLocalization, uiConfig NodeUIConfig) ([]migratedCase, []migratedCategory, uuids.UUID, uuids.UUID, []migratedExit, error) {
 	cases := make([]migratedCase, 0, len(r.Rules))
 	categories := make([]migratedCategory, 0, len(r.Rules))
 	exits := make([]migratedExit, 0, len(r.Rules))
@@ -832,7 +832,7 @@ func migrateRules(baseLanguage envs.Language, r RuleSet, validDests map[uuids.UU
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, localization migratedLocalization) (migratedCase, map[string]any, error) {
+func migrateRule(baseLanguage i18n.Language, r Rule, category migratedCategory, localization migratedLocalization) (migratedCase, map[string]any, error) {
 	newType := testTypeMappings[r.Test.Type]
 	var arguments []string
 	var err error
@@ -974,7 +974,7 @@ func migrateRule(baseLanguage envs.Language, r Rule, category migratedCategory, 
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migrateActionSet(lang envs.Language, a ActionSet, validDests map[uuids.UUID]bool, localization migratedLocalization, baseMediaURL string) (migratedNode, error) {
+func migrateActionSet(lang i18n.Language, a ActionSet, validDests map[uuids.UUID]bool, localization migratedLocalization, baseMediaURL string) (migratedNode, error) {
 	actions := make([]migratedAction, len(a.Actions))
 
 	// migrate each action

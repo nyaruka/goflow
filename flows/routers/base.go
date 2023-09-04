@@ -5,16 +5,15 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 
@@ -67,11 +66,11 @@ func (r *baseRouter) AllowTimeout() bool {
 func (r *baseRouter) ResultName() string { return r.resultName }
 
 // EnumerateTemplates enumerates all expressions on this object and its children
-func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(envs.Language, string)) {
+func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(envs.Language, assets.Reference)) {
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
 }
 
 // EnumerateResults enumerates all potential results on this object

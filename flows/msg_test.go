@@ -3,6 +3,7 @@ package flows_test
 import (
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -126,9 +127,9 @@ func TestBroadcastTranslations(t *testing.T) {
 		"fra": &flows.BroadcastTranslation{Text: "Bonjour"},
 		"spa": &flows.BroadcastTranslation{Text: "Hola"},
 	}
-	baseLanguage := envs.Language("eng")
+	baseLanguage := i18n.Language("eng")
 
-	assertTranslation := func(contactLanguage envs.Language, allowedLanguages []envs.Language, expectedText string, expectedLang envs.Language) {
+	assertTranslation := func(contactLanguage i18n.Language, allowedLanguages []i18n.Language, expectedText string, expectedLang i18n.Language) {
 		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages).Build()
 		sa, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 		require.NoError(t, err)
@@ -140,11 +141,11 @@ func TestBroadcastTranslations(t *testing.T) {
 		assert.Equal(t, expectedLang, lang)
 	}
 
-	assertTranslation("eng", []envs.Language{"eng"}, "Hello", "eng")          // uses contact language
-	assertTranslation("fra", []envs.Language{"eng", "fra"}, "Bonjour", "fra") // uses contact language
-	assertTranslation("kin", []envs.Language{"eng", "spa"}, "Hello", "eng")   // uses default flow language
-	assertTranslation("kin", []envs.Language{"spa", "eng"}, "Hola", "spa")    // uses default flow language
-	assertTranslation("kin", []envs.Language{"kin"}, "Hello", "eng")          // uses base language
+	assertTranslation("eng", []i18n.Language{"eng"}, "Hello", "eng")          // uses contact language
+	assertTranslation("fra", []i18n.Language{"eng", "fra"}, "Bonjour", "fra") // uses contact language
+	assertTranslation("kin", []i18n.Language{"eng", "spa"}, "Hello", "eng")   // uses default flow language
+	assertTranslation("kin", []i18n.Language{"spa", "eng"}, "Hola", "spa")    // uses default flow language
+	assertTranslation("kin", []i18n.Language{"kin"}, "Hello", "eng")          // uses base language
 
 	val, err := bcastTrans.Value()
 	assert.NoError(t, err)

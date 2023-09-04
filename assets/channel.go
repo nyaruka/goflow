@@ -3,8 +3,8 @@ package assets
 import (
 	"fmt"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 )
 
 // ChannelUUID is the UUID of a channel
@@ -41,7 +41,7 @@ type Channel interface {
 	Schemes() []string
 	Roles() []ChannelRole
 	Parent() *ChannelReference
-	Country() envs.Country
+	Country() i18n.Country
 	MatchPrefixes() []string
 	AllowInternational() bool
 }

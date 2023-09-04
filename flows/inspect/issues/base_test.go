@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -116,6 +117,6 @@ func TestIssues(t *testing.T) {
 	assert.Equal(t, issues.TypeMissingDependency, info.Issues[0].Type())
 	assert.Equal(t, flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"), info.Issues[0].NodeUUID())
 	assert.Equal(t, flows.ActionUUID("f01d693b-2af2-49fb-9e38-146eb00937e9"), info.Issues[0].ActionUUID())
-	assert.Equal(t, envs.NilLanguage, info.Issues[0].Language())
+	assert.Equal(t, i18n.NilLanguage, info.Issues[0].Language())
 	assert.Equal(t, "missing field dependency 'county'", info.Issues[0].Description())
 }

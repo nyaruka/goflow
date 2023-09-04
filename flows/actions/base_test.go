@@ -11,6 +11,7 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -180,12 +181,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 			// and switch their language
 			if tc.Localization != nil {
-				contact.SetLanguage(envs.Language("spa"))
+				contact.SetLanguage(i18n.Language("spa"))
 			}
 		}
 
 		envBuilder := envs.NewBuilder().
-			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
+			WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {
@@ -816,7 +817,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
 	_, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
@@ -943,7 +944,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
 	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -592,7 +593,7 @@ type SessionBuilder struct {
 	contactUUID flows.ContactUUID
 	contactID   flows.ContactID
 	contactName string
-	contactLang envs.Language
+	contactLang i18n.Language
 	contactURN  urns.URN
 	triggerMsg  string
 }
@@ -601,7 +602,7 @@ func NewSessionBuilder() *SessionBuilder {
 	env := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithDefaultCountry("US").
-		WithAllowedLanguages([]envs.Language{"eng", "spa"}).
+		WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
 		WithInputCollation(envs.CollationConfusables).
 		Build()
 
@@ -643,7 +644,7 @@ func (b *SessionBuilder) WithFlow(flowUUID assets.FlowUUID) *SessionBuilder {
 	return b
 }
 
-func (b *SessionBuilder) WithContact(uuid flows.ContactUUID, id flows.ContactID, name string, lang envs.Language, urn urns.URN) *SessionBuilder {
+func (b *SessionBuilder) WithContact(uuid flows.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
 	b.contactUUID = uuid
 	b.contactID = id
 	b.contactName = name

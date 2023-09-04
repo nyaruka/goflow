@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -83,7 +83,7 @@ func (a *baseAction) Validate() error { return nil }
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, envs.Language) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
 	evaluatedText, err := run.EvaluateTemplate(localizedText[0])
@@ -127,7 +127,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []envs.Language, a
 
 	// although it's possible for the different parts of the message to have different languages, we want to resolve
 	// a single language based on what the user actually provided for this message
-	var lang envs.Language
+	var lang i18n.Language
 	if localizedText[0] != "" {
 		lang = txtLang
 	} else if len(translatedAttachments) > 0 {
@@ -397,8 +397,8 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 	return user
 }
 
-func currentLocale(run flows.Run, lang envs.Language) envs.Locale {
-	return envs.NewLocale(lang, run.Session().MergedEnvironment().DefaultCountry())
+func currentLocale(run flows.Run, lang i18n.Language) i18n.Locale {
+	return i18n.NewLocale(lang, run.Session().MergedEnvironment().DefaultCountry())
 }
 
 //------------------------------------------------------------------------------------------

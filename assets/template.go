@@ -3,8 +3,8 @@ package assets
 import (
 	"fmt"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 )
 
 // TemplateUUID is the UUID of a template
@@ -45,7 +45,7 @@ type Template interface {
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
-	Locale() envs.Locale
+	Locale() i18n.Locale
 	Namespace() string
 	VariableCount() int
 	Channel() ChannelReference

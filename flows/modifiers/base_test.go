@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -159,7 +160,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewLanguage(envs.Language("fra")),
+			modifiers.NewLanguage(i18n.Language("fra")),
 			`{
 				"type": "language",
 				"language": "fra"

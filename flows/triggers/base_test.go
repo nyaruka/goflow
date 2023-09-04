@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -188,7 +189,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	user := sa.Users().Get("bob@nyaruka.com")
 	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", ticketer, weather, "Where are my shoes?", "123456", user)
 
-	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	eng := engine.NewBuilder().Build()
@@ -374,7 +375,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
-	contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
@@ -424,7 +425,7 @@ func TestTriggerContext(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	user := sa.Users().Get("bob@nyaruka.com")
 
-	contact := flows.NewEmptyContact(sa, "Jim", envs.Language("eng"), nil)
+	contact := flows.NewEmptyContact(sa, "Jim", i18n.Language("eng"), nil)
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})

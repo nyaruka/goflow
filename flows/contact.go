@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -48,7 +49,7 @@ type Contact struct {
 	uuid       ContactUUID
 	id         ContactID
 	name       string
-	language   envs.Language
+	language   i18n.Language
 	status     ContactStatus
 	timezone   *time.Location
 	createdOn  time.Time
@@ -68,7 +69,7 @@ func NewContact(
 	uuid ContactUUID,
 	id ContactID,
 	name string,
-	language envs.Language,
+	language i18n.Language,
 	status ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
@@ -105,7 +106,7 @@ func NewContact(
 }
 
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
-func NewEmptyContact(sa SessionAssets, name string, language envs.Language, timezone *time.Location) *Contact {
+func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:       ContactUUID(uuids.New()),
 		name:       name,
@@ -159,40 +160,40 @@ func (c *Contact) UUID() ContactUUID { return c.uuid }
 func (c *Contact) ID() ContactID { return c.id }
 
 // SetLanguage sets the language for this contact
-func (c *Contact) SetLanguage(lang envs.Language) { c.language = lang }
+func (c *Contact) SetLanguage(lang i18n.Language) { c.language = lang }
 
 // Language gets the language for this contact
-func (c *Contact) Language() envs.Language { return c.language }
+func (c *Contact) Language() i18n.Language { return c.language }
 
 // Country gets the country for this contact..
 //
 // TODO: currently this is derived from their preferred channel or any tel URNs but probably should become an explicit
 // field at some point
-func (c *Contact) Country() envs.Country {
+func (c *Contact) Country() i18n.Country {
 	ch := c.PreferredChannel()
-	if ch != nil && ch.Country() != envs.NilCountry {
+	if ch != nil && ch.Country() != i18n.NilCountry {
 		return ch.Country()
 	}
 
 	for _, u := range c.urns {
 		if u.urn.Scheme() == urns.TelScheme {
-			c := envs.DeriveCountryFromTel(u.urn.Path())
-			if c != envs.NilCountry {
+			c := i18n.DeriveCountryFromTel(u.urn.Path())
+			if c != i18n.NilCountry {
 				return c
 			}
 		}
 	}
 
-	return envs.NilCountry
+	return i18n.NilCountry
 }
 
 // Locale gets the locale for this contact, using the environment country if contact doesn't have one
-func (c *Contact) Locale(env envs.Environment) envs.Locale {
+func (c *Contact) Locale(env envs.Environment) i18n.Locale {
 	country := c.Country()
-	if country == envs.NilCountry {
+	if country == i18n.NilCountry {
 		country = env.DefaultCountry()
 	}
-	return envs.NewLocale(c.language, country)
+	return i18n.NewLocale(c.language, country)
 }
 
 // Status returns the contact status
@@ -497,7 +498,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return nil
 		case contactql.AttributeLanguage:
-			if c.language != envs.NilLanguage {
+			if c.language != i18n.NilLanguage {
 				return []any{string(c.language)}
 			}
 			return nil
@@ -582,7 +583,7 @@ type contactEnvelope struct {
 	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid4"`
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
-	Language   envs.Language            `json:"language,omitempty"`
+	Language   i18n.Language            `json:"language,omitempty"`
 	Status     ContactStatus            `json:"status,omitempty"    validate:"omitempty,contact_status"`
 	Stopped    bool                     `json:"stopped,omitempty"`
 	Blocked    bool                     `json:"blocked,omitempty"`

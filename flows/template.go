@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 )
 
 // Template represents messaging templates used by channels types such as WhatsApp
@@ -31,14 +31,14 @@ func (t *Template) Reference() *assets.TemplateReference {
 }
 
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
-func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []envs.Locale) *TemplateTranslation {
+func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []i18n.Locale) *TemplateTranslation {
 	// first iterate through and find all translations that are for this channel
-	candidatesByLocale := make(map[envs.Locale]*TemplateTranslation)
-	candidatesByLang := make(map[envs.Language]*TemplateTranslation)
+	candidatesByLocale := make(map[i18n.Locale]*TemplateTranslation)
+	candidatesByLang := make(map[i18n.Language]*TemplateTranslation)
 	for _, tr := range t.Template.Translations() {
 		if tr.Channel().UUID == channel {
 			tt := NewTemplateTranslation(tr)
-			lang, _ := tt.Locale().ToParts()
+			lang, _ := tt.Locale().Split()
 
 			candidatesByLocale[tt.Locale()] = tt
 			candidatesByLang[lang] = tt
@@ -55,7 +55,7 @@ func (t *Template) FindTranslation(channel assets.ChannelUUID, locales []envs.Lo
 
 	// if that fails look for language match
 	for _, locale := range locales {
-		lang, _ := locale.ToParts()
+		lang, _ := locale.Split()
 		tt := candidatesByLang[lang]
 		if tt != nil {
 			return tt
@@ -122,7 +122,7 @@ func (a *TemplateAssets) Get(uuid assets.TemplateUUID) *Template {
 
 // FindTranslation looks through our list of templates to find the template matching the passed in uuid
 // If no template or translation is found then empty string is returned
-func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, locales []envs.Locale) *TemplateTranslation {
+func (a *TemplateAssets) FindTranslation(uuid assets.TemplateUUID, channel *assets.ChannelReference, locales []i18n.Locale) *TemplateTranslation {
 	// no channel, can't match to a template
 	if channel == nil {
 		return nil

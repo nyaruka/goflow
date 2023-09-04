@@ -1,12 +1,11 @@
-package i18n_test
+package po_test
 
 import (
 	"os"
 	"path"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils/i18n"
-
+	"github.com/nyaruka/goflow/utils/po"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -30,7 +29,7 @@ func TestLibrary(t *testing.T) {
 	os.WriteFile(path.Join(libraryDir, "en", "simple.po"), poEN, 0700)
 	os.WriteFile(path.Join(libraryDir, "es", "simple.po"), poES, 0700)
 
-	library := i18n.NewLibrary(libraryDir, "en")
+	library := po.NewLibrary(libraryDir, "en")
 
 	assert.Equal(t, libraryDir, library.Path())
 	assert.Equal(t, "en", library.SrcLanguage())
@@ -47,7 +46,7 @@ func TestLibrary(t *testing.T) {
 	assert.Equal(t, "Blue", en.GetText("", "Blue"))
 
 	// add new entry
-	en.AddEntry(&i18n.POEntry{MsgID: "Green"})
+	en.AddEntry(&po.POEntry{MsgID: "Green"})
 
 	err = library.Update("simple", en)
 	require.NoError(t, err)

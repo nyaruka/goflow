@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -48,9 +49,9 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, allow
 		return nil, err
 	}
 
-	langs := make([]envs.Language, allowedLanguages.Length())
+	langs := make([]i18n.Language, allowedLanguages.Length())
 	for i := 0; i < allowedLanguages.Length(); i++ {
-		langs[i] = envs.Language(allowedLanguages.Get(i))
+		langs[i] = i18n.Language(allowedLanguages.Get(i))
 	}
 
 	return &Environment{
@@ -59,7 +60,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, allow
 			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).
 			WithAllowedLanguages(langs).
-			WithDefaultCountry(envs.Country(defaultCountry)).
+			WithDefaultCountry(i18n.Country(defaultCountry)).
 			WithRedactionPolicy(envs.RedactionPolicy(redactionPolicy)).
 			Build(),
 	}, nil
@@ -101,7 +102,7 @@ type Contact struct {
 // NewEmptyContact creates a new contact
 func NewEmptyContact(sa *SessionAssets) *Contact {
 	return &Contact{
-		target: flows.NewEmptyContact(sa.target, "", envs.NilLanguage, nil),
+		target: flows.NewEmptyContact(sa.target, "", i18n.NilLanguage, nil),
 	}
 }
 

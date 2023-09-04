@@ -1,13 +1,12 @@
 package legacy
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
-
 	"github.com/shopspring/decimal"
 )
 
@@ -78,9 +77,9 @@ func (n migratedNode) UUID() uuids.UUID {
 	return n["uuid"].(uuids.UUID)
 }
 
-type migratedLocalization map[envs.Language]map[uuids.UUID]map[string][]string
+type migratedLocalization map[i18n.Language]map[uuids.UUID]map[string][]string
 
-func (l migratedLocalization) addTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
+func (l migratedLocalization) addTranslation(lang i18n.Language, itemUUID uuids.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
 		l[lang] = make(map[uuids.UUID]map[string][]string)
@@ -95,7 +94,7 @@ func (l migratedLocalization) addTranslation(lang envs.Language, itemUUID uuids.
 	langTranslations[itemUUID][property] = translated
 }
 
-func (l migratedLocalization) addTranslationMap(baseLanguage envs.Language, mapped Translations, uuid uuids.UUID, property string) string {
+func (l migratedLocalization) addTranslationMap(baseLanguage i18n.Language, mapped Translations, uuid uuids.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, nil)
@@ -109,7 +108,7 @@ func (l migratedLocalization) addTranslationMap(baseLanguage envs.Language, mapp
 	return inBaseLanguage
 }
 
-func (l migratedLocalization) addTranslationMultiMap(baseLanguage envs.Language, mapped map[envs.Language][]string, uuid uuids.UUID, property string) []string {
+func (l migratedLocalization) addTranslationMultiMap(baseLanguage i18n.Language, mapped map[i18n.Language][]string, uuid uuids.UUID, property string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
 		templates := make([]string, len(items))

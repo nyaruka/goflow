@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
@@ -129,7 +130,7 @@ type Flow interface {
 	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
-	Language() envs.Language
+	Language() i18n.Language
 	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
@@ -143,7 +144,7 @@ type Flow interface {
 	Inspect(sa SessionAssets) *Inspection
 	ExtractTemplates() []string
 	ExtractLocalizables() []string
-	ChangeLanguage(envs.Language) (Flow, error)
+	ChangeLanguage(i18n.Language) (Flow, error)
 }
 
 // Node is a single node in a flow
@@ -155,8 +156,8 @@ type Node interface {
 
 	Validate(Flow, map[uuids.UUID]bool) error
 
-	EnumerateTemplates(Localization, func(Action, Router, envs.Language, string))
-	EnumerateDependencies(Localization, func(Action, Router, envs.Language, assets.Reference))
+	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
+	EnumerateDependencies(Localization, func(Action, Router, i18n.Language, assets.Reference))
 	EnumerateResults(func(Action, Router, *ResultInfo))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
@@ -194,8 +195,8 @@ type Router interface {
 	Route(Run, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
 
-	EnumerateTemplates(Localization, func(envs.Language, string))
-	EnumerateDependencies(Localization, func(envs.Language, assets.Reference))
+	EnumerateTemplates(Localization, func(i18n.Language, string))
+	EnumerateDependencies(Localization, func(i18n.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
@@ -230,9 +231,9 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
-	GetItemTranslation(envs.Language, uuids.UUID, string) []string
-	SetItemTranslation(envs.Language, uuids.UUID, string, []string)
-	Languages() []envs.Language
+	GetItemTranslation(i18n.Language, uuids.UUID, string) []string
+	SetItemTranslation(i18n.Language, uuids.UUID, string, []string)
+	Languages() []i18n.Language
 }
 
 // Trigger represents something which can initiate a session with the flow engine
@@ -423,8 +424,8 @@ type Run interface {
 	EvaluateTemplate(string) (string, error)
 	RootContext(envs.Environment) map[string]types.XValue
 
-	GetText(uuids.UUID, string, string) (string, envs.Language)
-	GetTextArray(uuids.UUID, string, []string, []envs.Language) ([]string, envs.Language)
+	GetText(uuids.UUID, string, string) (string, i18n.Language)
+	GetTextArray(uuids.UUID, string, []string, []i18n.Language) ([]string, i18n.Language)
 
 	Snapshot() RunSummary
 	Parent() RunSummary
@@ -454,6 +455,6 @@ type Issue interface {
 
 	NodeUUID() NodeUUID
 	ActionUUID() ActionUUID
-	Language() envs.Language
+	Language() i18n.Language
 	Description() string
 }

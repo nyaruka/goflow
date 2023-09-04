@@ -1,9 +1,9 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -68,11 +68,11 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 	}
 
 	translations := make(flows.BroadcastTranslations)
-	languages := append([]envs.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
+	languages := append([]i18n.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for
 	for _, language := range languages {
-		languages := []envs.Language{language, run.Flow().Language()}
+		languages := []i18n.Language{language, run.Flow().Language()}
 
 		evaluatedText, evaluatedAttachments, evaluatedQuickReplies, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
 		translations[language] = &flows.BroadcastTranslation{

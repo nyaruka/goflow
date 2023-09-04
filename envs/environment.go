@@ -4,10 +4,21 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/utils"
 )
+
+func init() {
+	utils.RegisterValidatorAlias("language", "len=3", func(validator.FieldError) string {
+		return "is not a valid language code"
+	})
+	utils.RegisterValidatorAlias("country", "len=2", func(validator.FieldError) string {
+		return "is not a valid country code"
+	})
+}
 
 type RedactionPolicy string
 
@@ -31,14 +42,14 @@ type Environment interface {
 	DateFormat() DateFormat
 	TimeFormat() TimeFormat
 	Timezone() *time.Location
-	AllowedLanguages() []Language
-	DefaultCountry() Country
+	AllowedLanguages() []i18n.Language
+	DefaultCountry() i18n.Country
 	NumberFormat() *NumberFormat
 	InputCollation() Collation
 	RedactionPolicy() RedactionPolicy
 
-	DefaultLanguage() Language
-	DefaultLocale() Locale
+	DefaultLanguage() i18n.Language
+	DefaultLocale() i18n.Locale
 
 	LocationResolver() LocationResolver
 
@@ -52,33 +63,33 @@ type environment struct {
 	dateFormat       DateFormat
 	timeFormat       TimeFormat
 	timezone         *time.Location
-	allowedLanguages []Language
-	defaultCountry   Country
+	allowedLanguages []i18n.Language
+	defaultCountry   i18n.Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
 	inputCollation   Collation
 }
 
-func (e *environment) DateFormat() DateFormat           { return e.dateFormat }
-func (e *environment) TimeFormat() TimeFormat           { return e.timeFormat }
-func (e *environment) Timezone() *time.Location         { return e.timezone }
-func (e *environment) AllowedLanguages() []Language     { return e.allowedLanguages }
-func (e *environment) DefaultCountry() Country          { return e.defaultCountry }
-func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
-func (e *environment) InputCollation() Collation        { return e.inputCollation }
-func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
+func (e *environment) DateFormat() DateFormat            { return e.dateFormat }
+func (e *environment) TimeFormat() TimeFormat            { return e.timeFormat }
+func (e *environment) Timezone() *time.Location          { return e.timezone }
+func (e *environment) AllowedLanguages() []i18n.Language { return e.allowedLanguages }
+func (e *environment) DefaultCountry() i18n.Country      { return e.defaultCountry }
+func (e *environment) NumberFormat() *NumberFormat       { return e.numberFormat }
+func (e *environment) InputCollation() Collation         { return e.inputCollation }
+func (e *environment) RedactionPolicy() RedactionPolicy  { return e.redactionPolicy }
 
 // DefaultLanguage is the first allowed language
-func (e *environment) DefaultLanguage() Language {
+func (e *environment) DefaultLanguage() i18n.Language {
 	if len(e.allowedLanguages) > 0 {
 		return e.allowedLanguages[0]
 	}
-	return NilLanguage
+	return i18n.NilLanguage
 }
 
 // DefaultLocale combines the default languages and countries into a locale
-func (e *environment) DefaultLocale() Locale {
-	return NewLocale(e.DefaultLanguage(), e.DefaultCountry())
+func (e *environment) DefaultLocale() i18n.Locale {
+	return i18n.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
 
 func (e *environment) LocationResolver() LocationResolver { return nil }
@@ -101,9 +112,9 @@ type envEnvelope struct {
 	DateFormat       DateFormat      `json:"date_format" validate:"date_format"`
 	TimeFormat       TimeFormat      `json:"time_format" validate:"time_format"`
 	Timezone         string          `json:"timezone"`
-	AllowedLanguages []Language      `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
+	AllowedLanguages []i18n.Language `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
-	DefaultCountry   Country         `json:"default_country,omitempty" validate:"omitempty,country"`
+	DefaultCountry   i18n.Country    `json:"default_country,omitempty" validate:"omitempty,country"`
 	InputCollation   Collation       `json:"input_collation"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
 }
@@ -170,7 +181,7 @@ func NewBuilder() *EnvironmentBuilder {
 			timeFormat:       TimeFormatHourMinute,
 			timezone:         time.UTC,
 			allowedLanguages: nil,
-			defaultCountry:   NilCountry,
+			defaultCountry:   i18n.NilCountry,
 			numberFormat:     DefaultNumberFormat,
 			inputCollation:   CollationDefault,
 			redactionPolicy:  RedactionPolicyNone,
@@ -195,12 +206,12 @@ func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentB
 	return b
 }
 
-func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []Language) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []i18n.Language) *EnvironmentBuilder {
 	b.env.allowedLanguages = allowedLanguages
 	return b
 }
 
-func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry Country) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry i18n.Country) *EnvironmentBuilder {
 	b.env.defaultCountry = defaultCountry
 	return b
 }
@@ -222,3 +233,23 @@ func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy
 
 // Build returns the final environment
 func (b *EnvironmentBuilder) Build() Environment { return b.env }
+
+// deprecated - can remove when gocommon's date formatting takes an i18n.Locale
+func ToBCP47(l i18n.Locale) string {
+	if l == i18n.NilLocale {
+		return ""
+	}
+
+	lang, country := l.Split()
+	lang2 := lang.ISO639_1()
+
+	// not all languages have a 2-letter code
+	if lang2 == "" {
+		return ""
+	}
+
+	if country != i18n.NilCountry {
+		lang2 += "-" + string(country)
+	}
+	return lang2
+}

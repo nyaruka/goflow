@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"golang.org/x/exp/slices"
@@ -109,29 +110,29 @@ func (e *sessionEnvironment) Timezone() *time.Location {
 	return e.Environment.Timezone()
 }
 
-func (e *sessionEnvironment) DefaultLanguage() envs.Language {
+func (e *sessionEnvironment) DefaultLanguage() i18n.Language {
 	contact := e.session.Contact()
 
 	// if we have a contact and they have a language and it's an allowed language that overrides the base environment's languuage
-	if contact != nil && contact.Language() != envs.NilLanguage && slices.Contains(e.AllowedLanguages(), contact.Language()) {
+	if contact != nil && contact.Language() != i18n.NilLanguage && slices.Contains(e.AllowedLanguages(), contact.Language()) {
 		return contact.Language()
 	}
 	return e.Environment.DefaultLanguage()
 }
 
-func (e *sessionEnvironment) DefaultCountry() envs.Country {
+func (e *sessionEnvironment) DefaultCountry() i18n.Country {
 	contact := e.session.Contact()
 
 	// if we have a contact and they have a preferred channel with a country that overrides the base environment's country
 	if contact != nil {
 		cc := contact.Country()
-		if cc != envs.NilCountry {
+		if cc != i18n.NilCountry {
 			return cc
 		}
 	}
 	return e.Environment.DefaultCountry()
 }
 
-func (e *sessionEnvironment) DefaultLocale() envs.Locale {
-	return envs.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
+func (e *sessionEnvironment) DefaultLocale() i18n.Locale {
+	return i18n.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }

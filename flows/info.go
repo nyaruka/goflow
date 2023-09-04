@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -13,7 +13,7 @@ type baseExtractedItem struct {
 	Node     Node
 	Action   Action
 	Router   Router
-	Language envs.Language
+	Language i18n.Language
 }
 
 // ExtractedTemplate is a template and its location in a flow
@@ -24,7 +24,7 @@ type ExtractedTemplate struct {
 }
 
 // NewExtractedTemplate creates a new extracted template
-func NewExtractedTemplate(n Node, a Action, r Router, l envs.Language, t string) ExtractedTemplate {
+func NewExtractedTemplate(n Node, a Action, r Router, l i18n.Language, t string) ExtractedTemplate {
 	return ExtractedTemplate{
 		baseExtractedItem: baseExtractedItem{Node: n, Action: a, Router: r, Language: l},
 		Template:          t,
@@ -39,7 +39,7 @@ type ExtractedReference struct {
 }
 
 // NewExtractedReference creates a new extracted reference
-func NewExtractedReference(n Node, a Action, r Router, l envs.Language, ref assets.Reference) ExtractedReference {
+func NewExtractedReference(n Node, a Action, r Router, l i18n.Language, ref assets.Reference) ExtractedReference {
 	return ExtractedReference{
 		baseExtractedItem: baseExtractedItem{Node: n, Action: a, Router: r, Language: l},
 		Reference:         ref,

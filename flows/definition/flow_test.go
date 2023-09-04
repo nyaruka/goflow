@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -20,7 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -205,7 +205,7 @@ func TestNewFlow(t *testing.T) {
 	flow, err := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
 		"Test Flow",          // name
-		envs.Language("eng"), // base language
+		i18n.Language("eng"), // base language
 		flows.FlowTypeMessaging,
 		123, // revision
 		30,  // expires after minutes
@@ -650,7 +650,7 @@ func TestChangeLanguage(t *testing.T) {
 	flow, err := test.LoadFlowFromAssets(env, "testdata/change_language.json", "19cad1f2-9110-4271-98d4-1b968bf19410")
 	require.NoError(t, err)
 
-	assertLanguageChange := func(lang envs.Language) {
+	assertLanguageChange := func(lang i18n.Language) {
 		copy, err := flow.ChangeLanguage(lang)
 		assert.NoError(t, err)
 

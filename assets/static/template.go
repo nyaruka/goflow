@@ -1,8 +1,8 @@
 package static
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 )
 
 // Template is a JSON serializable implementation of a template asset
@@ -40,13 +40,13 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 type TemplateTranslation struct {
 	Channel_       assets.ChannelReference `json:"channel"         validate:"required"`
 	Content_       string                  `json:"content"         validate:"required"`
-	Locale_        envs.Locale             `json:"locale"          validate:"required"`
+	Locale_        i18n.Locale             `json:"locale"          validate:"required"`
 	Namespace_     string                  `json:"namespace"`
 	VariableCount_ int                     `json:"variable_count"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel assets.ChannelReference, locale envs.Locale, content string, variableCount int, namespace string) *TemplateTranslation {
+func NewTemplateTranslation(channel assets.ChannelReference, locale i18n.Locale, content string, variableCount int, namespace string) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:       channel,
 		Content_:       content,
@@ -63,7 +63,7 @@ func (t *TemplateTranslation) Content() string { return t.Content_ }
 func (t *TemplateTranslation) Namespace() string { return t.Namespace_ }
 
 // Language returns the locale this translation is in
-func (t *TemplateTranslation) Locale() envs.Locale { return t.Locale_ }
+func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 
 // VariableCount returns the number of variables in this template
 func (t *TemplateTranslation) VariableCount() int { return t.VariableCount_ }

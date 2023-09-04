@@ -3,7 +3,7 @@ package actions
 import (
 	"strings"
 
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -59,9 +59,9 @@ func (a *SetContactLanguageAction) Execute(run flows.Run, step flows.Step, logMo
 	}
 
 	// language must be empty or valid language code
-	lang := envs.NilLanguage
+	lang := i18n.NilLanguage
 	if language != "" {
-		lang, err = envs.ParseLanguage(language)
+		lang, err = i18n.ParseLanguage(language)
 		if err != nil {
 			logEvent(events.NewError(err))
 			return nil

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -327,18 +328,18 @@ func (r *run) EvaluateTemplate(template string) (string, error) {
 }
 
 // get the ordered list of languages to be used for localization in this run
-func (r *run) getLanguages() []envs.Language {
-	languages := make([]envs.Language, 0, 3)
+func (r *run) getLanguages() []i18n.Language {
+	languages := make([]i18n.Language, 0, 3)
 
 	// if contact has an allowed language, it takes priority
 	contactLanguage := r.session.MergedEnvironment().DefaultLanguage()
-	if contactLanguage != envs.NilLanguage {
+	if contactLanguage != i18n.NilLanguage {
 		languages = append(languages, contactLanguage)
 	}
 
 	// next we include the default language if it's different to the contact language
 	defaultLanguage := r.session.Environment().DefaultLanguage()
-	if defaultLanguage != envs.NilLanguage && defaultLanguage != contactLanguage {
+	if defaultLanguage != i18n.NilLanguage && defaultLanguage != contactLanguage {
 		languages = append(languages, defaultLanguage)
 	}
 
@@ -348,17 +349,17 @@ func (r *run) getLanguages() []envs.Language {
 }
 
 // GetText is a convenience version of GetTextArray for a single text values
-func (r *run) GetText(uuid uuids.UUID, key string, native string) (string, envs.Language) {
+func (r *run) GetText(uuid uuids.UUID, key string, native string) (string, i18n.Language) {
 	textArray, lang := r.getText(uuid, key, []string{native}, nil)
 	return textArray[0], lang
 }
 
 // GetTextArray returns the localized value for the given flow definition value
-func (r *run) GetTextArray(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
+func (r *run) GetTextArray(uuid uuids.UUID, key string, native []string, languages []i18n.Language) ([]string, i18n.Language) {
 	return r.getText(uuid, key, native, languages)
 }
 
-func (r *run) getText(uuid uuids.UUID, key string, native []string, languages []envs.Language) ([]string, envs.Language) {
+func (r *run) getText(uuid uuids.UUID, key string, native []string, languages []i18n.Language) ([]string, i18n.Language) {
 	nativeLang := r.Flow().Language()
 
 	// if a preferred language list wasn't provided, default to the run preferred languages

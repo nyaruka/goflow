@@ -3,10 +3,9 @@ package static
 import (
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,9 +15,9 @@ func TestTemplate(t *testing.T) {
 		UUID: assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
 	}
 
-	translation := NewTemplateTranslation(channel, envs.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
 	assert.Equal(t, channel, translation.Channel())
-	assert.Equal(t, envs.Locale("eng-US"), translation.Locale())
+	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "Hello {{1}}", translation.Content())
 	assert.Equal(t, 1, translation.VariableCount())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())

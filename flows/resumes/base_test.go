@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -97,7 +98,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// start a waiting session
 		env := envs.NewBuilder().Build()
 		eng := engine.NewBuilder().Build()
-		contact := flows.NewEmptyContact(sa, "Bob", envs.Language("eng"), nil)
+		contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 		tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual()
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().Get("a78930fe-6a40-4aa8-99c3-e61b02f45ca1")

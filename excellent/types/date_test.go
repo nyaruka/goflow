@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/pkg/errors"
@@ -13,7 +14,7 @@ import (
 
 func TestXDate(t *testing.T) {
 	env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
-	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithAllowedLanguages([]envs.Language{"spa"}).Build()
+	env2 := envs.NewBuilder().WithDateFormat(envs.DateFormatYearMonthDay).WithAllowedLanguages([]i18n.Language{"spa"}).Build()
 
 	d1 := types.NewXDate(dates.NewDate(2019, 2, 20))
 	assert.Equal(t, `date`, d1.Describe())

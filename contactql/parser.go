@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/nyaruka/gocommon/i18n"
 	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -202,7 +203,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			}
 		} else if c.propKey == AttributeLanguage {
 			if c.value != "" {
-				_, err := envs.ParseLanguage(c.value)
+				_, err := i18n.ParseLanguage(c.value)
 				if err != nil {
 					return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
 				}

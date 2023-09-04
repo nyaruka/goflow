@@ -8,16 +8,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/translation"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/i18n"
-
-	"github.com/buger/jsonparser"
+	"github.com/nyaruka/goflow/utils/po"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,49 +29,49 @@ func TestExtractFromFlows(t *testing.T) {
 	tests := []struct {
 		assets       string
 		flowUUIDs    []assets.FlowUUID
-		lang         envs.Language
+		lang         i18n.Language
 		excludeProps []string
 		po           string
 	}{
 		{
 			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.NilLanguage, // generate POT without translations
+			i18n.NilLanguage, // generate POT without translations
 			nil,
 			"exports/two_questions.po",
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.Language("eng"), // is languiage of flow, thus also generates POT without translations
+			i18n.Language("eng"), // is languiage of flow, thus also generates POT without translations
 			nil,
 			"exports/two_questions.po",
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.Language(`fra`),
+			i18n.Language(`fra`),
 			nil,
 			"exports/two_questions.fr.po",
 		},
 		{
 			"../../test/testdata/runner/two_questions.json",
 			[]assets.FlowUUID{assets.FlowUUID(`615b8a0f-588c-4d20-a05f-363b0b4ce6f4`)},
-			envs.Language(`fra`),
+			i18n.Language(`fra`),
 			[]string{"arguments"},
 			"exports/two_questions.noargs.fr.po",
 		},
 		{
 			"testdata/translation_mismatches.json",
 			[]assets.FlowUUID{assets.FlowUUID(`19cad1f2-9110-4271-98d4-1b968bf19410`)},
-			envs.Language(`spa`),
+			i18n.Language(`spa`),
 			nil,
 			"exports/translation_mismatches.noargs.es.po",
 		},
 		{
 			"testdata/multiple_flows.json",
 			[]assets.FlowUUID{`c426f38b-d940-4353-a081-362295938bbe`, `bc6a3e73-d5e2-4658-943c-0c24adc8dc0f`},
-			envs.Language(`spa`),
+			i18n.Language(`spa`),
 			nil,
 			"exports/multiple_flows.es.po",
 		},
@@ -125,52 +125,52 @@ func TestImportIntoFlows(t *testing.T) {
 	flow, err := sa.Flows().Get("19cad1f2-9110-4271-98d4-1b968bf19410")
 	require.NoError(t, err)
 
-	po := i18n.NewPO(nil)
+	p := po.NewPO(nil)
 
 	// all instances of "Red" should be translated as "Rojo" (ignores the one which is already "Rojo")
-	po.AddEntry(&i18n.POEntry{
+	p.AddEntry(&po.POEntry{
 		MsgID:  "Red",
 		MsgStr: "Rojo",
 	})
 
 	// all instances of "Blue" should be translated as "Azul oscura"
-	po.AddEntry(&i18n.POEntry{
+	p.AddEntry(&po.POEntry{
 		MsgID:  "Blue",
 		MsgStr: "Azul oscura",
 	})
 
 	// except the quick reply instance of "Blue" should be translated as "Azul clara"
-	po.AddEntry(&i18n.POEntry{
+	p.AddEntry(&po.POEntry{
 		MsgContext: "e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1",
 		MsgID:      "Blue",
 		MsgStr:     "Azul clara",
 	})
 
 	// context-less entry which will be ignored because it doesn't match any text
-	po.AddEntry(&i18n.POEntry{
+	p.AddEntry(&po.POEntry{
 		MsgID:  "Murky Green",
 		MsgStr: "Verde",
 	})
 
 	// entry which will be ignored because its context doesn't match anything in the flow
-	po.AddEntry(&i18n.POEntry{
+	p.AddEntry(&po.POEntry{
 		MsgContext: "38c6ce0b-a746-48ae-ac64-f5f1163d80db/quick_replies:10",
 		MsgID:      "Lazy Pink",
 		MsgStr:     "Rosada",
 	})
 
-	updates := translation.CalculateFlowUpdates(po, envs.Language("spa"), []string{"quick_replies"}, flow)
+	updates := translation.CalculateFlowUpdates(p, i18n.Language("spa"), []string{"quick_replies"}, flow)
 	assert.Equal(t, 2, len(updates))
 	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
 	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[1].String())
 
-	updates = translation.CalculateFlowUpdates(po, envs.Language("spa"), []string{}, flow)
+	updates = translation.CalculateFlowUpdates(p, i18n.Language("spa"), []string{}, flow)
 	assert.Equal(t, 3, len(updates))
 	assert.Equal(t, `Translated/d1ce3c92-7025-4607-a910-444361a6b9b3/name:0 "Roja" -> "Rojo"`, updates[0].String())
 	assert.Equal(t, `Translated/e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1 "Azul" -> "Azul clara"`, updates[1].String())
 	assert.Equal(t, `Translated/43f7e69e-727d-4cfe-81b8-564e7833052b/name:0 "Azul" -> "Azul oscura"`, updates[2].String())
 
-	err = translation.ImportIntoFlows(po, envs.Language("spa"), []string{}, flow)
+	err = translation.ImportIntoFlows(p, i18n.Language("spa"), []string{}, flow)
 	require.NoError(t, err)
 
 	localJSON := jsonx.MustMarshal(flow.Localization())
@@ -224,10 +224,10 @@ func TestImportNewTranslationIntoFlows(t *testing.T) {
 	poData, err := os.ReadFile("testdata/imports/two_questions.es.po")
 	require.NoError(t, err)
 
-	po, err := i18n.ReadPO(bytes.NewReader(poData))
+	p, err := po.ReadPO(bytes.NewReader(poData))
 	require.NoError(t, err)
 
-	err = translation.ImportIntoFlows(po, "spa", []string{"arguments"}, flow)
+	err = translation.ImportIntoFlows(p, "spa", []string{"arguments"}, flow)
 	require.NoError(t, err)
 
 	localJSON := jsonx.MustMarshal(flow.Localization())
