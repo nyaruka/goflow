@@ -130,7 +130,7 @@ func TestBroadcastTranslations(t *testing.T) {
 	baseLanguage := i18n.Language("eng")
 
 	assertTranslation := func(contactLanguage i18n.Language, allowedLanguages []i18n.Language, expectedText string, expectedLang i18n.Language) {
-		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages).Build()
+		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages...).Build()
 		sa, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 		require.NoError(t, err)
 

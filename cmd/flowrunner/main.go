@@ -142,8 +142,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	languages := []i18n.Language{flow.Language(), contact.Language()}
-	env := envs.NewBuilder().WithTimezone(la).WithAllowedLanguages(languages).Build()
+	env := envs.NewBuilder().WithTimezone(la).WithAllowedLanguages(flow.Language(), contact.Language()).Build()
 
 	repro := &Repro{}
 

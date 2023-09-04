@@ -602,7 +602,7 @@ func NewSessionBuilder() *SessionBuilder {
 	env := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithDefaultCountry("US").
-		WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
+		WithAllowedLanguages("eng", "spa").
 		WithInputCollation(envs.CollationConfusables).
 		Build()
 

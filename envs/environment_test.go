@@ -104,7 +104,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithAllowedLanguages([]i18n.Language{i18n.Language("fra"), i18n.Language("eng")}).
+		WithAllowedLanguages("fra", "eng").
 		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).

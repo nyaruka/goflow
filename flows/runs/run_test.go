@@ -423,7 +423,7 @@ func TestTranslation(t *testing.T) {
 		assetsJSON, _ := os.ReadFile("testdata/translation_assets.json")
 		assetsJSON = test.JSONReplace(assetsJSON, []string{"flows", "[0]", "nodes", "[0]", "actions", "[0]"}, tc.msgAction)
 
-		env := envs.NewBuilder().WithAllowedLanguages(tc.envLangs).Build()
+		env := envs.NewBuilder().WithAllowedLanguages(tc.envLangs...).Build()
 		_, _, sp := test.NewSessionBuilder().
 			WithEnvironment(env).
 			WithContact("2efa1803-ae4d-4a58-ba54-b523e53e40f3", 123, "Bob", tc.contactLang, "tel+1234567890").

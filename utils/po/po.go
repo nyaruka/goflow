@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/nyaruka/gocommon/i18n"
 )
 
 const datetimeformat = "2006-01-02 15:04-0700"
@@ -22,11 +24,22 @@ type Header struct {
 }
 
 // NewHeader creates a new PO header with the given values
-func NewHeader(initialComment string, creationDate time.Time, lang string) *Header {
+func NewHeader(initialComment string, creationDate time.Time, locale i18n.Locale) *Header {
+	// use 2-letter lang code if it has one
+	language := string(locale)
+	lang, country := locale.Split()
+	lang2 := lang.ISO639_1()
+	if lang2 != "" {
+		language = lang2
+		if country != "" {
+			language += "-" + string(country)
+		}
+	}
+
 	return &Header{
 		InitialComment:  initialComment + "\n",
 		POTCreationDate: creationDate,
-		Language:        lang,
+		Language:        language,
 		MIMEVersion:     "1.0",
 		ContentType:     "text/plain; charset=UTF-8",
 		Custom:          make(map[string]string),

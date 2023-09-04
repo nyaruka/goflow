@@ -206,7 +206,7 @@ func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentB
 	return b
 }
 
-func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages []i18n.Language) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages ...i18n.Language) *EnvironmentBuilder {
 	b.env.allowedLanguages = allowedLanguages
 	return b
 }
@@ -233,23 +233,3 @@ func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy
 
 // Build returns the final environment
 func (b *EnvironmentBuilder) Build() Environment { return b.env }
-
-// deprecated - can remove when gocommon's date formatting takes an i18n.Locale
-func ToBCP47(l i18n.Locale) string {
-	if l == i18n.NilLocale {
-		return ""
-	}
-
-	lang, country := l.Split()
-	lang2 := lang.ISO639_1()
-
-	// not all languages have a 2-letter code
-	if lang2 == "" {
-		return ""
-	}
-
-	if country != i18n.NilCountry {
-		lang2 += "-" + string(country)
-	}
-	return lang2
-}

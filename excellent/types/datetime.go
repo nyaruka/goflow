@@ -53,7 +53,7 @@ func (x XDateTime) FormatCustom(env envs.Environment, layout string, tz *time.Lo
 		dt = dt.In(tz)
 	}
 
-	return dates.Format(dt, layout, envs.ToBCP47(env.DefaultLocale()), dates.DateTimeLayouts)
+	return dates.Format(dt, layout, env.DefaultLocale(), dates.DateTimeLayouts)
 }
 
 // String returns the native string representation of this type

@@ -186,7 +186,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 
 		envBuilder := envs.NewBuilder().
-			WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
+			WithAllowedLanguages("eng", "spa").
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {

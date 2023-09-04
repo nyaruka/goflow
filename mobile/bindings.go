@@ -59,7 +59,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, allow
 			WithDateFormat(envs.DateFormat(dateFormat)).
 			WithTimeFormat(envs.TimeFormat(timeFormat)).
 			WithTimezone(tz).
-			WithAllowedLanguages(langs).
+			WithAllowedLanguages(langs...).
 			WithDefaultCountry(i18n.Country(defaultCountry)).
 			WithRedactionPolicy(envs.RedactionPolicy(redactionPolicy)).
 			Build(),

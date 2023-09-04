@@ -327,7 +327,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 
 	for _, tc := range tests {
 		envBuilder := envs.NewBuilder().
-			WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
+			WithAllowedLanguages("eng", "spa").
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {
