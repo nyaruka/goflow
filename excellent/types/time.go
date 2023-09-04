@@ -44,7 +44,7 @@ func (x XTime) Format(env envs.Environment) string {
 
 // FormatCustom provides customised formatting
 func (x XTime) FormatCustom(env envs.Environment, layout string) (string, error) {
-	return x.Native().Format(layout, envs.ToBCP47(env.DefaultLocale()))
+	return x.Native().Format(layout, env.DefaultLocale())
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled

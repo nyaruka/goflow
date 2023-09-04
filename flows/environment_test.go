@@ -114,7 +114,7 @@ func TestSessionEnvironment(t *testing.T) {
 	tzUK, _ := time.LoadLocation("Europe/London")
 
 	env := envs.NewBuilder().
-		WithAllowedLanguages([]i18n.Language{"eng", "fra", "kin"}).
+		WithAllowedLanguages("eng", "fra", "kin").
 		WithDefaultCountry("RW").
 		WithTimezone(tzRW).
 		Build()

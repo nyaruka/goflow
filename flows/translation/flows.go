@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/po"
@@ -196,7 +195,7 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang i18n.Lang
 		flowUUIDs[i] = string(f.UUID())
 	}
 
-	header := po.NewHeader(initialComment, dates.Now(), envs.ToBCP47(i18n.NewLocale(lang, i18n.NilCountry)))
+	header := po.NewHeader(initialComment, dates.Now(), i18n.NewLocale(lang, i18n.NilCountry))
 	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, "; ")
 	header.Custom["Language-3"] = string(lang)
 	p := po.NewPO(header)
