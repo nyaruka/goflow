@@ -21,11 +21,11 @@ func TestComments(t *testing.T) {
 #: src/bar.go
 #, fuzzy,go-format`
 
-	c := po.POComment{}
+	c := po.Comment{}
 	assert.Equal(t, "", c.String())
-	assert.Equal(t, c, po.ParsePOComment(""))
+	assert.Equal(t, c, po.ParseComment(""))
 
-	c = po.POComment{
+	c = po.Comment{
 		Translator: []string{"translator", ""},
 		Extracted:  []string{"extracted"},
 		References: []string{"src/foo.go", "src/bar.go"},
@@ -33,33 +33,33 @@ func TestComments(t *testing.T) {
 	}
 	assert.Equal(t, text, c.String())
 
-	assert.Equal(t, c, po.ParsePOComment(text))
+	assert.Equal(t, c, po.ParseComment(text))
 	assert.True(t, c.HasFlag("fuzzy"))
 	assert.True(t, c.HasFlag("go-format"))
 	assert.False(t, c.HasFlag("python-format"))
 }
 
 func TestPOCreation(t *testing.T) {
-	header := po.NewPOHeader("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es")
+	header := po.NewHeader("Generated for testing", time.Date(2020, 3, 25, 11, 50, 30, 123456789, time.UTC), "es")
 	header.Custom["Foo"] = "Bar"
 	p := po.NewPO(header)
 
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgID:  "Yes",
 		MsgStr: "",
 	})
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgID:  "Yes",
 		MsgStr: "Si",
 	})
 
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgContext: "context1",
 		MsgID:      "No",
 		MsgStr:     "",
 	})
-	p.AddEntry(&po.POEntry{
-		Comment: po.POComment{
+	p.AddEntry(&po.Entry{
+		Comment: po.Comment{
 			Extracted: []string{"has_text"},
 		},
 		MsgContext: "context1",
@@ -187,7 +187,7 @@ func TestEncodeAndDecodePOString(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		assert.Equal(t, tc.encoded, po.EncodePOString(tc.original), "mismatch encoding: %s", tc.original)
-		assert.Equal(t, tc.original, po.DecodePOString(tc.encoded), "mismatch decoding: %s", tc.encoded)
+		assert.Equal(t, tc.encoded, po.EncodeString(tc.original), "mismatch encoding: %s", tc.original)
+		assert.Equal(t, tc.original, po.DecodeString(tc.encoded), "mismatch decoding: %s", tc.encoded)
 	}
 }

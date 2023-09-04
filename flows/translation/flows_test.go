@@ -128,32 +128,32 @@ func TestImportIntoFlows(t *testing.T) {
 	p := po.NewPO(nil)
 
 	// all instances of "Red" should be translated as "Rojo" (ignores the one which is already "Rojo")
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgID:  "Red",
 		MsgStr: "Rojo",
 	})
 
 	// all instances of "Blue" should be translated as "Azul oscura"
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgID:  "Blue",
 		MsgStr: "Azul oscura",
 	})
 
 	// except the quick reply instance of "Blue" should be translated as "Azul clara"
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgContext: "e42deebf-90fa-4636-81cb-d247a3d3ba75/quick_replies:1",
 		MsgID:      "Blue",
 		MsgStr:     "Azul clara",
 	})
 
 	// context-less entry which will be ignored because it doesn't match any text
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgID:  "Murky Green",
 		MsgStr: "Verde",
 	})
 
 	// entry which will be ignored because its context doesn't match anything in the flow
-	p.AddEntry(&po.POEntry{
+	p.AddEntry(&po.Entry{
 		MsgContext: "38c6ce0b-a746-48ae-ac64-f5f1163d80db/quick_replies:10",
 		MsgID:      "Lazy Pink",
 		MsgStr:     "Rosada",

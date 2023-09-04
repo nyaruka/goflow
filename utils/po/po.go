@@ -9,10 +9,10 @@ import (
 	"time"
 )
 
-const poDatetimeformat = "2006-01-02 15:04-0700"
+const datetimeformat = "2006-01-02 15:04-0700"
 
-// POHeader contains metadata about a PO file
-type POHeader struct {
+// Header contains metadata about a PO file
+type Header struct {
 	InitialComment  string
 	POTCreationDate time.Time         // POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE
 	Language        string            // Language: e.g. en-US
@@ -21,9 +21,9 @@ type POHeader struct {
 	Custom          map[string]string // other custom values
 }
 
-// NewPOHeader creates a new PO header with the given values
-func NewPOHeader(initialComment string, creationDate time.Time, lang string) *POHeader {
-	return &POHeader{
+// NewHeader creates a new PO header with the given values
+func NewHeader(initialComment string, creationDate time.Time, lang string) *Header {
+	return &Header{
 		InitialComment:  initialComment + "\n",
 		POTCreationDate: creationDate,
 		Language:        lang,
@@ -34,8 +34,8 @@ func NewPOHeader(initialComment string, creationDate time.Time, lang string) *PO
 }
 
 // headers are deserialized as regular entries and converted here
-func newPOHeaderFromEntry(e *POEntry) *POHeader {
-	h := &POHeader{
+func newHeaderFromEntry(e *Entry) *Header {
+	h := &Header{
 		InitialComment: strings.Join(e.Comment.Translator, "\n"),
 		Custom:         make(map[string]string),
 	}
@@ -51,7 +51,7 @@ func newPOHeaderFromEntry(e *POEntry) *POHeader {
 			value := strings.TrimSpace(parts[1])
 			switch key {
 			case "POT-Creation-Date":
-				h.POTCreationDate, _ = time.Parse(poDatetimeformat, value)
+				h.POTCreationDate, _ = time.Parse(datetimeformat, value)
 			case "Language":
 				h.Language = value
 			case "MIME-Version":
@@ -68,9 +68,9 @@ func newPOHeaderFromEntry(e *POEntry) *POHeader {
 }
 
 // convert header to an entry for serialization
-func (h *POHeader) asEntry() *POEntry {
+func (h *Header) asEntry() *Entry {
 	b := &strings.Builder{}
-	fmt.Fprintf(b, "POT-Creation-Date: %s\n", h.POTCreationDate.Format(poDatetimeformat))
+	fmt.Fprintf(b, "POT-Creation-Date: %s\n", h.POTCreationDate.Format(datetimeformat))
 	fmt.Fprintf(b, "Language: %s\n", h.Language)
 	fmt.Fprintf(b, "MIME-Version: %s\n", h.MIMEVersion)
 	fmt.Fprintf(b, "Content-Type: %s\n", h.ContentType)
@@ -84,8 +84,8 @@ func (h *POHeader) asEntry() *POEntry {
 		fmt.Fprintf(b, "%s: %s\n", key, h.Custom[key])
 	}
 
-	return &POEntry{
-		Comment: POComment{
+	return &Entry{
+		Comment: Comment{
 			Translator: strings.Split(h.InitialComment, "\n"),
 			Flags:      []string{"fuzzy"},
 		},
@@ -94,17 +94,17 @@ func (h *POHeader) asEntry() *POEntry {
 	}
 }
 
-// POComment is a comment for an entry
-type POComment struct {
+// Comment is a comment for an entry
+type Comment struct {
 	Translator []string // #  translator-comments
 	Extracted  []string // #. extracted-comments
 	References []string // #: references
 	Flags      []string // #, e.g. fuzzy,python-format
 }
 
-// ParsePOComment parses a PO file comment from the given string
-func ParsePOComment(s string) POComment {
-	c := POComment{}
+// ParseComment parses a PO file comment from the given string
+func ParseComment(s string) Comment {
+	c := Comment{}
 	if s == "" {
 		return c
 	}
@@ -137,7 +137,7 @@ func ParsePOComment(s string) POComment {
 }
 
 // HasFlag returns true if this comment contains the given flag
-func (c *POComment) HasFlag(flag string) bool {
+func (c *Comment) HasFlag(flag string) bool {
 	for _, f := range c.Flags {
 		if f == flag {
 			return true
@@ -146,7 +146,7 @@ func (c *POComment) HasFlag(flag string) bool {
 	return false
 }
 
-func (c *POComment) String() string {
+func (c *Comment) String() string {
 	lines := make([]string, 0)
 
 	for _, line := range c.Translator {
@@ -164,49 +164,49 @@ func (c *POComment) String() string {
 	return strings.Join(lines, "\n")
 }
 
-// POEntry is an entry in a PO catalog
-type POEntry struct {
-	Comment    POComment // Comment
-	MsgContext string    // msgctxt context
-	MsgID      string    // msgid untranslated-string
-	MsgStr     string    // msgstr translated-string
+// Entry is an entry in a PO catalog
+type Entry struct {
+	Comment    Comment // Comment
+	MsgContext string  // msgctxt context
+	MsgID      string  // msgid untranslated-string
+	MsgStr     string  // msgstr translated-string
 }
 
-func (e *POEntry) Write(w io.Writer) {
+func (e *Entry) Write(w io.Writer) {
 	comment := e.Comment.String()
 	if comment != "" {
 		fmt.Fprintf(w, "%s\n", comment)
 	}
 	if e.MsgContext != "" {
-		fmt.Fprintf(w, "msgctxt %s\n", EncodePOString(e.MsgContext))
+		fmt.Fprintf(w, "msgctxt %s\n", EncodeString(e.MsgContext))
 	}
-	fmt.Fprintf(w, "msgid %s\n", EncodePOString(e.MsgID))
-	fmt.Fprintf(w, "msgstr %s\n", EncodePOString(e.MsgStr))
+	fmt.Fprintf(w, "msgid %s\n", EncodeString(e.MsgID))
+	fmt.Fprintf(w, "msgstr %s\n", EncodeString(e.MsgStr))
 	fmt.Fprintln(w)
 }
 
 // PO is a PO file of translation entries
 type PO struct {
-	Header  *POHeader
-	Entries []*POEntry
+	Header  *Header
+	Entries []*Entry
 
-	contexts map[string]map[string]*POEntry
+	contexts map[string]map[string]*Entry
 }
 
 // NewPO creates a new PO catalog
-func NewPO(h *POHeader) *PO {
+func NewPO(h *Header) *PO {
 	return &PO{
 		Header:   h,
-		Entries:  make([]*POEntry, 0),
-		contexts: make(map[string]map[string]*POEntry),
+		Entries:  make([]*Entry, 0),
+		contexts: make(map[string]map[string]*Entry),
 	}
 }
 
 // AddEntry adds the given entry to this PO
-func (p *PO) AddEntry(e *POEntry) {
+func (p *PO) AddEntry(e *Entry) {
 	context, exists := p.contexts[e.MsgContext]
 	if !exists {
-		context = make(map[string]*POEntry)
+		context = make(map[string]*Entry)
 		p.contexts[e.MsgContext] = context
 	}
 
@@ -265,13 +265,13 @@ func ReadPO(r io.Reader) (*PO, error) {
 	po := NewPO(nil)
 
 	for {
-		entry, err := readPOEntry(nextLine)
+		entry, err := readEntry(nextLine)
 		if err != nil {
 			return nil, err
 		}
 		if entry != nil {
 			if entry.MsgID == "" {
-				po.Header = newPOHeaderFromEntry(entry)
+				po.Header = newHeaderFromEntry(entry)
 			} else {
 				po.AddEntry(entry)
 			}
@@ -284,7 +284,7 @@ func ReadPO(r io.Reader) (*PO, error) {
 }
 
 // reads a single entry
-func readPOEntry(nextLine func() (string, error)) (*POEntry, error) {
+func readEntry(nextLine func() (string, error)) (*Entry, error) {
 	// read lines until we hit EOF or empty line
 	lines := make([]string, 0)
 	for {
@@ -323,16 +323,16 @@ func readPOEntry(nextLine func() (string, error)) (*POEntry, error) {
 		}
 	}
 
-	return &POEntry{
-		Comment:    ParsePOComment(comment),
-		MsgContext: DecodePOString(values["msgctxt"]),
-		MsgID:      DecodePOString(values["msgid"]),
-		MsgStr:     DecodePOString(values["msgstr"]),
+	return &Entry{
+		Comment:    ParseComment(comment),
+		MsgContext: DecodeString(values["msgctxt"]),
+		MsgID:      DecodeString(values["msgid"]),
+		MsgStr:     DecodeString(values["msgstr"]),
 	}, nil
 }
 
-// EncodePOString encodes the string values that appear after msgid, mgstr etc
-func EncodePOString(text string) string {
+// EncodeString encodes the string values that appear after msgid, mgstr etc
+func EncodeString(text string) string {
 	if text == "" {
 		return `""`
 	}
@@ -381,8 +381,8 @@ func EncodePOString(text string) string {
 	return b.String()
 }
 
-// DecodePOString decodes the string values that appear after msgid, mgstr etc
-func DecodePOString(s string) string {
+// DecodeString decodes the string values that appear after msgid, mgstr etc
+func DecodeString(s string) string {
 	if s == "" {
 		return ""
 	}

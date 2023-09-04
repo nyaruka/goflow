@@ -196,7 +196,7 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang i18n.Lang
 		flowUUIDs[i] = string(f.UUID())
 	}
 
-	header := po.NewPOHeader(initialComment, dates.Now(), envs.ToBCP47(i18n.NewLocale(lang, i18n.NilCountry)))
+	header := po.NewHeader(initialComment, dates.Now(), envs.ToBCP47(i18n.NewLocale(lang, i18n.NilCountry)))
 	header.Custom["Source-Flows"] = strings.Join(flowUUIDs, "; ")
 	header.Custom["Language-3"] = string(lang)
 	p := po.NewPO(header)
@@ -213,8 +213,8 @@ func poFromExtracted(sources []flows.Flow, initialComment string, lang i18n.Lang
 			context = ext.Locations[0].MsgContext()
 		}
 
-		entry := &po.POEntry{
-			Comment: po.POComment{
+		entry := &po.Entry{
+			Comment: po.Comment{
 				References: references,
 			},
 			MsgContext: context,
@@ -269,7 +269,7 @@ func CalculateFlowUpdates(p *po.PO, translationsLanguage i18n.Language, excludeP
 	}
 
 	updates := make([]*TranslationUpdate, 0)
-	addUpdate := func(lt *localizedText, e *po.POEntry) {
+	addUpdate := func(lt *localizedText, e *po.Entry) {
 		// only update if translation has actually changed
 		if lt.Translation != e.MsgStr {
 			updates = append(updates, &TranslationUpdate{

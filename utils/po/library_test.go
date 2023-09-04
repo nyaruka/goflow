@@ -46,7 +46,7 @@ func TestLibrary(t *testing.T) {
 	assert.Equal(t, "Blue", en.GetText("", "Blue"))
 
 	// add new entry
-	en.AddEntry(&po.POEntry{MsgID: "Green"})
+	en.AddEntry(&po.Entry{MsgID: "Green"})
 
 	err = library.Update("simple", en)
 	require.NoError(t, err)
