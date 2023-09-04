@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -330,8 +331,8 @@ func TestTranslation(t *testing.T) {
 
 	tcs := []struct {
 		description          string
-		envLangs             []envs.Language
-		contactLang          envs.Language
+		envLangs             []i18n.Language
+		contactLang          i18n.Language
 		msgAction            []byte
 		expectedText         string
 		expectedAttachments  []utils.Attachment
@@ -339,7 +340,7 @@ func TestTranslation(t *testing.T) {
 	}{
 		{
 			description:  "contact language is valid and is flow base language, msg action has all fields",
-			envLangs:     []envs.Language{"eng", "spa"},
+			envLangs:     []i18n.Language{"eng", "spa"},
 			contactLang:  "eng",
 			msgAction:    msgAction1,
 			expectedText: "Hello",
@@ -351,7 +352,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action has all fields",
-			envLangs:     []envs.Language{"eng", "spa"},
+			envLangs:     []i18n.Language{"eng", "spa"},
 			contactLang:  "spa",
 			msgAction:    msgAction1,
 			expectedText: "Hola",
@@ -362,7 +363,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:  "contact language is allowed but no translations exist, msg action has all fields",
-			envLangs:     []envs.Language{"eng", "spa", "kin"},
+			envLangs:     []i18n.Language{"eng", "spa", "kin"},
 			contactLang:  "kin",
 			msgAction:    msgAction1,
 			expectedText: "Hello",
@@ -374,7 +375,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:  "contact language is not allowed and translations exist, msg action has all fields",
-			envLangs:     []envs.Language{"eng"},
+			envLangs:     []i18n.Language{"eng"},
 			contactLang:  "spa",
 			msgAction:    msgAction1,
 			expectedText: "Hello",
@@ -386,7 +387,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:          "contact language is valid and is flow base language, msg action only has text",
-			envLangs:             []envs.Language{"eng", "spa"},
+			envLangs:             []i18n.Language{"eng", "spa"},
 			contactLang:          "eng",
 			msgAction:            msgAction2,
 			expectedText:         "Hello",
@@ -395,7 +396,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action only has text",
-			envLangs:     []envs.Language{"eng", "spa"},
+			envLangs:     []i18n.Language{"eng", "spa"},
 			contactLang:  "spa",
 			msgAction:    msgAction2,
 			expectedText: "Hola",
@@ -406,7 +407,7 @@ func TestTranslation(t *testing.T) {
 		},
 		{
 			description:  "attachments and quick replies translations are single empty strings and should be ignored",
-			envLangs:     []envs.Language{"eng", "fra"},
+			envLangs:     []i18n.Language{"eng", "fra"},
 			contactLang:  "fra",
 			msgAction:    msgAction1,
 			expectedText: "Bonjour",

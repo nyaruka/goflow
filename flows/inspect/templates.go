@@ -4,22 +4,22 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/tools"
 	"github.com/nyaruka/goflow/flows"
 )
 
 // Templates extracts template values by reading engine tags on a struct
-func Templates(s any, localization flows.Localization, include func(envs.Language, string)) {
+func Templates(s any, localization flows.Localization, include func(i18n.Language, string)) {
 	templateValues(reflect.ValueOf(s), localization, include)
 }
 
-func templateValues(v reflect.Value, localization flows.Localization, include func(envs.Language, string)) {
+func templateValues(v reflect.Value, localization flows.Localization, include func(i18n.Language, string)) {
 	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 		if ef.Evaluated {
-			extractTemplates(fv, envs.NilLanguage, include)
+			extractTemplates(fv, i18n.NilLanguage, include)
 
 			// if this field is also localized, each translation is a template and needs to be included
 			if ef.Localized && localization != nil {
@@ -31,7 +31,7 @@ func templateValues(v reflect.Value, localization flows.Localization, include fu
 	})
 }
 
-func Translations(localization flows.Localization, itemUUID uuids.UUID, property string, include func(envs.Language, string)) {
+func Translations(localization flows.Localization, itemUUID uuids.UUID, property string, include func(i18n.Language, string)) {
 	for _, lang := range localization.Languages() {
 		for _, v := range localization.GetItemTranslation(lang, itemUUID, property) {
 			include(lang, v)
@@ -41,7 +41,7 @@ func Translations(localization flows.Localization, itemUUID uuids.UUID, property
 
 // Evaluated tags can be applied to fields of type string, slices of string or map of strings.
 // This method extracts template values from any such field.
-func extractTemplates(v reflect.Value, lang envs.Language, include func(envs.Language, string)) {
+func extractTemplates(v reflect.Value, lang i18n.Language, include func(i18n.Language, string)) {
 	switch typed := v.Interface().(type) {
 	case map[string]string:
 		for _, i := range typed {

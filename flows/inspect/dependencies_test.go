@@ -3,6 +3,7 @@ package inspect_test
 import (
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -35,20 +36,20 @@ func TestDependencies(t *testing.T) {
 	node2 := definition.NewNode("7c959933-4c30-4277-9810-adc95a459bd0", nil, router2, nil)
 
 	refs := []flows.ExtractedReference{
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewFieldReference("gender", "Gender")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTicketerReference("fb9cab80-4450-4a9d-ba9b-cb8df40dd233", "Support")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewTopicReference("531d3fc7-64f4-4170-927d-b477e8145dd3", "Weather")),
-		flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, assets.NewUserReference("jim@nyaruka.com", "Jim")),
-		flows.NewExtractedReference(node2, nil, router2, envs.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFieldReference("gender", "Gender")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTicketerReference("fb9cab80-4450-4a9d-ba9b-cb8df40dd233", "Support")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTopicReference("531d3fc7-64f4-4170-927d-b477e8145dd3", "Weather")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewUserReference("jim@nyaruka.com", "Jim")),
+		flows.NewExtractedReference(node2, nil, router2, i18n.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
 	}
 
 	// if our assets only includes a single group, the other assets should be reported as missing
@@ -149,7 +150,7 @@ func TestDependencies(t *testing.T) {
 	// panic if we get a dependency type we don't recognize
 	assert.Panics(t, func() {
 		inspect.NewDependencies([]flows.ExtractedReference{
-			flows.NewExtractedReference(node1, action1, nil, envs.NilLanguage, &unknownAssetType{}),
+			flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, &unknownAssetType{}),
 		}, sa)
 	})
 }

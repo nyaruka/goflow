@@ -12,6 +12,7 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -106,7 +107,7 @@ func TestEventMarshaling(t *testing.T) {
 					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
 					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
 				},
-				envs.Language("eng"),
+				i18n.Language("eng"),
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
 				},
@@ -260,7 +261,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewContactLanguageChanged(envs.Language("fra")),
+			events.NewContactLanguageChanged(i18n.Language("fra")),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"language": "fra",
@@ -452,7 +453,7 @@ func TestEventMarshaling(t *testing.T) {
 					"Hi there",
 					nil, nil, nil,
 					flows.NilMsgTopic,
-					envs.NilLocale,
+					i18n.NilLocale,
 					flows.NilUnsendableReason,
 				),
 			),

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -112,7 +113,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 
 	// tel is a special case because we do number based matching
 	if urn.URN().Scheme() == urns.TelScheme {
-		countryCode := envs.DeriveCountryFromTel(urn.URN().Path())
+		countryCode := i18n.DeriveCountryFromTel(urn.URN().Path())
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {

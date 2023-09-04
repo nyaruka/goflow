@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -74,7 +75,7 @@ func TestAssetsEnvironment(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(sa, "", envs.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
@@ -83,7 +84,7 @@ func TestAssetsEnvironment(t *testing.T) {
 	require.NoError(t, err)
 
 	aenv := flows.NewAssetsEnvironment(env, session.Assets().Locations())
-	assert.Equal(t, envs.Country("RW"), aenv.DefaultCountry())
+	assert.Equal(t, i18n.Country("RW"), aenv.DefaultCountry())
 	require.NotNil(t, aenv.LocationResolver())
 
 	kigali := aenv.LocationResolver().LookupLocation("Rwanda > Kigali City")
@@ -113,7 +114,7 @@ func TestSessionEnvironment(t *testing.T) {
 	tzUK, _ := time.LoadLocation("Europe/London")
 
 	env := envs.NewBuilder().
-		WithAllowedLanguages([]envs.Language{"eng", "fra", "kin"}).
+		WithAllowedLanguages([]i18n.Language{"eng", "fra", "kin"}).
 		WithDefaultCountry("RW").
 		WithTimezone(tzRW).
 		Build()
@@ -134,31 +135,31 @@ func TestSessionEnvironment(t *testing.T) {
 
 	// main environment on the session has the values we started with
 	serializedEnv := session.Environment()
-	assert.Equal(t, envs.Language("eng"), serializedEnv.DefaultLanguage())
-	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, serializedEnv.AllowedLanguages())
-	assert.Equal(t, envs.Country("RW"), serializedEnv.DefaultCountry())
-	assert.Equal(t, "en-RW", serializedEnv.DefaultLocale().ToBCP47())
+	assert.Equal(t, i18n.Language("eng"), serializedEnv.DefaultLanguage())
+	assert.Equal(t, []i18n.Language{"eng", "fra", "kin"}, serializedEnv.AllowedLanguages())
+	assert.Equal(t, i18n.Country("RW"), serializedEnv.DefaultCountry())
+	assert.Equal(t, i18n.Locale("eng-RW"), serializedEnv.DefaultLocale())
 	assert.Equal(t, tzRW, serializedEnv.Timezone())
 
 	// merged environment on the session has values from the contact
 	mergedEnv := session.MergedEnvironment()
-	assert.Equal(t, envs.Language("fra"), mergedEnv.DefaultLanguage())
-	assert.Equal(t, []envs.Language{"eng", "fra", "kin"}, mergedEnv.AllowedLanguages())
-	assert.Equal(t, envs.Country("US"), mergedEnv.DefaultCountry())
-	assert.Equal(t, "fr-US", mergedEnv.DefaultLocale().ToBCP47())
+	assert.Equal(t, i18n.Language("fra"), mergedEnv.DefaultLanguage())
+	assert.Equal(t, []i18n.Language{"eng", "fra", "kin"}, mergedEnv.AllowedLanguages())
+	assert.Equal(t, i18n.Country("US"), mergedEnv.DefaultCountry())
+	assert.Equal(t, i18n.Locale("fra-US"), mergedEnv.DefaultLocale())
 	assert.Equal(t, tzEC, mergedEnv.Timezone())
 	assert.NotNil(t, mergedEnv.LocationResolver())
 
 	// can make changes to contact
-	session.Contact().SetLanguage(envs.Language("kin"))
+	session.Contact().SetLanguage(i18n.Language("kin"))
 	session.Contact().SetTimezone(tzUK)
 
 	// and environment reflects those changes
-	assert.Equal(t, envs.Language("kin"), mergedEnv.DefaultLanguage())
+	assert.Equal(t, i18n.Language("kin"), mergedEnv.DefaultLanguage())
 	assert.Equal(t, tzUK, mergedEnv.Timezone())
 
 	// if contact language is not an allowed language it won't be used
-	session.Contact().SetLanguage(envs.Language("spa"))
-	assert.Equal(t, envs.Language("eng"), mergedEnv.DefaultLanguage())
-	assert.Equal(t, "en-US", mergedEnv.DefaultLocale().ToBCP47())
+	session.Contact().SetLanguage(i18n.Language("spa"))
+	assert.Equal(t, i18n.Language("eng"), mergedEnv.DefaultLanguage())
+	assert.Equal(t, i18n.Locale("eng-US"), mergedEnv.DefaultLocale())
 }

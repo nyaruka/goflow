@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	main "github.com/nyaruka/goflow/cmd/flowxgettext"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -18,7 +18,7 @@ func TestFlowXGetText(t *testing.T) {
 
 	out := &strings.Builder{}
 
-	err := main.FlowXGetText(envs.Language("fra"), false, []string{"../../test/testdata/runner/two_questions.json"}, out)
+	err := main.FlowXGetText(i18n.Language("fra"), false, []string{"../../test/testdata/runner/two_questions.json"}, out)
 	require.NoError(t, err)
 
 	assert.Contains(t, out.String(), `

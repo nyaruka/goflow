@@ -1,9 +1,9 @@
 package static
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 )
 
 // Channel is a JSON serializable implementation of a channel asset
@@ -14,7 +14,7 @@ type Channel struct {
 	Schemes_            []string                 `json:"schemes" validate:"min=1"`
 	Roles_              []assets.ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
 	Parent_             *assets.ChannelReference `json:"parent" validate:"omitempty,dive"`
-	Country_            envs.Country             `json:"country,omitempty"`
+	Country_            i18n.Country             `json:"country,omitempty"`
 	MatchPrefixes_      []string                 `json:"match_prefixes,omitempty"`
 	AllowInternational_ bool                     `json:"allow_international,omitempty"`
 }
@@ -33,7 +33,7 @@ func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []
 }
 
 // NewTelChannel creates a new tel channel
-func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country envs.Country, matchPrefixes []string, allowInternational bool) assets.Channel {
+func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country i18n.Country, matchPrefixes []string, allowInternational bool) assets.Channel {
 	return &Channel{
 		UUID_:               uuid,
 		Name_:               name,
@@ -66,7 +66,7 @@ func (c *Channel) Roles() []assets.ChannelRole { return c.Roles_ }
 func (c *Channel) Parent() *assets.ChannelReference { return c.Parent_ }
 
 // Country returns this channel's associated country code (if any)
-func (c *Channel) Country() envs.Country { return c.Country_ }
+func (c *Channel) Country() i18n.Country { return c.Country_ }
 
 // MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
 func (c *Channel) MatchPrefixes() []string { return c.MatchPrefixes_ }

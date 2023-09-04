@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -504,7 +505,7 @@ func TestTests(t *testing.T) {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithDefaultCountry(envs.Country("RW")).
+		WithDefaultCountry(i18n.Country("RW")).
 		Build()
 
 	source, err := static.NewSource([]byte(assetsJSON))
@@ -513,7 +514,7 @@ func TestTests(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(sa, "", envs.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
@@ -606,7 +607,7 @@ func TestHasPhone(t *testing.T) {
 		{"oui", "CD", ""},
 	}
 
-	env := envs.NewBuilder().WithDefaultCountry(envs.Country("RW")).Build()
+	env := envs.NewBuilder().WithDefaultCountry(i18n.Country("RW")).Build()
 
 	for _, tc := range tests {
 		var actual, expected types.XValue

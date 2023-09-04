@@ -3,6 +3,7 @@ package test
 import (
 	"os"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -42,7 +43,7 @@ func NewChannel(name string, address string, schemes []string, roles []assets.Ch
 	return flows.NewChannel(static.NewChannel(assets.ChannelUUID(uuids.New()), name, address, schemes, roles, parent))
 }
 
-func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country envs.Country, matchPrefixes []string, allowInternational bool) *flows.Channel {
+func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country i18n.Country, matchPrefixes []string, allowInternational bool) *flows.Channel {
 	return flows.NewChannel(static.NewTelChannel(assets.ChannelUUID(uuids.New()), name, address, roles, parent, country, matchPrefixes, allowInternational))
 }
 

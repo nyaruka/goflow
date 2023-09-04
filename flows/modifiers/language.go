@@ -3,6 +3,7 @@ package modifiers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -21,11 +22,11 @@ const TypeLanguage string = "language"
 type LanguageModifier struct {
 	baseModifier
 
-	Language envs.Language `json:"language"`
+	Language i18n.Language `json:"language"`
 }
 
 // NewLanguage creates a new language modifier
-func NewLanguage(language envs.Language) *LanguageModifier {
+func NewLanguage(language i18n.Language) *LanguageModifier {
 	return &LanguageModifier{
 		baseModifier: newBaseModifier(TypeLanguage),
 		Language:     language,

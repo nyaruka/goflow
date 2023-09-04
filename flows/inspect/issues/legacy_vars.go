@@ -1,7 +1,7 @@
 package issues
 
 import (
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 )
@@ -20,7 +20,7 @@ type LegacyVars struct {
 	Vars []string `json:"vars"`
 }
 
-func newLegacyVars(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language envs.Language, vars []string) *LegacyVars {
+func newLegacyVars(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, vars []string) *LegacyVars {
 	return &LegacyVars{
 		baseIssue: newBaseIssue(
 			TypeLegacyVars,
@@ -41,7 +41,7 @@ func LegacyVarsCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.Extra
 			if a.Type() == actions.TypeStartSession {
 				action := a.(*actions.StartSessionAction)
 				if len(action.LegacyVars) > 0 {
-					report(newLegacyVars(node.UUID(), a.UUID(), envs.NilLanguage, action.LegacyVars))
+					report(newLegacyVars(node.UUID(), a.UUID(), i18n.NilLanguage, action.LegacyVars))
 				}
 			}
 		}

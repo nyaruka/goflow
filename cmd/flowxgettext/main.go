@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/buger/jsonparser"
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
@@ -32,13 +32,13 @@ func main() {
 		flags.PrintDefaults()
 		os.Exit(1)
 	}
-	if err := FlowXGetText(envs.Language(lang), excludeArgs, args, os.Stdout); err != nil {
+	if err := FlowXGetText(i18n.Language(lang), excludeArgs, args, os.Stdout); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 }
 
-func FlowXGetText(lang envs.Language, excludeArgs bool, paths []string, writer io.Writer) error {
+func FlowXGetText(lang i18n.Language, excludeArgs bool, paths []string, writer io.Writer) error {
 	sources, err := loadFlows(paths)
 	if err != nil {
 		return err

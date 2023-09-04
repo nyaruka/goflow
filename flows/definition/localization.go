@@ -3,9 +3,9 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -65,7 +65,7 @@ func (t languageTranslation) Enumerate(callback func(uuids.UUID, string, []strin
 }
 
 // our top level container for all the translations for all languages
-type localization map[envs.Language]languageTranslation
+type localization map[i18n.Language]languageTranslation
 
 // NewLocalization creates a new empty localization
 func NewLocalization() flows.Localization {
@@ -73,8 +73,8 @@ func NewLocalization() flows.Localization {
 }
 
 // Languages gets the list of languages included in this localization
-func (l localization) Languages() []envs.Language {
-	languages := make([]envs.Language, 0, len(l))
+func (l localization) Languages() []i18n.Language {
+	languages := make([]i18n.Language, 0, len(l))
 	for lang := range l {
 		languages = append(languages, lang)
 	}
@@ -82,7 +82,7 @@ func (l localization) Languages() []envs.Language {
 }
 
 // GetItemTranslation gets an item translation
-func (l localization) GetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string) []string {
+func (l localization) GetItemTranslation(lang i18n.Language, itemUUID uuids.UUID, property string) []string {
 	translation, exists := l[lang]
 	if exists {
 		return translation.getTextArray(itemUUID, property)
@@ -91,7 +91,7 @@ func (l localization) GetItemTranslation(lang envs.Language, itemUUID uuids.UUID
 }
 
 // SetItemTranslation sets an item translation
-func (l localization) SetItemTranslation(lang envs.Language, itemUUID uuids.UUID, property string, translated []string) {
+func (l localization) SetItemTranslation(lang i18n.Language, itemUUID uuids.UUID, property string, translated []string) {
 	_, found := l[lang]
 	if !found {
 		l[lang] = make(languageTranslation)

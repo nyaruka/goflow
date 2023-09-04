@@ -3,7 +3,7 @@ package issues
 import (
 	"sort"
 
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -21,12 +21,12 @@ type baseIssue struct {
 	Type_        string           `json:"type"`
 	NodeUUID_    flows.NodeUUID   `json:"node_uuid"`
 	ActionUUID_  flows.ActionUUID `json:"action_uuid,omitempty"`
-	Language_    envs.Language    `json:"language,omitempty"`
+	Language_    i18n.Language    `json:"language,omitempty"`
 	Description_ string           `json:"description"`
 }
 
 // creates a new base issue
-func newBaseIssue(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language envs.Language, description string) baseIssue {
+func newBaseIssue(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, description string) baseIssue {
 	return baseIssue{
 		Type_:        typeName,
 		NodeUUID_:    nodeUUID,
@@ -46,7 +46,7 @@ func (p *baseIssue) NodeUUID() flows.NodeUUID { return p.NodeUUID_ }
 func (p *baseIssue) ActionUUID() flows.ActionUUID { return p.ActionUUID_ }
 
 // Language returns the translation language if the issue was found in a translation
-func (p *baseIssue) Language() envs.Language { return p.Language_ }
+func (p *baseIssue) Language() i18n.Language { return p.Language_ }
 
 // Description returns the description of the issue
 func (p *baseIssue) Description() string { return p.Description_ }

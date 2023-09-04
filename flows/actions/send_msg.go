@@ -1,10 +1,10 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -102,7 +102,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		var templating *flows.MsgTemplating
 		if a.Templating != nil {
 			// looks for a translation in the contact locale or environment default
-			locales := []envs.Locale{
+			locales := []i18n.Locale{
 				run.Session().MergedEnvironment().DefaultLocale(),
 				run.Session().Environment().DefaultLocale(),
 			}

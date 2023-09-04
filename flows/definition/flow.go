@@ -3,6 +3,8 @@ package definition
 import (
 	"encoding/json"
 
+	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -13,8 +15,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/Masterminds/semver"
 	"github.com/pkg/errors"
 )
 
@@ -32,7 +32,7 @@ type flow struct {
 	uuid               assets.FlowUUID
 	name               string
 	specVersion        *semver.Version
-	language           envs.Language
+	language           i18n.Language
 	flowType           flows.FlowType
 	revision           int
 	expireAfterMinutes int
@@ -50,7 +50,7 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language envs.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -81,7 +81,7 @@ func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
 func (f *flow) SpecVersion() *semver.Version           { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
-func (f *flow) Language() envs.Language                { return f.language }
+func (f *flow) Language() i18n.Language                { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
@@ -152,7 +152,7 @@ func (f *flow) Reference(withRevision bool) *assets.FlowReference {
 // ExtractTemplates extracts all non-empty templates
 func (f *flow) ExtractTemplates() []string {
 	templates := make([]string, 0)
-	include := func(a flows.Action, r flows.Router, l envs.Language, t string) {
+	include := func(a flows.Action, r flows.Router, l i18n.Language, t string) {
 		if t != "" {
 			templates = append(templates, t)
 		}
@@ -185,7 +185,7 @@ func (f *flow) ExtractLocalizables() []string {
 
 // ChangeLanguage changes the language of the flow saving the current flow text as a translation and replacing it with
 // the specified translation. It returns an error if there are missing translations.
-func (f *flow) ChangeLanguage(lang envs.Language) (flows.Flow, error) {
+func (f *flow) ChangeLanguage(lang i18n.Language) (flows.Flow, error) {
 	// make a copy of the flow
 	copy, err := f.copy()
 	if err != nil {
@@ -245,7 +245,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 	assetRefs := make([]flows.ExtractedReference, 0)
 	parentRefs := make(map[string]bool)
 
-	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
 		if ref != nil && !ref.Variable() {
 			er := flows.NewExtractedReference(n, a, r, l, ref)
 			assetRefs = append(assetRefs, er)
@@ -253,7 +253,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 	}
 
 	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, t string) {
+		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, t string) {
 			templates = append(templates, flows.NewExtractedTemplate(n, a, r, l, t))
 			ars, prs := inspect.ExtractFromTemplate(t)
 			for _, ref := range ars {
@@ -263,7 +263,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 				parentRefs[r] = true
 			}
 		})
-		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l envs.Language, ref assets.Reference) {
+		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
 			recordAssetRef(n, a, r, l, ref)
 		})
 	}
@@ -311,7 +311,7 @@ var _ flows.Flow = (*flow)(nil)
 type flowEnvelope struct {
 	migrations.Header13
 
-	Language           envs.Language   `json:"language" validate:"required,language"`
+	Language           i18n.Language   `json:"language" validate:"required,language"`
 	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
 	ExpireAfterMinutes int             `json:"expire_after_minutes"`

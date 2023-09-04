@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -70,7 +71,7 @@ func TestService(t *testing.T) {
 		"f96abf2f-3b53-4766-8ea6-09a655222a02",
 	)
 
-	env := envs.NewBuilder().WithAllowedLanguages([]envs.Language{"spa"}).WithDefaultCountry("US").Build()
+	env := envs.NewBuilder().WithAllowedLanguages([]i18n.Language{"spa"}).WithDefaultCountry("US").Build()
 	httpLogger := &flows.HTTPLogger{}
 
 	classification, err := svc.Classify(env, "book my flight to Quito", httpLogger.Log)

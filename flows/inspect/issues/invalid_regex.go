@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -25,7 +25,7 @@ type InvalidRegex struct {
 	Regex string `json:"regex"`
 }
 
-func newInvalidRegex(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language envs.Language, regex string) *InvalidRegex {
+func newInvalidRegex(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, regex string) *InvalidRegex {
 	return &InvalidRegex{
 		baseIssue: newBaseIssue(
 			TypeInvalidRegex,
@@ -40,7 +40,7 @@ func newInvalidRegex(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, langu
 
 // InvalidRegexCheck checks for invalid regexes
 func InvalidRegexCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTemplate, refs []flows.ExtractedReference, report func(flows.Issue)) {
-	checkTemplate := func(n flows.Node, a flows.Action, l envs.Language, t string) {
+	checkTemplate := func(n flows.Node, a flows.Action, l i18n.Language, t string) {
 		// only check if template doesn't contain expressions
 		if !excellent.HasExpressions(t, flows.RunContextTopLevels) {
 			_, err := regexp.Compile(t)
@@ -62,7 +62,7 @@ func InvalidRegexCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.Ext
 				if kase.Type == "has_pattern" && len(kase.Arguments) > 0 {
 					checkTemplate(node, nil, "", kase.Arguments[0])
 
-					inspect.Translations(flow.Localization(), kase.LocalizationUUID(), "arguments", func(l envs.Language, t string) {
+					inspect.Translations(flow.Localization(), kase.LocalizationUUID(), "arguments", func(l i18n.Language, t string) {
 						checkTemplate(node, nil, l, t)
 					})
 				}

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 
@@ -42,9 +43,9 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.DateFormatYearMonthDay, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinute, env.TimeFormat())
 	assert.Equal(t, envs.DefaultNumberFormat, env.NumberFormat())
-	assert.Equal(t, envs.NilLanguage, env.DefaultLanguage())
+	assert.Equal(t, i18n.NilLanguage, env.DefaultLanguage())
 	assert.Nil(t, env.AllowedLanguages())
-	assert.Equal(t, envs.NilCountry, env.DefaultCountry())
+	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
 	assert.Nil(t, env.LocationResolver())
 
 	// can create with valid values
@@ -59,10 +60,10 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
-	assert.Equal(t, envs.Language("eng"), env.DefaultLanguage())
-	assert.Equal(t, []envs.Language{envs.Language("eng"), envs.Language("fra")}, env.AllowedLanguages())
-	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
-	assert.Equal(t, "en-RW", env.DefaultLocale().ToBCP47())
+	assert.Equal(t, i18n.Language("eng"), env.DefaultLanguage())
+	assert.Equal(t, []i18n.Language{i18n.Language("eng"), i18n.Language("fra")}, env.AllowedLanguages())
+	assert.Equal(t, i18n.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, i18n.Locale("eng-RW"), env.DefaultLocale())
 	assert.Equal(t, envs.CollationDefault, env.InputCollation())
 	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
 	assert.Nil(t, env.LocationResolver())
@@ -103,8 +104,8 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDateFormat(envs.DateFormatDayMonthYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteSecond).
 		WithTimezone(kgl).
-		WithAllowedLanguages([]envs.Language{envs.Language("fra"), envs.Language("eng")}).
-		WithDefaultCountry(envs.Country("RW")).
+		WithAllowedLanguages([]i18n.Language{i18n.Language("fra"), i18n.Language("eng")}).
+		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
 		Build()
@@ -112,8 +113,8 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
-	assert.Equal(t, []envs.Language{envs.Language("fra"), envs.Language("eng")}, env.AllowedLanguages())
-	assert.Equal(t, envs.Country("RW"), env.DefaultCountry())
+	assert.Equal(t, []i18n.Language{i18n.Language("fra"), i18n.Language("eng")}, env.AllowedLanguages())
+	assert.Equal(t, i18n.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
 	assert.Nil(t, env.LocationResolver())

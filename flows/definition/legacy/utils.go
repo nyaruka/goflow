@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 
 // Translations is an inline translation map used for localization
-type Translations map[envs.Language]string
+type Translations map[i18n.Language]string
 
 // ReadTranslations reads a translations map
 func ReadTranslations(data json.RawMessage) (Translations, error) {
@@ -25,7 +24,7 @@ func ReadTranslations(data json.RawMessage) (Translations, error) {
 }
 
 // Base looks up the translation in the given base language, or "base"
-func (t Translations) Base(baseLanguage envs.Language) string {
+func (t Translations) Base(baseLanguage i18n.Language) string {
 	val, exists := t[baseLanguage]
 	if exists {
 		return val
@@ -45,7 +44,7 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	asMap := make(map[envs.Language]string)
+	asMap := make(map[i18n.Language]string)
 	if err := jsonx.Unmarshal(data, &asMap); err != nil {
 		return err
 	}
@@ -57,10 +56,9 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 // TransformTranslations transforms a list of single item translations into a map of multi-item translations, e.g.
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
-//
-func TransformTranslations(items []Translations) map[envs.Language][]string {
+func TransformTranslations(items []Translations) map[i18n.Language][]string {
 	// re-organize into a map of arrays
-	transformed := make(map[envs.Language][]string)
+	transformed := make(map[i18n.Language][]string)
 
 	for i := range items {
 		for language, translation := range items[i] {

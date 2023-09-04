@@ -27,9 +27,17 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 }
 
 func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	localeStr := strings.ReplaceAll(strings.ToLower(env.DefaultLocale().ToBCP47()), "-", "_") // en-US -> en_us
+	// eng-US -> en_us
+	lang := env.DefaultLanguage().ISO639_1()
+	if lang == "" {
+		lang = "en"
+	}
+	country := strings.ToLower(string(env.DefaultCountry()))
+	if country != "" {
+		lang += ("_" + country)
+	}
 
-	response, trace, err := s.client.Parse(input, localeStr)
+	response, trace, err := s.client.Parse(input, lang)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

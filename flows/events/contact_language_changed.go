@@ -1,7 +1,7 @@
 package events
 
 import (
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -28,7 +28,7 @@ type ContactLanguageChangedEvent struct {
 }
 
 // NewContactLanguageChanged returns a new contact language changed event
-func NewContactLanguageChanged(language envs.Language) *ContactLanguageChangedEvent {
+func NewContactLanguageChanged(language i18n.Language) *ContactLanguageChangedEvent {
 	return &ContactLanguageChangedEvent{
 		BaseEvent: NewBaseEvent(TypeContactLanguageChanged),
 		Language:  string(language),

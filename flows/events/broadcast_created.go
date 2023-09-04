@@ -1,9 +1,9 @@
 package events
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -41,7 +41,7 @@ type BroadcastCreatedEvent struct {
 	BaseEvent
 
 	Translations flows.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
-	BaseLanguage envs.Language               `json:"base_language" validate:"required"`
+	BaseLanguage i18n.Language               `json:"base_language" validate:"required"`
 	Groups       []*assets.GroupReference    `json:"groups,omitempty" validate:"dive"`
 	Contacts     []*flows.ContactReference   `json:"contacts,omitempty" validate:"dive"`
 	ContactQuery string                      `json:"contact_query,omitempty"`
@@ -49,7 +49,7 @@ type BroadcastCreatedEvent struct {
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage envs.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
+func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
 	return &BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
 		Translations: translations,

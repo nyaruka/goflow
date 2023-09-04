@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -68,7 +69,7 @@ func TestContact(t *testing.T) {
 		flows.ContactUUID(uuids.New()),
 		flows.ContactID(12345),
 		"Joe Bloggs",
-		envs.Language("eng"),
+		i18n.Language("eng"),
 		flows.ContactStatusActive,
 		tz,
 		time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC),
@@ -96,10 +97,10 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, "Joe Bloggs", contact.Name())
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
 	assert.Equal(t, tz, contact.Timezone())
-	assert.Equal(t, envs.Language("eng"), contact.Language())
+	assert.Equal(t, i18n.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
-	assert.Equal(t, envs.Country("US"), contact.Country())
-	assert.Equal(t, "en-US", contact.Locale(env).ToBCP47())
+	assert.Equal(t, i18n.Country("US"), contact.Country())
+	assert.Equal(t, i18n.Locale("eng-US"), contact.Locale(env))
 
 	contact.SetStatus(flows.ContactStatusStopped)
 	assert.Equal(t, flows.ContactStatusStopped, contact.Status())
@@ -156,14 +157,14 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, "Joe Bloggs", clone.Name())
 	assert.Equal(t, flows.ContactID(12345), clone.ID())
 	assert.Equal(t, tz, clone.Timezone())
-	assert.Equal(t, envs.Language("eng"), clone.Language())
-	assert.Equal(t, envs.Country("US"), clone.Country())
+	assert.Equal(t, i18n.Language("eng"), clone.Language())
+	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
 	assert.NotNil(t, contact.Ticket())
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
-	assert.Equal(t, envs.Country("US"), clone.Country())
+	assert.Equal(t, i18n.Country("US"), clone.Country())
 
 	// can also clone a null contact!
 	mrNil := (*flows.Contact)(nil)
@@ -226,7 +227,7 @@ func TestContactFormat(t *testing.T) {
 	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 
 	// name takes precedence if set
-	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "Joe", contact.Format(env))
 
@@ -236,7 +237,7 @@ func TestContactFormat(t *testing.T) {
 		flows.ContactUUID(uuids.New()),
 		flows.ContactID(1234),
 		"",
-		envs.NilLanguage,
+		i18n.NilLanguage,
 		flows.ContactStatusActive,
 		nil,
 		time.Now(),
@@ -256,7 +257,7 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "1234", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
-	contact = flows.NewEmptyContact(sa, "", envs.NilLanguage, nil)
+	contact = flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 	assert.Equal(t, "", contact.Format(env))
 }
 
@@ -271,7 +272,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
-	contact := flows.NewEmptyContact(sa, "Joe", envs.NilLanguage, nil)
+	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	contact.AddURN(urns.URN("tel:+12345678999"), nil)
 	contact.AddURN(urns.URN("tel:+18005555777"), nil)
@@ -326,7 +327,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 
 	for _, tc := range tests {
 		envBuilder := envs.NewBuilder().
-			WithAllowedLanguages([]envs.Language{"eng", "spa"}).
+			WithAllowedLanguages([]i18n.Language{"eng", "spa"}).
 			WithDefaultCountry("RW")
 
 		if tc.RedactURNs {
@@ -389,7 +390,7 @@ func TestContactEqual(t *testing.T) {
 
 	assert.True(t, contact1.Equal(contact2))
 
-	contact2.SetLanguage(envs.NilLanguage)
+	contact2.SetLanguage(i18n.NilLanguage)
 	assert.False(t, contact1.Equal(contact2))
 }
 
