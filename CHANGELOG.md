@@ -1,3 +1,7 @@
+v0.193.1 (2023-09-04)
+-------------------------
+ * Update to latest gocommon
+
 v0.193.0 (2023-09-04)
 -------------------------
  * Simplify naming in po package to avoid stuttering
