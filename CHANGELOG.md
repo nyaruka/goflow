@@ -1,3 +1,8 @@
+v0.193.0 (2023-09-04)
+-------------------------
+ * Simplify naming in po package to avoid stuttering
+ * Switch to i18n package from gocommon
+
 v0.192.1 (2023-08-31)
 -------------------------
  * Update to latest gocommon
