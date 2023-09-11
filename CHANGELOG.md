@@ -1,3 +1,8 @@
+v0.194.0 (2023-09-11)
+-------------------------
+ * Update to latest gocommon
+ * Remove support for delegate channels
+
 v0.193.1 (2023-09-04)
 -------------------------
  * Update to latest gocommon
