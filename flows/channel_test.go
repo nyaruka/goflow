@@ -99,15 +99,6 @@ func TestChannelSetGetForURN(t *testing.T) {
 	// if there's no overlap, then last/newest channel wins
 	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nil), assets.ChannelRoleSend))
 
-	// channels can be delegates for other channels
-	android := test.NewChannel("Android", "+250723333333", []string{"tel"}, rolesDefault, nil)
-	bulk := test.NewChannel("Bulk Sender", "1234", []string{"tel"}, rolesSend, android.Reference())
-	all = flows.NewChannelAssets([]assets.Channel{android.Asset(), bulk.Asset()})
-
-	// delegate will always be used if it has the requested role
-	assert.Equal(t, android, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleReceive))
-	assert.Equal(t, bulk, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
-
 	// matching prefixes can be explicitly set too
 	short1 := test.NewTelChannel("Shortcode 1", "1234", rolesSend, nil, "RW", []string{"25078", "25077"}, false)
 	short2 := test.NewTelChannel("Shortcode 2", "1235", rolesSend, nil, "RW", []string{"25072"}, false)

@@ -53,11 +53,6 @@ func (c *Channel) HasRole(role assets.ChannelRole) bool {
 	return false
 }
 
-// HasParent returns whether this channel has a parent
-func (c *Channel) HasParent() bool {
-	return c.Parent() != nil
-}
-
 // Context returns the properties available in expressions
 //
 //	__default__:text -> the name
@@ -108,7 +103,7 @@ func (s *ChannelAssets) Get(uuid assets.ChannelUUID) *Channel {
 func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Channel {
 	// if caller has told us which channel to use for this URN, use that
 	if urn.Channel() != nil && urn.Channel().HasRole(role) {
-		return s.getDelegate(urn.Channel(), role)
+		return urn.Channel()
 	}
 
 	// tel is a special case because we do number based matching
@@ -155,7 +150,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		}
 
 		if channel != nil {
-			return s.getDelegate(channel, role)
+			return channel
 		}
 
 		return nil
@@ -167,18 +162,8 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 func (s *ChannelAssets) getForSchemeAndRole(scheme string, role assets.ChannelRole) *Channel {
 	for _, ch := range s.all {
 		if ch.HasRole(role) && ch.SupportsScheme(scheme) {
-			return s.getDelegate(ch, role)
-		}
-	}
-	return nil
-}
-
-// looks for a delegate for the given channel and defaults to the channel itself
-func (s *ChannelAssets) getDelegate(channel *Channel, role assets.ChannelRole) *Channel {
-	for _, ch := range s.all {
-		if ch.HasParent() && ch.Parent().UUID == channel.UUID() && ch.HasRole(role) {
 			return ch
 		}
 	}
-	return channel
+	return nil
 }

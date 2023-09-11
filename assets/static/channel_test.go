@@ -25,7 +25,6 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, "+234151", channel.Address())
 	assert.Equal(t, []string{"tel"}, channel.Schemes())
 	assert.Equal(t, []assets.ChannelRole{assets.ChannelRoleSend}, channel.Roles())
-	assert.Nil(t, channel.Parent())
 	assert.Equal(t, i18n.NilCountry, channel.Country())
 	assert.Nil(t, channel.MatchPrefixes())
 	assert.True(t, channel.AllowInternational())

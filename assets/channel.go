@@ -40,7 +40,6 @@ type Channel interface {
 	Address() string
 	Schemes() []string
 	Roles() []ChannelRole
-	Parent() *ChannelReference
 	Country() i18n.Country
 	MatchPrefixes() []string
 	AllowInternational() bool
