@@ -561,10 +561,12 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flows.SessionAssets, error) {
 	env := envs.NewBuilder().Build()
 
-	// different tests different ports for the test HTTP server
-	if testServerURL != "" {
-		assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
+	// different tests different ports for the test HTTP server, or just let them fail to connect to port 65535
+	if testServerURL == "" {
+		testServerURL = "http://localhost:65535"
 	}
+
+	assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
 
 	// read our assets into a source
 	source, err := static.NewSource(assetsJSON)
