@@ -1,0 +1,48 @@
+[
+    {
+        "description": "NOOP when channel doesn't support optins feature",
+        "action": {
+            "type": "send_optin",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "optin": {
+                "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                "name": "Joke Of The Day"
+            }
+        },
+        "events": []
+    },
+    {
+        "description": "Event created when channel does support optins feature",
+        "contact": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "facebook:1234567890"
+            ],
+            "groups": [],
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789-00:00"
+        },
+        "action": {
+            "type": "send_optin",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "optin": {
+                "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                "name": "Joke Of The Day"
+            }
+        },
+        "events": [
+            {
+                "type": "optin_sent",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "optin": {
+                    "name": "Joke Of The Day",
+                    "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb"
+                }
+            }
+        ]
+    }
+]

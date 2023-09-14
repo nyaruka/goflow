@@ -37,12 +37,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var contactJSON = `{
+var defaultContactJSON = []byte(`{
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 	"name": "Ryan Lewis",
 	"language": "eng",
 	"timezone": "America/Guayaquil",
-	"urns": [],
+	"urns": [
+		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+		"twitterid:54784326227#nyaruka"
+	],
 	"groups": [
 		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
 		{"uuid": "0ec97956-c451-48a0-a180-1ce766623e31", "name": "Males"}
@@ -53,7 +56,7 @@ var contactJSON = `{
 		}
 	},
 	"created_on": "2018-06-20T11:40:30.123456789-00:00"
-}`
+}`)
 
 func TestActionTypes(t *testing.T) {
 	assetsJSON, err := os.ReadFile("testdata/_assets.json")
@@ -81,7 +84,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		HTTPMocks    *httpx.MockRequestor `json:"http_mocks,omitempty"`
 		SMTPError    string               `json:"smtp_error,omitempty"`
 		NoContact    bool                 `json:"no_contact,omitempty"`
-		NoURNs       bool                 `json:"no_urns,omitempty"`
+		Contact      json.RawMessage      `json:"contact,omitempty"`
 		HasTicket    bool                 `json:"has_ticket,omitempty"`
 		NoInput      bool                 `json:"no_input,omitempty"`
 		RedactURNs   bool                 `json:"redact_urns,omitempty"`
@@ -164,15 +167,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// optionally load our contact
 		var contact *flows.Contact
 		if !tc.NoContact {
-			contact, err = flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
+			contactJSON := defaultContactJSON
+			if tc.Contact != nil {
+				contactJSON = tc.Contact
+			}
+
+			contact, err = flows.ReadContact(sa, contactJSON, assets.PanicOnMissing)
 			require.NoError(t, err)
 
-			// optionally give our contact some URNs and a ticket
-			if !tc.NoURNs {
-				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				contact.AddURN(urns.URN("tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"), channel)
-				contact.AddURN(urns.URN("twitterid:54784326227#nyaruka"), nil)
-			}
 			if tc.HasTicket {
 				ticketer := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 				topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
@@ -566,6 +568,20 @@ func TestConstructors(t *testing.T) {
 			"addresses": ["bob@example.com"],
 			"subject": "Hi there",
 			"body": "So I was thinking..."
+		}`,
+		},
+		{
+			actions.NewSendOptIn(
+				actionUUID,
+				assets.NewOptInReference("248be71d-78e9-4d71-a6c4-9981d369e5cb", "Joke Of The Day"),
+			),
+			`{
+			"type": "send_optin",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"optin": {
+				"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+				"name": "Joke Of The Day"
+			}
 		}`,
 		},
 		{

@@ -104,6 +104,21 @@
             ]
         },
         {
+            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+            "name": "Facebook Channel",
+            "address": "235326346322111",
+            "schemes": [
+                "facebook"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ],
+            "features": [
+                "optins"
+            ]
+        },
+        {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
             "name": "Twitter Channel",
             "address": "nyaruka",
@@ -203,6 +218,12 @@
         {
             "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
             "name": "Spam"
+        }
+    ],
+    "optins": [
+        {
+            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+            "name": "Joke Of The Day"
         }
     ],
     "resthooks": [

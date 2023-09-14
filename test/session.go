@@ -44,7 +44,8 @@ var sessionAssets = `{
             "name": "Facebook Channel",
             "address": "235326346322111",
             "schemes": ["facebook"],
-            "roles": ["send", "receive"]
+            "roles": ["send", "receive"],
+            "features": ["optins"]
         }
     ],
     "classifiers": [

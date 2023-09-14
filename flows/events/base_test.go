@@ -45,6 +45,7 @@ func TestEventMarshaling(t *testing.T) {
 	timeout := 500
 	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 	gender := session.Assets().Fields().Get("gender")
+	jotd := session.Assets().OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
@@ -541,6 +542,17 @@ func TestEventMarshaling(t *testing.T) {
 				"dial_limit_seconds": 20,
 				"call_limit_seconds": 120,
 				"expires_on": "2022-02-03T13:45:30Z"
+			}`,
+		},
+		{
+			events.NewOptInSent(jotd),
+			`{
+				"type": "optin_sent",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"optin": {
+					"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+					"name": "Joke Of The Day"
+				}
 			}`,
 		},
 		{

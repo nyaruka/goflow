@@ -18,12 +18,14 @@ func TestChannel(t *testing.T) {
 		"+234151",
 		[]string{"tel"},
 		[]assets.ChannelRole{assets.ChannelRoleSend},
+		[]assets.ChannelFeature{assets.ChannelFeatureOptIns},
 	)
 	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID())
 	assert.Equal(t, "Android", channel.Name())
 	assert.Equal(t, "+234151", channel.Address())
 	assert.Equal(t, []string{"tel"}, channel.Schemes())
 	assert.Equal(t, []assets.ChannelRole{assets.ChannelRoleSend}, channel.Roles())
+	assert.Equal(t, []assets.ChannelFeature{assets.ChannelFeatureOptIns}, channel.Features())
 	assert.Equal(t, i18n.NilCountry, channel.Country())
 	assert.Nil(t, channel.MatchPrefixes())
 	assert.True(t, channel.AllowInternational())

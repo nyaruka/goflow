@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"golang.org/x/exp/slices"
 )
 
 // Channel represents a means for sending and receiving input during a flow run
@@ -35,22 +36,17 @@ func (c *Channel) Reference() *assets.ChannelReference {
 
 // SupportsScheme returns whether this channel supports the given URN scheme
 func (c *Channel) SupportsScheme(scheme string) bool {
-	for _, s := range c.Schemes() {
-		if s == scheme {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(c.Schemes(), scheme)
 }
 
 // HasRole returns whether this channel has the given role
 func (c *Channel) HasRole(role assets.ChannelRole) bool {
-	for _, r := range c.Roles() {
-		if r == role {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(c.Roles(), role)
+}
+
+// HasFeature returns whether this channel has the given feature
+func (c *Channel) HasFeature(feat assets.ChannelFeature) bool {
+	return slices.Contains(c.Features(), feat)
 }
 
 // Context returns the properties available in expressions
