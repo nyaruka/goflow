@@ -87,8 +87,6 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 
 	fieldAssets := flows.NewFieldAssets(fields)
 	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
-	channelAssets := flows.NewChannelAssets(channels)
-	optInAssets, _ := flows.NewOptInAssets(channelAssets, optIns)
 
 	return &sessionAssets{
 		source:      source,
@@ -100,7 +98,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		groups:      groupAssets,
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),
-		optIns:      optInAssets,
+		optIns:      flows.NewOptInAssets(optIns),
 		resthooks:   flows.NewResthookAssets(resthooks),
 		templates:   flows.NewTemplateAssets(templates),
 		ticketers:   flows.NewTicketerAssets(ticketers),

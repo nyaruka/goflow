@@ -58,11 +58,7 @@ var assetsJSON = `{
 	"optins": [
         {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-            "name": "Joke Of The Day",
-            "channel": {
-                "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-                "name": "Facebook"
-            }
+            "name": "Joke Of The Day"
         }
     ],
 	"resthooks": [

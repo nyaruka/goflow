@@ -22,28 +22,10 @@ func TestOptIns(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
-		"channels": [
-			{
-				"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-				"name": "Facebook",
-				"address": "457547478475",
-				"schemes": [
-					"facebook"
-				],
-				"roles": [
-					"send",
-					"receive"
-				]
-			}
-		],
 		"optins": [
 			{
 				"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-				"name": "Joke Of The Day",
-				"channel": {
-					"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-					"name": "Facebook"
-				}
+				"name": "Joke Of The Day"
 			}
 		]
 	}`))
@@ -55,7 +37,6 @@ func TestOptIns(t *testing.T) {
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	assert.Equal(t, assets.OptInUUID("248be71d-78e9-4d71-a6c4-9981d369e5cb"), jotd.UUID())
 	assert.Equal(t, "Joke Of The Day", jotd.Name())
-	assert.Equal(t, "Facebook", jotd.Channel().Name())
 	assert.Equal(t, assets.NewOptInReference("248be71d-78e9-4d71-a6c4-9981d369e5cb", "Joke Of The Day"), jotd.Reference())
 
 	// check use in expressions
@@ -63,12 +44,6 @@ func TestOptIns(t *testing.T) {
 		"__default__": types.NewXText("Joke Of The Day"),
 		"uuid":        types.NewXText("248be71d-78e9-4d71-a6c4-9981d369e5cb"),
 		"name":        types.NewXText("Joke Of The Day"),
-		"channel": types.NewXObject(map[string]types.XValue{
-			"__default__": types.NewXText("Facebook"),
-			"uuid":        types.NewXText("58e9b092-fe42-4173-876c-ff45a14a24fe"),
-			"name":        types.NewXText("Facebook"),
-			"address":     types.NewXText("457547478475"),
-		}),
 	}), flows.Context(env, jotd))
 
 	assert.Nil(t, (*flows.OptIn)(nil).Reference())

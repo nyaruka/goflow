@@ -9,22 +9,17 @@ import (
 // OptInUUID is the UUID of an opt in
 type OptInUUID uuids.UUID
 
-// OptIn are channel specific opt-ins
+// OptIn are opt-ins for messaging campaign.
 //
 //	{
 //	  "uuid": "8925c76f-926b-4a63-a6eb-ab69e7a6b79b",
-//	  "name": "Joke Of The Day",
-//	  "channel": {
-//	     "uuid": "204e5af9-42c3-4d46-8aab-ce204dff25b4",
-//	     "name": "Facebook"
-//	  }
+//	  "name": "Joke Of The Day"
 //	}
 //
 // @asset optin
 type OptIn interface {
 	UUID() OptInUUID
 	Name() string
-	Channel() *ChannelReference
 }
 
 // OptInReference is used to reference an opt in
