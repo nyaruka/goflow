@@ -94,7 +94,3 @@ func TestPrintEvent(t *testing.T) {
 		assert.Equal(t, tc.expected, out.String(), "event print mismatch for event type '%s'", tc.event.Type())
 	}
 }
-
-func TestFoo(t *testing.T) {
-	test.CreateTestSession("", envs.RedactionPolicyNone)
-}
