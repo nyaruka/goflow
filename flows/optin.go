@@ -11,7 +11,7 @@ import (
 type OptIn struct {
 	assets.OptIn
 
-	Channel *Channel
+	channel *Channel
 }
 
 // NewOptIn returns a new optin object from the given optin asset
@@ -21,11 +21,14 @@ func NewOptIn(channels *ChannelAssets, asset assets.OptIn) (*OptIn, error) {
 		return nil, errors.Errorf("no such channel with UUID %s", asset.Channel().UUID)
 	}
 
-	return &OptIn{OptIn: asset, Channel: ch}, nil
+	return &OptIn{OptIn: asset, channel: ch}, nil
 }
 
 // Asset returns the underlying asset
 func (o *OptIn) Asset() assets.OptIn { return o.OptIn }
+
+// Channel returns the associated channel
+func (o *OptIn) Channel() *Channel { return o.channel }
 
 // Reference returns a reference to this optin
 func (o *OptIn) Reference() *assets.OptInReference {
@@ -44,9 +47,10 @@ func (o *OptIn) Reference() *assets.OptInReference {
 // @context ticket
 func (o *OptIn) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":    types.NewXText(string(o.UUID())),
-		"name":    types.NewXText(string(o.Name())),
-		"channel": Context(env, o.Channel),
+		"__default__": types.NewXText(string(o.Name())),
+		"uuid":        types.NewXText(string(o.UUID())),
+		"name":        types.NewXText(string(o.Name())),
+		"channel":     Context(env, o.channel),
 	}
 }
 

@@ -103,7 +103,7 @@ type optInEventEnvelope struct {
 
 type optInTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event optInEventEnvelope `json:"event" validate:"required,dive"`
+	Event *optInEventEnvelope `json:"event" validate:"required,dive"`
 }
 
 func readOptInTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -133,7 +133,7 @@ func readOptInTrigger(sa flows.SessionAssets, data json.RawMessage, missing asse
 // MarshalJSON marshals this trigger into JSON
 func (t *OptInTrigger) MarshalJSON() ([]byte, error) {
 	e := &optInTriggerEnvelope{
-		Event: optInEventEnvelope{
+		Event: &optInEventEnvelope{
 			Type:  t.event.type_,
 			OptIn: t.event.optIn.Reference(),
 		},
