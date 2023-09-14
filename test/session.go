@@ -55,6 +55,16 @@ var sessionAssets = `{
             "intents": ["book_flight", "book_hotel"]
         }
     ],
+    "optins": [
+        {
+            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+            "name": "Joke Of The Day",
+            "channel": {
+                "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+                "name": "Facebook"
+            }
+        }
+    ],
     "ticketers": [
         {
             "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",

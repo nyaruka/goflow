@@ -447,6 +447,7 @@ func TestTriggerContext(t *testing.T) {
 			"name":        types.NewXText("Bob McTickets"),
 			"first_name":  types.NewXText("Bob"),
 		}),
+		"optin":    nil,
 		"origin":   types.NewXText("api"),
 		"campaign": nil,
 		"ticket":   nil,

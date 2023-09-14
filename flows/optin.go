@@ -2,6 +2,8 @@ package flows
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/pkg/errors"
 )
 
@@ -19,11 +21,34 @@ func NewOptIn(channels *ChannelAssets, asset assets.OptIn) (*OptIn, error) {
 		return nil, errors.Errorf("no such channel with UUID %s", asset.Channel().UUID)
 	}
 
-	return &OptIn{Channel: ch}, nil
+	return &OptIn{OptIn: asset, Channel: ch}, nil
 }
 
 // Asset returns the underlying asset
 func (o *OptIn) Asset() assets.OptIn { return o.OptIn }
+
+// Reference returns a reference to this optin
+func (o *OptIn) Reference() *assets.OptInReference {
+	if o == nil {
+		return nil
+	}
+	return assets.NewOptInReference(o.UUID(), o.Name())
+}
+
+// Context returns the properties available in expressions
+//
+//	uuid:text -> the UUID of the optin
+//	name:text -> the name of the optin
+//	channel:channel -> the channel of the optin
+//
+// @context ticket
+func (o *OptIn) Context(env envs.Environment) map[string]types.XValue {
+	return map[string]types.XValue{
+		"uuid":    types.NewXText(string(o.UUID())),
+		"name":    types.NewXText(string(o.Name())),
+		"channel": Context(env, o.Channel),
+	}
+}
 
 // OptInAssets provides access to all optin assets
 type OptInAssets struct {

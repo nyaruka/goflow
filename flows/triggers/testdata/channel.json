@@ -62,6 +62,7 @@
         "context": {
             "campaign": null,
             "keyword": "",
+            "optin": null,
             "origin": "",
             "params": {
                 "referer_id": "234567345"
