@@ -1,3 +1,10 @@
+v0.195.0 (2023-09-14)
+-------------------------
+ * Add send_optin action and optin_sent event
+ * Add features to channel assets and define optins as a feature
+ * Add trigger type for optins
+ * Add OptIn as new asset type
+
 v0.194.0 (2023-09-11)
 -------------------------
  * Update to latest gocommon
