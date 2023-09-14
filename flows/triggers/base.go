@@ -112,6 +112,7 @@ type Context struct {
 	origin   string
 	campaign types.XValue
 	ticket   types.XValue
+	optIn    types.XValue
 }
 
 func (c *Context) asMap() map[string]types.XValue {
@@ -123,6 +124,7 @@ func (c *Context) asMap() map[string]types.XValue {
 		"origin":   types.NewXText(c.origin),
 		"campaign": c.campaign,
 		"ticket":   c.ticket,
+		"optin":    c.optIn,
 	}
 }
 

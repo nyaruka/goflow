@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 
@@ -24,6 +23,7 @@ type StaticSource struct {
 		Groups      []*Group                  `json:"groups" validate:"omitempty,dive"`
 		Labels      []*Label                  `json:"labels" validate:"omitempty,dive"`
 		Locations   []*envs.LocationHierarchy `json:"locations"`
+		OptIns      []*OptIn                  `json:"optins" validate:"omitempty,dive"`
 		Resthooks   []*Resthook               `json:"resthooks" validate:"omitempty,dive"`
 		Templates   []*Template               `json:"templates" validate:"omitempty,dive"`
 		Ticketers   []*Ticketer               `json:"ticketers" validate:"omitempty,dive"`
@@ -134,6 +134,15 @@ func (s *StaticSource) Locations() ([]assets.LocationHierarchy, error) {
 	set := make([]assets.LocationHierarchy, len(s.s.Locations))
 	for i := range s.s.Locations {
 		set[i] = s.s.Locations[i]
+	}
+	return set, nil
+}
+
+// OptIns returns all optin assets
+func (s *StaticSource) OptIns() ([]assets.OptIn, error) {
+	set := make([]assets.OptIn, len(s.s.OptIns))
+	for i := range s.s.OptIns {
+		set[i] = s.s.OptIns[i]
 	}
 	return set, nil
 }

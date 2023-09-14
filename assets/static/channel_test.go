@@ -18,7 +18,6 @@ func TestChannel(t *testing.T) {
 		"+234151",
 		[]string{"tel"},
 		[]assets.ChannelRole{assets.ChannelRoleSend},
-		nil,
 	)
 	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID())
 	assert.Equal(t, "Android", channel.Name())

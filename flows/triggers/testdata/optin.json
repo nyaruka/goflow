@@ -2,12 +2,12 @@
     {
         "description": "flow is required",
         "trigger": {
-            "type": "channel",
+            "type": "optin",
             "event": {
-                "type": "new_conversation",
-                "channel": {
-                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-                    "name": "Facebook"
+                "type": "started",
+                "optin": {
+                    "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                    "name": "Joke Of The Day"
                 }
             },
             "triggered_on": "2000-01-01T00:00:00Z"
@@ -17,7 +17,7 @@
     {
         "description": "event is required",
         "trigger": {
-            "type": "channel",
+            "type": "optin",
             "flow": {
                 "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "name": "Trigger Tester"
@@ -35,7 +35,7 @@
     {
         "description": "with all required fields",
         "trigger": {
-            "type": "channel",
+            "type": "optin",
             "flow": {
                 "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
                 "name": "Trigger Tester"
@@ -46,29 +46,27 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
-            "params": {
-                "referer_id": "234567345"
-            },
-            "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
-                "type": "new_conversation",
-                "channel": {
-                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-                    "name": "Facebook"
+                "type": "started",
+                "optin": {
+                    "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                    "name": "Joke Of The Day"
                 }
-            }
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
         },
         "events": [],
         "context": {
             "campaign": null,
             "keyword": "",
-            "optin": null,
-            "origin": "",
-            "params": {
-                "referer_id": "234567345"
+            "optin": {
+                "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                "name": "Joke Of The Day"
             },
+            "origin": "",
+            "params": {},
             "ticket": null,
-            "type": "channel",
+            "type": "optin",
             "user": null
         }
     }
