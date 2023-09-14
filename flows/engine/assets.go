@@ -20,6 +20,7 @@ type sessionAssets struct {
 	groups      *flows.GroupAssets
 	labels      *flows.LabelAssets
 	locations   *flows.LocationAssets
+	optIns      *flows.OptInAssets
 	resthooks   *flows.ResthookAssets
 	templates   *flows.TemplateAssets
 	ticketers   *flows.TicketerAssets
@@ -59,6 +60,10 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 	if err != nil {
 		return nil, err
 	}
+	optIns, err := source.OptIns()
+	if err != nil {
+		return nil, err
+	}
 	resthooks, err := source.Resthooks()
 	if err != nil {
 		return nil, err
@@ -82,6 +87,8 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 
 	fieldAssets := flows.NewFieldAssets(fields)
 	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
+	channelAssets := flows.NewChannelAssets(channels)
+	optInAssets, _ := flows.NewOptInAssets(channelAssets, optIns)
 
 	return &sessionAssets{
 		source:      source,
@@ -93,6 +100,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		groups:      groupAssets,
 		labels:      flows.NewLabelAssets(labels),
 		locations:   flows.NewLocationAssets(locations),
+		optIns:      optInAssets,
 		resthooks:   flows.NewResthookAssets(resthooks),
 		templates:   flows.NewTemplateAssets(templates),
 		ticketers:   flows.NewTicketerAssets(ticketers),
@@ -110,6 +118,7 @@ func (s *sessionAssets) Globals() *flows.GlobalAssets         { return s.globals
 func (s *sessionAssets) Groups() *flows.GroupAssets           { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }
+func (s *sessionAssets) OptIns() *flows.OptInAssets           { return s.optIns }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets     { return s.templates }
 func (s *sessionAssets) Ticketers() *flows.TicketerAssets     { return s.ticketers }

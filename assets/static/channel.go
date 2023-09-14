@@ -19,7 +19,7 @@ type Channel struct {
 }
 
 // NewChannel creates a new channel
-func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []string, roles []assets.ChannelRole, parent *assets.ChannelReference) assets.Channel {
+func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []string, roles []assets.ChannelRole) assets.Channel {
 	return &Channel{
 		UUID_:               uuid,
 		Name_:               name,

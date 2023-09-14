@@ -175,6 +175,10 @@ func (s *testSource) Resthooks() ([]assets.Resthook, error) {
 	return nil, s.err("resthooks")
 }
 
+func (s *testSource) OptIns() ([]assets.OptIn, error) {
+	return nil, s.err("optins")
+}
+
 func (s *testSource) Templates() ([]assets.Template, error) {
 	return nil, s.err("templates")
 }
