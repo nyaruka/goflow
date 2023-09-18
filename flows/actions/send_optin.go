@@ -15,7 +15,7 @@ const TypeSendOptIn string = "send_optin"
 
 // SendOptInAction can be used to send an optin to the contact if the channel supports that.
 //
-// An [event:optin_sent] event will be created if the optin was sent.
+// An [event:optin_created] event will be created if the optin was sent.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -47,8 +47,13 @@ func (a *SendOptInAction) Execute(run flows.Run, step flows.Step, logModifier fl
 	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
 	destinations := run.Contact().ResolveDestinations(false)
 
-	if len(destinations) > 0 && destinations[0].Channel.HasFeature(assets.ChannelFeatureOptIns) {
-		logEvent(events.NewOptInSent(optIn))
+	if len(destinations) > 0 {
+		ch := destinations[0].Channel
+		urn := destinations[0].URN
+
+		if ch.HasFeature(assets.ChannelFeatureOptIns) {
+			logEvent(events.NewOptInCreated(optIn, ch, urn.URN()))
+		}
 	}
 
 	return nil
