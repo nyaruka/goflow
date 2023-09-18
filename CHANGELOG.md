@@ -1,3 +1,7 @@
+v0.195.2 (2023-09-18)
+-------------------------
+ * Rename optin_sent to optin_created for consistency with msg_created and add channel/URN properties
+
 v0.195.1 (2023-09-18)
 -------------------------
  * Fix optin triggers marshaling with type ticket
