@@ -81,7 +81,7 @@ type OptInBuilder struct {
 func (b *Builder) OptIn(optIn *flows.OptIn, eventType OptInEventType) *OptInBuilder {
 	return &OptInBuilder{
 		t: &OptInTrigger{
-			baseTrigger: newBaseTrigger(TypeTicket, b.environment, b.flow, b.contact, nil, false, nil),
+			baseTrigger: newBaseTrigger(TypeOptIn, b.environment, b.flow, b.contact, nil, false, nil),
 			event:       &OptInEvent{type_: eventType, optIn: optIn},
 		},
 	}
