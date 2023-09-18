@@ -49,6 +49,7 @@ func TestEventMarshaling(t *testing.T) {
 	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
+	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
 	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, weather, "Where are my cookies?", "1243252", user)
 
 	eventTests := []struct {
@@ -545,14 +546,19 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewOptInSent(jotd),
+			events.NewOptInCreated(jotd, facebook, urns.URN("facebook:1234567890")),
 			`{
-				"type": "optin_sent",
+				"type": "optin_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"optin": {
 					"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
 					"name": "Joke Of The Day"
-				}
+				},
+				"channel": {
+					"uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+					"name": "Facebook Channel"
+				},
+				"urn": "facebook:1234567890"
 			}`,
 		},
 		{

@@ -35,13 +35,18 @@
         },
         "events": [
             {
-                "type": "optin_sent",
+                "type": "optin_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "optin": {
                     "name": "Joke Of The Day",
                     "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb"
-                }
+                },
+                "channel": {
+                    "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+                    "name": "Facebook Channel"
+                },
+                "urn": "facebook:1234567890"
             }
         ]
     }
