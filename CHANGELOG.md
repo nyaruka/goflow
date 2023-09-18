@@ -1,3 +1,7 @@
+v0.195.1 (2023-09-18)
+-------------------------
+ * Fix optin triggers marshaling with type ticket
+
 v0.195.0 (2023-09-14)
 -------------------------
  * Add send_optin action and optin_sent event
