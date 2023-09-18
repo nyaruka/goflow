@@ -151,7 +151,13 @@ var assetsJSON = `{
             "schemes": ["tel"],
             "roles": ["send", "receive"]
         }
-	],
+    ],
+    "optins": [
+        {
+            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+            "name": "Joke Of The Day"
+        }
+    ],
     "ticketers": [
         {
             "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
@@ -184,6 +190,7 @@ func TestTriggerMarshaling(t *testing.T) {
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
+	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	ticketer := sa.Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("bob@nyaruka.com")
@@ -276,6 +283,18 @@ func TestTriggerMarshaling(t *testing.T) {
 				WithConnection(channel, "tel:+12065551212").
 				Build(),
 			"msg",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				OptIn(jotd, triggers.OptInEventTypeStarted).
+				Build(),
+			"optin_started",
+		},
+		{
+			triggers.NewBuilder(env, flow, contact).
+				OptIn(jotd, triggers.OptInEventTypeStopped).
+				Build(),
+			"optin_stopped",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
