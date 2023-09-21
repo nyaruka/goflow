@@ -1,3 +1,8 @@
+v0.195.3 (2023-09-21)
+-------------------------
+ * Rename send_optin to request_optin and optin_created to optin_requested
+ * Add mores tests for arabic-farsi collation
+
 v0.195.2 (2023-09-18)
 -------------------------
  * Rename optin_sent to optin_created for consistency with msg_created and add channel/URN properties
