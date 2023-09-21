@@ -546,9 +546,9 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewOptInCreated(jotd, facebook, urns.URN("facebook:1234567890")),
+			events.NewOptInRequested(jotd, facebook, urns.URN("facebook:1234567890")),
 			`{
-				"type": "optin_created",
+				"type": "optin_requested",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"optin": {
 					"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",

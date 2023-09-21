@@ -571,12 +571,12 @@ func TestConstructors(t *testing.T) {
 		}`,
 		},
 		{
-			actions.NewSendOptIn(
+			actions.NewRequestOptIn(
 				actionUUID,
 				assets.NewOptInReference("248be71d-78e9-4d71-a6c4-9981d369e5cb", "Joke Of The Day"),
 			),
 			`{
-			"type": "send_optin",
+			"type": "request_optin",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 			"optin": {
 				"uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
