@@ -45,6 +45,7 @@ func TestDependencies(t *testing.T) {
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGroupReference("46057a92-6580-4e93-af36-2bb9c9d61e51", "Testers")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGroupReference("377c3101-a7fc-47b1-9136-980348e362c0", "Customers")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewLabelReference("31c06b7c-010d-4f91-9590-d3fbdc2fb7ac", "Spam")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewOptInReference("c14b2e3f-997a-4547-a04e-6e9d5065c677", "Jokes")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTicketerReference("fb9cab80-4450-4a9d-ba9b-cb8df40dd233", "Support")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTopicReference("531d3fc7-64f4-4170-927d-b477e8145dd3", "Weather")),
@@ -120,6 +121,12 @@ func TestDependencies(t *testing.T) {
 			"name": "Spam",
 			"type": "label",
 			"uuid": "31c06b7c-010d-4f91-9590-d3fbdc2fb7ac"
+		},
+		{
+			"missing": true,
+			"name": "Jokes",
+			"type": "optin",
+			"uuid": "c14b2e3f-997a-4547-a04e-6e9d5065c677"
 		},
 		{
 			"missing": true,
