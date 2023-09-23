@@ -1,3 +1,7 @@
+v0.195.4 (2023-09-23)
+-------------------------
+ * Fix inspectng optin refs
+
 v0.195.3 (2023-09-21)
 -------------------------
  * Rename send_optin to request_optin and optin_created to optin_requested
