@@ -10,28 +10,41 @@ import (
 type Collation string
 
 const (
-	CollationDefault     Collation = "default"
-	CollationConfusables Collation = "confusables"
-	CollationArabicFarsi Collation = "arabic_farsi"
+	CollationDefault        Collation = "default"
+	CollationConfusables    Collation = "confusables"
+	CollationArabicVariants Collation = "arabic_variants"
+	CollationArabicFarsi    Collation = "arabic_farsi" // deprecated alias
 )
 
 type collateTransformer func(string) string
 
-// https://en.wikipedia.org/wiki/Persian_alphabet#Deviations_from_the_Arabic_script
-var arabicToFarsi = map[rune]rune{
-	'٠': '۰', // U+0660 > U+06F0 (0)
-	'١': '۱', // U+0661 > U+06F1 (1)
-	'٢': '۲', // U+06F2 > U+0662 (2)
-	'٣': '۳', // U+06F3 > U+0663 (3)
-	'٤': '۴', // U+06F4 > U+0664 (4)
-	'٥': '۵', // U+06F5 > U+0665 (5)
-	'٦': '۶', // U+06F6 > U+0666 (6)
-	'٧': '۷', // U+06F7 > U+0667 (7)
-	'٨': '۸', // U+06F8 > U+0668 (8)
-	'٩': '۹', // U+06F9 > U+0669 (9)
-	'ى': 'ی', // U+0649 > U+06CC (alef maksura)
-	'ي': 'ی', // U+064A > U+06CC (yeh)
-	'ك': 'ک', // U+0643 > U+06A9 (kāf)
+// Based on https://en.wikipedia.org/wiki/Persian_alphabet#Deviations_from_the_Arabic_script
+// and feedback from UNICEF Afghanistan
+var arabicVariants = map[rune]rune{
+	'٠': '۰', // U+0660 > U+06F0 (0 > ext arabic 0)
+	'١': '۱', // U+0661 > U+06F1 (1 > ext arabic 1)
+	'٢': '۲', // U+06F2 > U+0662 (2 > ext arabic 2)
+	'٣': '۳', // U+06F3 > U+0663 (3 > ext arabic 3)
+	'٤': '۴', // U+06F4 > U+0664 (4 > ext arabic 4)
+	'٥': '۵', // U+06F5 > U+0665 (5 > ext arabic 5)
+	'٦': '۶', // U+06F6 > U+0666 (6 > ext arabic 6)
+	'٧': '۷', // U+06F7 > U+0667 (7 > ext arabic 7)
+	'٨': '۸', // U+06F8 > U+0668 (8 > ext arabic 8)
+	'٩': '۹', // U+06F9 > U+0669 (9 > ext arabic 9)
+	'آ': 'ا', // U+0622 > U+0627 (alef with madda > alef)
+	'ى': 'ی', // U+0649 > U+06CC (alef maksura > farsi yeh)
+	'ي': 'ی', // U+064A > U+06CC (yeh > farsi yeh)
+	'ې': 'ی', // U+06DO > U+06CC (eh > farsi yeh)
+	'ۍ': 'ی', // U+06CD > U+06CC (yeh with tail > farsi yeh)
+	'ئ': 'ی', // U+0626 > U+06CC (yeh with hamza > farsi yeh)
+	'ك': 'ک', // U+0643 > U+06A9 (kāf > keheh)
+	'ګ': 'ک', // U+06AB > U+06A9 (kāf with ring > keheh)
+	'ټ': 'ت', // U+067C > U+062A (teh with ring > teh)
+	'ډ': 'د', // U+0689 > U+062F (dal with ring > dal)
+	'ړ': 'ر', // U+0693 > U+0631 (reh with ring > reh)
+	'ڼ': 'ن', // U+06BC > U+0646 (noon with ring > noon)
+	'ښ': 'ش', // U+069A > U+0634 (pashto seen > sheen)
+	'ژ': 'ږ', // U+0698 > U+0696 (pashto že > pashto gé)
 }
 
 var transformers = map[Collation]collateTransformer{
@@ -42,7 +55,10 @@ var transformers = map[Collation]collateTransformer{
 		return strings.ToLower(stringsx.Skeleton(s))
 	},
 	CollationArabicFarsi: func(s string) string {
-		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicToFarsi))
+		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicVariants))
+	},
+	CollationArabicVariants: func(s string) string {
+		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicVariants))
 	},
 }
 

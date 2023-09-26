@@ -30,25 +30,31 @@ func TestCollation(t *testing.T) {
 			"٠١٢٣٤٥٦۷٨٩": true,
 			"۰۱۲۳۴۵۶۷۸۹": true,
 		}},
-		{envs.CollationArabicFarsi, "\u0628\u0644\u06CC", "\u0628\u0644\u06CC", map[string]bool{ // ends with farsi yeh (unchanged)
+		{envs.CollationArabicVariants, "٠١٢٣٤٥٦۷٨٩", "۰۱۲۳۴۵۶۷۸۹", map[string]bool{
+			"٤٥٦۷":       false,
+			"٠١٢٣٤٥٦۷٨٩": true,
+			"۰۱۲۳۴۵۶۷۸۹": true,
+		}},
+		{envs.CollationArabicVariants, "\u0628\u0644\u06CC", "\u0628\u0644\u06CC", map[string]bool{ // ends with farsi yeh (unchanged)
 			"\u0628\u0644":       false,
 			"\u0628\u0644\u0649": true, // ends with alef maksura
 			"\u0628\u0644\u064A": true, // ends with arabic yeh
 		}},
-		{envs.CollationArabicFarsi, "\u0628\u0644\u0649", "\u0628\u0644\u06CC", map[string]bool{ // ends with alef maksura
+		{envs.CollationArabicVariants, "\u0628\u0644\u0649", "\u0628\u0644\u06CC", map[string]bool{ // ends with alef maksura
 			"\u0628\u0644\u06CC": true, // ends with farsi yeh
 			"\u0628\u0644\u064A": true, // ends with arabic yeh
 		}},
-		{envs.CollationArabicFarsi, "\u0628\u0644\u064A", "\u0628\u0644\u06CC", map[string]bool{ // ends with arabic yeh
+		{envs.CollationArabicVariants, "\u0628\u0644\u064A", "\u0628\u0644\u06CC", map[string]bool{ // ends with arabic yeh
 			"\u0628\u0644\u06CC": true, // ends with farsi yeh
 			"\u0628\u0644\u0649": true, // ends with alef maksura
 		}},
-		{envs.CollationArabicFarsi, "\u0643\u0627\u0641", "\u06A9\u0627\u0641", map[string]bool{ // starts with arabic kaf
+		{envs.CollationArabicVariants, "\u0643\u0627\u0641", "\u06A9\u0627\u0641", map[string]bool{ // starts with arabic kaf
 			"\u0643\u0627\u0641": true, // starts with arabic kaf
 			"\u06A9\u0627\u0641": true, // starts with farsi kaf
 			"\uFEDB\u0627\u0641": true, // starts with explicit initial form kaf
 		}},
-		{envs.CollationArabicFarsi, "YES", "yes", map[string]bool{"yes": true, "no": false}},
+		{envs.CollationArabicVariants, "\uFE8F\uFEDD\uFBFC", "\u0628\u0644\u06CC", map[string]bool{}}, // Arabic Presentation forms
+		{envs.CollationArabicVariants, "YES", "yes", map[string]bool{"yes": true, "no": false}},
 	}
 
 	for _, tc := range tcs {
