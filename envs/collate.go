@@ -13,7 +13,6 @@ const (
 	CollationDefault        Collation = "default"
 	CollationConfusables    Collation = "confusables"
 	CollationArabicVariants Collation = "arabic_variants"
-	CollationArabicFarsi    Collation = "arabic_farsi" // deprecated alias
 )
 
 type collateTransformer func(string) string
@@ -53,9 +52,6 @@ var transformers = map[Collation]collateTransformer{
 	},
 	CollationConfusables: func(s string) string {
 		return strings.ToLower(stringsx.Skeleton(s))
-	},
-	CollationArabicFarsi: func(s string) string {
-		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicVariants))
 	},
 	CollationArabicVariants: func(s string) string {
 		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicVariants))

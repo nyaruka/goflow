@@ -41,7 +41,7 @@ var dmy = envs.NewBuilder().
 	WithDefaultCountry(i18n.Country("RW")).
 	Build()
 var ara = envs.NewBuilder().
-	WithInputCollation(envs.CollationArabicFarsi).
+	WithInputCollation(envs.CollationArabicVariants).
 	Build()
 
 var assetsJSON = `{

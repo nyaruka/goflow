@@ -25,11 +25,6 @@ func TestCollation(t *testing.T) {
 			"Nyaruka": true,
 			"𝒩ɣaruka": true,
 		}},
-		{envs.CollationArabicFarsi, "٠١٢٣٤٥٦۷٨٩", "۰۱۲۳۴۵۶۷۸۹", map[string]bool{
-			"٤٥٦۷":       false,
-			"٠١٢٣٤٥٦۷٨٩": true,
-			"۰۱۲۳۴۵۶۷۸۹": true,
-		}},
 		{envs.CollationArabicVariants, "٠١٢٣٤٥٦۷٨٩", "۰۱۲۳۴۵۶۷۸۹", map[string]bool{
 			"٤٥٦۷":       false,
 			"٠١٢٣٤٥٦۷٨٩": true,
