@@ -1,3 +1,8 @@
+v0.196.0 (2023-09-26)
+-------------------------
+ * Update to go 1.21
+ * Add more mappings to arabic collation
+
 v0.195.4 (2023-09-23)
 -------------------------
  * Fix inspectng optin refs
