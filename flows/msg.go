@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
@@ -13,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"golang.org/x/exp/slices"
 )
 
 func init() {

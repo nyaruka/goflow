@@ -18,7 +18,7 @@ var invalidLegacyExtraKeyChars = regexp.MustCompile(`[^a-zA-Z0-9_]`)
 // keys in legacy @extra have non-word chars replaced with underscores and are limited to 255 chars
 func legacyExtraKey(key string) string {
 	key = invalidLegacyExtraKeyChars.ReplaceAllString(strings.ToLower(key), "_")
-	return key[0:utils.Min(len(key), 255)]
+	return key[0:min(len(key), 255)]
 }
 
 type legacyExtra struct {

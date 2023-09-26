@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -10,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"golang.org/x/exp/slices"
 )
 
 // Channel represents a means for sending and receiving input during a flow run

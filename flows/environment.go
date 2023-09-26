@@ -2,13 +2,13 @@ package flows
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"golang.org/x/exp/slices"
 )
 
 type assetsEnvironment struct {

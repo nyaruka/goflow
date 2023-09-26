@@ -2,10 +2,10 @@ package utils
 
 import (
 	"reflect"
+	"slices"
 
 	"golang.org/x/exp/constraints"
 	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
 )
 
 // IsNil returns whether the given object is nil or an interface to a nil
@@ -23,22 +23,6 @@ func IsNil(v any) bool {
 	}
 
 	return false
-}
-
-// Max returns the maximum of two values
-func Max[T constraints.Ordered](x, y T) T {
-	if x > y {
-		return x
-	}
-	return y
-}
-
-// Min returns the minimum of two values
-func Min[T constraints.Ordered](x, y T) T {
-	if x < y {
-		return x
-	}
-	return y
 }
 
 // Set converts a slice to a set (a K > bool map)
