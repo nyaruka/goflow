@@ -1,3 +1,7 @@
+v0.196.2 (2023-10-02)
+-------------------------
+ * Don't treat ژ and ږ as equivalent in arabic variants collation
+
 v0.196.1 (2023-09-27)
 -------------------------
  * Remove deprecated collation alias
