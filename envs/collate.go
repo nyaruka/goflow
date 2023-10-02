@@ -43,7 +43,6 @@ var arabicVariants = map[rune]rune{
 	'ړ': 'ر', // U+0693 > U+0631 (reh with ring > reh)
 	'ڼ': 'ن', // U+06BC > U+0646 (noon with ring > noon)
 	'ښ': 'ش', // U+069A > U+0634 (pashto seen > sheen)
-	'ژ': 'ږ', // U+0698 > U+0696 (pashto že > pashto gé)
 }
 
 var transformers = map[Collation]collateTransformer{
