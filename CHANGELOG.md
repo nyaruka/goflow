@@ -1,3 +1,8 @@
+v0.197.0 (2023-10-06)
+-------------------------
+ * Drop support for contact less sessions
+ * Add devcontainer config
+
 v0.196.2 (2023-10-02)
 -------------------------
  * Don't treat ژ and ږ as equivalent in arabic variants collation
