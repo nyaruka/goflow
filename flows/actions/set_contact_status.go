@@ -2,7 +2,6 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -40,11 +39,6 @@ func NewSetContactStatus(uuid flows.ActionUUID, status flows.ContactStatus) *Set
 
 // Execute runs this action
 func (a *SetContactStatusAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	if run.Contact() == nil {
-		logEvent(events.NewErrorf("can't execute action in session without a contact"))
-		return nil
-	}
-
 	a.applyModifier(run, modifiers.NewStatus(a.Status), logModifier, logEvent)
 	return nil
 }

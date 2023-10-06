@@ -32,13 +32,6 @@
         },
         "urn": "tel:+12065551212"
     },
-    "connection": {
-        "channel": {
-            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo"
-        },
-        "urn": "tel:+12065551212"
-    },
     "batch": true,
     "history": {
         "parent_uuid": "cdf7ed27-5ad5-4028-b664-880fc7581c77",

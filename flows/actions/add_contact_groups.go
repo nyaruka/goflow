@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -44,12 +43,6 @@ func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference)
 
 // Execute adds our contact to the specified groups
 func (a *AddContactGroupsAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	contact := run.Contact()
-	if contact == nil {
-		logEvent(events.NewErrorf("can't execute action in session without a contact"))
-		return nil
-	}
-
 	groups := resolveGroups(run, a.Groups, logEvent)
 
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logModifier, logEvent)

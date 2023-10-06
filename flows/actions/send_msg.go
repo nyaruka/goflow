@@ -75,11 +75,6 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	if run.Contact() == nil {
-		logEvent(events.NewErrorf("can't execute action in session without a contact"))
-		return nil
-	}
-
 	// a message to a non-active contact is unsendable but can still be created
 	unsendableReason := flows.NilUnsendableReason
 	if run.Contact().Status() != flows.ContactStatusActive {

@@ -43,12 +43,6 @@ func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReferenc
 
 // Execute runs our action
 func (a *SetContactChannelAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	contact := run.Contact()
-	if contact == nil {
-		logEvent(events.NewErrorf("can't execute action in session without a contact"))
-		return nil
-	}
-
 	var channel *flows.Channel
 	if a.Channel != nil {
 		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)

@@ -468,7 +468,7 @@ var voiceSessionTrigger = `{
         "type": "incoming_call",
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
     },
-    "connection": {
+    "call": {
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"},
         "urn": "tel:+12065551212"
     },

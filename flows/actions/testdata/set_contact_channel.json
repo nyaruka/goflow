@@ -1,25 +1,5 @@
 [
     {
-        "description": "Error event if session has no contact",
-        "no_contact": true,
-        "action": {
-            "type": "set_contact_channel",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "channel": {
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "My Android Phone"
-            }
-        },
-        "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact"
-            }
-        ]
-    },
-    {
         "description": "NOOP if channel doesn't change",
         "action": {
             "type": "set_contact_channel",

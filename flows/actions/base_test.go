@@ -83,7 +83,6 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Description  string               `json:"description"`
 		HTTPMocks    *httpx.MockRequestor `json:"http_mocks,omitempty"`
 		SMTPError    string               `json:"smtp_error,omitempty"`
-		NoContact    bool                 `json:"no_contact,omitempty"`
 		Contact      json.RawMessage      `json:"contact,omitempty"`
 		HasTicket    bool                 `json:"has_ticket,omitempty"`
 		NoInput      bool                 `json:"no_input,omitempty"`
@@ -165,26 +164,23 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 
 		// optionally load our contact
-		var contact *flows.Contact
-		if !tc.NoContact {
-			contactJSON := defaultContactJSON
-			if tc.Contact != nil {
-				contactJSON = tc.Contact
-			}
+		contactJSON := defaultContactJSON
+		if tc.Contact != nil {
+			contactJSON = tc.Contact
+		}
 
-			contact, err = flows.ReadContact(sa, contactJSON, assets.PanicOnMissing)
-			require.NoError(t, err)
+		contact, err := flows.ReadContact(sa, contactJSON, assets.PanicOnMissing)
+		require.NoError(t, err)
 
-			if tc.HasTicket {
-				ticketer := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
-				topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-				contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", ticketer, topic, "Help", "", nil))
-			}
+		if tc.HasTicket {
+			ticketer := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
+			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
+			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", ticketer, topic, "Help", "", nil))
+		}
 
-			// and switch their language
-			if tc.Localization != nil {
-				contact.SetLanguage(i18n.Language("spa"))
-			}
+		// and switch their language
+		if tc.Localization != nil {
+			contact.SetLanguage(i18n.Language("spa"))
 		}
 
 		envBuilder := envs.NewBuilder().

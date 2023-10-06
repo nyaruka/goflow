@@ -1,32 +1,5 @@
 [
     {
-        "description": "Error event if session has no contact",
-        "no_contact": true,
-        "action": {
-            "type": "set_contact_name",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "name": "John"
-        },
-        "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact"
-            }
-        ],
-        "templates": [
-            "John"
-        ],
-        "inspection": {
-            "dependencies": [],
-            "issues": [],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Error event and action skipped if name contains expression error",
         "action": {
             "type": "set_contact_name",
