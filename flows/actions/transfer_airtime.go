@@ -64,9 +64,6 @@ func (a *TransferAirtimeAction) Execute(run flows.Run, step flows.Step, logModif
 func (a *TransferAirtimeAction) transfer(run flows.Run, step flows.Step, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
-	if contact == nil {
-		return nil, errors.New("can't execute action in session without a contact")
-	}
 
 	// fail if the contact doesn't have a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)

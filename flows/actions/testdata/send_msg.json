@@ -22,50 +22,6 @@
         "read_error": "field 'topic' is not a valid message topic"
     },
     {
-        "description": "Error event if session has no contact",
-        "no_contact": true,
-        "action": {
-            "type": "send_msg",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "text": "Hi there",
-            "attachments": [
-                "http://example.com/red.jpg"
-            ],
-            "quick_replies": [
-                "Red",
-                "Blue"
-            ],
-            "all_urns": true
-        },
-        "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact"
-            }
-        ],
-        "templates": [
-            "Hi there",
-            "http://example.com/red.jpg",
-            "Red",
-            "Blue"
-        ],
-        "localizables": [
-            "Hi there",
-            "http://example.com/red.jpg",
-            "Red",
-            "Blue"
-        ],
-        "inspection": {
-            "dependencies": [],
-            "issues": [],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Error events if msg text, attachments and quick replies have expression errors",
         "action": {
             "type": "send_msg",

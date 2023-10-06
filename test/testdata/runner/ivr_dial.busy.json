@@ -88,13 +88,6 @@
                         },
                         "urn": "tel:+12065551212"
                     },
-                    "connection": {
-                        "channel": {
-                            "name": "Twilio",
-                            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
-                        },
-                        "urn": "tel:+12065551212"
-                    },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
                         "fields": {
@@ -266,13 +259,6 @@
                         },
                         "urn": "tel:+12065551212"
                     },
-                    "connection": {
-                        "channel": {
-                            "name": "Twilio",
-                            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
-                        },
-                        "urn": "tel:+12065551212"
-                    },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
                         "fields": {
@@ -330,7 +316,7 @@
         }
     ],
     "trigger": {
-        "connection": {
+        "call": {
             "channel": {
                 "name": "Twilio",
                 "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"

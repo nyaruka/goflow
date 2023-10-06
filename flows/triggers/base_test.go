@@ -360,7 +360,7 @@ func TestReadTrigger(t *testing.T) {
 				"tel:+12065551212"
 			]
 		},
-		"connection": {
+		"call": {
 			"channel": {
 				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
 				"name": "Nexmo"

@@ -15,28 +15,6 @@
         "read_error": "can't specify specific groups when all_groups=true"
     },
     {
-        "description": "Error event if session has no contact",
-        "no_contact": true,
-        "action": {
-            "type": "remove_contact_groups",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "groups": [
-                {
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "name": "Testers"
-                }
-            ]
-        },
-        "events": [
-            {
-                "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "can't execute action in session without a contact"
-            }
-        ]
-    },
-    {
         "description": "Error event if a group is query based",
         "action": {
             "type": "remove_contact_groups",

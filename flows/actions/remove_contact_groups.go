@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 
 	"github.com/pkg/errors"
@@ -57,12 +56,6 @@ func (a *RemoveContactGroupsAction) Validate() error {
 
 // Execute runs the action
 func (a *RemoveContactGroupsAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	contact := run.Contact()
-	if contact == nil {
-		logEvent(events.NewErrorf("can't execute action in session without a contact"))
-		return nil
-	}
-
 	var groups []*flows.Group
 
 	if a.AllGroups {

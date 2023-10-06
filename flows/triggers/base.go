@@ -176,16 +176,15 @@ func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows
 //------------------------------------------------------------------------------------------
 
 type baseTriggerEnvelope struct {
-	Type        string                `json:"type" validate:"required"`
+	Type        string                `json:"type"                  validate:"required"`
 	Environment json.RawMessage       `json:"environment,omitempty"`
-	Flow        *assets.FlowReference `json:"flow" validate:"required"`
-	Contact     json.RawMessage       `json:"contact,omitempty"`
+	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
+	Contact     json.RawMessage       `json:"contact"               validate:"required"`
 	Call        *flows.Call           `json:"call,omitempty"`
-	Connection  *flows.Call           `json:"connection,omitempty"` // backwards compatibility
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
-	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
+	TriggeredOn time.Time             `json:"triggered_on"          validate:"required"`
 }
 
 // ReadTrigger reads a trigger from the given JSON
@@ -208,23 +207,20 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.type_ = e.Type
 	t.flow = e.Flow
 	t.call = e.Call
-	if e.Connection != nil {
-		t.call = e.Connection
-	}
 	t.batch = e.Batch
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
+
+	if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
+		return errors.Wrap(err, "unable to read contact")
+	}
 
 	if e.Environment != nil {
 		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
 			return errors.Wrap(err, "unable to read environment")
 		}
 	}
-	if e.Contact != nil {
-		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
-			return errors.Wrap(err, "unable to read contact")
-		}
-	}
+
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
 			return errors.Wrap(err, "unable to read params")
@@ -239,19 +235,17 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.Type = t.type_
 	e.Flow = t.flow
 	e.Call = t.call
-	e.Connection = t.call
 	e.Batch = t.batch
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
+	e.Contact, err = jsonx.Marshal(t.contact)
+	if err != nil {
+		return err
+	}
+
 	if t.environment != nil {
 		e.Environment, err = jsonx.Marshal(t.environment)
-		if err != nil {
-			return err
-		}
-	}
-	if t.contact != nil {
-		e.Contact, err = jsonx.Marshal(t.contact)
 		if err != nil {
 			return err
 		}
