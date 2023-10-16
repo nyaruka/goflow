@@ -122,17 +122,6 @@ func TestReferences(t *testing.T) {
 	assert.False(t, templateRef.Variable())
 	assert.NoError(t, utils.Validate(templateRef))
 
-	ticketerRef := assets.NewTicketerReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Support Tickets")
-	assert.Equal(t, "ticketer", ticketerRef.Type())
-	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", ticketerRef.Identity())
-	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), ticketerRef.GenericUUID())
-	assert.Equal(t, "ticketer[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Support Tickets]", ticketerRef.String())
-	assert.False(t, ticketerRef.Variable())
-	assert.NoError(t, utils.Validate(ticketerRef))
-
-	// ticketer references must always be concrete
-	assert.EqualError(t, utils.Validate(assets.NewTicketerReference("", "Booking")), "field 'uuid' is required")
-
 	topicRef := assets.NewTopicReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Weather")
 	assert.Equal(t, "topic", topicRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", topicRef.Identity())

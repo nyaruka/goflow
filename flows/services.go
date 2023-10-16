@@ -18,7 +18,6 @@ type Services interface {
 	Email(SessionAssets) (EmailService, error)
 	Webhook(SessionAssets) (WebhookService, error)
 	Classification(*Classifier) (ClassificationService, error)
-	Ticket(*Ticketer) (TicketService, error)
 	Airtime(SessionAssets) (AirtimeService, error)
 }
 

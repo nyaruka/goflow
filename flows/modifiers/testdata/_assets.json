@@ -93,18 +93,6 @@
             "query": "name = \"\""
         }
     ],
-    "ticketers": [
-        {
-            "uuid": "856c2537-2af0-4457-8499-129e02f4bc18",
-            "name": "TextIt",
-            "type": "internal"
-        },
-        {
-            "uuid": "d444ef20-0529-44af-966d-0e6be9cf584a",
-            "name": "Broken",
-            "type": "mailgun"
-        }
-    ],
     "topics": [
         {
             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",

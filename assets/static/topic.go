@@ -18,8 +18,8 @@ func NewTopic(uuid assets.TopicUUID, name string) assets.Topic {
 	}
 }
 
-// UUID returns the UUID of this ticketer
+// UUID returns the UUID of this topic
 func (t *Topic) UUID() assets.TopicUUID { return t.UUID_ }
 
-// Name returns the name of this ticketer
+// Name returns the name of this topic
 func (t *Topic) Name() string { return t.Name_ }
