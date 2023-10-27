@@ -311,12 +311,12 @@ var _ flows.Flow = (*flow)(nil)
 type flowEnvelope struct {
 	migrations.Header13
 
-	Language           i18n.Language   `json:"language" validate:"required,language"`
-	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
+	Language           i18n.Language   `json:"language"             validate:"required,language"`
+	Type               flows.FlowType  `json:"type"                 validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
 	ExpireAfterMinutes int             `json:"expire_after_minutes"`
 	Localization       localization    `json:"localization"`
-	Nodes              []*node         `json:"nodes"`
+	Nodes              []*node         `json:"nodes"                validate:"dive,required"`
 	UI                 json.RawMessage `json:"_ui,omitempty"`
 }
 
