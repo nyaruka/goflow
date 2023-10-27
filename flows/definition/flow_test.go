@@ -40,6 +40,18 @@ func TestBrokenFlows(t *testing.T) {
 		err  string
 	}{
 		{
+			"null_node.json",
+			"field 'nodes[1]' is required",
+		},
+		{
+			"null_exit.json",
+			"unable to read node: field 'exits[1]' is required",
+		},
+		{
+			"null_action.json",
+			"unable to read action: field 'type' is required",
+		},
+		{
 			"exitless_node.json",
 			"unable to read node: field 'exits' must have a minimum of 1 items",
 		},

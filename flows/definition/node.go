@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/pkg/errors"
 )
 
@@ -143,9 +142,9 @@ func (n *node) EnumerateLocalizables(include func(uuids.UUID, string, []string, 
 
 type nodeEnvelope struct {
 	UUID    flows.NodeUUID    `json:"uuid"               validate:"required,uuid4"`
-	Actions []json.RawMessage `json:"actions,omitempty"`
+	Actions []json.RawMessage `json:"actions,omitempty"  validate:"dive,required"`
 	Router  json.RawMessage   `json:"router,omitempty"`
-	Exits   []*exit           `json:"exits"              validate:"required,min=1"`
+	Exits   []*exit           `json:"exits"              validate:"required,min=1,dive,required"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON
