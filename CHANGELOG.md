@@ -1,3 +1,11 @@
+v0.197.3 (2023-10-30)
+-------------------------
+ * Update to latest gocommon
+
+v0.197.2 (2023-10-27)
+-------------------------
+ * Less panics, more validation errors for invalid flow defs
+
 v0.197.1 (2023-10-12)
 -------------------------
  * Update deps
