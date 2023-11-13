@@ -53,7 +53,7 @@ var transformers = map[Collation]collateTransformer{
 		return strings.ToLower(stringsx.Skeleton(s))
 	},
 	CollationArabicVariants: func(s string) string {
-		return strings.ToLower(replaceRunes(norm.NFKD.String(s), arabicVariants))
+		return strings.ToLower(replaceRunes(norm.NFKC.String(s), arabicVariants))
 	},
 }
 
