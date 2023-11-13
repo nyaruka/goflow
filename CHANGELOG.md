@@ -1,3 +1,8 @@
+v0.197.4 (2023-11-13)
+-------------------------
+ * Tweak Arabic Variants collation
+ * Update depedencies
+
 v0.197.3 (2023-10-30)
 -------------------------
  * Update to latest gocommon
