@@ -48,6 +48,7 @@ func TestCollation(t *testing.T) {
 			"\u06A9\u0627\u0641": true, // starts with farsi kaf
 			"\uFEDB\u0627\u0641": true, // starts with explicit initial form kaf
 		}},
+		{envs.CollationArabicVariants, "\u0622", "\u0627", map[string]bool{}},
 		{envs.CollationArabicVariants, "\uFE8F\uFEDD\uFBFC", "\u0628\u0644\u06CC", map[string]bool{}}, // Arabic Presentation forms
 		{envs.CollationArabicVariants, "YES", "yes", map[string]bool{"yes": true, "no": false}},
 	}
