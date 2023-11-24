@@ -88,6 +88,11 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 
 	sa := run.Session().Assets()
 
+	var template *flows.Template
+	if a.Templating != nil {
+		template = sa.Templates().Get(a.Templating.Template.UUID)
+	}
+
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
 		urn := dest.URN.URN()
@@ -95,14 +100,14 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 
 		// do we have a template defined?
 		var templating *flows.MsgTemplating
-		if a.Templating != nil {
+		if template != nil {
 			// looks for a translation in the contact locale or environment default
 			locales := []i18n.Locale{
 				run.Session().MergedEnvironment().DefaultLocale(),
 				run.Session().Environment().DefaultLocale(),
 			}
 
-			translation := sa.Templates().FindTranslation(a.Templating.Template.UUID, channelRef, locales)
+			translation := template.FindTranslation(dest.Channel, locales)
 			if translation != nil {
 				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables, nil)
 
