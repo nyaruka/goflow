@@ -1,3 +1,8 @@
+v0.197.6 (2023-11-27)
+-------------------------
+ * Update to latest gocommon
+ * Rework template translation finding
+
 v0.197.5 (2023-11-20)
 -------------------------
  * Update deps
