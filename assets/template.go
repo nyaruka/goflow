@@ -48,7 +48,7 @@ type TemplateTranslation interface {
 	Locale() i18n.Locale
 	Namespace() string
 	VariableCount() int
-	Channel() ChannelReference
+	Channel() *ChannelReference
 }
 
 // TemplateReference is used to reference a Template

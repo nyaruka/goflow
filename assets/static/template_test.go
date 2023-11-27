@@ -10,10 +10,7 @@ import (
 )
 
 func TestTemplate(t *testing.T) {
-	channel := assets.ChannelReference{
-		Name: "Test Channel",
-		UUID: assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
-	}
+	channel := assets.NewChannelReference("Test Channel", "ffffffff-9b24-92e1-ffff-ffffb207cdb4")
 
 	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
 	assert.Equal(t, channel, translation.Channel())

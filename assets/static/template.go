@@ -38,15 +38,15 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	Channel_       assets.ChannelReference `json:"channel"         validate:"required"`
-	Content_       string                  `json:"content"         validate:"required"`
-	Locale_        i18n.Locale             `json:"locale"          validate:"required"`
-	Namespace_     string                  `json:"namespace"`
-	VariableCount_ int                     `json:"variable_count"`
+	Channel_       *assets.ChannelReference `json:"channel"         validate:"required"`
+	Content_       string                   `json:"content"         validate:"required"`
+	Locale_        i18n.Locale              `json:"locale"          validate:"required"`
+	Namespace_     string                   `json:"namespace"`
+	VariableCount_ int                      `json:"variable_count"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel assets.ChannelReference, locale i18n.Locale, content string, variableCount int, namespace string) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, content string, variableCount int, namespace string) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:       channel,
 		Content_:       content,
@@ -69,4 +69,4 @@ func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 func (t *TemplateTranslation) VariableCount() int { return t.VariableCount_ }
 
 // Channel returns the channel this template translation is for
-func (t *TemplateTranslation) Channel() assets.ChannelReference { return t.Channel_ }
+func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Channel_ }
