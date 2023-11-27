@@ -9,7 +9,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/nyaruka/gocommon v1.42.5
+	github.com/nyaruka/gocommon v1.42.6
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.3.1
@@ -31,7 +31,7 @@ require (
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/nyaruka/null/v2 v2.0.3 // indirect
-	github.com/nyaruka/phonenumbers v1.2.1 // indirect
+	github.com/nyaruka/phonenumbers v1.2.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect
