@@ -99,6 +99,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 		if err != nil {
 			logEvent(events.NewError(err))
 		}
+		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
 		if evaluatedAttachment == "" {
 			logEvent(events.NewErrorf("attachment text evaluated to empty string, skipping"))
 			continue
