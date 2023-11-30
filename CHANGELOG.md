@@ -1,3 +1,12 @@
+v0.197.6 (2023-11-27)
+-------------------------
+ * Update to latest gocommon
+ * Rework template translation finding
+
+v0.197.5 (2023-11-20)
+-------------------------
+ * Update deps
+
 v0.197.4 (2023-11-13)
 -------------------------
  * Tweak Arabic Variants collation
