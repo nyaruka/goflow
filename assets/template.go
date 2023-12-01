@@ -49,6 +49,8 @@ type TemplateTranslation interface {
 	Namespace() string
 	VariableCount() int
 	Channel() *ChannelReference
+	Components() []map[string]any
+	Params() map[string][]any
 }
 
 // TemplateReference is used to reference a Template

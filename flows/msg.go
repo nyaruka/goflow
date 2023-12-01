@@ -173,6 +173,7 @@ type MsgTemplating struct {
 	Template_  *assets.TemplateReference `json:"template"`
 	Variables_ []string                  `json:"variables,omitempty"`
 	Namespace_ string                    `json:"namespace"`
+	Params_    map[string][]any          `json:"params"`
 }
 
 // Template returns the template this msg template is for
@@ -184,12 +185,16 @@ func (t MsgTemplating) Variables() []string { return t.Variables_ }
 // Namespace returns the namespace that should be for the template
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
+// Params returns the params that should be used for the template
+func (t MsgTemplating) Params() map[string][]any { return t.Params_ }
+
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string, params map[string][]any) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Variables_: variables,
 		Namespace_: namespace,
+		Params_:    params,
 	}
 }
 

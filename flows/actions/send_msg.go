@@ -52,9 +52,10 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
-	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables" engine:"localized,evaluated"`
+	UUID      uuids.UUID                     `json:"uuid" validate:"required,uuid4"`
+	Template  *assets.TemplateReference      `json:"template" validate:"required"`
+	Variables []string                       `json:"variables" engine:"localized,evaluated"`
+	Params    map[string][]map[string]string `json:"params"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -121,8 +122,31 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 					evaluatedVariables[i] = sub
 				}
 
+				evaluatedParams := make(map[string][]any)
+
+				for compKey, compParams := range a.Templating.Params {
+					compVariables := make([]any, len(compParams))
+					for _, variableMap := range compParams {
+						evaluatedMap := make(map[string]string)
+						for k, v := range variableMap {
+							if k == "value" {
+								sub, err := run.EvaluateTemplate(variableMap[k])
+								if err != nil {
+									logEvent(events.NewError(err))
+								}
+								evaluatedMap[k] = sub
+							} else {
+								evaluatedMap[k] = v
+							}
+						}
+						compVariables = append(compVariables, evaluatedMap)
+					}
+					evaluatedParams[compKey] = compVariables
+
+				}
+
 				evaluatedText = translation.Substitute(evaluatedVariables)
-				templating = flows.NewMsgTemplating(a.Templating.Template, evaluatedVariables, translation.Namespace())
+				templating = flows.NewMsgTemplating(a.Templating.Template, evaluatedVariables, translation.Namespace(), evaluatedParams)
 				locale = translation.Locale()
 			}
 		}
