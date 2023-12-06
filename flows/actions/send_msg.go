@@ -52,10 +52,10 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID      uuids.UUID                     `json:"uuid" validate:"required,uuid4"`
-	Template  *assets.TemplateReference      `json:"template" validate:"required"`
-	Variables []string                       `json:"variables" engine:"localized,evaluated"`
-	Params    map[string][]map[string]string `json:"params"`
+	UUID      uuids.UUID                        `json:"uuid" validate:"required,uuid4"`
+	Template  *assets.TemplateReference         `json:"template" validate:"required"`
+	Variables []string                          `json:"variables" engine:"localized,evaluated"`
+	Params    map[string][]assets.TemplateParam `json:"params"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -121,31 +121,29 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 					}
 					evaluatedVariables[i] = sub
 				}
+				evaluatedText = translation.Substitute(evaluatedVariables)
 
-				evaluatedParams := make(map[string][]any)
+				evaluatedParams := make(map[string][]assets.TemplateParam)
 
 				for compKey, compParams := range a.Templating.Params {
-					compVariables := make([]any, len(compParams))
-					for _, variableMap := range compParams {
-						evaluatedMap := make(map[string]string)
-						for k, v := range variableMap {
-							if k == "value" {
-								sub, err := run.EvaluateTemplate(variableMap[k])
-								if err != nil {
-									logEvent(events.NewError(err))
-								}
-								evaluatedMap[k] = sub
-							} else {
-								evaluatedMap[k] = v
-							}
+					compVariables := make([]assets.TemplateParam, len(compParams))
+					for i, templateParam := range compParams {
+
+						evaluatedParam := assets.TemplateParam{Type: string(templateParam.Type), UUID: templateParam.UUID}
+
+						localizedParamVariables, _ := run.GetTextArray(uuids.UUID(templateParam.UUID), "value", []string{templateParam.Value}, nil)
+						sub, err := run.EvaluateTemplate(localizedParamVariables[0])
+						if err != nil {
+							logEvent(events.NewError(err))
 						}
-						compVariables = append(compVariables, evaluatedMap)
+
+						evaluatedParam.Value = sub
+						compVariables[i] = evaluatedParam
 					}
 					evaluatedParams[compKey] = compVariables
 
 				}
 
-				evaluatedText = translation.Substitute(evaluatedVariables)
 				templating = flows.NewMsgTemplating(a.Templating.Template, evaluatedVariables, translation.Namespace(), evaluatedParams)
 				locale = translation.Locale()
 			}

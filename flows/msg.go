@@ -170,10 +170,10 @@ func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_  *assets.TemplateReference `json:"template"`
-	Variables_ []string                  `json:"variables,omitempty"`
-	Namespace_ string                    `json:"namespace"`
-	Params_    map[string][]any          `json:"params"`
+	Template_  *assets.TemplateReference         `json:"template"`
+	Variables_ []string                          `json:"variables,omitempty"`
+	Namespace_ string                            `json:"namespace"`
+	Params_    map[string][]assets.TemplateParam `json:"params"`
 }
 
 // Template returns the template this msg template is for
@@ -186,10 +186,10 @@ func (t MsgTemplating) Variables() []string { return t.Variables_ }
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
 // Params returns the params that should be used for the template
-func (t MsgTemplating) Params() map[string][]any { return t.Params_ }
+func (t MsgTemplating) Params() map[string][]assets.TemplateParam { return t.Params_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string, params map[string][]any) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string, params map[string][]assets.TemplateParam) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Variables_: variables,

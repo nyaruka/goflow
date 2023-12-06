@@ -420,7 +420,20 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "params": {"body": [{"type": "text", "value": "@contact.name"}, {"type": "text", "value": "boy"}]},
+                "params": {
+                    "body": [
+                        {
+                            "type": "text",
+                            "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                            "value": "@contact.name"
+                        },
+                        {
+                            "type": "text",
+                            "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
+                            "value": "boy"
+                        }
+                    ]
+                },
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -446,7 +459,20 @@
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
-                        "params": {"body": [{"type": "text", "value": "Ryan Lewis"}, {"type": "text", "value": "boy"}]},
+                        "params": {
+                            "body": [
+                                {
+                                    "type": "text",
+                                    "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                                    "value": "Ryan Lewis"
+                                },
+                                {
+                                    "type": "text",
+                                    "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
+                                    "value": "boy"
+                                }
+                            ]
+                        },
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
@@ -494,7 +520,20 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "params": {"body": [{"type": "text", "value": "@contact.name"}, {"type": "text", "value": "boy"}]},
+                "params": {
+                    "body": [
+                        {
+                            "type": "text",
+                            "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                            "value": "@contact.name"
+                        },
+                        {
+                            "type": "text",
+                            "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
+                            "value": "boy"
+                        }
+                    ]
+                },
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -512,6 +551,12 @@
                         "@contact.name",
                         "niño"
                     ]
+                },
+                "f383e94d-0598-4fd9-81d7-f0aea397d63b": {
+                    "value": ["niño"]
+                },
+                "74d59988-18c0-4919-9cb4-9f9e3847ed50": {
+                    "value": ["@contact.name"]
                 }
             }
         },
@@ -529,7 +574,20 @@
                     },
                     "text": "Hola Ryan Lewis, quien es un niño excelente?",
                     "templating": {
-                        "params": {"body": [{"type": "text", "value": "Ryan Lewis"}, {"type": "text", "value": "niño"}]},
+                        "params": {
+                            "body": [
+                                {
+                                    "type": "text",
+                                    "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                                    "value": "Ryan Lewis"
+                                },
+                                {
+                                    "type": "text",
+                                    "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
+                                    "value": "niño"
+                                }
+                            ]
+                        },
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
