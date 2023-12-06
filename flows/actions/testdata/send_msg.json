@@ -420,7 +420,7 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "params": null,
+                "params": {"body": [{"type": "text", "value": "@contact.name"}, {"type": "text", "value": "boy"}]},
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -446,7 +446,7 @@
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
-                        "params": {},
+                        "params": {"body": [{"type": "text", "value": "Ryan Lewis"}, {"type": "text", "value": "boy"}]},
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
@@ -494,7 +494,7 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "params": null,
+                "params": {"body": [{"type": "text", "value": "@contact.name"}, {"type": "text", "value": "boy"}]},
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -529,7 +529,7 @@
                     },
                     "text": "Hola Ryan Lewis, quien es un niño excelente?",
                     "templating": {
-                        "params": {},
+                        "params": {"body": [{"type": "text", "value": "Ryan Lewis"}, {"type": "text", "value": "niño"}]},
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
