@@ -347,6 +347,7 @@
             "text": "Hi @contact.name, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                "params": null,
                 "template": {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
                     "name": "missing"
@@ -419,6 +420,7 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                "params": null,
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -444,6 +446,7 @@
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
+                        "params": {},
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
@@ -491,6 +494,7 @@
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                "params": null,
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -525,6 +529,7 @@
                     },
                     "text": "Hola Ryan Lewis, quien es un niño excelente?",
                     "templating": {
+                        "params": {},
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
@@ -573,6 +578,7 @@
             "text": "Hi there, it's time to get up!",
             "templating": {
                 "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
+                "params": null,
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup"
@@ -594,6 +600,7 @@
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
+                        "params": {},
                         "template": {
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
@@ -631,6 +638,7 @@
             "uuid": "4f0510e9-7e41-4f83-aaa3-59b6e9a17e70",
             "text": "Hi Ryan, wakeup!",
             "templating": {
+                "params": null,
                 "uuid": "dce1ab9c-81d7-4e2f-b7d6-33e577c731ba",
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
@@ -662,6 +670,7 @@
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
+                        "params": {},
                         "template": {
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"

@@ -38,24 +38,22 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	Channel_       *assets.ChannelReference `json:"channel"         validate:"required"`
-	Content_       string                   `json:"content"         validate:"required"`
-	Locale_        i18n.Locale              `json:"locale"          validate:"required"`
-	Namespace_     string                   `json:"namespace"`
-	VariableCount_ int                      `json:"variable_count"`
-	Components_    []map[string]any         `json:"components"`
-	Params_        map[string][]any         `json:"params"`
+	Channel_       *assets.ChannelReference          `json:"channel"         validate:"required"`
+	Content_       string                            `json:"content"         validate:"required"`
+	Locale_        i18n.Locale                       `json:"locale"          validate:"required"`
+	Namespace_     string                            `json:"namespace"`
+	VariableCount_ int                               `json:"variable_count"`
+	Params_        map[string][]assets.TemplateParam `json:"params"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, content string, variableCount int, namespace string, components []map[string]any, params map[string][]any) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, content string, variableCount int, namespace string, params map[string][]assets.TemplateParam) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:       channel,
 		Content_:       content,
 		Namespace_:     namespace,
 		Locale_:        locale,
 		VariableCount_: variableCount,
-		Components_:    components,
 		Params_:        params,
 	}
 }
@@ -75,8 +73,5 @@ func (t *TemplateTranslation) VariableCount() int { return t.VariableCount_ }
 // Channel returns the channel this template translation is for
 func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Channel_ }
 
-// Components returns the components for this template translation
-func (t *TemplateTranslation) Components() []map[string]any { return t.Components_ }
-
 // Params returns the params for this template translation
-func (t *TemplateTranslation) Params() map[string][]any { return t.Params_ }
+func (t *TemplateTranslation) Params() map[string][]assets.TemplateParam { return t.Params_ }

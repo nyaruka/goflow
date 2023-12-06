@@ -12,7 +12,7 @@ import (
 func TestTemplate(t *testing.T) {
 	channel := assets.NewChannelReference("Test Channel", "ffffffff-9b24-92e1-ffff-ffffb207cdb4")
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []map[string]any{}, map[string][]any{})
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]assets.TemplateParam{})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "Hello {{1}}", translation.Content())

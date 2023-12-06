@@ -42,6 +42,11 @@ type Template interface {
 	Translations() []TemplateTranslation
 }
 
+type TemplateParam struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}
+
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
@@ -49,8 +54,7 @@ type TemplateTranslation interface {
 	Namespace() string
 	VariableCount() int
 	Channel() *ChannelReference
-	Components() []map[string]any
-	Params() map[string][]any
+	Params() map[string][]TemplateParam
 }
 
 // TemplateReference is used to reference a Template
