@@ -156,3 +156,53 @@ func TestBroadcastTranslations(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, flows.BroadcastTranslations{"spa": {Text: "Adios"}}, bt)
 }
+
+func TestMsgTemplating(t *testing.T) {
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+
+	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
+
+	tp1 := flows.NewTemplateParam("text", "61f38f46-a856-4f90-899e-905691784159", "@contact.name")
+	assert.Equal(t, "text", tp1.Type())
+	assert.Equal(t, flows.TemplateParamUUID("61f38f46-a856-4f90-899e-905691784159"), tp1.UUID())
+	assert.Equal(t, "@contact.name", tp1.Value())
+	tp2 := flows.NewTemplateParam("text", "b424c534-dacf-4b9c-9905-4fe136b9390a", "boy")
+
+	msgTemplating := flows.NewMsgTemplating(templateRef, []string{"@contact.name", "boy"}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]flows.TemplateParam{"body": []flows.TemplateParam{tp1, tp2}})
+
+	assert.Equal(t, templateRef, msgTemplating.Template())
+	assert.Equal(t, []string{"@contact.name", "boy"}, msgTemplating.Variables())
+	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
+	assert.Equal(t, map[string][]flows.TemplateParam{"body": []flows.TemplateParam{tp1, tp2}}, msgTemplating.Params())
+
+	// test marshaling our msg
+	marshaled, err := jsonx.Marshal(msgTemplating)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"namespace":"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
+		"params":{
+		  "body":[
+			{
+			  "type":"text",
+			  "uuid":"61f38f46-a856-4f90-899e-905691784159",
+			  "value":"@contact.name"
+			},
+			{
+			  "type":"text",
+			  "uuid":"b424c534-dacf-4b9c-9905-4fe136b9390a",
+			  "value":"boy"
+			}
+		  ]
+		},
+		"template":{
+		  "name":"Affirmation",
+		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
+		},
+		"variables":[
+		  "@contact.name",
+		  "boy"
+		]
+	  }`), marshaled, "JSON mismatch")
+}
