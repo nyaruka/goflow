@@ -171,6 +171,7 @@ func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason
 // TemplateParamUUID is the UUID of a param
 type TemplateParamUUID uuids.UUID
 
+// TemplateParam represents a single parameter
 type TemplateParam struct {
 	Type_  string            `json:"type"`
 	UUID_  TemplateParamUUID `json:"uuid"`
