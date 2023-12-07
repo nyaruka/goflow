@@ -257,7 +257,17 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "content": "Hi {{1}}, who's an excellent {{2}}?"
+                    "content": "Hi {{1}}, who's an excellent {{2}}?",
+                    "params": {
+                        "body": [
+                            {
+                                "type": "text"
+                            },
+                            {
+                                "type": "text"
+                            }
+                        ]
+                    }
                 },
                 {
                     "channel": {
@@ -265,7 +275,17 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "content": "Hola {{1}}, quien es un {{2}} excelente?"
+                    "content": "Hola {{1}}, quien es un {{2}} excelente?",
+                    "params": {
+                        "body": [
+                            {
+                                "type": "text"
+                            },
+                            {
+                                "type": "text"
+                            }
+                        ]
+                    }
                 }
             ]
         },

@@ -93,3 +93,8 @@ type TemplateParam struct {
 
 // Type returns the type for this parameter
 func (t *TemplateParam) Type() string { return t.Type_ }
+
+// NewTemplateParam creates a new template param
+func NewTemplateParam(paramType string) TemplateParam {
+	return TemplateParam{Type_: paramType}
+}
