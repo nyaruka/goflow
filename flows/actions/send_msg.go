@@ -52,10 +52,10 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID      uuids.UUID                        `json:"uuid" validate:"required,uuid4"`
-	Template  *assets.TemplateReference         `json:"template" validate:"required"`
-	Variables []string                          `json:"variables" engine:"localized,evaluated"`
-	Params    map[string][]assets.TemplateParam `json:"params"`
+	UUID      uuids.UUID                       `json:"uuid" validate:"required,uuid4"`
+	Template  *assets.TemplateReference        `json:"template" validate:"required"`
+	Variables []string                         `json:"variables" engine:"localized,evaluated"`
+	Params    map[string][]flows.TemplateParam `json:"params"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -123,21 +123,18 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 				}
 				evaluatedText = translation.Substitute(evaluatedVariables)
 
-				evaluatedParams := make(map[string][]assets.TemplateParam)
+				evaluatedParams := make(map[string][]flows.TemplateParam)
 
 				for compKey, compParams := range a.Templating.Params {
-					compVariables := make([]assets.TemplateParam, len(compParams))
+					compVariables := make([]flows.TemplateParam, len(compParams))
 					for i, templateParam := range compParams {
 
-						evaluatedParam := assets.TemplateParam{Type: string(templateParam.Type), UUID: templateParam.UUID}
-
-						localizedParamVariables, _ := run.GetTextArray(uuids.UUID(templateParam.UUID), "value", []string{templateParam.Value}, nil)
+						localizedParamVariables, _ := run.GetTextArray(uuids.UUID(templateParam.UUID()), "value", []string{templateParam.Value()}, nil)
 						sub, err := run.EvaluateTemplate(localizedParamVariables[0])
 						if err != nil {
 							logEvent(events.NewError(err))
 						}
-
-						evaluatedParam.Value = sub
+						evaluatedParam := flows.NewTemplateParam(templateParam.Type(), templateParam.UUID(), sub)
 						compVariables[i] = evaluatedParam
 					}
 					evaluatedParams[compKey] = compVariables

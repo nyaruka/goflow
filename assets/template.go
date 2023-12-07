@@ -42,14 +42,9 @@ type Template interface {
 	Translations() []TemplateTranslation
 }
 
-// TemplateParamUUID is the UUID of a param
-type TemplateParamUUID uuids.UUID
-
 // TemplateParam is a parameter for template translation
-type TemplateParam struct {
-	Type  string            `json:"type"`
-	UUID  TemplateParamUUID `json:"uuid"`
-	Value string            `json:"value" engine:"localized,evaluated"`
+type TemplateParam interface {
+	Type() string
 }
 
 // TemplateTranslation represents a single translation for a specific template and channel
