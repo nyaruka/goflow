@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -130,8 +131,6 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 }
 
 func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	qrIndex := 0
-
 	localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
 	evaluatedVariables := make([]string, len(localizedVariables))
 	for i, variable := range localizedVariables {
@@ -150,8 +149,12 @@ func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channe
 			var paramValue string
 			var err error
 			if strings.HasPrefix(compKey, "button.") {
+
+				qrIndex, err := strconv.Atoi(strings.TrimPrefix(compKey, "button."))
+				if err != nil {
+					logEvent(events.NewError(err))
+				}
 				paramValue = evaluatedQuickReplies[qrIndex]
-				qrIndex++
 			} else if templateParam.Type() != "text" {
 				paramValue = ""
 				for _, att := range evaluatedAttachments {

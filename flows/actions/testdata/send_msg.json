@@ -873,14 +873,14 @@
                             "value": "boy"
                         }
                     ],
-                    "button.1": [
+                    "button.0": [
                         {
                             "type": "text",
                             "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
                             "value": "no_used"
                         }
                     ],
-                    "button.2": [
+                    "button.1": [
                         {
                             "type": "text",
                             "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
@@ -968,14 +968,14 @@
                                     "value": "http://example.com/rojo.jpg"
                                 }
                             ],
-                            "button.1": [
+                            "button.0": [
                                 {
                                     "type": "text",
                                     "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
                                     "value": "Si"
                                 }
                             ],
-                            "button.2": [
+                            "button.1": [
                                 {
                                     "type": "text",
                                     "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
