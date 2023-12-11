@@ -395,7 +395,7 @@ var _ flows.RunSummary = (*run)(nil)
 
 type runEnvelope struct {
 	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
-	Flow       *assets.FlowReference `json:"flow" validate:"required,dive"`
+	Flow       *assets.FlowReference `json:"flow" validate:"required"`
 	Path       []*step               `json:"path" validate:"dive"`
 	Events     []json.RawMessage     `json:"events,omitempty"`
 	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`

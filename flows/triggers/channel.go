@@ -32,7 +32,7 @@ const (
 // ChannelEvent describes the specific event on the channel that triggered the session
 type ChannelEvent struct {
 	Type    ChannelEventType         `json:"type" validate:"required"`
-	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
 // ChannelTrigger is used when a session was triggered by a channel event
@@ -102,7 +102,7 @@ func (b *ChannelBuilder) Build() *ChannelTrigger {
 
 type channelTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *ChannelEvent `json:"event" validate:"required,dive"`
+	Event *ChannelEvent `json:"event" validate:"required"`
 }
 
 func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

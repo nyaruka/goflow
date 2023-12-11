@@ -26,7 +26,7 @@ const TypeDialEnded string = "dial_ended"
 type DialEndedEvent struct {
 	BaseEvent
 
-	Dial *flows.Dial `json:"dial" validate:"required,dive"`
+	Dial *flows.Dial `json:"dial" validate:"required"`
 }
 
 // NewDialEnded returns a new dial ended event

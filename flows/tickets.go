@@ -69,11 +69,11 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 
 type ticketEnvelope struct {
 	UUID       TicketUUID                `json:"uuid"                   validate:"required,uuid4"`
-	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty,dive"`
-	Topic      *assets.TopicReference    `json:"topic"                  validate:"omitempty,dive"`
+	Ticketer   *assets.TicketerReference `json:"ticketer"               validate:"omitempty"`
+	Topic      *assets.TopicReference    `json:"topic"                  validate:"omitempty"`
 	Body       string                    `json:"body"`
 	ExternalID string                    `json:"external_id,omitempty"`
-	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty,dive"`
+	Assignee   *assets.UserReference     `json:"assignee,omitempty"     validate:"omitempty"`
 }
 
 // ReadTicket decodes a contact from the passed in JSON. If the ticketer or assigned user can't

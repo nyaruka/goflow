@@ -33,8 +33,8 @@ const TypeOptInRequested string = "optin_requested"
 type OptInRequestedEvent struct {
 	BaseEvent
 
-	OptIn   *assets.OptInReference   `json:"optin" validate:"required,dive"`
-	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
+	OptIn   *assets.OptInReference   `json:"optin" validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 	URN     urns.URN                 `json:"urn" validate:"required"`
 }
 

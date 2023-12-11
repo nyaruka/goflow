@@ -46,7 +46,7 @@ func (c *CampaignReference) Context(env envs.Environment) map[string]types.XValu
 // CampaignEvent describes the specific event in the campaign that triggered the session
 type CampaignEvent struct {
 	UUID     CampaignEventUUID  `json:"uuid" validate:"required,uuid4"`
-	Campaign *CampaignReference `json:"campaign" validate:"required,dive"`
+	Campaign *CampaignReference `json:"campaign" validate:"required"`
 }
 
 // CampaignTrigger is used when a session was triggered by a campaign event
@@ -111,7 +111,7 @@ func (b *CampaignBuilder) Build() *CampaignTrigger {
 
 type campaignTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *CampaignEvent `json:"event" validate:"required,dive"`
+	Event *CampaignEvent `json:"event" validate:"required"`
 }
 
 func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

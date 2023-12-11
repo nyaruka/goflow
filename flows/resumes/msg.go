@@ -79,7 +79,7 @@ var _ flows.Resume = (*MsgResume)(nil)
 
 type msgResumeEnvelope struct {
 	baseResumeEnvelope
-	Msg *flows.MsgIn `json:"msg" validate:"required,dive"`
+	Msg *flows.MsgIn `json:"msg" validate:"required"`
 }
 
 func readMsgResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {

@@ -54,7 +54,7 @@ var _ flows.Modifier = (*ChannelModifier)(nil)
 
 type channelModifierEnvelope struct {
 	utils.TypedEnvelope
-	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
+	Channel *assets.ChannelReference `json:"channel" validate:"omitempty"`
 }
 
 func readChannelModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {

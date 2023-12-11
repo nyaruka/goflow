@@ -31,7 +31,7 @@ type RequestOptInAction struct {
 	baseAction
 	onlineAction
 
-	OptIn *assets.OptInReference `json:"optin" validate:"required,dive"`
+	OptIn *assets.OptInReference `json:"optin" validate:"required"`
 }
 
 // NewRequestOptIn creates a new request optin action
