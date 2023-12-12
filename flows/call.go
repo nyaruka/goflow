@@ -28,7 +28,7 @@ func (c *Call) URN() urns.URN { return c.urn }
 //------------------------------------------------------------------------------------------
 
 type callEnvelope struct {
-	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 	URN     urns.URN                 `json:"urn" validate:"required,urn"`
 }
 

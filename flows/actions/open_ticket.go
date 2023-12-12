@@ -37,10 +37,10 @@ type OpenTicketAction struct {
 	baseAction
 	onlineAction
 
-	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required,dive"`
-	Topic      *assets.TopicReference    `json:"topic" validate:"omitempty,dive"`
+	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required"`
+	Topic      *assets.TopicReference    `json:"topic" validate:"omitempty"`
 	Body       string                    `json:"body" engine:"evaluated"`
-	Assignee   *assets.UserReference     `json:"assignee" validate:"omitempty,dive"`
+	Assignee   *assets.UserReference     `json:"assignee" validate:"omitempty"`
 	ResultName string                    `json:"result_name" validate:"required"`
 }
 

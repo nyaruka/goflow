@@ -29,7 +29,7 @@ const TypeMsgCreated string = "msg_created"
 type MsgCreatedEvent struct {
 	BaseEvent
 
-	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
+	Msg *flows.MsgOut `json:"msg" validate:"required"`
 }
 
 // NewMsgCreated creates a new outgoing msg event to a single contact

@@ -30,7 +30,7 @@ const TypeIVRCreated string = "ivr_created"
 type IVRCreatedEvent struct {
 	BaseEvent
 
-	Msg *flows.MsgOut `json:"msg" validate:"required,dive"`
+	Msg *flows.MsgOut `json:"msg" validate:"required"`
 }
 
 // NewIVRCreated creates a new IVR created event
