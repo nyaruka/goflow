@@ -1,3 +1,8 @@
+v0.197.7 (2023-12-12)
+-------------------------
+ * Merge pull request #1198 from nyaruka/trim_attachments
+ * Trim whitespace from evaluated message attachments
+
 v0.197.6 (2023-11-27)
 -------------------------
  * Update to latest gocommon
