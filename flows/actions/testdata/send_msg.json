@@ -421,18 +421,10 @@
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "params": {
-                    "body": [
-                        {
-                            "type": "text",
-                            "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                            "value": "@contact.name"
-                        },
-                        {
-                            "type": "text",
-                            "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                            "value": "boy"
-                        }
-                    ]
+                    "body": {
+                        "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                        "variables": ["@contact.name", "boy"]
+                    }
                 },
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -460,18 +452,10 @@
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
                         "params": {
-                            "body": [
-                                {
-                                    "type": "text",
-                                    "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                                    "value": "Ryan Lewis"
-                                },
-                                {
-                                    "type": "text",
-                                    "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                                    "value": "boy"
-                                }
-                            ]
+                            "body": {
+                                "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                                "variables": ["Ryan Lewis", "boy"]
+                            }
                         },
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -521,18 +505,10 @@
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "params": {
-                    "body": [
-                        {
-                            "type": "text",
-                            "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                            "value": "@contact.name"
-                        },
-                        {
-                            "type": "text",
-                            "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                            "value": "boy"
-                        }
-                    ]
+                    "body": {
+                        "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                        "variables": ["@contact.name", "boy"]
+                    }
                 },
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -552,11 +528,8 @@
                         "niño"
                     ]
                 },
-                "f383e94d-0598-4fd9-81d7-f0aea397d63b": {
-                    "value": ["niño"]
-                },
                 "74d59988-18c0-4919-9cb4-9f9e3847ed50": {
-                    "value": ["@contact.name"]
+                    "variables": ["@contact.name", "niño"]
                 }
             }
         },
@@ -575,18 +548,10 @@
                     "text": "Hola Ryan Lewis, quien es un niño excelente?",
                     "templating": {
                         "params": {
-                            "body": [
-                                {
-                                    "type": "text",
-                                    "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                                    "value": "Ryan Lewis"
-                                },
-                                {
-                                    "type": "text",
-                                    "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                                    "value": "niño"
-                                }
-                            ]
+                            "body": {
+                                "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                                "variables": ["Ryan Lewis", "niño"]
+                            }
                         },
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -854,39 +819,22 @@
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "params": {
-                    "header": [
-                        {
-                            "type": "image",
-                            "uuid": "98788f6d-775e-4c6c-a11c-d6169c3551c1",
-                            "value": "no_used"
-                        }
-                    ],
-                    "body": [
-                        {
-                            "type": "text",
+                    "header":{
+                        "uuid": "98788f6d-775e-4c6c-a11c-d6169c3551c1",
+                        "variables": ["http://example.com/red.jpg"]
+                    },
+                    "body": {
                             "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                            "value": "@contact.name"
-                        },
-                        {
-                            "type": "text",
-                            "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                            "value": "boy"
-                        }
-                    ],
-                    "button.0": [
-                        {
-                            "type": "text",
-                            "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
-                            "value": "no_used"
-                        }
-                    ],
-                    "button.1": [
-                        {
-                            "type": "text",
-                            "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
-                            "value": "no_used"
-                        }
-                    ]
+                            "variables": ["@contact.name", "boy"]
+                    },
+                    "button.0": {
+                        "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
+                        "variables": ["no_used"]
+                    },
+                    "button.1": {
+                        "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
+                        "variables": ["no_used"]
+                    }
                 },
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -918,11 +866,16 @@
                         "niño"
                     ]
                 },
+                "98788f6d-775e-4c6c-a11c-d6169c3551c1": {
+                    "variables": [
+                        "image:http://example.com/rojo.jpg"
+                    ]
+                },
                 "f383e94d-0598-4fd9-81d7-f0aea397d63b": {
-                    "value": ["niño"]
+                    "variables": ["niño"]
                 },
                 "74d59988-18c0-4919-9cb4-9f9e3847ed50": {
-                    "value": ["@contact.name"]
+                    "variables": ["@contact.name", "niño"]
                 }
             }
         },
@@ -948,40 +901,22 @@
                     ],
                     "templating": {
                         "params": {
-                            "body": [
-                                {
-                                    "type": "text",
-                                    "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
-                                    "value": "Ryan Lewis"
-                                },
-                                {
-                                    "type": "text",
-                                    "uuid": "f383e94d-0598-4fd9-81d7-f0aea397d63b",
-                                    "value": "niño"
-                                }
-
-                            ],
-                            "header": [
-                                {
-                                    "type": "image",
-                                    "uuid": "98788f6d-775e-4c6c-a11c-d6169c3551c1",
-                                    "value": "http://example.com/rojo.jpg"
-                                }
-                            ],
-                            "button.0": [
-                                {
-                                    "type": "text",
-                                    "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
-                                    "value": "Si"
-                                }
-                            ],
-                            "button.1": [
-                                {
-                                    "type": "text",
-                                    "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
-                                    "value": "No"
-                                }
-                            ]
+                            "body": {
+                                "uuid": "74d59988-18c0-4919-9cb4-9f9e3847ed50",
+                                "variables": ["Ryan Lewis", "niño"]
+                            },
+                            "header": {
+                                "uuid": "98788f6d-775e-4c6c-a11c-d6169c3551c1",
+                                "variables": ["image:http://example.com/rojo.jpg"]
+                            },
+                            "button.0": {
+                                "uuid": "31cd12f7-5a8d-4421-a289-d47cdfb7cff1",
+                                "variables": ["Si"]
+                            },
+                            "button.1": {
+                                "uuid": "67ed8f42-4fce-4e8a-b788-8a7afc9b02ea",
+                                "variables": ["No"]
+                            }
                         },
                         "template": {
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",

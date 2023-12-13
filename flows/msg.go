@@ -168,40 +168,17 @@ func (m *MsgOut) Locale() i18n.Locale { return m.Locale_ }
 // UnsendableReason returns the reason this message can't be sent (if any)
 func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }
 
-// TemplateParamUUID is the UUID of a param
-type TemplateParamUUID uuids.UUID
-
-// TemplateParam represents a single parameter
-type TemplateParam struct {
-	Type_  string            `json:"type"`
-	UUID_  TemplateParamUUID `json:"uuid"`
-	Value_ string            `json:"value"`
-}
-
-// Type returns the type for this parameter
-func (t *TemplateParam) Type() string { return t.Type_ }
-
-// UUID returns the UUID for this parameter
-func (t *TemplateParam) UUID() TemplateParamUUID { return t.UUID_ }
-
-// Value returns the value for this parameter
-func (t *TemplateParam) Value() string { return t.Value_ }
-
-// NewMsgTemplating creates and returns a new msg template
-func NewTemplateParam(paramType string, uuid TemplateParamUUID, value string) TemplateParam {
-	return TemplateParam{
-		Type_:  paramType,
-		UUID_:  uuid,
-		Value_: value,
-	}
+type ComponentVariables struct {
+	UUID      uuids.UUID `json:"uuid"`
+	Variables []string   `json:"variables"`
 }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_  *assets.TemplateReference  `json:"template"`
-	Variables_ []string                   `json:"variables,omitempty"`
-	Namespace_ string                     `json:"namespace"`
-	Params_    map[string][]TemplateParam `json:"params"`
+	Template_  *assets.TemplateReference     `json:"template"`
+	Variables_ []string                      `json:"variables,omitempty"`
+	Namespace_ string                        `json:"namespace"`
+	Params_    map[string]ComponentVariables `json:"params"`
 }
 
 // Template returns the template this msg template is for
@@ -214,10 +191,10 @@ func (t MsgTemplating) Variables() []string { return t.Variables_ }
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
 // Params returns the params that should be used for the template
-func (t MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
+func (t MsgTemplating) Params() map[string]ComponentVariables { return t.Params_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string, params map[string][]TemplateParam) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string, params map[string]ComponentVariables) *MsgTemplating {
 	return &MsgTemplating{
 		Template_:  template,
 		Variables_: variables,

@@ -56,10 +56,10 @@ type SendMsgAction struct {
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID      uuids.UUID                       `json:"uuid" validate:"required,uuid4"`
-	Template  *assets.TemplateReference        `json:"template" validate:"required"`
-	Variables []string                         `json:"variables" engine:"localized,evaluated"`
-	Params    map[string][]flows.TemplateParam `json:"params"`
+	UUID      uuids.UUID                          `json:"uuid" validate:"required,uuid4"`
+	Template  *assets.TemplateReference           `json:"template" validate:"required"`
+	Variables []string                            `json:"variables" engine:"localized,evaluated"`
+	Params    map[string]flows.ComponentVariables `json:"params"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -142,40 +142,34 @@ func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channe
 	}
 	evaluatedText := templateTranslation.Substitute(evaluatedVariables)
 
-	evaluatedParams := make(map[string][]flows.TemplateParam)
-	for compKey, compParams := range action.Templating.Params {
-		compVariables := make([]flows.TemplateParam, len(compParams))
-		for i, templateParam := range compParams {
-			var paramValue string
-			var err error
-			if strings.HasPrefix(compKey, "button.") {
+	evaluatedParams := make(map[string]flows.ComponentVariables)
+	for compKey, compVars := range action.Templating.Params {
 
-				qrIndex, err := strconv.Atoi(strings.TrimPrefix(compKey, "button."))
-				if err != nil {
-					logEvent(events.NewError(err))
-				}
-				paramValue = evaluatedQuickReplies[qrIndex]
-			} else if templateParam.Type() != "text" {
-				paramValue = ""
-				for _, att := range evaluatedAttachments {
-					attType := strings.Split(att.ContentType(), "/")[0]
-					if templateParam.Type() == attType {
-						paramValue = att.URL()
-						break
-					}
-				}
-			} else {
-				localizedParamVariables, _ := run.GetTextArray(uuids.UUID(templateParam.UUID()), "value", []string{templateParam.Value()}, nil)
-				paramValue, err = run.EvaluateTemplate(localizedParamVariables[0])
-				if err != nil {
-					logEvent(events.NewError(err))
-				}
+		var evaluatedComponentVariables []string
+		if strings.HasPrefix(compKey, "button.") {
+			qrIndex, err := strconv.Atoi(strings.TrimPrefix(compKey, "button."))
+			if err != nil {
+				logEvent(events.NewError(err))
 			}
-			evaluatedParam := flows.NewTemplateParam(templateParam.Type(), templateParam.UUID(), paramValue)
-			compVariables[i] = evaluatedParam
+			paramValue := evaluatedQuickReplies[qrIndex]
+			evaluatedComponentVariables = []string{paramValue}
+
+		} else {
+
+			localizedComponentVariables, _ := run.GetTextArray(uuids.UUID(compVars.UUID), "variables", compVars.Variables, nil)
+			evaluatedComponentVariables = make([]string, len(localizedComponentVariables))
+			for i, variable := range localizedComponentVariables {
+				sub, err := run.EvaluateTemplate(variable)
+				if err != nil {
+					logEvent(events.NewError(err))
+				}
+				evaluatedComponentVariables[i] = sub
+			}
 		}
-		evaluatedParams[compKey] = compVariables
+		evaluatedParams[compKey] = flows.ComponentVariables{UUID: compVars.UUID, Variables: evaluatedComponentVariables}
+
 	}
+
 	templating := flows.NewMsgTemplating(action.Templating.Template, evaluatedVariables, templateTranslation.Namespace(), evaluatedParams)
 	locale := templateTranslation.Locale()
 
