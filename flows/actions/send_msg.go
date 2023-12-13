@@ -131,18 +131,22 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 }
 
 func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
-	evaluatedVariables := make([]string, len(localizedVariables))
-	for i, variable := range localizedVariables {
-		sub, err := run.EvaluateTemplate(variable)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
-		evaluatedVariables[i] = sub
-	}
-	evaluatedText := templateTranslation.Substitute(evaluatedVariables)
-
 	evaluatedParams := make(map[string]flows.ComponentVariables)
+
+	if bodyComp, ok := action.Templating.Params["body"]; ok {
+		localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
+		evaluatedVariables := make([]string, len(localizedVariables))
+		for i, variable := range localizedVariables {
+			sub, err := run.EvaluateTemplate(variable)
+			if err != nil {
+				logEvent(events.NewError(err))
+			}
+			evaluatedVariables[i] = sub
+		}
+
+		evaluatedParams["body"] = flows.ComponentVariables{UUID: bodyComp.UUID, Variables: evaluatedVariables}
+	}
+
 	for compKey, compVars := range action.Templating.Params {
 
 		var evaluatedComponentVariables []string
@@ -170,7 +174,9 @@ func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channe
 
 	}
 
-	templating := flows.NewMsgTemplating(action.Templating.Template, evaluatedVariables, templateTranslation.Namespace(), evaluatedParams)
+	evaluatedText := templateTranslation.Substitute(evaluatedParams["body"].Variables)
+
+	templating := flows.NewMsgTemplating(action.Templating.Template, evaluatedParams["body"].Variables, templateTranslation.Namespace(), evaluatedParams)
 	locale := templateTranslation.Locale()
 
 	return flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, action.Topic, locale, unsendableReason)
