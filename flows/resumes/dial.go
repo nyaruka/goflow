@@ -68,7 +68,7 @@ var _ flows.Resume = (*DialResume)(nil)
 type dialResumeEnvelope struct {
 	baseResumeEnvelope
 
-	Dial *flows.Dial `json:"dial" validate:"required,dive"`
+	Dial *flows.Dial `json:"dial" validate:"required"`
 }
 
 func readDialResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {

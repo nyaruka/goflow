@@ -104,7 +104,7 @@ type ticketEventEnvelope struct {
 
 type ticketTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event ticketEventEnvelope `json:"event" validate:"required,dive"`
+	Event ticketEventEnvelope `json:"event" validate:"required"`
 }
 
 func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

@@ -14,9 +14,9 @@ const TypeTicketOpened string = "ticket_opened"
 
 type Ticket struct {
 	UUID     flows.TicketUUID       `json:"uuid"                   validate:"required,uuid4"`
-	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty,dive"`
+	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Body     string                 `json:"body"`
-	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty,dive"`
+	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }
 
 // TicketOpenedEvent events are created when a new ticket is opened.

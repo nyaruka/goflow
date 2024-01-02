@@ -52,7 +52,7 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 type baseInputEnvelope struct {
 	Type      string                   `json:"type" validate:"required"`
 	UUID      flows.InputUUID          `json:"uuid"`
-	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
+	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 }
 

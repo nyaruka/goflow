@@ -109,7 +109,7 @@ func (b *ManualBuilder) Build() *ManualTrigger {
 
 type manualTriggerEnvelope struct {
 	baseTriggerEnvelope
-	User   *assets.UserReference `json:"user,omitempty" validate:"omitempty,dive"`
+	User   *assets.UserReference `json:"user,omitempty" validate:"omitempty"`
 	Origin string                `json:"origin,omitempty"`
 }
 

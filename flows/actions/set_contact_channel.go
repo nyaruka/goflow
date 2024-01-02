@@ -30,7 +30,7 @@ type SetContactChannelAction struct {
 	baseAction
 	onlineAction
 
-	Channel *assets.ChannelReference `json:"channel" validate:"omitempty,dive"`
+	Channel *assets.ChannelReference `json:"channel" validate:"omitempty"`
 }
 
 // NewSetContactChannel creates a new set channel action
