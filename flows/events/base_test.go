@@ -26,7 +26,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -46,11 +45,10 @@ func TestEventMarshaling(t *testing.T) {
 	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 	gender := session.Assets().Fields().Get("gender")
 	jotd := session.Assets().OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
-	mailgun := session.Assets().Ticketers().Get("19dc6346-9623-4fe4-be80-538d493ecdf5")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", mailgun, weather, "Where are my cookies?", "1243252", user)
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, "Where are my cookies?", user)
 
 	eventTests := []struct {
 		event     flows.Event
@@ -312,10 +310,6 @@ func TestEventMarshaling(t *testing.T) {
 							"name": "Bob"
 						},
 						"body": "What day is it?",
-						"ticketer": {
-							"name": "Support Tickets",
-							"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-						},
 						"topic": {
 							"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 							"name": "Weather"
@@ -618,62 +612,16 @@ func TestEventMarshaling(t *testing.T) {
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"ticket": {
 					"uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
-					"ticketer": {
-						"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-						"name": "Support Tickets"
-					},
 					"topic": {
 						"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
          				"name": "Weather"
 					},
 					"body": "Where are my cookies?",
-					"external_id": "1243252",
 					"assignee": {
 						"email": "bob@nyaruka.com",
 						"name": "Bob"
 					}
 				}
-			}`,
-		},
-		{
-			events.NewTicketerCalled(
-				assets.NewTicketerReference(assets.TicketerUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Support"),
-				[]*flows.HTTPLog{
-					{
-						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-							LogWithoutTime: &httpx.LogWithoutTime{
-								URL:        "https://tickets.com",
-								StatusCode: 200,
-								Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
-								ElapsedMS:  12,
-							},
-							Status: flows.CallStatusSuccess,
-						},
-						CreatedOn: dates.Now(),
-					},
-				},
-			),
-			`{
-				"type": "service_called",
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"service": "ticketer",
-				"ticketer": {
-					"uuid": "4b937f49-7fb7-43a5-8e57-14e2f028a471",
-					"name": "Support"
-				},
-				"http_logs": [
-					{
-						"url": "https://tickets.com",
-						"status_code": 200,
-						"status": "success",
-						"request": "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: tickets.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-						"response": "HTTP/1.0 200 OK\r\nContent-Length: 0\r\n\r\n",
-						"elapsed_ms": 12,
-						"retries": 0,
-						"created_on": "2018-10-18T14:20:30.000123456Z"
-					}
-				]
 			}`,
 		},
 	}

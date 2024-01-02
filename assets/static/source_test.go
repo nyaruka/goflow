@@ -125,10 +125,6 @@ func TestSource(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, templates, 0)
 
-	ticketers, err := src.Ticketers()
-	assert.NoError(t, err)
-	assert.Len(t, ticketers, 0)
-
 	topics, err := src.Topics()
 	assert.NoError(t, err)
 	assert.Len(t, topics, 0)

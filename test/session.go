@@ -62,13 +62,6 @@ var sessionAssets = `{
             "name": "Joke Of The Day"
         }
     ],
-    "ticketers": [
-        {
-            "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-            "name": "Support Tickets",
-            "type": "mailgun"
-        }
-    ],
     "topics": [
         {
             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -335,10 +328,6 @@ var sessionTrigger = `{
             "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
             "subject": "Question",
             "body": "What day is it?",
-            "ticketer": {
-                "name": "Support Tickets",
-                "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5"
-            },
             "topic": {
                 "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                 "name": "Weather"

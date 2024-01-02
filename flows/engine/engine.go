@@ -86,12 +86,6 @@ func (b *Builder) WithClassificationServiceFactory(f ClassificationServiceFactor
 	return b
 }
 
-// WithTicketServiceFactory sets the ticket service factory
-func (b *Builder) WithTicketServiceFactory(f TicketServiceFactory) *Builder {
-	b.eng.services.ticket = f
-	return b
-}
-
 // WithAirtimeServiceFactory sets the airtime service factory
 func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
 	b.eng.services.airtime = f

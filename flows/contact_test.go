@@ -36,13 +36,6 @@ func TestContact(t *testing.T) {
 				"country": "US"
 			}
 		],
-		"ticketers": [
-			{
-				"uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-				"name": "Support Tickets",
-				"type": "mailgun"
-			}
-		],
 		"topics": [
 			{
 				"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -146,9 +139,8 @@ func TestContact(t *testing.T) {
 
 	assert.Nil(t, contact.Ticket())
 
-	mailgun := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
-	ticket := flows.OpenTicket(mailgun, weather, "I have issues", nil)
+	ticket := flows.OpenTicket(weather, "I have issues", nil)
 	contact.SetTicket(ticket)
 
 	assert.NotNil(t, contact.Ticket())
@@ -411,10 +403,6 @@ func TestContactQuery(t *testing.T) {
 		],
 		"ticket": {
 			"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
-			"ticketer": {
-				"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-				"name": "Support Tickets"
-			},
 			"subject": "Old ticket",
 			"body": "I have a problem",
 			"assignee": null

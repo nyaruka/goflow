@@ -31,7 +31,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/smtpx"
-
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -173,9 +172,8 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		require.NoError(t, err)
 
 		if tc.HasTicket {
-			ticketer := sa.Ticketers().Get("d605bb96-258d-4097-ad0a-080937db2212")
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", ticketer, topic, "Help", "", nil))
+			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", topic, "Help", nil))
 		}
 
 		// and switch their language
@@ -230,9 +228,6 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
 				return nil, errors.Errorf("no classification service available for %s", c.Reference())
-			}).
-			WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) {
-				return test.NewTicketService(t), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
@@ -443,7 +438,6 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewOpenTicket(
 				actionUUID,
-				assets.NewTicketerReference(assets.TicketerUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Support Tickets"),
 				assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"),
 				"Where are my cookies?",
 				assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"),
@@ -452,10 +446,6 @@ func TestConstructors(t *testing.T) {
 			`{
 				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 				"type": "open_ticket",
-				"ticketer": {
-					"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
-					"name": "Support Tickets"
-				},
 				"topic": {
 					"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 					"name": "Weather"

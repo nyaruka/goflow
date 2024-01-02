@@ -30,13 +30,8 @@
         "type": "closed",
         "ticket": {
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
-            "ticketer": {
-                "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-                "name": "Support Tickets"
-            },
             "topic": null,
             "body": "Where are my shoes?",
-            "external_id": "123456",
             "assignee": {
                 "email": "bob@nyaruka.com",
                 "name": "Bob McTickets"

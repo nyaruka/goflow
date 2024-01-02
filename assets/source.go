@@ -14,7 +14,6 @@ type Source interface {
 	OptIns() ([]OptIn, error)
 	Resthooks() ([]Resthook, error)
 	Templates() ([]Template, error)
-	Ticketers() ([]Ticketer, error)
 	Topics() ([]Topic, error)
 	Users() ([]User, error)
 }
