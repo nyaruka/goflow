@@ -50,7 +50,7 @@ type SendMsgAction struct {
 	createMsgAction
 
 	AllURNs    bool           `json:"all_urns,omitempty"`
-	Templating *Templating    `json:"templating,omitempty" validate:"omitempty,dive"`
+	Templating *Templating    `json:"templating,omitempty" validate:"omitempty"`
 	Topic      flows.MsgTopic `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
 

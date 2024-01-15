@@ -65,7 +65,7 @@ func (w *baseWait) expiresOn(run flows.Run) *time.Time {
 
 type baseWaitEnvelope struct {
 	Type    string   `json:"type"              validate:"required"`
-	Timeout *Timeout `json:"timeout,omitempty" validate:"omitempty,dive"`
+	Timeout *Timeout `json:"timeout,omitempty" validate:"omitempty"`
 }
 
 // ReadWait reads a wait from the given JSON

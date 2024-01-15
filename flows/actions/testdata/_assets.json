@@ -304,13 +304,6 @@
             ]
         }
     ],
-    "ticketers": [
-        {
-            "uuid": "d605bb96-258d-4097-ad0a-080937db2212",
-            "name": "Support Tickets",
-            "type": "mailgun"
-        }
-    ],
     "topics": [
         {
             "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",

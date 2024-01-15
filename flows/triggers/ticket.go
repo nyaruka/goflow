@@ -47,7 +47,6 @@ type TicketEvent struct {
 //	      "type": "closed",
 //	      "ticket": {
 //	          "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-//	          "ticketer": {"uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5", "name": "Support Tickets"},
 //	          "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"},
 //	          "body": "Where are my shoes?"
 //	      }
@@ -105,7 +104,7 @@ type ticketEventEnvelope struct {
 
 type ticketTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event ticketEventEnvelope `json:"event" validate:"required,dive"`
+	Event ticketEventEnvelope `json:"event" validate:"required"`
 }
 
 func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

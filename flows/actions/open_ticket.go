@@ -19,10 +19,6 @@ const TypeOpenTicket string = "open_ticket"
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "open_ticket",
-//	  "ticketer": {
-//	    "uuid": "19dc6346-9623-4fe4-be80-538d493ecdf5",
-//	    "name": "Support Tickets"
-//	  },
 //	  "topic": {
 //	    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 //	    "name": "Weather"
@@ -37,18 +33,16 @@ type OpenTicketAction struct {
 	baseAction
 	onlineAction
 
-	Ticketer   *assets.TicketerReference `json:"ticketer" validate:"required,dive"`
-	Topic      *assets.TopicReference    `json:"topic" validate:"omitempty,dive"`
-	Body       string                    `json:"body" engine:"evaluated"`
-	Assignee   *assets.UserReference     `json:"assignee" validate:"omitempty,dive"`
-	ResultName string                    `json:"result_name" validate:"required"`
+	Topic      *assets.TopicReference `json:"topic" validate:"omitempty"`
+	Body       string                 `json:"body" engine:"evaluated"`
+	Assignee   *assets.UserReference  `json:"assignee" validate:"omitempty"`
+	ResultName string                 `json:"result_name" validate:"required"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, topic *assets.TopicReference, body string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, body string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
-		Ticketer:   ticketer,
 		Topic:      topic,
 		Body:       body,
 		Assignee:   assignee,
@@ -59,8 +53,6 @@ func NewOpenTicket(uuid flows.ActionUUID, ticketer *assets.TicketerReference, to
 // Execute runs this action
 func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	sa := run.Session().Assets()
-
-	ticketer := sa.Ticketers().Get(a.Ticketer.UUID)
 
 	var topic *flows.Topic
 	if a.Topic != nil {
@@ -78,7 +70,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 		logEvent(events.NewError(err))
 	}
 
-	ticket := a.open(run, step, ticketer, topic, evaluatedBody, assignee, logModifier, logEvent)
+	ticket := a.open(run, step, topic, evaluatedBody, assignee, logModifier, logEvent)
 	if ticket != nil {
 		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
 	} else {
@@ -88,22 +80,18 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.Run, step flows.Step, ticketer *flows.Ticketer, topic *flows.Topic, body string, assignee *flows.User, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.Run, step flows.Step, topic *flows.Topic, body string, assignee *flows.User, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil
 	}
 
-	if ticketer == nil {
-		logEvent(events.NewDependencyError(a.Ticketer))
-		return nil
-	}
 	if a.Topic != nil && topic == nil {
 		logEvent(events.NewDependencyError(a.Topic))
 		return nil
 	}
 
-	mod := modifiers.NewTicket(ticketer, topic, body, assignee)
+	mod := modifiers.NewTicket(topic, body, assignee)
 
 	if a.applyModifier(run, mod, logModifier, logEvent) {
 		// if we were able to open a ticket, return it

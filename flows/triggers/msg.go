@@ -136,8 +136,8 @@ func (b *MsgBuilder) Build() *MsgTrigger {
 
 type msgTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Msg   *flows.MsgIn  `json:"msg" validate:"required,dive"`
-	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty,dive"`
+	Msg   *flows.MsgIn  `json:"msg" validate:"required"`
+	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
 func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {

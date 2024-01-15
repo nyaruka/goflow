@@ -1,3 +1,13 @@
+v0.198.0 (2024-01-02)
+-------------------------
+ * Update deps
+ * Remove ticketers
+
+v0.197.7 (2023-12-12)
+-------------------------
+ * Merge pull request #1198 from nyaruka/trim_attachments
+ * Trim whitespace from evaluated message attachments
+
 v0.197.6 (2023-11-27)
 -------------------------
  * Update to latest gocommon

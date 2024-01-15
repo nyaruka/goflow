@@ -206,10 +206,6 @@ func (s *testSource) Templates() ([]assets.Template, error) {
 	return nil, s.err("templates")
 }
 
-func (s *testSource) Ticketers() ([]assets.Ticketer, error) {
-	return nil, s.err("ticketers")
-}
-
 func (s *testSource) Topics() ([]assets.Topic, error) {
 	return nil, s.err("topics")
 }

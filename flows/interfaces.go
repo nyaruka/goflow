@@ -113,7 +113,6 @@ type SessionAssets interface {
 	OptIns() *OptInAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
-	Ticketers() *TicketerAssets
 	Topics() *TopicAssets
 	Users() *UserAssets
 }

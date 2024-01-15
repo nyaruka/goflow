@@ -18,8 +18,8 @@ func NewOptIn(uuid assets.OptInUUID, name string, channel *assets.ChannelReferen
 	}
 }
 
-// UUID returns the UUID of this ticketer
+// UUID returns the UUID of this optin
 func (t *OptIn) UUID() assets.OptInUUID { return t.UUID_ }
 
-// Name returns the name of this ticketer
+// Name returns the name of this optin
 func (t *OptIn) Name() string { return t.Name_ }

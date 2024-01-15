@@ -9,7 +9,7 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	ticketer := static.NewUser("bob@nyaruka.com", "Bob")
-	assert.Equal(t, "bob@nyaruka.com", ticketer.Email())
-	assert.Equal(t, "Bob", ticketer.Name())
+	user := static.NewUser("bob@nyaruka.com", "Bob")
+	assert.Equal(t, "bob@nyaruka.com", user.Email())
+	assert.Equal(t, "Bob", user.Name())
 }

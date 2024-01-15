@@ -125,9 +125,6 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 		}).
-		WithTicketServiceFactory(func(t *flows.Ticketer) (flows.TicketService, error) {
-			return NewTicketService(t), nil
-		}).
 		Build()
 
 	session, sprint, err := eng.NewSession(sa, trigger)

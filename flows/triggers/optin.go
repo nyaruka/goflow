@@ -98,12 +98,12 @@ func (b *OptInBuilder) Build() *OptInTrigger {
 
 type optInEventEnvelope struct {
 	Type  OptInEventType         `json:"type"  validate:"required"`
-	OptIn *assets.OptInReference `json:"optin" validate:"required,dive"`
+	OptIn *assets.OptInReference `json:"optin" validate:"required"`
 }
 
 type optInTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *optInEventEnvelope `json:"event" validate:"required,dive"`
+	Event *optInEventEnvelope `json:"event" validate:"required"`
 }
 
 func readOptInTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
