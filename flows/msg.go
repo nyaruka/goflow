@@ -191,19 +191,17 @@ func (t MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
 
 // NewMsgTemplating creates and returns a new msg template
 func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string) *MsgTemplating {
-	params := map[string][]TemplateParam{}
+	params := make(map[string][]TemplateParam, 1)
+
+	// TODO add support for params in other components besides body
 	if len(variables) > 0 {
-		params = map[string][]TemplateParam{"body": make([]TemplateParam, len(variables))}
+		params["body"] = make([]TemplateParam, len(variables))
 		for i, v := range variables {
 			params["body"][i] = TemplateParam{Type: "text", Value: v}
 		}
 	}
 
-	return &MsgTemplating{
-		Template_:  template,
-		Namespace_: namespace,
-		Params_:    params,
-	}
+	return &MsgTemplating{Template_: template, Namespace_: namespace, Params_: params}
 }
 
 // BroadcastTranslation is the broadcast content in a particular language
