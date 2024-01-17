@@ -190,16 +190,7 @@ func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 func (t MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string) *MsgTemplating {
-	params := make(map[string][]TemplateParam, 1)
-
-	// TODO add support for params in other components besides body
-	if len(variables) > 0 {
-		params["body"] = make([]TemplateParam, len(variables))
-		for i, v := range variables {
-			params["body"][i] = TemplateParam{Type: "text", Value: v}
-		}
-	}
+func NewMsgTemplating(template *assets.TemplateReference, params map[string][]TemplateParam, namespace string) *MsgTemplating {
 
 	return &MsgTemplating{Template_: template, Namespace_: namespace, Params_: params}
 }

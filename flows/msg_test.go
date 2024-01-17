@@ -163,7 +163,7 @@ func TestMsgTemplating(t *testing.T) {
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(templateRef, []string{"Ryan Lewis", "boy"}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
+	msgTemplating := flows.NewMsgTemplating(templateRef, map[string][]flows.TemplateParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
 
 	assert.Equal(t, templateRef, msgTemplating.Template())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
