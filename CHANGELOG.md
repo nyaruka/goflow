@@ -1,3 +1,7 @@
+v0.199.0 (2024-01-17)
+-------------------------
+ * Replace flows.MsgTemplating variables by params
+
 v0.198.0 (2024-01-02)
 -------------------------
  * Update deps
