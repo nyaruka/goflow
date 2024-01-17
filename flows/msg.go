@@ -168,28 +168,41 @@ func (m *MsgOut) Locale() i18n.Locale { return m.Locale_ }
 // UnsendableReason returns the reason this message can't be sent (if any)
 func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }
 
+type TemplateParam struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}
+
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_  *assets.TemplateReference `json:"template"`
-	Variables_ []string                  `json:"variables,omitempty"`
-	Namespace_ string                    `json:"namespace"`
+	Template_  *assets.TemplateReference  `json:"template"`
+	Params_    map[string][]TemplateParam `json:"params,omitempty"`
+	Namespace_ string                     `json:"namespace"`
 }
 
 // Template returns the template this msg template is for
 func (t MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
 
-// Variables returns the variables that should be substituted in the template
-func (t MsgTemplating) Variables() []string { return t.Variables_ }
-
 // Namespace returns the namespace that should be for the template
 func (t MsgTemplating) Namespace() string { return t.Namespace_ }
 
+// Params returns the params that should be used for the template
+func (t MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
+
 // NewMsgTemplating creates and returns a new msg template
 func NewMsgTemplating(template *assets.TemplateReference, variables []string, namespace string) *MsgTemplating {
+	params := map[string][]TemplateParam{}
+	if len(variables) > 0 {
+		params = map[string][]TemplateParam{"body": make([]TemplateParam, len(variables))}
+		for i, v := range variables {
+			params["body"][i] = TemplateParam{Type: "text", Value: v}
+		}
+	}
+
 	return &MsgTemplating{
 		Template_:  template,
-		Variables_: variables,
 		Namespace_: namespace,
+		Params_:    params,
 	}
 }
 
