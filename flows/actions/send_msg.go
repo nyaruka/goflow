@@ -122,7 +122,18 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 				}
 
 				evaluatedText = translation.Substitute(evaluatedVariables)
-				templating = flows.NewMsgTemplating(a.Templating.Template, evaluatedVariables, translation.Namespace())
+
+				params := make(map[string][]flows.TemplateParam, 1)
+
+				// TODO add support for params in other components besides body
+				if len(evaluatedVariables) > 0 {
+					params["body"] = make([]flows.TemplateParam, len(evaluatedVariables))
+					for i, v := range evaluatedVariables {
+						params["body"][i] = flows.TemplateParam{Type: "text", Value: v}
+					}
+				}
+
+				templating = flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
 				locale = translation.Locale()
 			}
 		}
