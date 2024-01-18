@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -98,47 +99,19 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 		urn := dest.URN.URN()
 		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
 
-		// do we have a template defined?
-		var templating *flows.MsgTemplating
+		var msg *flows.MsgOut
 		if template != nil {
-			// looks for a translation in the contact locale or environment default
-			locales := []i18n.Locale{
-				run.Session().MergedEnvironment().DefaultLocale(),
-				run.Session().Environment().DefaultLocale(),
-			}
-
-			translation := template.FindTranslation(dest.Channel, locales)
-			if translation != nil {
-				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables, nil)
-
-				// evaluate our variables
-				evaluatedVariables := make([]string, len(localizedVariables))
-				for i, variable := range localizedVariables {
-					sub, err := run.EvaluateTemplate(variable)
-					if err != nil {
-						logEvent(events.NewError(err))
-					}
-					evaluatedVariables[i] = sub
-				}
-
-				evaluatedText = translation.Substitute(evaluatedVariables)
-
-				params := make(map[string][]flows.TemplateParam, 1)
-
-				// TODO add support for params in other components besides body
-				if len(evaluatedVariables) > 0 {
-					params["body"] = make([]flows.TemplateParam, len(evaluatedVariables))
-					for i, v := range evaluatedVariables {
-						params["body"][i] = flows.TemplateParam{Type: "text", Value: v}
-					}
-				}
-
-				templating = flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
-				locale = translation.Locale()
+			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
+			templateTranslation := template.FindTranslation(dest.Channel, locales)
+			if templateTranslation != nil {
+				msg = getTemplatingMsg(a, run, urn, channelRef, templateTranslation, evaluatedAttachments, evaluatedQuickReplies, unsendableReason, logEvent)
 			}
 		}
 
-		msg := flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, a.Topic, locale, unsendableReason)
+		if msg == nil {
+			msg = flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, nil, a.Topic, locale, unsendableReason)
+		}
+
 		logEvent(events.NewMsgCreated(msg))
 	}
 
@@ -150,4 +123,34 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	}
 
 	return nil
+}
+
+func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
+
+	localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
+
+	evaluatedVariables := make([]string, len(localizedVariables))
+	for i, variable := range localizedVariables {
+		sub, err := run.EvaluateTemplate(variable)
+		if err != nil {
+			logEvent(events.NewError(err))
+		}
+		evaluatedVariables[i] = sub
+	}
+
+	evaluatedText := templateTranslation.Substitute(evaluatedVariables)
+
+	params := make(map[string][]flows.TemplateParam, 1)
+
+	// TODO add support for params in other components besides body
+	if len(evaluatedVariables) > 0 {
+		params["body"] = make([]flows.TemplateParam, len(evaluatedVariables))
+		for i, v := range evaluatedVariables {
+			params["body"][i] = flows.TemplateParam{Type: "text", Value: v}
+		}
+	}
+
+	templating := flows.NewMsgTemplating(action.Templating.Template, params, templateTranslation.Namespace())
+	locale := templateTranslation.Locale()
+	return flows.NewMsgOut(urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies, templating, action.Topic, locale, unsendableReason)
 }
