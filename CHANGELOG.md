@@ -1,3 +1,7 @@
+v0.200.0 (2024-01-22)
+-------------------------
+ * Rework template assets to use params instead of variables
+
 v0.199.0 (2024-01-17)
 -------------------------
  * Replace flows.MsgTemplating variables by params
