@@ -104,7 +104,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
 			templateTranslation := template.FindTranslation(dest.Channel, locales)
 			if templateTranslation != nil {
-				msg = getTemplatingMsg(a, run, urn, channelRef, templateTranslation, evaluatedAttachments, evaluatedQuickReplies, unsendableReason, logEvent)
+				msg = getTemplateMsg(a, run, urn, channelRef, templateTranslation, evaluatedAttachments, evaluatedQuickReplies, unsendableReason, logEvent)
 			}
 		}
 
@@ -125,8 +125,9 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	return nil
 }
 
-func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-
+// for message actions that specidy a template, this generates the template message where the message content should be
+// considered just a preview of how the template will be evaluated by the channel
+func getTemplateMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
 	localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
 
 	evaluatedVariables := make([]string, len(localizedVariables))
@@ -138,6 +139,7 @@ func getTemplatingMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channe
 		evaluatedVariables[i] = sub
 	}
 
+	// generate a preview of the body text with parameters substituted
 	evaluatedText := templateTranslation.Substitute(evaluatedVariables)
 
 	params := make(map[string][]flows.TemplateParam, 1)
