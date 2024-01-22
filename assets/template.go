@@ -52,7 +52,6 @@ type TemplateTranslation interface {
 	Content() string
 	Locale() i18n.Locale
 	Namespace() string
-	VariableCount() int
 	Channel() *ChannelReference
 	Params() map[string][]TemplateParam
 }

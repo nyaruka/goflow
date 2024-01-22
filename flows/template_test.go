@@ -26,7 +26,7 @@ func TestTemplateTranslation(t *testing.T) {
 	channel := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
 
 	for i, tc := range tcs {
-		tt := flows.NewTemplateTranslation(static.NewTemplateTranslation(channel, i18n.Locale("eng-US"), tc.Content, len(tc.Variables), "a6a8863e_7879_4487_ad24_5e2ea429027c", map[string][]static.TemplateParam{}))
+		tt := flows.NewTemplateTranslation(static.NewTemplateTranslation(channel, i18n.Locale("eng-US"), tc.Content, "a6a8863e_7879_4487_ad24_5e2ea429027c", map[string][]static.TemplateParam{}))
 		result := tt.Substitute(tc.Variables)
 		assert.Equal(t, tc.Expected, result, "%d: unexpected template substitution", i)
 	}
@@ -39,10 +39,10 @@ func TestTemplate(t *testing.T) {
 	channel1Ref := assets.NewChannelReference(channel1.UUID(), channel1.Name())
 	channel2Ref := assets.NewChannelReference(channel2.UUID(), channel2.Name())
 
-	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "Hello {{1}}", 1, "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
-	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "Que tal {{1}}", 1, "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
-	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "Hola {{1}}", 1, "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
-	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("en"), "Hello {{1}}", 1, "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
+	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "Hello {{1}}", "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
+	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "Que tal {{1}}", "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
+	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "Hola {{1}}", "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
+	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("en"), "Hello {{1}}", "", map[string][]static.TemplateParam{"body": {{Type_: "text"}}})
 	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
 
 	tas := flows.NewTemplateAssets([]assets.Template{template})

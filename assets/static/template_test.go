@@ -15,11 +15,10 @@ func TestTemplate(t *testing.T) {
 	tp1 := NewTemplateParam("text")
 	assert.Equal(t, "text", tp1.Type())
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]TemplateParam{"body": {tp1}})
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]TemplateParam{"body": {tp1}})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "Hello {{1}}", translation.Content())
-	assert.Equal(t, 1, translation.VariableCount())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
 	assert.Equal(t, map[string][]assets.TemplateParam{"body": {(assets.TemplateParam)(&tp1)}}, translation.Params())
 
