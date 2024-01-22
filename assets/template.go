@@ -42,13 +42,18 @@ type Template interface {
 	Translations() []TemplateTranslation
 }
 
+// TemplateParam is a parameter for template translation
+type TemplateParam interface {
+	Type() string
+}
+
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Content() string
 	Locale() i18n.Locale
 	Namespace() string
-	VariableCount() int
 	Channel() *ChannelReference
+	Params() map[string][]TemplateParam
 }
 
 // TemplateReference is used to reference a Template

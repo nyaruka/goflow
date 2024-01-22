@@ -12,12 +12,15 @@ import (
 func TestTemplate(t *testing.T) {
 	channel := assets.NewChannelReference("Test Channel", "ffffffff-9b24-92e1-ffff-ffffb207cdb4")
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", 1, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
+	tp1 := NewTemplateParam("text")
+	assert.Equal(t, "text", tp1.Type())
+
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]TemplateParam{"body": {tp1}})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "Hello {{1}}", translation.Content())
-	assert.Equal(t, 1, translation.VariableCount())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
+	assert.Equal(t, map[string][]assets.TemplateParam{"body": {(assets.TemplateParam)(&tp1)}}, translation.Params())
 
 	template := NewTemplate(assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), "hello", []*TemplateTranslation{translation})
 	assert.Equal(t, assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), template.UUID())
