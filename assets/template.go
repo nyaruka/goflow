@@ -43,8 +43,8 @@ type Template interface {
 }
 
 // TemplateParam is a parameter for template translation
-type TemplateParam interface {
-	Type() string
+type TemplateParam struct {
+	Type string `json:"type"`
 }
 
 // TemplateTranslation represents a single translation for a specific template and channel
