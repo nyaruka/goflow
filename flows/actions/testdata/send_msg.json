@@ -347,7 +347,6 @@
             "text": "Hi @contact.name, who's a good boy?",
             "templating": {
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "params": null,
                 "template": {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
                     "name": "missing"
@@ -610,7 +609,6 @@
             "text": "Hi there, it's time to get up!",
             "templating": {
                 "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
-                "params": null,                
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup"
@@ -670,7 +668,6 @@
             "text": "Hi Ryan, wakeup!",
             "templating": {
                 "uuid": "dce1ab9c-81d7-4e2f-b7d6-33e577c731ba",
-                "params": null,
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup"

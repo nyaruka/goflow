@@ -101,7 +101,7 @@ type Templating struct {
 	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
 	Variables []string                  `json:"variables" engine:"localized,evaluated"`
-	Params    *Params                   `json:"params"`
+	Params    *Params                   `json:"params,omitempty"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
