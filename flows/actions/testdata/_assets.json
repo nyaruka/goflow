@@ -302,6 +302,68 @@
                     "content": "Hi there, it's time to get up!"
                 }
             ]
+        },
+        {
+            "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+            "name": "gender_update",
+            "translations": [
+                {
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "locale": "eng-US",
+                    "content": "Hey {{1}}, your gender is saved as {{2}}.",
+                    "params": {
+                        "body": [
+                            {
+                                "type": "text"
+                            },
+                            {
+                                "type": "text"
+                            }
+                        ],
+                        "header": [
+                            {
+                                "type": "image"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "locale": "spa",
+                    "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
+                    "params": {
+                        "body": [
+                            {
+                                "type": "text"
+                            },
+                            {
+                                "type": "text"
+                            }
+                        ],
+                        "header": [
+                            {
+                                "type": "image"
+                            }
+                        ],
+                        "button.0": [
+                            {
+                                "type": "text"
+                            }
+                        ],
+                        "button.1": [
+                            {
+                                "type": "text"
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     ],
     "topics": [

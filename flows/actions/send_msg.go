@@ -1,6 +1,9 @@
 package actions
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -56,6 +59,7 @@ type Templating struct {
 	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
 	Variables []string                  `json:"variables" engine:"localized,evaluated"`
+	Params    map[string][]string       `json:"params"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -128,27 +132,61 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 // for message actions that specidy a template, this generates the template message where the message content should be
 // considered just a preview of how the template will be evaluated by the channel
 func getTemplateMsg(action *SendMsgAction, run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, templateTranslation *flows.TemplateTranslation, evaluatedAttachments []utils.Attachment, evaluatedQuickReplies []string, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
+	evaluatedParams := make(map[string][]string)
 
-	evaluatedVariables := make([]string, len(localizedVariables))
-	for i, variable := range localizedVariables {
-		sub, err := run.EvaluateTemplate(variable)
-		if err != nil {
-			logEvent(events.NewError(err))
+	if _, ok := action.Templating.Params["body"]; ok {
+		localizedVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), "variables", action.Templating.Variables, nil)
+
+		evaluatedVariables := make([]string, len(localizedVariables))
+		for i, variable := range localizedVariables {
+			sub, err := run.EvaluateTemplate(variable)
+			if err != nil {
+				logEvent(events.NewError(err))
+			}
+			evaluatedVariables[i] = sub
 		}
-		evaluatedVariables[i] = sub
+
+		evaluatedParams["body"] = evaluatedVariables
+	}
+
+	for compKey, compVars := range action.Templating.Params {
+		var evaluatedComponentVariables []string
+		if strings.HasPrefix(compKey, "button.") {
+			qrIndex, err := strconv.Atoi(strings.TrimPrefix(compKey, "button."))
+			if err != nil {
+				logEvent(events.NewError(err))
+			}
+			paramValue := evaluatedQuickReplies[qrIndex]
+			evaluatedComponentVariables = []string{paramValue}
+
+		} else {
+
+			localizedComponentVariables, _ := run.GetTextArray(uuids.UUID(action.Templating.UUID), compKey, compVars, nil)
+			evaluatedComponentVariables = make([]string, len(localizedComponentVariables))
+			for i, variable := range localizedComponentVariables {
+				sub, err := run.EvaluateTemplate(variable)
+				if err != nil {
+					logEvent(events.NewError(err))
+				}
+				evaluatedComponentVariables[i] = sub
+			}
+		}
+
+		evaluatedParams[compKey] = evaluatedComponentVariables
 	}
 
 	// generate a preview of the body text with parameters substituted
-	evaluatedText := templateTranslation.Substitute(evaluatedVariables)
+	evaluatedText := templateTranslation.Substitute(evaluatedParams["body"])
 
+	templateTranslationParams := templateTranslation.Params()
 	params := make(map[string][]flows.TemplateParam, 1)
 
-	// TODO add support for params in other components besides body
-	if len(evaluatedVariables) > 0 {
-		params["body"] = make([]flows.TemplateParam, len(evaluatedVariables))
-		for i, v := range evaluatedVariables {
-			params["body"][i] = flows.TemplateParam{Type: "text", Value: v}
+	for compKey, compValues := range evaluatedParams {
+		if len(compValues) > 0 {
+			params[compKey] = make([]flows.TemplateParam, len(compValues))
+			for i, v := range compValues {
+				params[compKey][i] = flows.TemplateParam{Type: templateTranslationParams[compKey][i].Type(), Value: v}
+			}
 		}
 	}
 
