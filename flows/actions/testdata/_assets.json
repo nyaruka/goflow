@@ -315,6 +315,11 @@
                     "locale": "eng-US",
                     "content": "Hey {{1}}, your gender is saved as {{2}}.",
                     "params": {
+                        "header": [
+                            {
+                                "type": "image"
+                            }
+                        ],
                         "body": [
                             {
                                 "type": "text"
@@ -323,9 +328,9 @@
                                 "type": "text"
                             }
                         ],
-                        "header": [
+                        "button.0": [
                             {
-                                "type": "image"
+                                "type": "text"
                             }
                         ]
                     }
