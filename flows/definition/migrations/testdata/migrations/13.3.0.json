@@ -1,0 +1,276 @@
+[
+    {
+        "description": "flow with send_msg with no templating",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with send_msg with templating and variables",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39",
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "variables": [
+                                    "@contact.name",
+                                    "@fields.state"
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "params": {
+                                    "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                    "body": [
+                                        "@contact.name",
+                                        "@fields.state"
+                                    ]
+                                },
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39"
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with send_msg with templating and no variables",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39",
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "variables": []
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39"
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with send_msg with templating and variables with params also, delete variables",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39",
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "params": {
+                                    "uuid": "1fdd7602-1138-4518-a6bb-4a7841dcf652",
+                                    "body": [
+                                        "Boy"
+                                    ]
+                                },
+                                "variables": [
+                                    "@contact.name",
+                                    "@fields.state"
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name of @fields.state, are you ready to complete today's survey?",
+                            "templating": {
+                                "template": {
+                                    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+                                    "name": "revive_issue"
+                                },
+                                "uuid": "d85342d6-c9ac-4045-987d-902b4af08c39",
+                                "params": {
+                                    "uuid": "1fdd7602-1138-4518-a6bb-4a7841dcf652",
+                                    "body": [
+                                        "Boy"
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "b6f4caf3-ec99-44d5-a40c-8600ac0e2eac"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
