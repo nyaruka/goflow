@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -57,8 +58,19 @@ type TemplateParams struct {
 	Values map[string][]string
 }
 
-// LocalizationUUID gets the UUID which identifies this object for localization
-func (p *TemplateParams) LocalizationUUID() uuids.UUID { return uuids.UUID(p.UUID) }
+func (p *TemplateParams) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
+	for _, comp := range utils.SortedKeys(p.Values) {
+		for _, v := range p.Values[comp] {
+			include(i18n.NilLanguage, v)
+		}
+		for _, lang := range localization.Languages() {
+			lvals := localization.GetItemTranslation(lang, p.UUID, comp)
+			for _, v := range lvals {
+				include(lang, v)
+			}
+		}
+	}
+}
 
 func (p *TemplateParams) MarshalJSON() ([]byte, error) {
 	if p == nil {
@@ -100,7 +112,7 @@ func (p *TemplateParams) UnmarshalJSON(d []byte) error {
 type Templating struct {
 	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables" engine:"localized,evaluated"`
+	Variables []string                  `json:"variables,omitempty" engine:"localized,evaluated"`
 	Params    *TemplateParams           `json:"params,omitempty"`
 }
 

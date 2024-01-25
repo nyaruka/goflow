@@ -17,18 +17,26 @@ func Templates(s any, localization flows.Localization, include func(i18n.Languag
 }
 
 func templateValues(v reflect.Value, localization flows.Localization, include func(i18n.Language, string)) {
-	walk(v, nil, func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
-		if ef.Evaluated {
-			extractTemplates(fv, i18n.NilLanguage, include)
-
-			// if this field is also localized, each translation is a template and needs to be included
-			if ef.Localized && localization != nil {
-				localizable := sv.Interface().(flows.Localizable)
-
-				Translations(localization, localizable.LocalizationUUID(), ef.JSONName, include)
+	walk(v,
+		func(v reflect.Value) {
+			te, ok := v.Interface().(flows.TemplateEnumerator)
+			if ok {
+				te.EnumerateTemplates(localization, include)
 			}
-		}
-	})
+		},
+		func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
+			if ef.Evaluated {
+				extractTemplates(fv, i18n.NilLanguage, include)
+
+				// if this field is also localized, each translation is a template and needs to be included
+				if ef.Localized && localization != nil {
+					localizable := sv.Interface().(flows.Localizable)
+
+					Translations(localization, localizable.LocalizationUUID(), ef.JSONName, include)
+				}
+			}
+		},
+	)
 }
 
 func Translations(localization flows.Localization, itemUUID uuids.UUID, property string, include func(i18n.Language, string)) {

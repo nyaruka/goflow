@@ -35,7 +35,7 @@ func Set[K constraints.Ordered](s []K) map[K]bool {
 }
 
 // SortedKeys returns the keys of a set in lexical order
-func SortedKeys[K constraints.Ordered](m map[K]bool) []K {
+func SortedKeys[K constraints.Ordered, V any](m map[K]V) []K {
 	keys := maps.Keys(m)
 	slices.Sort(keys)
 	return keys
