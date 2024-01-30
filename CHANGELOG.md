@@ -1,3 +1,7 @@
+v0.200.1 (2024-01-30)
+-------------------------
+ * Support more WA templates components
+
 v0.200.0 (2024-01-22)
 -------------------------
  * Rework template assets to use params instead of variables
