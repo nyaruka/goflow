@@ -122,6 +122,10 @@ type Localizable interface {
 	LocalizationUUID() uuids.UUID
 }
 
+type TemplateEnumerator interface {
+	EnumerateTemplates(Localization, func(i18n.Language, string))
+}
+
 // Flow describes the ordered logic of actions and routers
 type Flow interface {
 	Contextable
