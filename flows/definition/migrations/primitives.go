@@ -16,7 +16,9 @@ func (f Flow) Nodes() []Node {
 	d, _ := f["nodes"].([]any)
 	nodes := make([]Node, len(d))
 	for i := range d {
-		nodes[i] = Node(d[i].(map[string]any))
+		if d[i] != nil {
+			nodes[i] = Node(d[i].(map[string]any))
+		}
 	}
 	return nodes
 }
@@ -29,7 +31,9 @@ func (n Node) Actions() []Action {
 	d, _ := n["actions"].([]any)
 	actions := make([]Action, len(d))
 	for i := range d {
-		actions[i] = Action(d[i].(map[string]any))
+		if d[i] != nil {
+			actions[i] = Action(d[i].(map[string]any))
+		}
 	}
 	return actions
 }

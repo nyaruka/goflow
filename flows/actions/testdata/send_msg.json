@@ -346,15 +346,18 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi @contact.name, who's a good boy?",
             "templating": {
+                "params": {
+                    "body": [
+                        "@contact.name",
+                        "boy"
+                    ],
+                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                },
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
                     "name": "missing"
-                },
-                "variables": [
-                    "@contact.name",
-                    "boy"
-                ]
+                }
             }
         },
         "events": [
@@ -380,9 +383,7 @@
             "boy"
         ],
         "localizables": [
-            "Hi @contact.name, who's a good boy?",
-            "@contact.name",
-            "boy"
+            "Hi @contact.name, who's a good boy?"
         ],
         "inspection": {
             "dependencies": [
@@ -960,15 +961,18 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hey Ryan Lewis, your gender is saved as boy.",
             "templating": {
+                "params": {
+                    "body": [
+                        "@contact.name",
+                        "boy"
+                    ],
+                    "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d"
+                },
                 "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                     "name": "gender_update"
-                },
-                "variables": [
-                    "@contact.name",
-                    "boy"
-                ]
+                }
             }
         },
         "localization": {
@@ -985,8 +989,8 @@
                         "No"
                     ]
                 },
-                "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785": {
-                    "variables": [
+                "1ae96956-4b34-433e-8d1a-f05fe6923d6d": {
+                    "body": [
                         "@contact.name",
                         "niño"
                     ]
@@ -1059,9 +1063,7 @@
             "niño"
         ],
         "localizables": [
-            "Hey Ryan Lewis, your gender is saved as boy.",
-            "@contact.name",
-            "boy"
+            "Hey Ryan Lewis, your gender is saved as boy."
         ],
         "inspection": {
             "dependencies": [

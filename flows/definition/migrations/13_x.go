@@ -46,13 +46,20 @@ func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
 						delete(templating, "variables")
 
 						for lang := range localization {
-							ll := localization[lang].(map[string]map[string][]string)
-							langVariables := ll[templatingUUID]["variables"]
-
-							if langVariables != nil {
-								ll[string(paramsUUID)]["body"] = langVariables
+							ll := localization[lang].(map[string]any)
+							if ll != nil {
+								langVariables := ll[templatingUUID].(map[string]any)["variables"]
+								if langVariables != nil {
+									llParams := ll[string(paramsUUID)]
+									if llParams == nil {
+										llParams = make(map[string]any)
+									}
+									llParams.(map[string]any)["body"] = langVariables
+								}
 							}
+
 						}
+
 					}
 
 				}
