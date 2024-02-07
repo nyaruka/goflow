@@ -220,22 +220,25 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// next we cross reference with params defined in the template translation to get types
-	params := make(map[string][]flows.TemplateParam, len(translation.Params()))
+	params := make(map[string][]flows.TemplateParam, len(translation.Components()))
 
-	for comp, compParams := range translation.Params() {
-		params[comp] = make([]flows.TemplateParam, len(compParams))
+	for key, comp := range translation.Components() {
+		compParams := comp.Params()
+		if len(compParams) > 0 {
+			params[key] = make([]flows.TemplateParam, len(compParams))
+		}
 
 		for i, tp := range compParams {
-			if i < len(evaluatedParams[comp]) {
-				params[comp][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[comp][i]}
+			if i < len(evaluatedParams[key]) {
+				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
 			} else {
-				params[comp][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
+				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
 			}
 		}
 	}
 
 	// generate a preview of the body text with parameters substituted
-	evaluatedText := translation.Substitute(evaluatedParams["body"])
+	evaluatedText := translation.SubstituteParams(evaluatedParams)
 
 	templating := flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
 	locale := translation.Locale()

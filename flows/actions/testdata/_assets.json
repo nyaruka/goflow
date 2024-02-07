@@ -257,16 +257,18 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "content": "Hi {{1}}, who's an excellent {{2}}?",
-                    "params": {
-                        "body": [
-                            {
-                                "type": "text"
-                            },
-                            {
-                                "type": "text"
-                            }
-                        ]
+                    "components": {
+                        "body": {
+                            "content": "Hi {{1}}, who's an excellent {{2}}?",
+                            "params": [
+                                {
+                                    "type": "text"
+                                },
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        }
                     }
                 },
                 {
@@ -275,16 +277,18 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "content": "Hola {{1}}, quien es un {{2}} excelente?",
-                    "params": {
-                        "body": [
-                            {
-                                "type": "text"
-                            },
-                            {
-                                "type": "text"
-                            }
-                        ]
+                    "components": {
+                        "body": {
+                            "content": "Hola {{1}}, quien es un {{2}} excelente?",
+                            "params": [
+                                {
+                                    "type": "text"
+                                },
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        }
                     }
                 }
             ]
@@ -299,7 +303,12 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng",
-                    "content": "Hi there, it's time to get up!"
+                    "components": {
+                        "body": {
+                            "content": "Hi there, it's time to get up!",
+                            "params": []
+                        }
+                    }
                 }
             ]
         },
@@ -313,26 +322,34 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "content": "Hey {{1}}, your gender is saved as {{2}}.",
-                    "params": {
-                        "header": [
-                            {
-                                "type": "image"
-                            }
-                        ],
-                        "body": [
-                            {
-                                "type": "text"
-                            },
-                            {
-                                "type": "text"
-                            }
-                        ],
-                        "button.0": [
-                            {
-                                "type": "text"
-                            }
-                        ]
+                    "components": {
+                        "header": {
+                            "content": "",
+                            "params": [
+                                {
+                                    "type": "image"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "content": "Hey {{1}}, your gender is saved as {{2}}.",
+                            "params": [
+                                {
+                                    "type": "text"
+                                },
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "button.0": {
+                            "content": "",
+                            "params": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        }
                     }
                 },
                 {
@@ -341,31 +358,42 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
-                    "params": {
-                        "body": [
-                            {
-                                "type": "text"
-                            },
-                            {
-                                "type": "text"
-                            }
-                        ],
-                        "header": [
-                            {
-                                "type": "image"
-                            }
-                        ],
-                        "button.0": [
-                            {
-                                "type": "text"
-                            }
-                        ],
-                        "button.1": [
-                            {
-                                "type": "text"
-                            }
-                        ]
+                    "components": {
+                        "body": {
+                            "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
+                            "params": [
+                                {
+                                    "type": "text"
+                                },
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "header": {
+                            "content": "",
+                            "params": [
+                                {
+                                    "type": "image"
+                                }
+                            ]
+                        },
+                        "button.0": {
+                            "content": "",
+                            "params": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "button.1": {
+                            "content": "",
+                            "params": [
+                                {
+                                    "type": "text"
+                                }
+                            ]
+                        }
                     }
                 }
             ]
