@@ -12,94 +12,42 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTemplateTranslation(t *testing.T) {
-	tcs := []struct {
-		Content   string
-		Variables []string
-		Expected  string
-	}{
-		{"Hi {{1}}, {{2}}", []string{"Chef"}, "Hi Chef, "},
-		{"Good boy {{1}}! Who's the best {{1}}?", []string{"Chef"}, "Good boy Chef! Who's the best Chef?"},
-		{"Orbit {{1}}! No, go around the {{2}}!", []string{"Chef", "sofa"}, "Orbit Chef! No, go around the sofa!"},
-	}
-
-	channel := assets.NewChannelReference("0bce5fd3-c215-45a0-bcb8-2386eb194175", "Test Channel")
-
-	for i, tc := range tcs {
-		tt := flows.NewTemplateTranslation(static.NewTemplateTranslation(channel, i18n.Locale("eng-US"), "a6a8863e_7879_4487_ad24_5e2ea429027c", map[string]*static.TemplateComponent{"body": {Content_: tc.Content, Params_: []*static.TemplateParam{}}}))
-		result := tt.Substitute(tc.Variables)
-		assert.Equal(t, tc.Expected, result, "%d: unexpected template substitution", i)
-	}
-}
-
-func TestTemplate(t *testing.T) {
+func TestFindTranslation(t *testing.T) {
 	channel1 := test.NewChannel("WhatsApp 1", "+12345", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
 	channel2 := test.NewChannel("WhatsApp 2", "+23456", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
 	channel3 := test.NewChannel("WhatsApp 3", "+34567", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
 	channel1Ref := assets.NewChannelReference(channel1.UUID(), channel1.Name())
 	channel2Ref := assets.NewChannelReference(channel2.UUID(), channel2.Name())
 
-	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "", map[string]*static.TemplateComponent{"body": {Content_: "Hello {{1}}", Params_: []*static.TemplateParam{{Type_: "text"}}}})
-	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "", map[string]*static.TemplateComponent{"body": {Content_: "Que tal {{1}}", Params_: []*static.TemplateParam{{Type_: "text"}}}})
-	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "", map[string]*static.TemplateComponent{"body": {Content_: "Hola {{1}}", Params_: []*static.TemplateParam{{Type_: "text"}}}})
-	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("en"), "", map[string]*static.TemplateComponent{"body": {Content_: "Hello {{1}}", Params_: []*static.TemplateParam{{Type_: "text"}}}})
-	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
+	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "", map[string]*static.TemplateComponent{})
+	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "", map[string]*static.TemplateComponent{})
+	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "", map[string]*static.TemplateComponent{})
+	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), "", map[string]*static.TemplateComponent{})
 
+	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
 	tas := flows.NewTemplateAssets([]assets.Template{template})
 
 	tcs := []struct {
-		channel   *flows.Channel
-		locales   []i18n.Locale
-		variables []string
-		expected  string
+		channel  *flows.Channel
+		locales  []i18n.Locale
+		expected i18n.Locale
 	}{
-		{
-			channel1,
-			[]i18n.Locale{"eng-US", "spa-CO"},
-			[]string{"Chef"},
-			"Hello Chef",
-		},
-		{
-			channel1,
-			[]i18n.Locale{"eng", "spa-CO"},
-			[]string{"Chef"},
-			"Hello Chef",
-		},
-		{
-			channel1,
-			[]i18n.Locale{"deu-DE", "spa-ES"},
-			[]string{"Chef"},
-			"Hola Chef",
-		},
-		{
-			channel1,
-			[]i18n.Locale{"deu-DE"},
-			[]string{"Chef"},
-			"Hello Chef",
-		},
-		{
-			channel2,
-			[]i18n.Locale{"eng-US", "spa-ES"},
-			[]string{"Chef"},
-			"Hello Chef",
-		},
-		{
-			channel3,
-			[]i18n.Locale{"eng-US", "spa-ES"},
-			[]string{"Chef"},
-			"",
-		},
+		{channel1, []i18n.Locale{"eng-US", "spa-CO"}, "eng"},
+		{channel1, []i18n.Locale{"eng", "spa-CO"}, "eng"},
+		{channel1, []i18n.Locale{"deu-DE", "spa-ES"}, "spa-ES"},
+		{channel1, []i18n.Locale{"deu-DE"}, "eng"},
+		{channel2, []i18n.Locale{"eng-US", "spa-ES"}, "kin"},
+		{channel3, []i18n.Locale{"eng-US", "spa-ES"}, ""},
 	}
 
 	for _, tc := range tcs {
 		testID := fmt.Sprintf("channel '%s' and locales %v", tc.channel.Name(), tc.locales)
 		tr := template.FindTranslation(tc.channel, tc.locales)
+
 		if tc.expected == "" {
 			assert.Nil(t, tr, "unexpected translation found for %s", testID)
 		} else {
-			if assert.NotNil(t, tr, "expected translation to be found for %s", testID) {
-				assert.Equal(t, tc.expected, tr.Substitute(tc.variables), "substition mismatch for %s", testID)
-			}
+			assert.Equal(t, tc.expected, tr.Locale(), "translation mismatch for %s", testID)
 		}
 	}
 
@@ -107,4 +55,62 @@ func TestTemplate(t *testing.T) {
 	assert.NotNil(t, template)
 	assert.Equal(t, assets.NewTemplateReference("c520cbda-e118-440f-aaf6-c0485088384f", "greeting"), template.Reference())
 	assert.Equal(t, (*assets.TemplateReference)(nil), (*flows.Template)(nil).Reference())
+}
+
+func TestTemplatePreview(t *testing.T) {
+	channel := test.NewChannel("WhatsApp", "+12345", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
+	channelRef := assets.NewChannelReference(channel.UUID(), channel.Name())
+
+	tt := static.NewTemplateTranslation(channelRef, i18n.Locale("eng"), "", map[string]*static.TemplateComponent{
+		"body": {
+			Content_: "Hello {{1}}, {{2}}",
+			Params_:  []*static.TemplateParam{{Type_: "text"}},
+		},
+		"button.0": {
+			Content_: "Yes",
+			Params_:  []*static.TemplateParam{},
+		},
+		"button.1": {
+			Content_: "No {{1}}",
+			Params_:  []*static.TemplateParam{{Type_: "text"}},
+		},
+	})
+
+	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt}))
+	translation := template.FindTranslation(channel, []i18n.Locale{"eng"})
+
+	tcs := []struct {
+		templating map[string][]flows.TemplateParam
+		expected   map[string]string
+	}{
+		{
+			map[string][]flows.TemplateParam{}, // no params
+			map[string]string{"body": "Hello , ", "button.0": "Yes", "button.1": "No "},
+		},
+		{
+			map[string][]flows.TemplateParam{
+				"body": {{Type: "text", Value: "Bob"}}, // missing 1 param for body
+			},
+			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
+		},
+		{
+			map[string][]flows.TemplateParam{
+				"body": {{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
+			},
+			map[string]string{"body": "Hello Bob, how are you?", "button.0": "Yes", "button.1": "No "},
+		},
+		{
+			map[string][]flows.TemplateParam{
+				"body":   {{Type: "text", Value: "Bob"}},
+				"header": {{Type: "text", Value: "Hi"}}, // extra component ignored
+			},
+			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
+		},
+	}
+
+	for _, tc := range tcs {
+		templating := flows.NewMsgTemplating(template.Reference(), tc.templating, "")
+
+		assert.Equal(t, tc.expected, translation.Preview(templating))
+	}
 }

@@ -343,7 +343,7 @@
                             ]
                         },
                         "button.0": {
-                            "content": "",
+                            "content": "{{1}}",
                             "params": [
                                 {
                                     "type": "text"
@@ -379,7 +379,7 @@
                             ]
                         },
                         "button.0": {
-                            "content": "",
+                            "content": "{{1}}",
                             "params": [
                                 {
                                     "type": "text"
@@ -387,12 +387,8 @@
                             ]
                         },
                         "button.1": {
-                            "content": "",
-                            "params": [
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "content": "No",
+                            "params": []
                         }
                     }
                 }
