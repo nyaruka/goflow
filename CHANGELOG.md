@@ -1,3 +1,7 @@
+v0.201.0 (2024-02-12)
+-------------------------
+ * Replace template translation content and params by the components fields
+
 v0.200.1 (2024-01-30)
 -------------------------
  * Support more WA templates components
