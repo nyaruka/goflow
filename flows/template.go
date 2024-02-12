@@ -64,9 +64,29 @@ func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.Temp
 
 var templateRegex = regexp.MustCompile(`({{\d+}})`)
 
+func (t *TemplateTranslation) SubstituteParams(params map[string][]string) string {
+	allContents := make([]string, 0)
+
+	for key, comp := range t.Components() {
+		s := string(comp.Content())
+		vars := params[key]
+		for i, v := range vars {
+			s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i+1), v)
+		}
+
+		// replace any remaining unmatched items
+		s = templateRegex.ReplaceAllString(s, "")
+		if s != "" {
+			allContents = append(allContents, s)
+		}
+	}
+
+	return strings.Join(allContents[:], "\n")
+}
+
 // Substitute substitutes the passed in variables in our template
 func (t *TemplateTranslation) Substitute(vars []string) string {
-	s := string(t.Content())
+	s := string(t.Components()["body"].Content())
 	for i, v := range vars {
 		s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i+1), v)
 	}

@@ -15,12 +15,13 @@ func TestTemplate(t *testing.T) {
 	tp1 := NewTemplateParam("text")
 	assert.Equal(t, "text", tp1.Type())
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "Hello {{1}}", "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string][]TemplateParam{"body": {tp1}})
+	tc1 := NewTemplateComponent("Hello {{1}}", []*TemplateParam{&tp1})
+
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string]*TemplateComponent{"body": tc1})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
-	assert.Equal(t, "Hello {{1}}", translation.Content())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
-	assert.Equal(t, map[string][]assets.TemplateParam{"body": {(assets.TemplateParam)(&tp1)}}, translation.Params())
+	assert.Equal(t, map[string]assets.TemplateComponent{"body": (assets.TemplateComponent)(tc1)}, translation.Components())
 
 	template := NewTemplate(assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), "hello", []*TemplateTranslation{translation})
 	assert.Equal(t, assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), template.UUID())
@@ -37,6 +38,5 @@ func TestTemplate(t *testing.T) {
 
 	assert.Equal(t, copy.Name(), template.Name())
 	assert.Equal(t, copy.UUID(), template.UUID())
-	assert.Equal(t, copy.Translations()[0].Content(), template.Translations()[0].Content())
 	assert.Equal(t, copy.Translations()[0].Namespace(), template.Translations()[0].Namespace())
 }
