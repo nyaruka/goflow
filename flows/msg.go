@@ -180,20 +180,19 @@ type MsgTemplating struct {
 	Namespace_ string                     `json:"namespace"`
 }
 
-// Template returns the template this msg template is for
-func (t MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
-
-// Namespace returns the namespace that should be for the template
-func (t MsgTemplating) Namespace() string { return t.Namespace_ }
-
-// Params returns the params that should be used for the template
-func (t MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
-
 // NewMsgTemplating creates and returns a new msg template
 func NewMsgTemplating(template *assets.TemplateReference, params map[string][]TemplateParam, namespace string) *MsgTemplating {
-
 	return &MsgTemplating{Template_: template, Namespace_: namespace, Params_: params}
 }
+
+// Template returns the template this msg template is for
+func (t *MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
+
+// Namespace returns the namespace that should be for the template
+func (t *MsgTemplating) Namespace() string { return t.Namespace_ }
+
+// Params returns the params that should be used for the template
+func (t *MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
 
 // BroadcastTranslation is the broadcast content in a particular language
 type BroadcastTranslation struct {

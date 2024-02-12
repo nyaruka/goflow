@@ -465,7 +465,6 @@
                         },
                         "namespace": ""
                     },
-                    "topic": "account",
                     "locale": "eng-US"
                 }
             }
@@ -873,6 +872,10 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hola, Ryan Lewis, tu género está guardado como niño.",
+                    "quick_replies": [
+                        "Sip",
+                        "No"
+                    ],
                     "templating": {
                         "template": {
                             "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
@@ -893,12 +896,6 @@
                                 {
                                     "type": "text",
                                     "value": "Sip"
-                                }
-                            ],
-                            "button.1": [
-                                {
-                                    "type": "text",
-                                    "value": "Nope"
                                 }
                             ],
                             "header": [
@@ -1006,6 +1003,10 @@
                         "name": "My Android Phone"
                     },
                     "text": "Hola, Ryan Lewis, tu género está guardado como niño.",
+                    "quick_replies": [
+                        "",
+                        "No"
+                    ],
                     "templating": {
                         "template": {
                             "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
@@ -1023,12 +1024,6 @@
                                 }
                             ],
                             "button.0": [
-                                {
-                                    "type": "text",
-                                    "value": ""
-                                }
-                            ],
-                            "button.1": [
                                 {
                                     "type": "text",
                                     "value": ""

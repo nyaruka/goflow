@@ -2,6 +2,7 @@ package actions
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
@@ -237,10 +238,18 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		}
 	}
 
-	// generate a preview of the body text with parameters substituted
-	evaluatedText := translation.SubstituteParams(evaluatedParams)
-
-	templating := flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
 	locale := translation.Locale()
-	return flows.NewMsgOut(urn, channelRef, evaluatedText, nil, nil, templating, a.Topic, locale, unsendableReason)
+	templating := flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
+
+	// extract content for preview message
+	preview := translation.Preview(templating)
+	previewText := preview["body"]
+	var previewQRs []string
+	for _, key := range utils.SortedKeys(preview) {
+		if strings.HasPrefix(key, "button.") {
+			previewQRs = append(previewQRs, preview[key])
+		}
+	}
+
+	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }

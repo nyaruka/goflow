@@ -64,37 +64,23 @@ func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.Temp
 
 var templateRegex = regexp.MustCompile(`({{\d+}})`)
 
-func (t *TemplateTranslation) SubstituteParams(params map[string][]string) string {
-	allContents := make([]string, 0)
+func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]string {
+	preview := make(map[string]string, len(t.Components()))
 
 	for key, comp := range t.Components() {
-		s := string(comp.Content())
-		vars := params[key]
-		for i, v := range vars {
-			s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i+1), v)
+		content := comp.Content()
+
+		for i, p := range templating.Params()[key] {
+			content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
 		}
 
-		// replace any remaining unmatched items
-		s = templateRegex.ReplaceAllString(s, "")
-		if s != "" {
-			allContents = append(allContents, s)
-		}
+		// replace any remaining unmatched items with empty string
+		content = templateRegex.ReplaceAllString(content, "")
+
+		preview[key] = content
 	}
 
-	return strings.Join(allContents[:], "\n")
-}
-
-// Substitute substitutes the passed in variables in our template
-func (t *TemplateTranslation) Substitute(vars []string) string {
-	s := string(t.Components()["body"].Content())
-	for i, v := range vars {
-		s = strings.ReplaceAll(s, fmt.Sprintf("{{%d}}", i+1), v)
-	}
-
-	// replace any remaining unmatched items
-	s = templateRegex.ReplaceAllString(s, "")
-
-	return s
+	return preview
 }
 
 // TemplateAssets is our type for all the templates in an environment
