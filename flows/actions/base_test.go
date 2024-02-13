@@ -257,7 +257,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		actual.Events, _ = jsonx.Marshal(runEvents[ignoreEventCount:])
 
 		if tc.Webhook != nil {
-			actual.Webhook, _ = jsonx.Marshal(run.Webhook())
+			actual.Webhook = jsonx.MustMarshal(run.Webhook())
 		}
 		if tc.ContactAfter != nil {
 			actual.ContactAfter, _ = jsonx.Marshal(session.Contact())

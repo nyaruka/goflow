@@ -147,7 +147,7 @@ func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, bo
 		logEvent(events.NewError(err))
 	}
 	if call != nil {
-		a.updateWebhook(run, call)
+		run.SetWebhook(call)
 
 		status := callStatus(call, err, false)
 

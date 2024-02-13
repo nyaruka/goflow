@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"encoding/json"
 	"net/http"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 
 	"github.com/shopspring/decimal"
 )
@@ -48,6 +50,41 @@ type WebhookCall struct {
 	*httpx.Trace
 	ResponseJSON    []byte
 	ResponseCleaned bool // whether response had to be cleaned to make it valid JSON
+}
+
+// Context returns the properties available in expressions
+//
+//	__default__:text -> the URL
+//	headers:any -> the response headers
+//	json:any -> the response body if valid JSON
+//
+// @context webhook
+func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
+	headers := types.XObjectEmpty
+	if w.Response != nil {
+		headers = types.NewXLazyObject(func() map[string]types.XValue {
+			values := make(map[string]types.XValue, len(w.Response.Header))
+			for k := range w.Response.Header {
+				values[k] = types.NewXText(w.Response.Header.Get(k))
+			}
+			return values
+		})
+	}
+
+	json := types.JSONToXValue(w.ResponseJSON)
+	if types.IsXError(json) {
+		json = types.XObjectEmpty
+	}
+
+	return map[string]types.XValue{
+		"__default__": types.NewXText(w.Request.URL.String()),
+		"headers":     headers,
+		"json":        json,
+	}
+}
+
+func (w *WebhookCall) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Context(nil))
 }
 
 // WebhookService provides webhook functionality to the engine

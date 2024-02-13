@@ -64,7 +64,7 @@
           "actions": [
             {
               "attachments": [],
-              "text": "Would you like to continue?\n\n1. @results.call_1.extra\n2. @webhook",
+              "text": "Would you like to continue?\n\n1. @results.call_1.extra\n2. @webhook.json",
               "type": "send_msg",
               "quick_replies": [],
               "uuid": "b36af7e9-69ad-488e-acf2-2f0481ba1c91"
@@ -109,7 +109,7 @@
           "actions": [
             {
               "attachments": [],
-              "text": "1. @results.call_1.extra\n2. @webhook",
+              "text": "1. @results.call_1.extra\n2. @webhook.json",
               "type": "send_msg",
               "quick_replies": [],
               "uuid": "73e44bdf-58a0-4eb6-98a2-b70edab4837c"
@@ -179,7 +179,7 @@
           "actions": [
             {
               "attachments": [],
-              "text": "Would you like to continue again?\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook",
+              "text": "Would you like to continue again?\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook.json",
               "type": "send_msg",
               "quick_replies": [],
               "uuid": "7bdea126-c2e1-4932-a1d4-e5a14cfbe1f5"
@@ -224,7 +224,7 @@
           "actions": [
             {
               "attachments": [],
-              "text": "Finally..\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook",
+              "text": "Finally..\n\n1. @results.call_1.extra\n2. @results.call_2.extra\n3. @webhook.json",
               "type": "send_msg",
               "quick_replies": [],
               "uuid": "f77c5b65-45d6-427d-a31f-7cd5a8478098"

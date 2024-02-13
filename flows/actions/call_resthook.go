@@ -134,7 +134,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 
 	asResult := a.pickResultCall(calls)
 	if asResult != nil {
-		a.updateWebhook(run, asResult)
+		run.SetWebhook(asResult)
 	}
 
 	if a.ResultName != "" {

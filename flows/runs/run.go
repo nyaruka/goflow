@@ -36,7 +36,7 @@ type run struct {
 	modifiedOn time.Time
 	exitedOn   *time.Time
 
-	webhook     types.XValue
+	webhook     *flows.WebhookCall
 	legacyExtra *legacyExtra
 }
 
@@ -56,7 +56,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run 
 		modifiedOn: now,
 	}
 
-	r.webhook = types.XObjectEmpty
+	r.webhook = nil
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
@@ -94,11 +94,9 @@ func (r *run) SetStatus(status flows.RunStatus) {
 	r.modifiedOn = dates.Now()
 }
 
-func (r *run) Webhook() types.XValue {
-	return r.webhook
-}
-func (r *run) SetWebhook(value types.XValue) {
-	r.webhook = value
+func (r *run) Webhook() *flows.WebhookCall { return r.webhook }
+func (r *run) SetWebhook(call *flows.WebhookCall) {
+	r.webhook = call
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -246,7 +244,7 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 		"resume":       flows.Context(env, r.Session().CurrentResume()),
 		"input":        flows.Context(env, r.Session().Input()),
 		"globals":      flows.Context(env, r.Session().Assets().Globals()),
-		"webhook":      r.webhook,
+		"webhook":      flows.Context(env, r.webhook),
 		"node":         node,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
@@ -459,8 +457,6 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 		}
 	}
 
-	// create context
-	r.webhook = lastWebhookSavedAsExtra(r)
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil

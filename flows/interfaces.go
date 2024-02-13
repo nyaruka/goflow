@@ -411,8 +411,8 @@ type Run interface {
 	Session() Session
 	SaveResult(*Result)
 	SetStatus(RunStatus)
-	Webhook() types.XValue
-	SetWebhook(types.XValue)
+	Webhook() *WebhookCall
+	SetWebhook(*WebhookCall)
 
 	CreateStep(Node) Step
 	Path() []Step

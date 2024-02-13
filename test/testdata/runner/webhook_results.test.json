@@ -229,6 +229,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:29.123456789Z",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "text": "error evaluating @webhook.json: null doesn't support lookups",
+                    "type": "error"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:31.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "1. \n2. ",
@@ -239,7 +245,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:35.123456789Z",
+                    "created_on": "2018-07-06T12:30:37.123456789Z",
                     "elapsed_ms": 1000,
                     "extraction": "valid",
                     "request": "GET /2 HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -253,7 +259,7 @@
                 },
                 {
                     "category": "Success",
-                    "created_on": "2018-07-06T12:30:39.123456789Z",
+                    "created_on": "2018-07-06T12:30:41.123456789Z",
                     "extra": {
                         "greeting": "hello"
                     },
@@ -264,7 +270,7 @@
                     "value": "200"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:43.123456789Z",
+                    "created_on": "2018-07-06T12:30:45.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Would you like to continue again?\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
@@ -275,8 +281,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:48.123456789Z",
-                    "expires_on": "2018-07-13T12:30:47.123456789Z",
+                    "created_on": "2018-07-06T12:30:50.123456789Z",
+                    "expires_on": "2018-07-13T12:30:49.123456789Z",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_wait"
                 }
@@ -295,7 +301,7 @@
                     "exit_uuid": "bd58fffa-f763-4622-bed6-70f1fcd83159",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "23eb8d34-59b6-46b6-991a-440381c54947",
-                    "time": "2018-07-06T12:30:31.123456789Z"
+                    "time": "2018-07-06T12:30:33.123456789Z"
                 },
                 {
                     "destination_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
@@ -303,14 +309,14 @@
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                     "operand": "Success",
-                    "time": "2018-07-06T12:30:41.123456789Z"
+                    "time": "2018-07-06T12:30:43.123456789Z"
                 },
                 {
                     "destination_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                     "exit_uuid": "20d4d0a1-b1a8-4bc8-a50d-c5f6cf09cc88",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
-                    "time": "2018-07-06T12:30:45.123456789Z"
+                    "time": "2018-07-06T12:30:47.123456789Z"
                 }
             ],
             "session": {
@@ -409,6 +415,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "text": "error evaluating @webhook.json: null doesn't support lookups",
+                                "type": "error"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "1. \n2. ",
@@ -419,7 +431,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:37.123456789Z",
                                 "elapsed_ms": 1000,
                                 "extraction": "valid",
                                 "request": "GET /2 HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -433,7 +445,7 @@
                             },
                             {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:39.123456789Z",
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "extra": {
                                     "greeting": "hello"
                                 },
@@ -444,7 +456,7 @@
                                 "value": "200"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:43.123456789Z",
+                                "created_on": "2018-07-06T12:30:45.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Would you like to continue again?\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
@@ -455,8 +467,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:48.123456789Z",
-                                "expires_on": "2018-07-13T12:30:47.123456789Z",
+                                "created_on": "2018-07-06T12:30:50.123456789Z",
+                                "expires_on": "2018-07-13T12:30:49.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_wait"
                             }
@@ -467,7 +479,7 @@
                             "revision": 23,
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
-                        "modified_on": "2018-07-06T12:30:50.123456789Z",
+                        "modified_on": "2018-07-06T12:30:52.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -494,19 +506,19 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
                                 "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:42.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:44.123456789Z",
                                 "exit_uuid": "20d4d0a1-b1a8-4bc8-a50d-c5f6cf09cc88",
                                 "node_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:48.123456789Z",
                                 "node_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             }
@@ -522,7 +534,7 @@
                             },
                             "call_2": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:37.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "extra": {
                                     "greeting": "hello"
                                 },
@@ -572,7 +584,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:52.123456789Z",
+                    "created_on": "2018-07-06T12:30:54.123456789Z",
                     "msg": {
                         "text": "Sure",
                         "urn": "tel:+12065551212",
@@ -583,7 +595,7 @@
                 },
                 {
                     "category": "All Responses",
-                    "created_on": "2018-07-06T12:30:56.123456789Z",
+                    "created_on": "2018-07-06T12:30:58.123456789Z",
                     "input": "Sure",
                     "name": "Response 2",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
@@ -591,10 +603,16 @@
                     "value": "Sure"
                 },
                 {
-                    "created_on": "2018-07-06T12:31:00.123456789Z",
+                    "created_on": "2018-07-06T12:31:02.123456789Z",
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "text": "error evaluating @webhook.json: null doesn't support lookups",
+                    "type": "error"
+                },
+                {
+                    "created_on": "2018-07-06T12:31:04.123456789Z",
                     "msg": {
                         "locale": "eng-US",
-                        "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
+                        "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. ",
                         "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
@@ -609,7 +627,7 @@
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                     "operand": "Sure",
-                    "time": "2018-07-06T12:30:58.123456789Z"
+                    "time": "2018-07-06T12:31:00.123456789Z"
                 }
             ],
             "session": {
@@ -708,6 +726,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "text": "error evaluating @webhook.json: null doesn't support lookups",
+                                "type": "error"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "1. \n2. ",
@@ -718,7 +742,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "created_on": "2018-07-06T12:30:37.123456789Z",
                                 "elapsed_ms": 1000,
                                 "extraction": "valid",
                                 "request": "GET /2 HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -732,7 +756,7 @@
                             },
                             {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:39.123456789Z",
+                                "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "extra": {
                                     "greeting": "hello"
                                 },
@@ -743,7 +767,7 @@
                                 "value": "200"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:43.123456789Z",
+                                "created_on": "2018-07-06T12:30:45.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Would you like to continue again?\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
@@ -754,13 +778,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:48.123456789Z",
-                                "expires_on": "2018-07-13T12:30:47.123456789Z",
+                                "created_on": "2018-07-06T12:30:50.123456789Z",
+                                "expires_on": "2018-07-13T12:30:49.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:52.123456789Z",
+                                "created_on": "2018-07-06T12:30:54.123456789Z",
                                 "msg": {
                                     "text": "Sure",
                                     "urn": "tel:+12065551212",
@@ -771,7 +795,7 @@
                             },
                             {
                                 "category": "All Responses",
-                                "created_on": "2018-07-06T12:30:56.123456789Z",
+                                "created_on": "2018-07-06T12:30:58.123456789Z",
                                 "input": "Sure",
                                 "name": "Response 2",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
@@ -779,10 +803,16 @@
                                 "value": "Sure"
                             },
                             {
-                                "created_on": "2018-07-06T12:31:00.123456789Z",
+                                "created_on": "2018-07-06T12:31:02.123456789Z",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "text": "error evaluating @webhook.json: null doesn't support lookups",
+                                "type": "error"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:31:04.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
-                                    "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
+                                    "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. ",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },
@@ -790,13 +820,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:02.123456789Z",
+                        "exited_on": "2018-07-06T12:31:06.123456789Z",
                         "flow": {
                             "name": "Webhook Results",
                             "revision": 23,
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
-                        "modified_on": "2018-07-06T12:31:02.123456789Z",
+                        "modified_on": "2018-07-06T12:31:06.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -823,25 +853,25 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:34.123456789Z",
                                 "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
                                 "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:42.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:44.123456789Z",
                                 "exit_uuid": "20d4d0a1-b1a8-4bc8-a50d-c5f6cf09cc88",
                                 "node_uuid": "71e72160-bb45-4abf-ba22-ab646178722a",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:46.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:48.123456789Z",
                                 "exit_uuid": "066c4b62-72f2-460b-a671-b4fa919c745a",
                                 "node_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:59.123456789Z",
+                                "arrived_on": "2018-07-06T12:31:01.123456789Z",
                                 "exit_uuid": "28236174-02ce-49b0-bdce-403afd9850fb",
                                 "node_uuid": "066c0ea6-68f1-4849-a4f5-5ef3465e9e97",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
@@ -858,7 +888,7 @@
                             },
                             "call_2": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:37.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "extra": {
                                     "greeting": "hello"
                                 },
@@ -877,7 +907,7 @@
                             },
                             "response_2": {
                                 "category": "All Responses",
-                                "created_on": "2018-07-06T12:30:54.123456789Z",
+                                "created_on": "2018-07-06T12:30:56.123456789Z",
                                 "input": "Sure",
                                 "name": "Response 2",
                                 "node_uuid": "a28a6ec4-8e43-4362-9c0f-32be98f0b00c",

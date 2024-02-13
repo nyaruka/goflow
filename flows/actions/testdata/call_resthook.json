@@ -251,9 +251,13 @@
             }
         ],
         "webhook": {
-            "errors": [
-                "service unavailable"
-            ]
+            "__default__": "http://unavailable.com/",
+            "headers": {},
+            "json": {
+                "errors": [
+                    "service unavailable"
+                ]
+            }
         },
         "inspection": {
             "dependencies": [],
@@ -395,7 +399,11 @@
             }
         ],
         "webhook": {
-            "ok": "true"
+            "__default__": "http://temba.io/",
+            "headers": {},
+            "json": {
+                "ok": "true"
+            }
         },
         "inspection": {
             "dependencies": [],
@@ -622,9 +630,13 @@
             }
         ],
         "webhook": {
-            "errors": [
-                "service unavailable"
-            ]
+            "__default__": "http://unavailable.com/",
+            "headers": {},
+            "json": {
+                "errors": [
+                    "service unavailable"
+                ]
+            }
         },
         "inspection": {
             "dependencies": [],
