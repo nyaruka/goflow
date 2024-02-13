@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -13,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeRandom, readRandomRouter)
+	registerType(TypeRandom, func() flows.Router { return &RandomRouter{} })
 }
 
 // TypeRandom is the type for a random router
@@ -49,19 +48,17 @@ func (r *RandomRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readRandomRouter(data json.RawMessage) (flows.Router, error) {
+func (r *RandomRouter) UnmarshalJSON(data []byte) error {
 	e := &baseRouterEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, err
+		return err
 	}
-
-	r := &RandomRouter{}
 
 	if err := r.unmarshal(e); err != nil {
-		return nil, err
+		return err
 	}
 
-	return r, nil
+	return nil
 }
 
 // MarshalJSON marshals this resume into JSON

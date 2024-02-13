@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -19,7 +18,7 @@ import (
 )
 
 func init() {
-	registerType(TypeSwitch, readSwitchRouter)
+	registerType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
 }
 
 // TypeSwitch is the constant for our switch router
@@ -249,26 +248,24 @@ type switchRouterEnvelope struct {
 	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
 }
 
-func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
+func (r *SwitchRouter) UnmarshalJSON(data []byte) error {
 	e := &switchRouterEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, err
+		return err
 	}
 
-	r := &SwitchRouter{
-		operand:             e.Operand,
-		cases:               e.Cases,
-		defaultCategoryUUID: e.DefaultCategoryUUID,
-	}
+	r.operand = e.Operand
+	r.cases = e.Cases
+	r.defaultCategoryUUID = e.DefaultCategoryUUID
 
 	if err := r.unmarshal(&e.baseRouterEnvelope); err != nil {
-		return nil, err
+		return err
 	}
 
-	return r, nil
+	return nil
 }
 
-// MarshalJSON marshals this resume into JSON
+// MarshalJSON marshals this router into JSON
 func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
 	e := &switchRouterEnvelope{
 		Operand:             r.operand,
