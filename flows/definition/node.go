@@ -89,7 +89,7 @@ func (n *node) EnumerateTemplates(localization flows.Localization, include func(
 	}
 
 	if n.router != nil {
-		n.router.EnumerateTemplates(localization, func(l i18n.Language, t string) {
+		inspect.Templates(n.router, localization, func(l i18n.Language, t string) {
 			include(nil, n.router, l, t)
 		})
 	}

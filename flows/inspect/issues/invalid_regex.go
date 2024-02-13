@@ -58,7 +58,7 @@ func InvalidRegexCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.Ext
 	for _, node := range flow.Nodes() {
 		if node.Router() != nil && node.Router().Type() == routers.TypeSwitch {
 			router := node.Router().(*routers.SwitchRouter)
-			for _, kase := range router.Cases() {
+			for _, kase := range router.Cases {
 				if kase.Type == "has_pattern" && len(kase.Arguments) > 0 {
 					checkTemplate(node, nil, "", kase.Arguments[0])
 

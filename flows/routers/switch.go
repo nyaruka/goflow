@@ -75,32 +75,29 @@ func (c *Case) Dependencies(localization flows.Localization, include func(i18n.L
 type SwitchRouter struct {
 	baseRouter
 
-	operand             string
-	cases               []*Case
-	defaultCategoryUUID flows.CategoryUUID
+	Operand             string             `json:"operand"  validate:"required"  engine:"evaluated"`
+	Cases               []*Case            `json:"cases"`
+	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
 }
 
 // NewSwitch creates a new switch router
 func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, operand string, cases []*Case, defaultCategoryUUID flows.CategoryUUID) *SwitchRouter {
 	return &SwitchRouter{
 		baseRouter:          newBaseRouter(TypeSwitch, wait, resultName, categories),
-		defaultCategoryUUID: defaultCategoryUUID,
-		operand:             operand,
-		cases:               cases,
+		DefaultCategoryUUID: defaultCategoryUUID,
+		Operand:             operand,
+		Cases:               cases,
 	}
 }
-
-// Cases returns the cases for this switch router
-func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	// check the default category is valid
-	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
-		return errors.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
+	if r.DefaultCategoryUUID != "" && !r.isValidCategory(r.DefaultCategoryUUID) {
+		return errors.Errorf("default category %s is not a valid category", r.DefaultCategoryUUID)
 	}
 
-	for _, c := range r.cases {
+	for _, c := range r.Cases {
 		// check each case points to a valid category
 		if !r.isValidCategory(c.CategoryUUID) {
 			return errors.Errorf("case category %s is not a valid category", c.CategoryUUID)
@@ -120,7 +117,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand
-	operand, err := run.EvaluateTemplateValue(r.operand)
+	operand, err := run.EvaluateTemplateValue(r.Operand)
 	if err != nil {
 		run.LogError(step, err)
 	}
@@ -139,7 +136,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 	}
 
 	// none of our cases matched, so try to use the default
-	if categoryUUID == "" && r.defaultCategoryUUID != "" {
+	if categoryUUID == "" && r.DefaultCategoryUUID != "" {
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
@@ -147,7 +144,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 		}
 
 		match = value.Native()
-		categoryUUID = r.defaultCategoryUUID
+		categoryUUID = r.DefaultCategoryUUID
 	}
 
 	exit, err := r.routeToCategory(run, step, categoryUUID, match, operandAsStr, extra, logEvent)
@@ -155,7 +152,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 }
 
 func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, *types.XObject, error) {
-	for _, c := range r.cases {
+	for _, c := range r.Cases {
 		test := strings.ToLower(c.Type)
 
 		// try to look up our function
@@ -217,21 +214,14 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 	return "", "", nil, nil
 }
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
-	include(i18n.NilLanguage, r.operand)
-
-	inspect.Templates(r.cases, localization, include)
-}
-
 // EnumerateDependencies enumerates all dependencies on this object and its children
 func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
-	inspect.Dependencies(r.cases, localization, include)
+	inspect.Dependencies(r.Cases, localization, include)
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object
 func (r *SwitchRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string, func([]string))) {
-	inspect.LocalizableText(r.cases, include)
+	inspect.LocalizableText(r.Cases, include)
 
 	r.baseRouter.EnumerateLocalizables(include)
 }
@@ -243,7 +233,7 @@ func (r *SwitchRouter) EnumerateLocalizables(include func(uuids.UUID, string, []
 type switchRouterEnvelope struct {
 	baseRouterEnvelope
 
-	Operand             string             `json:"operand"               validate:"required"`
+	Operand             string             `json:"operand"  validate:"required"`
 	Cases               []*Case            `json:"cases"`
 	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
 }
@@ -254,9 +244,9 @@ func (r *SwitchRouter) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	r.operand = e.Operand
-	r.cases = e.Cases
-	r.defaultCategoryUUID = e.DefaultCategoryUUID
+	r.Operand = e.Operand
+	r.Cases = e.Cases
+	r.DefaultCategoryUUID = e.DefaultCategoryUUID
 
 	if err := r.unmarshal(&e.baseRouterEnvelope); err != nil {
 		return err
@@ -268,9 +258,9 @@ func (r *SwitchRouter) UnmarshalJSON(data []byte) error {
 // MarshalJSON marshals this router into JSON
 func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
 	e := &switchRouterEnvelope{
-		Operand:             r.operand,
-		Cases:               r.cases,
-		DefaultCategoryUUID: r.defaultCategoryUUID,
+		Operand:             r.Operand,
+		Cases:               r.Cases,
+		DefaultCategoryUUID: r.DefaultCategoryUUID,
 	}
 
 	if err := r.marshal(&e.baseRouterEnvelope); err != nil {

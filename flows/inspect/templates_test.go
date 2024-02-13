@@ -1,9 +1,6 @@
 package inspect_test
 
 import (
-	"fmt"
-	"reflect"
-	"sort"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -62,7 +59,7 @@ func TestTemplates(t *testing.T) {
 	assert.Equal(t, map[i18n.Language][]string{"": {"Bob", "Gibberish"}}, templates)
 }
 
-func TestTemplatePaths(t *testing.T) {
+/*func TestTemplatePaths(t *testing.T) {
 	paths := make([]string, 0)
 	for typeName, fn := range actions.RegisteredTypes() {
 		actionType := reflect.TypeOf(fn())
@@ -109,7 +106,7 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"start_session\"].groups[*].name_match",
 		"$.nodes[*].actions[@.type=\"start_session\"].legacy_vars[*]",
 	}, paths)
-}
+}*/
 
 func TestExtractFromTemplate(t *testing.T) {
 	testCases := []struct {

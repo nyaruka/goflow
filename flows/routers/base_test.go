@@ -163,7 +163,49 @@ func TestReadRouter(t *testing.T) {
 	_, err := routers.ReadRouter([]byte(`{"foo": "bar"}`))
 	assert.EqualError(t, err, "field 'type' is required")
 
-	// error if we don't recognize action type
+	// error if we don't recognize router type
 	_, err = routers.ReadRouter([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+
+	_, err = routers.ReadRouter([]byte(`{
+		"type": "switch",
+		"result_name": "Favorite Color",
+		"categories": [
+			{
+				"uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+				"name": "Yes",
+				"exit_uuid": "49a47f31-ec90-42b5-a0d8-6efb5b1fa57b"
+			},
+			{
+				"uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+				"name": "No",
+				"exit_uuid": "5bd6a427-2b9a-4a4d-ad3f-eb39eaaa7e5a"
+			},
+			{
+				"uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+				"name": "Other",
+				"exit_uuid": "b787ffe3-c21a-46ad-9475-954614b52477"
+			}
+		],
+		"operand": "@(\"YES!!\")",
+		"cases": [
+			{
+				"uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+				"type": "has_any_word",
+				"arguments": [
+					"yes"
+				],
+				"category_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+			},
+			{
+				"uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+				"type": "has_any_word",
+				"arguments": [
+					"no"
+				],
+				"category_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+			}
+		],
+		"default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
+	}`))
 }

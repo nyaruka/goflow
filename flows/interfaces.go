@@ -199,7 +199,6 @@ type Router interface {
 	Route(Run, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
 
-	EnumerateTemplates(Localization, func(i18n.Language, string))
 	EnumerateDependencies(Localization, func(i18n.Language, assets.Reference))
 	EnumerateResults(func(*ResultInfo))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))

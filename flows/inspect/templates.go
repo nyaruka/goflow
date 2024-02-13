@@ -64,16 +64,19 @@ func extractTemplates(v reflect.Value, lang i18n.Language, include func(i18n.Lan
 	}
 }
 
-func TemplatePaths(t reflect.Type, base string, include func(string)) {
+func TemplatePaths(t reflect.Type) []string {
+	var paths []string
+	base := ""
 	walkTypes(t, base, func(path string, ef *EngineField) {
 		if ef.Evaluated {
 			if ef.Type.Kind() == reflect.Map || ef.Type.Kind() == reflect.Slice {
-				include(path + "[*]")
+				paths = append(paths, path+"[*]")
 			} else {
-				include(path)
+				paths = append(paths, path)
 			}
 		}
 	})
+	return paths
 }
 
 // all the paths in the context where contact field references are found
