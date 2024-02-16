@@ -46,7 +46,7 @@ func TestXTime(t *testing.T) {
 func TestToXTime(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		expected types.XTime
+		expected *types.XTime
 		hasError bool
 	}{
 		{nil, types.XTimeZero, true},

@@ -62,10 +62,12 @@ func TestXDateTime(t *testing.T) {
 	assert.Equal(t, la, d2.Native().Location())
 
 	// test unmarshaling
-	var date types.XDateTime
-	err = jsonx.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
+	foo := &struct {
+		Val *types.XDateTime `json:"val"`
+	}{}
+	err = jsonx.Unmarshal([]byte(`{"val": "2018-04-09T17:01:30Z"}`), foo)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), date)
+	assert.Equal(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Native(), foo.Val.Native())
 
 	// test marshaling
 	data, err := jsonx.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
@@ -76,7 +78,7 @@ func TestXDateTime(t *testing.T) {
 func TestToXDateTime(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		expected types.XDateTime
+		expected *types.XDateTime
 		hasError bool
 	}{
 		{nil, types.XDateTimeZero, true},

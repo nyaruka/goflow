@@ -124,7 +124,7 @@ var FalseResult = types.NewXObject(map[string]types.XValue{
 //	@(has_only_text(results.webhook.category, "Failure")) -> false
 //
 // @test has_only_text(text1, text2)
-func HasOnlyText(env envs.Environment, text1 types.XText, text2 types.XText) types.XValue {
+func HasOnlyText(env envs.Environment, text1 *types.XText, text2 *types.XText) types.XValue {
 	if text1.Equals(text2) {
 		return NewTrueResult(text1)
 	}
@@ -198,7 +198,7 @@ func HasGroup(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(has_phrase("the Quick Brown fox", "").match) ->
 //
 // @test has_phrase(text, phrase)
-func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
+func HasPhrase(env envs.Environment, text *types.XText, test *types.XText) types.XValue {
 	return testTextTokens(env, text, test, hasPhraseTest)
 }
 
@@ -211,7 +211,7 @@ func HasPhrase(env envs.Environment, text types.XText, test types.XText) types.X
 //	@(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(text, words)
-func HasAllWords(env envs.Environment, text types.XText, test types.XText) types.XValue {
+func HasAllWords(env envs.Environment, text *types.XText, test *types.XText) types.XValue {
 	return testTextTokens(env, text, test, hasAllWordsTest)
 }
 
@@ -224,7 +224,7 @@ func HasAllWords(env envs.Environment, text types.XText, test types.XText) types
 //	@(has_any_word("The Quick Brown Fox", "red fox").match) -> Fox
 //
 // @test has_any_word(text, words)
-func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.XValue {
+func HasAnyWord(env envs.Environment, text *types.XText, test *types.XText) types.XValue {
 	return testTextTokens(env, text, test, hasAnyWordTest)
 }
 
@@ -240,7 +240,7 @@ func HasAnyWord(env envs.Environment, text types.XText, test types.XText) types.
 //	@(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(text, phrase)
-func HasOnlyPhrase(env envs.Environment, text types.XText, test types.XText) types.XValue {
+func HasOnlyPhrase(env envs.Environment, text *types.XText, test *types.XText) types.XValue {
 	return testTextTokens(env, text, test, hasOnlyPhraseTest)
 }
 
@@ -254,7 +254,7 @@ func HasOnlyPhrase(env envs.Environment, text types.XText, test types.XText) typ
 //	@(has_text(contact.fields.not_set)) -> false
 //
 // @test has_text(text)
-func HasText(env envs.Environment, text types.XText) types.XValue {
+func HasText(env envs.Environment, text *types.XText) types.XValue {
 	// trim any whitespace
 	text = types.NewXText(strings.TrimSpace(text.Native()))
 
@@ -277,7 +277,7 @@ func HasText(env envs.Environment, text types.XText) types.XValue {
 //	@(has_beginning("The Quick Brown", "quick brown")) -> false
 //
 // @test has_beginning(text, beginning)
-func HasBeginning(env envs.Environment, text types.XText, beginning types.XText) types.XValue {
+func HasBeginning(env envs.Environment, text *types.XText, beginning *types.XText) types.XValue {
 	// trim both
 	hayStack := strings.TrimSpace(text.Native())
 	pinCushion := strings.TrimSpace(beginning.Native())
@@ -310,7 +310,7 @@ func HasBeginning(env envs.Environment, text types.XText, beginning types.XText)
 //	@(has_pattern("Sell cheese please", "buy (\w+)")) -> false
 //
 // @test has_pattern(text, pattern)
-func HasPattern(env envs.Environment, text types.XText, pattern types.XText) types.XValue {
+func HasPattern(env envs.Environment, text *types.XText, pattern *types.XText) types.XValue {
 	regex, err := regexp.Compile("(?mi)" + strings.TrimSpace(pattern.Native()))
 	if err != nil {
 		return types.NewXErrorf("must be called with a valid regular expression")
@@ -337,7 +337,7 @@ func HasPattern(env envs.Environment, text types.XText, pattern types.XText) typ
 //	@(has_number("the number is forty two")) -> false
 //
 // @test has_number(text)
-func HasNumber(env envs.Environment, text types.XText) types.XValue {
+func HasNumber(env envs.Environment, text *types.XText) types.XValue {
 	return testNumber(env, text, types.XNumberZero, types.XNumberZero, isNumberTest)
 }
 
@@ -376,7 +376,7 @@ func HasNumberBetween(env envs.Environment, arg1 types.XValue, arg2 types.XValue
 //	@(has_number_lt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lt(text, max)
-func HasNumberLT(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
+func HasNumberLT(env envs.Environment, text *types.XText, num *types.XNumber) types.XValue {
 	return testNumber(env, text, num, types.XNumberZero, isNumberLT)
 }
 
@@ -389,7 +389,7 @@ func HasNumberLT(env envs.Environment, text types.XText, num types.XNumber) type
 //	@(has_number_lte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lte(text, max)
-func HasNumberLTE(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
+func HasNumberLTE(env envs.Environment, text *types.XText, num *types.XNumber) types.XValue {
 	return testNumber(env, text, num, types.XNumberZero, isNumberLTE)
 }
 
@@ -402,7 +402,7 @@ func HasNumberLTE(env envs.Environment, text types.XText, num types.XNumber) typ
 //	@(has_number_eq("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_eq(text, value)
-func HasNumberEQ(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
+func HasNumberEQ(env envs.Environment, text *types.XText, num *types.XNumber) types.XValue {
 	return testNumber(env, text, num, types.XNumberZero, isNumberEQ)
 }
 
@@ -415,7 +415,7 @@ func HasNumberEQ(env envs.Environment, text types.XText, num types.XNumber) type
 //	@(has_number_gte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gte(text, min)
-func HasNumberGTE(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
+func HasNumberGTE(env envs.Environment, text *types.XText, num *types.XNumber) types.XValue {
 	return testNumber(env, text, num, types.XNumberZero, isNumberGTE)
 }
 
@@ -428,7 +428,7 @@ func HasNumberGTE(env envs.Environment, text types.XText, num types.XNumber) typ
 //	@(has_number_gt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gt(text, min)
-func HasNumberGT(env envs.Environment, text types.XText, num types.XNumber) types.XValue {
+func HasNumberGT(env envs.Environment, text *types.XText, num *types.XNumber) types.XValue {
 	return testNumber(env, text, num, types.XNumberZero, isNumberGT)
 }
 
@@ -439,7 +439,7 @@ func HasNumberGT(env envs.Environment, text types.XText, num types.XNumber) type
 //	@(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(text)
-func HasDate(env envs.Environment, text types.XText) types.XValue {
+func HasDate(env envs.Environment, text *types.XText) types.XValue {
 	return testDate(env, text, types.XDateTimeZero, isDateTest)
 }
 
@@ -451,7 +451,7 @@ func HasDate(env envs.Environment, text types.XText) types.XValue {
 //	@(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_lt(text, max)
-func HasDateLT(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
+func HasDateLT(env envs.Environment, text *types.XText, date *types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateLTTest)
 }
 
@@ -464,7 +464,7 @@ func HasDateLT(env envs.Environment, text types.XText, date types.XDateTime) typ
 //	@(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_eq(text, date)
-func HasDateEQ(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
+func HasDateEQ(env envs.Environment, text *types.XText, date *types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateEQTest)
 }
 
@@ -477,7 +477,7 @@ func HasDateEQ(env envs.Environment, text types.XText, date types.XDateTime) typ
 //	@(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_gt(text, min)
-func HasDateGT(env envs.Environment, text types.XText, date types.XDateTime) types.XValue {
+func HasDateGT(env envs.Environment, text *types.XText, date *types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateGTTest)
 }
 
@@ -490,7 +490,7 @@ func HasDateGT(env envs.Environment, text types.XText, date types.XDateTime) typ
 //	@(has_time("there is no time here, just the number 25")) -> false
 //
 // @test has_time(text)
-func HasTime(env envs.Environment, text types.XText) types.XValue {
+func HasTime(env envs.Environment, text *types.XText) types.XValue {
 	t, xerr := types.ToXTime(env, text)
 	if xerr == nil {
 		return NewTrueResult(t)
@@ -509,7 +509,7 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_+$~.\pL\pN]*)@([\pL\pN][-_\
 //	@(has_email("i'm not sharing my email")) -> false
 //
 // @test has_email(text)
-func HasEmail(env envs.Environment, text types.XText) types.XValue {
+func HasEmail(env envs.Environment, text *types.XText) types.XValue {
 	// split by whitespace
 	email := emailAddressRE.FindString(text.Native())
 	if email != "" {
@@ -529,8 +529,8 @@ func HasEmail(env envs.Environment, text types.XText) types.XValue {
 //	@(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(text, country_code)
-func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
-	var country types.XText
+func HasPhone(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
+	var country *types.XText
 	var xerr types.XError
 	if len(args) == 1 {
 		country, xerr = types.ToXText(env, args[0])
@@ -557,7 +557,7 @@ func HasPhone(env envs.Environment, text types.XText, args ...types.XValue) type
 //	@(has_category(results.webhook, "Failure")) -> false
 //
 // @test has_category(result, categories...)
-func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...types.XText) types.XValue {
+func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...*types.XText) types.XValue {
 	result, err := resultFromXObject(resultObj)
 	if err != nil {
 		return types.NewXErrorf("first argument must be a result")
@@ -580,7 +580,7 @@ func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...t
 //	@(has_intent(results.intent, "book_hotel", 0.2)) -> true
 //
 // @test has_intent(result, name, confidence)
-func HasIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+func HasIntent(env envs.Environment, result *types.XObject, name *types.XText, confidence *types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, false)
 }
 
@@ -590,7 +590,7 @@ func HasIntent(env envs.Environment, result *types.XObject, name types.XText, co
 //	@(has_top_intent(results.intent, "book_hotel", 0.5)) -> false
 //
 // @test has_top_intent(result, name, confidence)
-func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText, confidence types.XNumber) types.XValue {
+func HasTopIntent(env envs.Environment, result *types.XObject, name *types.XText, confidence *types.XNumber) types.XValue {
 	return hasIntent(result, name, confidence, true)
 }
 
@@ -602,7 +602,7 @@ func HasTopIntent(env envs.Environment, result *types.XObject, name types.XText,
 //	@(has_state("Boston")) -> false
 //
 // @test has_state(text)
-func HasState(env envs.Environment, text types.XText) types.XValue {
+func HasState(env envs.Environment, text *types.XText) types.XValue {
 	locations := env.LocationResolver()
 	if locations == nil {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
@@ -630,7 +630,7 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
 	}
 
-	var text, stateText types.XText
+	var text, stateText *types.XText
 	var xerr types.XError
 
 	// grab the text we will search and the parent state name
@@ -641,6 +641,8 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 		if stateText, xerr = types.ToXText(env, args[1]); xerr != nil {
 			return xerr
 		}
+	} else {
+		stateText = types.XTextEmpty
 	}
 
 	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
@@ -683,7 +685,7 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
 	}
 
-	var text, districtText, stateText types.XText
+	var text, districtText, stateText *types.XText
 	var xerr types.XError
 
 	// grab the text we will search, as well as the parent district and state names
@@ -698,6 +700,9 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 		if districtText, xerr = types.ToXText(env, args[2]); xerr != nil {
 			return xerr
 		}
+	} else {
+		stateText = types.XTextEmpty
+		districtText = types.XTextEmpty
 	}
 
 	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
@@ -728,7 +733,7 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 
 type stringTokenTest func(env envs.Environment, hayTokens []string, pinTokens []string) types.XValue
 
-func testTextTokens(env envs.Environment, str types.XText, testStr types.XText, testFunc stringTokenTest) types.XValue {
+func testTextTokens(env envs.Environment, str *types.XText, testStr *types.XText, testFunc stringTokenTest) types.XValue {
 	hays := utils.TokenizeString(strings.TrimSpace(str.Native()))
 	needles := utils.TokenizeString(strings.TrimSpace(testStr.Native()))
 
@@ -842,7 +847,7 @@ func hasOnlyPhraseTest(env envs.Environment, hays []string, pins []string) types
 
 type decimalTest func(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool
 
-func testNumber(env envs.Environment, str types.XText, testNum1 types.XNumber, testNum2 types.XNumber, testFunc decimalTest) types.XValue {
+func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber, testNum2 *types.XNumber, testFunc decimalTest) types.XValue {
 	// create a number finding regex based on current environment
 	pattern := regexp.MustCompile(fmt.Sprintf(`[-+]?([\pN\%[1]s]+(\%[2]s[\pN]+)?|(\W|^)\%[2]s[\pN]+)`, env.NumberFormat().DigitGroupingSymbol, env.NumberFormat().DecimalSymbol))
 
@@ -893,7 +898,7 @@ func isNumberBetween(value decimal.Decimal, test1 decimal.Decimal, test2 decimal
 
 type dateTest func(dates.Date, dates.Date) bool
 
-func testDate(env envs.Environment, str types.XText, testDate types.XDateTime, testFunc dateTest) types.XValue {
+func testDate(env envs.Environment, str *types.XText, testDate *types.XDateTime, testFunc dateTest) types.XValue {
 	// first parse with time filling which will be the test result
 	value, xerr := types.ToXDateTimeWithTimeFill(env, str)
 
@@ -940,7 +945,7 @@ func resultFromXObject(object *types.XObject) (*flows.Result, error) {
 	return result, err
 }
 
-func hasIntent(resultObj *types.XObject, name types.XText, confidence types.XNumber, topOnly bool) types.XValue {
+func hasIntent(resultObj *types.XObject, name *types.XText, confidence *types.XNumber, topOnly bool) types.XValue {
 	result, err := resultFromXObject(resultObj)
 	if err != nil {
 		return types.NewXErrorf("first argument must be a result")

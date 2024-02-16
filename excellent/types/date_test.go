@@ -50,7 +50,7 @@ func TestXDate(t *testing.T) {
 func TestToXDate(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		expected types.XDate
+		expected *types.XDate
 		hasError bool
 	}{
 		{nil, types.XDateZero, true},

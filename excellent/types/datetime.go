@@ -18,35 +18,36 @@ import (
 //
 // @type datetime
 type XDateTime struct {
+	baseValue
 	native time.Time
 }
 
 // NewXDateTime creates a new date
-func NewXDateTime(value time.Time) XDateTime {
-	return XDateTime{native: value}
+func NewXDateTime(value time.Time) *XDateTime {
+	return &XDateTime{native: value}
 }
 
 // Describe returns a representation of this type for error messages
-func (x XDateTime) Describe() string { return "datetime" }
+func (x *XDateTime) Describe() string { return "datetime" }
 
 // Truthy determines truthiness for this type
-func (x XDateTime) Truthy() bool {
+func (x *XDateTime) Truthy() bool {
 	return !x.Native().IsZero()
 }
 
 // Render returns the canonical text representation
-func (x XDateTime) Render() string {
+func (x *XDateTime) Render() string {
 	return dates.FormatISO(x.Native())
 }
 
 // Format returns the pretty text representation
-func (x XDateTime) Format(env envs.Environment) string {
+func (x *XDateTime) Format(env envs.Environment) string {
 	formatted, _ := x.FormatCustom(env, string(env.DateFormat())+" "+string(env.TimeFormat()), env.Timezone())
 	return formatted
 }
 
 // FormatCustom provides customised formatting
-func (x XDateTime) FormatCustom(env envs.Environment, layout string, tz *time.Location) (string, error) {
+func (x *XDateTime) FormatCustom(env envs.Environment, layout string, tz *time.Location) (string, error) {
 	// convert to our timezone if we have one (otherwise we remain in the date's default)
 	dt := x.Native()
 	if tz != nil {
@@ -57,45 +58,45 @@ func (x XDateTime) FormatCustom(env envs.Environment, layout string, tz *time.Lo
 }
 
 // String returns the native string representation of this type
-func (x XDateTime) String() string {
+func (x *XDateTime) String() string {
 	return fmt.Sprintf(`XDateTime(`+x.native.Format("2006, 1, 2, 15, 4, 5, %d, MST")+`)`, x.native.Nanosecond())
 }
 
 // Native returns the native value of this type
-func (x XDateTime) Native() time.Time { return x.native }
+func (x *XDateTime) Native() time.Time { return x.native }
 
 // Date returns the date part of this datetime
-func (x XDateTime) Date() XDate {
+func (x *XDateTime) Date() *XDate {
 	return NewXDate(dates.ExtractDate(x.Native()))
 }
 
 // Time returns the time part of this datetime
-func (x XDateTime) Time() XTime {
+func (x *XDateTime) Time() *XTime {
 	return NewXTime(dates.ExtractTimeOfDay(x.Native()))
 }
 
 // In returns a copy of this datetime in a different timezone
-func (x XDateTime) In(tz *time.Location) XDateTime {
+func (x *XDateTime) In(tz *time.Location) *XDateTime {
 	return NewXDateTime(x.Native().In(tz))
 }
 
 // ReplaceTime returns the a new date time with the time part replaced by the given time
-func (x XDateTime) ReplaceTime(tm XTime) XDateTime {
+func (x *XDateTime) ReplaceTime(tm *XTime) *XDateTime {
 	d := x.Native()
 	t := tm.Native()
 	return NewXDateTime(time.Date(d.Year(), d.Month(), d.Day(), t.Hour, t.Minute, t.Second, t.Nanos, d.Location()))
 }
 
 // Equals determines equality for this type
-func (x XDateTime) Equals(o XValue) bool {
-	other := o.(XDateTime)
+func (x *XDateTime) Equals(o XValue) bool {
+	other := o.(*XDateTime)
 
 	return x.Native().Equal(other.Native())
 }
 
 // Compare compares this date to another
-func (x XDateTime) Compare(o XValue) int {
-	other := o.(XDateTime)
+func (x *XDateTime) Compare(o XValue) int {
+	other := o.(*XDateTime)
 
 	switch {
 	case x.Native().Before(other.Native()):
@@ -108,14 +109,13 @@ func (x XDateTime) Compare(o XValue) int {
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled
-func (x XDateTime) MarshalJSON() ([]byte, error) {
+func (x *XDateTime) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(dates.FormatISO(x.Native()))
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
 func (x *XDateTime) UnmarshalJSON(data []byte) error {
-	nativePtr := &x.native
-	return nativePtr.UnmarshalJSON(data)
+	return jsonx.Unmarshal(data, &x.native)
 }
 
 // XDateTimeZero is the zero time value
@@ -123,26 +123,26 @@ var XDateTimeZero = NewXDateTime(envs.ZeroDateTime)
 var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
-func ToXDateTime(env envs.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTime(env envs.Environment, x XValue) (*XDateTime, XError) {
 	return toXDateTime(env, x, false)
 }
 
 // ToXDateTimeWithTimeFill converts the given value to a time or returns an error if that isn't possible
-func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (XDateTime, XError) {
+func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (*XDateTime, XError) {
 	return toXDateTime(env, x, true)
 }
 
 // converts the given value to a time or returns an error if that isn't possible
-func toXDateTime(env envs.Environment, x XValue, fillTime bool) (XDateTime, XError) {
+func toXDateTime(env envs.Environment, x XValue, fillTime bool) (*XDateTime, XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
 		case XError:
 			return XDateTimeZero, typed
-		case XDate:
+		case *XDate:
 			return NewXDateTime(typed.Native().Combine(dates.ZeroTimeOfDay, env.Timezone())), nil
-		case XDateTime:
+		case *XDateTime:
 			return typed, nil
-		case XText:
+		case *XText:
 			parsed, err := envs.DateTimeFromString(env, typed.Native(), fillTime)
 			if err == nil {
 				return NewXDateTime(parsed), nil

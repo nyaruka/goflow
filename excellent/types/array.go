@@ -18,7 +18,7 @@ import (
 //
 // @type array
 type XArray struct {
-	XValue
+	baseValue
 
 	data   []XValue
 	source func() []XValue

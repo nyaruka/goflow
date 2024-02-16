@@ -69,7 +69,7 @@ type baseWaitEnvelope struct {
 }
 
 // ReadWait reads a wait from the given JSON
-func ReadWait(data json.RawMessage) (flows.Wait, error) {
+func ReadWait(data []byte) (flows.Wait, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

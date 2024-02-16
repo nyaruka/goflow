@@ -32,15 +32,17 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, `XNumber(123.45)`, types.RequireXNumberFromString("123.45").String())
 
 	// unmarshal with quotes
-	var num types.XNumber
-	err := jsonx.Unmarshal([]byte(`"23.45"`), &num)
+	foo := &struct {
+		Val *types.XNumber `json:"val"`
+	}{}
+	err := jsonx.Unmarshal([]byte(`{"val": "23.45"}`), foo)
 	assert.NoError(t, err)
-	assert.Equal(t, types.RequireXNumberFromString("23.45"), num)
+	assert.Equal(t, types.RequireXNumberFromString("23.45").Native(), foo.Val.Native())
 
 	// unmarshal without quotes
-	err = jsonx.Unmarshal([]byte(`34.56`), &num)
+	err = jsonx.Unmarshal([]byte(`{"val": 34.56}`), foo)
 	assert.NoError(t, err)
-	assert.Equal(t, types.RequireXNumberFromString("34.56"), num)
+	assert.Equal(t, types.RequireXNumberFromString("34.56").Native(), foo.Val.Native())
 
 	// marshal (doesn't use quotes)
 	data, err := jsonx.Marshal(types.RequireXNumberFromString("23.45"))
@@ -51,7 +53,7 @@ func TestXNumber(t *testing.T) {
 func TestToXNumberAndInteger(t *testing.T) {
 	var tests = []struct {
 		value     types.XValue
-		asNumber  types.XNumber
+		asNumber  *types.XNumber
 		asInteger int
 		hasError  bool
 	}{
@@ -87,7 +89,7 @@ func TestToXNumberAndInteger(t *testing.T) {
 
 func TestFormatCustom(t *testing.T) {
 	fmtTests := []struct {
-		input       types.XNumber
+		input       *types.XNumber
 		format      *envs.NumberFormat
 		places      int
 		groupDigits bool

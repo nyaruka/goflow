@@ -17,6 +17,7 @@ type XFunc func(env envs.Environment, args ...XValue) XValue
 //
 // @type function
 type XFunction struct {
+	*baseValue
 	name string
 	fn   XFunc
 }
