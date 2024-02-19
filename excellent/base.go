@@ -7,15 +7,28 @@ import (
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // Evaluator evaluates templates and expressions.
 type Evaluator struct {
+	onDeprecated func(types.XValue)
 }
 
 // NewEvaluator creates a new evaluator
-func NewEvaluator() *Evaluator {
-	return &Evaluator{}
+func NewEvaluator(opts ...func(*Evaluator)) *Evaluator {
+	e := &Evaluator{}
+	for _, o := range opts {
+		o(e)
+	}
+	return e
+}
+
+// WithDeprecatedCallback sets a callback to be called when a deprecated value in the context is accessed.
+func WithDeprecatedCallback(onDeprecated func(types.XValue)) func(*Evaluator) {
+	return func(e *Evaluator) {
+		e.onDeprecated = onDeprecated
+	}
 }
 
 // Escaping is a function applied to expressions in a template after they've been evaluated
@@ -99,10 +112,19 @@ const (
 	lookupNotationArray lookupNotation = "array"
 )
 
+func (e *Evaluator) onContextRead(val types.XValue) {
+	if !utils.IsNil(val) && val.Deprecated() != "" && e.onDeprecated != nil {
+		e.onDeprecated(val)
+	}
+}
+
 func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation) types.XValue {
-	// if left-hand side is an array, then this is an index
 	array, isArray := container.(*types.XArray)
+	object, isObject := container.(*types.XObject)
+	var resolved types.XValue
+
 	if isArray && array != nil {
+		// if left-hand side is an array, then this is an index
 		index, xerr := types.ToInteger(env, lookup)
 		if xerr != nil {
 			return xerr
@@ -114,12 +136,11 @@ func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, 
 		if index < 0 {
 			index += array.Count()
 		}
-		return array.Get(index)
-	}
 
-	// if left-hand side is an object, then this is a property lookup
-	object, isObject := container.(*types.XObject)
-	if isObject && object != nil {
+		resolved = array.Get(index)
+
+	} else if isObject && object != nil {
+		// if left-hand side is an object, then this is a property lookup
 		property, xerr := types.ToXText(env, lookup)
 		if xerr != nil {
 			return xerr
@@ -132,10 +153,15 @@ func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, 
 			return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property.Native())
 		}
 
-		return value
+		resolved = value
+
+	} else {
+		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
 	}
 
-	return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
+	e.onContextRead(resolved)
+
+	return resolved
 }
 
 // Parse parses an expression

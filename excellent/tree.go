@@ -27,6 +27,8 @@ func (x *ContextReference) Evaluate(evl *Evaluator, env envs.Environment, scope 
 		return types.NewXErrorf("context has no property '%s'", x.name)
 	}
 
+	evl.onContextRead(value)
+
 	return value
 }
 

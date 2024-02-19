@@ -366,6 +366,44 @@ func TestEvaluateTemplateWithEscaping(t *testing.T) {
 	assert.Equal(t, `Hi \"\"; DROP`, val)
 }
 
+func TestEvaluateTemplateWithDeprecatedCallback(t *testing.T) {
+	dep1 := types.NewXText(`abc`)
+	dep1.SetDeprecated("don't")
+
+	dep2 := types.NewXText(`xyz`)
+	dep2.SetDeprecated("noooo")
+
+	ctx := types.NewXObject(map[string]types.XValue{
+		"foo": types.NewXObject(map[string]types.XValue{
+			"bar": types.NewXText(`123`),
+			"zzz": dep1,
+		}),
+		"yyy": dep2,
+	})
+
+	var depMsgs []string
+
+	eval := excellent.NewEvaluator(excellent.WithDeprecatedCallback(func(x types.XValue) {
+		depMsgs = append(depMsgs, x.Deprecated())
+	}))
+	env := envs.NewBuilder().Build()
+
+	val, err := eval.Template(env, ctx, `Hi @foo.bar`, nil)
+	assert.NoError(t, err)
+	assert.Equal(t, `Hi 123`, val)
+	assert.Len(t, depMsgs, 0)
+
+	val, err = eval.Template(env, ctx, `Hi @foo.zzz`, nil)
+	assert.NoError(t, err)
+	assert.Equal(t, `Hi abc`, val)
+	assert.Equal(t, []string{"don't"}, depMsgs)
+
+	val, err = eval.Template(env, ctx, `Hi @yyy`, nil)
+	assert.NoError(t, err)
+	assert.Equal(t, `Hi xyz`, val)
+	assert.Equal(t, []string{"don't", "noooo"}, depMsgs)
+}
+
 func TestEvaluationErrors(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	ctx := types.NewXObject(map[string]types.XValue{

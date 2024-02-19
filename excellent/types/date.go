@@ -18,6 +18,7 @@ import (
 // @type date
 type XDate struct {
 	baseValue
+
 	native dates.Date
 }
 

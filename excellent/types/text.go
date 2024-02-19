@@ -20,6 +20,7 @@ import (
 // @type text
 type XText struct {
 	baseValue
+
 	native string
 }
 

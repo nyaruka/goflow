@@ -7,14 +7,16 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 )
 
 // an instance of the engine
 type engine struct {
-	evaluator *excellent.Evaluator
-	services  *services
-	options   *flows.EngineOptions
+	evaluator       *excellent.Evaluator
+	services        *services
+	options         *flows.EngineOptions
+	warningCallback func(string)
 }
 
 // NewSession creates a new session
@@ -44,6 +46,12 @@ func (e *engine) Evaluator() *excellent.Evaluator { return e.evaluator }
 func (e *engine) Services() flows.Services        { return e.services }
 func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
+func (e *engine) onDeprecatedContextValue(v types.XValue) {
+	if e.warningCallback != nil {
+		e.warningCallback("deprecated context access: " + v.Deprecated())
+	}
+}
+
 var _ flows.Engine = (*engine)(nil)
 
 //------------------------------------------------------------------------------------------
@@ -57,19 +65,18 @@ type Builder struct {
 
 // NewBuilder creates a new engine builder
 func NewBuilder() *Builder {
-	return &Builder{
-		eng: &engine{
-			evaluator: excellent.NewEvaluator(),
-			services:  newEmptyServices(),
-			options: &flows.EngineOptions{
-				MaxStepsPerSprint:    100,
-				MaxResumesPerSession: 500,
-				MaxTemplateChars:     10000,
-				MaxFieldChars:        640,
-				MaxResultChars:       640,
-			},
+	e := &engine{
+		services: newEmptyServices(),
+		options: &flows.EngineOptions{
+			MaxStepsPerSprint:    100,
+			MaxResumesPerSession: 500,
+			MaxTemplateChars:     10000,
+			MaxFieldChars:        640,
+			MaxResultChars:       640,
 		},
 	}
+	e.evaluator = excellent.NewEvaluator(excellent.WithDeprecatedCallback(e.onDeprecatedContextValue))
+	return &Builder{eng: e}
 }
 
 // WithEmailServiceFactory sets the email service factory
@@ -123,6 +130,12 @@ func (b *Builder) WithMaxFieldChars(max int) *Builder {
 // WithMaxResultChars sets the maximum number of characters allowed in a result value
 func (b *Builder) WithMaxResultChars(max int) *Builder {
 	b.eng.options.MaxResultChars = max
+	return b
+}
+
+// WithWarningCallback sets the email service factory
+func (b *Builder) WithWarningCallback(callback func(string)) *Builder {
+	b.eng.warningCallback = callback
 	return b
 }
 

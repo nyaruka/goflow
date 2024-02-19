@@ -19,6 +19,7 @@ import (
 // @type datetime
 type XDateTime struct {
 	baseValue
+
 	native time.Time
 }
 
