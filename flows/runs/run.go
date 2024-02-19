@@ -308,14 +308,14 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 func (r *run) EvaluateTemplateValue(template string) (types.XValue, error) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	return excellent.EvaluateTemplateValue(r.session.MergedEnvironment(), ctx, template)
+	return r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
 func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, err := excellent.EvaluateTemplate(r.session.MergedEnvironment(), ctx, template, escaping)
+	value, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
 	if truncate {
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)
 	}

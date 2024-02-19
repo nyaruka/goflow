@@ -9,33 +9,20 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
+// Evaluator evaluates templates and expressions.
+type Evaluator struct {
+}
+
+// NewEvaluator creates a new evaluator
+func NewEvaluator() *Evaluator {
+	return &Evaluator{}
+}
+
 // Escaping is a function applied to expressions in a template after they've been evaluated
 type Escaping func(string) string
 
-// Parse parses an expression
-func Parse(expression string, contextCallback func([]string)) (Expression, error) {
-	errListener := NewErrorListener(expression)
-
-	input := antlr.NewInputStream(expression)
-	lexer := gen.NewExcellent3Lexer(input)
-	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellent3Parser(stream)
-	p.RemoveErrorListeners()
-	p.AddErrorListener(errListener)
-	tree := p.Parse()
-
-	// if we ran into errors parsing, return the first one
-	if len(errListener.Errors()) > 0 {
-		return nil, errListener.Errors()[0]
-	}
-
-	visitor := &visitor{contextCallback: contextCallback}
-	output := visitor.Visit(tree)
-	return toExpression(output), nil
-}
-
-// EvaluateTemplate evaluates the passed in template
-func EvaluateTemplate(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, error) {
+// Template evaluates the passed in template
+func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, error) {
 	var buf strings.Builder
 
 	err := VisitTemplate(template, ctx.Properties(), func(tokenType XTokenType, token string) error {
@@ -43,7 +30,7 @@ func EvaluateTemplate(env envs.Environment, ctx *types.XObject, template string,
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER, EXPRESSION:
-			value := EvaluateExpression(env, ctx, token)
+			value := e.Expression(env, ctx, token)
 
 			// if we got an error, return that
 			if types.IsXError(value) {
@@ -66,10 +53,10 @@ func EvaluateTemplate(env envs.Environment, ctx *types.XObject, template string,
 	return buf.String(), err
 }
 
-// EvaluateTemplateValue is equivalent to EvaluateTemplate except in the case where the template contains
+// TemplateValue is equivalent to Template except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func EvaluateTemplateValue(env envs.Environment, ctx *types.XObject, template string) (types.XValue, error) {
+func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, template string) (types.XValue, error) {
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), ctx.Properties())
 
@@ -83,18 +70,18 @@ func EvaluateTemplateValue(env envs.Environment, ctx *types.XObject, template st
 	if nextTT == EOF {
 		switch tokenType {
 		case IDENTIFIER, EXPRESSION:
-			return EvaluateExpression(env, ctx, token), nil
+			return e.Expression(env, ctx, token), nil
 		}
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplate(env, ctx, template, nil)
+	asStr, err := e.Template(env, ctx, template, nil)
 	return types.NewXText(asStr), err
 }
 
-// EvaluateExpression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
+// Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func EvaluateExpression(env envs.Environment, ctx *types.XObject, expression string) types.XValue {
+func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) types.XValue {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
 		return types.NewXError(err)
@@ -102,7 +89,7 @@ func EvaluateExpression(env envs.Environment, ctx *types.XObject, expression str
 
 	scope := NewScope(ctx, nil)
 
-	return parsed.Evaluate(env, scope)
+	return parsed.Evaluate(e, env, scope)
 }
 
 type lookupNotation string
@@ -112,7 +99,7 @@ const (
 	lookupNotationArray lookupNotation = "array"
 )
 
-func resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation) types.XValue {
+func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation) types.XValue {
 	// if left-hand side is an array, then this is an index
 	array, isArray := container.(*types.XArray)
 	if isArray && array != nil {
@@ -149,6 +136,28 @@ func resolveLookup(env envs.Environment, container types.XValue, lookup types.XV
 	}
 
 	return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
+}
+
+// Parse parses an expression
+func Parse(expression string, contextCallback func([]string)) (Expression, error) {
+	errListener := NewErrorListener(expression)
+
+	input := antlr.NewInputStream(expression)
+	lexer := gen.NewExcellent3Lexer(input)
+	stream := antlr.NewCommonTokenStream(lexer, 0)
+	p := gen.NewExcellent3Parser(stream)
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errListener)
+	tree := p.Parse()
+
+	// if we ran into errors parsing, return the first one
+	if len(errListener.Errors()) > 0 {
+		return nil, errListener.Errors()[0]
+	}
+
+	visitor := &visitor{contextCallback: contextCallback}
+	output := visitor.Visit(tree)
+	return toExpression(output), nil
 }
 
 // VisitTemplate scans the given template and calls the callback for each token encountered
