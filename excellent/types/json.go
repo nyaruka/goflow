@@ -81,12 +81,12 @@ func jsonToArray(data []byte) *XArray {
 }
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(x XValue) (XText, XError) {
+func ToXJSON(x XValue) (*XText, *XError) {
 	if utils.IsNil(x) {
 		return NewXText(`null`), nil
 	}
 	if IsXError(x) {
-		return XTextEmpty, x.(XError)
+		return XTextEmpty, x.(*XError)
 	}
 
 	marshaled, err := jsonx.Marshal(x)

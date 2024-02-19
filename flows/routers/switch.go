@@ -187,7 +187,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {
-		case types.XError:
+		case *types.XError:
 			// test functions can return an error
 			run.LogError(step, errors.Errorf("error calling test %s: %s", xtest.Describe(), typed.Error()))
 		case *types.XObject:

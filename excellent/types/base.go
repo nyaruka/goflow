@@ -130,3 +130,7 @@ func String(x XValue) string {
 	}
 	return x.String()
 }
+
+// baseValue is shared by all X types
+type baseValue struct {
+}

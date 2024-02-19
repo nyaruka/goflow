@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/pkg/errors"
@@ -27,26 +28,27 @@ func init() {
 //
 // @type number
 type XNumber struct {
+	baseValue
 	native decimal.Decimal
 }
 
 // NewXNumber creates a new XNumber
-func NewXNumber(value decimal.Decimal) XNumber {
-	return XNumber{native: value}
+func NewXNumber(value decimal.Decimal) *XNumber {
+	return &XNumber{native: value}
 }
 
 // NewXNumberFromInt creates a new XNumber from the given int
-func NewXNumberFromInt(value int) XNumber {
+func NewXNumberFromInt(value int) *XNumber {
 	return NewXNumber(decimal.New(int64(value), 0))
 }
 
 // NewXNumberFromInt64 creates a new XNumber from the given int
-func NewXNumberFromInt64(value int64) XNumber {
+func NewXNumberFromInt64(value int64) *XNumber {
 	return NewXNumber(decimal.New(value, 0))
 }
 
 // RequireXNumberFromString creates a new XNumber from the given string or panics (used for tests)
-func RequireXNumberFromString(value string) XNumber {
+func RequireXNumberFromString(value string) *XNumber {
 	num, err := newXNumberFromString(value)
 	if err != nil {
 		panic(errors.Wrapf(err, "error parsing '%s' as number", value))
@@ -55,23 +57,23 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.Render() }
+func (x *XNumber) Describe() string { return x.Render() }
 
 // Truthy determines truthiness for this type
-func (x XNumber) Truthy() bool {
+func (x *XNumber) Truthy() bool {
 	return !x.Equals(XNumberZero)
 }
 
 // Render returns the canonical text representation
-func (x XNumber) Render() string { return x.Native().String() }
+func (x *XNumber) Render() string { return x.Native().String() }
 
 // Format returns the pretty text representation
-func (x XNumber) Format(env envs.Environment) string {
+func (x *XNumber) Format(env envs.Environment) string {
 	return x.FormatCustom(env.NumberFormat(), -1, true)
 }
 
 // FormatCustom provides customised formatting
-func (x XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigits bool) string {
+func (x *XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigits bool) string {
 	var formatted string
 
 	if places >= 0 {
@@ -100,34 +102,33 @@ func (x XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigits
 }
 
 // String returns the native string representation of this type
-func (x XNumber) String() string { return `XNumber(` + x.Render() + `)` }
+func (x *XNumber) String() string { return `XNumber(` + x.Render() + `)` }
 
 // Native returns the native value of this type
-func (x XNumber) Native() decimal.Decimal { return x.native }
+func (x *XNumber) Native() decimal.Decimal { return x.native }
 
 // Equals determines equality for this type
-func (x XNumber) Equals(o XValue) bool {
-	other := o.(XNumber)
+func (x *XNumber) Equals(o XValue) bool {
+	other := o.(*XNumber)
 
 	return x.Native().Equals(other.Native())
 }
 
 // Compare compares this number to another
-func (x XNumber) Compare(o XValue) int {
-	other := o.(XNumber)
+func (x *XNumber) Compare(o XValue) int {
+	other := o.(*XNumber)
 
 	return x.Native().Cmp(other.Native())
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled
-func (x XNumber) MarshalJSON() ([]byte, error) {
+func (x *XNumber) MarshalJSON() ([]byte, error) {
 	return x.Native().MarshalJSON()
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
 func (x *XNumber) UnmarshalJSON(data []byte) error {
-	nativePtr := &x.native
-	return nativePtr.UnmarshalJSON(data)
+	return jsonx.Unmarshal(data, &x.native)
 }
 
 // XNumberZero is the zero number value
@@ -135,7 +136,7 @@ var XNumberZero = NewXNumber(decimal.Zero)
 var _ XValue = XNumberZero
 
 // parses a number from a string
-func newXNumberFromString(s string) (XNumber, error) {
+func newXNumberFromString(s string) (*XNumber, error) {
 	s = strings.TrimSpace(s)
 
 	if !decimalRegexp.MatchString(s) {
@@ -149,14 +150,14 @@ func newXNumberFromString(s string) (XNumber, error) {
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
-func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
+func ToXNumber(env envs.Environment, x XValue) (*XNumber, *XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
-		case XError:
+		case *XError:
 			return XNumberZero, typed
-		case XNumber:
+		case *XNumber:
 			return typed, nil
-		case XText:
+		case *XText:
 			parsed, err := newXNumberFromString(typed.Native())
 			if err == nil {
 				return parsed, nil
@@ -172,7 +173,7 @@ func ToXNumber(env envs.Environment, x XValue) (XNumber, XError) {
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
-func ToInteger(env envs.Environment, x XValue) (int, XError) {
+func ToInteger(env envs.Environment, x XValue) (int, *XError) {
 	number, err := ToXNumber(env, x)
 	if err != nil {
 		return 0, err

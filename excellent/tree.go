@@ -314,7 +314,7 @@ func (x *Parentheses) String() string {
 }
 
 type TextLiteral struct {
-	val types.XText
+	val *types.XText
 }
 
 func (x *TextLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
@@ -327,7 +327,7 @@ func (x *TextLiteral) String() string {
 
 // NumberLiteral is a literal number like 123 or 1.5
 type NumberLiteral struct {
-	val types.XNumber
+	val *types.XNumber
 }
 
 func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
@@ -340,7 +340,7 @@ func (x *NumberLiteral) String() string {
 
 // BooleanLiteral is a literal bool
 type BooleanLiteral struct {
-	val types.XBoolean
+	val *types.XBoolean
 }
 
 func (x *BooleanLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {

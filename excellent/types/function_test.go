@@ -69,9 +69,9 @@ func TestToXFunction(t *testing.T) {
 		fun, err := types.ToXFunction(test.value)
 
 		if test.hasError {
-			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+			assert.Error(t, err.Native(), "expected error for input %T{%s}", test.value, test.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.NoError(t, err.Native(), "unexpected error for input %T{%s}", test.value, test.value)
 			assert.Equal(t, test.asFunc, fun, "array mismatch for input %T{%s}", test.value, test.value)
 		}
 	}

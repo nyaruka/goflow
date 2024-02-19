@@ -32,8 +32,10 @@ func TestXText(t *testing.T) {
 	assert.Equal(t, `XText("abc")`, types.NewXText("abc").String())
 
 	// unmarshal
-	var val types.XText
-	err := jsonx.Unmarshal([]byte(`"hello"`), &val)
+	foo := &struct {
+		Val *types.XText `json:"val"`
+	}{}
+	err := jsonx.Unmarshal([]byte(`{"val": "hello"}`), foo)
 	assert.NoError(t, err)
-	assert.Equal(t, types.NewXText("hello"), val)
+	assert.Equal(t, types.NewXText("hello"), foo.Val)
 }

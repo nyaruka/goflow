@@ -162,9 +162,9 @@ func TestToXObject(t *testing.T) {
 		object, err := types.ToXObject(env, tc.value)
 
 		if tc.hasError {
-			assert.Error(t, err, "expected error for input %s", tc.value)
+			assert.Error(t, err.Native(), "expected error for input %s", tc.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input %s", tc.value)
+			assert.NoError(t, err.Native(), "unexpected error for input %s", tc.value)
 			test.AssertXEqual(t, tc.asObject, object, "object mismatch for input %s", tc.value)
 		}
 	}

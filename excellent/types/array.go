@@ -18,7 +18,7 @@ import (
 //
 // @type array
 type XArray struct {
-	XValue
+	baseValue
 
 	data   []XValue
 	source func() []XValue
@@ -138,12 +138,12 @@ func (x *XArray) values() []XValue {
 var XArrayEmpty = NewXArray()
 
 // ToXArray converts the given value to an array
-func ToXArray(env envs.Environment, x XValue) (*XArray, XError) {
+func ToXArray(env envs.Environment, x XValue) (*XArray, *XError) {
 	if utils.IsNil(x) {
 		return XArrayEmpty, nil
 	}
 	if IsXError(x) {
-		return XArrayEmpty, x.(XError)
+		return XArrayEmpty, x.(*XError)
 	}
 
 	asArray, isArray := x.(*XArray)
