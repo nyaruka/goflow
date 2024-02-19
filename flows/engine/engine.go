@@ -6,13 +6,15 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 )
 
 // an instance of the engine
 type engine struct {
-	services *services
-	options  *flows.EngineOptions
+	evaluator *excellent.Evaluator
+	services  *services
+	options   *flows.EngineOptions
 }
 
 // NewSession creates a new session
@@ -38,8 +40,9 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missi
 	return readSession(e, sa, data, missing)
 }
 
-func (e *engine) Services() flows.Services      { return e.services }
-func (e *engine) Options() *flows.EngineOptions { return e.options }
+func (e *engine) Evaluator() *excellent.Evaluator { return e.evaluator }
+func (e *engine) Services() flows.Services        { return e.services }
+func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
 
@@ -56,7 +59,8 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			services: newEmptyServices(),
+			evaluator: excellent.NewEvaluator(),
+			services:  newEmptyServices(),
 			options: &flows.EngineOptions{
 				MaxStepsPerSprint:    100,
 				MaxResumesPerSession: 500,

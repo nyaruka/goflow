@@ -334,6 +334,7 @@ type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
+	Evaluator() *excellent.Evaluator
 	Services() Services
 	Options() *EngineOptions
 }

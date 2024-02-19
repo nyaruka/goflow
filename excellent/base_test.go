@@ -198,7 +198,8 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, tc := range evaluateTests {
-		result, err := excellent.EvaluateTemplateValue(env, ctx, tc.template)
+		eval := excellent.NewEvaluator()
+		result, err := eval.TemplateValue(env, ctx, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
@@ -337,13 +338,14 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval, err := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
+		eval := excellent.NewEvaluator()
+		val, err := eval.Template(env, ctx, tc.template, nil)
 
 		if tc.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
 		} else {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", tc.template)
-			assert.Equal(t, tc.expected, eval, " output mismatch for template: '%s'", tc.template)
+			assert.Equal(t, tc.expected, val, " output mismatch for template: '%s'", tc.template)
 		}
 	}
 }
@@ -357,10 +359,11 @@ func TestEvaluateTemplateWithEscaping(t *testing.T) {
 		return strings.Replace(s, `"`, `\"`, -1)
 	}
 
+	eval := excellent.NewEvaluator()
 	env := envs.NewBuilder().Build()
-	eval, err := excellent.EvaluateTemplate(env, ctx, `Hi @string1`, escaping)
+	val, err := eval.Template(env, ctx, `Hi @string1`, escaping)
 	assert.NoError(t, err)
-	assert.Equal(t, `Hi \"\"; DROP`, eval)
+	assert.Equal(t, `Hi \"\"; DROP`, val)
 }
 
 func TestEvaluationErrors(t *testing.T) {
@@ -410,7 +413,8 @@ func TestEvaluationErrors(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		result, err := excellent.EvaluateTemplate(env, ctx, tc.template, nil)
+		eval := excellent.NewEvaluator()
+		result, err := eval.Template(env, ctx, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 

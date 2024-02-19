@@ -587,14 +587,15 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplate(env, ctx, test.template, nil)
+		eval := excellent.NewEvaluator()
+		val, err := eval.Template(env, ctx, test.template, nil)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 
-			assert.Equal(t, test.expected, eval, "actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+			assert.Equal(t, test.expected, val, "actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
 	}
 }
