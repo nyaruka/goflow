@@ -169,7 +169,7 @@ func (a *baseAction) updateWebhook(run flows.Run, call *flows.WebhookCall) {
 	parsed := types.JSONToXValue(call.ResponseJSON)
 
 	switch typed := parsed.(type) {
-	case nil, types.XError:
+	case nil, *types.XError:
 		run.SetWebhook(types.XObjectEmpty)
 	default:
 		run.SetWebhook(typed)

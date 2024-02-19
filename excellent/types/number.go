@@ -150,10 +150,10 @@ func newXNumberFromString(s string) (*XNumber, error) {
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
-func ToXNumber(env envs.Environment, x XValue) (*XNumber, XError) {
+func ToXNumber(env envs.Environment, x XValue) (*XNumber, *XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
-		case XError:
+		case *XError:
 			return XNumberZero, typed
 		case *XNumber:
 			return typed, nil
@@ -173,7 +173,7 @@ func ToXNumber(env envs.Environment, x XValue) (*XNumber, XError) {
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
-func ToInteger(env envs.Environment, x XValue) (int, XError) {
+func ToInteger(env envs.Environment, x XValue) (int, *XError) {
 	number, err := ToXNumber(env, x)
 	if err != nil {
 		return 0, err

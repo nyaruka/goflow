@@ -115,7 +115,7 @@ func ReadXObject(data []byte) (*XObject, error) {
 	switch typed := v.(type) {
 	case *XObject:
 		return typed, nil
-	case XError:
+	case *XError:
 		return nil, typed
 	default:
 		return nil, errors.New("JSON doesn't contain an object")
@@ -235,12 +235,12 @@ var XObjectEmpty = NewXObject(map[string]XValue{})
 var _ json.Marshaler = (*XObject)(nil)
 
 // ToXObject converts the given value to an object
-func ToXObject(env envs.Environment, x XValue) (*XObject, XError) {
+func ToXObject(env envs.Environment, x XValue) (*XObject, *XError) {
 	if utils.IsNil(x) {
 		return XObjectEmpty, nil
 	}
 	if IsXError(x) {
-		return XObjectEmpty, x.(XError)
+		return XObjectEmpty, x.(*XError)
 	}
 
 	object, isObject := x.(*XObject)

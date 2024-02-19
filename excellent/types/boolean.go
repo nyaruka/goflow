@@ -88,12 +88,12 @@ var XBooleanTrue = NewXBoolean(true)
 var _ XValue = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
-func ToXBoolean(x XValue) (*XBoolean, XError) {
+func ToXBoolean(x XValue) (*XBoolean, *XError) {
 	if utils.IsNil(x) {
 		return XBooleanFalse, nil
 	}
 	if IsXError(x) {
-		return XBooleanFalse, x.(XError)
+		return XBooleanFalse, x.(*XError)
 	}
 
 	return NewXBoolean(x.Truthy()), nil

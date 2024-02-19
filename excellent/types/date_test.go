@@ -71,9 +71,9 @@ func TestToXDate(t *testing.T) {
 		result, err := types.ToXDate(env, test.value)
 
 		if test.hasError {
-			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
+			assert.Error(t, err.Native(), "expected error for input %T{%s}", test.value, test.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.NoError(t, err.Native(), "unexpected error for input %T{%s}", test.value, test.value)
 			assert.Equal(t, test.expected.Native(), result.Native(), "result mismatch for input %T{%s}", test.value, test.value)
 		}
 	}

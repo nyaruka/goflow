@@ -28,7 +28,7 @@ func TestJSONToXValue(t *testing.T) {
 
 	test.AssertXEqual(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
 
-	xerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
+	xerr := types.JSONToXValue([]byte(`fish`)).(*types.XError)
 	assert.Equal(t, `invalid JSON`, xerr.Error())
 }
 

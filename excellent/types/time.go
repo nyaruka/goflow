@@ -86,10 +86,10 @@ var XTimeZero = NewXTime(dates.ZeroTimeOfDay)
 var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
-func ToXTime(env envs.Environment, x XValue) (*XTime, XError) {
+func ToXTime(env envs.Environment, x XValue) (*XTime, *XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
-		case XError:
+		case *XError:
 			return XTimeZero, typed
 		case *XTime:
 			return typed, nil

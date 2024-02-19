@@ -80,10 +80,10 @@ var XDateZero = NewXDate(dates.ZeroDate)
 var _ XValue = XDateZero
 
 // ToXDate converts the given value to a time or returns an error if that isn't possible
-func ToXDate(env envs.Environment, x XValue) (*XDate, XError) {
+func ToXDate(env envs.Environment, x XValue) (*XDate, *XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
-		case XError:
+		case *XError:
 			return XDateZero, typed
 		case *XDate:
 			return typed, nil

@@ -87,12 +87,12 @@ var XTextEmpty = NewXText("")
 var _ XValue = XTextEmpty
 
 // ToXText converts the given value to a string
-func ToXText(env envs.Environment, x XValue) (*XText, XError) {
+func ToXText(env envs.Environment, x XValue) (*XText, *XError) {
 	if utils.IsNil(x) {
 		return XTextEmpty, nil
 	}
 	if IsXError(x) {
-		return XTextEmpty, x.(XError)
+		return XTextEmpty, x.(*XError)
 	}
 
 	return NewXText(x.Render()), nil

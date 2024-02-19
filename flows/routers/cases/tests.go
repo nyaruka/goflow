@@ -143,7 +143,7 @@ func HasOnlyText(env envs.Environment, text1 *types.XText, text2 *types.XText) t
 // @test has_error(value)
 func HasError(env envs.Environment, value types.XValue) types.XValue {
 	if types.IsXError(value) {
-		return NewTrueResult(types.NewXText(value.(types.XError).Error()))
+		return NewTrueResult(types.NewXText(value.(*types.XError).Error()))
 	}
 
 	return FalseResult
@@ -531,7 +531,7 @@ func HasEmail(env envs.Environment, text *types.XText) types.XValue {
 // @test has_phone(text, country_code)
 func HasPhone(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	var country *types.XText
-	var xerr types.XError
+	var xerr *types.XError
 	if len(args) == 1 {
 		country, xerr = types.ToXText(env, args[0])
 		if xerr != nil {
@@ -631,7 +631,7 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	var text, stateText *types.XText
-	var xerr types.XError
+	var xerr *types.XError
 
 	// grab the text we will search and the parent state name
 	if text, xerr = types.ToXText(env, args[0]); xerr != nil {
@@ -686,7 +686,7 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 	}
 
 	var text, districtText, stateText *types.XText
-	var xerr types.XError
+	var xerr *types.XError
 
 	// grab the text we will search, as well as the parent district and state names
 	if text, xerr = types.ToXText(env, args[0]); xerr != nil {

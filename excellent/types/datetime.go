@@ -123,20 +123,20 @@ var XDateTimeZero = NewXDateTime(envs.ZeroDateTime)
 var _ XValue = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
-func ToXDateTime(env envs.Environment, x XValue) (*XDateTime, XError) {
+func ToXDateTime(env envs.Environment, x XValue) (*XDateTime, *XError) {
 	return toXDateTime(env, x, false)
 }
 
 // ToXDateTimeWithTimeFill converts the given value to a time or returns an error if that isn't possible
-func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (*XDateTime, XError) {
+func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (*XDateTime, *XError) {
 	return toXDateTime(env, x, true)
 }
 
 // converts the given value to a time or returns an error if that isn't possible
-func toXDateTime(env envs.Environment, x XValue, fillTime bool) (*XDateTime, XError) {
+func toXDateTime(env envs.Environment, x XValue, fillTime bool) (*XDateTime, *XError) {
 	if !utils.IsNil(x) {
 		switch typed := x.(type) {
-		case XError:
+		case *XError:
 			return XDateTimeZero, typed
 		case *XDate:
 			return NewXDateTime(typed.Native().Combine(dates.ZeroTimeOfDay, env.Timezone())), nil
