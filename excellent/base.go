@@ -23,14 +23,16 @@ type Escaping func(string) string
 // Template evaluates the passed in template
 func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, []string, error) {
 	var buf strings.Builder
-	probs := &Warnings{}
+	var allWarnings []string
 
 	err := VisitTemplate(template, ctx.Properties(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER, EXPRESSION:
-			value := e.expression(env, ctx, token, probs)
+			value, warnings := e.Expression(env, ctx, token)
+
+			allWarnings = append(allWarnings, warnings...)
 
 			// if we got an error, return that
 			if types.IsXError(value) {
@@ -50,7 +52,7 @@ func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template 
 		return nil
 	})
 
-	return buf.String(), probs.all, err
+	return buf.String(), allWarnings, err
 }
 
 // TemplateValue is equivalent to Template except in the case where the template contains
@@ -83,19 +85,16 @@ func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, temp
 // Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) (types.XValue, []string) {
-	probs := &Warnings{}
-	return e.expression(env, ctx, expression, probs), probs.all
-}
-
-func (e *Evaluator) expression(env envs.Environment, ctx *types.XObject, expression string, probs *Warnings) types.XValue {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
-		return types.NewXError(err)
+		return types.NewXError(err), nil
 	}
 
 	scope := NewScope(ctx, nil)
 
-	return parsed.Evaluate(env, scope, probs)
+	warnings := &Warnings{}
+
+	return parsed.Evaluate(env, scope, warnings), warnings.all
 }
 
 // Parse parses an expression
