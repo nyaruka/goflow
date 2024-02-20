@@ -112,7 +112,7 @@ func lastWebhookSavedAsExtra(r *run) types.XValue {
 				if asResultEvent.Extra != nil {
 					value := types.JSONToXValue([]byte(asResultEvent.Extra))
 					if value != nil {
-						value.SetDeprecated("webhook from extra")
+						value.SetDeprecated("webhook recreated from extra")
 					}
 					return value
 				}

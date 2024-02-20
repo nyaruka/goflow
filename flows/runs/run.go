@@ -141,10 +141,6 @@ func (r *run) LogEvent(s flows.Step, event flows.Event) {
 	r.modifiedOn = dates.Now()
 }
 
-func (r *run) LogError(step flows.Step, err error) {
-	r.LogEvent(step, events.NewError(err))
-}
-
 // find the first event matching the given step UUID and type
 func (r *run) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
 	for _, e := range r.events {
@@ -305,26 +301,39 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *run) EvaluateTemplateValue(template string) (types.XValue, error) {
+func (r *run) EvaluateTemplateValue(template string, log flows.EventCallback) (types.XValue, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	return r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
+	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
+	if err != nil {
+		log(events.NewError(err))
+	}
+	for _, w := range warnings {
+		log(events.NewWarning(w))
+	}
+	return value, err == nil
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
-func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool) (string, error) {
+func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log flows.EventCallback) (string, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
+	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
+	if err != nil {
+		log(events.NewError(err))
+	}
+	for _, w := range warnings {
+		log(events.NewWarning(w))
+	}
 	if truncate {
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)
 	}
-	return value, err
+	return value, err == nil
 }
 
-// EvaluateTemplate is a convenience function for evaluating as text with no escaping
-func (r *run) EvaluateTemplate(template string) (string, error) {
-	return r.EvaluateTemplateText(template, nil, true)
+// EvaluateTemplate is a convenience function for evaluating as text with truncating but no escaping
+func (r *run) EvaluateTemplate(template string, log flows.EventCallback) (string, bool) {
+	return r.EvaluateTemplateText(template, nil, true, log)
 }
 
 // get the ordered list of languages to be used for localization in this run

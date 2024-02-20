@@ -195,10 +195,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 		evaluatedVariables := make([]string, len(localizedVariables))
 		for i, variable := range localizedVariables {
-			sub, err := run.EvaluateTemplate(variable)
-			if err != nil {
-				logEvent(events.NewError(err))
-			}
+			sub, _ := run.EvaluateTemplate(variable, logEvent)
 			evaluatedVariables[i] = sub
 		}
 
@@ -210,10 +207,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 			evaluatedCompParams := make([]string, len(localizedCompParams))
 
 			for i, variable := range localizedCompParams {
-				sub, err := run.EvaluateTemplate(variable)
-				if err != nil {
-					logEvent(events.NewError(err))
-				}
+				sub, _ := run.EvaluateTemplate(variable, logEvent)
 				evaluatedCompParams[i] = sub
 			}
 			evaluatedParams[comp] = evaluatedCompParams

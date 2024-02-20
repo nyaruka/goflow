@@ -592,6 +592,12 @@
                 },
                 {
                     "created_on": "2018-07-06T12:31:00.123456789Z",
+                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                    "text": "deprecated context value accessed: webhook recreated from extra",
+                    "type": "warning"
+                },
+                {
+                    "created_on": "2018-07-06T12:31:02.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
@@ -780,6 +786,12 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:31:00.123456789Z",
+                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
+                                "text": "deprecated context value accessed: webhook recreated from extra",
+                                "type": "warning"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
@@ -790,13 +802,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:31:02.123456789Z",
+                        "exited_on": "2018-07-06T12:31:04.123456789Z",
                         "flow": {
                             "name": "Webhook Results",
                             "revision": 23,
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
-                        "modified_on": "2018-07-06T12:31:02.123456789Z",
+                        "modified_on": "2018-07-06T12:31:04.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -911,10 +923,7 @@
                 },
                 "type": "messaging",
                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
-            },
-            "warnings": [
-                "deprecated context access: webhook from extra"
-            ]
+            }
         }
     ],
     "resumes": [

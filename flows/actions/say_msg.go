@@ -50,10 +50,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
-	evaluatedText, err := run.EvaluateTemplate(localizedText)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
+	evaluatedText, _ := run.EvaluateTemplate(localizedText, logEvent)
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
 	// localize the audio URL

@@ -163,8 +163,9 @@ func TestMigrateFunctionCall(t *testing.T) {
 
 		if migratedTemplate == tc.new {
 			// check that the migrated template can be evaluated
-			val, err := session.Runs()[0].EvaluateTemplate(migratedTemplate)
-			require.NoError(t, err, "unable to evaluate migrated function call '%s'", migratedTemplate)
+			log := test.NewEventLog()
+			val, _ := session.Runs()[0].EvaluateTemplate(migratedTemplate, log.Log)
+			require.NoError(t, log.Error(), "unable to evaluate migrated function call '%s'", migratedTemplate)
 
 			if tc.val != "" {
 				assert.Equal(t, tc.val, val, "unexpected evaluated value for migrated function call '%s'", tc.old)

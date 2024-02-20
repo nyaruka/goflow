@@ -224,14 +224,16 @@ func TestRunContext(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		actual, err := run.EvaluateTemplate(tc.template)
-		assert.NoError(t, err)
+		log := test.NewEventLog()
+		actual, _ := run.EvaluateTemplate(tc.template, log.Log)
+		assert.NoError(t, log.Error())
 		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
 	}
 
 	// test with escaping
-	evaluated, err := run.EvaluateTemplateText(`gender = @("M\" OR")`, flows.ContactQueryEscaping, true)
-	assert.NoError(t, err)
+	log := test.NewEventLog()
+	evaluated, _ := run.EvaluateTemplateText(`gender = @("M\" OR")`, flows.ContactQueryEscaping, true, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Equal(t, `gender = "M\" OR"`, evaluated)
 }
 
@@ -248,25 +250,26 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
+	log := test.NewEventLog()
 
 	// since we have no parent, check that it resolves to nil
-	val, err := run.EvaluateTemplateValue(`@parent`)
-	assert.NoError(t, err)
+	val, _ := run.EvaluateTemplateValue(`@parent`, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Nil(t, val)
 
 	// check that trying to resolve a property of parent is an error
-	val, err = run.EvaluateTemplateValue(`@parent.contact`)
-	assert.NoError(t, err)
+	val, _ = run.EvaluateTemplateValue(`@parent.contact`, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 
 	// we also have no child, check that it resolves to nil
-	val, err = run.EvaluateTemplateValue(`@child`)
-	assert.NoError(t, err)
+	val, _ = run.EvaluateTemplateValue(`@child`, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Nil(t, val)
 
 	// check that trying to resolve a property of child is an error
-	val, err = run.EvaluateTemplateValue(`@child.contact`)
-	assert.NoError(t, err)
+	val, _ = run.EvaluateTemplateValue(`@child.contact`, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 }
 

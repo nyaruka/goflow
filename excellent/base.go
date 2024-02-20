@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
@@ -11,23 +12,20 @@ import (
 )
 
 // Evaluator evaluates templates and expressions.
-type Evaluator struct {
-	onDeprecated func(types.XValue)
-}
+type Evaluator struct{}
 
 // NewEvaluator creates a new evaluator
-func NewEvaluator(opts ...func(*Evaluator)) *Evaluator {
-	e := &Evaluator{}
-	for _, o := range opts {
-		o(e)
-	}
-	return e
+func NewEvaluator() *Evaluator {
+	return &Evaluator{}
 }
 
-// WithDeprecatedCallback sets a callback to be called when a deprecated value in the context is accessed.
-func WithDeprecatedCallback(onDeprecated func(types.XValue)) func(*Evaluator) {
-	return func(e *Evaluator) {
-		e.onDeprecated = onDeprecated
+type problems struct {
+	warnings []string
+}
+
+func (w *problems) warning(m string) {
+	if !slices.Contains(w.warnings, m) {
+		w.warnings = append(w.warnings, m)
 	}
 }
 
@@ -35,15 +33,16 @@ func WithDeprecatedCallback(onDeprecated func(types.XValue)) func(*Evaluator) {
 type Escaping func(string) string
 
 // Template evaluates the passed in template
-func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, error) {
+func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, []string, error) {
 	var buf strings.Builder
+	probs := &problems{}
 
 	err := VisitTemplate(template, ctx.Properties(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER, EXPRESSION:
-			value := e.Expression(env, ctx, token)
+			value := e.expression(env, ctx, token, probs)
 
 			// if we got an error, return that
 			if types.IsXError(value) {
@@ -63,13 +62,13 @@ func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template 
 		return nil
 	})
 
-	return buf.String(), err
+	return buf.String(), probs.warnings, err
 }
 
 // TemplateValue is equivalent to Template except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, template string) (types.XValue, error) {
+func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, template string) (types.XValue, []string, error) {
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), ctx.Properties())
 
@@ -83,18 +82,24 @@ func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, temp
 	if nextTT == EOF {
 		switch tokenType {
 		case IDENTIFIER, EXPRESSION:
-			return e.Expression(env, ctx, token), nil
+			val, warnings := e.Expression(env, ctx, token)
+			return val, warnings, nil
 		}
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := e.Template(env, ctx, template, nil)
-	return types.NewXText(asStr), err
+	asStr, warnings, err := e.Template(env, ctx, template, nil)
+	return types.NewXText(asStr), warnings, err
 }
 
 // Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) types.XValue {
+func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) (types.XValue, []string) {
+	probs := &problems{}
+	return e.expression(env, ctx, expression, probs), probs.warnings
+}
+
+func (e *Evaluator) expression(env envs.Environment, ctx *types.XObject, expression string, probs *problems) types.XValue {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
 		return types.NewXError(err)
@@ -102,7 +107,7 @@ func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, express
 
 	scope := NewScope(ctx, nil)
 
-	return parsed.Evaluate(e, env, scope)
+	return parsed.Evaluate(env, scope, probs)
 }
 
 type lookupNotation string
@@ -112,13 +117,7 @@ const (
 	lookupNotationArray lookupNotation = "array"
 )
 
-func (e *Evaluator) onContextRead(val types.XValue) {
-	if !utils.IsNil(val) && val.Deprecated() != "" && e.onDeprecated != nil {
-		e.onDeprecated(val)
-	}
-}
-
-func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation) types.XValue {
+func resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation, probs *problems) types.XValue {
 	array, isArray := container.(*types.XArray)
 	object, isObject := container.(*types.XObject)
 	var resolved types.XValue
@@ -159,7 +158,9 @@ func (e *Evaluator) resolveLookup(env envs.Environment, container types.XValue, 
 		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
 	}
 
-	e.onContextRead(resolved)
+	if !utils.IsNil(resolved) && resolved.Deprecated() != "" {
+		probs.warning("deprecated context value accessed: " + resolved.Deprecated())
+	}
 
 	return resolved
 }

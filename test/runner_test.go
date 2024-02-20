@@ -88,7 +88,6 @@ type Output struct {
 	Session  json.RawMessage   `json:"session"`
 	Events   []json.RawMessage `json:"events"`
 	Segments json.RawMessage   `json:"segments"`
-	Warnings []string          `json:"warnings,omitempty"`
 }
 
 type FlowTest struct {
@@ -115,8 +114,6 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
-	var warnings []string
-
 	eng := engine.NewBuilder().
 		WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
@@ -127,9 +124,6 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
-		}).
-		WithWarningCallback(func(msg string) {
-			warnings = append(warnings, msg)
 		}).
 		Build()
 
@@ -151,10 +145,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			Session:  sessionJSON,
 			Events:   marshalEventLog(sprint.Events()),
 			Segments: jsonx.MustMarshal(sprint.Segments()),
-			Warnings: warnings,
 		})
-
-		warnings = nil
 
 		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
@@ -186,7 +177,6 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		Session:  sessionJSON,
 		Events:   marshalEventLog(sprint.Events()),
 		Segments: jsonx.MustMarshal(sprint.Segments()),
-		Warnings: warnings,
 	})
 
 	return runResult{session, outputs}, nil

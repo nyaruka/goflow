@@ -44,17 +44,16 @@ func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLa
 
 // Execute runs this action
 func (a *SetContactLanguageAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	language, err := run.EvaluateTemplate(a.Language)
+	language, ok := run.EvaluateTemplate(a.Language, logEvent)
 	language = strings.TrimSpace(language)
 
-	// if we received an error, log it
-	if err != nil {
-		logEvent(events.NewError(err))
+	if !ok {
 		return nil
 	}
 
 	// language must be empty or valid language code
 	lang := i18n.NilLanguage
+	var err error
 	if language != "" {
 		lang, err = i18n.ParseLanguage(language)
 		if err != nil {

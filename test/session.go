@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 
@@ -759,4 +760,13 @@ func NewEventLog() *EventLog {
 
 func (l *EventLog) Log(e flows.Event) {
 	l.Events = append(l.Events, e)
+}
+
+func (l *EventLog) Error() error {
+	for _, e := range l.Events {
+		if e.Type() == events.TypeError {
+			return errors.New(e.(*events.ErrorEvent).Text)
+		}
+	}
+	return nil
 }

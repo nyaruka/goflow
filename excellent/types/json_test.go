@@ -79,7 +79,7 @@ func TestXJSONResolve(t *testing.T) {
 		ctx := types.NewXObject(map[string]types.XValue{"j": fragment})
 
 		eval := excellent.NewEvaluator()
-		value := eval.Expression(env, ctx, tc.expression)
+		value, _ := eval.Expression(env, ctx, tc.expression)
 		err, _ := value.(error)
 
 		if tc.hasError {
