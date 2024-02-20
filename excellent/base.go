@@ -1,14 +1,12 @@
 package excellent
 
 import (
-	"slices"
 	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Evaluator evaluates templates and expressions.
@@ -19,23 +17,13 @@ func NewEvaluator() *Evaluator {
 	return &Evaluator{}
 }
 
-type problems struct {
-	warnings []string
-}
-
-func (w *problems) warning(m string) {
-	if !slices.Contains(w.warnings, m) {
-		w.warnings = append(w.warnings, m)
-	}
-}
-
 // Escaping is a function applied to expressions in a template after they've been evaluated
 type Escaping func(string) string
 
 // Template evaluates the passed in template
 func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, []string, error) {
 	var buf strings.Builder
-	probs := &problems{}
+	probs := &Warnings{}
 
 	err := VisitTemplate(template, ctx.Properties(), func(tokenType XTokenType, token string) error {
 		switch tokenType {
@@ -62,7 +50,7 @@ func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template 
 		return nil
 	})
 
-	return buf.String(), probs.warnings, err
+	return buf.String(), probs.all, err
 }
 
 // TemplateValue is equivalent to Template except in the case where the template contains
@@ -95,11 +83,11 @@ func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, temp
 // Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
 func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) (types.XValue, []string) {
-	probs := &problems{}
-	return e.expression(env, ctx, expression, probs), probs.warnings
+	probs := &Warnings{}
+	return e.expression(env, ctx, expression, probs), probs.all
 }
 
-func (e *Evaluator) expression(env envs.Environment, ctx *types.XObject, expression string, probs *problems) types.XValue {
+func (e *Evaluator) expression(env envs.Environment, ctx *types.XObject, expression string, probs *Warnings) types.XValue {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
 		return types.NewXError(err)
@@ -108,61 +96,6 @@ func (e *Evaluator) expression(env envs.Environment, ctx *types.XObject, express
 	scope := NewScope(ctx, nil)
 
 	return parsed.Evaluate(env, scope, probs)
-}
-
-type lookupNotation string
-
-const (
-	lookupNotationDot   lookupNotation = "dot"
-	lookupNotationArray lookupNotation = "array"
-)
-
-func resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, notation lookupNotation, probs *problems) types.XValue {
-	array, isArray := container.(*types.XArray)
-	object, isObject := container.(*types.XObject)
-	var resolved types.XValue
-
-	if isArray && array != nil {
-		// if left-hand side is an array, then this is an index
-		index, xerr := types.ToInteger(env, lookup)
-		if xerr != nil {
-			return xerr
-		}
-
-		if index >= array.Count() || index < -array.Count() {
-			return types.NewXErrorf("index %d out of range for %d items", index, array.Count())
-		}
-		if index < 0 {
-			index += array.Count()
-		}
-
-		resolved = array.Get(index)
-
-	} else if isObject && object != nil {
-		// if left-hand side is an object, then this is a property lookup
-		property, xerr := types.ToXText(env, lookup)
-		if xerr != nil {
-			return xerr
-		}
-
-		value, exists := object.Get(property.Native())
-
-		// [] notation doesn't error for non-existent properties, . does
-		if !exists && notation == lookupNotationDot {
-			return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property.Native())
-		}
-
-		resolved = value
-
-	} else {
-		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
-	}
-
-	if !utils.IsNil(resolved) && resolved.Deprecated() != "" {
-		probs.warning("deprecated context value accessed: " + resolved.Deprecated())
-	}
-
-	return resolved
 }
 
 // Parse parses an expression
