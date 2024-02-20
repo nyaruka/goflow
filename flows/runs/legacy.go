@@ -47,7 +47,9 @@ func newLegacyExtra(run flows.Run) *legacyExtra {
 }
 
 func (e *legacyExtra) ToXValue(env envs.Environment) types.XValue {
-	return types.NewXObject(e.values)
+	value := types.NewXObject(e.values)
+	value.SetDeprecated("legacy_extra")
+	return value
 }
 
 func (e *legacyExtra) addResults(results flows.Results) {
@@ -108,7 +110,11 @@ func lastWebhookSavedAsExtra(r *run) types.XValue {
 			if resultEvent != nil {
 				asResultEvent := resultEvent.(*events.RunResultChangedEvent)
 				if asResultEvent.Extra != nil {
-					return types.JSONToXValue([]byte(asResultEvent.Extra))
+					value := types.JSONToXValue([]byte(asResultEvent.Extra))
+					if value != nil {
+						value.SetDeprecated("webhook recreated from extra")
+					}
+					return value
 				}
 			}
 		default:

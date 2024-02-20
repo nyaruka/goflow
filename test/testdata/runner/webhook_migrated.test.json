@@ -140,8 +140,14 @@
                     "value": "200"
                 },
                 {
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "text": "deprecated context value accessed: legacy_extra",
+                    "type": "warning"
+                },
+                {
                     "category": "Valid",
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "input": "valid",
                     "name": "Country",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -253,8 +259,14 @@
                                 "value": "200"
                             },
                             {
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "text": "deprecated context value accessed: legacy_extra",
+                                "type": "warning"
+                            },
+                            {
                                 "category": "Valid",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "input": "valid",
                                 "name": "Country",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -262,12 +274,12 @@
                                 "value": "valid"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:28.123456789Z",
+                        "exited_on": "2018-07-06T12:30:30.123456789Z",
                         "flow": {
                             "name": "Migrated Webhook",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:28.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -291,7 +303,7 @@
                         "results": {
                             "country": {
                                 "category": "Valid",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "input": "valid",
                                 "name": "Country",
                                 "node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",

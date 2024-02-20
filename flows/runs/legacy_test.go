@@ -45,8 +45,9 @@ func TestLegacyExtra(t *testing.T) {
 		{"@legacy_extra", `{address: {state: WA}, array: [1, x], bool: true, entities: {location: [{confidence: 1, value: Quito}]}, intent: {"intents":[{"name":"book_flight","confidence":0.5},{"name":"book_hotel","confidence":0.25}],"entities":{"location":[{"value":"Quito","confidence":1}]}}, intents: [{confidence: 0.5, name: book_flight}, {confidence: 0.25, name: book_hotel}], number: 123.34, object: {1: xx, foo: bar}, source: website, text: hello, webhook: {"bool": true, "number": 123.34, "text": "hello", "object": {"foo": "bar", "1": "xx"}, "array": [1, "x"]}}`},
 	}
 	for _, tc := range tests {
-		output, err := run.EvaluateTemplate(tc.template)
-		assert.NoError(t, err)
+		log := test.NewEventLog()
+		output, _ := run.EvaluateTemplate(tc.template, log.Log)
+		assert.NoError(t, log.Error())
 		assert.Equal(t, tc.output, output, "evaluate failed for %s", tc.template)
 	}
 
@@ -54,7 +55,8 @@ func TestLegacyExtra(t *testing.T) {
 	result := flows.NewResult("webhook", "200", "Success", "", flows.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), dates.Now())
 	run.SaveResult(result)
 
-	output, err := run.EvaluateTemplate(`@(legacy_extra[0])`)
-	assert.NoError(t, err)
+	log := test.NewEventLog()
+	output, _ := run.EvaluateTemplate(`@(legacy_extra[0])`, log.Log)
+	assert.NoError(t, log.Error())
 	assert.Equal(t, `{foo: 123}`, output)
 }

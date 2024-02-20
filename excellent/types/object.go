@@ -25,6 +25,7 @@ const serializeDefaultAs = "__default__"
 // @type object
 type XObject struct {
 	baseValue
+
 	def            XValue
 	props          map[string]XValue
 	source         func() map[string]XValue

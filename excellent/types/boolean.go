@@ -18,6 +18,7 @@ import (
 // @type boolean
 type XBoolean struct {
 	baseValue
+
 	native bool
 }
 

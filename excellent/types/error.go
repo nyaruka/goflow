@@ -10,6 +10,7 @@ import (
 // XError is an error
 type XError struct {
 	baseValue
+
 	native error
 }
 

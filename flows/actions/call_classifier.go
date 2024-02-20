@@ -57,10 +57,7 @@ func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifi
 	classifier := classifiers.Get(a.Classifier.UUID)
 
 	// substitute any variables in our input
-	input, err := run.EvaluateTemplate(a.Input)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
+	input, _ := run.EvaluateTemplate(a.Input, logEvent)
 
 	classification, skipped := a.classify(run, step, input, classifier, logEvent)
 	if classification != nil {

@@ -86,19 +86,13 @@ func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) 
 func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
-	evaluatedText, err := run.EvaluateTemplate(localizedText[0])
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
+	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], logEvent)
 
 	// localize and evaluate the message attachments
 	translatedAttachments, attLang := run.GetTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for _, a := range translatedAttachments {
-		evaluatedAttachment, err := run.EvaluateTemplate(a)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
+		evaluatedAttachment, _ := run.EvaluateTemplate(a, logEvent)
 		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
 		if evaluatedAttachment == "" {
 			logEvent(events.NewErrorf("attachment text evaluated to empty string, skipping"))
@@ -115,10 +109,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
-		evaluatedQuickReply, err := run.EvaluateTemplate(qr)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
+		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, logEvent)
 		if evaluatedQuickReply == "" {
 			logEvent(events.NewErrorf("quick reply text evaluated to empty string, skipping"))
 			continue
@@ -251,10 +242,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 
 	// evaluate the legacy variables
 	for _, legacyVar := range a.LegacyVars {
-		evaluatedLegacyVar, err := run.EvaluateTemplate(legacyVar)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
+		evaluatedLegacyVar, _ := run.EvaluateTemplate(legacyVar, logEvent)
 
 		evaluatedLegacyVar = strings.TrimSpace(evaluatedLegacyVar)
 
@@ -285,7 +273,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 	}
 
 	// evaluate contact query
-	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true)
+	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true, logEvent)
 	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
@@ -308,10 +296,9 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent 
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing group's name
-			evaluatedName, err := run.EvaluateTemplate(ref.NameMatch)
-			if err != nil {
-				logEvent(events.NewError(err))
-			} else {
+			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, logEvent)
+			if ok {
+
 				// look up the set of all groups to see if such a group exists
 				group = groupAssets.FindByName(evaluatedName)
 				if group == nil {
@@ -344,10 +331,8 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent 
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing label's name
-			evaluatedName, err := run.EvaluateTemplate(ref.NameMatch)
-			if err != nil {
-				logEvent(events.NewError(err))
-			} else {
+			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, logEvent)
+			if ok {
 				// look up the set of all labels to see if such a label exists
 				label = labelAssets.FindByName(evaluatedName)
 				if label == nil {
@@ -377,10 +362,8 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 
 	if ref.Variable() {
 		// is an expression that evaluates to an existing user's email
-		evaluatedEmail, err := run.EvaluateTemplate(ref.EmailMatch)
-		if err != nil {
-			logEvent(events.NewError(err))
-		} else {
+		evaluatedEmail, ok := run.EvaluateTemplate(ref.EmailMatch, logEvent)
+		if ok {
 			// look up to see if such a user exists
 			user = userAssets.Get(evaluatedEmail)
 			if user == nil {

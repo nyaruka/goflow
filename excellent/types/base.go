@@ -31,6 +31,12 @@ type XValue interface {
 
 	// Equals returns true if this value is equal to the given value
 	Equals(XValue) bool
+
+	// Deprecated returns whether this value is considered deprecated
+	Deprecated() string
+
+	// Marks this value as considered deprecated
+	SetDeprecated(string)
 }
 
 // XCountable is the interface for types which can be counted
@@ -133,4 +139,9 @@ func String(x XValue) string {
 
 // baseValue is shared by all X types
 type baseValue struct {
+	deprecated string
 }
+
+func (x *baseValue) Deprecated() string { return x.deprecated }
+
+func (x *baseValue) SetDeprecated(msg string) { x.deprecated = msg }

@@ -29,6 +29,7 @@ func init() {
 // @type number
 type XNumber struct {
 	baseValue
+
 	native decimal.Decimal
 }
 

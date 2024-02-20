@@ -65,10 +65,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 		assignee = resolveUser(run, a.Assignee, logEvent)
 	}
 
-	evaluatedBody, err := run.EvaluateTemplate(a.Body)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
+	evaluatedBody, _ := run.EvaluateTemplate(a.Body, logEvent)
 
 	ticket := a.open(run, step, topic, evaluatedBody, assignee, logModifier, logEvent)
 	if ticket != nil {

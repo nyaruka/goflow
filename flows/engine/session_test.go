@@ -63,7 +63,8 @@ func TestEvaluateTemplate(t *testing.T) {
 			run = sessionWithURNs.Runs()[0]
 		}
 
-		eval, err := run.EvaluateTemplate(tc.Template)
+		log := test.NewEventLog()
+		eval, ok := run.EvaluateTemplate(tc.Template, log.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
@@ -72,8 +73,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		} else {
 			actual.Output = eval
 		}
-		if err != nil {
-			actual.Error = err.Error()
+		if !ok {
+			actual.Error = log.Error().Error()
 		}
 
 		if !test.UpdateSnapshots {
@@ -116,9 +117,11 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 	jsonx.Unmarshal(testFile, &tests)
 	require.NoError(b, err)
 
+	logEvent := func(e flows.Event) {}
+
 	for n := 0; n < b.N; n++ {
 		for _, tc := range tests {
-			run.EvaluateTemplate(tc.Template)
+			run.EvaluateTemplate(tc.Template, logEvent)
 		}
 	}
 }
