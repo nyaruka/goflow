@@ -1,11 +1,11 @@
 package flows
 
 import (
+	"reflect"
 	"strconv"
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Contextable is an object that can accessed in expressions as a object with properties
@@ -15,12 +15,15 @@ type Contextable interface {
 
 // Context generates a lazy object for use in expressions
 func Context(env envs.Environment, contextable Contextable) types.XValue {
-	if !utils.IsNil(contextable) {
-		return types.NewXLazyObject(func() map[string]types.XValue {
-			return contextable.Context(env)
-		})
+	// we allow passing nil pointers which will become non-nil Contextables
+	if contextable == nil || reflect.ValueOf(contextable).IsNil() {
+		return nil
 	}
-	return nil
+
+	return types.NewXLazyObject(func() map[string]types.XValue {
+		return contextable.Context(env)
+	})
+
 }
 
 // ContextFunc generates a lazy object for use in expressions

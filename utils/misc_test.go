@@ -8,12 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsNil(t *testing.T) {
-	assert.True(t, utils.IsNil(nil))
-	assert.True(t, utils.IsNil(error(nil)))
-	assert.False(t, utils.IsNil(""))
-}
-
 func TestSortedKeys(t *testing.T) {
 	assert.Equal(t, []string{}, utils.SortedKeys(map[string]bool{}))
 	assert.Equal(t, []string{"a", "x", "y"}, utils.SortedKeys(map[string]bool{"x": true, "y": true, "a": true}))

@@ -53,7 +53,7 @@ func (r *baseRouter) Categories() []flows.Category { return r.categories }
 
 // AllowTimeout returns whether this router can be resumed at with a timeout
 func (r *baseRouter) AllowTimeout() bool {
-	return r.wait != nil && !utils.IsNil(r.wait.Timeout())
+	return r.wait != nil && r.wait.Timeout() != nil
 }
 
 // ResultName returns the name which the result of this router should be saved as (if any)

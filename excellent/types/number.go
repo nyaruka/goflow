@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
@@ -152,7 +151,7 @@ func newXNumberFromString(s string) (*XNumber, error) {
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(env envs.Environment, x XValue) (*XNumber, *XError) {
-	if !utils.IsNil(x) {
+	if !IsNil(x) {
 		switch typed := x.(type) {
 		case *XError:
 			return XNumberZero, typed

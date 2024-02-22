@@ -6,7 +6,6 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
@@ -82,7 +81,7 @@ func jsonToArray(data []byte) *XArray {
 
 // ToXJSON converts the given value to a JSON string
 func ToXJSON(x XValue) (*XText, *XError) {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return NewXText(`null`), nil
 	}
 	if IsXError(x) {

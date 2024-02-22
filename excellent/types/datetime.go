@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // XDateTime is a datetime value.
@@ -135,7 +134,7 @@ func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (*XDateTime, *XErro
 
 // converts the given value to a time or returns an error if that isn't possible
 func toXDateTime(env envs.Environment, x XValue, fillTime bool) (*XDateTime, *XError) {
-	if !utils.IsNil(x) {
+	if !IsNil(x) {
 		switch typed := x.(type) {
 		case *XError:
 			return XDateTimeZero, typed

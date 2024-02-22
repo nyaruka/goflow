@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 type Warnings struct {
@@ -43,7 +42,7 @@ func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope, warnings
 		return types.NewXErrorf("context has no property '%s'", x.name)
 	}
 
-	if !utils.IsNil(value) && value.Deprecated() != "" {
+	if !types.IsNil(value) && value.Deprecated() != "" {
 		warnings.deprecatedContext(value)
 	}
 
@@ -422,7 +421,7 @@ func resolveLookup(env envs.Environment, container types.XValue, lookup types.XV
 		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
 	}
 
-	if !utils.IsNil(resolved) && resolved.Deprecated() != "" {
+	if !types.IsNil(resolved) && resolved.Deprecated() != "" {
 		warnings.deprecatedContext(resolved)
 	}
 
