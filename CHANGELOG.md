@@ -1,3 +1,7 @@
+v0.202.1 (2024-02-23)
+-------------------------
+ * Limit use of reflect nil checking
+
 v0.202.0 (2024-02-20)
 -------------------------
  * Add warnings from template eval functions and recorded as events
