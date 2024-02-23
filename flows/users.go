@@ -48,7 +48,7 @@ func (u *User) Format() string {
 //
 // @context user
 func (u *User) Context(env envs.Environment) map[string]types.XValue {
-	var firstName types.XText
+	firstName := types.XTextEmpty
 
 	names := utils.TokenizeString(u.Name())
 	if len(names) >= 1 {

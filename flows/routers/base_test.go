@@ -41,7 +41,7 @@ func TestRouterTypes(t *testing.T) {
 	assetsJSON, err := os.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	for _, typeName := range routers.RegisteredTypes() {
+	for typeName := range routers.RegisteredTypes() {
 		testRouterType(t, assetsJSON, typeName)
 	}
 }

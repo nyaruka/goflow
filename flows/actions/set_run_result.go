@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -50,12 +49,8 @@ func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category 
 
 // Execute runs this action
 func (a *SetRunResultAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	// get our evaluated value
-	value, err := run.EvaluateTemplate(a.Value)
-
-	// log any error received
-	if err != nil {
-		logEvent(events.NewError(err))
+	value, ok := run.EvaluateTemplate(a.Value, logEvent)
+	if !ok {
 		return nil
 	}
 

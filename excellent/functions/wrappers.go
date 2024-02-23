@@ -68,7 +68,7 @@ func ThreeArgFunction(f func(envs.Environment, types.XValue, types.XValue, types
 }
 
 // OneTextFunction creates an XFunc from a function that takes a single text arg
-func OneTextFunction(f func(envs.Environment, types.XText) types.XValue) types.XFunc {
+func OneTextFunction(f func(envs.Environment, *types.XText) types.XValue) types.XFunc {
 	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -79,7 +79,7 @@ func OneTextFunction(f func(envs.Environment, types.XText) types.XValue) types.X
 }
 
 // TwoTextFunction creates an XFunc from a function that takes two text args
-func TwoTextFunction(f func(envs.Environment, types.XText, types.XText) types.XValue) types.XFunc {
+func TwoTextFunction(f func(envs.Environment, *types.XText, *types.XText) types.XValue) types.XFunc {
 	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str1, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -94,7 +94,7 @@ func TwoTextFunction(f func(envs.Environment, types.XText, types.XText) types.XV
 }
 
 // TextAndNumberFunction creates an XFunc from a function that takes a text and a number arg
-func TextAndNumberFunction(f func(envs.Environment, types.XText, types.XNumber) types.XValue) types.XFunc {
+func TextAndNumberFunction(f func(envs.Environment, *types.XText, *types.XNumber) types.XValue) types.XFunc {
 	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -110,7 +110,7 @@ func TextAndNumberFunction(f func(envs.Environment, types.XText, types.XNumber) 
 }
 
 // TextAndIntegerFunction creates an XFunc from a function that takes a text and an integer arg
-func TextAndIntegerFunction(f func(envs.Environment, types.XText, int) types.XValue) types.XFunc {
+func TextAndIntegerFunction(f func(envs.Environment, *types.XText, int) types.XValue) types.XFunc {
 	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -126,7 +126,7 @@ func TextAndIntegerFunction(f func(envs.Environment, types.XText, int) types.XVa
 }
 
 // TextAndOptionalTextFunction creates an XFunc from a function that takes either one or two text args
-func TextAndOptionalTextFunction(f func(envs.Environment, types.XText, types.XText) types.XValue, defaultVal types.XText) types.XFunc {
+func TextAndOptionalTextFunction(f func(envs.Environment, *types.XText, *types.XText) types.XValue, defaultVal *types.XText) types.XFunc {
 	return MinAndMaxArgsCheck(1, 2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str1, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -166,7 +166,7 @@ func ThreeIntegerFunction(f func(envs.Environment, int, int, int) types.XValue) 
 }
 
 // TextAndDateFunction creates an XFunc from a function that takes a text and a date arg
-func TextAndDateFunction(f func(envs.Environment, types.XText, types.XDateTime) types.XValue) types.XFunc {
+func TextAndDateFunction(f func(envs.Environment, *types.XText, *types.XDateTime) types.XValue) types.XFunc {
 	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -182,7 +182,7 @@ func TextAndDateFunction(f func(envs.Environment, types.XText, types.XDateTime) 
 }
 
 // InitialTextFunction creates an XFunc from a function that takes an initial text arg followed by other args
-func InitialTextFunction(minOtherArgs int, maxOtherArgs int, f func(envs.Environment, types.XText, ...types.XValue) types.XValue) types.XFunc {
+func InitialTextFunction(minOtherArgs int, maxOtherArgs int, f func(envs.Environment, *types.XText, ...types.XValue) types.XValue) types.XFunc {
 	return MinAndMaxArgsCheck(minOtherArgs+1, maxOtherArgs+1, func(env envs.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
@@ -193,7 +193,7 @@ func InitialTextFunction(minOtherArgs int, maxOtherArgs int, f func(envs.Environ
 }
 
 // OneNumberFunction creates an XFunc from a single number function
-func OneNumberFunction(f func(envs.Environment, types.XNumber) types.XValue) types.XFunc {
+func OneNumberFunction(f func(envs.Environment, *types.XNumber) types.XValue) types.XFunc {
 	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {
 		num, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
@@ -205,7 +205,7 @@ func OneNumberFunction(f func(envs.Environment, types.XNumber) types.XValue) typ
 }
 
 // OneNumberAndOptionalIntegerFunction creates an XFunc from a function that takes a number and an optional integer
-func OneNumberAndOptionalIntegerFunction(f func(envs.Environment, types.XNumber, int) types.XValue, defaultVal int) types.XFunc {
+func OneNumberAndOptionalIntegerFunction(f func(envs.Environment, *types.XNumber, int) types.XValue, defaultVal int) types.XFunc {
 	return MinAndMaxArgsCheck(1, 2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		num, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
@@ -225,7 +225,7 @@ func OneNumberAndOptionalIntegerFunction(f func(envs.Environment, types.XNumber,
 }
 
 // TwoNumberFunction creates an XFunc from a function that takes two numbers
-func TwoNumberFunction(f func(envs.Environment, types.XNumber, types.XNumber) types.XValue) types.XFunc {
+func TwoNumberFunction(f func(envs.Environment, *types.XNumber, *types.XNumber) types.XValue) types.XFunc {
 	return NumArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		num1, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
@@ -241,7 +241,7 @@ func TwoNumberFunction(f func(envs.Environment, types.XNumber, types.XNumber) ty
 }
 
 // OneDateFunction creates an XFunc from a single date function
-func OneDateFunction(f func(envs.Environment, types.XDate) types.XValue) types.XFunc {
+func OneDateFunction(f func(envs.Environment, *types.XDate) types.XValue) types.XFunc {
 	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {
 		date, xerr := types.ToXDate(env, args[0])
 		if xerr != nil {
@@ -253,7 +253,7 @@ func OneDateFunction(f func(envs.Environment, types.XDate) types.XValue) types.X
 }
 
 // OneDateTimeFunction creates an XFunc from a single datetime function
-func OneDateTimeFunction(f func(envs.Environment, types.XDateTime) types.XValue) types.XFunc {
+func OneDateTimeFunction(f func(envs.Environment, *types.XDateTime) types.XValue) types.XFunc {
 	return NumArgsCheck(1, func(env envs.Environment, args ...types.XValue) types.XValue {
 		date, xerr := types.ToXDateTime(env, args[0])
 		if xerr != nil {
@@ -265,7 +265,7 @@ func OneDateTimeFunction(f func(envs.Environment, types.XDateTime) types.XValue)
 }
 
 // ObjectTextAndNumberFunction creates an XFunc from a function that takes an object, text and a number
-func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, types.XText, types.XNumber) types.XValue) types.XFunc {
+func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, *types.XText, *types.XNumber) types.XValue) types.XFunc {
 	return NumArgsCheck(3, func(env envs.Environment, args ...types.XValue) types.XValue {
 		object, xerr := types.ToXObject(env, args[0])
 		if xerr != nil {
@@ -285,14 +285,14 @@ func ObjectTextAndNumberFunction(f func(envs.Environment, *types.XObject, types.
 }
 
 // ObjectAndTextsFunction creates an XFunc from a function that takes an object and any number of text values
-func ObjectAndTextsFunction(f func(envs.Environment, *types.XObject, ...types.XText) types.XValue) types.XFunc {
+func ObjectAndTextsFunction(f func(envs.Environment, *types.XObject, ...*types.XText) types.XValue) types.XFunc {
 	return MinArgsCheck(2, func(env envs.Environment, args ...types.XValue) types.XValue {
 		object, xerr := types.ToXObject(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
 
-		texts := make([]types.XText, len(args)-1)
+		texts := make([]*types.XText, len(args)-1)
 		for i, arg := range args[1:] {
 			text, xerr := types.ToXText(env, arg)
 			if xerr != nil {

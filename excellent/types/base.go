@@ -6,7 +6,6 @@ import (
 	"reflect"
 
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // XValue is the base interface of all excellent types
@@ -31,6 +30,12 @@ type XValue interface {
 
 	// Equals returns true if this value is equal to the given value
 	Equals(XValue) bool
+
+	// Deprecated returns whether this value is considered deprecated
+	Deprecated() string
+
+	// Marks this value as considered deprecated
+	SetDeprecated(string)
 }
 
 // XCountable is the interface for types which can be counted
@@ -48,9 +53,9 @@ type XComparable interface {
 // specifically means text(x) == text(y)
 func Equals(x1 XValue, x2 XValue) bool {
 	// nil == nil
-	if utils.IsNil(x1) && utils.IsNil(x2) {
+	if IsNil(x1) && IsNil(x2) {
 		return true
-	} else if utils.IsNil(x1) || utils.IsNil(x2) {
+	} else if IsNil(x1) || IsNil(x2) {
 		return false
 	}
 
@@ -65,11 +70,11 @@ func Equals(x1 XValue, x2 XValue) bool {
 // Compare compares two given values
 func Compare(x1 XValue, x2 XValue) int {
 	// nil == nil
-	if utils.IsNil(x1) && utils.IsNil(x2) {
+	if IsNil(x1) && IsNil(x2) {
 		return 0
-	} else if utils.IsNil(x1) {
+	} else if IsNil(x1) {
 		return -1
-	} else if utils.IsNil(x2) {
+	} else if IsNil(x2) {
 		return 1
 	}
 
@@ -93,7 +98,7 @@ func SameType(x1 XValue, x2 XValue) bool {
 
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return "null"
 	}
 	return x.Describe()
@@ -101,7 +106,7 @@ func Describe(x XValue) string {
 
 // Truthy determines truthiness for the given value
 func Truthy(x XValue) bool {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return false
 	}
 	return x.Truthy()
@@ -109,7 +114,7 @@ func Truthy(x XValue) bool {
 
 // Render returns the canonical text representation
 func Render(x XValue) string {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return ""
 	}
 	return x.Render()
@@ -117,7 +122,7 @@ func Render(x XValue) string {
 
 // Format returns the pretty text representation
 func Format(env envs.Environment, x XValue) string {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return ""
 	}
 	return x.Format(env)
@@ -125,8 +130,23 @@ func Format(env envs.Environment, x XValue) string {
 
 // String returns a representation of the given value for use in debugging
 func String(x XValue) string {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return "nil"
 	}
 	return x.String()
 }
+
+// IsNil returns whether the given value is nil... because of golang's love of autoboxing nil pointers into non-nil
+// interfaces, we need to check if interface itself is nil or the underlying pointer is nil.
+func IsNil(x XValue) bool {
+	return x == nil || reflect.ValueOf(x).IsNil()
+}
+
+// baseValue is shared by all X types
+type baseValue struct {
+	deprecated string
+}
+
+func (x *baseValue) Deprecated() string { return x.deprecated }
+
+func (x *baseValue) SetDeprecated(msg string) { x.deprecated = msg }

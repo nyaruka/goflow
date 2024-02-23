@@ -28,7 +28,7 @@ func TestJSONToXValue(t *testing.T) {
 
 	test.AssertXEqual(t, types.RequireXNumberFromString(`37.27903`), types.JSONToXValue([]byte(`37.27903`)))
 
-	xerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
+	xerr := types.JSONToXValue([]byte(`fish`)).(*types.XError)
 	assert.Equal(t, `invalid JSON`, xerr.Error())
 }
 
@@ -78,7 +78,8 @@ func TestXJSONResolve(t *testing.T) {
 		fragment := types.JSONToXValue(tc.JSON)
 		ctx := types.NewXObject(map[string]types.XValue{"j": fragment})
 
-		value := excellent.EvaluateExpression(env, ctx, tc.expression)
+		eval := excellent.NewEvaluator()
+		value, _ := eval.Expression(env, ctx, tc.expression)
 		err, _ := value.(error)
 
 		if tc.hasError {

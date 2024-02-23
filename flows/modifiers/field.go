@@ -92,12 +92,6 @@ func readFieldModifier(assets flows.SessionAssets, data json.RawMessage, missing
 	// try unmarshaling value as string
 	json.Unmarshal(e.Value, &value)
 
-	// then try as a value object (how this modifier used to be work)
-	valueAsObj := &flows.Value{}
-	if json.Unmarshal(e.Value, valueAsObj) == nil {
-		value = valueAsObj.Text.Native()
-	}
-
 	return NewField(field, value), nil
 }
 

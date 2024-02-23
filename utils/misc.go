@@ -1,29 +1,11 @@
 package utils
 
 import (
-	"reflect"
 	"slices"
 
 	"golang.org/x/exp/constraints"
 	"golang.org/x/exp/maps"
 )
-
-// IsNil returns whether the given object is nil or an interface to a nil
-func IsNil(v any) bool {
-	// if v doesn't have a type or value then v == nil
-	if v == nil {
-		return true
-	}
-
-	val := reflect.ValueOf(v)
-
-	// if v is a typed nil pointer then v != nil but the value is nil
-	if val.Kind() == reflect.Ptr {
-		return val.IsNil()
-	}
-
-	return false
-}
 
 // Set converts a slice to a set (a K > bool map)
 func Set[K constraints.Ordered](s []K) map[K]bool {

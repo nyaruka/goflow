@@ -1,6 +1,7 @@
 package migrations
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 
@@ -160,7 +161,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 		return mapped
 	}
 
-	objectCallback := func(obj map[string]any) {
+	objectCallback := func(path string, obj map[string]any) {
 		props := objectProperties(obj)
 
 		for _, p := range props {
@@ -179,7 +180,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 		}
 	}
 
-	arrayCallback := func(arr []any) {
+	arrayCallback := func(path string, arr []any) {
 		for i, v := range arr {
 			asString, isString := v.(string)
 			if isString && uuids.IsV4(asString) {
@@ -188,7 +189,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 		}
 	}
 
-	walk(data, objectCallback, arrayCallback)
+	Walk(data, objectCallback, arrayCallback)
 }
 
 // extract the property names from a generic JSON object, sorted A-Z
@@ -202,19 +203,24 @@ func objectProperties(obj map[string]any) []string {
 }
 
 // walks the given generic JSON invoking the given callbacks for each thing found
-func walk(j any, objectCallback func(map[string]any), arrayCallback func([]any)) {
+func Walk(j any, objectCallback func(string, map[string]any), arrayCallback func(string, []any)) {
+	walk(j, objectCallback, arrayCallback, "$")
+}
+
+// walks the given generic JSON invoking the given callbacks for each thing found
+func walk(j any, objectCallback func(string, map[string]any), arrayCallback func(string, []any), path string) {
 	switch typed := j.(type) {
 	case map[string]any:
-		objectCallback(typed)
+		objectCallback(path, typed)
 
 		for _, p := range objectProperties(typed) {
-			walk(typed[p], objectCallback, arrayCallback)
+			walk(typed[p], objectCallback, arrayCallback, fmt.Sprintf("%s.%s", path, p))
 		}
 	case []any:
-		arrayCallback(typed)
+		arrayCallback(path, typed)
 
-		for _, v := range typed {
-			walk(v, objectCallback, arrayCallback)
+		for i, v := range typed {
+			walk(v, objectCallback, arrayCallback, fmt.Sprintf("%s[%d]", path, i))
 		}
 	}
 }

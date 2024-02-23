@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
@@ -19,7 +19,7 @@ import (
 )
 
 func init() {
-	registerType(TypeSwitch, readSwitchRouter)
+	registerType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
 }
 
 // TypeSwitch is the constant for our switch router
@@ -117,14 +117,11 @@ func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, string, error) {
+func (r *SwitchRouter) Route(run flows.Run, step flows.Step, log flows.EventCallback) (flows.ExitUUID, string, error) {
 	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand
-	operand, err := run.EvaluateTemplateValue(r.operand)
-	if err != nil {
-		run.LogError(step, err)
-	}
+	operand, _ := run.EvaluateTemplateValue(r.operand, log)
 
 	var operandAsStr string
 
@@ -134,7 +131,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 	}
 
 	// find first matching case
-	match, categoryUUID, extra, err := r.matchCase(run, step, operand)
+	match, categoryUUID, extra, err := r.matchCase(run, step, operand, log)
 	if err != nil {
 		return "", "", err
 	}
@@ -144,18 +141,18 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
-			run.LogError(step, xerr)
+			log(events.NewError(xerr))
 		}
 
 		match = value.Native()
 		categoryUUID = r.defaultCategoryUUID
 	}
 
-	exit, err := r.routeToCategory(run, step, categoryUUID, match, operandAsStr, extra, logEvent)
+	exit, err := r.routeToCategory(run, step, categoryUUID, match, operandAsStr, extra, log)
 	return exit, operandAsStr, err
 }
 
-func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.XValue) (string, flows.CategoryUUID, *types.XObject, error) {
+func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.XValue, log flows.EventCallback) (string, flows.CategoryUUID, *types.XObject, error) {
 	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 
@@ -176,10 +173,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 		}
 
 		for _, localizedArg := range localizedArgs {
-			arg, err := run.EvaluateTemplateValue(localizedArg)
-			if err != nil {
-				run.LogError(step, err)
-			}
+			arg, _ := run.EvaluateTemplateValue(localizedArg, log)
 			args = append(args, arg)
 		}
 
@@ -188,9 +182,9 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {
-		case types.XError:
+		case *types.XError:
 			// test functions can return an error
-			run.LogError(step, errors.Errorf("error calling test %s: %s", xtest.Describe(), typed.Error()))
+			log(events.NewErrorf("error calling test %s: %s", xtest.Describe(), typed.Error()))
 		case *types.XObject:
 			matched := typed.Truthy()
 			if !matched {
@@ -202,7 +196,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 
 			extraAsObject, isObject := extra.(*types.XObject)
 			if extra != nil && !isObject {
-				run.LogError(step, errors.Errorf("test %s returned non-object extra", strings.ToUpper(test)))
+				log(events.NewErrorf("test %s returned non-object extra", strings.ToUpper(test)))
 			}
 
 			resultAsStr, xerr := types.ToXText(run.Session().MergedEnvironment(), match)
@@ -249,26 +243,24 @@ type switchRouterEnvelope struct {
 	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
 }
 
-func readSwitchRouter(data json.RawMessage) (flows.Router, error) {
+func (r *SwitchRouter) UnmarshalJSON(data []byte) error {
 	e := &switchRouterEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, err
+		return err
 	}
 
-	r := &SwitchRouter{
-		operand:             e.Operand,
-		cases:               e.Cases,
-		defaultCategoryUUID: e.DefaultCategoryUUID,
-	}
+	r.operand = e.Operand
+	r.cases = e.Cases
+	r.defaultCategoryUUID = e.DefaultCategoryUUID
 
 	if err := r.unmarshal(&e.baseRouterEnvelope); err != nil {
-		return nil, err
+		return err
 	}
 
-	return r, nil
+	return nil
 }
 
-// MarshalJSON marshals this resume into JSON
+// MarshalJSON marshals this router into JSON
 func (r *SwitchRouter) MarshalJSON() ([]byte, error) {
 	e := &switchRouterEnvelope{
 		Operand:             r.operand,

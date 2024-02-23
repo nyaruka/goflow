@@ -61,10 +61,7 @@ func (w *DialWait) AllowedFlowTypes() []flows.FlowType {
 
 // Begin beings waiting at this wait
 func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
-	phone, err := run.EvaluateTemplate(w.phone)
-	if err != nil {
-		log(events.NewError(err))
-	}
+	phone, _ := run.EvaluateTemplate(w.phone, log)
 
 	urn, err := urns.NewTelURNForCountry(phone, string(run.Session().MergedEnvironment().DefaultCountry()))
 	if err != nil {

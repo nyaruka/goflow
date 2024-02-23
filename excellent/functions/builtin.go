@@ -392,7 +392,7 @@ func If(env envs.Environment, test types.XValue, value1 types.XValue, value2 typ
 //	@(code("")) -> ERROR
 //
 // @function code(text)
-func Code(env envs.Environment, text types.XText) types.XValue {
+func Code(env envs.Environment, text *types.XText) types.XValue {
 	if text.Length() == 0 {
 		return types.NewXErrorf("requires a string of at least one character")
 	}
@@ -413,7 +413,7 @@ func Code(env envs.Environment, text types.XText) types.XValue {
 //	@(split("a|b,c  d", " .|,")) -> [a, b, c, d]
 //
 // @function split(text, [,delimiters])
-func Split(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
+func Split(env envs.Environment, text *types.XText, delimiters *types.XText) types.XValue {
 	splits := extractWords(text.Native(), delimiters.Native())
 
 	nonEmpty := make([]types.XValue, 0)
@@ -431,7 +431,7 @@ func Split(env envs.Environment, text types.XText, delimiters types.XText) types
 //	@(trim("+123157568", "+")) -> 123157568
 //
 // @function trim(text, [,chars])
-func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+func Trim(env envs.Environment, text *types.XText, chars *types.XText) types.XValue {
 	if chars != types.XTextEmpty {
 		return types.NewXText(strings.Trim(text.Native(), chars.Native()))
 	}
@@ -447,7 +447,7 @@ func Trim(env envs.Environment, text types.XText, chars types.XText) types.XValu
 //	@(trim_left("+12345+", "+")) -> 12345+
 //
 // @function trim_left(text, [,chars])
-func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+func TrimLeft(env envs.Environment, text *types.XText, chars *types.XText) types.XValue {
 	if chars != types.XTextEmpty {
 		return types.NewXText(strings.TrimLeft(text.Native(), chars.Native()))
 	}
@@ -463,7 +463,7 @@ func TrimLeft(env envs.Environment, text types.XText, chars types.XText) types.X
 //	@(trim_right("+12345+", "+")) -> +12345
 //
 // @function trim_right(text, [,chars])
-func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.XValue {
+func TrimRight(env envs.Environment, text *types.XText, chars *types.XText) types.XValue {
 	if chars != types.XTextEmpty {
 		return types.NewXText(strings.TrimRight(text.Native(), chars.Native()))
 	}
@@ -480,7 +480,7 @@ func TrimRight(env envs.Environment, text types.XText, chars types.XText) types.
 //	@(char("foo")) -> ERROR
 //
 // @function char(code)
-func Char(env envs.Environment, num types.XNumber) types.XValue {
+func Char(env envs.Environment, num *types.XNumber) types.XValue {
 	code, xerr := types.ToInteger(env, num)
 	if xerr != nil {
 		return xerr
@@ -497,7 +497,7 @@ func Char(env envs.Environment, num types.XNumber) types.XValue {
 //	@(title(123)) -> 123
 //
 // @function title(text)
-func Title(env envs.Environment, text types.XText) types.XValue {
+func Title(env envs.Environment, text *types.XText) types.XValue {
 	return types.NewXText(strings.Title(strings.ToLower(text.Native())))
 }
 
@@ -516,7 +516,7 @@ func Title(env envs.Environment, text types.XText) types.XValue {
 //	@(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
 //
 // @function word(text, index [,delimiters])
-func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func Word(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	index, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
@@ -550,7 +550,7 @@ func Word(env envs.Environment, text types.XText, args ...types.XValue) types.XV
 //	@(remove_first_word("Hi there. I'm a flow!")) -> there. I'm a flow!
 //
 // @function remove_first_word(text)
-func RemoveFirstWord(env envs.Environment, text types.XText) types.XValue {
+func RemoveFirstWord(env envs.Environment, text *types.XText) types.XValue {
 	s := text.Native()
 	words := extractWords(s, "")
 	if len(words) < 2 {
@@ -584,7 +584,7 @@ func RemoveFirstWord(env envs.Environment, text types.XText) types.XValue {
 //	@(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
 //
 // @function word_slice(text, start, end [,delimiters])
-func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func WordSlice(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	start, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
@@ -639,7 +639,7 @@ func WordSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 //	@(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
 // @function word_count(text [,delimiters])
-func WordCount(env envs.Environment, text types.XText, delimiters types.XText) types.XValue {
+func WordCount(env envs.Environment, text *types.XText, delimiters *types.XText) types.XValue {
 	words := extractWords(text.Native(), delimiters.Native())
 
 	return types.NewXNumberFromInt(len(words))
@@ -657,7 +657,7 @@ func WordCount(env envs.Environment, text types.XText, delimiters types.XText) t
 //	@(field("a,b,c", "foo", ",")) -> ERROR
 //
 // @function field(text, index, delimiter)
-func Field(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func Field(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	field, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
@@ -698,7 +698,7 @@ func Field(env envs.Environment, text types.XText, args ...types.XValue) types.X
 //	@(clean(123)) -> 123
 //
 // @function clean(text)
-func Clean(env envs.Environment, text types.XText) types.XValue {
+func Clean(env envs.Environment, text *types.XText) types.XValue {
 	return types.NewXText(nonPrintableRegex.ReplaceAllString(text.Native(), ""))
 }
 
@@ -713,7 +713,7 @@ func Clean(env envs.Environment, text types.XText) types.XValue {
 //	@(text_slice("hello", 7)) ->
 //
 // @function text_slice(text, start [, end])
-func TextSlice(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func TextSlice(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	length := utf8.RuneCountInString(text.Native())
 
 	start, xerr := types.ToInteger(env, args[0])
@@ -754,7 +754,7 @@ func TextSlice(env envs.Environment, text types.XText, args ...types.XValue) typ
 //	@(lower("😀")) -> 😀
 //
 // @function lower(text)
-func Lower(env envs.Environment, text types.XText) types.XValue {
+func Lower(env envs.Environment, text *types.XText) types.XValue {
 	return types.NewXText(strings.ToLower(text.Native()))
 }
 
@@ -769,7 +769,7 @@ func Lower(env envs.Environment, text types.XText) types.XValue {
 //	@(regex_match("abc", "[\.")) -> ERROR
 //
 // @function regex_match(text, pattern [,group])
-func RegexMatch(env envs.Environment, text types.XText, args ...types.XValue) types.XValue {
+func RegexMatch(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
 	pattern, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
@@ -803,7 +803,7 @@ func RegexMatch(env envs.Environment, text types.XText, args ...types.XValue) ty
 //	@(text_length(array(2, 3))) -> 6
 //
 // @function text_length(value)
-func TextLength(env envs.Environment, value types.XText) types.XValue {
+func TextLength(env envs.Environment, value *types.XText) types.XValue {
 	return types.NewXNumberFromInt(value.Length())
 }
 
@@ -817,7 +817,7 @@ func TextLength(env envs.Environment, value types.XText) types.XValue {
 //	@(text_compare("zzz", "aaa")) -> 1
 //
 // @function text_compare(text1, text2)
-func TextCompare(env envs.Environment, text1 types.XText, text2 types.XText) types.XValue {
+func TextCompare(env envs.Environment, text1 *types.XText, text2 *types.XText) types.XValue {
 	return types.NewXNumberFromInt(text1.Compare(text2))
 }
 
@@ -827,7 +827,7 @@ func TextCompare(env envs.Environment, text1 types.XText, text2 types.XText) typ
 //	@(repeat("*", "foo")) -> ERROR
 //
 // @function repeat(text, count)
-func Repeat(env envs.Environment, text types.XText, count int) types.XValue {
+func Repeat(env envs.Environment, text *types.XText, count int) types.XValue {
 	if count < 0 {
 		return types.NewXErrorf("must be called with a positive integer, got %d", count)
 	}
@@ -880,7 +880,7 @@ func Replace(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(upper(123)) -> 123
 //
 // @function upper(text)
-func Upper(env envs.Environment, text types.XText) types.XValue {
+func Upper(env envs.Environment, text *types.XText) types.XValue {
 	return types.NewXText(strings.ToUpper(text.Native()))
 }
 
@@ -891,7 +891,7 @@ func Upper(env envs.Environment, text types.XText) types.XValue {
 //	@(percent("foo")) -> ERROR
 //
 // @function percent(number)
-func Percent(env envs.Environment, num types.XNumber) types.XValue {
+func Percent(env envs.Environment, num *types.XNumber) types.XValue {
 	// multiply by 100 and floor
 	percent := num.Native().Mul(decimal.NewFromFloat(100)).Round(0)
 
@@ -905,7 +905,7 @@ func Percent(env envs.Environment, num types.XNumber) types.XValue {
 //	@(url_encode(10)) -> 10
 //
 // @function url_encode(text)
-func URLEncode(env envs.Environment, text types.XText) types.XValue {
+func URLEncode(env envs.Environment, text *types.XText) types.XValue {
 	// escapes spaces as %20 matching urllib.quote(s, safe="") in Python
 	encoded := strings.Replace(url.QueryEscape(text.Native()), "+", "%20", -1)
 	return types.NewXText(encoded)
@@ -917,7 +917,7 @@ func URLEncode(env envs.Environment, text types.XText) types.XValue {
 //	@(html_decode("5 + 10")) -> 5 + 10
 //
 // @function html_decode(text)
-func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
+func HTMLDecode(env envs.Environment, text *types.XText) types.XValue {
 	decoded := html.UnescapeString(text.Native())
 
 	// the common nbsp; turns into a unicode non breaking space, convert to a normal space
@@ -936,7 +936,7 @@ func HTMLDecode(env envs.Environment, text types.XText) types.XValue {
 //	@(abs("foo")) -> ERROR
 //
 // @function abs(number)
-func Abs(env envs.Environment, num types.XNumber) types.XValue {
+func Abs(env envs.Environment, num *types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Abs())
 }
 
@@ -954,7 +954,7 @@ func Abs(env envs.Environment, num types.XNumber) types.XValue {
 //	@(round("notnum", 2)) -> ERROR
 //
 // @function round(number [,places])
-func Round(env envs.Environment, num types.XNumber, places int) types.XValue {
+func Round(env envs.Environment, num *types.XNumber, places int) types.XValue {
 	return types.NewXNumber(num.Native().Round(int32(places)))
 }
 
@@ -970,7 +970,7 @@ func Round(env envs.Environment, num types.XNumber, places int) types.XValue {
 //	@(round_up("foo")) -> ERROR
 //
 // @function round_up(number [,places])
-func RoundUp(env envs.Environment, num types.XNumber, places int) types.XValue {
+func RoundUp(env envs.Environment, num *types.XNumber, places int) types.XValue {
 	dec := num.Native()
 	if dec.Round(int32(places)).Equal(dec) {
 		return num
@@ -994,7 +994,7 @@ func RoundUp(env envs.Environment, num types.XNumber, places int) types.XValue {
 //	@(round_down("foo")) -> ERROR
 //
 // @function round_down(number [,places])
-func RoundDown(env envs.Environment, num types.XNumber, places int) types.XValue {
+func RoundDown(env envs.Environment, num *types.XNumber, places int) types.XValue {
 	dec := num.Native()
 	if dec.Round(int32(places)).Equal(dec) {
 		return num
@@ -1086,7 +1086,7 @@ func Mean(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(mod(5, "foo")) -> ERROR
 //
 // @function mod(dividend, divisor)
-func Mod(env envs.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
+func Mod(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
 	return types.NewXNumber(num1.Native().Mod(num2.Native()))
 }
 
@@ -1106,7 +1106,7 @@ func Rand(env envs.Environment) types.XValue {
 //	@(rand_between(1, 10)) -> 2
 //
 // @function rand_between()
-func RandBetween(env envs.Environment, min types.XNumber, max types.XNumber) types.XValue {
+func RandBetween(env envs.Environment, min *types.XNumber, max *types.XNumber) types.XValue {
 	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
 
 	val := random.Decimal().Mul(span).Add(min.Native()).Floor()
@@ -1202,7 +1202,7 @@ func ParseDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(datetime_from_epoch(1497286619.123456)) -> 2017-06-12T11:56:59.123456-05:00
 //
 // @function datetime_from_epoch(seconds)
-func DateTimeFromEpoch(env envs.Environment, num types.XNumber) types.XValue {
+func DateTimeFromEpoch(env envs.Environment, num *types.XNumber) types.XValue {
 	nanos := num.Native().Mul(nanosPerSecond).IntPart()
 	return types.NewXDateTime(time.Unix(0, nanos).In(env.Timezone()))
 }
@@ -1338,7 +1338,7 @@ func ReplaceTime(env envs.Environment, arg1 types.XValue, arg2 types.XValue) typ
 //	@(tz("foo")) -> ERROR
 //
 // @function tz(date)
-func TZ(env envs.Environment, date types.XDateTime) types.XValue {
+func TZ(env envs.Environment, date *types.XDateTime) types.XValue {
 	return types.NewXText(date.Native().Location().String())
 }
 
@@ -1353,7 +1353,7 @@ func TZ(env envs.Environment, date types.XDateTime) types.XValue {
 //	@(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
-func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
+func TZOffset(env envs.Environment, date *types.XDateTime) types.XValue {
 	// this looks like we are returning a set offset, but this is how go describes formats
 	return types.NewXText(date.Native().Format("-0700"))
 }
@@ -1368,7 +1368,7 @@ func TZOffset(env envs.Environment, date types.XDateTime) types.XValue {
 //	@(round_down(epoch("2017-06-12T16:56:59.123456Z"))) -> 1497286619
 //
 // @function epoch(date)
-func Epoch(env envs.Environment, date types.XDateTime) types.XValue {
+func Epoch(env envs.Environment, date *types.XDateTime) types.XValue {
 	nanos := decimal.New(date.Native().UnixNano(), 0)
 	return types.NewXNumber(nanos.Div(nanosPerSecond))
 }
@@ -1409,7 +1409,7 @@ func DateFromParts(env envs.Environment, year, month, day int) types.XValue {
 //	@(weekday("foo")) -> ERROR
 //
 // @function weekday(date)
-func Weekday(env envs.Environment, date types.XDate) types.XValue {
+func Weekday(env envs.Environment, date *types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
@@ -1422,7 +1422,7 @@ func Weekday(env envs.Environment, date types.XDate) types.XValue {
 //	@(week_number("xx")) -> ERROR
 //
 // @function week_number(date)
-func WeekNumber(env envs.Environment, date types.XDate) types.XValue {
+func WeekNumber(env envs.Environment, date *types.XDate) types.XValue {
 	return types.NewXNumberFromInt(date.Native().WeekNum())
 }
 
@@ -1734,7 +1734,7 @@ func Filter(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XV
 //	@(urn_parts("not a urn")) -> ERROR
 //
 // @function urn_parts(urn)
-func URNParts(env envs.Environment, urn types.XText) types.XValue {
+func URNParts(env envs.Environment, urn *types.XText) types.XValue {
 	u, err := urns.Parse(urn.Native())
 	if err != nil {
 		return types.NewXErrorf("%s is not a valid URN: %s", urn.Native(), err)
@@ -1754,7 +1754,7 @@ func URNParts(env envs.Environment, urn types.XText) types.XValue {
 //	@(attachment_parts("image/jpeg:https://example.com/test.jpg")) -> {content_type: image/jpeg, url: https://example.com/test.jpg}
 //
 // @function attachment_parts(attachment)
-func AttachmentParts(env envs.Environment, attachment types.XText) types.XValue {
+func AttachmentParts(env envs.Environment, attachment *types.XText) types.XValue {
 	a := utils.Attachment(attachment.Native())
 	contentType, url := a.ToParts()
 
@@ -1777,7 +1777,7 @@ func AttachmentParts(env envs.Environment, attachment types.XText) types.XValue 
 //	@(parse_json("invalid json")) -> ERROR
 //
 // @function parse_json(text)
-func ParseJSON(env envs.Environment, text types.XText) types.XValue {
+func ParseJSON(env envs.Environment, text *types.XText) types.XValue {
 	return types.JSONToXValue([]byte(text.Native()))
 }
 
@@ -1809,7 +1809,7 @@ func JSON(env envs.Environment, value types.XValue) types.XValue {
 //
 // @function format(value)
 func Format(env envs.Environment, value types.XValue) types.XValue {
-	if !utils.IsNil(value) {
+	if !types.IsNil(value) {
 		return types.NewXText(value.Format(env))
 	}
 	return types.XTextEmpty
@@ -1914,7 +1914,7 @@ func FormatDateTime(env envs.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	var format types.XText
+	var format *types.XText
 	if len(args) >= 2 {
 		format, xerr = types.ToXText(env, args[1])
 		if xerr != nil {
@@ -2039,7 +2039,7 @@ func FormatNumber(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(format_location("Rwanda > Kigali")) -> Kigali
 //
 // @function format_location(location)
-func FormatLocation(env envs.Environment, path types.XText) types.XValue {
+func FormatLocation(env envs.Environment, path *types.XText) types.XValue {
 	parts := strings.Split(path.Native(), ">")
 	return types.NewXText(strings.TrimSpace(parts[len(parts)-1]))
 }
@@ -2054,7 +2054,7 @@ func FormatLocation(env envs.Environment, path types.XText) types.XValue {
 //	@(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)
-func FormatURN(env envs.Environment, arg types.XText) types.XValue {
+func FormatURN(env envs.Environment, arg *types.XText) types.XValue {
 	urn, err := urns.Parse(arg.Native())
 	if err != nil {
 		return types.NewXErrorf("%s is not a valid URN: %s", arg.Native(), err)
@@ -2090,7 +2090,7 @@ func IsError(env envs.Environment, value types.XValue) types.XValue {
 // @function count(value)
 func Count(env envs.Environment, value types.XValue) types.XValue {
 	// a nil has count of zero
-	if utils.IsNil(value) {
+	if types.IsNil(value) {
 		return types.XNumberZero
 	}
 
@@ -2323,7 +2323,7 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 //	@(read_chars("abcdef")) -> a b c , d e f
 //
 // @function read_chars(text)
-func ReadChars(env envs.Environment, val types.XText) types.XValue {
+func ReadChars(env envs.Environment, val *types.XText) types.XValue {
 	var output bytes.Buffer
 
 	// remove any leading +

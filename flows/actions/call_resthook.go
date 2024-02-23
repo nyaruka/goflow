@@ -89,11 +89,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 	}
 
 	// build our payload (not truncated)
-	payload, err := run.EvaluateTemplateText(ResthookPayload, nil, false)
-	if err != nil {
-		// if we got an error then our payload is likely not valid JSON
-		return errors.Wrapf(err, "error evaluating resthook payload")
-	}
+	payload, _ := run.EvaluateTemplateText(ResthookPayload, nil, false, logEvent)
 
 	// check the payload is valid JSON - it ends up in the session so needs to be valid
 	if !json.Valid([]byte(payload)) {

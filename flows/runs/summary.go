@@ -48,9 +48,6 @@ type relatedRunContext struct {
 }
 
 func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
-	if utils.IsNil(run) {
-		return nil
-	}
 	return &relatedRunContext{run: run}
 }
 

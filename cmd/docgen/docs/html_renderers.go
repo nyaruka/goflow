@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/pkg/errors"
@@ -394,23 +395,24 @@ func checkExample(session flows.Session, line string) error {
 		return errors.Errorf("unparseable example: %s", line)
 	}
 
-	test := strings.TrimSpace(pieces[0])
+	example := strings.TrimSpace(pieces[0])
 	expected := strings.Replace(strings.TrimSpace(pieces[1]), `\n`, "\n", -1)
 	expected = strings.Replace(expected, `\x20`, " ", -1)
 
 	// evaluate our expression
-	val, err := session.Runs()[0].EvaluateTemplate(test)
+	log := test.NewEventLog()
+	val, ok := session.Runs()[0].EvaluateTemplate(example, log.Log)
 
 	if expected == "ERROR" {
-		if err == nil {
-			return errors.Errorf("expected example '%s' to error but it didn't", strconv.Quote(test))
+		if ok {
+			return errors.Errorf("expected example '%s' to error but it didn't", strconv.Quote(example))
 		}
 	} else {
-		if err != nil {
-			return errors.Errorf("unexpected error from example '%s': %s", strconv.Quote(test), err)
+		if !ok {
+			return errors.Errorf("unexpected error from example '%s': %s", strconv.Quote(example), log.Error())
 		}
 		if val != expected {
-			return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(test), strconv.Quote(val))
+			return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(example), strconv.Quote(val))
 		}
 	}
 

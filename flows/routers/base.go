@@ -17,22 +17,16 @@ import (
 	"github.com/pkg/errors"
 )
 
-type readFunc func(json.RawMessage) (flows.Router, error)
-
-var registeredTypes = map[string]readFunc{}
+var registeredTypes = map[string](func() flows.Router){}
 
 // registers a new type of router
-func registerType(name string, f readFunc) {
-	registeredTypes[name] = f
+func registerType(name string, initFunc func() flows.Router) {
+	registeredTypes[name] = initFunc
 }
 
-// RegisteredTypes gets the registered types of router
-func RegisteredTypes() []string {
-	typeNames := make([]string, 0, len(registeredTypes))
-	for typeName := range registeredTypes {
-		typeNames = append(typeNames, typeName)
-	}
-	return typeNames
+// RegisteredTypes gets the registered types
+func RegisteredTypes() map[string](func() flows.Router) {
+	return registeredTypes
 }
 
 // baseRouter is the base class for all router types
@@ -59,7 +53,7 @@ func (r *baseRouter) Categories() []flows.Category { return r.categories }
 
 // AllowTimeout returns whether this router can be resumed at with a timeout
 func (r *baseRouter) AllowTimeout() bool {
-	return r.wait != nil && !utils.IsNil(r.wait.Timeout())
+	return r.wait != nil && r.wait.Timeout() != nil
 }
 
 // ResultName returns the name which the result of this router should be saved as (if any)
@@ -213,7 +207,8 @@ func ReadRouter(data json.RawMessage) (flows.Router, error) {
 		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 
-	return f(data)
+	router := f()
+	return router, utils.UnmarshalAndValidate(data, router)
 }
 
 func (r *baseRouter) unmarshal(e *baseRouterEnvelope) error {

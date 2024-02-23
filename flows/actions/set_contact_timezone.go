@@ -44,17 +44,16 @@ func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTi
 
 // Execute runs this action
 func (a *SetContactTimezoneAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	timezone, err := run.EvaluateTemplate(a.Timezone)
+	timezone, ok := run.EvaluateTemplate(a.Timezone, logEvent)
 	timezone = strings.TrimSpace(timezone)
 
-	// if we received an error, log it
-	if err != nil {
-		logEvent(events.NewError(err))
+	if !ok {
 		return nil
 	}
 
 	// timezone must be empty or valid timezone name
 	var tz *time.Location
+	var err error
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {

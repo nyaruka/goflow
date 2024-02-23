@@ -17,6 +17,8 @@ type XFunc func(env envs.Environment, args ...XValue) XValue
 //
 // @type function
 type XFunction struct {
+	baseValue
+
 	name string
 	fn   XFunc
 }
@@ -31,7 +33,7 @@ func (x *XFunction) Call(env envs.Environment, params []XValue) XValue {
 
 	// if function returned an error, wrap the error with the function name
 	if IsXError(val) {
-		return NewXErrorf("error calling %s: %s", x.Describe(), val.(XError).Error())
+		return NewXErrorf("error calling %s: %s", x.Describe(), val.(*XError).Error())
 	}
 
 	return val
@@ -84,7 +86,7 @@ func (x *XFunction) Equals(o XValue) bool {
 var _ XValue = (*XFunction)(nil)
 
 // ToXFunction converts the given value to a function returns an error if that isn't possible
-func ToXFunction(x XValue) (*XFunction, XError) {
+func ToXFunction(x XValue) (*XFunction, *XError) {
 	function, isFunction := x.(*XFunction)
 	if !isFunction {
 		return nil, NewXErrorf("%s is not a function", Describe(x))

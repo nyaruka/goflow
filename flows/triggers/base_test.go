@@ -93,7 +93,8 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 		actual := tc
 		actual.Events, _ = jsonx.Marshal(sprint.Events())
 
-		actualContextJSON, err := session.Runs()[0].EvaluateTemplate(`@(json(trigger))`)
+		log := test.NewEventLog()
+		actualContextJSON, _ := session.Runs()[0].EvaluateTemplate(`@(json(trigger))`, log.Log)
 		assert.NoError(t, err)
 		actual.Context = []byte(actualContextJSON)
 

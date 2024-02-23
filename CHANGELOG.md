@@ -1,3 +1,14 @@
+v0.202.1 (2024-02-23)
+-------------------------
+ * Limit use of reflect nil checking
+
+v0.202.0 (2024-02-20)
+-------------------------
+ * Add warnings from template eval functions and recorded as events
+ * Add excellent.Evaluator and move top level evaluation functions to methods on that
+ * Rework xvalues to be passed by pointer and have a base struct
+ * Rework router reading to be like action reading (and allow for enumeration of types)
+
 v0.201.0 (2024-02-12)
 -------------------------
  * Replace template translation content and params by the components fields

@@ -47,12 +47,10 @@ func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, val
 
 // Execute runs this action
 func (a *SetContactFieldAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	value, err := run.EvaluateTemplate(a.Value)
+	value, ok := run.EvaluateTemplate(a.Value, logEvent)
 	value = strings.TrimSpace(value)
 
-	// if we received an error, log it
-	if err != nil {
-		logEvent(events.NewError(err))
+	if !ok {
 		return nil
 	}
 

@@ -298,11 +298,6 @@ func TestFieldValueTypes(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "", mod.(*modifiers.FieldModifier).Value())
 
-	// or be a value object
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": {"text": "37 years", "number": 37}}`), assets.PanicOnMissing)
-	assert.NoError(t, err)
-	assert.Equal(t, "37 years", mod.(*modifiers.FieldModifier).Value())
-
 	// or be a string
 	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": "39 years"}`), assets.PanicOnMissing)
 	assert.NoError(t, err)

@@ -2,6 +2,7 @@ package excellent
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
@@ -10,9 +11,23 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
+type Warnings struct {
+	all []string
+}
+
+func (w *Warnings) add(m string) {
+	if !slices.Contains(w.all, m) {
+		w.all = append(w.all, m)
+	}
+}
+
+func (w *Warnings) deprecatedContext(v types.XValue) {
+	w.add("deprecated context value accessed: " + v.Deprecated())
+}
+
 // Expression is the base interface of all syntax elements
 type Expression interface {
-	Evaluate(envs.Environment, *Scope) types.XValue
+	Evaluate(envs.Environment, *Scope, *Warnings) types.XValue
 	String() string
 }
 
@@ -21,10 +36,14 @@ type ContextReference struct {
 	name string
 }
 
-func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	value, exists := scope.Get(x.name)
 	if !exists {
 		return types.NewXErrorf("context has no property '%s'", x.name)
+	}
+
+	if !types.IsNil(value) && value.Deprecated() != "" {
+		warnings.deprecatedContext(value)
 	}
 
 	return value
@@ -39,13 +58,13 @@ type DotLookup struct {
 	lookup    string
 }
 
-func (x *DotLookup) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	containerVal := x.container.Evaluate(env, scope)
+func (x *DotLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	containerVal := x.container.Evaluate(env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
 
-	return resolveLookup(env, containerVal, types.NewXText(x.lookup), lookupNotationDot)
+	return resolveLookup(env, containerVal, types.NewXText(x.lookup), true, warnings)
 }
 
 func (x *DotLookup) String() string {
@@ -57,18 +76,18 @@ type ArrayLookup struct {
 	lookup    Expression
 }
 
-func (x *ArrayLookup) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	containerVal := x.container.Evaluate(env, scope)
+func (x *ArrayLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	containerVal := x.container.Evaluate(env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
 
-	lookupVal := x.lookup.Evaluate(env, scope)
+	lookupVal := x.lookup.Evaluate(env, scope, warnings)
 	if types.IsXError(lookupVal) {
 		return lookupVal
 	}
 
-	return resolveLookup(env, containerVal, lookupVal, lookupNotationArray)
+	return resolveLookup(env, containerVal, lookupVal, false, warnings)
 }
 
 func (x *ArrayLookup) String() string {
@@ -80,8 +99,8 @@ type FunctionCall struct {
 	params   []Expression
 }
 
-func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	funcVal := x.function.Evaluate(env, scope)
+func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	funcVal := x.function.Evaluate(env, scope, warnings)
 	if types.IsXError(funcVal) {
 		return funcVal
 	}
@@ -93,7 +112,7 @@ func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope) types.XValue
 
 	params := make([]types.XValue, len(x.params))
 	for i := range x.params {
-		params[i] = x.params[i].Evaluate(env, scope)
+		params[i] = x.params[i].Evaluate(env, scope, warnings)
 	}
 
 	return asFunction.Call(env, params)
@@ -113,7 +132,7 @@ type AnonFunction struct {
 	body Expression
 }
 
-func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	// create an XFunction which wraps our body expression
 	fn := func(env envs.Environment, args ...types.XValue) types.XValue {
 		// create new context that includes the args
@@ -123,7 +142,7 @@ func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope) types.XValue
 		}
 		childScope := NewScope(types.NewXObject(argsMap), scope)
 
-		return x.body.Evaluate(env, childScope)
+		return x.body.Evaluate(env, childScope, warnings)
 	}
 
 	return types.NewXFunction("", functions.NumArgsCheck(len(x.args), fn))
@@ -138,8 +157,8 @@ type Concatenation struct {
 	exp2 Expression
 }
 
-func (x *Concatenation) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Concatenate(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Concatenation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Concatenate(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Concatenation) String() string {
@@ -151,8 +170,8 @@ type Addition struct {
 	exp2 Expression
 }
 
-func (x *Addition) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Add(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Addition) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Add(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Addition) String() string {
@@ -164,8 +183,8 @@ type Subtraction struct {
 	exp2 Expression
 }
 
-func (x *Subtraction) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Subtract(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Subtraction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Subtract(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Subtraction) String() string {
@@ -177,8 +196,8 @@ type Multiplication struct {
 	exp2 Expression
 }
 
-func (x *Multiplication) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Multiply(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Multiplication) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Multiply(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Multiplication) String() string {
@@ -190,8 +209,8 @@ type Division struct {
 	exp2 Expression
 }
 
-func (x *Division) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Divide(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Division) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Divide(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Division) String() string {
@@ -203,8 +222,8 @@ type Exponent struct {
 	exponent   Expression
 }
 
-func (x *Exponent) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Exponent(env, x.expression.Evaluate(env, scope), x.exponent.Evaluate(env, scope))
+func (x *Exponent) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Exponent(env, x.expression.Evaluate(env, scope, warnings), x.exponent.Evaluate(env, scope, warnings))
 }
 
 func (x *Exponent) String() string {
@@ -215,8 +234,8 @@ type Negation struct {
 	exp Expression
 }
 
-func (x *Negation) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Negate(env, x.exp.Evaluate(env, scope))
+func (x *Negation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Negate(env, x.exp.Evaluate(env, scope, warnings))
 }
 
 func (x *Negation) String() string {
@@ -228,8 +247,8 @@ type Equality struct {
 	exp2 Expression
 }
 
-func (x *Equality) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.Equal(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *Equality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Equal(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *Equality) String() string {
@@ -241,8 +260,8 @@ type InEquality struct {
 	exp2 Expression
 }
 
-func (x *InEquality) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.NotEqual(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *InEquality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.NotEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *InEquality) String() string {
@@ -254,8 +273,8 @@ type LessThan struct {
 	exp2 Expression
 }
 
-func (x *LessThan) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.LessThan(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *LessThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.LessThan(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *LessThan) String() string {
@@ -267,8 +286,8 @@ type LessThanOrEqual struct {
 	exp2 Expression
 }
 
-func (x *LessThanOrEqual) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.LessThanOrEqual(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *LessThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.LessThanOrEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *LessThanOrEqual) String() string {
@@ -280,8 +299,8 @@ type GreaterThan struct {
 	exp2 Expression
 }
 
-func (x *GreaterThan) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.GreaterThan(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *GreaterThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.GreaterThan(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *GreaterThan) String() string {
@@ -293,8 +312,8 @@ type GreaterThanOrEqual struct {
 	exp2 Expression
 }
 
-func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return operators.GreaterThanOrEqual(env, x.exp1.Evaluate(env, scope), x.exp2.Evaluate(env, scope))
+func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.GreaterThanOrEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *GreaterThanOrEqual) String() string {
@@ -305,8 +324,8 @@ type Parentheses struct {
 	exp Expression
 }
 
-func (x *Parentheses) Evaluate(env envs.Environment, scope *Scope) types.XValue {
-	return x.exp.Evaluate(env, scope)
+func (x *Parentheses) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return x.exp.Evaluate(env, scope, warnings)
 }
 
 func (x *Parentheses) String() string {
@@ -314,10 +333,10 @@ func (x *Parentheses) String() string {
 }
 
 type TextLiteral struct {
-	val types.XText
+	val *types.XText
 }
 
-func (x *TextLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *TextLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.val
 }
 
@@ -327,10 +346,10 @@ func (x *TextLiteral) String() string {
 
 // NumberLiteral is a literal number like 123 or 1.5
 type NumberLiteral struct {
-	val types.XNumber
+	val *types.XNumber
 }
 
-func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.val
 }
 
@@ -340,10 +359,10 @@ func (x *NumberLiteral) String() string {
 
 // BooleanLiteral is a literal bool
 type BooleanLiteral struct {
-	val types.XBoolean
+	val *types.XBoolean
 }
 
-func (x *BooleanLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *BooleanLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.val
 }
 
@@ -353,10 +372,58 @@ func (x *BooleanLiteral) String() string {
 
 type NullLiteral struct{}
 
-func (x *NullLiteral) Evaluate(env envs.Environment, scope *Scope) types.XValue {
+func (x *NullLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return nil
 }
 
 func (x *NullLiteral) String() string {
 	return "null"
+}
+
+func resolveLookup(env envs.Environment, container types.XValue, lookup types.XValue, dotNotation bool, warnings *Warnings) types.XValue {
+	array, isArray := container.(*types.XArray)
+	object, isObject := container.(*types.XObject)
+	var resolved types.XValue
+
+	if isArray && array != nil {
+		// if left-hand side is an array, then this is an index
+		index, xerr := types.ToInteger(env, lookup)
+		if xerr != nil {
+			return xerr
+		}
+
+		if index >= array.Count() || index < -array.Count() {
+			return types.NewXErrorf("index %d out of range for %d items", index, array.Count())
+		}
+		if index < 0 {
+			index += array.Count()
+		}
+
+		resolved = array.Get(index)
+
+	} else if isObject && object != nil {
+		// if left-hand side is an object, then this is a property lookup
+		property, xerr := types.ToXText(env, lookup)
+		if xerr != nil {
+			return xerr
+		}
+
+		value, exists := object.Get(property.Native())
+
+		// [] notation doesn't error for non-existent properties, . does
+		if !exists && dotNotation {
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(container), property.Native())
+		}
+
+		resolved = value
+
+	} else {
+		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
+	}
+
+	if !types.IsNil(resolved) && resolved.Deprecated() != "" {
+		warnings.deprecatedContext(resolved)
+	}
+
+	return resolved
 }

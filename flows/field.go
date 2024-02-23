@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Field represents a contact field
@@ -34,7 +33,7 @@ func (f *Field) Reference() *assets.FieldReference {
 
 // Value represents a value in each of the field types
 type Value struct {
-	Text     types.XText       `json:"text" validate:"required"`
+	Text     *types.XText      `json:"text" validate:"required"`
 	Datetime *types.XDateTime  `json:"datetime,omitempty"`
 	Number   *types.XNumber    `json:"number,omitempty"`
 	State    envs.LocationPath `json:"state,omitempty"`
@@ -43,7 +42,7 @@ type Value struct {
 }
 
 // NewValue creates an empty value
-func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state envs.LocationPath, district envs.LocationPath, ward envs.LocationPath) *Value {
+func NewValue(text *types.XText, datetime *types.XDateTime, number *types.XNumber, state envs.LocationPath, district envs.LocationPath, ward envs.LocationPath) *Value {
 	return &Value{
 		Text:     text,
 		Datetime: datetime,
@@ -63,8 +62,8 @@ func (v *Value) Equals(o *Value) bool {
 		return false
 	}
 
-	dateEqual := (v.Datetime == nil && o.Datetime == nil) || (v.Datetime != nil && o.Datetime != nil && v.Datetime.Equals(*o.Datetime))
-	numEqual := (v.Number == nil && o.Number == nil) || (v.Number != nil && o.Number != nil && v.Number.Equals(*o.Number))
+	dateEqual := (v.Datetime == nil && o.Datetime == nil) || (v.Datetime != nil && o.Datetime != nil && v.Datetime.Equals(o.Datetime))
+	numEqual := (v.Number == nil && o.Number == nil) || (v.Number != nil && o.Number != nil && v.Number.Equals(o.Number))
 
 	return v.Text.Equals(o.Text) && dateEqual && numEqual && v.State == o.State && v.District == o.District && v.Ward == o.Ward
 }
@@ -92,11 +91,11 @@ func (v *FieldValue) ToXValue(env envs.Environment) types.XValue {
 		return v.Text
 	case assets.FieldTypeDatetime:
 		if v.Datetime != nil {
-			return *v.Datetime
+			return v.Datetime
 		}
 	case assets.FieldTypeNumber:
 		if v.Number != nil {
-			return *v.Number
+			return v.Number
 		}
 	case assets.FieldTypeState:
 		if v.State != "" {
@@ -211,11 +210,11 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 	var asNumber *types.XNumber
 
 	if parsedNumber, xerr := types.ToXNumber(env, asText); xerr == nil {
-		asNumber = &parsedNumber
+		asNumber = parsedNumber
 	}
 
 	if parsedDate, xerr := types.ToXDateTimeWithTimeFill(env, asText); xerr == nil {
-		asDateTime = &parsedDate
+		asDateTime = parsedDate
 	}
 
 	var asLocation *envs.Location
@@ -284,7 +283,7 @@ func (f FieldValues) Context(env envs.Environment) map[string]types.XValue {
 		val := v.ToXValue(env)
 		entries[string(k)] = val
 
-		if !utils.IsNil(val) {
+		if val != nil {
 			lines = append(lines, fmt.Sprintf("%s: %s", v.field.Name(), types.Render(val)))
 		}
 	}
@@ -307,7 +306,7 @@ func (f FieldValues) getFirstLocationValue(env envs.Environment, fields *FieldAs
 		return nil
 	}
 
-	return env.LocationResolver().LookupLocation(envs.LocationPath(value.(types.XText).Native()))
+	return env.LocationResolver().LookupLocation(envs.LocationPath(value.(*types.XText).Native()))
 }
 
 // FieldAssets provides access to all field assets

@@ -46,8 +46,10 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, "false", types.XBooleanFalse.Describe())
 
 	// unmarshal
-	var val types.XBoolean
-	err := jsonx.Unmarshal([]byte(`true`), &val)
+	foo := &struct {
+		Val *types.XBoolean `json:"val"`
+	}{}
+	err := jsonx.Unmarshal([]byte(`{"val": true}`), foo)
 	assert.NoError(t, err)
-	assert.Equal(t, types.XBooleanTrue, val)
+	assert.Equal(t, types.XBooleanTrue.Native(), foo.Val.Native())
 }

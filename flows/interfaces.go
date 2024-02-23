@@ -334,6 +334,7 @@ type Engine interface {
 	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
+	Evaluator() *excellent.Evaluator
 	Services() Services
 	Options() *EngineOptions
 }
@@ -419,13 +420,12 @@ type Run interface {
 	PathLocation() (Step, Node, error)
 
 	LogEvent(Step, Event)
-	LogError(Step, error)
 	Events() []Event
 	ReceivedInput() bool
 
-	EvaluateTemplateValue(string) (types.XValue, error)
-	EvaluateTemplateText(string, excellent.Escaping, bool) (string, error)
-	EvaluateTemplate(string) (string, error)
+	EvaluateTemplateValue(string, EventCallback) (types.XValue, bool)
+	EvaluateTemplateText(string, excellent.Escaping, bool, EventCallback) (string, bool)
+	EvaluateTemplate(string, EventCallback) (string, bool)
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) (string, i18n.Language)

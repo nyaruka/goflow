@@ -84,14 +84,8 @@ func (a *CallWebhookAction) Validate() error {
 
 // Execute runs this action
 func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-
-	// substitute any variables in our url
-	url, err := run.EvaluateTemplate(a.URL)
-	if err != nil {
-		logEvent(events.NewError(err))
-	}
-
-	url = strings.TrimSpace(url) // some servers don't like trailing spaces in HTTP requests
+	url, _ := run.EvaluateTemplate(a.URL, logEvent)
+	url = strings.TrimSpace(url)
 
 	if url == "" {
 		logEvent(events.NewErrorf("webhook URL evaluated to empty string"))
@@ -108,10 +102,7 @@ func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier 
 	// substitute any body variables
 	if body != "" {
 		// webhook bodies aren't truncated like other templates
-		body, err = run.EvaluateTemplateText(body, nil, false)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
+		body, _ = run.EvaluateTemplateText(body, nil, false, logEvent)
 	}
 
 	return a.call(run, step, url, method, body, logEvent)
@@ -127,10 +118,7 @@ func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, bo
 
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, err := run.EvaluateTemplate(value)
-		if err != nil {
-			logEvent(events.NewError(err))
-		}
+		headerValue, _ := run.EvaluateTemplate(value, logEvent)
 
 		req.Header.Add(key, headerValue)
 	}
