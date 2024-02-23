@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -277,7 +276,7 @@ func (v legacyVariables) Context(env envs.Environment) *types.XObject {
 }
 
 func toXType(env envs.Environment, val any) types.XValue {
-	if utils.IsNil(val) {
+	if val == nil {
 		return nil
 	}
 

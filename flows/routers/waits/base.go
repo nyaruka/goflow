@@ -48,7 +48,12 @@ func newBaseWait(typeName string, timeout *Timeout) baseWait {
 func (w *baseWait) Type() string { return w.type_ }
 
 // Timeout returns the timeout of this wait or nil if no timeout is set
-func (w *baseWait) Timeout() flows.Timeout { return w.timeout }
+func (w *baseWait) Timeout() flows.Timeout {
+	if w.timeout == nil {
+		return nil
+	}
+	return w.timeout
+}
 
 func (w *baseWait) expiresOn(run flows.Run) *time.Time {
 	expiresAfterMins := run.Flow().ExpireAfterMinutes()

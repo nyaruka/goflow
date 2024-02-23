@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // XText is a string of characters.
@@ -89,7 +88,7 @@ var _ XValue = XTextEmpty
 
 // ToXText converts the given value to a string
 func ToXText(env envs.Environment, x XValue) (*XText, *XError) {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return XTextEmpty, nil
 	}
 	if IsXError(x) {

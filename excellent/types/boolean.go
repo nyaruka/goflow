@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // XBoolean is a boolean `true` or `false`.
@@ -90,7 +89,7 @@ var _ XValue = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
 func ToXBoolean(x XValue) (*XBoolean, *XError) {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return XBooleanFalse, nil
 	}
 	if IsXError(x) {

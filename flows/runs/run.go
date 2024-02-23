@@ -216,8 +216,13 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 		}
 	}
 
-	var child = newRelatedRunContext(r.Session().GetCurrentChild(r))
-	var parent = newRelatedRunContext(r.Parent())
+	var child, parent *relatedRunContext
+	if r.Session().GetCurrentChild(r) != nil {
+		child = newRelatedRunContext(r.Session().GetCurrentChild(r))
+	}
+	if r.Parent() != nil {
+		parent = newRelatedRunContext(r.Parent())
+	}
 
 	_, n, _ := r.PathLocation()
 	if n != nil {

@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Field represents a contact field
@@ -284,7 +283,7 @@ func (f FieldValues) Context(env envs.Environment) map[string]types.XValue {
 		val := v.ToXValue(env)
 		entries[string(k)] = val
 
-		if !utils.IsNil(val) {
+		if val != nil {
 			lines = append(lines, fmt.Sprintf("%s: %s", v.field.Name(), types.Render(val)))
 		}
 	}

@@ -237,7 +237,7 @@ var _ json.Marshaler = (*XObject)(nil)
 
 // ToXObject converts the given value to an object
 func ToXObject(env envs.Environment, x XValue) (*XObject, *XError) {
-	if utils.IsNil(x) {
+	if IsNil(x) {
 		return XObjectEmpty, nil
 	}
 	if IsXError(x) {

@@ -2,7 +2,6 @@ package tools
 
 import (
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // ContextWalk traverses the given context invoking the callback for each non-nil value
@@ -21,7 +20,7 @@ func ContextWalkObjects(context *types.XObject, callback func(*types.XObject)) {
 }
 
 func contextWalk(v types.XValue, callback func(types.XValue)) {
-	if utils.IsNil(v) {
+	if types.IsNil(v) {
 		return
 	}
 
