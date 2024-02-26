@@ -94,7 +94,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version, cfg *Config)
 	// sorted by earliest first
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
-	migrated, err := readFlow(data)
+	migrated, err := ReadFlow(data)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version, cfg *Config)
 // Clone clones the given flow definition by replacing all UUIDs using the provided mapping and
 // generating new random UUIDs if they aren't in the mapping
 func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
-	clone, err := readFlow(data)
+	clone, err := ReadFlow(data)
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +126,8 @@ func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
 	return jsonx.Marshal(clone)
 }
 
-// reads a flow definition as a flow primitive
-func readFlow(data []byte) (Flow, error) {
+// ReadFlow reads a flow definition as a flow primitive
+func ReadFlow(data []byte) (Flow, error) {
 	g, err := jsonx.DecodeGeneric(data)
 	if err != nil {
 		return nil, err
@@ -189,7 +189,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 		}
 	}
 
-	Walk(data, objectCallback, arrayCallback)
+	walk(data, objectCallback, arrayCallback, "")
 }
 
 // extract the property names from a generic JSON object, sorted A-Z
@@ -200,11 +200,6 @@ func objectProperties(obj map[string]any) []string {
 	}
 	sort.Strings(props)
 	return props
-}
-
-// walks the given generic JSON invoking the given callbacks for each thing found
-func Walk(j any, objectCallback func(string, map[string]any), arrayCallback func(string, []any)) {
-	walk(j, objectCallback, arrayCallback, "$")
 }
 
 // walks the given generic JSON invoking the given callbacks for each thing found
