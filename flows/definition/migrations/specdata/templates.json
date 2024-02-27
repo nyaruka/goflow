@@ -50,6 +50,7 @@
             "send_msg": [
                 ".attachments[*]",
                 ".quick_replies[*]",
+                ".templating.components[*].params[*]",
                 ".templating.variables[*]",
                 ".text"
             ],
