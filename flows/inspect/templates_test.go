@@ -98,6 +98,7 @@ func TestTemplatePaths(t *testing.T) {
 		"$.nodes[*].actions[@.type=\"send_email\"].subject",
 		"$.nodes[*].actions[@.type=\"send_msg\"].attachments[*]",
 		"$.nodes[*].actions[@.type=\"send_msg\"].quick_replies[*]",
+		"$.nodes[*].actions[@.type=\"send_msg\"].templating.components[*].params[*]",
 		"$.nodes[*].actions[@.type=\"send_msg\"].templating.variables[*]",
 		"$.nodes[*].actions[@.type=\"send_msg\"].text",
 		"$.nodes[*].actions[@.type=\"set_contact_field\"].value",

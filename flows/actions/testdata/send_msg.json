@@ -423,13 +423,16 @@
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
                 },
-                "params": {
-                    "body": [
-                        "@contact.name",
-                        "boy"
-                    ],
-                    "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7"
-                }
+                "components": [
+                    {
+                        "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7",
+                        "name": "body",
+                        "params": [
+                            "@contact.name",
+                            "boy"
+                        ]
+                    }
+                ]
             },
             "topic": "account"
         },
@@ -475,7 +478,9 @@
             "boy"
         ],
         "localizables": [
-            "Hi Ryan Lewis, who's a good boy?"
+            "Hi Ryan Lewis, who's a good boy?",
+            "@contact.name",
+            "boy"
         ],
         "inspection": {
             "dependencies": [
@@ -492,7 +497,7 @@
         }
     },
     {
-        "description": "Msg with a matching template with localized variables",
+        "description": "Msg with a matching template with localized component params",
         "action": {
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -503,25 +508,22 @@
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
                 },
-                "params": {
-                    "body": [
-                        "@contact.name",
-                        "boy"
-                    ],
-                    "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7"
-                }
+                "components": [
+                    {
+                        "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7",
+                        "name": "body",
+                        "params": [
+                            "@contact.name",
+                            "boy"
+                        ]
+                    }
+                ]
             }
         },
         "localization": {
             "spa": {
-                "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785": {
-                    "variables": [
-                        "@contact.name",
-                        "niño"
-                    ]
-                },
                 "1067f8e2-82f0-4378-9214-0f019365ddb7": {
-                    "body": [
+                    "params": [
                         "@contact.name",
                         "niño"
                     ]
@@ -567,14 +569,14 @@
         "templates": [
             "Hi Ryan Lewis, who's a good boy?",
             "@contact.name",
-            "niño",
-            "@contact.name",
             "boy",
             "@contact.name",
             "niño"
         ],
         "localizables": [
-            "Hi Ryan Lewis, who's a good boy?"
+            "Hi Ryan Lewis, who's a good boy?",
+            "@contact.name",
+            "boy"
         ],
         "inspection": {
             "dependencies": [
@@ -813,47 +815,54 @@
                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                     "name": "gender_update"
                 },
-                "params": {
-                    "body": [
-                        "@contact.name",
-                        "boy"
-                    ],
-                    "button.0": [
-                        "Yeah"
-                    ],
-                    "button.1": [
-                        "Nope"
-                    ],
-                    "header": [
-                        "http://templates.com/red.jpg"
-                    ],
-                    "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7"
-                }
+                "components": [
+                    {
+                        "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7",
+                        "name": "body",
+                        "params": [
+                            "@contact.name",
+                            "boy"
+                        ]
+                    },
+                    {
+                        "uuid": "5fb16175-4aef-4ee3-ae59-53cd55452bd8",
+                        "name": "button.0",
+                        "params": [
+                            "Yeah"
+                        ]
+                    },
+                    {
+                        "uuid": "1be525d9-7bbd-478e-8922-38a75ad95c36",
+                        "name": "button.1",
+                        "params": [
+                            "Nope"
+                        ]
+                    },
+                    {
+                        "uuid": "128b97ff-a530-4ec8-87dd-04a9a778c3e0",
+                        "name": "header",
+                        "params": [
+                            "http://templates.com/red.jpg"
+                        ]
+                    }
+                ]
             }
         },
         "localization": {
             "spa": {
-                "ad154980-7bf7-4ab8-8728-545fd6378912": {
-                    "text": [
-                        "Hola!"
-                    ],
-                    "attachments": [
-                        "http://example.com/rojo.jpg"
-                    ],
-                    "quick_replies": [
-                        "Si",
-                        "No"
+                "128b97ff-a530-4ec8-87dd-04a9a778c3e0": {
+                    "params": [
+                        "http://templates.com/rojo.jpg"
                     ]
                 },
                 "1067f8e2-82f0-4378-9214-0f019365ddb7": {
-                    "header": [
-                        "http://templates.com/rojo.jpg"
-                    ],
-                    "body": [
+                    "params": [
                         "@contact.name",
                         "niño"
-                    ],
-                    "button.0": [
+                    ]
+                },
+                "5fb16175-4aef-4ee3-ae59-53cd55452bd8": {
+                    "params": [
                         "Sip"
                     ]
                 }
@@ -913,12 +922,8 @@
         ],
         "templates": [
             "Hey Ryan Lewis, your gender is saved as boy.",
-            "Hola!",
             "http://example.com/red.jpg",
-            "http://example.com/rojo.jpg",
             "Yes",
-            "No",
-            "Si",
             "No",
             "@contact.name",
             "boy",
@@ -934,7 +939,12 @@
             "Hey Ryan Lewis, your gender is saved as boy.",
             "http://example.com/red.jpg",
             "Yes",
-            "No"
+            "No",
+            "@contact.name",
+            "boy",
+            "Yeah",
+            "Nope",
+            "http://templates.com/red.jpg"
         ],
         "inspection": {
             "dependencies": [
