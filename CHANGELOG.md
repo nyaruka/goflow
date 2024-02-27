@@ -1,3 +1,7 @@
+v0.203.0 (2024-02-27)
+-------------------------
+ * Rework semd_msg templating to have a simpler structure in flow definitions and fix enumerating templates and localizable strings
+
 v0.202.1 (2024-02-23)
 -------------------------
  * Limit use of reflect nil checking
