@@ -7,7 +7,7 @@ import (
 )
 
 // RefactorTemplate refactors the passed in template
-func RefactorTemplate(template string, allowedTopLevels []string) (string, error) {
+func RefactorTemplate(template string, allowedTopLevels []string, tx func(excellent.Expression)) (string, error) {
 	buf := &strings.Builder{}
 
 	err := excellent.VisitTemplate(template, allowedTopLevels, func(tokenType excellent.XTokenType, token string) error {
@@ -15,7 +15,7 @@ func RefactorTemplate(template string, allowedTopLevels []string) (string, error
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER, excellent.EXPRESSION:
-			refactored, err := refactorExpression(token)
+			refactored, err := refactorExpression(token, tx)
 
 			// if we got an error, return that, and rewrite original expression
 			if err != nil {
@@ -33,11 +33,13 @@ func RefactorTemplate(template string, allowedTopLevels []string) (string, error
 }
 
 // RefactorTemplate refactors the passed in template
-func refactorExpression(expression string) (string, error) {
+func refactorExpression(expression string, tx func(excellent.Expression)) (string, error) {
 	parsed, err := excellent.Parse(expression, nil)
 	if err != nil {
 		return "", err
 	}
+
+	tx(parsed)
 
 	return parsed.String(), nil
 }
@@ -47,4 +49,15 @@ func wrapExpression(tokenType excellent.XTokenType, token string) string {
 		return "@" + token
 	}
 	return "@(" + token + ")"
+}
+
+// ContextRefRename returns a transformation function that renames context references
+func ContextRefRename(from, to string) func(excellent.Expression) {
+	return func(exp excellent.Expression) {
+		exp.Visit(func(e excellent.Expression) {
+			if ref, ok := e.(*excellent.ContextReference); ok && strings.EqualFold(ref.Name, from) {
+				ref.Name = to
+			}
+		})
+	}
 }

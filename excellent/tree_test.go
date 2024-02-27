@@ -1,62 +1,63 @@
-package excellent
+package excellent_test
 
 import (
 	"testing"
 
+	. "github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParse(t *testing.T) {
+func TestParseTrees(t *testing.T) {
 	tcs := []struct {
 		expression string
 		parsed     Expression
 	}{
 		{
 			expression: `"hello\nworld"`,
-			parsed:     &TextLiteral{val: types.NewXText("hello\nworld")},
+			parsed:     &TextLiteral{Value: types.NewXText("hello\nworld")},
 		},
 		{
 			expression: `"\w+"`,
-			parsed:     &TextLiteral{val: types.NewXText("\\w+")},
+			parsed:     &TextLiteral{Value: types.NewXText("\\w+")},
 		},
 		{
 			expression: `"abc" & "cde"`,
 			parsed: &Concatenation{
-				exp1: &TextLiteral{val: types.NewXText("abc")},
-				exp2: &TextLiteral{val: types.NewXText("cde")},
+				Exp1: &TextLiteral{Value: types.NewXText("abc")},
+				Exp2: &TextLiteral{Value: types.NewXText("cde")},
 			},
 		},
 		{
 			expression: `upper("abc")`,
 			parsed: &FunctionCall{
-				function: &ContextReference{name: "upper"},
-				params:   []Expression{&TextLiteral{val: types.NewXText("abc")}},
+				Func:   &ContextReference{Name: "upper"},
+				Params: []Expression{&TextLiteral{Value: types.NewXText("abc")}},
 			},
 		},
 		{
 			expression: `(x) => upper(x)`,
 			parsed: &AnonFunction{
-				args: []string{"x"},
-				body: &FunctionCall{
-					function: &ContextReference{name: "upper"},
-					params:   []Expression{&ContextReference{name: "x"}},
+				Args: []string{"x"},
+				Body: &FunctionCall{
+					Func:   &ContextReference{Name: "upper"},
+					Params: []Expression{&ContextReference{Name: "x"}},
 				},
 			},
 		},
 		{
 			expression: `((x) => upper(x))("abc")`,
 			parsed: &FunctionCall{
-				function: &Parentheses{
-					exp: &AnonFunction{
-						args: []string{"x"},
-						body: &FunctionCall{
-							function: &ContextReference{name: "upper"},
-							params:   []Expression{&ContextReference{name: "x"}},
+				Func: &Parentheses{
+					Exp: &AnonFunction{
+						Args: []string{"x"},
+						Body: &FunctionCall{
+							Func:   &ContextReference{Name: "upper"},
+							Params: []Expression{&ContextReference{Name: "x"}},
 						},
 					},
 				},
-				params: []Expression{&TextLiteral{val: types.NewXText("abc")}},
+				Params: []Expression{&TextLiteral{Value: types.NewXText("abc")}},
 			},
 		},
 	}
@@ -68,51 +69,63 @@ func TestParse(t *testing.T) {
 	}
 }
 
-func TestExpressionsToString(t *testing.T) {
-	foo := &ContextReference{name: "foo"}
+func TestExpressionVisitAndString(t *testing.T) {
+	foo := &ContextReference{Name: "foo"}
 	abc := &TextLiteral{types.NewXText("abc")}
 	cde := &TextLiteral{types.NewXText("cde")}
-	one := &NumberLiteral{val: types.RequireXNumberFromString(`1`)}
-	two := &NumberLiteral{val: types.RequireXNumberFromString(`2`)}
+	one := &NumberLiteral{Value: types.RequireXNumberFromString(`1`)}
+	two := &NumberLiteral{Value: types.RequireXNumberFromString(`2`)}
 
-	assert.Equal(t, `foo`, foo.String())
+	tcs := []struct {
+		exp      Expression
+		expected []string
+	}{
+		{foo, []string{"foo"}},
 
-	assert.Equal(t, `foo.bar`, (&DotLookup{container: foo, lookup: "bar"}).String())
-	assert.Equal(t, `foo.1`, (&DotLookup{container: foo, lookup: "1"}).String())
+		{&DotLookup{Container: foo, Lookup: "bar"}, []string{`foo`, `foo.bar`}},
+		{&DotLookup{Container: foo, Lookup: "1"}, []string{`foo`, `foo.1`}},
 
-	assert.Equal(t, `foo["abc"]`, (&ArrayLookup{container: foo, lookup: abc}).String())
-	assert.Equal(t, `foo[1]`, (&ArrayLookup{container: foo, lookup: one}).String())
+		{&ArrayLookup{Container: foo, Lookup: abc}, []string{"foo", `"abc"`, `foo["abc"]`}},
+		{&ArrayLookup{Container: foo, Lookup: one}, []string{"foo", `1`, `foo[1]`}},
 
-	assert.Equal(t, `foo("abc", 1)`, (&FunctionCall{function: foo, params: []Expression{abc, one}}).String())
-	assert.Equal(t, `foo()`, (&FunctionCall{function: foo, params: []Expression{}}).String())
+		{&FunctionCall{Func: foo, Params: []Expression{abc, one}}, []string{"foo", `"abc"`, `1`, `foo("abc", 1)`}},
+		{&FunctionCall{Func: foo, Params: []Expression{}}, []string{`foo`, `foo()`}},
 
-	assert.Equal(t, `(x, y) => "abc"`, (&AnonFunction{args: []string{"x", "y"}, body: abc}).String())
+		{&AnonFunction{Args: []string{"x", "y"}, Body: abc}, []string{`"abc"`, `(x, y) => "abc"`}},
 
-	assert.Equal(t, `"abc" & "cde"`, (&Concatenation{exp1: abc, exp2: cde}).String())
+		{&Concatenation{Exp1: abc, Exp2: cde}, []string{`"abc"`, `"cde"`, `"abc" & "cde"`}},
 
-	assert.Equal(t, `1 + 2`, (&Addition{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 - 2`, (&Subtraction{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 * 2`, (&Multiplication{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 / 2`, (&Division{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 ^ 2`, (&Exponent{expression: one, exponent: two}).String())
-	assert.Equal(t, `-1`, (&Negation{exp: one}).String())
+		{&Addition{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 + 2`}},
+		{&Subtraction{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 - 2`}},
+		{&Multiplication{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 * 2`}},
+		{&Division{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 / 2`}},
+		{&Exponent{Expression: one, Exponent: two}, []string{`1`, `2`, `1 ^ 2`}},
+		{&Negation{Exp: one}, []string{`1`, `-1`}},
 
-	assert.Equal(t, `1 = 2`, (&Equality{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 != 2`, (&InEquality{exp1: one, exp2: two}).String())
+		{&Equality{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 = 2`}},
+		{&InEquality{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 != 2`}},
+		{&LessThan{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 < 2`}},
+		{&LessThanOrEqual{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 <= 2`}},
+		{&GreaterThan{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 > 2`}},
+		{&GreaterThanOrEqual{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 >= 2`}},
 
-	assert.Equal(t, `1 < 2`, (&LessThan{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 <= 2`, (&LessThanOrEqual{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 > 2`, (&GreaterThan{exp1: one, exp2: two}).String())
-	assert.Equal(t, `1 >= 2`, (&GreaterThanOrEqual{exp1: one, exp2: two}).String())
+		{&Parentheses{Exp: abc}, []string{`"abc"`, `("abc")`}},
 
-	assert.Equal(t, `("abc")`, (&Parentheses{exp: abc}).String())
+		{&TextLiteral{Value: types.XTextEmpty}, []string{`""`}},
+		{abc, []string{`"abc"`}},
+		{&TextLiteral{Value: types.NewXText(`don't say "hello"`)}, []string{`"don't say \"hello\""`}},
+		{&NumberLiteral{Value: types.RequireXNumberFromString(`123.5`)}, []string{`123.5`}},
+		{&NumberLiteral{Value: types.RequireXNumberFromString(`123.0`)}, []string{`123`}},
+		{&BooleanLiteral{Value: types.XBooleanTrue}, []string{`true`}},
+		{&BooleanLiteral{Value: types.XBooleanFalse}, []string{`false`}},
+		{&NullLiteral{}, []string{`null`}},
+	}
 
-	assert.Equal(t, `""`, (&TextLiteral{val: types.XTextEmpty}).String())
-	assert.Equal(t, `"abc"`, abc.String())
-	assert.Equal(t, `"don't say \"hello\""`, (&TextLiteral{val: types.NewXText(`don't say "hello"`)}).String())
-	assert.Equal(t, `123.5`, (&NumberLiteral{val: types.RequireXNumberFromString(`123.5`)}).String())
-	assert.Equal(t, `123`, (&NumberLiteral{val: types.RequireXNumberFromString(`123.0`)}).String())
-	assert.Equal(t, `true`, (&BooleanLiteral{val: types.XBooleanTrue}).String())
-	assert.Equal(t, `false`, (&BooleanLiteral{val: types.XBooleanFalse}).String())
-	assert.Equal(t, `null`, (&NullLiteral{}).String())
+	for _, tc := range tcs {
+		var log []string
+		visit := func(e Expression) { log = append(log, e.String()) } // log string version of each expression visited
+		tc.exp.Visit(visit)
+		assert.Equal(t, tc.expected, log)
+		assert.Equal(t, tc.exp.String(), log[len(log)-1]) // last visit should be to the top level expression
+	}
 }
