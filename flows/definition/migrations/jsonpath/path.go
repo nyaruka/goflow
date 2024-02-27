@@ -1,10 +1,16 @@
 package jsonpath
 
+// Very barebones jsonpath implementation, only supports the path types we need for now.. no expressions, only *
+// wildcards.
+//
+// But allows us to transform values, with access to the container which may be a localizable object.
+
 import (
 	"strconv"
 	"strings"
 )
 
+// ParsePath parses a jsonpath into a slice of path parts
 func ParsePath(path string) []string {
 	path = strings.ReplaceAll(path, "[*]", ".*")
 	split := strings.Split(path, ".")
@@ -18,15 +24,22 @@ func ParsePath(path string) []string {
 	return parts
 }
 
-func Visit(j any, path []string, callback func(any)) error {
-	return visit(nil, j, path, callback, nil)
+func Visit(j any, path []string, on func(any)) {
+	visit(nil, j, path, on, nil)
 }
 
-func Transform(j any, path []string, callback func(any, any) any) error {
-	return visit(nil, j, path, nil, callback)
+// Transform applies a transformation function to the value at the given path. The transformation function takes 3
+// parameters:
+//  1. the container object (will be either map[string]any or []any)
+//  2. the key within the container (will be either string or int depending on the container type)
+//  3. the value itself
+//
+// The transformation function should return the new value to be set at the same path.
+func Transform(j any, path []string, tx func(any, any, any) any) {
+	visit(nil, j, path, nil, tx)
 }
 
-func visit(container, j any, path []string, on func(any), tx func(any, any) any) error {
+func visit(container, j any, path []string, on func(any), tx func(any, any, any) any) {
 	selector := path[0]
 	rem := path[1:]
 
@@ -40,14 +53,12 @@ func visit(container, j any, path []string, on func(any), tx func(any, any) any)
 			if filter(k, val) {
 				if len(rem) == 0 {
 					if tx != nil {
-						typed[k] = tx(j, val)
+						typed[k] = tx(j, k, val)
 					} else {
 						on(val)
 					}
 				} else {
-					if err := visit(j, val, rem, on, tx); err != nil {
-						return err
-					}
+					visit(j, val, rem, on, tx)
 				}
 			}
 		}
@@ -61,17 +72,14 @@ func visit(container, j any, path []string, on func(any), tx func(any, any) any)
 			if filter(i, val) {
 				if len(rem) == 0 {
 					if tx != nil {
-						typed[i] = tx(j, val)
+						typed[i] = tx(j, i, val)
 					} else {
 						on(val)
 					}
 				} else {
-					if err := visit(j, val, rem, on, tx); err != nil {
-						return err
-					}
+					visit(j, val, rem, on, tx)
 				}
 			}
 		}
 	}
-	return nil
 }

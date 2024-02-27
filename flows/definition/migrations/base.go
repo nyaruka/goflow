@@ -126,21 +126,6 @@ func Clone(data []byte, depMapping map[uuids.UUID]uuids.UUID) ([]byte, error) {
 	return jsonx.Marshal(clone)
 }
 
-// ReadFlow reads a flow definition as a flow primitive
-func ReadFlow(data []byte) (Flow, error) {
-	g, err := jsonx.DecodeGeneric(data)
-	if err != nil {
-		return nil, err
-	}
-
-	d, _ := g.(map[string]any)
-	if d == nil {
-		return nil, errors.New("flow definition isn't an object")
-	}
-
-	return d, nil
-}
-
 // remap all UUIDs in the flow
 func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 	// copy in the dependency mappings into a master mapping of all UUIDs

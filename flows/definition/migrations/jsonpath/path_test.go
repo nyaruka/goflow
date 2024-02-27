@@ -38,8 +38,7 @@ func TestVisit(t *testing.T) {
 
 	for _, tc := range tcs {
 		var matches []any
-		err := jsonpath.Visit(data, jsonpath.ParsePath(tc.path), func(m any) { matches = append(matches, m) })
-		assert.NoError(t, err)
+		jsonpath.Visit(data, jsonpath.ParsePath(tc.path), func(m any) { matches = append(matches, m) })
 
 		assert.Equal(t, tc.expected, matches)
 	}
@@ -54,11 +53,11 @@ func TestTransform(t *testing.T) {
 	}{
 		{[]any{"foo", "bar"}, "$[*]", "baz", []any{"baz", "baz"}},
 		{map[string]any{"foo": "bar"}, "$.foo", "baz", map[string]any{"foo": "baz"}},
+		{map[string]any{"foo": []any{"1", "2"}, "bar": []any{"3"}}, "$.foo[*]", "baz", map[string]any{"foo": []any{"baz", "baz"}, "bar": []any{"3"}}},
 	}
 
 	for _, tc := range tcs {
-		err := jsonpath.Transform(tc.data, jsonpath.ParsePath(tc.path), func(c, m any) any { return tc.repl })
-		assert.NoError(t, err)
+		jsonpath.Transform(tc.data, jsonpath.ParsePath(tc.path), func(c, k, m any) any { return tc.repl })
 
 		assert.Equal(t, tc.expected, tc.data)
 	}
