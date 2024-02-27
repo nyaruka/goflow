@@ -2,7 +2,6 @@ package migrations
 
 import (
 	_ "embed"
-	"fmt"
 	"sync"
 
 	"github.com/Masterminds/semver"
@@ -35,40 +34,21 @@ func GetTemplateCatalog(v *semver.Version) *TemplateCatalog {
 }
 
 func RewriteTemplates(f Flow, catalog *TemplateCatalog, tx func(string) string) {
-	for _, n := range f.Nodes() {
+	/*for _, n := range f.Nodes() {
 		for _, a := range n.Actions() {
-			rewriteObjTemplates(a, catalog.Actions[a.Type()], tx)
+			for _, p := range catalog.Actions[a.Type()] {
+				rewriteObjTemplates(a, parsePath(p), tx)
+			}
 		}
 
 		if n.Router() != nil {
-			rewriteObjTemplates(n.Router(), catalog.Routers[n.Router().Type()], tx)
-		}
-	}
-}
-
-func rewriteObjTemplates(obj map[string]any, paths []string, tx func(string) string) {
-	onObject := func(path string, m map[string]any) {
-		for k, v := range m {
-			p := fmt.Sprintf("%s.%s", path, k)
-
-			if pathMatches(p, paths) {
-				m[k] = tx(v.(string))
+			for _, p := range catalog.Routers[n.Router().Type()] {
+				rewriteObjTemplates(n.Router(), parsePath(p), tx)
 			}
 		}
-	}
-	onArray := func(path string, a []any) {
-		for i, v := range a {
-			p := fmt.Sprintf("%s[%d]", path, i)
-
-			if pathMatches(p, paths) {
-				a[i] = tx(v.(string))
-			}
-		}
-	}
-
-	walk(obj, onObject, onArray, "")
+	}*/
 }
 
-func pathMatches(p string, paths []string) bool {
-	return false
+func rewriteValues(obj any, path []string, tx func(string) string) {
+
 }
