@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"encoding/json"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -38,7 +37,13 @@ const TypeSendMsg string = "send_msg"
 //	      "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //	      "name": "revive_issue"
 //	    },
-//	    "variables": ["@contact.name"]
+//	    "components": [
+//	      {
+//	      	"uuid": "2131d674-9afb-41e8-bcb8-5910c2faec2f",
+//	      	"name": "body",
+//	      	"params": ["@contact.name"]
+//	      }
+//	    ]
 //	  },
 //	  "topic": "event"
 //	}
@@ -54,67 +59,21 @@ type SendMsgAction struct {
 	Topic      flows.MsgTopic `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
 
-type TemplateParams struct {
-	UUID   uuids.UUID `json:"uuid"`
-	Values map[string][]string
+type TemplatingComponent struct {
+	UUID   uuids.UUID `json:"uuid" validate:"required,uuid4"`
+	Name   string     `json:"name" validate:"required"`
+	Params []string   `json:"params" engine:"localized,evaluated"`
 }
 
-func (p *TemplateParams) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
-	for _, comp := range utils.SortedKeys(p.Values) {
-		for _, v := range p.Values[comp] {
-			include(i18n.NilLanguage, v)
-		}
-		for _, lang := range localization.Languages() {
-			lvals := localization.GetItemTranslation(lang, p.UUID, comp)
-			for _, v := range lvals {
-				include(lang, v)
-			}
-		}
-	}
-}
-
-func (p *TemplateParams) MarshalJSON() ([]byte, error) {
-	if p == nil {
-		return json.Marshal(p)
-	}
-
-	m := make(map[string]any, 1+len(p.Values))
-	m["uuid"] = p.UUID
-	for k, v := range p.Values {
-		m[k] = v
-	}
-	return json.Marshal(m)
-}
-
-func (p *TemplateParams) UnmarshalJSON(d []byte) error {
-	var m map[string]any
-	if err := json.Unmarshal(d, &m); err != nil {
-		return err
-	}
-	p.Values = make(map[string][]string, len(m)-1)
-	for k, v := range m {
-		switch typed := v.(type) {
-		case string:
-			if k == "uuid" {
-				p.UUID = uuids.UUID(typed)
-			}
-		case []any:
-			var l []string
-			for _, j := range typed {
-				l = append(l, j.(string))
-			}
-			p.Values[k] = l
-		}
-	}
-	return nil
-}
+// LocalizationUUID gets the UUID which identifies this object for localization
+func (c *TemplatingComponent) LocalizationUUID() uuids.UUID { return c.UUID }
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID      uuids.UUID                `json:"uuid" validate:"required,uuid4"`
-	Template  *assets.TemplateReference `json:"template" validate:"required"`
-	Variables []string                  `json:"variables,omitempty" engine:"localized,evaluated"`
-	Params    *TemplateParams           `json:"params,omitempty"`
+	UUID       uuids.UUID                `json:"uuid" validate:"required,uuid4"`
+	Template   *assets.TemplateReference `json:"template" validate:"required"`
+	Variables  []string                  `json:"variables,omitempty" engine:"localized,evaluated"`
+	Components []*TemplatingComponent    `json:"components,omitempty"`
 }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -201,16 +160,16 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 		evaluatedParams["body"] = evaluatedVariables
 
-	} else if a.Templating.Params != nil {
-		for comp, compParams := range a.Templating.Params.Values {
-			localizedCompParams, _ := run.GetTextArray(uuids.UUID(a.Templating.Params.UUID), comp, compParams, nil)
+	} else if len(a.Templating.Components) > 0 {
+		for _, comp := range a.Templating.Components {
+			localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
 			evaluatedCompParams := make([]string, len(localizedCompParams))
-
 			for i, variable := range localizedCompParams {
 				sub, _ := run.EvaluateTemplate(variable, logEvent)
 				evaluatedCompParams[i] = sub
 			}
-			evaluatedParams[comp] = evaluatedCompParams
+
+			evaluatedParams[comp.Name] = evaluatedCompParams
 		}
 	}
 
