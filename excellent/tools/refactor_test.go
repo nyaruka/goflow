@@ -11,7 +11,7 @@ import (
 )
 
 func TestRefactorTemplate(t *testing.T) {
-	testCases := []struct {
+	tcs := []struct {
 		template   string
 		refactored string
 		hasError   bool
@@ -41,8 +41,10 @@ func TestRefactorTemplate(t *testing.T) {
 	})
 	topLevels := []string{"foo"}
 
-	for _, tc := range testCases {
-		actual, err := tools.RefactorTemplate(tc.template, topLevels)
+	tx := func(excellent.Expression) {}
+
+	for _, tc := range tcs {
+		actual, err := tools.RefactorTemplate(tc.template, topLevels, tx)
 
 		assert.Equal(t, tc.refactored, actual, "refactor mismatch for template: %s", tc.template)
 
@@ -57,5 +59,29 @@ func TestRefactorTemplate(t *testing.T) {
 
 			assert.Equal(t, originalValue, refactoredValue, "refactoring of template %s gives different value: %s", tc.template, refactoredValue)
 		}
+	}
+}
+
+func TestContextRefRename(t *testing.T) {
+	tcs := []struct {
+		template string
+		from     string
+		to       string
+		expected string
+	}{
+		{"@foo", "foo", "bar", "@bar"},
+		{" @foo @foo ", "foo", "bar", " @bar @bar "},
+		{"@(foo.uuid + 1)", "foo", "bar", "@(bar.uuid + 1)"},
+		{"@(Upper(Foo))", "foo", "bar", "@(upper(bar))"},
+		{"@webhook", "webhook", "webhook.json", "@webhook.json"},
+		{"@( webhook[0] )", "webhook", "webhook.json", "@(webhook.json[0])"},
+	}
+
+	topLevels := []string{"foo", "webhook"}
+
+	for _, tc := range tcs {
+		actual, err := tools.RefactorTemplate(tc.template, topLevels, tools.ContextRefRename(tc.from, tc.to))
+		assert.NoError(t, err)
+		assert.Equal(t, tc.expected, actual, "refactor mismatch for template: %s", tc.template)
 	}
 }

@@ -28,18 +28,19 @@ func (w *Warnings) deprecatedContext(v types.XValue) {
 // Expression is the base interface of all syntax elements
 type Expression interface {
 	Evaluate(envs.Environment, *Scope, *Warnings) types.XValue
+	Visit(func(Expression))
 	String() string
 }
 
 // ContextReference is an identifier which is a function name or root variable in the context
 type ContextReference struct {
-	name string
+	Name string
 }
 
 func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	value, exists := scope.Get(x.name)
+	value, exists := scope.Get(x.Name)
 	if !exists {
-		return types.NewXErrorf("context has no property '%s'", x.name)
+		return types.NewXErrorf("context has no property '%s'", x.Name)
 	}
 
 	if !types.IsNil(value) && value.Deprecated() != "" {
@@ -49,40 +50,49 @@ func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope, warnings
 	return value
 }
 
+func (x *ContextReference) Visit(v func(Expression)) {
+	v(x)
+}
+
 func (x *ContextReference) String() string {
-	return strings.ToLower(x.name)
+	return strings.ToLower(x.Name)
 }
 
 type DotLookup struct {
-	container Expression
-	lookup    string
+	Container Expression
+	Lookup    string
 }
 
 func (x *DotLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	containerVal := x.container.Evaluate(env, scope, warnings)
+	containerVal := x.Container.Evaluate(env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
 
-	return resolveLookup(env, containerVal, types.NewXText(x.lookup), true, warnings)
+	return resolveLookup(env, containerVal, types.NewXText(x.Lookup), true, warnings)
+}
+
+func (x *DotLookup) Visit(v func(Expression)) {
+	x.Container.Visit(v)
+	v(x)
 }
 
 func (x *DotLookup) String() string {
-	return fmt.Sprintf("%s.%s", x.container.String(), x.lookup)
+	return fmt.Sprintf("%s.%s", x.Container.String(), x.Lookup)
 }
 
 type ArrayLookup struct {
-	container Expression
-	lookup    Expression
+	Container Expression
+	Lookup    Expression
 }
 
 func (x *ArrayLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	containerVal := x.container.Evaluate(env, scope, warnings)
+	containerVal := x.Container.Evaluate(env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
 
-	lookupVal := x.lookup.Evaluate(env, scope, warnings)
+	lookupVal := x.Lookup.Evaluate(env, scope, warnings)
 	if types.IsXError(lookupVal) {
 		return lookupVal
 	}
@@ -90,290 +100,407 @@ func (x *ArrayLookup) Evaluate(env envs.Environment, scope *Scope, warnings *War
 	return resolveLookup(env, containerVal, lookupVal, false, warnings)
 }
 
+func (x *ArrayLookup) Visit(v func(Expression)) {
+	x.Container.Visit(v)
+	x.Lookup.Visit(v)
+	v(x)
+}
+
 func (x *ArrayLookup) String() string {
-	return fmt.Sprintf("%s[%s]", x.container.String(), x.lookup.String())
+	return fmt.Sprintf("%s[%s]", x.Container.String(), x.Lookup.String())
 }
 
 type FunctionCall struct {
-	function Expression
-	params   []Expression
+	Func   Expression
+	Params []Expression
 }
 
 func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	funcVal := x.function.Evaluate(env, scope, warnings)
+	funcVal := x.Func.Evaluate(env, scope, warnings)
 	if types.IsXError(funcVal) {
 		return funcVal
 	}
 
 	asFunction, isFunction := funcVal.(*types.XFunction)
 	if !isFunction {
-		return types.NewXErrorf("%s is not a function", x.function.String())
+		return types.NewXErrorf("%s is not a function", x.Func.String())
 	}
 
-	params := make([]types.XValue, len(x.params))
-	for i := range x.params {
-		params[i] = x.params[i].Evaluate(env, scope, warnings)
+	params := make([]types.XValue, len(x.Params))
+	for i := range x.Params {
+		params[i] = x.Params[i].Evaluate(env, scope, warnings)
 	}
 
 	return asFunction.Call(env, params)
 }
 
+func (x *FunctionCall) Visit(v func(Expression)) {
+	x.Func.Visit(v)
+	for _, p := range x.Params {
+		p.Visit(v)
+	}
+	v(x)
+}
+
 func (x *FunctionCall) String() string {
-	params := make([]string, len(x.params))
-	for i := range x.params {
-		params[i] = x.params[i].String()
+	params := make([]string, len(x.Params))
+	for i := range x.Params {
+		params[i] = x.Params[i].String()
 	}
 
-	return fmt.Sprintf("%s(%s)", x.function.String(), strings.Join(params, ", "))
+	return fmt.Sprintf("%s(%s)", x.Func.String(), strings.Join(params, ", "))
 }
 
 type AnonFunction struct {
-	args []string
-	body Expression
+	Args []string
+	Body Expression
 }
 
 func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	// create an XFunction which wraps our body expression
 	fn := func(env envs.Environment, args ...types.XValue) types.XValue {
 		// create new context that includes the args
-		argsMap := make(map[string]types.XValue, len(x.args))
-		for i := range x.args {
-			argsMap[x.args[i]] = args[i]
+		argsMap := make(map[string]types.XValue, len(x.Args))
+		for i := range x.Args {
+			argsMap[x.Args[i]] = args[i]
 		}
 		childScope := NewScope(types.NewXObject(argsMap), scope)
 
-		return x.body.Evaluate(env, childScope, warnings)
+		return x.Body.Evaluate(env, childScope, warnings)
 	}
 
-	return types.NewXFunction("", functions.NumArgsCheck(len(x.args), fn))
+	return types.NewXFunction("", functions.NumArgsCheck(len(x.Args), fn))
+}
+
+func (x *AnonFunction) Visit(v func(Expression)) {
+	x.Body.Visit(v)
+	v(x)
 }
 
 func (x *AnonFunction) String() string {
-	return fmt.Sprintf("(%s) => %s", strings.Join(x.args, ", "), x.body)
+	return fmt.Sprintf("(%s) => %s", strings.Join(x.Args, ", "), x.Body)
 }
 
 type Concatenation struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Concatenation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Concatenate(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Concatenate(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Concatenation) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Concatenation) String() string {
-	return fmt.Sprintf("%s & %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s & %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Addition struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Addition) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Add(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Add(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Addition) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Addition) String() string {
-	return fmt.Sprintf("%s + %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s + %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Subtraction struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Subtraction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Subtract(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Subtract(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Subtraction) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Subtraction) String() string {
-	return fmt.Sprintf("%s - %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s - %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Multiplication struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Multiplication) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Multiply(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Multiply(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Multiplication) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Multiplication) String() string {
-	return fmt.Sprintf("%s * %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s * %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Division struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Division) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Divide(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Divide(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Division) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Division) String() string {
-	return fmt.Sprintf("%s / %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s / %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Exponent struct {
-	expression Expression
-	exponent   Expression
+	Expression Expression
+	Exponent   Expression
 }
 
 func (x *Exponent) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Exponent(env, x.expression.Evaluate(env, scope, warnings), x.exponent.Evaluate(env, scope, warnings))
+	return operators.Exponent(env, x.Expression.Evaluate(env, scope, warnings), x.Exponent.Evaluate(env, scope, warnings))
+}
+
+func (x *Exponent) Visit(v func(Expression)) {
+	x.Expression.Visit(v)
+	x.Exponent.Visit(v)
+	v(x)
 }
 
 func (x *Exponent) String() string {
-	return fmt.Sprintf("%s ^ %s", x.expression.String(), x.exponent.String())
+	return fmt.Sprintf("%s ^ %s", x.Expression.String(), x.Exponent.String())
 }
 
 type Negation struct {
-	exp Expression
+	Exp Expression
 }
 
 func (x *Negation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Negate(env, x.exp.Evaluate(env, scope, warnings))
+	return operators.Negate(env, x.Exp.Evaluate(env, scope, warnings))
+}
+
+func (x *Negation) Visit(v func(Expression)) {
+	x.Exp.Visit(v)
+	v(x)
 }
 
 func (x *Negation) String() string {
-	return fmt.Sprintf("-%s", x.exp.String())
+	return fmt.Sprintf("-%s", x.Exp.String())
 }
 
 type Equality struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *Equality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Equal(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.Equal(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *Equality) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *Equality) String() string {
-	return fmt.Sprintf("%s = %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s = %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type InEquality struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *InEquality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.NotEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.NotEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *InEquality) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *InEquality) String() string {
-	return fmt.Sprintf("%s != %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s != %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type LessThan struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *LessThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.LessThan(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.LessThan(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *LessThan) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *LessThan) String() string {
-	return fmt.Sprintf("%s < %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s < %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type LessThanOrEqual struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *LessThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.LessThanOrEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.LessThanOrEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *LessThanOrEqual) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *LessThanOrEqual) String() string {
-	return fmt.Sprintf("%s <= %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s <= %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type GreaterThan struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *GreaterThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.GreaterThan(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.GreaterThan(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *GreaterThan) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *GreaterThan) String() string {
-	return fmt.Sprintf("%s > %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s > %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type GreaterThanOrEqual struct {
-	exp1 Expression
-	exp2 Expression
+	Exp1 Expression
+	Exp2 Expression
 }
 
 func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.GreaterThanOrEqual(env, x.exp1.Evaluate(env, scope, warnings), x.exp2.Evaluate(env, scope, warnings))
+	return operators.GreaterThanOrEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+}
+
+func (x *GreaterThanOrEqual) Visit(v func(Expression)) {
+	x.Exp1.Visit(v)
+	x.Exp2.Visit(v)
+	v(x)
 }
 
 func (x *GreaterThanOrEqual) String() string {
-	return fmt.Sprintf("%s >= %s", x.exp1.String(), x.exp2.String())
+	return fmt.Sprintf("%s >= %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Parentheses struct {
-	exp Expression
+	Exp Expression
 }
 
 func (x *Parentheses) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.exp.Evaluate(env, scope, warnings)
+	return x.Exp.Evaluate(env, scope, warnings)
+}
+
+func (x *Parentheses) Visit(v func(Expression)) {
+	x.Exp.Visit(v)
+	v(x)
 }
 
 func (x *Parentheses) String() string {
-	return fmt.Sprintf("(%s)", x.exp.String())
+	return fmt.Sprintf("(%s)", x.Exp.String())
 }
 
 type TextLiteral struct {
-	val *types.XText
+	Value *types.XText
 }
 
 func (x *TextLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.val
+	return x.Value
+}
+
+func (x *TextLiteral) Visit(v func(Expression)) {
+	v(x)
 }
 
 func (x *TextLiteral) String() string {
-	return x.val.Describe()
+	return x.Value.Describe()
 }
 
 // NumberLiteral is a literal number like 123 or 1.5
 type NumberLiteral struct {
-	val *types.XNumber
+	Value *types.XNumber
 }
 
 func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.val
+	return x.Value
+}
+
+func (x *NumberLiteral) Visit(v func(Expression)) {
+	v(x)
 }
 
 func (x *NumberLiteral) String() string {
-	return x.val.Describe()
+	return x.Value.Describe()
 }
 
 // BooleanLiteral is a literal bool
 type BooleanLiteral struct {
-	val *types.XBoolean
+	Value *types.XBoolean
 }
 
 func (x *BooleanLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.val
+	return x.Value
+}
+
+func (x *BooleanLiteral) Visit(v func(Expression)) {
+	v(x)
 }
 
 func (x *BooleanLiteral) String() string {
-	return x.val.Describe()
+	return x.Value.Describe()
 }
 
 type NullLiteral struct{}
 
 func (x *NullLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return nil
+}
+
+func (x *NullLiteral) Visit(v func(Expression)) {
+	v(x)
 }
 
 func (x *NullLiteral) String() string {
