@@ -82,7 +82,7 @@ func rewriteTemplates[T ~map[string]any](o T, path string, tx func(container, ke
 	// if path points to an array of strings, get the array instead of the individual strings
 	path = strings.TrimSuffix(path, "[*]")
 
-	jsonpath.Transform(map[string]any(o), jsonpath.ParsePath(path), tx)
+	jsonpath.Transform(map[string]any(o), "$"+path, tx)
 }
 
 func rewriteTranslations(f Flow, uuid, property string, tx func(string) string) {

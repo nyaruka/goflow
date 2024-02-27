@@ -1,31 +1,75 @@
 package jsonpath
 
-// Very barebones jsonpath implementation, only supports the path types we need for now.. no expressions, only *
-// wildcards.
+// Very barebones jsonpath implementation that only supports the following syntax:
 //
-// But allows us to transform values, with access to the container which may be a localizable object.
+//  - $.foo
+//  - $.foo.*
+//  - $.foo[0]
+//  - $.foo[*]
+//  - $.foo[*].bar
+//
+// This exists because goflow has some very specific requirements for making transformations in JSON flow definitions
+// knowing the parent container of the thing being transformed, and the name of thing in the container.
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 )
 
-// ParsePath parses a jsonpath into a slice of path parts
-func ParsePath(path string) []string {
-	path = strings.ReplaceAll(path, "[*]", ".*")
-	split := strings.Split(path, ".")
-	parts := make([]string, 0, len(split))
+// parses a jsonpath into a slice of path parts
+func parsePath(path string) ([]string, error) {
+	runes := []rune(path)
+	steps := make([]string, 0, 5)
 
-	for _, p := range split {
-		if p != "" && p != "$" {
-			parts = append(parts, p)
+	if len(runes) == 0 || runes[0] != '$' {
+		return nil, errors.New("path must begin with $")
+	}
+	i := 1
+
+	for {
+		if i == len(runes) {
+			break
+		}
+
+		if runes[i] == '.' {
+			i++
+
+			var b strings.Builder
+			for i < len(runes) && runes[i] != '.' && runes[i] != '[' {
+				b.WriteRune(runes[i])
+				i++
+			}
+			steps = append(steps, b.String())
+		} else if runes[i] == '[' {
+			i++
+
+			var b strings.Builder
+			for i < len(runes) && runes[i] != ']' {
+				b.WriteRune(runes[i])
+				i++
+			}
+			if i < len(runes) && runes[i] == ']' {
+				i++
+			}
+			s := b.String()
+			if len(s) == 0 {
+				return nil, errors.New("subscript value can't be empty")
+			}
+			steps = append(steps, s)
 		}
 	}
-	return parts
+
+	return steps, nil
 }
 
-func Visit(j any, path []string, on func(any)) {
-	visit(nil, j, path, on, nil)
+func Visit(j any, path string, on func(any)) error {
+	p, err := parsePath(path)
+	if err != nil {
+		return err
+	}
+	visit(nil, j, p, on, nil)
+	return nil
 }
 
 // Transform applies a transformation function to the value at the given path. The transformation function takes 3
@@ -35,8 +79,13 @@ func Visit(j any, path []string, on func(any)) {
 //  3. the value itself
 //
 // The transformation function should return the new value to be set at the same path.
-func Transform(j any, path []string, tx func(any, any, any) any) {
-	visit(nil, j, path, nil, tx)
+func Transform(j any, path string, tx func(any, any, any) any) error {
+	p, err := parsePath(path)
+	if err != nil {
+		return err
+	}
+	visit(nil, j, p, nil, tx)
+	return nil
 }
 
 func visit(container, j any, path []string, on func(any), tx func(any, any, any) any) {
