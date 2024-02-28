@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-01-18 13:23-0500\n"
+"POT-Creation-Date: 2024-02-28 12:31-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -330,6 +330,11 @@ msgstr "Vrací `value1`, pokud je `test` pravdivý, nebo `value2`, pokud není."
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
 msgstr "Vrací `value`, pokud není prázdný nebo se jedná o chybu, jinak vrací `default`."
 
+#, fuzzy
+#| msgid "Returns a new array with the values of `array` sorted."
+msgid "Returns a new array with the items from `array` that when passed to `func` return true."
+msgstr "Vrátí nové pole s hodnotami `array` seřazenými."
+
 msgid "Returns a new array with the values of `array` reversed."
 msgstr "Vrátí nové pole s obrácenými hodnotami pole `array`."
 
@@ -418,6 +423,11 @@ msgstr "Vrací číslo týdne (1-54) pro `date`."
 
 msgid "Returns the word at `index` in `text`."
 msgstr "Vrátí slovo v `index` v `text`."
+
+#, fuzzy
+#| msgid "Returns the JSON representation of `value`."
+msgid "Returns whether `array` contains `value`."
+msgstr "Vrací JSON reprezentaci hodnoty `value`."
 
 msgid "Returns whether `value` is an error"
 msgstr "Vrací, zda `value` je chyba"
@@ -638,6 +648,9 @@ msgid ""
 "\"m\" for minutes, \"s\" for seconds."
 msgstr "Platné doby trvání jsou \"Y\" pro roky, \"M\" pro měsíce, \"W\" pro týdny, \"D\" pro dny, \"h\" pro hodiny, \"m\" pro minuty, \"s\" pro sekundy."
 
+msgid "Values in `array` must be a sortable type and be of the same type."
+msgstr ""
+
 msgid "You can optionally pass in the number of decimal places to round to as `places`."
 msgstr "Jako `places` můžete volitelně zadat počet desetinných míst, na která se má zaokrouhlovat."
 
@@ -678,6 +691,11 @@ msgstr "UUID uzlu"
 
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "UUID uzlu v toku, který vygeneroval výsledek."
+
+#, fuzzy
+#| msgid "the UUID of the topic"
+msgid "the UUID of the optin"
+msgstr "UUID tématu"
 
 msgid "the UUID of the run"
 msgstr "UUID běhu"
@@ -793,9 +811,6 @@ msgstr "jazyk kontaktu jako 3-písmenný kód ISO."
 msgid "the last child run"
 msgstr "poslední běh podřazeného"
 
-msgid "the last opened ticket for the contact"
-msgstr "poslední otevřený tiket pro kontakt"
-
 msgid "the last seen date of the contact"
 msgstr "datum posledního setkání s kontaktem"
 
@@ -817,6 +832,11 @@ msgstr "název toku"
 msgid "the name of the group"
 msgstr "název skupiny"
 
+#, fuzzy
+#| msgid "the name of the topic"
+msgid "the name of the optin"
+msgstr "název tématu"
+
 msgid "the name of the result"
 msgstr "název výsledku"
 
@@ -835,7 +855,9 @@ msgstr "název e-mailu"
 msgid "the numeric ID of the contact"
 msgstr "číselné ID kontaktu"
 
-msgid "the open tickets of the contact"
+#, fuzzy
+#| msgid "the open tickets of the contact"
+msgid "the open ticket for the contact"
 msgstr "otevřené tikety kontaktu"
 
 msgid "the origin of this session if this is a manual trigger"
@@ -905,3 +927,6 @@ msgstr "{key} pro kontakt"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN pro kontakt"
+
+#~ msgid "the last opened ticket for the contact"
+#~ msgstr "poslední otevřený tiket pro kontakt"

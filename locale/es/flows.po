@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-01-18 13:23-0500\n"
+"POT-Creation-Date: 2024-02-28 12:31-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -346,6 +346,11 @@ msgstr "Devuelve `value1` si `test` es veraz o `value2` si no."
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
 msgstr "Devuelve `value` si no está vacío o es un error; de lo contrario, devuelve `default`."
 
+#, fuzzy
+#| msgid "Returns a new array with the values of `array` sorted."
+msgid "Returns a new array with the items from `array` that when passed to `func` return true."
+msgstr "Devuelve un nuevo array de los valores de `array` ordenados."
+
 msgid "Returns a new array with the values of `array` reversed."
 msgstr "Devuelve un nuevo array de los valores de `array` invertidos."
 
@@ -434,6 +439,11 @@ msgstr "Devuelve el número de semana (1-54) de `date`."
 
 msgid "Returns the word at `index` in `text`."
 msgstr "Devuelve la palabra en `index` en `text`."
+
+#, fuzzy
+#| msgid "Returns the JSON representation of `value`."
+msgid "Returns whether `array` contains `value`."
+msgstr "Devuelve la representación JSON de `value`."
 
 msgid "Returns whether `value` is an error"
 msgstr "Devuelve si `value` es un error"
@@ -672,6 +682,9 @@ msgstr ""
 "Las duraciones válidas son \"Y\" para años, \"M\" para meses, \"W\" para semanas, \"D\" para días, \"h\" para hora,\n"
 "\"m\" para minutos, \"s\" para segundos."
 
+msgid "Values in `array` must be a sortable type and be of the same type."
+msgstr ""
+
 msgid "You can optionally pass in the number of decimal places to round to as `places`."
 msgstr "Opcionalmente, puede pasar el número de lugares decimales a redondear como `places`."
 
@@ -714,6 +727,11 @@ msgstr "el UUID del nodo"
 
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "el UUID del nodo en el flujo que generó el resultado"
+
+#, fuzzy
+#| msgid "the UUID of the topic"
+msgid "the UUID of the optin"
+msgstr "el UUID del tema"
 
 msgid "the UUID of the run"
 msgstr "el UUID de la ejecución"
@@ -829,9 +847,6 @@ msgstr "el idioma del contacto como código ISO de 3 letras"
 msgid "the last child run"
 msgstr "la última ejecución de hijo"
 
-msgid "the last opened ticket for the contact"
-msgstr "el último ticket que se ha abierto para el contacto"
-
 msgid "the last seen date of the contact"
 msgstr "la fecha de última vista del contacto"
 
@@ -853,6 +868,11 @@ msgstr "el nombre del flujo"
 msgid "the name of the group"
 msgstr "el nombre del grupo"
 
+#, fuzzy
+#| msgid "the name of the topic"
+msgid "the name of the optin"
+msgstr "el nombre del tema"
+
 msgid "the name of the result"
 msgstr "el nombre del resultado"
 
@@ -871,7 +891,9 @@ msgstr "el nombre o correo"
 msgid "the numeric ID of the contact"
 msgstr "el ID numérico del contacto"
 
-msgid "the open tickets of the contact"
+#, fuzzy
+#| msgid "the open tickets of the contact"
+msgid "the open ticket for the contact"
 msgstr "los tickets abiertos del contacto"
 
 msgid "the origin of this session if this is a manual trigger"
@@ -941,3 +963,6 @@ msgstr "{key} para el contacto"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN para el contacto"
+
+#~ msgid "the last opened ticket for the contact"
+#~ msgstr "el último ticket que se ha abierto para el contacto"

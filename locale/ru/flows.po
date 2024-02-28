@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-01-18 13:23-0500\n"
+"POT-Creation-Date: 2024-02-28 12:31-0500\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -262,6 +262,9 @@ msgstr ""
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
 msgstr ""
 
+msgid "Returns a new array with the items from `array` that when passed to `func` return true."
+msgstr ""
+
 msgid "Returns a new array with the values of `array` reversed."
 msgstr ""
 
@@ -347,6 +350,9 @@ msgid "Returns the week number (1-54) of `date`."
 msgstr ""
 
 msgid "Returns the word at `index` in `text`."
+msgstr ""
+
+msgid "Returns whether `array` contains `value`."
 msgstr ""
 
 msgid "Returns whether `value` is an error"
@@ -517,6 +523,9 @@ msgid ""
 "\"m\" for minutes, \"s\" for seconds."
 msgstr ""
 
+msgid "Values in `array` must be a sortable type and be of the same type."
+msgstr ""
+
 msgid "You can optionally pass in the number of decimal places to round to as `places`."
 msgstr ""
 
@@ -556,6 +565,9 @@ msgid "the UUID of the node"
 msgstr ""
 
 msgid "the UUID of the node in the flow that generated the result"
+msgstr ""
+
+msgid "the UUID of the optin"
 msgstr ""
 
 msgid "the UUID of the run"
@@ -672,9 +684,6 @@ msgstr ""
 msgid "the last child run"
 msgstr ""
 
-msgid "the last opened ticket for the contact"
-msgstr ""
-
 msgid "the last seen date of the contact"
 msgstr ""
 
@@ -696,6 +705,9 @@ msgstr ""
 msgid "the name of the group"
 msgstr ""
 
+msgid "the name of the optin"
+msgstr ""
+
 msgid "the name of the result"
 msgstr ""
 
@@ -714,7 +726,7 @@ msgstr ""
 msgid "the numeric ID of the contact"
 msgstr ""
 
-msgid "the open tickets of the contact"
+msgid "the open ticket for the contact"
 msgstr ""
 
 msgid "the origin of this session if this is a manual trigger"

@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-01-18 13:23-0500\n"
+"POT-Creation-Date: 2024-02-28 12:31-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -281,6 +281,9 @@ msgstr "Retorna `value1` se `test` é verdadeiro ou `value2` caso contrário."
 msgid "Returns `value` if is not empty or an error, otherwise it returns `default`."
 msgstr "Retorna `value` se não for vazio ou erro, de outra forma retorna `default`."
 
+msgid "Returns a new array with the items from `array` that when passed to `func` return true."
+msgstr ""
+
 msgid "Returns a new array with the values of `array` reversed."
 msgstr ""
 
@@ -369,6 +372,11 @@ msgstr "Retorna o número da semana (1-54) de `date`."
 
 msgid "Returns the word at `index` in `text`."
 msgstr "Retorna a palavra em um `index` no `text`."
+
+#, fuzzy
+#| msgid "Returns the JSON representation of `value`."
+msgid "Returns whether `array` contains `value`."
+msgstr "Retorna a representação em JSON de `value`."
 
 msgid "Returns whether `value` is an error"
 msgstr "Retorna se `value` é um erro."
@@ -551,6 +559,9 @@ msgstr ""
 "Durações válidas são \"Y\" para anos, \"M\" para meses, \"W\" para semanas, \"D\" para dias, \"h\" para hora,\n"
 "\"m\" para minutos, \"s\" para segundos."
 
+msgid "Values in `array` must be a sortable type and be of the same type."
+msgstr ""
+
 msgid "You can optionally pass in the number of decimal places to round to as `places`."
 msgstr "Você pode, opcionalmente, passar o número de casas decimais para arredondar como `places`."
 
@@ -593,6 +604,11 @@ msgstr "o UUID do nó"
 
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "o UUID do nó no fluxo que gerou o resultado"
+
+#, fuzzy
+#| msgid "the UUID of the group"
+msgid "the UUID of the optin"
+msgstr "o UUID do grupo"
 
 msgid "the UUID of the run"
 msgstr "o UUID da execução"
@@ -708,9 +724,6 @@ msgstr "a língua do contato como código ISO de 3 letras"
 msgid "the last child run"
 msgstr "a última execução do filho"
 
-msgid "the last opened ticket for the contact"
-msgstr ""
-
 msgid "the last seen date of the contact"
 msgstr "a última data vista do contato"
 
@@ -732,6 +745,11 @@ msgstr "o nome do fluxo"
 msgid "the name of the group"
 msgstr "o nome do grupo"
 
+#, fuzzy
+#| msgid "the name of the group"
+msgid "the name of the optin"
+msgstr "o nome do grupo"
+
 msgid "the name of the result"
 msgstr "o nome do resultado"
 
@@ -750,8 +768,10 @@ msgstr ""
 msgid "the numeric ID of the contact"
 msgstr "o ID numérico do contato"
 
-msgid "the open tickets of the contact"
-msgstr ""
+#, fuzzy
+#| msgid "the name of the contact"
+msgid "the open ticket for the contact"
+msgstr "o nome do contato"
 
 msgid "the origin of this session if this is a manual trigger"
 msgstr "a origem desta sessão se for um gatilho manual"
