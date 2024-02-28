@@ -25,7 +25,7 @@ func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template 
 	var buf strings.Builder
 	var allWarnings []string
 
-	err := VisitTemplate(template, ctx.Properties(), func(tokenType XTokenType, token string) error {
+	err := VisitTemplate(template, ctx.Properties(), true, func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
@@ -120,13 +120,14 @@ func Parse(expression string, contextCallback func([]string)) (Expression, error
 }
 
 // VisitTemplate scans the given template and calls the callback for each token encountered
-func VisitTemplate(template string, allowedTopLevels []string, callback func(XTokenType, string) error) error {
+func VisitTemplate(template string, allowedTopLevels []string, unescapeBody bool, callback func(XTokenType, string) error) error {
 	// nothing todo for an empty template
 	if template == "" {
 		return nil
 	}
 
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
+	scanner.SetUnescapeBody(unescapeBody)
 	errors := NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
@@ -152,7 +153,7 @@ func VisitTemplate(template string, allowedTopLevels []string, callback func(XTo
 // HasExpressions returns whether the given template contains any expressions or identifiers
 func HasExpressions(template string, allowedTopLevels []string) bool {
 	found := false
-	VisitTemplate(template, allowedTopLevels, func(tokenType XTokenType, token string) error {
+	VisitTemplate(template, allowedTopLevels, false, func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case IDENTIFIER, EXPRESSION:
 			found = true
