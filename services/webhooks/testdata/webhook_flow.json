@@ -3,7 +3,7 @@
         {
             "name": "Webhook Test",
             "uuid": "bb38eefb-3cd9-4f80-9867-9c84ae276f7a",
-            "spec_version": "13.1.0",
+            "spec_version": "13.3.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [
