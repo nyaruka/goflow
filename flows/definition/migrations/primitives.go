@@ -1,9 +1,10 @@
 package migrations
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/pkg/errors"
-	"golang.org/x/exp/maps"
 )
 
 // Flow holds a flow definition
@@ -40,19 +41,23 @@ func (it ItemTranslation) Set(prop string, ss []string) {
 
 type LanguageTranslation map[string]any
 
-func (lt LanguageTranslation) GetItemTranslation(uuid string) ItemTranslation {
-	it, _ := lt[uuid].(map[string]any)
+func (lt LanguageTranslation) GetItemTranslation(uuid uuids.UUID) ItemTranslation {
+	it, _ := lt[string(uuid)].(map[string]any)
 	return ItemTranslation(it)
 }
 
 type Localization map[string]any
 
-func (l Localization) Languages() []string {
-	return maps.Keys(l)
+func (l Localization) Languages() []i18n.Language {
+	langs := make([]i18n.Language, 0, len(l))
+	for k := range l {
+		langs = append(langs, i18n.Language(k))
+	}
+	return langs
 }
 
-func (l Localization) GetLanguageTranslation(lang string) LanguageTranslation {
-	lt, _ := l[lang].(map[string]any)
+func (l Localization) GetLanguageTranslation(lang i18n.Language) LanguageTranslation {
+	lt, _ := l[string(lang)].(map[string]any)
 	return LanguageTranslation(lt)
 }
 
@@ -110,6 +115,21 @@ type Router map[string]any
 func (r Router) Type() string {
 	d, _ := r["type"].(string)
 	return d
+}
+
+// GetObjectUUID gets the UUID property of o, if o is an object, if it has "uuid" property, and if the type of that property is a string
+func GetObjectUUID(o any) uuids.UUID {
+	m, ok := o.(map[string]any)
+	if ok {
+		v, exists := m["uuid"]
+		if exists {
+			s, ok := v.(string)
+			if ok {
+				return uuids.UUID(s)
+			}
+		}
+	}
+	return ""
 }
 
 // ReadFlow reads a flow definition as a flow primitive
