@@ -10,7 +10,7 @@ import (
 func RefactorTemplate(template string, allowedTopLevels []string, tx func(excellent.Expression) bool) (string, error) {
 	buf := &strings.Builder{}
 
-	err := excellent.VisitTemplate(template, allowedTopLevels, func(tokenType excellent.XTokenType, token string) error {
+	err := excellent.VisitTemplate(template, allowedTopLevels, false, func(tokenType excellent.XTokenType, token string) error {
 		switch tokenType {
 		case excellent.BODY:
 			buf.WriteString(token)
