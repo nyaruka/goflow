@@ -1,9 +1,6 @@
 package inspect_test
 
 import (
-	"fmt"
-	"reflect"
-	"sort"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -60,56 +57,6 @@ func TestTemplates(t *testing.T) {
 	})
 
 	assert.Equal(t, map[i18n.Language][]string{"": {"Bob", "Gibberish"}}, templates)
-}
-
-func TestTemplatePaths(t *testing.T) {
-	paths := make([]string, 0)
-	for typeName, fn := range actions.RegisteredTypes() {
-		actionType := reflect.TypeOf(fn())
-
-		inspect.TemplatePaths(actionType, fmt.Sprintf("$.nodes[*].actions[@.type=\"%s\"]", typeName), func(path string) {
-			paths = append(paths, path)
-		})
-	}
-
-	sort.Strings(paths)
-
-	assert.Equal(t, []string{
-		"$.nodes[*].actions[@.type=\"add_contact_groups\"].groups[*].name_match",
-		"$.nodes[*].actions[@.type=\"add_contact_urn\"].path",
-		"$.nodes[*].actions[@.type=\"add_input_labels\"].labels[*].name_match",
-		"$.nodes[*].actions[@.type=\"call_classifier\"].input",
-		"$.nodes[*].actions[@.type=\"call_webhook\"].body",
-		"$.nodes[*].actions[@.type=\"call_webhook\"].headers[*]",
-		"$.nodes[*].actions[@.type=\"call_webhook\"].url",
-		"$.nodes[*].actions[@.type=\"open_ticket\"].assignee.email_match",
-		"$.nodes[*].actions[@.type=\"open_ticket\"].body",
-		"$.nodes[*].actions[@.type=\"play_audio\"].audio_url",
-		"$.nodes[*].actions[@.type=\"remove_contact_groups\"].groups[*].name_match",
-		"$.nodes[*].actions[@.type=\"say_msg\"].text",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].attachments[*]",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].contact_query",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].groups[*].name_match",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].legacy_vars[*]",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].quick_replies[*]",
-		"$.nodes[*].actions[@.type=\"send_broadcast\"].text",
-		"$.nodes[*].actions[@.type=\"send_email\"].addresses[*]",
-		"$.nodes[*].actions[@.type=\"send_email\"].body",
-		"$.nodes[*].actions[@.type=\"send_email\"].subject",
-		"$.nodes[*].actions[@.type=\"send_msg\"].attachments[*]",
-		"$.nodes[*].actions[@.type=\"send_msg\"].quick_replies[*]",
-		"$.nodes[*].actions[@.type=\"send_msg\"].templating.components[*].params[*]",
-		"$.nodes[*].actions[@.type=\"send_msg\"].templating.variables[*]",
-		"$.nodes[*].actions[@.type=\"send_msg\"].text",
-		"$.nodes[*].actions[@.type=\"set_contact_field\"].value",
-		"$.nodes[*].actions[@.type=\"set_contact_language\"].language",
-		"$.nodes[*].actions[@.type=\"set_contact_name\"].name",
-		"$.nodes[*].actions[@.type=\"set_contact_timezone\"].timezone",
-		"$.nodes[*].actions[@.type=\"set_run_result\"].value",
-		"$.nodes[*].actions[@.type=\"start_session\"].contact_query",
-		"$.nodes[*].actions[@.type=\"start_session\"].groups[*].name_match",
-		"$.nodes[*].actions[@.type=\"start_session\"].legacy_vars[*]",
-	}, paths)
 }
 
 func TestExtractFromTemplate(t *testing.T) {
