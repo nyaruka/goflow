@@ -1,0 +1,155 @@
+[
+    {
+        "description": "flow with no localization",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing @webhook",
+            "spec_version": "13.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "@webhook @(webhook[\"foo\"])"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "default_category_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                        "result_name": "Question",
+                        "operand": "@webhook.foo",
+                        "cases": [
+                            {
+                                "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "@webhook.bar"
+                                ],
+                                "category_uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492"
+                            },
+                            {
+                                "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "no",
+                                    "nope"
+                                ],
+                                "category_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
+                                "name": "Yes",
+                                "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                            },
+                            {
+                                "uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
+                                "name": "No",
+                                "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0"
+                            },
+                            {
+                                "uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                                "name": "Other",
+                                "exit_uuid": "e80bc037-3b57-45b5-9f19-a8346a475578"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        },
+                        {
+                            "uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0"
+                        },
+                        {
+                            "uuid": "e80bc037-3b57-45b5-9f19-a8346a475578"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing @webhook",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "@webhook.json @(webhook.json[\"foo\"])"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "default_category_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                        "result_name": "Question",
+                        "operand": "@webhook.json.foo",
+                        "cases": [
+                            {
+                                "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "@webhook.json.bar"
+                                ],
+                                "category_uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492"
+                            },
+                            {
+                                "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "no",
+                                    "nope"
+                                ],
+                                "category_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
+                                "name": "Yes",
+                                "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                            },
+                            {
+                                "uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
+                                "name": "No",
+                                "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0"
+                            },
+                            {
+                                "uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                                "name": "Other",
+                                "exit_uuid": "e80bc037-3b57-45b5-9f19-a8346a475578"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        },
+                        {
+                            "uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0"
+                        },
+                        {
+                            "uuid": "e80bc037-3b57-45b5-9f19-a8346a475578"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

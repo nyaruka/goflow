@@ -59,9 +59,12 @@ func (l Localization) GetLanguageTranslation(lang string) LanguageTranslation {
 // Nodes returns the nodes in this flow
 func (f Flow) Nodes() []Node {
 	d, _ := f["nodes"].([]any)
-	nodes := make([]Node, len(d))
-	for i := range d {
-		nodes[i] = Node(d[i].(map[string]any))
+	nodes := make([]Node, 0, len(d))
+	for _, v := range d {
+		n, _ := v.(map[string]any)
+		if n != nil {
+			nodes = append(nodes, n)
+		}
 	}
 	return nodes
 }
@@ -72,17 +75,23 @@ type Node map[string]any
 // Actions returns the actions on this node
 func (n Node) Actions() []Action {
 	d, _ := n["actions"].([]any)
-	actions := make([]Action, len(d))
-	for i := range d {
-		actions[i] = Action(d[i].(map[string]any))
+	actions := make([]Action, 0, len(d))
+	for _, v := range d {
+		a, _ := v.(map[string]any)
+		if a != nil {
+			actions = append(actions, a)
+		}
 	}
 	return actions
 }
 
 // Router returns the router on this node
 func (n Node) Router() Router {
-	d, _ := n["router"].(map[string]any)
-	return Router(d)
+	v, _ := n["router"].(map[string]any)
+	if v != nil {
+		return Router(v)
+	}
+	return nil
 }
 
 // Action holds an action definition
