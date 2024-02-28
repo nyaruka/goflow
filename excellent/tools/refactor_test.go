@@ -41,7 +41,7 @@ func TestRefactorTemplate(t *testing.T) {
 	})
 	topLevels := []string{"foo"}
 
-	tx := func(excellent.Expression) {}
+	tx := func(excellent.Expression) bool { return true } // always refactor
 
 	for _, tc := range tcs {
 		actual, err := tools.RefactorTemplate(tc.template, topLevels, tx)
@@ -75,6 +75,7 @@ func TestContextRefRename(t *testing.T) {
 		{"@(Upper(Foo))", "foo", "bar", "@(upper(bar))"},
 		{"@webhook", "webhook", "webhook.json", "@webhook.json"},
 		{"@( webhook[0] )", "webhook", "webhook.json", "@(webhook.json[0])"},
+		{"@( 1 +  2)", "webhook", "webhook.json", "@( 1 +  2)"}, // unchanged because no change needed
 	}
 
 	topLevels := []string{"foo", "webhook"}
