@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 14:34-0500\n"
+"POT-Creation-Date: 2024-02-28 15:43-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -575,9 +575,6 @@ msgstr ""
 msgid "any attachments on the input"
 msgstr "quaisquer anexos na entrada"
 
-msgid "the URL"
-msgstr ""
-
 msgid "the URN values of the contact"
 msgstr "os valores de URN do contato"
 
@@ -732,6 +729,11 @@ msgstr "a última data vista do contato"
 
 msgid "the localized category of the result"
 msgstr "a categoria localizada do resultado"
+
+#, fuzzy
+#| msgid "the name or URN"
+msgid "the method and URL"
+msgstr "o nome da URN"
 
 msgid "the name"
 msgstr "o nome"

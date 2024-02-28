@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 14:34-0500\n"
+"POT-Creation-Date: 2024-02-28 15:43-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -662,9 +662,6 @@ msgstr "Jako `místa` můžete volitelně zadat počet desetinných míst, na kt
 msgid "any attachments on the input"
 msgstr "všechny přílohy na vstupu"
 
-msgid "the URL"
-msgstr ""
-
 msgid "the URN values of the contact"
 msgstr "hodnoty URN kontaktu"
 
@@ -819,6 +816,11 @@ msgstr "datum posledního setkání s kontaktem"
 
 msgid "the localized category of the result"
 msgstr "lokalizovaná kategorie výsledku"
+
+#, fuzzy
+#| msgid "the name or URN"
+msgid "the method and URL"
+msgstr "Název URN"
 
 msgid "the name"
 msgstr "název"

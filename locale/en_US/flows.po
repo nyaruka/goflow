@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 14:34-0500\n"
+"POT-Creation-Date: 2024-02-28 15:43-0500\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -535,9 +535,6 @@ msgstr ""
 msgid "any attachments on the input"
 msgstr ""
 
-msgid "the URL"
-msgstr ""
-
 msgid "the URN values of the contact"
 msgstr ""
 
@@ -689,6 +686,9 @@ msgid "the last seen date of the contact"
 msgstr ""
 
 msgid "the localized category of the result"
+msgstr ""
+
+msgid "the method and URL"
 msgstr ""
 
 msgid "the name"

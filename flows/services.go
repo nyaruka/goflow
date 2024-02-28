@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -54,7 +55,7 @@ type WebhookCall struct {
 
 // Context returns the properties available in expressions
 //
-//	__default__:text -> the URL
+//	__default__:text -> the method and URL
 //	status:number -> the response status code
 //	headers:any -> the response headers
 //	json:any -> the response body if valid JSON
@@ -83,7 +84,7 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 	}
 
 	return map[string]types.XValue{
-		"__default__": types.NewXText(w.Request.URL.String()),
+		"__default__": types.NewXText(fmt.Sprintf("%s %s", w.Request.Method, w.Request.URL.String())),
 		"status":      status,
 		"headers":     headers,
 		"json":        json,

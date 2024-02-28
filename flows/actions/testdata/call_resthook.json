@@ -258,7 +258,7 @@
             }
         ],
         "webhook": {
-            "__default__": "http://unavailable.com/",
+            "__default__": "POST http://unavailable.com/",
             "headers": {
                 "Content-Type": "text/plain"
             },
@@ -408,7 +408,7 @@
             }
         ],
         "webhook": {
-            "__default__": "http://temba.io/",
+            "__default__": "POST http://temba.io/",
             "headers": {
                 "Content-Type": "application/json"
             },
@@ -642,7 +642,7 @@
             }
         ],
         "webhook": {
-            "__default__": "http://unavailable.com/",
+            "__default__": "POST http://unavailable.com/",
             "headers": {},
             "json": {
                 "errors": [
