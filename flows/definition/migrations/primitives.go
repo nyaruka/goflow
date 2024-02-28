@@ -1,9 +1,10 @@
 package migrations
 
 import (
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/pkg/errors"
-	"golang.org/x/exp/maps"
 )
 
 // Flow holds a flow definition
@@ -40,28 +41,35 @@ func (it ItemTranslation) Set(prop string, ss []string) {
 
 type LanguageTranslation map[string]any
 
-func (lt LanguageTranslation) GetItemTranslation(uuid string) ItemTranslation {
-	it, _ := lt[uuid].(map[string]any)
+func (lt LanguageTranslation) GetItemTranslation(uuid uuids.UUID) ItemTranslation {
+	it, _ := lt[string(uuid)].(map[string]any)
 	return ItemTranslation(it)
 }
 
 type Localization map[string]any
 
-func (l Localization) Languages() []string {
-	return maps.Keys(l)
+func (l Localization) Languages() []i18n.Language {
+	langs := make([]i18n.Language, 0, len(l))
+	for k := range l {
+		langs = append(langs, i18n.Language(k))
+	}
+	return langs
 }
 
-func (l Localization) GetLanguageTranslation(lang string) LanguageTranslation {
-	lt, _ := l[lang].(map[string]any)
+func (l Localization) GetLanguageTranslation(lang i18n.Language) LanguageTranslation {
+	lt, _ := l[string(lang)].(map[string]any)
 	return LanguageTranslation(lt)
 }
 
 // Nodes returns the nodes in this flow
 func (f Flow) Nodes() []Node {
 	d, _ := f["nodes"].([]any)
-	nodes := make([]Node, len(d))
-	for i := range d {
-		nodes[i] = Node(d[i].(map[string]any))
+	nodes := make([]Node, 0, len(d))
+	for _, v := range d {
+		n, _ := v.(map[string]any)
+		if n != nil {
+			nodes = append(nodes, n)
+		}
 	}
 	return nodes
 }
@@ -72,17 +80,23 @@ type Node map[string]any
 // Actions returns the actions on this node
 func (n Node) Actions() []Action {
 	d, _ := n["actions"].([]any)
-	actions := make([]Action, len(d))
-	for i := range d {
-		actions[i] = Action(d[i].(map[string]any))
+	actions := make([]Action, 0, len(d))
+	for _, v := range d {
+		a, _ := v.(map[string]any)
+		if a != nil {
+			actions = append(actions, a)
+		}
 	}
 	return actions
 }
 
 // Router returns the router on this node
 func (n Node) Router() Router {
-	d, _ := n["router"].(map[string]any)
-	return Router(d)
+	v, _ := n["router"].(map[string]any)
+	if v != nil {
+		return Router(v)
+	}
+	return nil
 }
 
 // Action holds an action definition
@@ -101,6 +115,21 @@ type Router map[string]any
 func (r Router) Type() string {
 	d, _ := r["type"].(string)
 	return d
+}
+
+// GetObjectUUID gets the UUID property of o, if o is an object, if it has "uuid" property, and if the type of that property is a string
+func GetObjectUUID(o any) uuids.UUID {
+	m, ok := o.(map[string]any)
+	if ok {
+		v, exists := m["uuid"]
+		if exists {
+			s, ok := v.(string)
+			if ok {
+				return uuids.UUID(s)
+			}
+		}
+	}
+	return ""
 }
 
 // ReadFlow reads a flow definition as a flow primitive

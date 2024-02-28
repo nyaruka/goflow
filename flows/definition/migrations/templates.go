@@ -7,6 +7,7 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/utils/jsonpath"
 )
 
@@ -37,7 +38,7 @@ func GetTemplateCatalog(v *semver.Version) *TemplateCatalog {
 
 func RewriteTemplates(f Flow, catalog *TemplateCatalog, tx func(string) string) {
 	txl := func(container, key, val any) any {
-		localizableUUID := getObjectUUID(container)
+		localizableUUID := GetObjectUUID(container)
 		if localizableUUID != "" {
 			prop, _ := key.(string)
 			if prop != "" {
@@ -85,13 +86,13 @@ func rewriteTemplates[T ~map[string]any](o T, path string, tx func(container, ke
 	jsonpath.Transform(map[string]any(o), "$"+path, tx)
 }
 
-func rewriteTranslations(f Flow, uuid, property string, tx func(string) string) {
+func rewriteTranslations(f Flow, itemUUID uuids.UUID, property string, tx func(string) string) {
 	localization := f.Localization()
 	if localization != nil {
 		for _, lang := range localization.Languages() {
 			langTrans := localization.GetLanguageTranslation(lang)
 			if langTrans != nil {
-				itemTrans := langTrans.GetItemTranslation(uuid)
+				itemTrans := langTrans.GetItemTranslation(itemUUID)
 				if itemTrans != nil {
 					ss := itemTrans.Get(property)
 					if ss != nil {
@@ -104,19 +105,4 @@ func rewriteTranslations(f Flow, uuid, property string, tx func(string) string) 
 			}
 		}
 	}
-}
-
-// gets the UUID property of o, if o is an object, if it has "uuid" property, and if the type of that property is a string
-func getObjectUUID(o any) string {
-	m, ok := o.(map[string]any)
-	if ok {
-		v, exists := m["uuid"]
-		if exists {
-			s, ok := v.(string)
-			if ok {
-				return s
-			}
-		}
-	}
-	return ""
 }

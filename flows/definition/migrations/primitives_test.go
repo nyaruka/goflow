@@ -4,13 +4,15 @@ import (
 	"os"
 	"testing"
 
+	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestMigrationPrimitives(t *testing.T) {
+func TestPrimitives(t *testing.T) {
 	f := migrations.Flow(map[string]any{}) // nodes not set
 	assert.Equal(t, []migrations.Node{}, f.Nodes())
 
@@ -45,6 +47,13 @@ func TestMigrationPrimitives(t *testing.T) {
 
 	a = migrations.Action(map[string]any{"type": "foo"}) // type set
 	assert.Equal(t, "foo", a.Type())
+}
+
+func TestGetObjectUUID(t *testing.T) {
+	assert.Equal(t, uuids.UUID(""), migrations.GetObjectUUID(nil))
+	assert.Equal(t, uuids.UUID(""), migrations.GetObjectUUID(map[string]any{}))
+	assert.Equal(t, uuids.UUID(""), migrations.GetObjectUUID(map[string]any{"uuid": 234}))
+	assert.Equal(t, uuids.UUID("foo"), migrations.GetObjectUUID(map[string]any{"uuid": "foo", "name": "bar"}))
 }
 
 func TestReadFlow(t *testing.T) {
@@ -86,13 +95,58 @@ func TestReadFlow(t *testing.T) {
 		assert.Nil(t, f.Nodes()[0].Router())
 	}
 	if assert.NotNil(t, f.Localization()) {
-		assert.Equal(t, []string{"spa"}, f.Localization().Languages())
+		assert.Equal(t, []i18n.Language{"spa"}, f.Localization().Languages())
 		assert.NotNil(t, f.Localization().GetLanguageTranslation("spa"))
 		assert.Nil(t, f.Localization().GetLanguageTranslation("kin"))
 	}
 
+	// error trying to load something that is not a flow
 	_, err = migrations.ReadFlow([]byte(`[]`))
 	assert.EqualError(t, err, "flow definition isn't an object")
+
+	// but tolerate other ways that a flow might be invalid since validation is version specific
+	f, err = migrations.ReadFlow([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"type": "messaging",
+		"nodes": null
+	}`))
+	assert.NoError(t, err)
+	assert.Len(t, f.Nodes(), 0)
+
+	f, err = migrations.ReadFlow([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"type": "messaging",
+		"nodes": [
+			{
+				"uuid": "365293c7-633c-45bd-96b7-0b059766588d"
+			}, 
+			null
+		]
+	}`))
+	assert.NoError(t, err)
+	assert.Len(t, f.Nodes(), 1)
+
+	f, err = migrations.ReadFlow([]byte(`{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"type": "messaging",
+		"nodes": [
+			{
+				"uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+				"actions": [
+					{
+						"uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+						"type": "spam"
+					},
+					null
+				]
+			}, 
+			null
+		]
+	}`))
+	assert.NoError(t, err)
+	assert.Len(t, f.Nodes(), 1)
+	assert.Len(t, f.Nodes()[0].Actions(), 1)
+	assert.Equal(t, "spam", f.Nodes()[0].Actions()[0].Type())
 }
 
 func readFlow(t *testing.T, path string) migrations.Flow {
