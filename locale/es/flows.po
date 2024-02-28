@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 12:33-0500\n"
+"POT-Creation-Date: 2024-02-28 14:34-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -922,6 +922,11 @@ msgstr ""
 
 msgid "the response headers"
 msgstr ""
+
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the response status code"
+msgstr "el estado actual de la ejecución"
 
 msgid "the result for {key}"
 msgstr "el resultado de {key}"

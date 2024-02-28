@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 12:33-0500\n"
+"POT-Creation-Date: 2024-02-28 14:34-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -886,6 +886,11 @@ msgstr ""
 
 msgid "the response headers"
 msgstr ""
+
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the response status code"
+msgstr "aktuální stav běhu"
 
 msgid "the result for {key}"
 msgstr "výsledek pro {key}"

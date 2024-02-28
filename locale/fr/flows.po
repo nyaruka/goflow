@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 12:33-0500\n"
+"POT-Creation-Date: 2024-02-28 14:34-0500\n"
 "Language-Team: French (https://www.transifex.com/rapidpro/teams/226/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -754,6 +754,9 @@ msgid "the response body if valid JSON"
 msgstr ""
 
 msgid "the response headers"
+msgstr ""
+
+msgid "the response status code"
 msgstr ""
 
 msgid "the result for {key}"

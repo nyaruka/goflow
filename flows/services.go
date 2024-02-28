@@ -55,13 +55,19 @@ type WebhookCall struct {
 // Context returns the properties available in expressions
 //
 //	__default__:text -> the URL
+//	status:number -> the response status code
 //	headers:any -> the response headers
 //	json:any -> the response body if valid JSON
 //
 // @context webhook
 func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
+	status := types.NewXNumberFromInt(0)
 	headers := types.XObjectEmpty
+	var json types.XValue
+
 	if w.Response != nil {
+		status = types.NewXNumberFromInt(w.Response.StatusCode)
+
 		headers = types.NewXLazyObject(func() map[string]types.XValue {
 			values := make(map[string]types.XValue, len(w.Response.Header))
 			for k := range w.Response.Header {
@@ -69,15 +75,16 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 			}
 			return values
 		})
-	}
 
-	json := types.JSONToXValue(w.ResponseJSON)
-	if types.IsXError(json) {
-		json = types.XObjectEmpty
+		json = types.JSONToXValue(w.ResponseJSON)
+		if types.IsXError(json) {
+			json = nil
+		}
 	}
 
 	return map[string]types.XValue{
 		"__default__": types.NewXText(w.Request.URL.String()),
+		"status":      status,
 		"headers":     headers,
 		"json":        json,
 	}
