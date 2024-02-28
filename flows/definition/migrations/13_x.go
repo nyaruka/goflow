@@ -4,7 +4,6 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/excellent/tools"
-	"github.com/nyaruka/goflow/flows"
 )
 
 func init() {
@@ -18,7 +17,10 @@ func init() {
 // @version 13_3 "13.3"
 func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
 	RewriteTemplates(f, GetTemplateCatalog(semver.MustParse("13.2.0")), func(s string) string {
-		refactored, _ := tools.RefactorTemplate(s, flows.RunContextTopLevels, tools.ContextRefRename("webhook", "webhook.json"))
+		// some optimizations here...
+		//   1. we can parse templates as if @(...) and @webhook are only valid top-levels
+		//   2. we can treat adding .json as a lookup to webhook as a simple renaming of webhook to webhook.json
+		refactored, _ := tools.RefactorTemplate(s, []string{"webhook"}, tools.ContextRefRename("webhook", "webhook.json"))
 		return refactored
 	})
 	return f, nil
