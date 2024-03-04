@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 15:43-0500\n"
+"POT-Creation-Date: 2024-03-04 14:34-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -814,6 +814,11 @@ msgstr "poslední běh podřazeného"
 msgid "the last seen date of the contact"
 msgstr "datum posledního setkání s kontaktem"
 
+#, fuzzy
+#| msgid "the last child run"
+msgid "the last webhook call "
+msgstr "poslední běh podřazeného"
+
 msgid "the localized category of the result"
 msgstr "lokalizovaná kategorie výsledku"
 
@@ -873,9 +878,6 @@ msgstr "parametry předané spouštěči"
 
 msgid "the parent of the run"
 msgstr "nadřízený běhu"
-
-msgid "the parsed JSON response of the last webhook call"
-msgstr "zpracovaná odpověď JSON posledního volání webhooku."
 
 msgid "the preferred URN of the contact"
 msgstr "preferované URN kontaktu"
@@ -946,3 +948,6 @@ msgstr "{type} URN pro kontakt"
 
 #~ msgid "the last opened ticket for the contact"
 #~ msgstr "poslední otevřený tiket pro kontakt"
+
+#~ msgid "the parsed JSON response of the last webhook call"
+#~ msgstr "zpracovaná odpověď JSON posledního volání webhooku."

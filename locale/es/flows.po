@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 15:43-0500\n"
+"POT-Creation-Date: 2024-03-04 14:34-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -850,6 +850,11 @@ msgstr "la última ejecución de hijo"
 msgid "the last seen date of the contact"
 msgstr "la fecha de última vista del contacto"
 
+#, fuzzy
+#| msgid "the last child run"
+msgid "the last webhook call "
+msgstr "la última ejecución de hijo"
+
 msgid "the localized category of the result"
 msgstr "la categoría localizada del resultado"
 
@@ -909,9 +914,6 @@ msgstr "los parámetros pasados al activador"
 
 msgid "the parent of the run"
 msgstr "el padre de la ejecución"
-
-msgid "the parsed JSON response of the last webhook call"
-msgstr "la respuesta JSON analizada de la última llamada de webhook"
 
 msgid "the preferred URN of the contact"
 msgstr "la URN preferida del contacto"
@@ -982,3 +984,6 @@ msgstr "{type} URN para el contacto"
 
 #~ msgid "the last opened ticket for the contact"
 #~ msgstr "el último ticket que se ha abierto para el contacto"
+
+#~ msgid "the parsed JSON response of the last webhook call"
+#~ msgstr "la respuesta JSON analizada de la última llamada de webhook"

@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 15:43-0500\n"
+"POT-Creation-Date: 2024-03-04 14:34-0500\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -687,6 +687,9 @@ msgstr ""
 msgid "the last seen date of the contact"
 msgstr ""
 
+msgid "the last webhook call "
+msgstr ""
+
 msgid "the localized category of the result"
 msgstr ""
 
@@ -739,9 +742,6 @@ msgid "the parameters passed to the trigger"
 msgstr ""
 
 msgid "the parent of the run"
-msgstr ""
-
-msgid "the parsed JSON response of the last webhook call"
 msgstr ""
 
 msgid "the preferred URN of the contact"

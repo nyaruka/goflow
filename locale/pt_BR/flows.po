@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 15:43-0500\n"
+"POT-Creation-Date: 2024-03-04 14:34-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -727,6 +727,11 @@ msgstr "a última execução do filho"
 msgid "the last seen date of the contact"
 msgstr "a última data vista do contato"
 
+#, fuzzy
+#| msgid "the last child run"
+msgid "the last webhook call "
+msgstr "a última execução do filho"
+
 msgid "the localized category of the result"
 msgstr "a categoria localizada do resultado"
 
@@ -786,9 +791,6 @@ msgstr "os parâmetros passados para o gatilho"
 
 msgid "the parent of the run"
 msgstr "o pai da exeução"
-
-msgid "the parsed JSON response of the last webhook call"
-msgstr "a resposta JSON avaliada da última chamada webhook"
 
 msgid "the preferred URN of the contact"
 msgstr "a URN preferida do contato"
@@ -856,3 +858,6 @@ msgstr "{key} para o contato"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN para o contato"
+
+#~ msgid "the parsed JSON response of the last webhook call"
+#~ msgstr "a resposta JSON avaliada da última chamada webhook"
