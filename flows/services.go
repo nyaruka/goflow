@@ -51,6 +51,7 @@ type WebhookCall struct {
 	*httpx.Trace
 	ResponseJSON    []byte
 	ResponseCleaned bool // whether response had to be cleaned to make it valid JSON
+	Recreated       bool // whether the call was recreated from a result
 }
 
 // Context returns the properties available in expressions
@@ -65,6 +66,19 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 	status := types.NewXNumberFromInt(0)
 	headers := types.XObjectEmpty
 	var json types.XValue
+
+	// TODO remove when users stop relying on this
+	if w.Recreated {
+		json = types.JSONToXValue(w.ResponseJSON)
+		if types.IsXError(json) {
+			json = nil
+		}
+		if json != nil {
+			json.SetDeprecated("webhook recreated from extra")
+		}
+
+		return map[string]types.XValue{"json": json}
+	}
 
 	if w.Response != nil {
 		status = types.NewXNumberFromInt(w.Response.StatusCode)

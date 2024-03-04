@@ -605,14 +605,14 @@
                 {
                     "created_on": "2018-07-06T12:31:02.123456789Z",
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                    "text": "error evaluating @webhook.json: null doesn't support lookups",
-                    "type": "error"
+                    "text": "deprecated context value accessed: webhook recreated from extra",
+                    "type": "warning"
                 },
                 {
                     "created_on": "2018-07-06T12:31:04.123456789Z",
                     "msg": {
                         "locale": "eng-US",
-                        "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. ",
+                        "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
                         "unsendable_reason": "no_destination",
                         "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                     },
@@ -805,14 +805,14 @@
                             {
                                 "created_on": "2018-07-06T12:31:02.123456789Z",
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "text": "error evaluating @webhook.json: null doesn't support lookups",
-                                "type": "error"
+                                "text": "deprecated context value accessed: webhook recreated from extra",
+                                "type": "warning"
                             },
                             {
                                 "created_on": "2018-07-06T12:31:04.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
-                                    "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. ",
+                                    "text": "Finally..\n\n1. \n2. {greeting: hello}\n3. {greeting: hello}",
                                     "unsendable_reason": "no_destination",
                                     "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                                 },

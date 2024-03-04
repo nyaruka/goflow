@@ -471,6 +471,8 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 		}
 	}
 
+	// create context
+	r.webhook = lastWebhookSavedAsExtra(r)
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil
