@@ -1,3 +1,7 @@
+v0.204.0 (2024-03-04)
+-------------------------
+ * Make @webhook an object with headers and json properties
+
 v0.203.0 (2024-02-27)
 -------------------------
  * Rework semd_msg templating to have a simpler structure in flow definitions and fix enumerating templates and localizable strings
