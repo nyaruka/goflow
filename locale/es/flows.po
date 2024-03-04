@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-02-28 12:31-0500\n"
+"POT-Creation-Date: 2024-02-28 15:43-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -853,6 +853,11 @@ msgstr "la fecha de última vista del contacto"
 msgid "the localized category of the result"
 msgstr "la categoría localizada del resultado"
 
+#, fuzzy
+#| msgid "the name or URN"
+msgid "the method and URL"
+msgstr "el nombre o URN"
+
 msgid "the name"
 msgstr "el nombre"
 
@@ -913,6 +918,17 @@ msgstr "la URN preferida del contacto"
 
 msgid "the preferred channel of the contact"
 msgstr "el canal preferido del contacto"
+
+msgid "the response body if valid JSON"
+msgstr ""
+
+msgid "the response headers"
+msgstr ""
+
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the response status code"
+msgstr "el estado actual de la ejecución"
 
 msgid "the result for {key}"
 msgstr "el resultado de {key}"

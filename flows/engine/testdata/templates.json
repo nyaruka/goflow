@@ -313,19 +313,27 @@
         "output": "completed"
     },
     {
-        "template": "@webhook",
+        "template": "@webhook.headers",
+        "output": "{Content-Length: 43, Content-Type: text/plain; charset=utf-8, Date: Wed, 11 Apr 2018 18:24:30 GMT}"
+    },
+    {
+        "template": "@(webhook.headers[\"Content-Type\"])",
+        "output": "text/plain; charset=utf-8"
+    },
+    {
+        "template": "@webhook.json",
         "output": "{results: [{state: WA}, {state: IN}]}"
     },
     {
-        "template": "@webhook.results",
+        "template": "@webhook.json.results",
         "output": "[{state: WA}, {state: IN}]"
     },
     {
-        "template": "@(webhook.results[1])",
+        "template": "@(webhook.json.results[1])",
         "output": "{state: IN}"
     },
     {
-        "template": "@(webhook.results[1].state)",
+        "template": "@(webhook.json.results[1].state)",
         "output": "IN"
     },
     {

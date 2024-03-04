@@ -3,11 +3,27 @@ package migrations
 import (
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/excellent/tools"
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_3 refactors template expressions that reference @webhook to use @webhook.json
+//
+// @version 13_3 "13.3"
+func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
+	RewriteTemplates(f, GetTemplateCatalog(semver.MustParse("13.2.0")), func(s string) string {
+		// some optimizations here...
+		//   1. we can parse templates as if @(...) and @webhook are only valid top-levels
+		//   2. we can treat adding .json as a lookup to webhook as a simple renaming of webhook to webhook.json
+		refactored, _ := tools.RefactorTemplate(s, []string{"webhook"}, tools.ContextRefRename("webhook", "webhook.json"))
+		return refactored
+	})
+	return f, nil
 }
 
 // Migrate13_2 replaces `base` as a flow language with `und` which indicates text with undetermined language

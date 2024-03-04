@@ -1,11 +1,13 @@
 package runs
 
 import (
+	"net/http"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -100,7 +102,7 @@ func arrayToObject(array *types.XArray) *types.XObject {
 }
 
 // finds the last webhook response that was saved as extra on a result
-func lastWebhookSavedAsExtra(r *run) types.XValue {
+func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
 	for i := len(r.events) - 1; i >= 0; i-- {
 		switch typed := r.events[i].(type) {
 		case *events.WebhookCalledEvent:
@@ -110,11 +112,11 @@ func lastWebhookSavedAsExtra(r *run) types.XValue {
 			if resultEvent != nil {
 				asResultEvent := resultEvent.(*events.RunResultChangedEvent)
 				if asResultEvent.Extra != nil {
-					value := types.JSONToXValue([]byte(asResultEvent.Extra))
-					if value != nil {
-						value.SetDeprecated("webhook recreated from extra")
+					return &flows.WebhookCall{
+						Trace:        &httpx.Trace{Response: &http.Response{}},
+						ResponseJSON: asResultEvent.Extra,
+						Recreated:    true,
 					}
-					return value
 				}
 			}
 		default:
