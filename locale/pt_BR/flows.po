@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 14:34-0500\n"
+"POT-Creation-Date: 2024-03-04 15:09-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -691,9 +691,6 @@ msgstr "a data de saída da execução"
 msgid "the external ID of the input"
 msgstr "o ID externo da entrada"
 
-msgid "the extra data of the result such as a webhook response"
-msgstr "os dados extras do resultado como resposta de webhook"
-
 msgid "the first name of the contact"
 msgstr "o primeiro nome do contato"
 
@@ -783,6 +780,11 @@ msgstr "o ID numérico do contato"
 msgid "the open ticket for the contact"
 msgstr "o nome do contato"
 
+#, fuzzy
+#| msgid "the creation date of the result"
+msgid "the optional extra data of the result"
+msgstr "a data de ciração do resultado"
+
 msgid "the origin of this session if this is a manual trigger"
 msgstr "a origem desta sessão se for um gatilho manual"
 
@@ -858,6 +860,9 @@ msgstr "{key} para o contato"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN para o contato"
+
+#~ msgid "the extra data of the result such as a webhook response"
+#~ msgstr "os dados extras do resultado como resposta de webhook"
 
 #~ msgid "the parsed JSON response of the last webhook call"
 #~ msgstr "a resposta JSON avaliada da última chamada webhook"

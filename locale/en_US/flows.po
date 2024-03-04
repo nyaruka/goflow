@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 14:34-0500\n"
+"POT-Creation-Date: 2024-03-04 15:09-0500\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -649,9 +649,6 @@ msgstr ""
 msgid "the external ID of the input"
 msgstr ""
 
-msgid "the extra data of the result such as a webhook response"
-msgstr ""
-
 msgid "the first name of the contact"
 msgstr ""
 
@@ -731,6 +728,9 @@ msgid "the numeric ID of the contact"
 msgstr ""
 
 msgid "the open ticket for the contact"
+msgstr ""
+
+msgid "the optional extra data of the result"
 msgstr ""
 
 msgid "the origin of this session if this is a manual trigger"
