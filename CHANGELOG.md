@@ -1,3 +1,7 @@
+v0.206.1 (2024-03-05)
+-------------------------
+ * Remove no longer used uuid property from msg.templating
+
 v0.206.0 (2024-03-05)
 -------------------------
  * Instead of supporting both variables and components in send_msg actions, add 13.4 migration
