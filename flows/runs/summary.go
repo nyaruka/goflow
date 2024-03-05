@@ -70,6 +70,9 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 		fields = flows.Context(env, c.run.Contact().Fields())
 	}
 
+	legacyStatus := types.NewXText(string(c.run.Status()))
+	legacyStatus.SetDeprecated("child.run.status: use child.status instead")
+
 	return map[string]types.XValue{
 		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
@@ -82,9 +85,7 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 
 		// deprecated but used by a lot of flows for @child.run.status as that is what editor has
 		// been using for subflow splits
-		"run": types.NewXObject(map[string]types.XValue{
-			"status": types.NewXText(string(c.run.Status())),
-		}),
+		"run": types.NewXObject(map[string]types.XValue{"status": legacyStatus}),
 	}
 }
 
