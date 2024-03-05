@@ -1,0 +1,184 @@
+[
+    {
+        "description": "flow with localization",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Hola"
+                        ]
+                    },
+                    "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785": {
+                        "variables": [
+                            "@contact"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "variables": [
+                                    "@contact.name"
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Hola"
+                        ]
+                    },
+                    "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                        "params": [
+                            "@contact"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "components": [
+                                    {
+                                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                        "name": "body",
+                                        "params": [
+                                            "@contact.name"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow without localization",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "variables": [
+                                    "@contact.name"
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "components": [
+                                    {
+                                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                        "name": "body",
+                                        "params": [
+                                            "@contact.name"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

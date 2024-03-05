@@ -7,9 +7,52 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.4.0"), Migrate13_4)
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_4 converts the `templating` object in [action:send_msg] actions to use a list of components.
+//
+// @version 13_4 "13.4"
+func Migrate13_4(f Flow, cfg *Config) (Flow, error) {
+	localization := f.Localization()
+
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "send_msg" {
+				templating, _ := action["templating"].(map[string]any)
+				if templating != nil {
+					templatingUUID := GetObjectUUID(templating)
+					bodyCompUUID := uuids.New()
+					variables, _ := templating["variables"].([]any)
+					if variables == nil {
+						variables = []any{}
+					}
+					templating["components"] = []map[string]any{
+						{"uuid": bodyCompUUID, "name": "body", "params": variables},
+					}
+
+					if localization != nil {
+						for _, lang := range localization.Languages() {
+							langTrans := localization.GetLanguageTranslation(lang)
+							if langTrans != nil {
+								vars := langTrans.GetTranslation(templatingUUID, "variables")
+								if vars != nil {
+									langTrans.SetTranslation(bodyCompUUID, "params", vars)
+									langTrans.DeleteTranslation(templatingUUID, "variables")
+								}
+							}
+						}
+					}
+
+					delete(templating, "variables")
+				}
+			}
+		}
+	}
+	return f, nil
 }
 
 // Migrate13_3 refactors template expressions that reference @webhook to use @webhook.json
