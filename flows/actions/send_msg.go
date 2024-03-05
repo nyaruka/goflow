@@ -32,7 +32,6 @@ const TypeSendMsg string = "send_msg"
 //	  "attachments": [],
 //	  "all_urns": false,
 //	  "templating": {
-//	    "uuid": "32c2ead6-3fa3-4402-8e27-9cc718175c5a",
 //	    "template": {
 //	      "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //	      "name": "revive_issue"
@@ -70,13 +69,9 @@ func (c *TemplatingComponent) LocalizationUUID() uuids.UUID { return c.UUID }
 
 // Templating represents the templating that should be used if possible
 type Templating struct {
-	UUID       uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template   *assets.TemplateReference `json:"template" validate:"required"`
 	Components []*TemplatingComponent    `json:"components,omitempty"`
 }
-
-// LocalizationUUID gets the UUID which identifies this object for localization
-func (t *Templating) LocalizationUUID() uuids.UUID { return t.UUID }
 
 // NewSendMsg creates a new send msg action
 func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
