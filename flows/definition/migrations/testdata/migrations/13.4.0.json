@@ -78,7 +78,6 @@
                             "type": "send_msg",
                             "text": "Hello",
                             "templating": {
-                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                                 "template": {
                                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                                     "name": "welcome"
@@ -155,7 +154,6 @@
                             "type": "send_msg",
                             "text": "Hello",
                             "templating": {
-                                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                                 "template": {
                                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                                     "name": "welcome"

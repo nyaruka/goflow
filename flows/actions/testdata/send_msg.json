@@ -346,7 +346,6 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi @contact.name, who's a good boy?",
             "templating": {
-                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
                     "name": "missing"
@@ -424,7 +423,6 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
-                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -509,7 +507,6 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi Ryan Lewis, who's a good boy?",
             "templating": {
-                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                     "name": "affirmation"
@@ -605,7 +602,6 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there, it's time to get up!",
             "templating": {
-                "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup"
@@ -663,7 +659,6 @@
             "uuid": "4f0510e9-7e41-4f83-aaa3-59b6e9a17e70",
             "text": "Hi Ryan, wakeup!",
             "templating": {
-                "uuid": "dce1ab9c-81d7-4e2f-b7d6-33e577c731ba",
                 "template": {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                     "name": "wakeup"
@@ -816,7 +811,6 @@
                 "No"
             ],
             "templating": {
-                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
                 "template": {
                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                     "name": "gender_update"

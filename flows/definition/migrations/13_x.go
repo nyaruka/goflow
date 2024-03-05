@@ -47,6 +47,7 @@ func Migrate13_4(f Flow, cfg *Config) (Flow, error) {
 						}
 					}
 
+					delete(templating, "uuid")
 					delete(templating, "variables")
 				}
 			}
