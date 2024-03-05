@@ -1,3 +1,7 @@
+v0.206.0 (2024-03-05)
+-------------------------
+ * Instead of supporting both variables and components in send_msg actions, add 13.4 migration
+
 v0.205.0 (2024-03-05)
 -------------------------
  * Support excluding deprecated object properties from marshalling
