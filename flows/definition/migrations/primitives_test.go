@@ -5,8 +5,10 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
+	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -54,6 +56,78 @@ func TestGetObjectUUID(t *testing.T) {
 	assert.Equal(t, uuids.UUID(""), migrations.GetObjectUUID(map[string]any{}))
 	assert.Equal(t, uuids.UUID(""), migrations.GetObjectUUID(map[string]any{"uuid": 234}))
 	assert.Equal(t, uuids.UUID("foo"), migrations.GetObjectUUID(map[string]any{"uuid": "foo", "name": "bar"}))
+}
+
+func TestLocalizationPrimitives(t *testing.T) {
+	readLocalization := func(j string) migrations.Localization {
+		m, err := jsonx.DecodeGeneric([]byte(j))
+		require.NoError(t, err)
+		return migrations.Localization(m.(map[string]any))
+	}
+
+	l10n1 := readLocalization(`{
+			"spa": {
+				"8eebd020-1af5-431c-b943-aa670fc74da9": {
+					"text": ["Hola"],
+					"params": ["Rojo", "Verde"],
+					"empty": [],
+					"bad": {}
+				}
+			}
+	}`)
+
+	spa := l10n1.GetLanguageTranslation("spa")
+	assert.NotNil(t, spa)
+	assert.Nil(t, spa.GetTranslation("6f865930-e783-4fde-8e28-34b93b3a17c6", "text")) // no such item
+	assert.Nil(t, spa.GetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "foo"))  // no such property
+	assert.Equal(t, []string{"Hola"}, spa.GetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "text"))
+	assert.Equal(t, []string{"Rojo", "Verde"}, spa.GetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "params"))
+	assert.Equal(t, []string{}, spa.GetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "empty"))
+	assert.Nil(t, spa.GetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "bad")) // not strings
+
+	spa.SetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "text", []string{"Que tal"})
+	spa.SetTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "bad", []string{"Mal"})
+
+	test.AssertEqualJSON(t, []byte(`{
+		"spa": {
+			"8eebd020-1af5-431c-b943-aa670fc74da9": {
+				"text": ["Que tal"],
+				"params": ["Rojo", "Verde"],
+				"empty": [],
+				"bad": ["Mal"]
+			}
+		}
+	}`), jsonx.MustMarshal(l10n1))
+
+	// if item doesn't exist, should be created
+	spa.SetTranslation("6f865930-e783-4fde-8e28-34b93b3a17c6", "text", []string{"Uno"})
+
+	test.AssertEqualJSON(t, []byte(`{
+		"spa": {
+			"8eebd020-1af5-431c-b943-aa670fc74da9": {
+				"text": ["Que tal"],
+				"params": ["Rojo", "Verde"],
+				"empty": [],
+				"bad": ["Mal"]
+			},
+			"6f865930-e783-4fde-8e28-34b93b3a17c6": {
+				"text": ["Uno"]
+			}
+		}
+	}`), jsonx.MustMarshal(l10n1))
+
+	spa.DeleteTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "text")
+	spa.DeleteTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "empty")
+	spa.DeleteTranslation("6f865930-e783-4fde-8e28-34b93b3a17c6", "text")
+
+	test.AssertEqualJSON(t, []byte(`{
+		"spa": {
+			"8eebd020-1af5-431c-b943-aa670fc74da9": {
+				"params": ["Rojo", "Verde"],
+				"bad": ["Mal"]
+			}
+		}
+	}`), jsonx.MustMarshal(l10n1))
 }
 
 func TestReadFlow(t *testing.T) {

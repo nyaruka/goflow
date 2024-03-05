@@ -92,15 +92,12 @@ func rewriteTranslations(f Flow, itemUUID uuids.UUID, property string, tx func(s
 		for _, lang := range localization.Languages() {
 			langTrans := localization.GetLanguageTranslation(lang)
 			if langTrans != nil {
-				itemTrans := langTrans.GetItemTranslation(itemUUID)
-				if itemTrans != nil {
-					ss := itemTrans.Get(property)
-					if ss != nil {
-						for i, s := range ss {
-							ss[i] = tx(s)
-						}
-						itemTrans.Set(property, ss)
+				trans := langTrans.GetTranslation(itemUUID, property)
+				if trans != nil {
+					for i, s := range trans {
+						trans[i] = tx(s)
 					}
+					langTrans.SetTranslation(itemUUID, property, trans)
 				}
 			}
 		}
