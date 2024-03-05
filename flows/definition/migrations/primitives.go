@@ -18,8 +18,8 @@ func (f Flow) Localization() Localization {
 
 type ItemTranslation map[string]any
 
-func (it ItemTranslation) Get(prop string) []string {
-	vs, exists := it[prop].([]any)
+func (it ItemTranslation) Get(property string) []string {
+	vs, exists := it[property].([]any)
 	if !exists {
 		return nil
 	}
@@ -31,19 +31,53 @@ func (it ItemTranslation) Get(prop string) []string {
 	return ss
 }
 
-func (it ItemTranslation) Set(prop string, ss []string) {
-	vs := make([]any, len(ss))
-	for i := range ss {
-		vs[i] = ss[i]
+func (it ItemTranslation) Set(property string, trans []string) {
+	vs := make([]any, len(trans))
+	for i := range trans {
+		vs[i] = trans[i]
 	}
-	it[prop] = vs
+	it[property] = vs
+}
+
+func (it ItemTranslation) Delete(property string) {
+	delete(it, property)
 }
 
 type LanguageTranslation map[string]any
 
-func (lt LanguageTranslation) GetItemTranslation(uuid uuids.UUID) ItemTranslation {
+func (lt LanguageTranslation) getItemTranslation(uuid uuids.UUID) ItemTranslation {
 	it, _ := lt[string(uuid)].(map[string]any)
 	return ItemTranslation(it)
+}
+
+func (lt LanguageTranslation) GetTranslation(uuid uuids.UUID, property string) []string {
+	it := lt.getItemTranslation(uuid)
+	if it != nil {
+		return it.Get(property)
+	}
+	return nil
+}
+
+func (lt LanguageTranslation) SetTranslation(uuid uuids.UUID, property string, trans []string) {
+	it := lt.getItemTranslation(uuid)
+	if it == nil {
+		m := map[string]any{}
+		lt[string(uuid)] = m
+		it = ItemTranslation(m)
+	}
+	it.Set(property, trans)
+}
+
+func (lt LanguageTranslation) DeleteTranslation(uuid uuids.UUID, property string) {
+	it := lt.getItemTranslation(uuid)
+	if it != nil {
+		it.Delete(property)
+
+		// if item translation is now empty, remove it completely
+		if len(it) == 0 {
+			delete(lt, string(uuid))
+		}
+	}
 }
 
 type Localization map[string]any
