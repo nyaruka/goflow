@@ -1,3 +1,9 @@
+v0.205.0 (2024-03-05)
+-------------------------
+ * Support excluding deprecated object properties from marshalling
+ * Deprecate undocumented multi-match result fields
+ * Update autocompletion docs for results extra
+
 v0.204.1 (2024-03-04)
 -------------------------
  * Update docs for @webhook
