@@ -72,7 +72,6 @@ func (c *TemplatingComponent) LocalizationUUID() uuids.UUID { return c.UUID }
 type Templating struct {
 	UUID       uuids.UUID                `json:"uuid" validate:"required,uuid4"`
 	Template   *assets.TemplateReference `json:"template" validate:"required"`
-	Variables  []string                  `json:"variables,omitempty" engine:"localized,evaluated"`
 	Components []*TemplatingComponent    `json:"components,omitempty"`
 }
 
@@ -148,29 +147,16 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
 	evaluatedParams := make(map[string][]string)
 
-	// start by localizing and evaluating either the legacy variables or per-component params
-	if len(a.Templating.Variables) > 0 {
-		localizedVariables, _ := run.GetTextArray(uuids.UUID(a.Templating.UUID), "variables", a.Templating.Variables, nil)
-
-		evaluatedVariables := make([]string, len(localizedVariables))
-		for i, variable := range localizedVariables {
+	// start by localizing and evaluating either the  per-component params
+	for _, comp := range a.Templating.Components {
+		localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
+		evaluatedCompParams := make([]string, len(localizedCompParams))
+		for i, variable := range localizedCompParams {
 			sub, _ := run.EvaluateTemplate(variable, logEvent)
-			evaluatedVariables[i] = sub
+			evaluatedCompParams[i] = sub
 		}
 
-		evaluatedParams["body"] = evaluatedVariables
-
-	} else if len(a.Templating.Components) > 0 {
-		for _, comp := range a.Templating.Components {
-			localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
-			evaluatedCompParams := make([]string, len(localizedCompParams))
-			for i, variable := range localizedCompParams {
-				sub, _ := run.EvaluateTemplate(variable, logEvent)
-				evaluatedCompParams[i] = sub
-			}
-
-			evaluatedParams[comp.Name] = evaluatedCompParams
-		}
+		evaluatedParams[comp.Name] = evaluatedCompParams
 	}
 
 	// next we cross reference with params defined in the template translation to get types

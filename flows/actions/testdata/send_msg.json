@@ -351,9 +351,15 @@
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
                     "name": "missing"
                 },
-                "variables": [
-                    "@contact.name",
-                    "boy"
+                "components": [
+                    {
+                        "uuid": "aa304c85-c14f-4f94-b97c-ec59c07a3f39",
+                        "name": "body",
+                        "params": [
+                            "@contact.name",
+                            "boy"
+                        ]
+                    }
                 ]
             }
         },
@@ -945,128 +951,6 @@
             "Yeah",
             "Nope",
             "http://templates.com/red.jpg"
-        ],
-        "inspection": {
-            "dependencies": [
-                {
-                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
-                    "name": "gender_update",
-                    "type": "template"
-                }
-            ],
-            "issues": [],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
-        "description": "Use template translation with legacy variables",
-        "action": {
-            "type": "send_msg",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "text": "Hey Ryan Lewis, your gender is saved as boy.",
-            "templating": {
-                "uuid": "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785",
-                "template": {
-                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
-                    "name": "gender_update"
-                },
-                "variables": [
-                    "@contact.name",
-                    "boy"
-                ]
-            }
-        },
-        "localization": {
-            "spa": {
-                "ad154980-7bf7-4ab8-8728-545fd6378912": {
-                    "text": [
-                        "Hola!"
-                    ],
-                    "attachments": [
-                        "http://example.com/rojo.jpg"
-                    ],
-                    "quick_replies": [
-                        "Si",
-                        "No"
-                    ]
-                },
-                "9c4bf5b5-3aa4-48ec-9bb9-424a9cbc6785": {
-                    "variables": [
-                        "@contact.name",
-                        "niño"
-                    ]
-                }
-            }
-        },
-        "events": [
-            {
-                "type": "msg_created",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "msg": {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "channel": {
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
-                    },
-                    "text": "Hola, Ryan Lewis, tu género está guardado como niño.",
-                    "quick_replies": [
-                        "",
-                        "No"
-                    ],
-                    "templating": {
-                        "template": {
-                            "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
-                            "name": "gender_update"
-                        },
-                        "params": {
-                            "body": [
-                                {
-                                    "type": "text",
-                                    "value": "Ryan Lewis"
-                                },
-                                {
-                                    "type": "text",
-                                    "value": "niño"
-                                }
-                            ],
-                            "button.0": [
-                                {
-                                    "type": "text",
-                                    "value": ""
-                                }
-                            ],
-                            "header": [
-                                {
-                                    "type": "image",
-                                    "value": ""
-                                }
-                            ]
-                        },
-                        "namespace": ""
-                    },
-                    "locale": "spa"
-                }
-            }
-        ],
-        "templates": [
-            "Hey Ryan Lewis, your gender is saved as boy.",
-            "Hola!",
-            "http://example.com/rojo.jpg",
-            "Si",
-            "No",
-            "@contact.name",
-            "boy",
-            "@contact.name",
-            "niño"
-        ],
-        "localizables": [
-            "Hey Ryan Lewis, your gender is saved as boy.",
-            "@contact.name",
-            "boy"
         ],
         "inspection": {
             "dependencies": [

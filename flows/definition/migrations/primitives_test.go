@@ -118,6 +118,7 @@ func TestLocalizationPrimitives(t *testing.T) {
 
 	spa.DeleteTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "text")
 	spa.DeleteTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "empty")
+	spa.DeleteTranslation("8eebd020-1af5-431c-b943-aa670fc74da9", "foo") // doesn't exist
 	spa.DeleteTranslation("6f865930-e783-4fde-8e28-34b93b3a17c6", "text")
 
 	test.AssertEqualJSON(t, []byte(`{
