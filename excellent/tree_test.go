@@ -60,6 +60,16 @@ func TestParseTrees(t *testing.T) {
 				Params: []Expression{&TextLiteral{Value: types.NewXText("abc")}},
 			},
 		},
+		{
+			expression: `child.run.status`,
+			parsed: &DotLookup{
+				Container: &DotLookup{
+					Container: &ContextReference{Name: "child"},
+					Lookup:    "run",
+				},
+				Lookup: "status",
+			},
+		},
 	}
 
 	for _, tc := range tcs {

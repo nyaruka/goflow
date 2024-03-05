@@ -3,7 +3,7 @@ package migrations
 import (
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/excellent/tools"
+	"github.com/nyaruka/goflow/excellent/refactor"
 )
 
 func init() {
@@ -64,7 +64,7 @@ func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
 		// some optimizations here...
 		//   1. we can parse templates as if @(...) and @webhook are only valid top-levels
 		//   2. we can treat adding .json as a lookup to webhook as a simple renaming of webhook to webhook.json
-		refactored, _ := tools.RefactorTemplate(s, []string{"webhook"}, tools.ContextRefRename("webhook", "webhook.json"))
+		refactored, _ := refactor.Template(s, []string{"webhook"}, refactor.ContextRefRename("webhook", "webhook.json"))
 		return refactored
 	})
 	return f, nil

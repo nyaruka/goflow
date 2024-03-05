@@ -1,4 +1,4 @@
-package tools
+package refactor
 
 import (
 	"strings"
@@ -6,8 +6,8 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 )
 
-// RefactorTemplate refactors the passed in template
-func RefactorTemplate(template string, allowedTopLevels []string, tx func(excellent.Expression) bool) (string, error) {
+// Template refactors the passed in template
+func Template(template string, allowedTopLevels []string, tx func(excellent.Expression) bool) (string, error) {
 	buf := &strings.Builder{}
 
 	err := excellent.VisitTemplate(template, allowedTopLevels, false, func(tokenType excellent.XTokenType, token string) error {
@@ -15,7 +15,7 @@ func RefactorTemplate(template string, allowedTopLevels []string, tx func(excell
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER, excellent.EXPRESSION:
-			refactored, err := refactorExpression(token, tx)
+			refactored, err := expression(token, tx)
 
 			// if we got an error, return that, and rewrite original expression
 			if err != nil {
@@ -32,8 +32,8 @@ func RefactorTemplate(template string, allowedTopLevels []string, tx func(excell
 	return buf.String(), err
 }
 
-// RefactorTemplate refactors the passed in template
-func refactorExpression(expression string, tx func(excellent.Expression) bool) (string, error) {
+// refactors the passed in expression by applying a transformation function
+func expression(expression string, tx func(excellent.Expression) bool) (string, error) {
 	parsed, err := excellent.Parse(expression, nil)
 	if err != nil {
 		return "", err
@@ -53,18 +53,4 @@ func wrapExpression(tokenType excellent.XTokenType, token string) string {
 		return "@" + token
 	}
 	return "@(" + token + ")"
-}
-
-// ContextRefRename returns a transformation function that renames context references
-func ContextRefRename(from, to string) func(excellent.Expression) bool {
-	return func(exp excellent.Expression) bool {
-		changed := false
-		exp.Visit(func(e excellent.Expression) {
-			if ref, ok := e.(*excellent.ContextReference); ok && strings.EqualFold(ref.Name, from) {
-				ref.Name = to
-				changed = true
-			}
-		})
-		return changed
-	}
 }
