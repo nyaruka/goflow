@@ -26,10 +26,12 @@ const serializeDefaultAs = "__default__"
 type XObject struct {
 	baseValue
 
-	def            XValue
-	props          map[string]XValue
-	source         func() map[string]XValue
-	marshalDefault bool
+	def    XValue
+	props  map[string]XValue
+	source func() map[string]XValue
+
+	marshalDefault    bool
+	marshalDeprecated bool
 }
 
 // NewXObject returns a new object with the given properties
@@ -41,6 +43,9 @@ func NewXObject(properties map[string]XValue) *XObject {
 func NewXLazyObject(source func() map[string]XValue) *XObject {
 	return &XObject{
 		source: source,
+
+		marshalDefault:    false,
+		marshalDeprecated: true,
 	}
 }
 
@@ -94,9 +99,11 @@ func (x *XObject) Format(env envs.Environment) string {
 func (x *XObject) MarshalJSON() ([]byte, error) {
 	marshaled := make(map[string]json.RawMessage, x.Count())
 	for p, v := range x.properties() {
-		asJSON, err := ToXJSON(v)
-		if err == nil {
-			marshaled[p] = json.RawMessage(asJSON.Native())
+		if IsNil(v) || x.marshalDeprecated || v.Deprecated() == "" {
+			asJSON, err := ToXJSON(v)
+			if err == nil {
+				marshaled[p] = json.RawMessage(asJSON.Native())
+			}
 		}
 	}
 
@@ -205,8 +212,9 @@ func (x *XObject) Default() XValue {
 	return x.def
 }
 
-func (x *XObject) SetMarshalDefault(marshal bool) {
-	x.marshalDefault = marshal
+func (x *XObject) SetMarshalOptions(includeDefault, includeDeprecated bool) {
+	x.marshalDefault = includeDefault
+	x.marshalDeprecated = includeDeprecated
 }
 
 // Default returns the default value for this
