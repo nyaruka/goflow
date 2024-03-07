@@ -180,7 +180,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	previewText := preview["body"]
 	var previewQRs []string
 	for _, key := range utils.SortedKeys(preview) {
-		if strings.HasPrefix(key, "button.") {
+		if strings.HasPrefix(key, "buttons.") {
 			previewQRs = append(previewQRs, preview[key])
 		}
 	}

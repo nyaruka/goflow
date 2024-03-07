@@ -826,14 +826,14 @@
                     },
                     {
                         "uuid": "5fb16175-4aef-4ee3-ae59-53cd55452bd8",
-                        "name": "button.0",
+                        "name": "buttons.0",
                         "params": [
                             "Yeah"
                         ]
                     },
                     {
                         "uuid": "1be525d9-7bbd-478e-8922-38a75ad95c36",
-                        "name": "button.1",
+                        "name": "buttons.1",
                         "params": [
                             "Nope"
                         ]
@@ -901,7 +901,7 @@
                                     "value": "niño"
                                 }
                             ],
-                            "button.0": [
+                            "buttons.0": [
                                 {
                                     "type": "text",
                                     "value": "Sip"

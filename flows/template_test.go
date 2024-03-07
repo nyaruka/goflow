@@ -66,11 +66,11 @@ func TestTemplatePreview(t *testing.T) {
 			Content_: "Hello {{1}}, {{2}}",
 			Params_:  []*static.TemplateParam{{Type_: "text"}},
 		},
-		"button.0": {
+		"buttons.0": {
 			Content_: "Yes",
 			Params_:  []*static.TemplateParam{},
 		},
-		"button.1": {
+		"buttons.1": {
 			Content_: "No {{1}}",
 			Params_:  []*static.TemplateParam{{Type_: "text"}},
 		},
@@ -85,26 +85,26 @@ func TestTemplatePreview(t *testing.T) {
 	}{
 		{
 			map[string][]flows.TemplateParam{}, // no params
-			map[string]string{"body": "Hello , ", "button.0": "Yes", "button.1": "No "},
+			map[string]string{"body": "Hello , ", "buttons.0": "Yes", "buttons.1": "No "},
 		},
 		{
 			map[string][]flows.TemplateParam{
 				"body": {{Type: "text", Value: "Bob"}}, // missing 1 param for body
 			},
-			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
+			map[string]string{"body": "Hello Bob, ", "buttons.0": "Yes", "buttons.1": "No "},
 		},
 		{
 			map[string][]flows.TemplateParam{
 				"body": {{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
 			},
-			map[string]string{"body": "Hello Bob, how are you?", "button.0": "Yes", "button.1": "No "},
+			map[string]string{"body": "Hello Bob, how are you?", "buttons.0": "Yes", "buttons.1": "No "},
 		},
 		{
 			map[string][]flows.TemplateParam{
 				"body":   {{Type: "text", Value: "Bob"}},
 				"header": {{Type: "text", Value: "Hi"}}, // extra component ignored
 			},
-			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
+			map[string]string{"body": "Hello Bob, ", "buttons.0": "Yes", "buttons.1": "No "},
 		},
 	}
 
