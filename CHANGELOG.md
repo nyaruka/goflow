@@ -1,3 +1,9 @@
+v0.206.2 (2024-03-14)
+-------------------------
+ * Update to go 1.22
+ * Mark @child.run.status as deprecated in context
+ * Reorg of expression refactoring code into its own package
+
 v0.206.1 (2024-03-05)
 -------------------------
  * Remove no longer used uuid property from msg.templating
