@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
 	"name": "GoFlow",
-	"image": "mcr.microsoft.com/devcontainers/go:1-1.21-bullseye",
+	"image": "mcr.microsoft.com/devcontainers/go:1-1.22-bullseye",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/pandoc:1": {
 			"version": "latest"
