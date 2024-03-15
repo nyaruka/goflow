@@ -1,3 +1,7 @@
+v0.206.3 (2024-03-15)
+-------------------------
+ * Truncate quick replies for template preview messages
+
 v0.206.2 (2024-03-14)
 -------------------------
  * Update to go 1.22
