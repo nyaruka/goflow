@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -181,7 +182,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	var previewQRs []string
 	for _, key := range utils.SortedKeys(preview) {
 		if strings.HasPrefix(key, "button.") {
-			previewQRs = append(previewQRs, preview[key])
+			previewQRs = append(previewQRs, stringsx.TruncateEllipsis(preview[key], maxQuickReplyLength))
 		}
 	}
 
