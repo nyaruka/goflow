@@ -48,7 +48,9 @@ type TemplateParam interface {
 }
 
 type TemplateComponent interface {
+	Type() string
 	Content() string
+	Display() string
 	Params() []TemplateParam
 }
 

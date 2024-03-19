@@ -15,13 +15,22 @@ func TestTemplate(t *testing.T) {
 	tp1 := NewTemplateParam("text")
 	assert.Equal(t, "text", tp1.Type())
 
-	tc1 := NewTemplateComponent("Hello {{1}}", []*TemplateParam{&tp1})
+	tc1 := NewTemplateComponent("body", "Hello {{1}}", "", []*TemplateParam{tp1})
+	tc2 := NewTemplateComponent("button/url", "http://google.com?q={{1}}", "Go {{1}", []*TemplateParam{NewTemplateParam("text"), NewTemplateParam("text")})
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string]*TemplateComponent{"body": tc1})
+	assert.Equal(t, "body", tc1.Type())
+	assert.Equal(t, "Hello {{1}}", tc1.Content())
+	assert.Equal(t, "", tc1.Display())
+	assert.Equal(t, []assets.TemplateParam{tp1}, tc1.Params())
+
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string]*TemplateComponent{"body": tc1, "button.0": tc2})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
-	assert.Equal(t, map[string]assets.TemplateComponent{"body": (assets.TemplateComponent)(tc1)}, translation.Components())
+	assert.Equal(t, map[string]assets.TemplateComponent{
+		"body":     (assets.TemplateComponent)(tc1),
+		"button.0": (assets.TemplateComponent)(tc2),
+	}, translation.Components())
 
 	template := NewTemplate(assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), "hello", []*TemplateTranslation{translation})
 	assert.Equal(t, assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), template.UUID())
