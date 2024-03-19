@@ -1,3 +1,7 @@
+v0.206.4 (2024-03-19)
+-------------------------
+ * Add type and display fields to temmplate components
+
 v0.206.3 (2024-03-15)
 -------------------------
  * Truncate quick replies for template preview messages
