@@ -73,12 +73,20 @@ func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Channel_ }
 
 type TemplateComponent struct {
+	Type_    string           `json:"type"`
 	Content_ string           `json:"content"`
+	Display_ string           `json:"display"`
 	Params_  []*TemplateParam `json:"params"`
 }
 
+// Type returns the type for this template component
+func (t *TemplateComponent) Type() string { return t.Type_ }
+
 // Content returns the content for this template component
 func (t *TemplateComponent) Content() string { return t.Content_ }
+
+// Display returns the display for this template component
+func (t *TemplateComponent) Display() string { return t.Display_ }
 
 // Params returns the params for this template component
 func (t *TemplateComponent) Params() []assets.TemplateParam {
@@ -90,8 +98,8 @@ func (t *TemplateComponent) Params() []assets.TemplateParam {
 }
 
 // NewTemplateComponent creates a new template param
-func NewTemplateComponent(content string, params []*TemplateParam) *TemplateComponent {
-	return &TemplateComponent{Content_: content, Params_: params}
+func NewTemplateComponent(type_, content, display string, params []*TemplateParam) *TemplateComponent {
+	return &TemplateComponent{Type_: type_, Content_: content, Display_: display, Params_: params}
 }
 
 // TemplateParam represents a single parameter for a template translation
@@ -103,6 +111,6 @@ type TemplateParam struct {
 func (t *TemplateParam) Type() string { return t.Type_ }
 
 // NewTemplateParam creates a new template param
-func NewTemplateParam(paramType string) TemplateParam {
-	return TemplateParam{Type_: paramType}
+func NewTemplateParam(paramType string) *TemplateParam {
+	return &TemplateParam{Type_: paramType}
 }
