@@ -67,20 +67,20 @@ var templateRegex = regexp.MustCompile(`({{\d+}})`)
 func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]string {
 	preview := make(map[string]string, len(t.Components()))
 
-	for key, comp := range t.Components() {
+	buttonIndex := -1
+	for ic, comp := range t.Components() {
 		content := comp.Content()
+		compType := comp.Type()
 
-		buttonIndex := -1
-		for _, cp := range templating.Components() {
+		key := compType
+		if strings.HasPrefix(compType, "button/") {
+			buttonIndex += 1
+			key = fmt.Sprintf("button.%d", buttonIndex)
+		}
 
-			if strings.HasPrefix(cp.Type, "button") {
-				buttonIndex += 1
-			}
-
-			if cp.Type == key || key == fmt.Sprintf("button.%d", buttonIndex) {
-				for i, p := range cp.Params {
-					content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
-				}
+		if ic < len(templating.Components()) {
+			for i, p := range templating.Components()[ic].Params {
+				content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
 			}
 		}
 

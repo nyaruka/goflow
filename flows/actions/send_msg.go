@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"sort"
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-	"golang.org/x/exp/maps"
 )
 
 func init() {
@@ -157,41 +156,36 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		evaluatedParams[comp.Name] = evaluatedCompParams
 	}
 
+	// next we cross reference with params defined in the template translation to get types
+	components := make([]flows.TemplateComponent, 0)
 	oldParams := make(map[string][]flows.TemplateParam, len(translation.Components()))
 
-	for key, comp := range translation.Components() {
+	translationComponents := translation.Components()
+
+	buttonIndex := -1
+	for _, comp := range translationComponents {
 		compParams := comp.Params()
+		compType := comp.Type()
+
+		key := compType
+		if strings.HasPrefix(compType, "button/") {
+			buttonIndex += 1
+			key = fmt.Sprintf("button.%d", buttonIndex)
+		}
+
 		if len(compParams) > 0 {
 			oldParams[key] = make([]flows.TemplateParam, len(compParams))
 		}
 
-		for i, tp := range compParams {
-			if i < len(evaluatedParams[key]) {
-				oldParams[key][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
-			} else {
-				oldParams[key][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
-			}
-		}
-	}
-
-	// next we cross reference with params defined in the template translation to get types
-	components := make([]flows.TemplateComponent, 0)
-
-	translationComponents := translation.Components()
-
-	compKeys := maps.Keys(translationComponents)
-	sort.Strings(compKeys)
-
-	for _, key := range compKeys {
-		comp := translationComponents[key]
-		compParams := comp.Params()
 		params := make([]flows.TemplateParam, len(compParams))
 
 		for i, tp := range compParams {
 			if i < len(evaluatedParams[key]) {
 				params[i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
+				oldParams[key][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
 			} else {
 				params[i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
+				oldParams[key][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
 			}
 		}
 		if len(params) > 0 {

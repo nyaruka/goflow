@@ -257,8 +257,8 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "components": {
-                        "body": {
+                    "components": [
+                        {
                             "content": "Hi {{1}}, who's an excellent {{2}}?",
                             "type": "body",
                             "params": [
@@ -270,7 +270,7 @@
                                 }
                             ]
                         }
-                    }
+                    ]
                 },
                 {
                     "channel": {
@@ -278,8 +278,8 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "components": {
-                        "body": {
+                    "components": [
+                        {
                             "content": "Hola {{1}}, quien es un {{2}} excelente?",
                             "type": "body",
                             "params": [
@@ -291,7 +291,7 @@
                                 }
                             ]
                         }
-                    }
+                    ]
                 }
             ]
         },
@@ -305,13 +305,13 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng",
-                    "components": {
-                        "body": {
+                    "components": [
+                        {
                             "content": "Hi there, it's time to get up!",
                             "type": "body",
                             "params": []
                         }
-                    }
+                    ]
                 }
             ]
         },
@@ -325,8 +325,8 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "components": {
-                        "header": {
+                    "components": [
+                        {
                             "content": "",
                             "type": "header",
                             "params": [
@@ -335,7 +335,7 @@
                                 }
                             ]
                         },
-                        "body": {
+                        {
                             "content": "Hey {{1}}, your gender is saved as {{2}}.",
                             "type": "body",
                             "params": [
@@ -347,7 +347,7 @@
                                 }
                             ]
                         },
-                        "button.0": {
+                        {
                             "content": "{{1}}",
                             "type": "button/quick_reply",
                             "params": [
@@ -356,7 +356,7 @@
                                 }
                             ]
                         }
-                    }
+                    ]
                 },
                 {
                     "channel": {
@@ -364,8 +364,17 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "components": {
-                        "body": {
+                    "components": [
+                        {
+                            "content": "",
+                            "type": "header",
+                            "params": [
+                                {
+                                    "type": "image"
+                                }
+                            ]
+                        },
+                        {
                             "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
                             "type": "body",
                             "params": [
@@ -377,16 +386,7 @@
                                 }
                             ]
                         },
-                        "header": {
-                            "content": "",
-                            "type": "header",
-                            "params": [
-                                {
-                                    "type": "image"
-                                }
-                            ]
-                        },
-                        "button.0": {
+                        {
                             "content": "{{1}}",
                             "type": "button/quick_reply",
                             "params": [
@@ -395,12 +395,12 @@
                                 }
                             ]
                         },
-                        "button.1": {
+                        {
                             "content": "No",
                             "type": "button/quick_reply",
                             "params": []
                         }
-                    }
+                    ]
                 }
             ]
         }

@@ -38,14 +38,14 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	Channel_    *assets.ChannelReference      `json:"channel"         validate:"required"`
-	Locale_     i18n.Locale                   `json:"locale"          validate:"required"`
-	Namespace_  string                        `json:"namespace"`
-	Components_ map[string]*TemplateComponent `json:"components"`
+	Channel_    *assets.ChannelReference `json:"channel"         validate:"required"`
+	Locale_     i18n.Locale              `json:"locale"          validate:"required"`
+	Namespace_  string                   `json:"namespace"`
+	Components_ []*TemplateComponent     `json:"components"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components map[string]*TemplateComponent) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:    channel,
 		Namespace_:  namespace,
@@ -55,8 +55,8 @@ func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale
 }
 
 // Components returns the components structure for this template
-func (t *TemplateTranslation) Components() map[string]assets.TemplateComponent {
-	tcs := make(map[string]assets.TemplateComponent, len(t.Components_))
+func (t *TemplateTranslation) Components() []assets.TemplateComponent {
+	tcs := make([]assets.TemplateComponent, len(t.Components_))
 	for k, tc := range t.Components_ {
 		tcs[k] = tc
 	}

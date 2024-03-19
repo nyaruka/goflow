@@ -23,13 +23,13 @@ func TestTemplate(t *testing.T) {
 	assert.Equal(t, "", tc1.Display())
 	assert.Equal(t, []assets.TemplateParam{tp1}, tc1.Params())
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", map[string]*TemplateComponent{"body": tc1, "button.0": tc2})
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*TemplateComponent{tc1, tc2})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
-	assert.Equal(t, map[string]assets.TemplateComponent{
-		"body":     (assets.TemplateComponent)(tc1),
-		"button.0": (assets.TemplateComponent)(tc2),
+	assert.Equal(t, []assets.TemplateComponent{
+		(assets.TemplateComponent)(tc1),
+		(assets.TemplateComponent)(tc2),
 	}, translation.Components())
 
 	template := NewTemplate(assets.TemplateUUID("8a9c1f73-5059-46a0-ba4a-6390979c01d3"), "hello", []*TemplateTranslation{translation})
