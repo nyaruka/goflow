@@ -174,21 +174,21 @@ type TemplateParam struct {
 }
 
 type TemplateComponent struct {
-	Name   string          `json:"name"`
 	Type   string          `json:"type"`
 	Params []TemplateParam `json:"params"`
 }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_   *assets.TemplateReference `json:"template"`
-	Components_ []TemplateComponent       `json:"components,omitempty"`
-	Namespace_  string                    `json:"namespace"`
+	Template_   *assets.TemplateReference  `json:"template"`
+	Params_     map[string][]TemplateParam `json:"params,omitempty"`
+	Components_ []TemplateComponent        `json:"components,omitempty"`
+	Namespace_  string                     `json:"namespace"`
 }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, components []TemplateComponent, namespace string) *MsgTemplating {
-	return &MsgTemplating{Template_: template, Namespace_: namespace, Components_: components}
+func NewMsgTemplating(template *assets.TemplateReference, params map[string][]TemplateParam, components []TemplateComponent, namespace string) *MsgTemplating {
+	return &MsgTemplating{Template_: template, Namespace_: namespace, Components_: components, Params_: params}
 }
 
 // Template returns the template this msg template is for
@@ -199,6 +199,9 @@ func (t *MsgTemplating) Namespace() string { return t.Namespace_ }
 
 // Components returns the components that should be used for the templates
 func (t *MsgTemplating) Components() []TemplateComponent { return t.Components_ }
+
+// Params returns the params that should be used for the template
+func (t *MsgTemplating) Params() map[string][]TemplateParam { return t.Params_ }
 
 // BroadcastTranslation is the broadcast content in a particular language
 type BroadcastTranslation struct {

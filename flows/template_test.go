@@ -92,34 +92,35 @@ func TestTemplatePreview(t *testing.T) {
 		},
 		{
 			[]flows.TemplateComponent{{
-				Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}, // missing 1 param for body
+				Type: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}, // missing 1 param for body
 			}},
 			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
 		},
 		{
 			[]flows.TemplateComponent{{
-				Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
+				Type: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
 			}},
 			map[string]string{"body": "Hello Bob, how are you?", "button.0": "Yes", "button.1": "No "},
 		},
 		{
 			[]flows.TemplateComponent{
-				{Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}},
-				{Type: "header", Name: "header", Params: []flows.TemplateParam{{Type: "text", Value: "Hi"}}},
+				{Type: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}},
+				{Type: "header", Params: []flows.TemplateParam{{Type: "text", Value: "Hi"}}},
 			}, // extra component ignored
 			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
 		},
 		{
 			[]flows.TemplateComponent{
-				{Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}},
-				{Type: "button/quick_reply", Name: "button.1", Params: []flows.TemplateParam{{Type: "text", Value: "code002"}}},
+				{Type: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Bob"}}},
+				{Type: "button/quick_reply", Params: []flows.TemplateParam{}},
+				{Type: "button/quick_reply", Params: []flows.TemplateParam{{Type: "text", Value: "code002"}}},
 			},
 			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No code002"},
 		},
 	}
 
 	for _, tc := range tcs {
-		templating := flows.NewMsgTemplating(template.Reference(), tc.components, "")
+		templating := flows.NewMsgTemplating(template.Reference(), map[string][]flows.TemplateParam{}, tc.components, "")
 
 		assert.Equal(t, tc.expected, translation.Preview(templating))
 	}
