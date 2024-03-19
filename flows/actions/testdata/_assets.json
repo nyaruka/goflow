@@ -260,6 +260,7 @@
                     "components": {
                         "body": {
                             "content": "Hi {{1}}, who's an excellent {{2}}?",
+                            "type": "body",
                             "params": [
                                 {
                                     "type": "text"
@@ -280,6 +281,7 @@
                     "components": {
                         "body": {
                             "content": "Hola {{1}}, quien es un {{2}} excelente?",
+                            "type": "body",
                             "params": [
                                 {
                                     "type": "text"
@@ -306,6 +308,7 @@
                     "components": {
                         "body": {
                             "content": "Hi there, it's time to get up!",
+                            "type": "body",
                             "params": []
                         }
                     }
@@ -325,6 +328,7 @@
                     "components": {
                         "header": {
                             "content": "",
+                            "type": "header",
                             "params": [
                                 {
                                     "type": "image"
@@ -333,6 +337,7 @@
                         },
                         "body": {
                             "content": "Hey {{1}}, your gender is saved as {{2}}.",
+                            "type": "body",
                             "params": [
                                 {
                                     "type": "text"
@@ -344,6 +349,7 @@
                         },
                         "button.0": {
                             "content": "{{1}}",
+                            "type": "button/quick_reply",
                             "params": [
                                 {
                                     "type": "text"
@@ -361,6 +367,7 @@
                     "components": {
                         "body": {
                             "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
+                            "type": "body",
                             "params": [
                                 {
                                     "type": "text"
@@ -372,6 +379,7 @@
                         },
                         "header": {
                             "content": "",
+                            "type": "header",
                             "params": [
                                 {
                                     "type": "image"
@@ -380,6 +388,7 @@
                         },
                         "button.0": {
                             "content": "{{1}}",
+                            "type": "button/quick_reply",
                             "params": [
                                 {
                                     "type": "text"
@@ -388,6 +397,7 @@
                         },
                         "button.1": {
                             "content": "No",
+                            "type": "button/quick_reply",
                             "params": []
                         }
                     }

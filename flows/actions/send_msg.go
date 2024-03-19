@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"sort"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -11,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"golang.org/x/exp/maps"
 )
 
 func init() {
@@ -156,25 +158,33 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// next we cross reference with params defined in the template translation to get types
-	params := make(map[string][]flows.TemplateParam, len(translation.Components()))
+	components := make([]flows.TemplateComponent, 0)
 
-	for key, comp := range translation.Components() {
+	translationComponents := translation.Components()
+
+	compKeys := maps.Keys(translationComponents)
+	sort.Strings(compKeys)
+
+	for _, key := range compKeys {
+		comp := translationComponents[key]
 		compParams := comp.Params()
-		if len(compParams) > 0 {
-			params[key] = make([]flows.TemplateParam, len(compParams))
-		}
+		params := make([]flows.TemplateParam, len(compParams))
 
 		for i, tp := range compParams {
 			if i < len(evaluatedParams[key]) {
-				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
+				params[i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
 			} else {
-				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
+				params[i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
 			}
 		}
+		if len(params) > 0 {
+			components = append(components, flows.TemplateComponent{Type: comp.Type(), Name: key, Params: params})
+		}
+
 	}
 
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
+	templating := flows.NewMsgTemplating(a.Templating.Template, components, translation.Namespace())
 
 	// extract content for preview message
 	preview := translation.Preview(templating)

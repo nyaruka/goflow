@@ -163,11 +163,11 @@ func TestMsgTemplating(t *testing.T) {
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(templateRef, map[string][]flows.TemplateParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
+	msgTemplating := flows.NewMsgTemplating(templateRef, []flows.TemplateComponent{{Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
 
 	assert.Equal(t, templateRef, msgTemplating.Template())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
-	assert.Equal(t, map[string][]flows.TemplateParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, msgTemplating.Params())
+	assert.Equal(t, []flows.TemplateComponent{{Type: "body", Name: "body", Params: []flows.TemplateParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, msgTemplating.Components())
 
 	// test marshaling our msg
 	marshaled, err := jsonx.Marshal(msgTemplating)
@@ -175,8 +175,10 @@ func TestMsgTemplating(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(`{
 		"namespace":"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
-		"params":{
-		  "body":[
+		"components":[{
+		  "type": "body",
+		  "name": "body",
+		  "params":[
 			{
 				"type": "text",
 				"value": "Ryan Lewis"
@@ -186,7 +188,7 @@ func TestMsgTemplating(t *testing.T) {
 				"value": "boy"
 			}
 		  ]
-		},
+		}],
 		"template":{
 		  "name":"Affirmation",
 		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"

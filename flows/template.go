@@ -70,8 +70,13 @@ func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]stri
 	for key, comp := range t.Components() {
 		content := comp.Content()
 
-		for i, p := range templating.Params()[key] {
-			content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
+		for _, cp := range templating.Components() {
+			if key == cp.Name {
+				for i, p := range cp.Params {
+					content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
+				}
+			}
+
 		}
 
 		// replace any remaining unmatched items with empty string
