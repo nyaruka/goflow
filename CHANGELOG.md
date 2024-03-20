@@ -1,3 +1,7 @@
+v0.207.1 (2024-03-20)
+-------------------------
+ * Drop support for variables in display parts of template components
+
 v0.207.0 (2024-03-20)
 -------------------------
  * Rework template components... again
