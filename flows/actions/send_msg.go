@@ -156,7 +156,6 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 	// next we cross reference with params defined in the template translation to get types
 	components := make([]*flows.TemplatingComponent, 0, len(translation.Components()))
-	legacy := make(map[string][]flows.TemplatingParam, len(translation.Components())) // TODO deprecated
 
 	// the message we return is an approximate preview of what the channel will send using the template
 	var previewParts []string
@@ -187,14 +186,13 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 		if len(params) > 0 {
 			components = append(components, compTemplating)
-			legacy[comp.Name()] = params
 		}
 	}
 
 	previewText := strings.Join(previewParts, "\n\n")
 
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, legacy, components, translation.Namespace())
+	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components)
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }
