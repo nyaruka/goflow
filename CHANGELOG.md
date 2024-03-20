@@ -1,3 +1,7 @@
+v0.207.3 (2024-03-20)
+-------------------------
+ * Remove no longer used templating.params
+
 v0.207.2 (2024-03-20)
 -------------------------
  * Include component name on templating
