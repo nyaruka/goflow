@@ -73,9 +73,9 @@ func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Channel_ }
 
 type TemplateComponent struct {
+	Type_    string           `json:"type"`
 	Content_ string           `json:"content"`
 	Display_ string           `json:"display"`
-	Type_    string           `json:"type"`
 	Params_  []*TemplateParam `json:"params"`
 }
 
