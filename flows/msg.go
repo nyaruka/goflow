@@ -177,6 +177,7 @@ type TemplatingParam struct {
 
 type TemplatingComponent struct {
 	Type   string            `json:"type"`
+	Name   string            `json:"name"`
 	Params []TemplatingParam `json:"params"`
 }
 
