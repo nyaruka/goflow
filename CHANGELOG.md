@@ -1,3 +1,7 @@
+v0.207.2 (2024-03-20)
+-------------------------
+ * Include component name on templating
+
 v0.207.1 (2024-03-20)
 -------------------------
  * Drop support for variables in display parts of template components
