@@ -175,6 +175,10 @@ func TestMsgTemplating(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
+		"template":{
+		  "name":"Affirmation",
+		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
+		},
 		"namespace":"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
 		"params": {
 			"body": [
@@ -188,68 +192,59 @@ func TestMsgTemplating(t *testing.T) {
 				}
 			]
 		},
-		"components":[{
-		  "type": "body",
-		  "params":[
+		"components":[
 			{
-				"type": "text",
-				"value": "Ryan Lewis"
-			},
-			{
-				"type": "text",
-				"value": "boy"
+				"type": "body",
+				"params":[
+					{
+						"type": "text",
+						"value": "Ryan Lewis"
+					},
+					{
+						"type": "text",
+						"value": "boy"
+					}
+				]
 			}
-		  ]
-		}],
-		"template":{
-		  "name":"Affirmation",
-		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
-		}
+		]
 	  }`), marshaled, "JSON mismatch")
 }
 
 func TestTemplatingComponentPreview(t *testing.T) {
 	tcs := []struct {
-		templating      *flows.TemplatingComponent
-		component       assets.TemplateComponent
-		expectedContent string
-		expectedDisplay string
+		templating *flows.TemplatingComponent
+		component  assets.TemplateComponent
+		expected   string
 	}{
 		{ // 0: no params
-			component:       static.NewTemplateComponent("body", "body", "Hello", "", []*static.TemplateParam{}),
-			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{}},
-			expectedContent: "Hello",
-			expectedDisplay: "",
+			component:  static.NewTemplateComponent("body", "body", "Hello", "", []*static.TemplateParam{}),
+			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{}},
+			expected:   "Hello",
 		},
 		{ // 1: two params on component and two params in templating
-			component:       static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
-			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}, {Type: "text", Value: "Bob"}}},
-			expectedContent: "Hello Dr Bob",
-			expectedDisplay: "",
+			component:  static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
+			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}, {Type: "text", Value: "Bob"}}},
+			expected:   "Hello Dr Bob",
 		},
 		{ // 2: one less param in templating than on component
-			component:       static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
-			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}}},
-			expectedContent: "Hello Dr ",
-			expectedDisplay: "",
+			component:  static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
+			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}}},
+			expected:   "Hello Dr ",
 		},
 		{ // 3
-			component:       static.NewTemplateComponent("button/quick_reply", "button.0", "{{1}}", "", []*static.TemplateParam{{Type_: "text"}}),
-			templating:      &flows.TemplatingComponent{Type: "button/quick_reply", Params: []flows.TemplatingParam{{Type: "text", Value: "Yes"}}},
-			expectedContent: "Yes",
-			expectedDisplay: "",
+			component:  static.NewTemplateComponent("button/quick_reply", "button.0", "{{1}}", "", []*static.TemplateParam{{Type_: "text"}}),
+			templating: &flows.TemplatingComponent{Type: "button/quick_reply", Params: []flows.TemplatingParam{{Type: "text", Value: "Yes"}}},
+			expected:   "Yes",
 		},
 		{ // 4: one param for content, one for display
-			component:       static.NewTemplateComponent("button/url", "button.0", "example.com?p={{1}}", "{{1}}", []*static.TemplateParam{{Type_: "text"}}),
-			templating:      &flows.TemplatingComponent{Type: "button/url", Params: []flows.TemplatingParam{{Type: "text", Value: "123"}, {Type: "text", Value: "Go"}}},
-			expectedContent: "example.com?p=123",
-			expectedDisplay: "Go",
+			component:  static.NewTemplateComponent("button/url", "button.0", "example.com?p={{1}}", "{{1}}", []*static.TemplateParam{{Type_: "text"}}),
+			templating: &flows.TemplatingComponent{Type: "button/url", Params: []flows.TemplatingParam{{Type: "text", Value: "123"}, {Type: "text", Value: "Go"}}},
+			expected:   "example.com?p=123",
 		},
 	}
 
 	for i, tc := range tcs {
-		actualContent, actualDisplay := tc.templating.Preview(tc.component)
-		assert.Equal(t, tc.expectedContent, actualContent, "content mismatch in test %d", i)
-		assert.Equal(t, tc.expectedDisplay, actualDisplay, "display mismatch in test %d", i)
+		actualContent := tc.templating.Preview(tc.component)
+		assert.Equal(t, tc.expected, actualContent, "content mismatch in test %d", i)
 	}
 }

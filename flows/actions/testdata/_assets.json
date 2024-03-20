@@ -259,9 +259,9 @@
                     "locale": "eng-US",
                     "components": [
                         {
-                            "content": "Hi {{1}}, who's an excellent {{2}}?",
                             "type": "body",
                             "name": "body",
+                            "content": "Hi {{1}}, who's an excellent {{2}}?",
                             "params": [
                                 {
                                     "type": "text"
@@ -281,9 +281,9 @@
                     "locale": "spa",
                     "components": [
                         {
-                            "content": "Hola {{1}}, quien es un {{2}} excelente?",
                             "type": "body",
                             "name": "body",
+                            "content": "Hola {{1}}, quien es un {{2}} excelente?",
                             "params": [
                                 {
                                     "type": "text"
@@ -309,9 +309,9 @@
                     "locale": "eng",
                     "components": [
                         {
-                            "content": "Hi there, it's time to get up!",
                             "type": "body",
                             "name": "body",
+                            "content": "Hi there, it's time to get up!",
                             "params": []
                         }
                     ]
@@ -330,9 +330,9 @@
                     "locale": "eng-US",
                     "components": [
                         {
-                            "content": "",
                             "type": "header",
                             "name": "header",
+                            "content": "",
                             "params": [
                                 {
                                     "type": "image"
@@ -340,9 +340,9 @@
                             ]
                         },
                         {
-                            "content": "Hey {{1}}, your gender is saved as {{2}}.",
                             "type": "body",
                             "name": "body",
+                            "content": "Hey {{1}}, your gender is saved as {{2}}.",
                             "params": [
                                 {
                                     "type": "text"
@@ -353,9 +353,9 @@
                             ]
                         },
                         {
-                            "content": "{{1}}",
                             "type": "button/quick_reply",
                             "name": "button.1",
+                            "content": "{{1}}",
                             "params": [
                                 {
                                     "type": "text"
@@ -372,9 +372,9 @@
                     "locale": "spa",
                     "components": [
                         {
-                            "content": "",
                             "type": "header",
                             "name": "header",
+                            "content": "",
                             "params": [
                                 {
                                     "type": "image"
@@ -382,9 +382,9 @@
                             ]
                         },
                         {
-                            "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
                             "type": "body",
                             "name": "body",
+                            "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
                             "params": [
                                 {
                                     "type": "text"
@@ -395,9 +395,9 @@
                             ]
                         },
                         {
-                            "content": "{{1}}",
                             "type": "button/quick_reply",
                             "name": "button.0",
+                            "content": "{{1}}",
                             "params": [
                                 {
                                     "type": "text"
@@ -405,9 +405,9 @@
                             ]
                         },
                         {
-                            "content": "No",
                             "type": "button/quick_reply",
                             "name": "button.1",
+                            "content": "No",
                             "params": []
                         }
                     ]

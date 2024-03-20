@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"regexp"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -183,42 +182,17 @@ type TemplatingComponent struct {
 
 var templateVariableRegex = regexp.MustCompile(`{{(\d+)}}`)
 
-func getTemplateVariableCount(s string) int {
-	count := 0
-	for _, m := range templateVariableRegex.FindAllStringSubmatch(s, -1) {
-		if v, _ := strconv.Atoi(m[1]); v > count {
-			count = v
-		}
-	}
-	return count
-}
-
-// Preview returns the content and display for given template component using these templating params
-func (tc *TemplatingComponent) Preview(c assets.TemplateComponent) (string, string) {
+// Preview returns the content of the given template component rendered using these templating params
+func (tc *TemplatingComponent) Preview(c assets.TemplateComponent) string {
 	content := c.Content()
-	display := c.Display()
-	numContentParams := getTemplateVariableCount(content)
-	numDisplayParams := getTemplateVariableCount(display)
 
-	// replace {{?}} placeholders in component content
-	for i := 0; i < numContentParams; i++ {
-		value := ""
-		if i < len(tc.Params) {
-			value = tc.Params[i].Value
-		}
-		content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), value)
+	for i, p := range tc.Params {
+		content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
 	}
 
-	// replace {{?}} placeholders in component display using any remaining param values
-	for i := 0; i < numDisplayParams; i++ {
-		value := ""
-		if (numContentParams + i) < len(tc.Params) {
-			value = tc.Params[numContentParams+i].Value
-		}
-		display = strings.ReplaceAll(display, fmt.Sprintf("{{%d}}", i+1), value)
-	}
+	content = templateVariableRegex.ReplaceAllString(content, "")
 
-	return content, display
+	return content
 }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
