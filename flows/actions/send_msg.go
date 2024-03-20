@@ -175,7 +175,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		}
 
 		compTemplating := &flows.TemplatingComponent{Type: comp.Type(), Params: params}
-		previewContent, _ := compTemplating.Preview(comp)
+		previewContent := compTemplating.Preview(comp)
 
 		if previewContent != "" {
 			if comp.Type() == "header" || comp.Type() == "body" || comp.Type() == "footer" {
