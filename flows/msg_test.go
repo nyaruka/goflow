@@ -163,12 +163,12 @@ func TestMsgTemplating(t *testing.T) {
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(templateRef, map[string][]flows.TemplatingParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, []flows.TemplatingComponent{{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
+	msgTemplating := flows.NewMsgTemplating(templateRef, map[string][]flows.TemplatingParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, []*flows.TemplatingComponent{{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b")
 
 	assert.Equal(t, templateRef, msgTemplating.Template())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
 	assert.Equal(t, map[string][]flows.TemplatingParam{"body": {{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}, msgTemplating.Params())
-	assert.Equal(t, []flows.TemplatingComponent{{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, msgTemplating.Components())
+	assert.Equal(t, []*flows.TemplatingComponent{{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, msgTemplating.Components())
 
 	// test marshaling our msg
 	marshaled, err := jsonx.Marshal(msgTemplating)
@@ -206,4 +206,50 @@ func TestMsgTemplating(t *testing.T) {
 		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
 		}
 	  }`), marshaled, "JSON mismatch")
+}
+
+func TestTemplatingComponentPreview(t *testing.T) {
+	tcs := []struct {
+		templating      *flows.TemplatingComponent
+		component       assets.TemplateComponent
+		expectedContent string
+		expectedDisplay string
+	}{
+		{ // 0: no params
+			component:       static.NewTemplateComponent("body", "body", "Hello", "", []*static.TemplateParam{}),
+			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{}},
+			expectedContent: "Hello",
+			expectedDisplay: "",
+		},
+		{ // 1: two params on component and two params in templating
+			component:       static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
+			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}, {Type: "text", Value: "Bob"}}},
+			expectedContent: "Hello Dr Bob",
+			expectedDisplay: "",
+		},
+		{ // 2: one less param in templating than on component
+			component:       static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", []*static.TemplateParam{{Type_: "text"}, {Type_: "text"}}),
+			templating:      &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}}},
+			expectedContent: "Hello Dr ",
+			expectedDisplay: "",
+		},
+		{ // 3
+			component:       static.NewTemplateComponent("button/quick_reply", "button.0", "{{1}}", "", []*static.TemplateParam{{Type_: "text"}}),
+			templating:      &flows.TemplatingComponent{Type: "button/quick_reply", Params: []flows.TemplatingParam{{Type: "text", Value: "Yes"}}},
+			expectedContent: "Yes",
+			expectedDisplay: "",
+		},
+		{ // 4: one param for content, one for display
+			component:       static.NewTemplateComponent("button/url", "button.0", "example.com?p={{1}}", "{{1}}", []*static.TemplateParam{{Type_: "text"}}),
+			templating:      &flows.TemplatingComponent{Type: "button/url", Params: []flows.TemplatingParam{{Type: "text", Value: "123"}, {Type: "text", Value: "Go"}}},
+			expectedContent: "example.com?p=123",
+			expectedDisplay: "Go",
+		},
+	}
+
+	for i, tc := range tcs {
+		actualContent, actualDisplay := tc.templating.Preview(tc.component)
+		assert.Equal(t, tc.expectedContent, actualContent, "content mismatch in test %d", i)
+		assert.Equal(t, tc.expectedDisplay, actualDisplay, "display mismatch in test %d", i)
+	}
 }
