@@ -15,10 +15,11 @@ func TestTemplate(t *testing.T) {
 	tp1 := NewTemplateParam("text")
 	assert.Equal(t, "text", tp1.Type())
 
-	tc1 := NewTemplateComponent("body", "Hello {{1}}", "", []*TemplateParam{tp1})
-	tc2 := NewTemplateComponent("button/url", "http://google.com?q={{1}}", "Go {{1}", []*TemplateParam{NewTemplateParam("text"), NewTemplateParam("text")})
+	tc1 := NewTemplateComponent("body", "body", "Hello {{1}}", "", []*TemplateParam{tp1})
+	tc2 := NewTemplateComponent("button/url", "button.0", "http://google.com?q={{1}}", "Go {{1}", []*TemplateParam{NewTemplateParam("text"), NewTemplateParam("text")})
 
 	assert.Equal(t, "body", tc1.Type())
+	assert.Equal(t, "body", tc1.Name())
 	assert.Equal(t, "Hello {{1}}", tc1.Content())
 	assert.Equal(t, "", tc1.Display())
 	assert.Equal(t, []assets.TemplateParam{tp1}, tc1.Params())

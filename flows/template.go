@@ -67,16 +67,9 @@ var templateRegex = regexp.MustCompile(`({{\d+}})`)
 func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]string {
 	preview := make(map[string]string, len(t.Components()))
 
-	buttonIndex := -1
 	for ic, comp := range t.Components() {
 		content := comp.Content()
-		compType := comp.Type()
-
-		key := compType
-		if strings.HasPrefix(compType, "button/") {
-			buttonIndex += 1
-			key = fmt.Sprintf("button.%d", buttonIndex)
-		}
+		key := comp.Name()
 
 		if ic < len(templating.Components()) {
 			for i, p := range templating.Components()[ic].Params {

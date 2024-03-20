@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -162,16 +161,9 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 	translationComponents := translation.Components()
 
-	buttonIndex := -1
 	for _, comp := range translationComponents {
 		compParams := comp.Params()
-		compType := comp.Type()
-
-		key := compType
-		if strings.HasPrefix(compType, "button/") {
-			buttonIndex += 1
-			key = fmt.Sprintf("button.%d", buttonIndex)
-		}
+		key := comp.Name()
 
 		if len(compParams) > 0 {
 			oldParams[key] = make([]flows.TemplateParam, len(compParams))

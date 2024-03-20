@@ -65,16 +65,19 @@ func TestTemplatePreview(t *testing.T) {
 		{
 			Content_: "Hello {{1}}, {{2}}",
 			Type_:    "body",
+			Name_:    "body",
 			Params_:  []*static.TemplateParam{static.NewTemplateParam("text")},
 		},
 		{
 			Content_: "Yes",
 			Type_:    "button/quick_reply",
+			Name_:    "button.0",
 			Params_:  []*static.TemplateParam{},
 		},
 		{
 			Content_: "No {{1}}",
 			Type_:    "button/quick_reply",
+			Name_:    "button.1",
 			Params_:  []*static.TemplateParam{static.NewTemplateParam("text")},
 		},
 	})
