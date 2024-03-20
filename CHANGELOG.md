@@ -1,3 +1,7 @@
+v0.207.0 (2024-03-20)
+-------------------------
+ * Rework template components... again
+
 v0.206.4 (2024-03-19)
 -------------------------
  * Add type and display fields to temmplate components
