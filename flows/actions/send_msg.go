@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -143,7 +142,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
 	evaluatedParams := make(map[string][]string)
 
-	// start by localizing and evaluating either the  per-component params
+	// start by localizing and evaluating the param values
 	for _, comp := range a.Templating.Components {
 		localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
 		evaluatedCompParams := make([]string, len(localizedCompParams))
@@ -156,48 +155,46 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// next we cross reference with params defined in the template translation to get types
-	components := make([]flows.TemplatingComponent, 0)
-	oldParams := make(map[string][]flows.TemplatingParam, len(translation.Components()))
+	components := make([]*flows.TemplatingComponent, 0, len(translation.Components()))
+	legacy := make(map[string][]flows.TemplatingParam, len(translation.Components())) // TODO deprecated
 
-	translationComponents := translation.Components()
+	// the message we return is an approximate preview of what the channel will send using the template
+	var previewParts []string
+	var previewQRs []string
 
-	for _, comp := range translationComponents {
-		compParams := comp.Params()
-		key := comp.Name()
+	for _, comp := range translation.Components() {
+		paramValues := evaluatedParams[comp.Name()]
+		params := make([]flows.TemplatingParam, len(comp.Params()))
 
-		if len(compParams) > 0 {
-			oldParams[key] = make([]flows.TemplatingParam, len(compParams))
-		}
-
-		params := make([]flows.TemplatingParam, len(compParams))
-
-		for i, tp := range compParams {
-			if i < len(evaluatedParams[key]) {
-				params[i] = flows.TemplatingParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
-				oldParams[key][i] = flows.TemplatingParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
+		for i, p := range comp.Params() {
+			if i < len(paramValues) {
+				params[i] = flows.TemplatingParam{Type: p.Type(), Value: paramValues[i]}
 			} else {
-				params[i] = flows.TemplatingParam{Type: tp.Type(), Value: ""}
-				oldParams[key][i] = flows.TemplatingParam{Type: tp.Type(), Value: ""}
+				params[i] = flows.TemplatingParam{Type: p.Type(), Value: ""}
 			}
 		}
-		if len(params) > 0 {
-			components = append(components, flows.TemplatingComponent{Type: comp.Type(), Params: params})
+
+		compTemplating := &flows.TemplatingComponent{Type: comp.Type(), Params: params}
+		previewContent, _ := compTemplating.Preview(comp)
+
+		if previewContent != "" {
+			if comp.Type() == "header" || comp.Type() == "body" || comp.Type() == "footer" {
+				previewParts = append(previewParts, previewContent)
+			} else if strings.HasPrefix(comp.Type(), "button/") {
+				previewQRs = append(previewQRs, stringsx.TruncateEllipsis(previewContent, maxQuickReplyLength))
+			}
 		}
 
+		if len(params) > 0 {
+			components = append(components, compTemplating)
+			legacy[comp.Name()] = params
+		}
 	}
+
+	previewText := strings.Join(previewParts, "\n\n")
 
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, oldParams, components, translation.Namespace())
-
-	// extract content for preview message
-	preview := translation.Preview(templating)
-	previewText := preview["body"]
-	var previewQRs []string
-	for _, key := range utils.SortedKeys(preview) {
-		if strings.HasPrefix(key, "button.") {
-			previewQRs = append(previewQRs, stringsx.TruncateEllipsis(preview[key], maxQuickReplyLength))
-		}
-	}
+	templating := flows.NewMsgTemplating(a.Templating.Template, legacy, components, translation.Namespace())
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }

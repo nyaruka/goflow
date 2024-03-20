@@ -5,7 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"regexp"
 	"slices"
+	"strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
@@ -178,16 +181,56 @@ type TemplatingComponent struct {
 	Params []TemplatingParam `json:"params"`
 }
 
+var templateVariableRegex = regexp.MustCompile(`{{(\d+)}}`)
+
+func getTemplateVariableCount(s string) int {
+	count := 0
+	for _, m := range templateVariableRegex.FindAllStringSubmatch(s, -1) {
+		if v, _ := strconv.Atoi(m[1]); v > count {
+			count = v
+		}
+	}
+	return count
+}
+
+// Preview returns the content and display for given template component using these templating params
+func (tc *TemplatingComponent) Preview(c assets.TemplateComponent) (string, string) {
+	content := c.Content()
+	display := c.Display()
+	numContentParams := getTemplateVariableCount(content)
+	numDisplayParams := getTemplateVariableCount(display)
+
+	// replace {{?}} placeholders in component content
+	for i := 0; i < numContentParams; i++ {
+		value := ""
+		if i < len(tc.Params) {
+			value = tc.Params[i].Value
+		}
+		content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), value)
+	}
+
+	// replace {{?}} placeholders in component display using any remaining param values
+	for i := 0; i < numDisplayParams; i++ {
+		value := ""
+		if (numContentParams + i) < len(tc.Params) {
+			value = tc.Params[numContentParams+i].Value
+		}
+		display = strings.ReplaceAll(display, fmt.Sprintf("{{%d}}", i+1), value)
+	}
+
+	return content, display
+}
+
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
 	Template_   *assets.TemplateReference    `json:"template"`
 	Params_     map[string][]TemplatingParam `json:"params,omitempty"`
-	Components_ []TemplatingComponent        `json:"components,omitempty"`
+	Components_ []*TemplatingComponent       `json:"components,omitempty"`
 	Namespace_  string                       `json:"namespace"`
 }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, params map[string][]TemplatingParam, components []TemplatingComponent, namespace string) *MsgTemplating {
+func NewMsgTemplating(template *assets.TemplateReference, params map[string][]TemplatingParam, components []*TemplatingComponent, namespace string) *MsgTemplating {
 	return &MsgTemplating{Template_: template, Namespace_: namespace, Components_: components, Params_: params}
 }
 
@@ -198,7 +241,7 @@ func (t *MsgTemplating) Template() *assets.TemplateReference { return t.Template
 func (t *MsgTemplating) Namespace() string { return t.Namespace_ }
 
 // Components returns the components that should be used for the templates
-func (t *MsgTemplating) Components() []TemplatingComponent { return t.Components_ }
+func (t *MsgTemplating) Components() []*TemplatingComponent { return t.Components_ }
 
 // Params returns the params that should be used for the template
 func (t *MsgTemplating) Params() map[string][]TemplatingParam { return t.Params_ }

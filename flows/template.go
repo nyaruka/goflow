@@ -1,10 +1,6 @@
 package flows
 
 import (
-	"fmt"
-	"regexp"
-	"strings"
-
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 )
@@ -61,30 +57,6 @@ func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
 
 // Asset returns the underlying asset
 func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }
-
-var templateRegex = regexp.MustCompile(`({{\d+}})`)
-
-func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]string {
-	preview := make(map[string]string, len(t.Components()))
-
-	for ic, comp := range t.Components() {
-		content := comp.Content()
-		key := comp.Name()
-
-		if ic < len(templating.Components()) {
-			for i, p := range templating.Components()[ic].Params {
-				content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
-			}
-		}
-
-		// replace any remaining unmatched items with empty string
-		content = templateRegex.ReplaceAllString(content, "")
-
-		preview[key] = content
-	}
-
-	return preview
-}
 
 // TemplateAssets is our type for all the templates in an environment
 type TemplateAssets struct {
