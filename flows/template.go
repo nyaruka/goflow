@@ -67,11 +67,14 @@ var templateRegex = regexp.MustCompile(`({{\d+}})`)
 func (t *TemplateTranslation) Preview(templating *MsgTemplating) map[string]string {
 	preview := make(map[string]string, len(t.Components()))
 
-	for key, comp := range t.Components() {
+	for ic, comp := range t.Components() {
 		content := comp.Content()
+		key := comp.Name()
 
-		for i, p := range templating.Params()[key] {
-			content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
+		if ic < len(templating.Components()) {
+			for i, p := range templating.Components()[ic].Params {
+				content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
+			}
 		}
 
 		// replace any remaining unmatched items with empty string

@@ -19,10 +19,10 @@ func TestFindTranslation(t *testing.T) {
 	channel1Ref := assets.NewChannelReference(channel1.UUID(), channel1.Name())
 	channel2Ref := assets.NewChannelReference(channel2.UUID(), channel2.Name())
 
-	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "", map[string]*static.TemplateComponent{})
-	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "", map[string]*static.TemplateComponent{})
-	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "", map[string]*static.TemplateComponent{})
-	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), "", map[string]*static.TemplateComponent{})
+	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "", []*static.TemplateComponent{})
+	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "", []*static.TemplateComponent{})
+	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "", []*static.TemplateComponent{})
+	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), "", []*static.TemplateComponent{})
 
 	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
 	tas := flows.NewTemplateAssets([]assets.Template{template})
@@ -61,18 +61,24 @@ func TestTemplatePreview(t *testing.T) {
 	channel := test.NewChannel("WhatsApp", "+12345", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
 	channelRef := assets.NewChannelReference(channel.UUID(), channel.Name())
 
-	tt := static.NewTemplateTranslation(channelRef, i18n.Locale("eng"), "", map[string]*static.TemplateComponent{
-		"body": {
+	tt := static.NewTemplateTranslation(channelRef, i18n.Locale("eng"), "", []*static.TemplateComponent{
+		{
 			Content_: "Hello {{1}}, {{2}}",
-			Params_:  []*static.TemplateParam{{Type_: "text"}},
+			Type_:    "body",
+			Name_:    "body",
+			Params_:  []*static.TemplateParam{static.NewTemplateParam("text")},
 		},
-		"button.0": {
+		{
 			Content_: "Yes",
+			Type_:    "button/quick_reply",
+			Name_:    "button.0",
 			Params_:  []*static.TemplateParam{},
 		},
-		"button.1": {
+		{
 			Content_: "No {{1}}",
-			Params_:  []*static.TemplateParam{{Type_: "text"}},
+			Type_:    "button/quick_reply",
+			Name_:    "button.1",
+			Params_:  []*static.TemplateParam{static.NewTemplateParam("text")},
 		},
 	})
 
@@ -80,36 +86,44 @@ func TestTemplatePreview(t *testing.T) {
 	translation := template.FindTranslation(channel, []i18n.Locale{"eng"})
 
 	tcs := []struct {
-		templating map[string][]flows.TemplateParam
+		components []flows.TemplatingComponent
 		expected   map[string]string
 	}{
 		{
-			map[string][]flows.TemplateParam{}, // no params
+			[]flows.TemplatingComponent{}, // no params
 			map[string]string{"body": "Hello , ", "button.0": "Yes", "button.1": "No "},
 		},
 		{
-			map[string][]flows.TemplateParam{
-				"body": {{Type: "text", Value: "Bob"}}, // missing 1 param for body
-			},
+			[]flows.TemplatingComponent{{
+				Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Bob"}}, // missing 1 param for body
+			}},
 			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
 		},
 		{
-			map[string][]flows.TemplateParam{
-				"body": {{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
-			},
+			[]flows.TemplatingComponent{{
+				Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Bob"}, {Type: "text", Value: "how are you?"}, {Type: "text", Value: "xxx"}}, // 1 extra param
+			}},
 			map[string]string{"body": "Hello Bob, how are you?", "button.0": "Yes", "button.1": "No "},
 		},
 		{
-			map[string][]flows.TemplateParam{
-				"body":   {{Type: "text", Value: "Bob"}},
-				"header": {{Type: "text", Value: "Hi"}}, // extra component ignored
-			},
+			[]flows.TemplatingComponent{
+				{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Bob"}}},
+				{Type: "header", Params: []flows.TemplatingParam{{Type: "text", Value: "Hi"}}},
+			}, // extra component ignored
 			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No "},
+		},
+		{
+			[]flows.TemplatingComponent{
+				{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Bob"}}},
+				{Type: "button/quick_reply", Params: []flows.TemplatingParam{}},
+				{Type: "button/quick_reply", Params: []flows.TemplatingParam{{Type: "text", Value: "code002"}}},
+			},
+			map[string]string{"body": "Hello Bob, ", "button.0": "Yes", "button.1": "No code002"},
 		},
 	}
 
 	for _, tc := range tcs {
-		templating := flows.NewMsgTemplating(template.Reference(), tc.templating, "")
+		templating := flows.NewMsgTemplating(template.Reference(), map[string][]flows.TemplatingParam{}, tc.components, "")
 
 		assert.Equal(t, tc.expected, translation.Preview(templating))
 	}

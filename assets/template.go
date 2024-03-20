@@ -49,6 +49,7 @@ type TemplateParam interface {
 
 type TemplateComponent interface {
 	Type() string
+	Name() string
 	Content() string
 	Display() string
 	Params() []TemplateParam
@@ -59,7 +60,7 @@ type TemplateTranslation interface {
 	Locale() i18n.Locale
 	Namespace() string
 	Channel() *ChannelReference
-	Components() map[string]TemplateComponent
+	Components() []TemplateComponent
 }
 
 // TemplateReference is used to reference a Template

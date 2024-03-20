@@ -38,14 +38,14 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	Channel_    *assets.ChannelReference      `json:"channel"         validate:"required"`
-	Locale_     i18n.Locale                   `json:"locale"          validate:"required"`
-	Namespace_  string                        `json:"namespace"`
-	Components_ map[string]*TemplateComponent `json:"components"`
+	Channel_    *assets.ChannelReference `json:"channel"         validate:"required"`
+	Locale_     i18n.Locale              `json:"locale"          validate:"required"`
+	Namespace_  string                   `json:"namespace"`
+	Components_ []*TemplateComponent     `json:"components"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components map[string]*TemplateComponent) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:    channel,
 		Namespace_:  namespace,
@@ -55,8 +55,8 @@ func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale
 }
 
 // Components returns the components structure for this template
-func (t *TemplateTranslation) Components() map[string]assets.TemplateComponent {
-	tcs := make(map[string]assets.TemplateComponent, len(t.Components_))
+func (t *TemplateTranslation) Components() []assets.TemplateComponent {
+	tcs := make([]assets.TemplateComponent, len(t.Components_))
 	for k, tc := range t.Components_ {
 		tcs[k] = tc
 	}
@@ -74,6 +74,7 @@ func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Chan
 
 type TemplateComponent struct {
 	Type_    string           `json:"type"`
+	Name_    string           `json:"name"`
 	Content_ string           `json:"content"`
 	Display_ string           `json:"display"`
 	Params_  []*TemplateParam `json:"params"`
@@ -81,6 +82,9 @@ type TemplateComponent struct {
 
 // Type returns the type for this template component
 func (t *TemplateComponent) Type() string { return t.Type_ }
+
+// Name returns the name for this template component
+func (t *TemplateComponent) Name() string { return t.Name_ }
 
 // Content returns the content for this template component
 func (t *TemplateComponent) Content() string { return t.Content_ }
@@ -98,8 +102,8 @@ func (t *TemplateComponent) Params() []assets.TemplateParam {
 }
 
 // NewTemplateComponent creates a new template param
-func NewTemplateComponent(type_, content, display string, params []*TemplateParam) *TemplateComponent {
-	return &TemplateComponent{Type_: type_, Content_: content, Display_: display, Params_: params}
+func NewTemplateComponent(type_, name, content, display string, params []*TemplateParam) *TemplateComponent {
+	return &TemplateComponent{Type_: type_, Name_: name, Content_: content, Display_: display, Params_: params}
 }
 
 // TemplateParam represents a single parameter for a template translation

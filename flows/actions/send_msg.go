@@ -156,25 +156,38 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// next we cross reference with params defined in the template translation to get types
-	params := make(map[string][]flows.TemplateParam, len(translation.Components()))
+	components := make([]flows.TemplatingComponent, 0)
+	oldParams := make(map[string][]flows.TemplatingParam, len(translation.Components()))
 
-	for key, comp := range translation.Components() {
+	translationComponents := translation.Components()
+
+	for _, comp := range translationComponents {
 		compParams := comp.Params()
+		key := comp.Name()
+
 		if len(compParams) > 0 {
-			params[key] = make([]flows.TemplateParam, len(compParams))
+			oldParams[key] = make([]flows.TemplatingParam, len(compParams))
 		}
+
+		params := make([]flows.TemplatingParam, len(compParams))
 
 		for i, tp := range compParams {
 			if i < len(evaluatedParams[key]) {
-				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
+				params[i] = flows.TemplatingParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
+				oldParams[key][i] = flows.TemplatingParam{Type: tp.Type(), Value: evaluatedParams[key][i]}
 			} else {
-				params[key][i] = flows.TemplateParam{Type: tp.Type(), Value: ""}
+				params[i] = flows.TemplatingParam{Type: tp.Type(), Value: ""}
+				oldParams[key][i] = flows.TemplatingParam{Type: tp.Type(), Value: ""}
 			}
 		}
+		if len(params) > 0 {
+			components = append(components, flows.TemplatingComponent{Type: comp.Type(), Params: params})
+		}
+
 	}
 
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, params, translation.Namespace())
+	templating := flows.NewMsgTemplating(a.Templating.Template, oldParams, components, translation.Namespace())
 
 	// extract content for preview message
 	preview := translation.Preview(templating)
