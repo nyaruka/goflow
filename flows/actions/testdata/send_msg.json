@@ -476,6 +476,7 @@
                                 ]
                             }
                         ],
+                        "external_id": "ext_id_affirmation_eng",
                         "namespace": ""
                     },
                     "locale": "eng-US"
@@ -575,6 +576,7 @@
                                 ]
                             }
                         ],
+                        "external_id": "ext_id_affirmation_spa",
                         "namespace": ""
                     },
                     "locale": "spa"
@@ -639,6 +641,7 @@
                             "uuid": "a62e19cb-adec-424b-8c92-b434768272e0",
                             "name": "new_features"
                         },
+                        "external_id": "ext_id_new_features_eng",
                         "namespace": ""
                     },
                     "locale": "eng"
@@ -696,6 +699,7 @@
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
                         },
+                        "external_id": "ext_id_wakeup_eng",
                         "namespace": ""
                     },
                     "locale": "eng"
@@ -762,6 +766,7 @@
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
                         },
+                        "external_id": "ext_id_wakeup_eng",
                         "namespace": ""
                     },
                     "locale": "eng"
@@ -1000,6 +1005,7 @@
                                 ]
                             }
                         ],
+                        "external_id": "ext_id_gender_update_spa",
                         "namespace": ""
                     },
                     "locale": "spa"

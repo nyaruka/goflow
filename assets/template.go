@@ -72,6 +72,7 @@ type TemplateTranslation interface {
 	Locale() i18n.Locale
 	Namespace() string
 	Status() TemplateStatus
+	ExternalID() string
 	Channel() *ChannelReference
 	Components() []TemplateComponent
 }

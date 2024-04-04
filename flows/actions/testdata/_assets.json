@@ -258,6 +258,7 @@
                     },
                     "locale": "eng-US",
                     "status": "A",
+                    "external_id": "ext_id_affirmation_eng",
                     "components": [
                         {
                             "type": "body",
@@ -283,6 +284,7 @@
                     },
                     "locale": "spa",
                     "status": "A",
+                    "external_id": "ext_id_affirmation_spa",
                     "components": [
                         {
                             "type": "body",
@@ -314,6 +316,7 @@
                     },
                     "locale": "eng",
                     "status": "A",
+                    "external_id": "ext_id_wakeup_eng",
                     "components": [
                         {
                             "type": "body",
@@ -336,6 +339,7 @@
                     },
                     "locale": "eng",
                     "status": "R",
+                    "external_id": "ext_id_new_features_eng",
                     "components": [
                         {
                             "type": "body",
@@ -358,6 +362,7 @@
                     },
                     "locale": "eng-US",
                     "status": "A",
+                    "external_id": "ext_id_gender_update_eng",
                     "components": [
                         {
                             "type": "header",
@@ -405,6 +410,7 @@
                     },
                     "locale": "spa",
                     "status": "A",
+                    "external_id": "ext_id_gender_update_spa",
                     "components": [
                         {
                             "type": "header",

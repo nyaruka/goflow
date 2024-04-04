@@ -201,13 +201,14 @@ func (tc *TemplatingComponent) Preview(c assets.TemplateComponent) string {
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
 	Template_   *assets.TemplateReference `json:"template"`
+	ExternalID_ string                    `json:"external_id"`
 	Namespace_  string                    `json:"namespace"`
 	Components_ []*TemplatingComponent    `json:"components,omitempty"`
 }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, namespace string, components []*TemplatingComponent) *MsgTemplating {
-	return &MsgTemplating{Template_: template, Namespace_: namespace, Components_: components}
+func NewMsgTemplating(template *assets.TemplateReference, externalID string, namespace string, components []*TemplatingComponent) *MsgTemplating {
+	return &MsgTemplating{Template_: template, ExternalID_: externalID, Namespace_: namespace, Components_: components}
 }
 
 // Template returns the template this msg template is for

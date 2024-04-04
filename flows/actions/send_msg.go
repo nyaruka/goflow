@@ -202,7 +202,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	previewText := strings.Join(previewParts, "\n\n")
 
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components)
+	templating := flows.NewMsgTemplating(a.Templating.Template, translation.ExternalID(), translation.Namespace(), components)
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }

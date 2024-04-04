@@ -163,7 +163,7 @@ func TestMsgTemplating(t *testing.T) {
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(templateRef, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Name: "1", Value: "Ryan Lewis"}, {Type: "text", Name: "2", Value: "boy"}}}})
+	msgTemplating := flows.NewMsgTemplating(templateRef, "ext1", "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Name: "1", Value: "Ryan Lewis"}, {Type: "text", Name: "2", Value: "boy"}}}})
 
 	assert.Equal(t, templateRef, msgTemplating.Template())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
@@ -178,6 +178,7 @@ func TestMsgTemplating(t *testing.T) {
 		  "name":"Affirmation",
 		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
 		},
+		"external_id": "ext1",
 		"namespace":"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
 		"components":[
 			{

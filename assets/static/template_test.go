@@ -25,11 +25,12 @@ func TestTemplate(t *testing.T) {
 	assert.Equal(t, "", tc1.Display())
 	assert.Equal(t, []assets.TemplateParam{tp1}, tc1.Params())
 
-	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), assets.TemplateStatus("A"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*TemplateComponent{tc1, tc2})
+	translation := NewTemplateTranslation(channel, i18n.Locale("eng-US"), assets.TemplateStatus("A"), "ext1", "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*TemplateComponent{tc1, tc2})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
 	assert.Equal(t, assets.TemplateStatusApproved, translation.Status())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
+	assert.Equal(t, "ext1", translation.ExternalID())
 	assert.Equal(t, []assets.TemplateComponent{
 		(assets.TemplateComponent)(tc1),
 		(assets.TemplateComponent)(tc2),
