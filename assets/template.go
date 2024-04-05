@@ -45,6 +45,7 @@ type Template interface {
 // TemplateParam is a parameter for template translation
 type TemplateParam interface {
 	Type() string
+	Name() string
 }
 
 type TemplateComponent interface {

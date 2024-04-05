@@ -173,6 +173,7 @@ func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason
 type TemplatingParam struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
+	Name  string `json:"name"`
 }
 
 type TemplatingComponent struct {

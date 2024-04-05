@@ -261,13 +261,15 @@
                         {
                             "type": "body",
                             "name": "body",
-                            "content": "Hi {{1}}, who's an excellent {{2}}?",
+                            "content": "Hi {{2}}, who's an excellent {{1}}?",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "2"
                                 },
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 }
                             ]
                         }
@@ -283,13 +285,15 @@
                         {
                             "type": "body",
                             "name": "body",
-                            "content": "Hola {{1}}, quien es un {{2}} excelente?",
+                            "content": "Hola {{2}}, quien es un {{1}} excelente?",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "2"
                                 },
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 }
                             ]
                         }
@@ -335,7 +339,8 @@
                             "content": "",
                             "params": [
                                 {
-                                    "type": "image"
+                                    "type": "image",
+                                    "name": ""
                                 }
                             ]
                         },
@@ -345,10 +350,12 @@
                             "content": "Hey {{1}}, your gender is saved as {{2}}.",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "2"
                                 },
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 }
                             ]
                         },
@@ -358,7 +365,8 @@
                             "content": "{{1}}",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 }
                             ]
                         }
@@ -377,7 +385,9 @@
                             "content": "",
                             "params": [
                                 {
-                                    "type": "image"
+                                    "type": "image",
+                                    "name": "1"
+
                                 }
                             ]
                         },
@@ -387,10 +397,12 @@
                             "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 },
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "2"
                                 }
                             ]
                         },
@@ -400,7 +412,8 @@
                             "content": "{{1}}",
                             "params": [
                                 {
-                                    "type": "text"
+                                    "type": "text",
+                                    "name": "1"
                                 }
                             ]
                         },
