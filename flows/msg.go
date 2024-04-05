@@ -27,9 +27,10 @@ func init() {
 type UnsendableReason string
 
 const (
-	NilUnsendableReason           UnsendableReason = ""
-	UnsendableReasonNoDestination UnsendableReason = "no_destination" // no sendable channel+URN pair
-	UnsendableReasonContactStatus UnsendableReason = "contact_status" // contact is blocked or stopped or archived
+	NilUnsendableReason            UnsendableReason = ""
+	UnsendableReasonNoDestination  UnsendableReason = "no_destination"  // no sendable channel+URN pair
+	UnsendableReasonContactStatus  UnsendableReason = "contact_status"  // contact is blocked or stopped or archived
+	UnsendableReasonTemplateStatus UnsendableReason = "template_status" // template not approved yet
 )
 
 // MsgTopic is the topic, as required by some channel types

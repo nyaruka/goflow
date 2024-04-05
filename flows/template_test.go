@@ -19,10 +19,10 @@ func TestFindTranslation(t *testing.T) {
 	channel1Ref := assets.NewChannelReference(channel1.UUID(), channel1.Name())
 	channel2Ref := assets.NewChannelReference(channel2.UUID(), channel2.Name())
 
-	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), "", []*static.TemplateComponent{})
-	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), "", []*static.TemplateComponent{})
-	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), "", []*static.TemplateComponent{})
-	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), "", []*static.TemplateComponent{})
+	tt1 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("eng"), assets.TemplateStatus("A"), "", []*static.TemplateComponent{})
+	tt2 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-EC"), assets.TemplateStatus("A"), "", []*static.TemplateComponent{})
+	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), assets.TemplateStatus("A"), "", []*static.TemplateComponent{})
+	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), assets.TemplateStatus("A"), "", []*static.TemplateComponent{})
 
 	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
 	tas := flows.NewTemplateAssets([]assets.Template{template})

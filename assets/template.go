@@ -55,10 +55,22 @@ type TemplateComponent interface {
 	Params() []TemplateParam
 }
 
+// TemplateStatus is the status for the template translation
+type TemplateStatus string
+
+// different status that template translations can have
+const (
+	TemplateStatusApproved    TemplateStatus = "A"
+	TemplateStatusPending     TemplateStatus = "P"
+	TemplateStatusRejected    TemplateStatus = "R"
+	TemplateStatusUnsupported TemplateStatus = "X"
+)
+
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Locale() i18n.Locale
 	Namespace() string
+	Status() TemplateStatus
 	Channel() *ChannelReference
 	Components() []TemplateComponent
 }
