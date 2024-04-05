@@ -12,11 +12,12 @@ import (
 func TestTemplate(t *testing.T) {
 	channel := assets.NewChannelReference("Test Channel", "ffffffff-9b24-92e1-ffff-ffffb207cdb4")
 
-	tp1 := NewTemplateParam("text")
+	tp1 := NewTemplateParam("text", "1")
 	assert.Equal(t, "text", tp1.Type())
+	assert.Equal(t, "1", tp1.Name())
 
 	tc1 := NewTemplateComponent("body", "body", "Hello {{1}}", "", []*TemplateParam{tp1})
-	tc2 := NewTemplateComponent("button/url", "button.0", "http://google.com?q={{1}}", "Go {{1}", []*TemplateParam{NewTemplateParam("text"), NewTemplateParam("text")})
+	tc2 := NewTemplateComponent("button/url", "button.0", "http://google.com?q={{1}}", "Go {{1}", []*TemplateParam{NewTemplateParam("text", "1"), NewTemplateParam("text", "2")})
 
 	assert.Equal(t, "body", tc1.Type())
 	assert.Equal(t, "body", tc1.Name())

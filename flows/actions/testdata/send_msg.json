@@ -464,12 +464,14 @@
                                 "name": "body",
                                 "params": [
                                     {
-                                        "type": "text",
-                                        "value": "Ryan Lewis"
-                                    },
-                                    {
+                                        "name": "1",
                                         "type": "text",
                                         "value": "boy"
+                                    },
+                                    {
+                                        "name": "2",
+                                        "type": "text",
+                                        "value": "Ryan Lewis"
                                     }
                                 ]
                             }
@@ -561,12 +563,14 @@
                                 "name": "body",
                                 "params": [
                                     {
-                                        "type": "text",
-                                        "value": "Ryan Lewis"
-                                    },
-                                    {
+                                        "name": "1",
                                         "type": "text",
                                         "value": "niño"
+                                    },
+                                    {
+                                        "name": "2",
+                                        "type": "text",
+                                        "value": "Ryan Lewis"
                                     }
                                 ]
                             }
@@ -962,6 +966,7 @@
                                 "name": "header",
                                 "params": [
                                     {
+                                        "name": "1",
                                         "type": "image",
                                         "value": "http://templates.com/rojo.jpg"
                                     }
@@ -972,10 +977,12 @@
                                 "name": "body",
                                 "params": [
                                     {
+                                        "name": "1",
                                         "type": "text",
                                         "value": "Ryan Lewis"
                                     },
                                     {
+                                        "name": "2",
                                         "type": "text",
                                         "value": "niño"
                                     }
@@ -986,6 +993,7 @@
                                 "name": "button.0",
                                 "params": [
                                     {
+                                        "name": "1",
                                         "type": "text",
                                         "value": "Sip"
                                     }

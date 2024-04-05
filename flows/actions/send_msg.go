@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"sort"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -172,11 +173,15 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 		for i, p := range comp.Params() {
 			if i < len(paramValues) {
-				params[i] = flows.TemplatingParam{Type: p.Type(), Value: paramValues[i]}
+				params[i] = flows.TemplatingParam{Type: p.Type(), Name: p.Name(), Value: paramValues[i]}
 			} else {
-				params[i] = flows.TemplatingParam{Type: p.Type(), Value: ""}
+				params[i] = flows.TemplatingParam{Type: p.Type(), Name: p.Name(), Value: ""}
 			}
 		}
+
+		sort.Slice(params, func(i, j int) bool {
+			return params[i].Name < params[j].Name
+		})
 
 		compTemplating := &flows.TemplatingComponent{Type: comp.Type(), Name: comp.Name(), Params: params}
 		previewContent := compTemplating.Preview(comp)

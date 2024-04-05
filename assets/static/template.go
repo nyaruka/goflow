@@ -114,12 +114,16 @@ func NewTemplateComponent(type_, name, content, display string, params []*Templa
 // TemplateParam represents a single parameter for a template translation
 type TemplateParam struct {
 	Type_ string `json:"type"`
+	Name_ string `json:"name"`
 }
 
 // Type returns the type for this parameter
 func (t *TemplateParam) Type() string { return t.Type_ }
 
+// Name returns the name for this parameter
+func (t *TemplateParam) Name() string { return t.Name_ }
+
 // NewTemplateParam creates a new template param
-func NewTemplateParam(paramType string) *TemplateParam {
-	return &TemplateParam{Type_: paramType}
+func NewTemplateParam(paramType string, paramName string) *TemplateParam {
+	return &TemplateParam{Type_: paramType, Name_: paramName}
 }

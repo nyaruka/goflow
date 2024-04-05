@@ -163,11 +163,11 @@ func TestMsgTemplating(t *testing.T) {
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(templateRef, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}})
+	msgTemplating := flows.NewMsgTemplating(templateRef, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Name: "1", Value: "Ryan Lewis"}, {Type: "text", Name: "2", Value: "boy"}}}})
 
 	assert.Equal(t, templateRef, msgTemplating.Template())
 	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace())
-	assert.Equal(t, []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}}}, msgTemplating.Components())
+	assert.Equal(t, []*flows.TemplatingComponent{{Type: "body", Name: "body", Params: []flows.TemplatingParam{{Type: "text", Name: "1", Value: "Ryan Lewis"}, {Type: "text", Name: "2", Value: "boy"}}}}, msgTemplating.Components())
 
 	// test marshaling our msg
 	marshaled, err := jsonx.Marshal(msgTemplating)
@@ -185,10 +185,12 @@ func TestMsgTemplating(t *testing.T) {
 				"name": "body",
 				"params":[
 					{
+						"name": "1",
 						"type": "text",
 						"value": "Ryan Lewis"
 					},
 					{
+						"name": "2",
 						"type": "text",
 						"value": "boy"
 					}
