@@ -59,6 +59,7 @@ type TemplateComponent interface {
 type TemplateTranslation interface {
 	Locale() i18n.Locale
 	Namespace() string
+	Approved() bool
 	Channel() *ChannelReference
 	Components() []TemplateComponent
 }

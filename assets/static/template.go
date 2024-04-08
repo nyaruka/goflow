@@ -40,15 +40,17 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 type TemplateTranslation struct {
 	Channel_    *assets.ChannelReference `json:"channel"         validate:"required"`
 	Locale_     i18n.Locale              `json:"locale"          validate:"required"`
+	Approved_   bool                     `json:"approved"        validate:"required"`
 	Namespace_  string                   `json:"namespace"`
 	Components_ []*TemplateComponent     `json:"components"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, approved bool, namespace string, components []*TemplateComponent) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:    channel,
 		Namespace_:  namespace,
+		Approved_:   approved,
 		Locale_:     locale,
 		Components_: components,
 	}
@@ -65,6 +67,9 @@ func (t *TemplateTranslation) Components() []assets.TemplateComponent {
 
 // Namespace returns the namespace for this template
 func (t *TemplateTranslation) Namespace() string { return t.Namespace_ }
+
+// Approved returns whether this translation is approved
+func (t *TemplateTranslation) Approved() bool { return t.Approved_ }
 
 // Language returns the locale this translation is in
 func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }

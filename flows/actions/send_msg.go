@@ -116,6 +116,11 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
 			templateTranslation := template.FindTranslation(dest.Channel, locales)
 			if templateTranslation != nil {
+
+				if !templateTranslation.Approved() {
+					unsendableReason = flows.UnsendableReasonTemplateStatus
+				}
+
 				msg = a.getTemplateMsg(run, urn, channelRef, templateTranslation, unsendableReason, logEvent)
 			}
 		}
