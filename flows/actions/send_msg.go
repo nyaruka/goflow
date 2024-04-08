@@ -117,7 +117,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 			templateTranslation := template.FindTranslation(dest.Channel, locales)
 			if templateTranslation != nil {
 
-				if templateTranslation.Status() != assets.TemplateStatusApproved {
+				if !templateTranslation.Approved() {
 					unsendableReason = flows.UnsendableReasonTemplateStatus
 				}
 
