@@ -13,24 +13,38 @@ type TemplateUUID uuids.UUID
 // Template is a message template, currently only used by WhatsApp channels
 //
 //	{
-//	  "name": "revive-issue",
+//	  "name": "greeting",
 //	  "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
 //	  "translations": [
 //	    {
 //	       "locale": "eng-US",
-//	       "content": "Hi {{1}}, are you still experiencing your issue?",
 //	       "channel": {
 //	         "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
 //	         "name": "Twilio Channel"
-//	       }
+//	       },
+//	       "components": [
+//	         {
+//	           "type": "body",
+//	           "name": "body",
+//	           "content": "Hello {{1}}",
+//	           "params": [{"type": "text"}]
+//	         }
+//	       ]
 //	    },
 //	    {
 //	       "locale": "fra",
-//	       "content": "Bonjour {{1}}",
 //	       "channel": {
 //	         "uuid": "cf26be4c-875f-4094-9e08-162c3c9dcb5b",
 //	         "name": "Twilio Channel"
-//	       }
+//	       },
+//	       "components": [
+//	         {
+//	           "type": "body",
+//	           "name": "body",
+//	           "content": "Bonjour {{1}}",
+//	           "params": [{"type": "text"}]
+//	         }
+//	       ]
 //	    }
 //	  ]
 //	}
