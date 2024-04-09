@@ -257,7 +257,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "approved": true,
+                    "status": "A",
                     "components": [
                         {
                             "type": "body",
@@ -280,7 +280,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "approved": true,
+                    "status": "A",
                     "components": [
                         {
                             "type": "body",
@@ -309,7 +309,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng",
-                    "approved": true,
+                    "status": "A",
                     "components": [
                         {
                             "type": "body",
@@ -331,7 +331,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng",
-                    "approved": false,
+                    "status": "R",
                     "components": [
                         {
                             "type": "body",
@@ -353,7 +353,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "approved": true,
+                    "status": "A",
                     "components": [
                         {
                             "type": "header",
@@ -396,7 +396,7 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "approved": true,
+                    "status": "A",
                     "components": [
                         {
                             "type": "header",
