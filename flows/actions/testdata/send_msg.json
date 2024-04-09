@@ -604,64 +604,6 @@
         }
     },
     {
-        "description": "Msg with template but not approved",
-        "action": {
-            "type": "send_msg",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "text": "Hi there, these are the features you can test.",
-            "templating": {
-                "template": {
-                    "uuid": "a62e19cb-adec-424b-8c92-b434768272e0",
-                    "name": "new_features"
-                }
-            }
-        },
-        "events": [
-            {
-                "type": "msg_created",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "msg": {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "unsendable_reason": "template_status",
-                    "channel": {
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
-                    },
-                    "text": "Hi there, these are the features you can test.",
-                    "templating": {
-                        "template": {
-                            "uuid": "a62e19cb-adec-424b-8c92-b434768272e0",
-                            "name": "new_features"
-                        },
-                        "namespace": ""
-                    },
-                    "locale": "eng"
-                }
-            }
-        ],
-        "templates": [
-            "Hi there, these are the features you can test."
-        ],
-        "localizables": [
-            "Hi there, these are the features you can test."
-        ],
-        "inspection": {
-            "dependencies": [
-                {
-                    "uuid": "a62e19cb-adec-424b-8c92-b434768272e0",
-                    "name": "new_features",
-                    "type": "template"
-                }
-            ],
-            "issues": [],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Msg with template but no params or variables",
         "action": {
             "type": "send_msg",

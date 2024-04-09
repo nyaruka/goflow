@@ -257,7 +257,6 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "status": "A",
                     "components": [
                         {
                             "type": "body",
@@ -280,7 +279,6 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "status": "A",
                     "components": [
                         {
                             "type": "body",
@@ -309,34 +307,11 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng",
-                    "status": "A",
                     "components": [
                         {
                             "type": "body",
                             "name": "body",
                             "content": "Hi there, it's time to get up!",
-                            "params": []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "uuid": "a62e19cb-adec-424b-8c92-b434768272e0",
-            "name": "new_features",
-            "translations": [
-                {
-                    "channel": {
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
-                    },
-                    "locale": "eng",
-                    "status": "R",
-                    "components": [
-                        {
-                            "type": "body",
-                            "name": "body",
-                            "content": "Hi there, these are the features you can test.",
                             "params": []
                         }
                     ]
@@ -353,7 +328,6 @@
                         "name": "My Android Phone"
                     },
                     "locale": "eng-US",
-                    "status": "A",
                     "components": [
                         {
                             "type": "header",
@@ -396,7 +370,6 @@
                         "name": "My Android Phone"
                     },
                     "locale": "spa",
-                    "status": "A",
                     "components": [
                         {
                             "type": "header",
