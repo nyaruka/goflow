@@ -458,6 +458,7 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
+                        "namespace": "",
                         "components": [
                             {
                                 "type": "body",
@@ -473,8 +474,7 @@
                                     }
                                 ]
                             }
-                        ],
-                        "namespace": ""
+                        ]
                     },
                     "locale": "eng-US"
                 }
@@ -555,6 +555,7 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
+                        "namespace": "",
                         "components": [
                             {
                                 "type": "body",
@@ -570,8 +571,7 @@
                                     }
                                 ]
                             }
-                        ],
-                        "namespace": ""
+                        ]
                     },
                     "locale": "spa"
                 }
@@ -825,13 +825,6 @@
                 },
                 "components": [
                     {
-                        "uuid": "128b97ff-a530-4ec8-87dd-04a9a778c3e0",
-                        "name": "header",
-                        "params": [
-                            "http://templates.com/red.jpg"
-                        ]
-                    },
-                    {
                         "uuid": "1067f8e2-82f0-4378-9214-0f019365ddb7",
                         "name": "body",
                         "params": [
@@ -898,17 +891,8 @@
                             "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                             "name": "gender_update"
                         },
+                        "namespace": "",
                         "components": [
-                            {
-                                "type": "header",
-                                "name": "header",
-                                "params": [
-                                    {
-                                        "type": "image",
-                                        "value": "http://templates.com/rojo.jpg"
-                                    }
-                                ]
-                            },
                             {
                                 "type": "body",
                                 "name": "body",
@@ -933,8 +917,7 @@
                                     }
                                 ]
                             }
-                        ],
-                        "namespace": ""
+                        ]
                     },
                     "locale": "spa"
                 }
@@ -945,8 +928,6 @@
             "http://example.com/red.jpg",
             "Yes",
             "No",
-            "http://templates.com/red.jpg",
-            "http://templates.com/rojo.jpg",
             "@contact.name",
             "boy",
             "@contact.name",
@@ -960,7 +941,6 @@
             "http://example.com/red.jpg",
             "Yes",
             "No",
-            "http://templates.com/red.jpg",
             "@contact.name",
             "boy",
             "Yeah",

@@ -262,14 +262,18 @@
                             "type": "body",
                             "name": "body",
                             "content": "Hi {{1}}, who's an excellent {{2}}?",
-                            "params": [
-                                {
-                                    "type": "text"
-                                },
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 0,
+                                "2": 1
+                            }
+                        }
+                    ],
+                    "variables": [
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
                         }
                     ]
                 },
@@ -284,14 +288,18 @@
                             "type": "body",
                             "name": "body",
                             "content": "Hola {{1}}, quien es un {{2}} excelente?",
-                            "params": [
-                                {
-                                    "type": "text"
-                                },
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 0,
+                                "2": 1
+                            }
+                        }
+                    ],
+                    "variables": [
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
                         }
                     ]
                 }
@@ -312,9 +320,10 @@
                             "type": "body",
                             "name": "body",
                             "content": "Hi there, it's time to get up!",
-                            "params": []
+                            "variables": {}
                         }
-                    ]
+                    ],
+                    "variables": []
                 }
             ]
         },
@@ -333,34 +342,35 @@
                             "type": "header",
                             "name": "header",
                             "content": "",
-                            "params": [
-                                {
-                                    "type": "image"
-                                }
-                            ]
+                            "variables": {}
                         },
                         {
                             "type": "body",
                             "name": "body",
                             "content": "Hey {{1}}, your gender is saved as {{2}}.",
-                            "params": [
-                                {
-                                    "type": "text"
-                                },
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 0,
+                                "2": 1
+                            }
                         },
                         {
                             "type": "button/quick_reply",
                             "name": "button.1",
                             "content": "{{1}}",
-                            "params": [
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 2
+                            }
+                        }
+                    ],
+                    "variables": [
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
                         }
                     ]
                 },
@@ -375,40 +385,41 @@
                             "type": "header",
                             "name": "header",
                             "content": "",
-                            "params": [
-                                {
-                                    "type": "image"
-                                }
-                            ]
+                            "variables": {}
                         },
                         {
                             "type": "body",
                             "name": "body",
                             "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
-                            "params": [
-                                {
-                                    "type": "text"
-                                },
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 0,
+                                "2": 1
+                            }
                         },
                         {
                             "type": "button/quick_reply",
                             "name": "button.0",
                             "content": "{{1}}",
-                            "params": [
-                                {
-                                    "type": "text"
-                                }
-                            ]
+                            "variables": {
+                                "1": 2
+                            }
                         },
                         {
                             "type": "button/quick_reply",
                             "name": "button.1",
                             "content": "No",
-                            "params": []
+                            "variables": {}
+                        }
+                    ],
+                    "variables": [
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
+                        },
+                        {
+                            "type": "text"
                         }
                     ]
                 }

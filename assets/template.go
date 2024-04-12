@@ -27,9 +27,10 @@ type TemplateUUID uuids.UUID
 //	           "type": "body",
 //	           "name": "body",
 //	           "content": "Hello {{1}}",
-//	           "params": [{"type": "text"}]
+//	           "variables": {"1": 0}
 //	         }
-//	       ]
+//	       ],
+//	       "variables": [{"type": "text"}]
 //	    },
 //	    {
 //	       "locale": "fra",
@@ -42,9 +43,10 @@ type TemplateUUID uuids.UUID
 //	           "type": "body",
 //	           "name": "body",
 //	           "content": "Bonjour {{1}}",
-//	           "params": [{"type": "text"}]
+//	           "variables": {"1": 0}
 //	         }
-//	       ]
+//	       ],
+//	       "variables": [{"type": "text"}]
 //	    }
 //	  ]
 //	}
@@ -56,8 +58,7 @@ type Template interface {
 	Translations() []TemplateTranslation
 }
 
-// TemplateParam is a parameter for template translation
-type TemplateParam interface {
+type TemplateVariable interface {
 	Type() string
 }
 
@@ -66,7 +67,7 @@ type TemplateComponent interface {
 	Name() string
 	Content() string
 	Display() string
-	Params() []TemplateParam
+	Variables() map[string]int
 }
 
 // TemplateTranslation represents a single translation for a specific template and channel
@@ -75,6 +76,7 @@ type TemplateTranslation interface {
 	Namespace() string
 	Channel() *ChannelReference
 	Components() []TemplateComponent
+	Variables() []TemplateVariable
 }
 
 // TemplateReference is used to reference a Template
