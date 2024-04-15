@@ -1,3 +1,8 @@
+v0.208.0 (2024-04-15)
+-------------------------
+ * Update to latest decimal library that fixes .Pow
+ * Rework template assets to use variables instead of component specific param lists
+
 v0.207.3 (2024-03-20)
 -------------------------
  * Remove no longer used templating.params
