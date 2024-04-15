@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -161,15 +162,19 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	var previewParts []string
 	var previewQRs []string
 
-	for _, comp := range translation.Components() {
-		paramValues := evaluatedParams[comp.Name()]
-		params := make([]flows.TemplatingParam, len(comp.Params()))
+	variables := translation.Variables()
 
-		for i, p := range comp.Params() {
+	for _, comp := range translation.Components() {
+		varMap := comp.Variables()
+		paramValues := evaluatedParams[comp.Name()]
+		params := make([]flows.TemplatingParam, len(varMap))
+
+		for i, varName := range utils.SortedKeys(varMap) {
+			v := variables[varMap[varName]]
 			if i < len(paramValues) {
-				params[i] = flows.TemplatingParam{Type: p.Type(), Value: paramValues[i]}
+				params[i] = flows.TemplatingParam{Type: v.Type(), Value: paramValues[i]}
 			} else {
-				params[i] = flows.TemplatingParam{Type: p.Type(), Value: ""}
+				params[i] = flows.TemplatingParam{Type: v.Type(), Value: ""}
 			}
 		}
 

@@ -38,29 +38,40 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 
 // TemplateTranslation represents a single template translation
 type TemplateTranslation struct {
-	Channel_    *assets.ChannelReference `json:"channel"         validate:"required"`
-	Locale_     i18n.Locale              `json:"locale"          validate:"required"`
+	Channel_    *assets.ChannelReference `json:"channel"      validate:"required"`
+	Locale_     i18n.Locale              `json:"locale"       validate:"required"`
 	Namespace_  string                   `json:"namespace"`
 	Components_ []*TemplateComponent     `json:"components"`
+	Variables_  []*TemplateVariable      `json:"variables"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent, variables []*TemplateVariable) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:    channel,
 		Namespace_:  namespace,
 		Locale_:     locale,
 		Components_: components,
+		Variables_:  variables,
 	}
 }
 
-// Components returns the components structure for this template
+// Components returns the components for this template translation
 func (t *TemplateTranslation) Components() []assets.TemplateComponent {
-	tcs := make([]assets.TemplateComponent, len(t.Components_))
+	cs := make([]assets.TemplateComponent, len(t.Components_))
 	for k, tc := range t.Components_ {
-		tcs[k] = tc
+		cs[k] = tc
 	}
-	return tcs
+	return cs
+}
+
+// Variables returns the variables for this template translation
+func (t *TemplateTranslation) Variables() []assets.TemplateVariable {
+	vs := make([]assets.TemplateVariable, len(t.Variables_))
+	for i := range t.Variables_ {
+		vs[i] = t.Variables_[i]
+	}
+	return vs
 }
 
 // Namespace returns the namespace for this template
@@ -73,11 +84,11 @@ func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 func (t *TemplateTranslation) Channel() *assets.ChannelReference { return t.Channel_ }
 
 type TemplateComponent struct {
-	Type_    string           `json:"type"`
-	Name_    string           `json:"name"`
-	Content_ string           `json:"content"`
-	Display_ string           `json:"display"`
-	Params_  []*TemplateParam `json:"params"`
+	Type_      string         `json:"type"`
+	Name_      string         `json:"name"`
+	Content_   string         `json:"content"`
+	Display_   string         `json:"display"`
+	Variables_ map[string]int `json:"variables"`
 }
 
 // Type returns the type for this template component
@@ -92,29 +103,23 @@ func (t *TemplateComponent) Content() string { return t.Content_ }
 // Display returns the display for this template component
 func (t *TemplateComponent) Display() string { return t.Display_ }
 
-// Params returns the params for this template component
-func (t *TemplateComponent) Params() []assets.TemplateParam {
-	tps := make([]assets.TemplateParam, len(t.Params_))
-	for i := range t.Params_ {
-		tps[i] = t.Params_[i]
-	}
-	return tps
-}
+// Variables returns the variable mapping for this template component
+func (t *TemplateComponent) Variables() map[string]int { return t.Variables_ }
 
 // NewTemplateComponent creates a new template param
-func NewTemplateComponent(type_, name, content, display string, params []*TemplateParam) *TemplateComponent {
-	return &TemplateComponent{Type_: type_, Name_: name, Content_: content, Display_: display, Params_: params}
+func NewTemplateComponent(type_, name, content, display string, variables map[string]int) *TemplateComponent {
+	return &TemplateComponent{Type_: type_, Name_: name, Content_: content, Display_: display, Variables_: variables}
 }
 
-// TemplateParam represents a single parameter for a template translation
-type TemplateParam struct {
+// TemplateVariable represents a single variable for a template translation
+type TemplateVariable struct {
 	Type_ string `json:"type"`
 }
 
 // Type returns the type for this parameter
-func (t *TemplateParam) Type() string { return t.Type_ }
+func (t *TemplateVariable) Type() string { return t.Type_ }
 
-// NewTemplateParam creates a new template param
-func NewTemplateParam(paramType string) *TemplateParam {
-	return &TemplateParam{Type_: paramType}
+// NewTemplateVariable creates a new template variable
+func NewTemplateVariable(paramType string) *TemplateVariable {
+	return &TemplateVariable{Type_: paramType}
 }
