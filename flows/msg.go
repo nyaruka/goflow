@@ -5,9 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"regexp"
 	"slices"
-	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
@@ -170,52 +168,29 @@ func (m *MsgOut) Locale() i18n.Locale { return m.Locale_ }
 // UnsendableReason returns the reason this message can't be sent (if any)
 func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }
 
-type TemplatingParam struct {
+type TemplatingVariable struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
 }
 
 type TemplatingComponent struct {
-	Type   string            `json:"type"`
-	Name   string            `json:"name"`
-	Params []TemplatingParam `json:"params"`
-}
-
-var templateVariableRegex = regexp.MustCompile(`{{(\d+)}}`)
-
-// Preview returns the content of the given template component rendered using these templating params
-func (tc *TemplatingComponent) Preview(c assets.TemplateComponent) string {
-	content := c.Content()
-
-	for i, p := range tc.Params {
-		content = strings.ReplaceAll(content, fmt.Sprintf("{{%d}}", i+1), p.Value)
-	}
-
-	content = templateVariableRegex.ReplaceAllString(content, "")
-
-	return content
+	Type      string         `json:"type"`
+	Name      string         `json:"name"`
+	Variables map[string]int `json:"variables"`
 }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
-	Template_   *assets.TemplateReference `json:"template"`
-	Namespace_  string                    `json:"namespace"`
-	Components_ []*TemplatingComponent    `json:"components,omitempty"`
+	Template   *assets.TemplateReference `json:"template"`
+	Namespace  string                    `json:"namespace"`
+	Components []*TemplatingComponent    `json:"components,omitempty"`
+	Variables  []*TemplatingVariable     `json:"variables,omitempty"`
 }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, namespace string, components []*TemplatingComponent) *MsgTemplating {
-	return &MsgTemplating{Template_: template, Namespace_: namespace, Components_: components}
+func NewMsgTemplating(template *assets.TemplateReference, namespace string, components []*TemplatingComponent, variables []*TemplatingVariable) *MsgTemplating {
+	return &MsgTemplating{Template: template, Namespace: namespace, Components: components, Variables: variables}
 }
-
-// Template returns the template this msg template is for
-func (t *MsgTemplating) Template() *assets.TemplateReference { return t.Template_ }
-
-// Namespace returns the namespace that should be for the template
-func (t *MsgTemplating) Namespace() string { return t.Namespace_ }
-
-// Components returns the components that should be used for the templates
-func (t *MsgTemplating) Components() []*TemplatingComponent { return t.Components_ }
 
 // BroadcastTranslation is the broadcast content in a particular language
 type BroadcastTranslation struct {
