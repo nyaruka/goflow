@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -10,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -141,45 +141,54 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 // for message actions that specidy a template, this generates the template message where the message content should be
 // considered just a preview of how the template will be evaluated by the channel
 func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
+	// start by localizing and evaluating the param values - for now these are per-component
 	evaluatedParams := make(map[string][]string)
-
-	// start by localizing and evaluating the param values
+	totalParams := 0
 	for _, comp := range a.Templating.Components {
 		localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
 		evaluatedCompParams := make([]string, len(localizedCompParams))
 		for i, variable := range localizedCompParams {
 			sub, _ := run.EvaluateTemplate(variable, logEvent)
 			evaluatedCompParams[i] = sub
+			totalParams++
 		}
-
 		evaluatedParams[comp.Name] = evaluatedCompParams
 	}
 
-	// next we cross reference with params defined in the template translation to get types
+	// Turn that into a single list of variable values using the order of components on translation.
+	// Eventually this is what will be stored in the flow definition.
+	evaluatedVariables := make([]string, 0, totalParams)
+	for _, comp := range translation.Components() {
+		evaluatedVariables = append(evaluatedVariables, evaluatedParams[comp.Name()]...)
+	}
+
+	// cross-reference with asset to get variable types
+	variables := make([]*flows.TemplatingVariable, len(translation.Variables()))
+	for i, v := range translation.Variables() {
+		if i < len(evaluatedVariables) {
+			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: evaluatedVariables[i]}
+		} else {
+			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: ""}
+		}
+	}
+
+	// create a list of components that have variables
 	components := make([]*flows.TemplatingComponent, 0, len(translation.Components()))
+	for _, comp := range translation.Components() {
+		if len(comp.Variables()) > 0 {
+			components = append(components, &flows.TemplatingComponent{Type: comp.Type(), Name: comp.Name(), Variables: comp.Variables()})
+		}
+	}
 
 	// the message we return is an approximate preview of what the channel will send using the template
 	var previewParts []string
 	var previewQRs []string
 
-	variables := translation.Variables()
-
 	for _, comp := range translation.Components() {
-		varMap := comp.Variables()
-		paramValues := evaluatedParams[comp.Name()]
-		params := make([]flows.TemplatingParam, len(varMap))
-
-		for i, varName := range utils.SortedKeys(varMap) {
-			v := variables[varMap[varName]]
-			if i < len(paramValues) {
-				params[i] = flows.TemplatingParam{Type: v.Type(), Value: paramValues[i]}
-			} else {
-				params[i] = flows.TemplatingParam{Type: v.Type(), Value: ""}
-			}
+		previewContent := comp.Content()
+		for key, index := range comp.Variables() {
+			previewContent = strings.ReplaceAll(previewContent, fmt.Sprintf("{{%s}}", key), variables[index].Value)
 		}
-
-		compTemplating := &flows.TemplatingComponent{Type: comp.Type(), Name: comp.Name(), Params: params}
-		previewContent := compTemplating.Preview(comp)
 
 		if previewContent != "" {
 			if comp.Type() == "header" || comp.Type() == "body" || comp.Type() == "footer" {
@@ -188,16 +197,11 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 				previewQRs = append(previewQRs, stringsx.TruncateEllipsis(previewContent, maxQuickReplyLength))
 			}
 		}
-
-		if len(params) > 0 {
-			components = append(components, compTemplating)
-		}
 	}
 
 	previewText := strings.Join(previewParts, "\n\n")
-
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components)
+	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components, variables)
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }
