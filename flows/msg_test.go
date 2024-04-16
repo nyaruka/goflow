@@ -189,7 +189,8 @@ func TestMsgTemplating(t *testing.T) {
 			{
 				"type": "body",
 				"name": "body",
-				"variables": {"1": 0, "2": 1}
+				"variables": {"1": 0, "2": 1},
+				"params": null
 			}
 		],
 		"variables": [
@@ -204,42 +205,3 @@ func TestMsgTemplating(t *testing.T) {
 		]
 	  }`), marshaled, "JSON mismatch")
 }
-
-/*func TestTemplatingComponentPreview(t *testing.T) {
-	tcs := []struct {
-		templating *flows.TemplatingComponent
-		component  assets.TemplateComponent
-		expected   string
-	}{
-		{ // 0: no params
-			component:  static.NewTemplateComponent("body", "body", "Hello", "", map[string]int{}),
-			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{}},
-			expected:   "Hello",
-		},
-		{ // 1: two params on component and two params in templating
-			component:  static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", map[string]int{"1": 0, "2": 1}),
-			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}, {Type: "text", Value: "Bob"}}},
-			expected:   "Hello Dr Bob",
-		},
-		{ // 2: one less param in templating than on component
-			component:  static.NewTemplateComponent("body", "body", "Hello {{1}} {{2}}", "", map[string]int{"1": 0, "2": 1}),
-			templating: &flows.TemplatingComponent{Type: "body", Params: []flows.TemplatingParam{{Type: "text", Value: "Dr"}}},
-			expected:   "Hello Dr ",
-		},
-		{ // 3
-			component:  static.NewTemplateComponent("button/quick_reply", "button.0", "{{1}}", "", map[string]int{"1": 0, "2": 1}),
-			templating: &flows.TemplatingComponent{Type: "button/quick_reply", Params: []flows.TemplatingParam{{Type: "text", Value: "Yes"}}},
-			expected:   "Yes",
-		},
-		{ // 4: one param for content, one for display
-			component:  static.NewTemplateComponent("button/url", "button.0", "example.com?p={{1}}", "{{1}}", map[string]int{"1": 0, "2": 1}),
-			templating: &flows.TemplatingComponent{Type: "button/url", Params: []flows.TemplatingParam{{Type: "text", Value: "123"}, {Type: "text", Value: "Go"}}},
-			expected:   "example.com?p=123",
-		},
-	}
-
-	for i, tc := range tcs {
-		actualContent := tc.templating.Preview(tc.component)
-		assert.Equal(t, tc.expected, actualContent, "content mismatch in test %d", i)
-	}
-}*/
