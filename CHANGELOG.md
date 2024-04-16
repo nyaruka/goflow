@@ -1,3 +1,7 @@
+v0.209.1 (2024-04-16)
+-------------------------
+ * Re-include legacy .params field on components temporarily
+
 v0.209.0 (2024-04-16)
 -------------------------
  * Rework the format of MsgTemplating
