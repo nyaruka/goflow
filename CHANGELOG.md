@@ -1,3 +1,7 @@
+v0.209.0 (2024-04-16)
+-------------------------
+ * Rework the format of MsgTemplating
+
 v0.208.0 (2024-04-15)
 -------------------------
  * Update to latest decimal library that fixes .Pow
