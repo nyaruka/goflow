@@ -1,3 +1,7 @@
+v0.209.2 (2024-04-17)
+-------------------------
+ * Remove deprecated params in templating
+
 v0.209.1 (2024-04-16)
 -------------------------
  * Re-include legacy .params field on components temporarily
