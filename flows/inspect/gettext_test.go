@@ -31,9 +31,10 @@ func TestLocalizableText(t *testing.T) {
 	})
 
 	assert.Equal(t, map[string][]string{
-		"attachments":   {"image:https://example.com/test.jpg", "audio:https://example.com/test.mp3"},
-		"quick_replies": {"Yes", "No"},
-		"text":          {"Hi there"},
+		"attachments":        {"image:https://example.com/test.jpg", "audio:https://example.com/test.mp3"},
+		"quick_replies":      {"Yes", "No"},
+		"text":               {"Hi there"},
+		"template_variables": nil,
 	}, extracted)
 
 	data := jsonx.MustMarshal(sendMsg)
@@ -46,6 +47,10 @@ func TestLocalizableText(t *testing.T) {
 			"bar"
 		],
 		"quick_replies": [
+			"foo",
+			"bar"
+		],
+		"template_variables": [
 			"foo",
 			"bar"
 		]

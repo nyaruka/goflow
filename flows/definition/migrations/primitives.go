@@ -136,6 +136,12 @@ func (n Node) Router() Router {
 // Action holds an action definition
 type Action map[string]any
 
+// UUID returns the uuid of this action
+func (a Action) UUID() uuids.UUID {
+	d, _ := a["uuid"].(string)
+	return uuids.UUID(d)
+}
+
 // Type returns the type of this action
 func (a Action) Type() string {
 	d, _ := a["type"].(string)
