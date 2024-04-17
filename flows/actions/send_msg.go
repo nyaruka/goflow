@@ -32,19 +32,11 @@ const TypeSendMsg string = "send_msg"
 //	  "text": "Hi @contact.name, are you ready to complete today's survey?",
 //	  "attachments": [],
 //	  "all_urns": false,
-//	  "templating": {
-//	    "template": {
-//	      "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
-//	      "name": "revive_issue"
-//	    },
-//	    "components": [
-//	      {
-//	      	"uuid": "2131d674-9afb-41e8-bcb8-5910c2faec2f",
-//	      	"name": "body",
-//	      	"params": ["@contact.name"]
-//	      }
-//	    ]
+//	  "template": {
+//	    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+//	    "name": "revive_issue"
 //	  },
+//	  "template_variables": ["@contact.name"],
 //	  "topic": "event"
 //	}
 //
@@ -54,24 +46,10 @@ type SendMsgAction struct {
 	universalAction
 	createMsgAction
 
-	AllURNs    bool           `json:"all_urns,omitempty"`
-	Templating *Templating    `json:"templating,omitempty" validate:"omitempty"`
-	Topic      flows.MsgTopic `json:"topic,omitempty" validate:"omitempty,msg_topic"`
-}
-
-type TemplatingComponent struct {
-	UUID   uuids.UUID `json:"uuid" validate:"required,uuid4"`
-	Name   string     `json:"name" validate:"required"`
-	Params []string   `json:"params" engine:"localized,evaluated"`
-}
-
-// LocalizationUUID gets the UUID which identifies this object for localization
-func (c *TemplatingComponent) LocalizationUUID() uuids.UUID { return c.UUID }
-
-// Templating represents the templating that should be used if possible
-type Templating struct {
-	Template   *assets.TemplateReference `json:"template" validate:"required"`
-	Components []*TemplatingComponent    `json:"components,omitempty"`
+	AllURNs           bool                      `json:"all_urns,omitempty"`
+	Template          *assets.TemplateReference `json:"template,omitempty"`
+	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"localized,evaluated"`
+	Topic             flows.MsgTopic            `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
 
 // NewSendMsg creates a new send msg action
@@ -103,8 +81,8 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	sa := run.Session().Assets()
 
 	var template *flows.Template
-	if a.Templating != nil {
-		template = sa.Templates().Get(a.Templating.Template.UUID)
+	if a.Template != nil {
+		template = sa.Templates().Get(a.Template.UUID)
 	}
 
 	// create a new message for each URN+channel destination
@@ -141,12 +119,10 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 // for message actions that specify a template, this generates a mesage with templating information and content that can
 // be used as a preview
 func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	// start by localizing and transforming the current per-component lists into a single list
-	variableExpressions := getTemplateVariables(run, a.Templating)
-
-	// evaluate the variables
-	evaluatedVariables := make([]string, len(variableExpressions))
-	for i, varExp := range variableExpressions {
+	// localize and evaluate the variables
+	localizedVariables, _ := run.GetTextArray(uuids.UUID(a.UUID()), "template_variables", a.TemplateVariables, nil)
+	evaluatedVariables := make([]string, len(localizedVariables))
+	for i, varExp := range localizedVariables {
 		v, _ := run.EvaluateTemplate(varExp, logEvent)
 		evaluatedVariables[i] = v
 	}
@@ -194,19 +170,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 
 	previewText := strings.Join(previewParts, "\n\n")
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components, variables)
+	templating := flows.NewMsgTemplating(a.Template, translation.Namespace(), components, variables)
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
-}
-
-func getTemplateVariables(run flows.Run, t *Templating) []string {
-	variables := make([]string, 0, 5)
-
-	for _, comp := range t.Components {
-		localized, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
-
-		variables = append(variables, localized...)
-	}
-
-	return variables
 }
