@@ -59,7 +59,7 @@ func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifi
 	// substitute any variables in our input
 	input, _ := run.EvaluateTemplate(a.Input, logEvent)
 
-	classification, skipped := a.classify(run, step, input, classifier, logEvent)
+	classification, skipped := a.classify(run, input, classifier, logEvent)
 	if classification != nil {
 		a.saveSuccess(run, step, input, classification, logEvent)
 	} else if skipped {
@@ -71,7 +71,7 @@ func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifi
 	return nil
 }
 
-func (a *CallClassifierAction) classify(run flows.Run, step flows.Step, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
+func (a *CallClassifierAction) classify(run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
 		logEvent(events.NewErrorf("can't classify empty input, skipping classification"))
 		return nil, true
