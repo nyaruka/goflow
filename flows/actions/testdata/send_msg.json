@@ -466,17 +466,7 @@
                                 "variables": {
                                     "1": 0,
                                     "2": 1
-                                },
-                                "params": [
-                                    {
-                                        "type": "text",
-                                        "value": "Ryan Lewis"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "value": "boy"
-                                    }
-                                ]
+                                }
                             }
                         ],
                         "variables": [
@@ -577,17 +567,7 @@
                                 "variables": {
                                     "1": 0,
                                     "2": 1
-                                },
-                                "params": [
-                                    {
-                                        "type": "text",
-                                        "value": "Ryan Lewis"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "value": "niño"
-                                    }
-                                ]
+                                }
                             }
                         ],
                         "variables": [
@@ -927,30 +907,14 @@
                                 "variables": {
                                     "1": 0,
                                     "2": 1
-                                },
-                                "params": [
-                                    {
-                                        "type": "text",
-                                        "value": "Ryan Lewis"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "value": "niño"
-                                    }
-                                ]
+                                }
                             },
                             {
                                 "type": "button/quick_reply",
                                 "name": "button.0",
                                 "variables": {
                                     "1": 2
-                                },
-                                "params": [
-                                    {
-                                        "type": "text",
-                                        "value": "Sip"
-                                    }
-                                ]
+                                }
                             }
                         ],
                         "variables": [
