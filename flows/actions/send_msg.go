@@ -138,28 +138,17 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	return nil
 }
 
-// for message actions that specidy a template, this generates the template message where the message content should be
-// considered just a preview of how the template will be evaluated by the channel
+// for message actions that specify a template, this generates a mesage with templating information and content that can
+// be used as a preview
 func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	// start by localizing and evaluating the param values - for now these are per-component
-	evaluatedParams := make(map[string][]string)
-	totalParams := 0
-	for _, comp := range a.Templating.Components {
-		localizedCompParams, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
-		evaluatedCompParams := make([]string, len(localizedCompParams))
-		for i, variable := range localizedCompParams {
-			sub, _ := run.EvaluateTemplate(variable, logEvent)
-			evaluatedCompParams[i] = sub
-			totalParams++
-		}
-		evaluatedParams[comp.Name] = evaluatedCompParams
-	}
+	// start by localizing and transforming the current per-component lists into a single list
+	variableExpressions := getTemplateVariables(run, a.Templating)
 
-	// Turn that into a single list of variable values using the order of components on translation.
-	// Eventually this is what will be stored in the flow definition.
-	evaluatedVariables := make([]string, 0, totalParams)
-	for _, comp := range translation.Components() {
-		evaluatedVariables = append(evaluatedVariables, evaluatedParams[comp.Name()]...)
+	// evaluate the variables
+	evaluatedVariables := make([]string, len(variableExpressions))
+	for i, varExp := range variableExpressions {
+		v, _ := run.EvaluateTemplate(varExp, logEvent)
+		evaluatedVariables[i] = v
 	}
 
 	// cross-reference with asset to get variable types
@@ -208,4 +197,16 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	templating := flows.NewMsgTemplating(a.Templating.Template, translation.Namespace(), components, variables)
 
 	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
+}
+
+func getTemplateVariables(run flows.Run, t *Templating) []string {
+	variables := make([]string, 0, 5)
+
+	for _, comp := range t.Components {
+		localized, _ := run.GetTextArray(comp.UUID, "params", comp.Params, nil)
+
+		variables = append(variables, localized...)
+	}
+
+	return variables
 }
