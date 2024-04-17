@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -177,16 +176,11 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	components := make([]*flows.TemplatingComponent, 0, len(translation.Components()))
 	for _, comp := range translation.Components() {
 		if len(comp.Variables()) > 0 {
-			tc := &flows.TemplatingComponent{Type: comp.Type(), Name: comp.Name(), Variables: comp.Variables()}
-
-			// TODO remove when courier updated
-			tc.Params = make([]*flows.TemplatingVariable, 0, len(comp.Variables()))
-			for _, vn := range utils.SortedKeys(comp.Variables()) {
-				vi := comp.Variables()[vn]
-				tc.Params = append(tc.Params, variables[vi])
-			}
-
-			components = append(components, tc)
+			components = append(components, &flows.TemplatingComponent{
+				Type:      comp.Type(),
+				Name:      comp.Name(),
+				Variables: comp.Variables(),
+			})
 		}
 	}
 

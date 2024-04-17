@@ -189,8 +189,7 @@ func TestMsgTemplating(t *testing.T) {
 			{
 				"type": "body",
 				"name": "body",
-				"variables": {"1": 0, "2": 1},
-				"params": null
+				"variables": {"1": 0, "2": 1}
 			}
 		],
 		"variables": [

@@ -174,10 +174,9 @@ type TemplatingVariable struct {
 }
 
 type TemplatingComponent struct {
-	Type      string                `json:"type"`
-	Name      string                `json:"name"`
-	Variables map[string]int        `json:"variables"`
-	Params    []*TemplatingVariable `json:"params"` // deprecated
+	Type      string         `json:"type"`
+	Name      string         `json:"name"`
+	Variables map[string]int `json:"variables"`
 }
 
 // MsgTemplating represents any substituted message template that should be applied when sending this message
