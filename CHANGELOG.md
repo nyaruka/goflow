@@ -1,3 +1,7 @@
+v0.210.0 (2024-04-25)
+-------------------------
+ * Add new 13.5 flow spec which changes send_msg to use single list of variables
+
 v0.209.2 (2024-04-17)
 -------------------------
  * Remove deprecated params in templating
