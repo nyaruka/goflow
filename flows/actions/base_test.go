@@ -140,16 +140,16 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// inject the action into a suitable node's actions in that flow
 		actionsPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "nodes", "[0]", "actions"}
 		actionsJson := []byte(fmt.Sprintf("[%s]", string(tc.Action)))
-		assetsJSON = test.JSONReplace(assetsJSON, actionsPath, actionsJson)
+		testAssetsJSON := test.JSONReplace(assetsJSON, actionsPath, actionsJson)
 
 		// if we have a localization section, inject that too
 		if tc.Localization != nil {
 			localizationPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "localization"}
-			assetsJSON = test.JSONReplace(assetsJSON, localizationPath, tc.Localization)
+			testAssetsJSON = test.JSONReplace(testAssetsJSON, localizationPath, tc.Localization)
 		}
 
 		// create session assets
-		sa, err := test.CreateSessionAssets(assetsJSON, "")
+		sa, err := test.CreateSessionAssets(testAssetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
 		// now try to read the flow, and if we expect a read error, check that

@@ -2,15 +2,84 @@ package migrations
 
 import (
 	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/excellent/refactor"
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
 	registerMigration(semver.MustParse("13.4.0"), Migrate13_4)
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_5 converts the `templating` object in [action:send_msg] actions to use a merged list of variables.
+//
+// @version 13_5 "13.5"
+func Migrate13_5(f Flow, cfg *Config) (Flow, error) {
+	localization := f.Localization()
+
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "send_msg" {
+				templating, _ := action["templating"].(map[string]any)
+
+				if templating != nil {
+					variables := make([]string, 0, 5)
+					localizedVariables := make(map[i18n.Language][]string)
+
+					// the languages for which any component has param translations
+					localizedLangs := make(map[i18n.Language]bool)
+
+					components, _ := templating["components"].([]any)
+					for i := range components {
+						comp, _ := components[i].(map[string]any)
+						compUUID := GetObjectUUID(comp)
+						compParams, _ := comp["params"].([]any)
+						compParamsAsStrings := make([]string, len(compParams))
+						for j := range compParams {
+							p, _ := compParams[j].(string)
+							variables = append(variables, p)
+							compParamsAsStrings[j] = p
+						}
+
+						if localization != nil {
+							for _, lang := range localization.Languages() {
+								langTrans := localization.GetLanguageTranslation(lang)
+								if langTrans != nil {
+									params := langTrans.GetTranslation(compUUID, "params")
+									if params != nil {
+										localizedVariables[lang] = append(localizedVariables[lang], params...)
+										langTrans.DeleteTranslation(compUUID, "params")
+										localizedLangs[lang] = true
+									} else {
+										// maybe this component's params aren't translated but others are
+										localizedVariables[lang] = append(localizedVariables[lang], compParamsAsStrings...)
+									}
+								}
+							}
+						}
+					}
+
+					action["template"] = templating["template"]
+					action["template_variables"] = variables
+					delete(action, "templating")
+
+					if localization != nil {
+						for lang, langVariables := range localizedVariables {
+							if localizedLangs[lang] {
+								langTrans := localization.GetLanguageTranslation(lang)
+								langTrans.SetTranslation(action.UUID(), "template_variables", langVariables)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return f, nil
 }
 
 // Migrate13_4 converts the `templating` object in [action:send_msg] actions to use a list of components.

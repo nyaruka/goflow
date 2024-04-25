@@ -1,0 +1,225 @@
+[
+    {
+        "description": "flow without localization",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "components": [
+                                    {
+                                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                        "name": "body",
+                                        "params": [
+                                            "@contact.name"
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "5a5ccef6-8daa-4cb8-8e52-6b486361710f",
+                                        "name": "button.0",
+                                        "params": [
+                                            "@contact.language"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "template": {
+                                "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                "name": "welcome"
+                            },
+                            "template_variables": [
+                                "@contact.name",
+                                "@contact.language"
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with localization",
+        "original": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Hola"
+                        ]
+                    },
+                    "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                        "params": [
+                            "Nombre"
+                        ]
+                    },
+                    "5a5ccef6-8daa-4cb8-8e52-6b486361710f": {
+                        "params": [
+                            "Si"
+                        ]
+                    }
+                },
+                "kin": {
+                    "5a5ccef6-8daa-4cb8-8e52-6b486361710f": {
+                        "params": [
+                            "Yego"
+                        ]
+                    }
+                },
+                "fra": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "templating": {
+                                "template": {
+                                    "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                    "name": "welcome"
+                                },
+                                "components": [
+                                    {
+                                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                        "name": "body",
+                                        "params": [
+                                            "@contact.name"
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "5a5ccef6-8daa-4cb8-8e52-6b486361710f",
+                                        "name": "button.0",
+                                        "params": [
+                                            "@contact.language"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Testing",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Hola"
+                        ],
+                        "template_variables": [
+                            "Nombre",
+                            "Si"
+                        ]
+                    }
+                },
+                "kin": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "template_variables": [
+                            "@contact.name",
+                            "Yego"
+                        ]
+                    }
+                },
+                "fra": {
+                    "8eebd020-1af5-431c-b943-aa670fc74da9": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "365293c7-633c-45bd-96b7-0b059766588d",
+                    "actions": [
+                        {
+                            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+                            "type": "send_msg",
+                            "text": "Hello",
+                            "template": {
+                                "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
+                                "name": "welcome"
+                            },
+                            "template_variables": [
+                                "@contact.name",
+                                "@contact.language"
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
