@@ -22,6 +22,31 @@
         "read_error": "field 'topic' is not a valid message topic"
     },
     {
+        "description": "Read fails when template is missing uuid",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "hi there",
+            "template": {
+                "name": "no_uuid_template"
+            }
+        },
+        "read_error": "field 'template.uuid' is required"
+    },
+    {
+        "description": "Read fails when template uuid is invalid",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "hi there",
+            "template": {
+                "uuid": "ad154980-7bf7",
+                "name": "no_uuid_template"
+            }
+        },
+        "read_error": "field 'template.uuid' must be a valid UUID"
+    },
+    {
         "description": "Error events if msg text, attachments and quick replies have expression errors",
         "action": {
             "type": "send_msg",

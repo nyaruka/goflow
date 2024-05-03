@@ -47,7 +47,7 @@ type SendMsgAction struct {
 	createMsgAction
 
 	AllURNs           bool                      `json:"all_urns,omitempty"`
-	Template          *assets.TemplateReference `json:"template,omitempty"`
+	Template          *assets.TemplateReference `json:"template,omitempty" validate:"omitempty"`
 	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"localized,evaluated"`
 	Topic             flows.MsgTopic            `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
