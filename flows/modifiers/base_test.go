@@ -202,14 +202,6 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewURN(urns.URN("tel:+1234567890"), modifiers.URNAppend),
-			`{
-				"type": "urn",
-				"urn": "tel:+1234567890",
-				"modification": "append"
-			}`,
-		},
-		{
 			modifiers.NewURNs([]urns.URN{urns.URN("tel:+1234567890"), urns.URN("tel:+1234567891")}, modifiers.URNsSet),
 			`{
 				"type": "urns",
