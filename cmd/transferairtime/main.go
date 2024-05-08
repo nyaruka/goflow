@@ -35,7 +35,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	destination, err := urns.NewTelURNForCountry(args[0], "")
+	destination, err := urns.ParsePhone(args[0], "")
 	if err != nil {
 		fmt.Printf("%s isn't a valid phone number\n", args[0])
 		os.Exit(1)

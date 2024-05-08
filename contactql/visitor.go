@@ -102,7 +102,7 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return NewCondition(urns.TelScheme, PropertyTypeScheme, OpContains, value)
+		return NewCondition(urns.Phone.Prefix, PropertyTypeScheme, OpContains, value)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check

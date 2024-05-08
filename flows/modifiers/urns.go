@@ -54,8 +54,7 @@ func (m *URNsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 	}
 
 	for _, urn := range m.URNs {
-		// normalize the URN
-		urn := urn.Normalize(string(env.DefaultCountry()))
+		urn := urn.Normalize()
 
 		if err := urn.Validate(); err != nil {
 			log(events.NewErrorf("'%s' is not valid URN", urn))

@@ -110,7 +110,7 @@
                         "type": "switch",
                         "wait": {
                             "type": "dial",
-                            "phone": "(206)5551212"
+                            "phone": "1(206)5551212"
                         },
                         "result_name": "Redirect",
                         "categories": [

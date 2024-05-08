@@ -13,7 +13,7 @@
         "flow_uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
         "wait": {
             "type": "dial",
-            "phone": "(206)5551212"
+            "phone": "1(206)5551212"
         },
         "resume": {
             "type": "dial",

@@ -66,15 +66,15 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 	contact := run.Contact()
 
 	// fail if the contact doesn't have a tel URN
-	telURNs := contact.URNs().WithScheme(urns.TelScheme)
+	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix)
 	if len(telURNs) == 0 {
 		return nil, errors.New("can't transfer airtime to contact without a tel URN")
 	}
 
-	// if contact's preferred channel is tel, use that as the sender
+	// if contact's preferred channel is a phone number, use that as the sender
 	var sender urns.URN
 	channel := contact.PreferredChannel()
-	if channel != nil && channel.SupportsScheme(urns.TelScheme) {
+	if channel != nil && channel.SupportsScheme(urns.Phone.Prefix) {
 		sender, _ = urns.Parse("tel:" + channel.Address())
 	}
 

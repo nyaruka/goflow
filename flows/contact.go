@@ -176,7 +176,7 @@ func (c *Contact) Country() i18n.Country {
 	}
 
 	for _, u := range c.urns {
-		if u.urn.Scheme() == urns.TelScheme {
+		if u.urn.Scheme() == urns.Phone.Prefix {
 			c := i18n.DeriveCountryFromTel(u.urn.Path())
 			if c != i18n.NilCountry {
 				return c
@@ -262,7 +262,7 @@ func (c *Contact) RemoveURN(urn urns.URN) bool {
 
 // HasURN checks whether the contact has the given URN
 func (c *Contact) HasURN(urn urns.URN) bool {
-	urn = urn.Normalize("")
+	urn = urn.Normalize()
 
 	for _, u := range c.urns {
 		if u.URN().Identity() == urn.Identity() {
@@ -433,7 +433,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 
 		for _, urn := range c.urns {
 			// tel URNs can be re-assigned, other URN schemes are considered channel specific
-			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+			if urn.URN().Scheme() == urns.Phone.Prefix && channel.SupportsScheme(urns.Phone.Prefix) {
 				urn.SetChannel(channel)
 			}
 
