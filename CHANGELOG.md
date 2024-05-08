@@ -1,3 +1,8 @@
+v0.211.0 (2024-05-08)
+-------------------------
+ * Update to latest gocommon
+ * Remove old urn modifier which was replaced by the urns modifier
+
 v0.210.0 (2024-04-25)
 -------------------------
  * Add new 13.5 flow spec which changes send_msg to use single list of variables
