@@ -343,7 +343,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 
 	// if query is a valid number, rewrite as a tel = query
 	if env.RedactionPolicy() != envs.RedactionPolicyURNs {
-		if number := utils.ParsePhoneNumber(text, string(env.DefaultCountry())); number != "" {
+		if number := utils.ParsePhoneNumber(text, env.DefaultCountry()); number != "" {
 			text = fmt.Sprintf(`tel = %s`, number)
 		}
 	}

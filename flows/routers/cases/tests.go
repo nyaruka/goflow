@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -542,7 +543,7 @@ func HasPhone(env envs.Environment, text *types.XText, args ...types.XValue) typ
 	}
 
 	// try to find a phone number
-	numbers := utils.FindPhoneNumbers(text.Native(), country.Native())
+	numbers := utils.FindPhoneNumbers(text.Native(), i18n.Country(country.Native()))
 	if len(numbers) == 0 {
 		return FalseResult
 	}

@@ -90,7 +90,7 @@ func (u *ContactURN) SetChannel(channel *Channel) {
 		parsedQuery.Del("channel")
 	}
 
-	urn, _ := urns.NewURNFromParts(scheme, path, parsedQuery.Encode(), display)
+	urn, _ := urns.NewFromParts(scheme, path, parsedQuery.Encode(), display)
 	u.urn = urn
 }
 
@@ -111,7 +111,7 @@ func (u *ContactURN) withoutQuery(redact bool) urns.URN {
 		return urns.URN(fmt.Sprintf("%s:%s", scheme, redacted))
 	}
 
-	urn, _ := urns.NewURNFromParts(scheme, path, "", display)
+	urn, _ := urns.NewFromParts(scheme, path, "", display)
 
 	return urn
 }
@@ -207,9 +207,9 @@ func (l URNList) MapContext(env envs.Environment) map[string]types.XValue {
 	}
 
 	// and add nils for all other schemes
-	for scheme := range urns.ValidSchemes {
-		if _, seen := byScheme[scheme]; !seen {
-			byScheme[scheme] = nil
+	for _, scheme := range urns.Schemes {
+		if _, seen := byScheme[scheme.Prefix]; !seen {
+			byScheme[scheme.Prefix] = nil
 		}
 	}
 

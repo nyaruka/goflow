@@ -622,7 +622,7 @@ func TestHasPhone(t *testing.T) {
 		{"0954 1053 7962", "ID", "+6295410537962"}, // Invalid but possible Indonesian number
 		{"0811-1005-611", "ID", "+628111005611"},   // Valid with 11 digits
 		{"10000", "US", ""},
-		{"12067799294", "BW", ""},
+		{"12067799294", "BW", "+12067799294"},
 		{"oui", "CD", ""},
 	}
 

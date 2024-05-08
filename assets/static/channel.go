@@ -38,7 +38,7 @@ func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles [
 		UUID_:               uuid,
 		Name_:               name,
 		Address_:            address,
-		Schemes_:            []string{urns.TelScheme},
+		Schemes_:            []string{urns.Phone.Prefix},
 		Roles_:              roles,
 		Features_:           []assets.ChannelFeature{},
 		Country_:            country,

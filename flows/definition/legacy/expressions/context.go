@@ -16,9 +16,9 @@ type mapping struct {
 var mappings []mapping
 
 func init() {
-	schemes := make([]string, 0, len(urns.ValidSchemes))
-	for s := range urns.ValidSchemes {
-		schemes = append(schemes, s)
+	schemes := make([]string, len(urns.Schemes))
+	for i, s := range urns.Schemes {
+		schemes[i] = s.Prefix
 	}
 
 	schemesRe := strings.Join(schemes, `|`)
@@ -103,8 +103,9 @@ func MigrateContextReference(path string, rawDates bool) string {
 var numericLookupRegex = regexp.MustCompile(`\.\d+\w*`)
 
 // fixes property lookups
-//  .1 => ["1"]
-//  .1foo  => ["1foo"]
+//
+//	.1 => ["1"]
+//	.1foo  => ["1foo"]
 func fixLookups(path string) string {
 	return numericLookupRegex.ReplaceAllStringFunc(path, func(lookup string) string {
 		return `["` + lookup[1:] + `"]`

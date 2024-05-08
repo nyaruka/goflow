@@ -156,11 +156,10 @@ func createContextPathListFile(outputDir string, c *completion.Completion) error
 }
 
 func createURNsType(gettext func(string) string) completion.Type {
-	properties := make([]*completion.Property, 0, len(urns.ValidSchemes))
-	for k := range urns.ValidSchemes {
-		name := strings.Title(k)
-		help := strings.ReplaceAll(gettext("{type} URN for the contact"), "{type}", name)
-		properties = append(properties, completion.NewProperty(k, help, "text"))
+	properties := make([]*completion.Property, 0, len(urns.Schemes))
+	for _, s := range urns.Schemes {
+		help := strings.ReplaceAll(gettext("{type} URN for the contact"), "{type}", s.Name)
+		properties = append(properties, completion.NewProperty(s.Prefix, help, "text"))
 	}
 	sort.SliceStable(properties, func(i, j int) bool { return properties[i].Key < properties[j].Key })
 

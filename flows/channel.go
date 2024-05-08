@@ -103,13 +103,13 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 	}
 
 	// tel is a special case because we do number based matching
-	if urn.URN().Scheme() == urns.TelScheme {
+	if urn.URN().Scheme() == urns.Phone.Prefix {
 		countryCode := i18n.DeriveCountryFromTel(urn.URN().Path())
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {
 			// skip if not tel and not sendable
-			if !ch.SupportsScheme(urns.TelScheme) || !ch.HasRole(role) {
+			if !ch.SupportsScheme(urns.Phone.Prefix) || !ch.HasRole(role) {
 				continue
 			}
 			// skip if international and channel doesn't allow that
