@@ -19,7 +19,7 @@ func ParsePhoneNumber(s string, country i18n.Country) string {
 		return ""
 	}
 
-	formatted, err := urns.ParseNumber(s, country, false)
+	formatted, err := urns.ParseNumber(s, country, false, false)
 	if err != nil {
 		return ""
 	}
