@@ -1,3 +1,7 @@
+v0.211.1 (2024-05-09)
+-------------------------
+ * Update to latest gocommon
+
 v0.211.0 (2024-05-08)
 -------------------------
  * Update to latest gocommon
