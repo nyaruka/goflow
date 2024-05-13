@@ -1,13 +1,12 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from ContactQL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package gen
 
 import (
 	"fmt"
+	"github.com/antlr4-go/antlr/v4"
 	"sync"
 	"unicode"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Suppress unused import error
@@ -22,40 +21,40 @@ type ContactQLLexer struct {
 	// TODO: EOF string
 }
 
-var contactqllexerLexerStaticData struct {
+var ContactQLLexerLexerStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	channelNames           []string
-	modeNames              []string
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	ChannelNames           []string
+	ModeNames              []string
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func contactqllexerLexerInit() {
-	staticData := &contactqllexerLexerStaticData
-	staticData.channelNames = []string{
+	staticData := &ContactQLLexerLexerStaticData
+	staticData.ChannelNames = []string{
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN",
 	}
-	staticData.modeNames = []string{
+	staticData.ModeNames = []string{
 		"DEFAULT_MODE",
 	}
-	staticData.literalNames = []string{
+	staticData.LiteralNames = []string{
 		"", "'('", "')'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT", "STRING",
 		"WS", "ERROR",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"HAS", "IS", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT",
 		"STRING", "WS", "ERROR", "UnicodeLetter", "UnicodeClass_LU", "UnicodeClass_LL",
 		"UnicodeClass_LT", "UnicodeClass_LM", "UnicodeClass_LO", "UnicodeDigit",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 0, 9, 114, 6, -1, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2,
 		4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2,
@@ -205,7 +204,7 @@ func contactqllexerLexerInit() {
 // NewContactQLLexer(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func ContactQLLexerInit() {
-	staticData := &contactqllexerLexerStaticData
+	staticData := &ContactQLLexerLexerStaticData
 	staticData.once.Do(contactqllexerLexerInit)
 }
 
@@ -214,13 +213,13 @@ func NewContactQLLexer(input antlr.CharStream) *ContactQLLexer {
 	ContactQLLexerInit()
 	l := new(ContactQLLexer)
 	l.BaseLexer = antlr.NewBaseLexer(input)
-	staticData := &contactqllexerLexerStaticData
-	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	l.channelNames = staticData.channelNames
-	l.modeNames = staticData.modeNames
-	l.RuleNames = staticData.ruleNames
-	l.LiteralNames = staticData.literalNames
-	l.SymbolicNames = staticData.symbolicNames
+	staticData := &ContactQLLexerLexerStaticData
+	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	l.channelNames = staticData.ChannelNames
+	l.modeNames = staticData.ModeNames
+	l.RuleNames = staticData.RuleNames
+	l.LiteralNames = staticData.LiteralNames
+	l.SymbolicNames = staticData.SymbolicNames
 	l.GrammarFileName = "ContactQL.g4"
 	// TODO: l.EOF = antlr.TokenEOF
 
