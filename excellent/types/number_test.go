@@ -69,6 +69,8 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
 		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
 		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
+		{types.NewXText("234."), types.XNumberZero, 0, true},
+		{types.NewXText("+1800567890"), types.XNumberZero, 0, true},
 	}
 
 	env := envs.NewBuilder().Build()
