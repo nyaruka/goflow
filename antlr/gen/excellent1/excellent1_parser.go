@@ -1,4 +1,4 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package gen // Excellent1
 import (
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -18,32 +18,32 @@ type Excellent1Parser struct {
 	*antlr.BaseParser
 }
 
-var excellent1ParserStaticData struct {
+var Excellent1ParserStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func excellent1ParserInit() {
-	staticData := &excellent1ParserStaticData
-	staticData.literalNames = []string{
+	staticData := &Excellent1ParserStaticData
+	staticData.LiteralNames = []string{
 		"", "','", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'='", "'<>'",
 		"'<='", "'<'", "'>='", "'>'", "'&'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "COMMA", "LPAREN", "RPAREN", "PLUS", "MINUS", "TIMES", "DIVIDE",
 		"EXPONENT", "EQ", "NEQ", "LTE", "LT", "GTE", "GT", "AMPERSAND", "DECIMAL",
 		"STRING", "TRUE", "FALSE", "NAME", "WS", "ERROR",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"parse", "expression", "fnname", "parameters",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 1, 22, 66, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 1, 0, 1,
 		0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 16, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -90,7 +90,7 @@ func excellent1ParserInit() {
 // NewExcellent1Parser(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func Excellent1ParserInit() {
-	staticData := &excellent1ParserStaticData
+	staticData := &Excellent1ParserStaticData
 	staticData.once.Do(excellent1ParserInit)
 }
 
@@ -99,12 +99,12 @@ func NewExcellent1Parser(input antlr.TokenStream) *Excellent1Parser {
 	Excellent1ParserInit()
 	this := new(Excellent1Parser)
 	this.BaseParser = antlr.NewBaseParser(input)
-	staticData := &excellent1ParserStaticData
-	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	this.RuleNames = staticData.ruleNames
-	this.LiteralNames = staticData.literalNames
-	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "java-escape"
+	staticData := &Excellent1ParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	this.RuleNames = staticData.RuleNames
+	this.LiteralNames = staticData.LiteralNames
+	this.SymbolicNames = staticData.SymbolicNames
+	this.GrammarFileName = "Excellent1.g4"
 
 	return this
 }
@@ -151,20 +151,29 @@ type IParseContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Expression() IExpressionContext
+	EOF() antlr.TerminalNode
+
 	// IsParseContext differentiates from other interfaces.
 	IsParseContext()
 }
 
 type ParseContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyParseContext() *ParseContext {
 	var p = new(ParseContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent1ParserRULE_parse
 	return p
+}
+
+func InitEmptyParseContext(p *ParseContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent1ParserRULE_parse
 }
 
 func (*ParseContext) IsParseContext() {}
@@ -172,7 +181,7 @@ func (*ParseContext) IsParseContext() {}
 func NewParseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ParseContext {
 	var p = new(ParseContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent1ParserRULE_parse
@@ -233,28 +242,8 @@ func (s *ParseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent1Parser) Parse() (localctx IParseContext) {
-	this := p
-	_ = this
-
 	localctx = NewParseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, Excellent1ParserRULE_parse)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(8)
@@ -263,9 +252,23 @@ func (p *Excellent1Parser) Parse() (localctx IParseContext) {
 	{
 		p.SetState(9)
 		p.Match(Excellent1ParserEOF)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IExpressionContext is an interface to support dynamic dispatch.
@@ -274,21 +277,25 @@ type IExpressionContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsExpressionContext differentiates from other interfaces.
 	IsExpressionContext()
 }
 
 type ExpressionContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyExpressionContext() *ExpressionContext {
 	var p = new(ExpressionContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent1ParserRULE_expression
 	return p
+}
+
+func InitEmptyExpressionContext(p *ExpressionContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent1ParserRULE_expression
 }
 
 func (*ExpressionContext) IsExpressionContext() {}
@@ -296,7 +303,7 @@ func (*ExpressionContext) IsExpressionContext() {}
 func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExpressionContext {
 	var p = new(ExpressionContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent1ParserRULE_expression
@@ -306,8 +313,8 @@ func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *ExpressionContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExpressionContext) CopyFrom(ctx *ExpressionContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ExpressionContext) CopyAll(ctx *ExpressionContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ExpressionContext) GetRuleContext() antlr.RuleContext {
@@ -319,15 +326,15 @@ func (s *ExpressionContext) ToStringTree(ruleNames []string, recog antlr.Recogni
 }
 
 type DecimalLiteralContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewDecimalLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *DecimalLiteralContext {
 	var p = new(DecimalLiteralContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -363,15 +370,15 @@ func (s *DecimalLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface
 }
 
 type ParenthesesContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewParenthesesContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ParenthesesContext {
 	var p = new(ParenthesesContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -427,15 +434,15 @@ func (s *ParenthesesContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 type NegationContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewNegationContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegationContext {
 	var p = new(NegationContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -487,15 +494,15 @@ func (s *NegationContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type ExponentExpressionContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewExponentExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ExponentExpressionContext {
 	var p = new(ExponentExpressionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -572,16 +579,16 @@ func (s *ExponentExpressionContext) Accept(visitor antlr.ParseTreeVisitor) inter
 }
 
 type AdditionOrSubtractionExpressionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewAdditionOrSubtractionExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AdditionOrSubtractionExpressionContext {
 	var p = new(AdditionOrSubtractionExpressionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -666,15 +673,15 @@ func (s *AdditionOrSubtractionExpressionContext) Accept(visitor antlr.ParseTreeV
 }
 
 type FalseContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewFalseContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FalseContext {
 	var p = new(FalseContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -710,15 +717,15 @@ func (s *FalseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type ContextReferenceContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewContextReferenceContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ContextReferenceContext {
 	var p = new(ContextReferenceContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -754,16 +761,16 @@ func (s *ContextReferenceContext) Accept(visitor antlr.ParseTreeVisitor) interfa
 }
 
 type ComparisonExpressionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewComparisonExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ComparisonExpressionContext {
 	var p = new(ComparisonExpressionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -856,15 +863,15 @@ func (s *ComparisonExpressionContext) Accept(visitor antlr.ParseTreeVisitor) int
 }
 
 type ConcatenationContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewConcatenationContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ConcatenationContext {
 	var p = new(ConcatenationContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -941,15 +948,15 @@ func (s *ConcatenationContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type StringLiteralContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewStringLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringLiteralContext {
 	var p = new(StringLiteralContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -985,15 +992,15 @@ func (s *StringLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type FunctionCallContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewFunctionCallContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FunctionCallContext {
 	var p = new(FunctionCallContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1065,15 +1072,15 @@ func (s *FunctionCallContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 }
 
 type TrueContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewTrueContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *TrueContext {
 	var p = new(TrueContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1109,16 +1116,16 @@ func (s *TrueContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type EqualityExpressionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewEqualityExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *EqualityExpressionContext {
 	var p = new(EqualityExpressionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1203,16 +1210,16 @@ func (s *EqualityExpressionContext) Accept(visitor antlr.ParseTreeVisitor) inter
 }
 
 type MultiplicationOrDivisionExpressionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewMultiplicationOrDivisionExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *MultiplicationOrDivisionExpressionContext {
 	var p = new(MultiplicationOrDivisionExpressionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1301,10 +1308,8 @@ func (p *Excellent1Parser) Expression() (localctx IExpressionContext) {
 }
 
 func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
-	this := p
-	_ = this
-
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
 	_parentState := p.GetState()
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IExpressionContext = localctx
@@ -1313,28 +1318,16 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 	p.EnterRecursionRule(localctx, 2, Excellent1ParserRULE_expression, _p)
 	var _la int
 
-	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(30)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 1, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewFunctionCallContext(p, localctx)
 		p.SetParserRuleContext(localctx)
@@ -1347,9 +1340,16 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(13)
 			p.Match(Excellent1ParserLPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		p.SetState(15)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 
 		if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&2031652) != 0 {
@@ -1362,6 +1362,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(17)
 			p.Match(Excellent1ParserRPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 2:
@@ -1371,6 +1375,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(19)
 			p.Match(Excellent1ParserMINUS)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(20)
@@ -1384,6 +1392,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(21)
 			p.Match(Excellent1ParserSTRING)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 4:
@@ -1393,6 +1405,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(22)
 			p.Match(Excellent1ParserDECIMAL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 5:
@@ -1402,6 +1418,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(23)
 			p.Match(Excellent1ParserTRUE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 6:
@@ -1411,6 +1431,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(24)
 			p.Match(Excellent1ParserFALSE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 7:
@@ -1420,6 +1444,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(25)
 			p.Match(Excellent1ParserNAME)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 8:
@@ -1429,6 +1457,10 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(26)
 			p.Match(Excellent1ParserLPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(27)
@@ -1437,14 +1469,25 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(28)
 			p.Match(Excellent1ParserRPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(52)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
-
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
 			if p.GetParseListeners() != nil {
@@ -1453,18 +1496,27 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 			_prevctx = localctx
 			p.SetState(50)
 			p.GetErrorHandler().Sync(p)
-			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
+			if p.HasError() {
+				goto errorExit
+			}
+
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewExponentExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent1ParserRULE_expression)
 				p.SetState(32)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 12)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 12)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 12)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(33)
 					p.Match(Excellent1ParserEXPONENT)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(34)
@@ -1477,7 +1529,8 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(35)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 11)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 11)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 11)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(36)
@@ -1508,7 +1561,8 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(38)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 10)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 10)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 10)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(39)
@@ -1539,7 +1593,8 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(41)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 9)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 9)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 9)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(42)
@@ -1570,7 +1625,8 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(44)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 8)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(45)
@@ -1601,26 +1657,49 @@ func (p *Excellent1Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(47)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(48)
 					p.Match(Excellent1ParserAMPERSAND)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(49)
 					p.expression(8)
 				}
 
+			case antlr.ATNInvalidAltNumber:
+				goto errorExit
 			}
 
 		}
 		p.SetState(54)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IFnnameContext is an interface to support dynamic dispatch.
@@ -1630,20 +1709,30 @@ type IFnnameContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	NAME() antlr.TerminalNode
+	TRUE() antlr.TerminalNode
+	FALSE() antlr.TerminalNode
+
 	// IsFnnameContext differentiates from other interfaces.
 	IsFnnameContext()
 }
 
 type FnnameContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyFnnameContext() *FnnameContext {
 	var p = new(FnnameContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent1ParserRULE_fnname
 	return p
+}
+
+func InitEmptyFnnameContext(p *FnnameContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent1ParserRULE_fnname
 }
 
 func (*FnnameContext) IsFnnameContext() {}
@@ -1651,7 +1740,7 @@ func (*FnnameContext) IsFnnameContext() {}
 func NewFnnameContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FnnameContext {
 	var p = new(FnnameContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent1ParserRULE_fnname
@@ -1704,28 +1793,9 @@ func (s *FnnameContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent1Parser) Fnname() (localctx IFnnameContext) {
-	this := p
-	_ = this
-
 	localctx = NewFnnameContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, Excellent1ParserRULE_fnname)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
@@ -1740,7 +1810,17 @@ func (p *Excellent1Parser) Fnname() (localctx IFnnameContext) {
 		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IParametersContext is an interface to support dynamic dispatch.
@@ -1749,21 +1829,25 @@ type IParametersContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsParametersContext differentiates from other interfaces.
 	IsParametersContext()
 }
 
 type ParametersContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyParametersContext() *ParametersContext {
 	var p = new(ParametersContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent1ParserRULE_parameters
 	return p
+}
+
+func InitEmptyParametersContext(p *ParametersContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent1ParserRULE_parameters
 }
 
 func (*ParametersContext) IsParametersContext() {}
@@ -1771,7 +1855,7 @@ func (*ParametersContext) IsParametersContext() {}
 func NewParametersContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ParametersContext {
 	var p = new(ParametersContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent1ParserRULE_parameters
@@ -1781,8 +1865,8 @@ func NewParametersContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *ParametersContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ParametersContext) CopyFrom(ctx *ParametersContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ParametersContext) CopyAll(ctx *ParametersContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ParametersContext) GetRuleContext() antlr.RuleContext {
@@ -1794,15 +1878,15 @@ func (s *ParametersContext) ToStringTree(ruleNames []string, recog antlr.Recogni
 }
 
 type FunctionParametersContext struct {
-	*ParametersContext
+	ParametersContext
 }
 
 func NewFunctionParametersContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FunctionParametersContext {
 	var p = new(FunctionParametersContext)
 
-	p.ParametersContext = NewEmptyParametersContext()
+	InitEmptyParametersContext(&p.ParametersContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ParametersContext))
+	p.CopyAll(ctx.(*ParametersContext))
 
 	return p
 }
@@ -1883,28 +1967,9 @@ func (s *FunctionParametersContext) Accept(visitor antlr.ParseTreeVisitor) inter
 }
 
 func (p *Excellent1Parser) Parameters() (localctx IParametersContext) {
-	this := p
-	_ = this
-
 	localctx = NewParametersContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, Excellent1ParserRULE_parameters)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	localctx = NewFunctionParametersContext(p, localctx)
 	p.EnterOuterAlt(localctx, 1)
@@ -1914,12 +1979,19 @@ func (p *Excellent1Parser) Parameters() (localctx IParametersContext) {
 	}
 	p.SetState(62)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	for _la == Excellent1ParserCOMMA {
 		{
 			p.SetState(58)
 			p.Match(Excellent1ParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(59)
@@ -1928,10 +2000,23 @@ func (p *Excellent1Parser) Parameters() (localctx IParametersContext) {
 
 		p.SetState(64)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 func (p *Excellent1Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
@@ -1949,9 +2034,6 @@ func (p *Excellent1Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIn
 }
 
 func (p *Excellent1Parser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	this := p
-	_ = this
-
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 12)
