@@ -114,9 +114,9 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 	return NewCondition(AttributeName, PropertyTypeAttribute, operator, value)
 }
 
-// expression : TEXT COMPARATOR literal
+// expression : NAME COMPARATOR literal
 func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
-	propKey := strings.ToLower(ctx.TEXT().GetText())
+	propKey := strings.ToLower(ctx.NAME().GetText())
 	operatorText := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
@@ -176,7 +176,7 @@ func (v *visitor) VisitExpressionGrouping(ctx *gen.ExpressionGroupingContext) an
 	return v.Visit(ctx.Expression())
 }
 
-// literal : TEXT
+// literal : TEXT | NAME
 func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) any {
 	return ctx.GetText()
 }

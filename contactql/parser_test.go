@@ -274,21 +274,27 @@ func TestParsingErrors(t *testing.T) {
 	}{
 		{
 			query:    `$`,
-			errMsg:   "mismatched input '$' expecting {'(', TEXT, STRING}",
+			errMsg:   "mismatched input '$' expecting {'(', STRING, NAME, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "$"},
 		},
 		{
 			query:    `name = `,
-			errMsg:   "mismatched input '<EOF>' expecting {TEXT, STRING}",
+			errMsg:   "mismatched input '<EOF>' expecting {STRING, NAME, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "<EOF>"},
 		},
 		{
 			query:    `name = "x`,
-			errMsg:   "extraneous input '\"' expecting {TEXT, STRING}",
+			errMsg:   "extraneous input '\"' expecting {STRING, NAME, TEXT}",
 			errCode:  "",
 			errExtra: nil,
+		},
+		{
+			query:    `nam/e = "x"`,
+			errMsg:   "mismatched input '=' expecting <EOF>",
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "="},
 		},
 		{
 			query:    `age = XZ`,
