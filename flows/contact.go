@@ -523,7 +523,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 		default:
 			return nil
 		}
-	} else if propType == contactql.PropertyTypeScheme {
+	} else if propType == contactql.PropertyTypeURN {
 		urnsWithScheme := c.urns.WithScheme(key)
 		vals := make([]any, len(urnsWithScheme))
 		for i := range urnsWithScheme {

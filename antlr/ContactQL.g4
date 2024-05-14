@@ -22,7 +22,7 @@ COMPARATOR: (
 		| IS
 	);
 STRING: '"' (~["] | '\\"')* '"';
-NAME: (UnicodeLetter | UnicodeDigit | '_' | ':')+;
+NAME: (UnicodeLetter | UnicodeDigit | '_' | '.')+;  // e.g. fields.num_goats or urns.tel or name
 TEXT: (
 		UnicodeLetter
 		| UnicodeDigit

@@ -41,7 +41,7 @@ func Inspect(query *ContactQuery) *Inspection {
 					addRef(assets.NewVariableGroupReference(c.value))
 				}
 			}
-		case PropertyTypeScheme:
+		case PropertyTypeURN:
 			schemes[c.propKey] = true
 		case PropertyTypeField:
 			if query.resolver != nil {

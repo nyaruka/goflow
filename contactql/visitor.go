@@ -92,17 +92,17 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		num, err := strconv.Atoi(value)
 		if err == nil {
-			return NewCondition(AttributeID, PropertyTypeAttribute, OpEqual, strconv.Itoa(num))
+			return NewCondition(PropertyTypeAttribute, AttributeID, OpEqual, strconv.Itoa(num))
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()
 
-		return NewCondition(scheme, PropertyTypeScheme, OpEqual, path)
+		return NewCondition(PropertyTypeURN, scheme, OpEqual, path)
 
 	} else if implicitIsPhoneNumberRegex.MatchString(value) {
 		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
 
-		return NewCondition(urns.Phone.Prefix, PropertyTypeScheme, OpContains, value)
+		return NewCondition(PropertyTypeURN, urns.Phone.Prefix, OpContains, value)
 	}
 
 	// convert to contains condition only if we have the right tokens, otherwise make equals check
@@ -111,12 +111,12 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 		operator = OpEqual
 	}
 
-	return NewCondition(AttributeName, PropertyTypeAttribute, operator, value)
+	return NewCondition(PropertyTypeAttribute, AttributeName, operator, value)
 }
 
 // expression : NAME COMPARATOR literal
 func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
-	propKey := strings.ToLower(ctx.NAME().GetText())
+	propText := strings.ToLower(ctx.NAME().GetText())
 	operatorText := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
@@ -126,28 +126,40 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 	}
 
 	var propType PropertyType
+	var propKey string
 
-	// first try to match a fixed attribute
-	_, isAttribute := attributes[propKey]
-	if isAttribute {
-		propType = PropertyTypeAttribute
-
-		if propKey == AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
-		}
-
-	} else if urns.IsValidScheme(propKey) {
-		// second try to match a URN scheme
-		propType = PropertyTypeScheme
-
-		if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-			v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
-		}
-	} else {
+	// check if property type is specified as prefix
+	if strings.HasPrefix(propText, "fields.") {
+		propKey = strings.TrimPrefix(propText, "fields.")
 		propType = PropertyTypeField
+	} else if strings.HasPrefix(propText, "urns.") {
+		propKey = strings.TrimPrefix(propText, "urns.")
+		propType = PropertyTypeURN
+	} else {
+		propKey = propText
+
+		// first try to match a fixed attribute
+		_, isAttribute := attributes[propKey]
+		if isAttribute {
+			propType = PropertyTypeAttribute
+
+			if propKey == AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
+				v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
+			}
+
+		} else if urns.IsValidScheme(propKey) {
+			// second try to match a URN scheme
+			propType = PropertyTypeURN
+
+			if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
+				v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
+			}
+		} else {
+			propType = PropertyTypeField
+		}
 	}
 
-	return NewCondition(propKey, propType, operator, value)
+	return NewCondition(propType, propKey, operator, value)
 }
 
 // expression : expression AND expression

@@ -48,6 +48,7 @@ func TestFieldValues(t *testing.T) {
 		"join_date":        nil,
 		"state":            nil,
 		"not_set":          nil,
+		"language":         nil,
 	}), flows.Context(env, fieldVals))
 }
 
