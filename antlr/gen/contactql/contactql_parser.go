@@ -35,30 +35,30 @@ func contactqlParserInit() {
 		"", "'('", "')'",
 	}
 	staticData.SymbolicNames = []string{
-		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT", "STRING",
-		"WS", "ERROR",
+		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "STRING", "NAME",
+		"TEXT", "WS", "ERROR",
 	}
 	staticData.RuleNames = []string{
 		"parse", "expression", "literal",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 9, 38, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 19, 8, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 29, 8, 1, 10, 1, 12, 1, 32,
-		9, 1, 1, 2, 1, 2, 3, 2, 36, 8, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4, 0, 0, 40,
-		0, 6, 1, 0, 0, 0, 2, 18, 1, 0, 0, 0, 4, 35, 1, 0, 0, 0, 6, 7, 3, 2, 1,
-		0, 7, 8, 5, 0, 0, 1, 8, 1, 1, 0, 0, 0, 9, 10, 6, 1, -1, 0, 10, 11, 5, 1,
-		0, 0, 11, 12, 3, 2, 1, 0, 12, 13, 5, 2, 0, 0, 13, 19, 1, 0, 0, 0, 14, 15,
-		5, 6, 0, 0, 15, 16, 5, 5, 0, 0, 16, 19, 3, 4, 2, 0, 17, 19, 3, 4, 2, 0,
-		18, 9, 1, 0, 0, 0, 18, 14, 1, 0, 0, 0, 18, 17, 1, 0, 0, 0, 19, 30, 1, 0,
-		0, 0, 20, 21, 10, 6, 0, 0, 21, 22, 5, 3, 0, 0, 22, 29, 3, 2, 1, 7, 23,
-		24, 10, 5, 0, 0, 24, 29, 3, 2, 1, 6, 25, 26, 10, 4, 0, 0, 26, 27, 5, 4,
-		0, 0, 27, 29, 3, 2, 1, 5, 28, 20, 1, 0, 0, 0, 28, 23, 1, 0, 0, 0, 28, 25,
-		1, 0, 0, 0, 29, 32, 1, 0, 0, 0, 30, 28, 1, 0, 0, 0, 30, 31, 1, 0, 0, 0,
-		31, 3, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 33, 36, 5, 6, 0, 0, 34, 36, 5, 7,
-		0, 0, 35, 33, 1, 0, 0, 0, 35, 34, 1, 0, 0, 0, 36, 5, 1, 0, 0, 0, 4, 18,
-		28, 30, 35,
+		4, 1, 10, 39, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 19, 8, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 29, 8, 1, 10, 1, 12, 1,
+		32, 9, 1, 1, 2, 1, 2, 1, 2, 3, 2, 37, 8, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4,
+		0, 0, 42, 0, 6, 1, 0, 0, 0, 2, 18, 1, 0, 0, 0, 4, 36, 1, 0, 0, 0, 6, 7,
+		3, 2, 1, 0, 7, 8, 5, 0, 0, 1, 8, 1, 1, 0, 0, 0, 9, 10, 6, 1, -1, 0, 10,
+		11, 5, 1, 0, 0, 11, 12, 3, 2, 1, 0, 12, 13, 5, 2, 0, 0, 13, 19, 1, 0, 0,
+		0, 14, 15, 5, 7, 0, 0, 15, 16, 5, 5, 0, 0, 16, 19, 3, 4, 2, 0, 17, 19,
+		3, 4, 2, 0, 18, 9, 1, 0, 0, 0, 18, 14, 1, 0, 0, 0, 18, 17, 1, 0, 0, 0,
+		19, 30, 1, 0, 0, 0, 20, 21, 10, 6, 0, 0, 21, 22, 5, 3, 0, 0, 22, 29, 3,
+		2, 1, 7, 23, 24, 10, 5, 0, 0, 24, 29, 3, 2, 1, 6, 25, 26, 10, 4, 0, 0,
+		26, 27, 5, 4, 0, 0, 27, 29, 3, 2, 1, 5, 28, 20, 1, 0, 0, 0, 28, 23, 1,
+		0, 0, 0, 28, 25, 1, 0, 0, 0, 29, 32, 1, 0, 0, 0, 30, 28, 1, 0, 0, 0, 30,
+		31, 1, 0, 0, 0, 31, 3, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 33, 37, 5, 7, 0,
+		0, 34, 37, 5, 8, 0, 0, 35, 37, 5, 6, 0, 0, 36, 33, 1, 0, 0, 0, 36, 34,
+		1, 0, 0, 0, 36, 35, 1, 0, 0, 0, 37, 5, 1, 0, 0, 0, 4, 18, 28, 30, 36,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -102,10 +102,11 @@ const (
 	ContactQLParserAND        = 3
 	ContactQLParserOR         = 4
 	ContactQLParserCOMPARATOR = 5
-	ContactQLParserTEXT       = 6
-	ContactQLParserSTRING     = 7
-	ContactQLParserWS         = 8
-	ContactQLParserERROR      = 9
+	ContactQLParserSTRING     = 6
+	ContactQLParserNAME       = 7
+	ContactQLParserTEXT       = 8
+	ContactQLParserWS         = 9
+	ContactQLParserERROR      = 10
 )
 
 // ContactQLParser rules.
@@ -370,8 +371,8 @@ func (s *ConditionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ConditionContext) TEXT() antlr.TerminalNode {
-	return s.GetToken(ContactQLParserTEXT, 0)
+func (s *ConditionContext) NAME() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserNAME, 0)
 }
 
 func (s *ConditionContext) COMPARATOR() antlr.TerminalNode {
@@ -786,7 +787,7 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		_prevctx = localctx
 		{
 			p.SetState(14)
-			p.Match(ContactQLParserTEXT)
+			p.Match(ContactQLParserNAME)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -1043,6 +1044,10 @@ func (s *TextLiteralContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
+func (s *TextLiteralContext) NAME() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserNAME, 0)
+}
+
 func (s *TextLiteralContext) TEXT() antlr.TerminalNode {
 	return s.GetToken(ContactQLParserTEXT, 0)
 }
@@ -1072,18 +1077,30 @@ func (s *TextLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 func (p *ContactQLParser) Literal() (localctx ILiteralContext) {
 	localctx = NewLiteralContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, ContactQLParserRULE_literal)
-	p.SetState(35)
+	p.SetState(36)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
 	switch p.GetTokenStream().LA(1) {
-	case ContactQLParserTEXT:
+	case ContactQLParserNAME:
 		localctx = NewTextLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(33)
+			p.Match(ContactQLParserNAME)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case ContactQLParserTEXT:
+		localctx = NewTextLiteralContext(p, localctx)
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(34)
 			p.Match(ContactQLParserTEXT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1093,9 +1110,9 @@ func (p *ContactQLParser) Literal() (localctx ILiteralContext) {
 
 	case ContactQLParserSTRING:
 		localctx = NewStringLiteralContext(p, localctx)
-		p.EnterOuterAlt(localctx, 2)
+		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(34)
+			p.SetState(35)
 			p.Match(ContactQLParserSTRING)
 			if p.HasError() {
 				// Recognition error - abort rule

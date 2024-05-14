@@ -2,6 +2,7 @@ grammar ContactQL;
 
 import LexUnicode;
 
+// Lexer rules
 fragment HAS: [Hh][Aa][Ss];
 fragment IS: [Ii][Ss];
 
@@ -20,6 +21,8 @@ COMPARATOR: (
 		| HAS
 		| IS
 	);
+STRING: '"' (~["] | '\\"')* '"';
+NAME: (UnicodeLetter | UnicodeDigit | '_' | ':')+;
 TEXT: (
 		UnicodeLetter
 		| UnicodeDigit
@@ -32,12 +35,12 @@ TEXT: (
 		| '@'
 		| ':'
 	)+;
-STRING: '"' (~["] | '\\"')* '"';
 
 WS: [ \t\n\r]+ -> skip; // ignore whitespace
 
 ERROR: .;
 
+// Parser rules
 parse: expression EOF;
 
 expression:
@@ -45,7 +48,10 @@ expression:
 	| expression expression		# combinationImpicitAnd
 	| expression OR expression	# combinationOr
 	| LPAREN expression RPAREN	# expressionGrouping
-	| TEXT COMPARATOR literal	# condition
+	| NAME COMPARATOR literal	# condition
 	| literal					# implicitCondition;
 
-literal: TEXT # textLiteral | STRING # stringLiteral;
+literal: 
+	NAME # textLiteral 
+	| TEXT # textLiteral 
+	| STRING # stringLiteral;
