@@ -282,27 +282,39 @@ func TestParsingErrors(t *testing.T) {
 	}{
 		{
 			query:    `$`,
-			errMsg:   "mismatched input '$' expecting {'(', STRING, NAME, TEXT}",
+			errMsg:   "mismatched input '$' expecting {'(', STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "$"},
 		},
 		{
 			query:    `name = `,
-			errMsg:   "mismatched input '<EOF>' expecting {STRING, NAME, TEXT}",
+			errMsg:   "mismatched input '<EOF>' expecting {STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "<EOF>"},
 		},
 		{
 			query:    `name = "x`,
-			errMsg:   "extraneous input '\"' expecting {STRING, NAME, TEXT}",
+			errMsg:   "extraneous input '\"' expecting {STRING, PROPERTY, TEXT}",
 			errCode:  "",
 			errExtra: nil,
 		},
 		{
 			query:    `nam/e = "x"`,
+			errMsg:   "mismatched input '=' expecting <EOF>", // because .name isn't valid NAME
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "="},
+		},
+		{
+			query:    `name. = "x"`,
 			errMsg:   "mismatched input '=' expecting <EOF>",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "="},
+		},
+		{
+			query:    `.name != "x"`,
+			errMsg:   "mismatched input '!=' expecting <EOF>",
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "!="},
 		},
 		{
 			query:    `age = XZ`,
@@ -375,6 +387,12 @@ func TestParsingErrors(t *testing.T) {
 			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
 			errCode:  "unknown_property",
 			errExtra: map[string]string{"property": "beers"},
+		},
+		{
+			query:    `xxx.age = 12`,
+			errMsg:   "unknown property type 'xxx'",
+			errCode:  "unknown_property_type",
+			errExtra: map[string]string{"type": "xxx"},
 		},
 	}
 

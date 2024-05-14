@@ -114,9 +114,9 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 	return NewCondition(PropertyTypeAttribute, AttributeName, operator, value)
 }
 
-// expression : NAME COMPARATOR literal
+// expression : PROPERTY COMPARATOR literal
 func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
-	propText := strings.ToLower(ctx.NAME().GetText())
+	propText := strings.ToLower(ctx.PROPERTY().GetText())
 	operatorText := strings.ToLower(ctx.COMPARATOR().GetText())
 	value := v.Visit(ctx.Literal()).(string)
 
@@ -129,12 +129,18 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 	var propKey string
 
 	// check if property type is specified as prefix
-	if strings.HasPrefix(propText, "fields.") {
-		propKey = strings.TrimPrefix(propText, "fields.")
-		propType = PropertyTypeField
-	} else if strings.HasPrefix(propText, "urns.") {
-		propKey = strings.TrimPrefix(propText, "urns.")
-		propType = PropertyTypeURN
+	if strings.Contains(propText, ".") {
+		parts := strings.SplitN(propText, ".", 2)
+
+		if parts[0] == "fields" {
+			propType = PropertyTypeField
+			propKey = parts[1]
+		} else if parts[0] == "urns" {
+			propType = PropertyTypeURN
+			propKey = parts[1]
+		} else {
+			v.addError(NewQueryError(ErrUnknownPropertyType, "unknown property type '%s'", parts[0]).withExtra("type", parts[0]))
+		}
 	} else {
 		propKey = propText
 
