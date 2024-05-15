@@ -223,14 +223,22 @@ func (c *Condition) Simplify() QueryNode {
 }
 
 func (c *Condition) String() string {
+	property := c.propKey
 	value := c.value
+
+	// add prefix for fields and URNs
+	if c.propType == PropertyTypeField {
+		property = fmt.Sprintf(`fields.%s`, property)
+	} else if c.propType == PropertyTypeURN {
+		property = fmt.Sprintf(`urns.%s`, property)
+	}
 
 	if !isNumberRegex.MatchString(value) {
 		// if not a decimal then quote
 		value = strconv.Quote(value)
 	}
 
-	return fmt.Sprintf(`%s %s %s`, c.propKey, c.operator, value)
+	return fmt.Sprintf(`%s %s %s`, property, c.operator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions
