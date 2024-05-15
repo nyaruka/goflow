@@ -1,3 +1,8 @@
+v0.212.0 (2024-05-15)
+-------------------------
+ * Add support for contactql conditions with properties prefixed by their type
+ * Update to latest ANTLR4
+
 v0.211.2 (2024-05-09)
 -------------------------
  * Update gocommom
