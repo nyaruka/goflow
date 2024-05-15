@@ -5,6 +5,8 @@ import LexUnicode;
 // Lexer rules
 fragment HAS: [Hh][Aa][Ss];
 fragment IS: [Ii][Ss];
+fragment PROPTYPE: (UnicodeLetter)+;
+fragment PROPKEY: (UnicodeLetter | UnicodeDigit | '_')+;
 
 LPAREN: '(';
 RPAREN: ')';
@@ -22,7 +24,7 @@ COMPARATOR: (
 		| IS
 	);
 STRING: '"' (~["] | '\\"')* '"';
-NAME: (UnicodeLetter | UnicodeDigit | '_' | ':')+;
+PROPERTY: (PROPTYPE '.')? PROPKEY;
 TEXT: (
 		UnicodeLetter
 		| UnicodeDigit
@@ -44,14 +46,14 @@ ERROR: .;
 parse: expression EOF;
 
 expression:
-	expression AND expression	# combinationAnd
-	| expression expression		# combinationImpicitAnd
-	| expression OR expression	# combinationOr
-	| LPAREN expression RPAREN	# expressionGrouping
-	| NAME COMPARATOR literal	# condition
-	| literal					# implicitCondition;
+	expression AND expression		# combinationAnd
+	| expression expression			# combinationImpicitAnd
+	| expression OR expression		# combinationOr
+	| LPAREN expression RPAREN		# expressionGrouping
+	| PROPERTY COMPARATOR literal	# condition
+	| literal						# implicitCondition;
 
-literal: 
-	NAME # textLiteral 
-	| TEXT # textLiteral 
-	| STRING # stringLiteral;
+literal:
+	PROPERTY	# textLiteral // it's not really a property, just indistinguishable by lexer
+	| TEXT		# textLiteral
+	| STRING	# stringLiteral;

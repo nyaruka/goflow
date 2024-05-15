@@ -17,6 +17,7 @@ func TestParseQuery(t *testing.T) {
 			static.NewField("d66a7823-eada-40e5-9a3a-57239d4690bf", "gender", "Gender", assets.FieldTypeText),
 			static.NewField("165def68-3216-4ebf-96bc-f6f1ee5bd966", "state", "State", assets.FieldTypeState),
 			static.NewField("85baf5e1-b57a-46dc-a726-a84e8c4229c7", "dob", "DOB", assets.FieldTypeDatetime),
+			static.NewField("85baf5e1-b57a-46dc-a726-a84e8c4229c7", "language", "Language", assets.FieldTypeText), // conflicts with language attribute
 		},
 		[]assets.Flow{
 			static.NewFlow("f87fd7cd-e501-4394-9cff-62309af85138", "Registration", []byte(`{}`)),
@@ -71,8 +72,9 @@ func TestParseQuery(t *testing.T) {
 		{text: `language = spa`, parsed: `language = "spa"`, resolver: resolver},
 		{text: `Group IS U-Reporters`, parsed: `group = "U-Reporters"`, resolver: resolver},
 		{text: `CREATED_ON>27-01-2020`, parsed: `created_on > "27-01-2020"`, resolver: resolver},
+		{text: `URN=ewok`, parsed: `urn = "ewok"`, resolver: resolver},
 
-		// explicit conditions on URN
+		// explicit conditions on URN schemes
 		{text: `tel=""`, parsed: `tel = ""`, resolver: resolver},
 		{text: `tel!=""`, parsed: `tel != ""`, resolver: resolver},
 		{text: `tel IS 233`, parsed: `tel = 233`, resolver: resolver},
@@ -80,26 +82,32 @@ func TestParseQuery(t *testing.T) {
 		{text: `tel ~ 23`, err: "contains operator on URN requires value of minimum length 3", resolver: resolver},
 		{text: `mailto = user@example.com`, parsed: `mailto = "user@example.com"`, resolver: resolver},
 		{text: `MAILTO ~ user@example.com`, parsed: `mailto ~ "user@example.com"`, resolver: resolver},
-		{text: `URN=ewok`, parsed: `urn = "ewok"`, resolver: resolver},
+		{text: `urns.tel = 234`, parsed: `tel = 234`, resolver: resolver},
+		{text: `URNS.MAILTO = user@example.com`, parsed: `mailto = "user@example.com"`, resolver: resolver},
 
-		// explicit conditions on URN with URN redaction
+		// explicit conditions on URN attribute with URN redaction
+		{text: `URN=""`, parsed: `urn = ""`, redactURNs: true, resolver: resolver},
+		{text: `URN!=""`, parsed: `urn != ""`, redactURNs: true, resolver: resolver},
+		{text: `URN=ewok`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
+		{text: `URN!=ewok`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
+
+		// explicit conditions on URN schemes with URN redaction
 		{text: `tel=""`, parsed: `tel = ""`, redactURNs: true, resolver: resolver},
 		{text: `tel!=""`, parsed: `tel != ""`, redactURNs: true, resolver: resolver},
 		{text: `mailto=""`, parsed: `mailto = ""`, redactURNs: true, resolver: resolver},
 		{text: `mailto!=""`, parsed: `mailto != ""`, redactURNs: true, resolver: resolver},
-		{text: `urn=""`, parsed: `urn = ""`, redactURNs: true, resolver: resolver},
-		{text: `urn!=""`, parsed: `urn != ""`, redactURNs: true, resolver: resolver},
 		{text: `tel = 233`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `tel ~ 233`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `mailto = user@example.com`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `MAILTO ~ user@example.com`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
-		{text: `URN=ewok`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 
 		// field conditions
 		{text: `Age IS 18`, parsed: `age = 18`, resolver: resolver},
 		{text: `AGE != ""`, parsed: `age != ""`, resolver: resolver},
 		{text: `age ~ 34`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
+		{text: `FIELDS.AGE != "45"`, parsed: `age != 45`, resolver: resolver},
 		{text: `gender ~ M`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
+		{text: `fields.language = "EN"`, parsed: `language = "EN"`, resolver: resolver},
 
 		// lt/lte/gt/gte comparisons
 		{text: `Age > "18"`, parsed: `age > 18`, resolver: resolver},
@@ -274,27 +282,39 @@ func TestParsingErrors(t *testing.T) {
 	}{
 		{
 			query:    `$`,
-			errMsg:   "mismatched input '$' expecting {'(', STRING, NAME, TEXT}",
+			errMsg:   "mismatched input '$' expecting {'(', STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "$"},
 		},
 		{
 			query:    `name = `,
-			errMsg:   "mismatched input '<EOF>' expecting {STRING, NAME, TEXT}",
+			errMsg:   "mismatched input '<EOF>' expecting {STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "<EOF>"},
 		},
 		{
 			query:    `name = "x`,
-			errMsg:   "extraneous input '\"' expecting {STRING, NAME, TEXT}",
+			errMsg:   "extraneous input '\"' expecting {STRING, PROPERTY, TEXT}",
 			errCode:  "",
 			errExtra: nil,
 		},
 		{
 			query:    `nam/e = "x"`,
+			errMsg:   "mismatched input '=' expecting <EOF>", // because .name isn't valid NAME
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "="},
+		},
+		{
+			query:    `name. = "x"`,
 			errMsg:   "mismatched input '=' expecting <EOF>",
 			errCode:  "unexpected_token",
 			errExtra: map[string]string{"token": "="},
+		},
+		{
+			query:    `.name != "x"`,
+			errMsg:   "mismatched input '!=' expecting <EOF>",
+			errCode:  "unexpected_token",
+			errExtra: map[string]string{"token": "!="},
 		},
 		{
 			query:    `age = XZ`,
@@ -367,6 +387,12 @@ func TestParsingErrors(t *testing.T) {
 			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
 			errCode:  "unknown_property",
 			errExtra: map[string]string{"property": "beers"},
+		},
+		{
+			query:    `xxx.age = 12`,
+			errMsg:   "unknown property type 'xxx'",
+			errCode:  "unknown_property_type",
+			errExtra: map[string]string{"type": "xxx"},
 		},
 	}
 
@@ -445,29 +471,29 @@ func TestQueryBuilding(t *testing.T) {
 		query string
 	}{
 		{
-			node:  contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+			node:  contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
 			query: "age > 10",
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
-				contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
-				contactql.NewCondition("age", contactql.PropertyTypeField, "<", "20"),
+				contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
+				contactql.NewCondition(contactql.PropertyTypeField, "age", "<", "20"),
 			),
 			query: "age > 10 AND age < 20",
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorOr,
-				contactql.NewCondition("name", contactql.PropertyTypeField, "=", "bob"),
+				contactql.NewCondition(contactql.PropertyTypeField, "name", "=", "bob"),
 				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
-					contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
-					contactql.NewCondition("age", contactql.PropertyTypeField, "<", "20"),
+					contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
+					contactql.NewCondition(contactql.PropertyTypeField, "age", "<", "20"),
 				),
 			),
 			query: `name = "bob" OR (age > 10 AND age < 20)`,
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
-				contactql.NewCondition("age", contactql.PropertyTypeField, ">", "10"),
+				contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
 			),
 			query: "age > 10",
 		},
@@ -477,7 +503,7 @@ func TestQueryBuilding(t *testing.T) {
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
-				contactql.NewCondition("name", contactql.PropertyTypeField, "=", "bob"),
+				contactql.NewCondition(contactql.PropertyTypeField, "name", "=", "bob"),
 				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
 					contactql.NewBoolCombination(contactql.BoolOperatorAnd),
 				),

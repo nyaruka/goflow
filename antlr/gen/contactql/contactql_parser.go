@@ -35,7 +35,7 @@ func contactqlParserInit() {
 		"", "'('", "')'",
 	}
 	staticData.SymbolicNames = []string{
-		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "STRING", "NAME",
+		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "STRING", "PROPERTY",
 		"TEXT", "WS", "ERROR",
 	}
 	staticData.RuleNames = []string{
@@ -103,7 +103,7 @@ const (
 	ContactQLParserOR         = 4
 	ContactQLParserCOMPARATOR = 5
 	ContactQLParserSTRING     = 6
-	ContactQLParserNAME       = 7
+	ContactQLParserPROPERTY   = 7
 	ContactQLParserTEXT       = 8
 	ContactQLParserWS         = 9
 	ContactQLParserERROR      = 10
@@ -371,8 +371,8 @@ func (s *ConditionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ConditionContext) NAME() antlr.TerminalNode {
-	return s.GetToken(ContactQLParserNAME, 0)
+func (s *ConditionContext) PROPERTY() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserPROPERTY, 0)
 }
 
 func (s *ConditionContext) COMPARATOR() antlr.TerminalNode {
@@ -787,7 +787,7 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		_prevctx = localctx
 		{
 			p.SetState(14)
-			p.Match(ContactQLParserNAME)
+			p.Match(ContactQLParserPROPERTY)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -1044,8 +1044,8 @@ func (s *TextLiteralContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *TextLiteralContext) NAME() antlr.TerminalNode {
-	return s.GetToken(ContactQLParserNAME, 0)
+func (s *TextLiteralContext) PROPERTY() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserPROPERTY, 0)
 }
 
 func (s *TextLiteralContext) TEXT() antlr.TerminalNode {
@@ -1084,12 +1084,12 @@ func (p *ContactQLParser) Literal() (localctx ILiteralContext) {
 	}
 
 	switch p.GetTokenStream().LA(1) {
-	case ContactQLParserNAME:
+	case ContactQLParserPROPERTY:
 		localctx = NewTextLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(33)
-			p.Match(ContactQLParserNAME)
+			p.Match(ContactQLParserPROPERTY)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
