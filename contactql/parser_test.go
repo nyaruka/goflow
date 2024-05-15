@@ -42,12 +42,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `w`, parsed: `name = "w"`, resolver: resolver}, // don't have at least 1 token of >= 2 chars
 		{text: `w me`, parsed: `name = "w" AND name ~ "me"`, resolver: resolver},
 		{text: `w m`, parsed: `name = "w" AND name = "m"`, resolver: resolver},
-		{text: `tel:+0123456566`, parsed: `tel = "+0123456566"`, resolver: resolver}, // whole query is a URN
-		{text: `twitter:bobby`, parsed: `twitter = "bobby"`, resolver: resolver},
-		{text: `(202) 456-1111`, parsed: `tel = "+12024561111"`, resolver: resolver}, // whole query looks like a phone number
-		{text: `+12024561111`, parsed: `tel = "+12024561111"`, resolver: resolver},
-		{text: ` 202.456.1111 `, parsed: `tel = "+12024561111"`, resolver: resolver},
-		{text: `"+12024561111"`, parsed: `tel ~ "+12024561111"`, resolver: resolver},
+		{text: `tel:+0123456566`, parsed: `urns.tel = "+0123456566"`, resolver: resolver}, // whole query is a URN
+		{text: `twitter:bobby`, parsed: `urns.twitter = "bobby"`, resolver: resolver},
+		{text: `(202) 456-1111`, parsed: `urns.tel = "+12024561111"`, resolver: resolver}, // whole query looks like a phone number
+		{text: `+12024561111`, parsed: `urns.tel = "+12024561111"`, resolver: resolver},
+		{text: ` 202.456.1111 `, parsed: `urns.tel = "+12024561111"`, resolver: resolver},
+		{text: `"+12024561111"`, parsed: `urns.tel ~ "+12024561111"`, resolver: resolver},
 		{text: `566`, parsed: `name ~ 566`, resolver: resolver}, // too short to be a phone number
 
 		// implicit conditions with URN redaction
@@ -75,15 +75,15 @@ func TestParseQuery(t *testing.T) {
 		{text: `URN=ewok`, parsed: `urn = "ewok"`, resolver: resolver},
 
 		// explicit conditions on URN schemes
-		{text: `tel=""`, parsed: `tel = ""`, resolver: resolver},
-		{text: `tel!=""`, parsed: `tel != ""`, resolver: resolver},
-		{text: `tel IS 233`, parsed: `tel = 233`, resolver: resolver},
-		{text: `tel HAS 233`, parsed: `tel ~ 233`, resolver: resolver},
+		{text: `tel=""`, parsed: `urns.tel = ""`, resolver: resolver},
+		{text: `tel!=""`, parsed: `urns.tel != ""`, resolver: resolver},
+		{text: `tel IS 233`, parsed: `urns.tel = 233`, resolver: resolver},
+		{text: `tel HAS 233`, parsed: `urns.tel ~ 233`, resolver: resolver},
 		{text: `tel ~ 23`, err: "contains operator on URN requires value of minimum length 3", resolver: resolver},
-		{text: `mailto = user@example.com`, parsed: `mailto = "user@example.com"`, resolver: resolver},
-		{text: `MAILTO ~ user@example.com`, parsed: `mailto ~ "user@example.com"`, resolver: resolver},
-		{text: `urns.tel = 234`, parsed: `tel = 234`, resolver: resolver},
-		{text: `URNS.MAILTO = user@example.com`, parsed: `mailto = "user@example.com"`, resolver: resolver},
+		{text: `mailto = user@example.com`, parsed: `urns.mailto = "user@example.com"`, resolver: resolver},
+		{text: `MAILTO ~ user@example.com`, parsed: `urns.mailto ~ "user@example.com"`, resolver: resolver},
+		{text: `urns.tel = 234`, parsed: `urns.tel = 234`, resolver: resolver},
+		{text: `URNS.MAILTO = user@example.com`, parsed: `urns.mailto = "user@example.com"`, resolver: resolver},
 
 		// explicit conditions on URN attribute with URN redaction
 		{text: `URN=""`, parsed: `urn = ""`, redactURNs: true, resolver: resolver},
@@ -92,48 +92,48 @@ func TestParseQuery(t *testing.T) {
 		{text: `URN!=ewok`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 
 		// explicit conditions on URN schemes with URN redaction
-		{text: `tel=""`, parsed: `tel = ""`, redactURNs: true, resolver: resolver},
-		{text: `tel!=""`, parsed: `tel != ""`, redactURNs: true, resolver: resolver},
-		{text: `mailto=""`, parsed: `mailto = ""`, redactURNs: true, resolver: resolver},
-		{text: `mailto!=""`, parsed: `mailto != ""`, redactURNs: true, resolver: resolver},
+		{text: `tel=""`, parsed: `urns.tel = ""`, redactURNs: true, resolver: resolver},
+		{text: `tel!=""`, parsed: `urns.tel != ""`, redactURNs: true, resolver: resolver},
+		{text: `mailto=""`, parsed: `urns.mailto = ""`, redactURNs: true, resolver: resolver},
+		{text: `mailto!=""`, parsed: `urns.mailto != ""`, redactURNs: true, resolver: resolver},
 		{text: `tel = 233`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `tel ~ 233`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `mailto = user@example.com`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 		{text: `MAILTO ~ user@example.com`, err: "cannot query on redacted URNs", redactURNs: true, resolver: resolver},
 
 		// field conditions
-		{text: `Age IS 18`, parsed: `age = 18`, resolver: resolver},
-		{text: `AGE != ""`, parsed: `age != ""`, resolver: resolver},
+		{text: `Age IS 18`, parsed: `fields.age = 18`, resolver: resolver},
+		{text: `AGE != ""`, parsed: `fields.age != ""`, resolver: resolver},
 		{text: `age ~ 34`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
-		{text: `FIELDS.AGE != "45"`, parsed: `age != 45`, resolver: resolver},
+		{text: `FIELDS.AGE != "45"`, parsed: `fields.age != 45`, resolver: resolver},
 		{text: `gender ~ M`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
-		{text: `fields.language = "EN"`, parsed: `language = "EN"`, resolver: resolver},
+		{text: `fields.language = "EN"`, parsed: `fields.language = "EN"`, resolver: resolver},
 
 		// lt/lte/gt/gte comparisons
-		{text: `Age > "18"`, parsed: `age > 18`, resolver: resolver},
-		{text: `Age >= 18`, parsed: `age >= 18`, resolver: resolver},
-		{text: `Age < 18`, parsed: `age < 18`, resolver: resolver},
-		{text: `Age <= 18`, parsed: `age <= 18`, resolver: resolver},
-		{text: `DOB > "27-01-2020"`, parsed: `dob > "27-01-2020"`, resolver: resolver},
-		{text: `DOB >= 27-01-2020`, parsed: `dob >= "27-01-2020"`, resolver: resolver},
-		{text: `DOB < 27/01/2020`, parsed: `dob < "27/01/2020"`, resolver: resolver},
-		{text: `DOB <= 27.01.2020`, parsed: `dob <= "27.01.2020"`, resolver: resolver},
+		{text: `Age > "18"`, parsed: `fields.age > 18`, resolver: resolver},
+		{text: `Age >= 18`, parsed: `fields.age >= 18`, resolver: resolver},
+		{text: `Age < 18`, parsed: `fields.age < 18`, resolver: resolver},
+		{text: `Age <= 18`, parsed: `fields.age <= 18`, resolver: resolver},
+		{text: `DOB > "27-01-2020"`, parsed: `fields.dob > "27-01-2020"`, resolver: resolver},
+		{text: `DOB >= 27-01-2020`, parsed: `fields.dob >= "27-01-2020"`, resolver: resolver},
+		{text: `DOB < 27/01/2020`, parsed: `fields.dob < "27/01/2020"`, resolver: resolver},
+		{text: `DOB <= 27.01.2020`, parsed: `fields.dob <= "27.01.2020"`, resolver: resolver},
 		{text: `name > Will`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
 		{text: `tel < 23425`, err: "comparisons with < can only be used with date and number fields", resolver: resolver},
 
 		// implicit combinations
 		{text: `will felix`, parsed: `name ~ "will" AND name ~ "felix"`, resolver: resolver},
-		{text: `will +123456566`, parsed: `name ~ "will" AND tel ~ "+123456566"`, resolver: resolver},
+		{text: `will +123456566`, parsed: `name ~ "will" AND urns.tel ~ "+123456566"`, resolver: resolver},
 
 		// explicit combinations...
 		{text: `will and felix`, parsed: `name ~ "will" AND name ~ "felix"`, resolver: resolver}, // explicit AND
 		{text: `will AND felix AND matt`, parsed: `name ~ "will" AND name ~ "felix" AND name ~ "matt"`, resolver: resolver},
 		{text: `will or felix or matt`, parsed: `name ~ "will" OR name ~ "felix" OR name ~ "matt"`, resolver: resolver},
-		{text: `name = will AND age > 18 AND tickets = 0`, parsed: `name = "will" AND age > 18 AND tickets = 0`, resolver: resolver},
-		{text: `name = will OR age > 18 AND tickets = 0`, parsed: `name = "will" OR (age > 18 AND tickets = 0)`, resolver: resolver},
-		{text: `name = will AND age > 18 OR tickets = 0`, parsed: `(name = "will" AND age > 18) OR tickets = 0`, resolver: resolver},
-		{text: `(name = will AND age > 18) AND tickets = 0`, parsed: `name = "will" AND age > 18 AND tickets = 0`, resolver: resolver},
-		{text: `(name = will AND age > 18) AND (tickets = 0 AND language = eng)`, parsed: `name = "will" AND age > 18 AND tickets = 0 AND language = "eng"`, resolver: resolver},
+		{text: `name = will AND age > 18 AND tickets = 0`, parsed: `name = "will" AND fields.age > 18 AND tickets = 0`, resolver: resolver},
+		{text: `name = will OR age > 18 AND tickets = 0`, parsed: `name = "will" OR (fields.age > 18 AND tickets = 0)`, resolver: resolver},
+		{text: `name = will AND age > 18 OR tickets = 0`, parsed: `(name = "will" AND fields.age > 18) OR tickets = 0`, resolver: resolver},
+		{text: `(name = will AND age > 18) AND tickets = 0`, parsed: `name = "will" AND fields.age > 18 AND tickets = 0`, resolver: resolver},
+		{text: `(name = will AND age > 18) AND (tickets = 0 AND language = eng)`, parsed: `name = "will" AND fields.age > 18 AND tickets = 0 AND language = "eng"`, resolver: resolver},
 		{text: `name=will or Name ~ "felix"`, parsed: `name = "will" OR name ~ "felix"`, resolver: resolver},
 		{text: `Name is will or Name has felix`, parsed: `name = "will" OR name ~ "felix"`, resolver: resolver}, // operator aliases
 		{text: `will or Name ~ "felix"`, parsed: `name ~ "will" OR name ~ "felix"`, resolver: resolver},
@@ -145,12 +145,12 @@ func TestParseQuery(t *testing.T) {
 		// boolean combinations can themselves be combined
 		{
 			text:     `(Age < 18 and Gender = "male") or (Age > 18 and Gender = "female")`,
-			parsed:   `(age < 18 AND gender = "male") OR (age > 18 AND gender = "female")`,
+			parsed:   `(fields.age < 18 AND fields.gender = "male") OR (fields.age > 18 AND fields.gender = "female")`,
 			resolver: resolver,
 		},
 		{
 			text:     `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60`,
-			parsed:   `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60)`,
+			parsed:   `(fields.age > 10 AND fields.age < 20) OR (fields.age > 30 AND fields.age < 40) OR (fields.age > 50 AND fields.age < 60)`,
 			resolver: resolver,
 		},
 
@@ -172,12 +172,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `group = u-reporters`, parsed: `group = "u-reporters"`, resolver: resolver},
 		{text: `flow = registration`, parsed: `flow = "registration"`, resolver: resolver},
 		{text: `created_on = 20-02-2020`, parsed: `created_on = "20-02-2020"`, resolver: resolver},
-		{text: `tel = 02352`, parsed: `tel = 02352`, resolver: resolver},
 		{text: `urn = 02352`, parsed: `urn = 02352`, resolver: resolver},
-		{text: `age = 18`, parsed: `age = 18`, resolver: resolver},
-		{text: `gender = male`, parsed: `gender = "male"`, resolver: resolver},
-		{text: `dob = 20-02-2020`, parsed: `dob = "20-02-2020"`, resolver: resolver},
-		{text: `state = Pichincha`, parsed: `state = "Pichincha"`, resolver: resolver},
+		{text: `tel = 02352`, parsed: `urns.tel = 02352`, resolver: resolver},
+		{text: `age = 18`, parsed: `fields.age = 18`, resolver: resolver},
+		{text: `gender = male`, parsed: `fields.gender = "male"`, resolver: resolver},
+		{text: `dob = 20-02-2020`, parsed: `fields.dob = "20-02-2020"`, resolver: resolver},
+		{text: `state = Pichincha`, parsed: `fields.state = "Pichincha"`, resolver: resolver},
 
 		// != supported for everything
 		{text: `uuid != f81d1eb5-215d-4ae8-90fa-38b3f2d6e328`, parsed: `uuid != "f81d1eb5-215d-4ae8-90fa-38b3f2d6e328"`, resolver: resolver},
@@ -189,12 +189,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `flow != registration`, parsed: `flow != "registration"`, resolver: resolver},
 		{text: `tickets != 0`, parsed: `tickets != 0`, resolver: resolver},
 		{text: `created_on != 20-02-2020`, parsed: `created_on != "20-02-2020"`, resolver: resolver},
-		{text: `tel != 02352`, parsed: `tel != 02352`, resolver: resolver},
 		{text: `urn != 02352`, parsed: `urn != 02352`, resolver: resolver},
-		{text: `age != 18`, parsed: `age != 18`, resolver: resolver},
-		{text: `gender != male`, parsed: `gender != "male"`, resolver: resolver},
-		{text: `dob != 20-02-2020`, parsed: `dob != "20-02-2020"`, resolver: resolver},
-		{text: `state != Pichincha`, parsed: `state != "Pichincha"`, resolver: resolver},
+		{text: `tel != 02352`, parsed: `urns.tel != 02352`, resolver: resolver},
+		{text: `age != 18`, parsed: `fields.age != 18`, resolver: resolver},
+		{text: `gender != male`, parsed: `fields.gender != "male"`, resolver: resolver},
+		{text: `dob != 20-02-2020`, parsed: `fields.dob != "20-02-2020"`, resolver: resolver},
+		{text: `state != Pichincha`, parsed: `fields.state != "Pichincha"`, resolver: resolver},
 
 		// = "" supported for name, language, flow, groups, fields, urns
 		{text: `uuid = ""`, err: "can't check whether 'uuid' is set or not set", resolver: resolver},
@@ -206,12 +206,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `flow = ""`, parsed: `flow = ""`, resolver: resolver},
 		{text: `tickets = ""`, err: "can't check whether 'tickets' is set or not set", resolver: resolver},
 		{text: `created_on = ""`, err: "can't check whether 'created_on' is set or not set", resolver: resolver},
-		{text: `tel = ""`, parsed: `tel = ""`, resolver: resolver},
 		{text: `urn = ""`, parsed: `urn = ""`, resolver: resolver},
-		{text: `age = ""`, parsed: `age = ""`, resolver: resolver},
-		{text: `gender = ""`, parsed: `gender = ""`, resolver: resolver},
-		{text: `dob = ""`, parsed: `dob = ""`, resolver: resolver},
-		{text: `state = ""`, parsed: `state = ""`, resolver: resolver},
+		{text: `tel = ""`, parsed: `urns.tel = ""`, resolver: resolver},
+		{text: `age = ""`, parsed: `fields.age = ""`, resolver: resolver},
+		{text: `gender = ""`, parsed: `fields.gender = ""`, resolver: resolver},
+		{text: `dob = ""`, parsed: `fields.dob = ""`, resolver: resolver},
+		{text: `state = ""`, parsed: `fields.state = ""`, resolver: resolver},
 
 		// ~ only supported for name and URNs
 		{text: `uuid ~ 02352`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
@@ -223,8 +223,8 @@ func TestParseQuery(t *testing.T) {
 		{text: `flow ~ reg`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
 		{text: `tickets ~ 12`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
 		{text: `created_on ~ 2018`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
-		{text: `tel ~ 02352`, parsed: `tel ~ 02352`, resolver: resolver},
 		{text: `urn ~ 02352`, parsed: `urn ~ 02352`, resolver: resolver},
+		{text: `tel ~ 02352`, parsed: `urns.tel ~ 02352`, resolver: resolver},
 		{text: `age ~ 18`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
 		{text: `gender ~ mal`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
 		{text: `dob ~ 20-02-2020`, err: "contains conditions can only be used with name or URN values", resolver: resolver},
@@ -240,18 +240,18 @@ func TestParseQuery(t *testing.T) {
 		{text: `flow > registration`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
 		{text: `tickets > 0`, parsed: `tickets > 0`, resolver: resolver},
 		{text: `created_on > 20-02-2020`, parsed: `created_on > "20-02-2020"`, resolver: resolver},
-		{text: `tel > 02352`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
 		{text: `urn > 02352`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
-		{text: `age > 18`, parsed: `age > 18`, resolver: resolver},
+		{text: `tel > 02352`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
+		{text: `age > 18`, parsed: `fields.age > 18`, resolver: resolver},
 		{text: `gender > male`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
-		{text: `dob > 20-02-2020`, parsed: `dob > "20-02-2020"`, resolver: resolver},
+		{text: `dob > 20-02-2020`, parsed: `fields.dob > "20-02-2020"`, resolver: resolver},
 		{text: `state > Pichincha`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
 
 		// however if we don't provide a resolver, we don't know the field type, so allowed for all
-		{text: `age > 18`, parsed: `age > 18`},
-		{text: `gender > male`, parsed: `gender > "male"`},
-		{text: `dob > 20-02-2020`, parsed: `dob > "20-02-2020"`},
-		{text: `state > Pichincha`, parsed: `state > "Pichincha"`},
+		{text: `age > 18`, parsed: `fields.age > 18`},
+		{text: `gender > male`, parsed: `fields.gender > "male"`},
+		{text: `dob > 20-02-2020`, parsed: `fields.dob > "20-02-2020"`},
+		{text: `state > Pichincha`, parsed: `fields.state > "Pichincha"`},
 	}
 
 	for _, tc := range tests {
@@ -434,23 +434,23 @@ func TestSimplify(t *testing.T) {
 	}{
 		{
 			text:   `age > 10 and age < 20 and age < 40 and age < 60`,
-			parsed: `age > 10 AND age < 20 AND age < 40 AND age < 60`,
+			parsed: `fields.age > 10 AND fields.age < 20 AND fields.age < 40 AND fields.age < 60`,
 		},
 		{
 			text:   `age > 10 and age < 20 and age < 40 or age < 60`,
-			parsed: `(age > 10 AND age < 20 AND age < 40) OR age < 60`,
+			parsed: `(fields.age > 10 AND fields.age < 20 AND fields.age < 40) OR fields.age < 60`,
 		},
 		{
 			text:   `age > 10 or age < 20 and age < 40 and age < 60`,
-			parsed: `age > 10 OR (age < 20 AND age < 40 AND age < 60)`,
+			parsed: `fields.age > 10 OR (fields.age < 20 AND fields.age < 40 AND fields.age < 60)`,
 		},
 		{
 			text:   `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60`,
-			parsed: `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60)`,
+			parsed: `(fields.age > 10 AND fields.age < 20) OR (fields.age > 30 AND fields.age < 40) OR (fields.age > 50 AND fields.age < 60)`,
 		},
 		{
 			text:   `age > 10 and age < 20 or age > 30 and age < 40 or age > 50 and age < 60 or age > 70 and age < 80`,
-			parsed: `(age > 10 AND age < 20) OR (age > 30 AND age < 40) OR (age > 50 AND age < 60) OR (age > 70 AND age < 80)`,
+			parsed: `(fields.age > 10 AND fields.age < 20) OR (fields.age > 30 AND fields.age < 40) OR (fields.age > 50 AND fields.age < 60) OR (fields.age > 70 AND fields.age < 80)`,
 		},
 		{
 			text:   `Jim McJim or Bob McBob or Ann McAnn`,
@@ -472,30 +472,30 @@ func TestQueryBuilding(t *testing.T) {
 	}{
 		{
 			node:  contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
-			query: "age > 10",
+			query: "fields.age > 10",
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
 				contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
 				contactql.NewCondition(contactql.PropertyTypeField, "age", "<", "20"),
 			),
-			query: "age > 10 AND age < 20",
+			query: "fields.age > 10 AND fields.age < 20",
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorOr,
-				contactql.NewCondition(contactql.PropertyTypeField, "name", "=", "bob"),
+				contactql.NewCondition(contactql.PropertyTypeAttribute, "name", "=", "bob"),
 				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
 					contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
 					contactql.NewCondition(contactql.PropertyTypeField, "age", "<", "20"),
 				),
 			),
-			query: `name = "bob" OR (age > 10 AND age < 20)`,
+			query: `name = "bob" OR (fields.age > 10 AND fields.age < 20)`,
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
 				contactql.NewCondition(contactql.PropertyTypeField, "age", ">", "10"),
 			),
-			query: "age > 10",
+			query: "fields.age > 10",
 		},
 		{
 			node:  contactql.NewBoolCombination(contactql.BoolOperatorAnd),
@@ -503,7 +503,7 @@ func TestQueryBuilding(t *testing.T) {
 		},
 		{
 			node: contactql.NewBoolCombination(contactql.BoolOperatorAnd,
-				contactql.NewCondition(contactql.PropertyTypeField, "name", "=", "bob"),
+				contactql.NewCondition(contactql.PropertyTypeAttribute, "name", "=", "bob"),
 				contactql.NewBoolCombination(contactql.BoolOperatorAnd,
 					contactql.NewBoolCombination(contactql.BoolOperatorAnd),
 				),
