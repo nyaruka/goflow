@@ -1,3 +1,7 @@
+v0.213.0 (2024-05-15)
+-------------------------
+ * Normalize contactql queries with type prefixes
+
 v0.212.0 (2024-05-15)
 -------------------------
  * Add support for contactql conditions with properties prefixed by their type
