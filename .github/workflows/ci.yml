@@ -50,6 +50,7 @@ jobs:
           go install github.com/nyaruka/goflow/cmd/docgen
           docgen
           tar -zcf docs.tar.gz docs
+          git restore locale/
 
       - name: Publish release
         uses: goreleaser/goreleaser-action@v5
