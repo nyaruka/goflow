@@ -1,3 +1,7 @@
+v0.213.1 (2024-05-16)
+-------------------------
+ * Switch to use goreleaser and update actions to latest versions
+
 v0.213.0 (2024-05-15)
 -------------------------
  * Normalize contactql queries with type prefixes
