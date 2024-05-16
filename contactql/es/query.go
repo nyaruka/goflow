@@ -65,7 +65,7 @@ func conditionToElastic(env envs.Environment, resolver contactql.Resolver, mappe
 		return fieldConditionToElastic(env, resolver, c)
 	case contactql.PropertyTypeAttribute:
 		return attributeConditionToElastic(env, resolver, mapper, c)
-	case contactql.PropertyTypeScheme:
+	case contactql.PropertyTypeURN:
 		return schemeConditionToElastic(env, c)
 	default:
 		panic(fmt.Sprintf("unsupported property type: %s", c.PropertyType()))

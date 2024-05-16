@@ -5,11 +5,11 @@ go 1.22
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
-	github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20221202181307-76fa05c21b12
+	github.com/antlr4-go/antlr/v4 v4.13.0
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.20.0
-	github.com/nyaruka/gocommon v1.54.6
+	github.com/nyaruka/gocommon v1.54.9
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.3.1

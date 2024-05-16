@@ -90,7 +90,7 @@ func (u *ContactURN) SetChannel(channel *Channel) {
 		parsedQuery.Del("channel")
 	}
 
-	urn, _ := urns.NewFromParts(scheme, path, parsedQuery.Encode(), display)
+	urn, _ := urns.NewFromParts(scheme, path, parsedQuery, display)
 	u.urn = urn
 }
 
@@ -111,7 +111,7 @@ func (u *ContactURN) withoutQuery(redact bool) urns.URN {
 		return urns.URN(fmt.Sprintf("%s:%s", scheme, redacted))
 	}
 
-	urn, _ := urns.NewFromParts(scheme, path, "", display)
+	urn, _ := urns.NewFromParts(scheme, path, nil, display)
 
 	return urn
 }

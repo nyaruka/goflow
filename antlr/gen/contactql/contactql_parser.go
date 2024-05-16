@@ -1,4 +1,4 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from ContactQL.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package gen // ContactQL
 import (
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -18,47 +18,47 @@ type ContactQLParser struct {
 	*antlr.BaseParser
 }
 
-var contactqlParserStaticData struct {
+var ContactQLParserStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func contactqlParserInit() {
-	staticData := &contactqlParserStaticData
-	staticData.literalNames = []string{
+	staticData := &ContactQLParserStaticData
+	staticData.LiteralNames = []string{
 		"", "'('", "')'",
 	}
-	staticData.symbolicNames = []string{
-		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "TEXT", "STRING",
-		"WS", "ERROR",
+	staticData.SymbolicNames = []string{
+		"", "LPAREN", "RPAREN", "AND", "OR", "COMPARATOR", "STRING", "PROPERTY",
+		"TEXT", "WS", "ERROR",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"parse", "expression", "literal",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 9, 38, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 19, 8, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 29, 8, 1, 10, 1, 12, 1, 32,
-		9, 1, 1, 2, 1, 2, 3, 2, 36, 8, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4, 0, 0, 40,
-		0, 6, 1, 0, 0, 0, 2, 18, 1, 0, 0, 0, 4, 35, 1, 0, 0, 0, 6, 7, 3, 2, 1,
-		0, 7, 8, 5, 0, 0, 1, 8, 1, 1, 0, 0, 0, 9, 10, 6, 1, -1, 0, 10, 11, 5, 1,
-		0, 0, 11, 12, 3, 2, 1, 0, 12, 13, 5, 2, 0, 0, 13, 19, 1, 0, 0, 0, 14, 15,
-		5, 6, 0, 0, 15, 16, 5, 5, 0, 0, 16, 19, 3, 4, 2, 0, 17, 19, 3, 4, 2, 0,
-		18, 9, 1, 0, 0, 0, 18, 14, 1, 0, 0, 0, 18, 17, 1, 0, 0, 0, 19, 30, 1, 0,
-		0, 0, 20, 21, 10, 6, 0, 0, 21, 22, 5, 3, 0, 0, 22, 29, 3, 2, 1, 7, 23,
-		24, 10, 5, 0, 0, 24, 29, 3, 2, 1, 6, 25, 26, 10, 4, 0, 0, 26, 27, 5, 4,
-		0, 0, 27, 29, 3, 2, 1, 5, 28, 20, 1, 0, 0, 0, 28, 23, 1, 0, 0, 0, 28, 25,
-		1, 0, 0, 0, 29, 32, 1, 0, 0, 0, 30, 28, 1, 0, 0, 0, 30, 31, 1, 0, 0, 0,
-		31, 3, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 33, 36, 5, 6, 0, 0, 34, 36, 5, 7,
-		0, 0, 35, 33, 1, 0, 0, 0, 35, 34, 1, 0, 0, 0, 36, 5, 1, 0, 0, 0, 4, 18,
-		28, 30, 35,
+		4, 1, 10, 39, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 19, 8, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 29, 8, 1, 10, 1, 12, 1,
+		32, 9, 1, 1, 2, 1, 2, 1, 2, 3, 2, 37, 8, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4,
+		0, 0, 42, 0, 6, 1, 0, 0, 0, 2, 18, 1, 0, 0, 0, 4, 36, 1, 0, 0, 0, 6, 7,
+		3, 2, 1, 0, 7, 8, 5, 0, 0, 1, 8, 1, 1, 0, 0, 0, 9, 10, 6, 1, -1, 0, 10,
+		11, 5, 1, 0, 0, 11, 12, 3, 2, 1, 0, 12, 13, 5, 2, 0, 0, 13, 19, 1, 0, 0,
+		0, 14, 15, 5, 7, 0, 0, 15, 16, 5, 5, 0, 0, 16, 19, 3, 4, 2, 0, 17, 19,
+		3, 4, 2, 0, 18, 9, 1, 0, 0, 0, 18, 14, 1, 0, 0, 0, 18, 17, 1, 0, 0, 0,
+		19, 30, 1, 0, 0, 0, 20, 21, 10, 6, 0, 0, 21, 22, 5, 3, 0, 0, 22, 29, 3,
+		2, 1, 7, 23, 24, 10, 5, 0, 0, 24, 29, 3, 2, 1, 6, 25, 26, 10, 4, 0, 0,
+		26, 27, 5, 4, 0, 0, 27, 29, 3, 2, 1, 5, 28, 20, 1, 0, 0, 0, 28, 23, 1,
+		0, 0, 0, 28, 25, 1, 0, 0, 0, 29, 32, 1, 0, 0, 0, 30, 28, 1, 0, 0, 0, 30,
+		31, 1, 0, 0, 0, 31, 3, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 33, 37, 5, 7, 0,
+		0, 34, 37, 5, 8, 0, 0, 35, 37, 5, 6, 0, 0, 36, 33, 1, 0, 0, 0, 36, 34,
+		1, 0, 0, 0, 36, 35, 1, 0, 0, 0, 37, 5, 1, 0, 0, 0, 4, 18, 28, 30, 36,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -75,7 +75,7 @@ func contactqlParserInit() {
 // NewContactQLParser(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func ContactQLParserInit() {
-	staticData := &contactqlParserStaticData
+	staticData := &ContactQLParserStaticData
 	staticData.once.Do(contactqlParserInit)
 }
 
@@ -84,12 +84,12 @@ func NewContactQLParser(input antlr.TokenStream) *ContactQLParser {
 	ContactQLParserInit()
 	this := new(ContactQLParser)
 	this.BaseParser = antlr.NewBaseParser(input)
-	staticData := &contactqlParserStaticData
-	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	this.RuleNames = staticData.ruleNames
-	this.LiteralNames = staticData.literalNames
-	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "java-escape"
+	staticData := &ContactQLParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	this.RuleNames = staticData.RuleNames
+	this.LiteralNames = staticData.LiteralNames
+	this.SymbolicNames = staticData.SymbolicNames
+	this.GrammarFileName = "ContactQL.g4"
 
 	return this
 }
@@ -102,10 +102,11 @@ const (
 	ContactQLParserAND        = 3
 	ContactQLParserOR         = 4
 	ContactQLParserCOMPARATOR = 5
-	ContactQLParserTEXT       = 6
-	ContactQLParserSTRING     = 7
-	ContactQLParserWS         = 8
-	ContactQLParserERROR      = 9
+	ContactQLParserSTRING     = 6
+	ContactQLParserPROPERTY   = 7
+	ContactQLParserTEXT       = 8
+	ContactQLParserWS         = 9
+	ContactQLParserERROR      = 10
 )
 
 // ContactQLParser rules.
@@ -122,20 +123,29 @@ type IParseContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Expression() IExpressionContext
+	EOF() antlr.TerminalNode
+
 	// IsParseContext differentiates from other interfaces.
 	IsParseContext()
 }
 
 type ParseContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyParseContext() *ParseContext {
 	var p = new(ParseContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = ContactQLParserRULE_parse
 	return p
+}
+
+func InitEmptyParseContext(p *ParseContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ContactQLParserRULE_parse
 }
 
 func (*ParseContext) IsParseContext() {}
@@ -143,7 +153,7 @@ func (*ParseContext) IsParseContext() {}
 func NewParseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ParseContext {
 	var p = new(ParseContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = ContactQLParserRULE_parse
@@ -204,28 +214,8 @@ func (s *ParseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *ContactQLParser) Parse() (localctx IParseContext) {
-	this := p
-	_ = this
-
 	localctx = NewParseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, ContactQLParserRULE_parse)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(6)
@@ -234,9 +224,23 @@ func (p *ContactQLParser) Parse() (localctx IParseContext) {
 	{
 		p.SetState(7)
 		p.Match(ContactQLParserEOF)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IExpressionContext is an interface to support dynamic dispatch.
@@ -245,21 +249,25 @@ type IExpressionContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsExpressionContext differentiates from other interfaces.
 	IsExpressionContext()
 }
 
 type ExpressionContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyExpressionContext() *ExpressionContext {
 	var p = new(ExpressionContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = ContactQLParserRULE_expression
 	return p
+}
+
+func InitEmptyExpressionContext(p *ExpressionContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ContactQLParserRULE_expression
 }
 
 func (*ExpressionContext) IsExpressionContext() {}
@@ -267,7 +275,7 @@ func (*ExpressionContext) IsExpressionContext() {}
 func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExpressionContext {
 	var p = new(ExpressionContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = ContactQLParserRULE_expression
@@ -277,8 +285,8 @@ func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *ExpressionContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExpressionContext) CopyFrom(ctx *ExpressionContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ExpressionContext) CopyAll(ctx *ExpressionContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ExpressionContext) GetRuleContext() antlr.RuleContext {
@@ -290,15 +298,15 @@ func (s *ExpressionContext) ToStringTree(ruleNames []string, recog antlr.Recogni
 }
 
 type ImplicitConditionContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewImplicitConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ImplicitConditionContext {
 	var p = new(ImplicitConditionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -346,15 +354,15 @@ func (s *ImplicitConditionContext) Accept(visitor antlr.ParseTreeVisitor) interf
 }
 
 type ConditionContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ConditionContext {
 	var p = new(ConditionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -363,8 +371,8 @@ func (s *ConditionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ConditionContext) TEXT() antlr.TerminalNode {
-	return s.GetToken(ContactQLParserTEXT, 0)
+func (s *ConditionContext) PROPERTY() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserPROPERTY, 0)
 }
 
 func (s *ConditionContext) COMPARATOR() antlr.TerminalNode {
@@ -410,15 +418,15 @@ func (s *ConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type CombinationAndContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewCombinationAndContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *CombinationAndContext {
 	var p = new(CombinationAndContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -495,15 +503,15 @@ func (s *CombinationAndContext) Accept(visitor antlr.ParseTreeVisitor) interface
 }
 
 type CombinationImpicitAndContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewCombinationImpicitAndContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *CombinationImpicitAndContext {
 	var p = new(CombinationImpicitAndContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -576,15 +584,15 @@ func (s *CombinationImpicitAndContext) Accept(visitor antlr.ParseTreeVisitor) in
 }
 
 type CombinationOrContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewCombinationOrContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *CombinationOrContext {
 	var p = new(CombinationOrContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -661,15 +669,15 @@ func (s *CombinationOrContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type ExpressionGroupingContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewExpressionGroupingContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ExpressionGroupingContext {
 	var p = new(ExpressionGroupingContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -729,39 +737,24 @@ func (p *ContactQLParser) Expression() (localctx IExpressionContext) {
 }
 
 func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
-	this := p
-	_ = this
-
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
 	_parentState := p.GetState()
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IExpressionContext = localctx
 	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
 	_startState := 2
 	p.EnterRecursionRule(localctx, 2, ContactQLParserRULE_expression, _p)
-
-	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(18)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 0, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 0, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewExpressionGroupingContext(p, localctx)
 		p.SetParserRuleContext(localctx)
@@ -770,6 +763,10 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(10)
 			p.Match(ContactQLParserLPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(11)
@@ -778,6 +775,10 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(12)
 			p.Match(ContactQLParserRPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 2:
@@ -786,11 +787,19 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 		_prevctx = localctx
 		{
 			p.SetState(14)
-			p.Match(ContactQLParserTEXT)
+			p.Match(ContactQLParserPROPERTY)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(15)
 			p.Match(ContactQLParserCOMPARATOR)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(16)
@@ -806,12 +815,19 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 			p.Literal()
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(30)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext())
-
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
 			if p.GetParseListeners() != nil {
@@ -820,18 +836,27 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 			_prevctx = localctx
 			p.SetState(28)
 			p.GetErrorHandler().Sync(p)
-			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext()) {
+			if p.HasError() {
+				goto errorExit
+			}
+
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 1, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewCombinationAndContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ContactQLParserRULE_expression)
 				p.SetState(20)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(21)
 					p.Match(ContactQLParserAND)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(22)
@@ -844,7 +869,8 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(23)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(24)
@@ -857,26 +883,49 @@ func (p *ContactQLParser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(25)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(26)
 					p.Match(ContactQLParserOR)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(27)
 					p.expression(5)
 				}
 
+			case antlr.ATNInvalidAltNumber:
+				goto errorExit
 			}
 
 		}
 		p.SetState(32)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ILiteralContext is an interface to support dynamic dispatch.
@@ -885,21 +934,25 @@ type ILiteralContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsLiteralContext differentiates from other interfaces.
 	IsLiteralContext()
 }
 
 type LiteralContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyLiteralContext() *LiteralContext {
 	var p = new(LiteralContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = ContactQLParserRULE_literal
 	return p
+}
+
+func InitEmptyLiteralContext(p *LiteralContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ContactQLParserRULE_literal
 }
 
 func (*LiteralContext) IsLiteralContext() {}
@@ -907,7 +960,7 @@ func (*LiteralContext) IsLiteralContext() {}
 func NewLiteralContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LiteralContext {
 	var p = new(LiteralContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = ContactQLParserRULE_literal
@@ -917,8 +970,8 @@ func NewLiteralContext(parser antlr.Parser, parent antlr.ParserRuleContext, invo
 
 func (s *LiteralContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *LiteralContext) CopyFrom(ctx *LiteralContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *LiteralContext) CopyAll(ctx *LiteralContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *LiteralContext) GetRuleContext() antlr.RuleContext {
@@ -930,15 +983,15 @@ func (s *LiteralContext) ToStringTree(ruleNames []string, recog antlr.Recognizer
 }
 
 type StringLiteralContext struct {
-	*LiteralContext
+	LiteralContext
 }
 
 func NewStringLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringLiteralContext {
 	var p = new(StringLiteralContext)
 
-	p.LiteralContext = NewEmptyLiteralContext()
+	InitEmptyLiteralContext(&p.LiteralContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*LiteralContext))
+	p.CopyAll(ctx.(*LiteralContext))
 
 	return p
 }
@@ -974,21 +1027,25 @@ func (s *StringLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type TextLiteralContext struct {
-	*LiteralContext
+	LiteralContext
 }
 
 func NewTextLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *TextLiteralContext {
 	var p = new(TextLiteralContext)
 
-	p.LiteralContext = NewEmptyLiteralContext()
+	InitEmptyLiteralContext(&p.LiteralContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*LiteralContext))
+	p.CopyAll(ctx.(*LiteralContext))
 
 	return p
 }
 
 func (s *TextLiteralContext) GetRuleContext() antlr.RuleContext {
 	return s
+}
+
+func (s *TextLiteralContext) PROPERTY() antlr.TerminalNode {
+	return s.GetToken(ContactQLParserPROPERTY, 0)
 }
 
 func (s *TextLiteralContext) TEXT() antlr.TerminalNode {
@@ -1018,53 +1075,67 @@ func (s *TextLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 func (p *ContactQLParser) Literal() (localctx ILiteralContext) {
-	this := p
-	_ = this
-
 	localctx = NewLiteralContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, ContactQLParserRULE_literal)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.SetState(35)
+	p.SetState(36)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 
 	switch p.GetTokenStream().LA(1) {
-	case ContactQLParserTEXT:
+	case ContactQLParserPROPERTY:
 		localctx = NewTextLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(33)
+			p.Match(ContactQLParserPROPERTY)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case ContactQLParserTEXT:
+		localctx = NewTextLiteralContext(p, localctx)
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(34)
 			p.Match(ContactQLParserTEXT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case ContactQLParserSTRING:
 		localctx = NewStringLiteralContext(p, localctx)
-		p.EnterOuterAlt(localctx, 2)
+		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(34)
+			p.SetState(35)
 			p.Match(ContactQLParserSTRING)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 func (p *ContactQLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
@@ -1082,9 +1153,6 @@ func (p *ContactQLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predInd
 }
 
 func (p *ContactQLParser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	this := p
-	_ = this
-
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 6)

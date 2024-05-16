@@ -239,7 +239,8 @@ var sessionAssets = `{
         {"uuid": "6c86d5ab-3fd9-4a5c-a5b6-48168b016747", "key": "join_date", "name": "Join Date", "type": "datetime"},
         {"uuid": "c88d2640-d124-438a-b666-5ec53a353dcd", "key": "activation_token", "name": "Activation Token", "type": "text"},
         {"uuid": "ab9c0631-d8cd-4e77-a5a2-66a8b077e385", "key": "state", "name": "State", "type": "state"},
-        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "not_set", "name": "Not set", "type": "text"}
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "not_set", "name": "Not set", "type": "text"},
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "language", "name": "Language (Conflicts)", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},

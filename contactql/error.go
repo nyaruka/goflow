@@ -21,6 +21,7 @@ const (
 	ErrUnsupportedContains   = "unsupported_contains"   // `property` the property key
 	ErrUnsupportedComparison = "unsupported_comparison" // `property` the property key, `operator` one of =>, <, >=, <=
 	ErrUnsupportedSetCheck   = "unsupported_setcheck"   // `property` the property key, `operator` one of =, !=
+	ErrUnknownPropertyType   = "unknown_property_type"  // `type` the property type
 	ErrUnknownProperty       = "unknown_property"       // `property` the property key
 	ErrRedactedURNs          = "redacted_urns"
 )

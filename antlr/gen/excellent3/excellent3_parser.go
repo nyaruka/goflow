@@ -1,4 +1,4 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from Excellent3.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package gen // Excellent3
 import (
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -18,33 +18,33 @@ type Excellent3Parser struct {
 	*antlr.BaseParser
 }
 
-var excellent3ParserStaticData struct {
+var Excellent3ParserStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func excellent3ParserInit() {
-	staticData := &excellent3ParserStaticData
-	staticData.literalNames = []string{
+	staticData := &Excellent3ParserStaticData
+	staticData.LiteralNames = []string{
 		"", "','", "'('", "')'", "'['", "']'", "'.'", "'=>'", "'+'", "'-'",
 		"'*'", "'/'", "'^'", "'='", "'!='", "'<='", "'<'", "'>='", "'>'", "'&'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "COMMA", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "DOT", "ARROW",
 		"PLUS", "MINUS", "TIMES", "DIVIDE", "EXPONENT", "EQ", "NEQ", "LTE",
 		"LT", "GTE", "GT", "AMPERSAND", "TEXT", "INTEGER", "DECIMAL", "TRUE",
 		"FALSE", "NULL", "NAME", "WS", "ERROR",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"parse", "expression", "atom", "parameters", "nameList",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 1, 28, 97, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -105,7 +105,7 @@ func excellent3ParserInit() {
 // NewExcellent3Parser(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func Excellent3ParserInit() {
-	staticData := &excellent3ParserStaticData
+	staticData := &Excellent3ParserStaticData
 	staticData.once.Do(excellent3ParserInit)
 }
 
@@ -114,12 +114,12 @@ func NewExcellent3Parser(input antlr.TokenStream) *Excellent3Parser {
 	Excellent3ParserInit()
 	this := new(Excellent3Parser)
 	this.BaseParser = antlr.NewBaseParser(input)
-	staticData := &excellent3ParserStaticData
-	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	this.RuleNames = staticData.ruleNames
-	this.LiteralNames = staticData.literalNames
-	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "java-escape"
+	staticData := &Excellent3ParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	this.RuleNames = staticData.RuleNames
+	this.LiteralNames = staticData.LiteralNames
+	this.SymbolicNames = staticData.SymbolicNames
+	this.GrammarFileName = "Excellent3.g4"
 
 	return this
 }
@@ -173,20 +173,29 @@ type IParseContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Expression() IExpressionContext
+	EOF() antlr.TerminalNode
+
 	// IsParseContext differentiates from other interfaces.
 	IsParseContext()
 }
 
 type ParseContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyParseContext() *ParseContext {
 	var p = new(ParseContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent3ParserRULE_parse
 	return p
+}
+
+func InitEmptyParseContext(p *ParseContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent3ParserRULE_parse
 }
 
 func (*ParseContext) IsParseContext() {}
@@ -194,7 +203,7 @@ func (*ParseContext) IsParseContext() {}
 func NewParseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ParseContext {
 	var p = new(ParseContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent3ParserRULE_parse
@@ -255,28 +264,8 @@ func (s *ParseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent3Parser) Parse() (localctx IParseContext) {
-	this := p
-	_ = this
-
 	localctx = NewParseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, Excellent3ParserRULE_parse)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(10)
@@ -285,9 +274,23 @@ func (p *Excellent3Parser) Parse() (localctx IParseContext) {
 	{
 		p.SetState(11)
 		p.Match(Excellent3ParserEOF)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IExpressionContext is an interface to support dynamic dispatch.
@@ -296,21 +299,25 @@ type IExpressionContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsExpressionContext differentiates from other interfaces.
 	IsExpressionContext()
 }
 
 type ExpressionContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyExpressionContext() *ExpressionContext {
 	var p = new(ExpressionContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent3ParserRULE_expression
 	return p
+}
+
+func InitEmptyExpressionContext(p *ExpressionContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent3ParserRULE_expression
 }
 
 func (*ExpressionContext) IsExpressionContext() {}
@@ -318,7 +325,7 @@ func (*ExpressionContext) IsExpressionContext() {}
 func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExpressionContext {
 	var p = new(ExpressionContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent3ParserRULE_expression
@@ -328,8 +335,8 @@ func NewExpressionContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *ExpressionContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExpressionContext) CopyFrom(ctx *ExpressionContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ExpressionContext) CopyAll(ctx *ExpressionContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ExpressionContext) GetRuleContext() antlr.RuleContext {
@@ -341,15 +348,15 @@ func (s *ExpressionContext) ToStringTree(ruleNames []string, recog antlr.Recogni
 }
 
 type NegationContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewNegationContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegationContext {
 	var p = new(NegationContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -401,16 +408,16 @@ func (s *NegationContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type ComparisonContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewComparisonContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ComparisonContext {
 	var p = new(ComparisonContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -503,15 +510,15 @@ func (s *ComparisonContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type FalseContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewFalseContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FalseContext {
 	var p = new(FalseContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -547,16 +554,16 @@ func (s *FalseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type AdditionOrSubtractionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewAdditionOrSubtractionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AdditionOrSubtractionContext {
 	var p = new(AdditionOrSubtractionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -641,15 +648,15 @@ func (s *AdditionOrSubtractionContext) Accept(visitor antlr.ParseTreeVisitor) in
 }
 
 type TextLiteralContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewTextLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *TextLiteralContext {
 	var p = new(TextLiteralContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -685,15 +692,15 @@ func (s *TextLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 type ConcatenationContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewConcatenationContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ConcatenationContext {
 	var p = new(ConcatenationContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -770,15 +777,15 @@ func (s *ConcatenationContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type NullContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewNullContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NullContext {
 	var p = new(NullContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -814,16 +821,16 @@ func (s *NullContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type MultiplicationOrDivisionContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewMultiplicationOrDivisionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *MultiplicationOrDivisionContext {
 	var p = new(MultiplicationOrDivisionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -908,15 +915,15 @@ func (s *MultiplicationOrDivisionContext) Accept(visitor antlr.ParseTreeVisitor)
 }
 
 type TrueContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewTrueContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *TrueContext {
 	var p = new(TrueContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -952,15 +959,15 @@ func (s *TrueContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type AtomReferenceContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewAtomReferenceContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AtomReferenceContext {
 	var p = new(AtomReferenceContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1008,15 +1015,15 @@ func (s *AtomReferenceContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type AnonFunctionContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewAnonFunctionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AnonFunctionContext {
 	var p = new(AnonFunctionContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1092,16 +1099,16 @@ func (s *AnonFunctionContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 }
 
 type EqualityContext struct {
-	*ExpressionContext
+	ExpressionContext
 	op antlr.Token
 }
 
 func NewEqualityContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *EqualityContext {
 	var p = new(EqualityContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1186,15 +1193,15 @@ func (s *EqualityContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type NumberLiteralContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewNumberLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NumberLiteralContext {
 	var p = new(NumberLiteralContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1234,15 +1241,15 @@ func (s *NumberLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 }
 
 type ExponentContext struct {
-	*ExpressionContext
+	ExpressionContext
 }
 
 func NewExponentContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ExponentContext {
 	var p = new(ExponentContext)
 
-	p.ExpressionContext = NewEmptyExpressionContext()
+	InitEmptyExpressionContext(&p.ExpressionContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ExpressionContext))
+	p.CopyAll(ctx.(*ExpressionContext))
 
 	return p
 }
@@ -1323,10 +1330,8 @@ func (p *Excellent3Parser) Expression() (localctx IExpressionContext) {
 }
 
 func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
-	this := p
-	_ = this
-
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
 	_parentState := p.GetState()
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IExpressionContext = localctx
@@ -1335,28 +1340,16 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 	p.EnterRecursionRule(localctx, 2, Excellent3ParserRULE_expression, _p)
 	var _la int
 
-	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(28)
 	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 0, p.GetParserRuleContext()) {
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 0, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewAtomReferenceContext(p, localctx)
 		p.SetParserRuleContext(localctx)
@@ -1374,6 +1367,10 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(15)
 			p.Match(Excellent3ParserMINUS)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(16)
@@ -1387,6 +1384,10 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(17)
 			p.Match(Excellent3ParserLPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(18)
@@ -1395,10 +1396,18 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(19)
 			p.Match(Excellent3ParserRPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(20)
 			p.Match(Excellent3ParserARROW)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(21)
@@ -1412,6 +1421,10 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(23)
 			p.Match(Excellent3ParserTEXT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 5:
@@ -1437,6 +1450,10 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(25)
 			p.Match(Excellent3ParserTRUE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 7:
@@ -1446,6 +1463,10 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(26)
 			p.Match(Excellent3ParserFALSE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 8:
@@ -1455,14 +1476,25 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 		{
 			p.SetState(27)
 			p.Match(Excellent3ParserNULL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(50)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext())
-
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
 			if p.GetParseListeners() != nil {
@@ -1471,18 +1503,27 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 			_prevctx = localctx
 			p.SetState(48)
 			p.GetErrorHandler().Sync(p)
-			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext()) {
+			if p.HasError() {
+				goto errorExit
+			}
+
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 1, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewExponentContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent3ParserRULE_expression)
 				p.SetState(30)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 12)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 12)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 12)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(31)
 					p.Match(Excellent3ParserEXPONENT)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(32)
@@ -1495,7 +1536,8 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(33)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 11)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 11)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 11)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(34)
@@ -1526,7 +1568,8 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(36)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 10)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 10)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 10)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(37)
@@ -1557,7 +1600,8 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(39)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 9)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 9)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 9)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(40)
@@ -1588,7 +1632,8 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(42)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 8)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(43)
@@ -1619,26 +1664,49 @@ func (p *Excellent3Parser) expression(_p int) (localctx IExpressionContext) {
 				p.SetState(45)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(46)
 					p.Match(Excellent3ParserAMPERSAND)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(47)
 					p.expression(8)
 				}
 
+			case antlr.ATNInvalidAltNumber:
+				goto errorExit
 			}
 
 		}
 		p.SetState(52)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IAtomContext is an interface to support dynamic dispatch.
@@ -1647,21 +1715,25 @@ type IAtomContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsAtomContext differentiates from other interfaces.
 	IsAtomContext()
 }
 
 type AtomContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyAtomContext() *AtomContext {
 	var p = new(AtomContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent3ParserRULE_atom
 	return p
+}
+
+func InitEmptyAtomContext(p *AtomContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent3ParserRULE_atom
 }
 
 func (*AtomContext) IsAtomContext() {}
@@ -1669,7 +1741,7 @@ func (*AtomContext) IsAtomContext() {}
 func NewAtomContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *AtomContext {
 	var p = new(AtomContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent3ParserRULE_atom
@@ -1679,8 +1751,8 @@ func NewAtomContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *AtomContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *AtomContext) CopyFrom(ctx *AtomContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *AtomContext) CopyAll(ctx *AtomContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *AtomContext) GetRuleContext() antlr.RuleContext {
@@ -1692,15 +1764,15 @@ func (s *AtomContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) s
 }
 
 type ParenthesesContext struct {
-	*AtomContext
+	AtomContext
 }
 
 func NewParenthesesContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ParenthesesContext {
 	var p = new(ParenthesesContext)
 
-	p.AtomContext = NewEmptyAtomContext()
+	InitEmptyAtomContext(&p.AtomContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
+	p.CopyAll(ctx.(*AtomContext))
 
 	return p
 }
@@ -1756,15 +1828,15 @@ func (s *ParenthesesContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 type DotLookupContext struct {
-	*AtomContext
+	AtomContext
 }
 
 func NewDotLookupContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *DotLookupContext {
 	var p = new(DotLookupContext)
 
-	p.AtomContext = NewEmptyAtomContext()
+	InitEmptyAtomContext(&p.AtomContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
+	p.CopyAll(ctx.(*AtomContext))
 
 	return p
 }
@@ -1824,15 +1896,15 @@ func (s *DotLookupContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 type FunctionCallContext struct {
-	*AtomContext
+	AtomContext
 }
 
 func NewFunctionCallContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FunctionCallContext {
 	var p = new(FunctionCallContext)
 
-	p.AtomContext = NewEmptyAtomContext()
+	InitEmptyAtomContext(&p.AtomContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
+	p.CopyAll(ctx.(*AtomContext))
 
 	return p
 }
@@ -1904,15 +1976,15 @@ func (s *FunctionCallContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 }
 
 type ArrayLookupContext struct {
-	*AtomContext
+	AtomContext
 }
 
 func NewArrayLookupContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ArrayLookupContext {
 	var p = new(ArrayLookupContext)
 
-	p.AtomContext = NewEmptyAtomContext()
+	InitEmptyAtomContext(&p.AtomContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
+	p.CopyAll(ctx.(*AtomContext))
 
 	return p
 }
@@ -1984,15 +2056,15 @@ func (s *ArrayLookupContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 }
 
 type ContextReferenceContext struct {
-	*AtomContext
+	AtomContext
 }
 
 func NewContextReferenceContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ContextReferenceContext {
 	var p = new(ContextReferenceContext)
 
-	p.AtomContext = NewEmptyAtomContext()
+	InitEmptyAtomContext(&p.AtomContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
+	p.CopyAll(ctx.(*AtomContext))
 
 	return p
 }
@@ -2032,10 +2104,8 @@ func (p *Excellent3Parser) Atom() (localctx IAtomContext) {
 }
 
 func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
-	this := p
-	_ = this
-
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
 	_parentState := p.GetState()
 	localctx = NewAtomContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IAtomContext = localctx
@@ -2044,27 +2114,14 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 	p.EnterRecursionRule(localctx, 4, Excellent3ParserRULE_atom, _p)
 	var _la int
 
-	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(59)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 
 	switch p.GetTokenStream().LA(1) {
 	case Excellent3ParserLPAREN:
@@ -2075,6 +2132,10 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 		{
 			p.SetState(54)
 			p.Match(Excellent3ParserLPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(55)
@@ -2083,6 +2144,10 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 		{
 			p.SetState(56)
 			p.Match(Excellent3ParserRPAREN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case Excellent3ParserNAME:
@@ -2092,16 +2157,26 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 		{
 			p.SetState(58)
 			p.Match(Excellent3ParserNAME)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(77)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext())
-
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 6, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
 			if p.GetParseListeners() != nil {
@@ -2110,21 +2185,33 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 			_prevctx = localctx
 			p.SetState(75)
 			p.GetErrorHandler().Sync(p)
-			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 5, p.GetParserRuleContext()) {
+			if p.HasError() {
+				goto errorExit
+			}
+
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 5, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewFunctionCallContext(p, NewAtomContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, Excellent3ParserRULE_atom)
 				p.SetState(61)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(62)
 					p.Match(Excellent3ParserLPAREN)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				p.SetState(64)
 				p.GetErrorHandler().Sync(p)
+				if p.HasError() {
+					goto errorExit
+				}
 				_la = p.GetTokenStream().LA(1)
 
 				if (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&133169668) != 0 {
@@ -2137,6 +2224,10 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 				{
 					p.SetState(66)
 					p.Match(Excellent3ParserRPAREN)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 
 			case 2:
@@ -2145,11 +2236,16 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 				p.SetState(67)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(68)
 					p.Match(Excellent3ParserDOT)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(69)
@@ -2169,11 +2265,16 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 				p.SetState(70)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
-					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+					goto errorExit
 				}
 				{
 					p.SetState(71)
 					p.Match(Excellent3ParserLBRACK)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 				{
 					p.SetState(72)
@@ -2182,17 +2283,39 @@ func (p *Excellent3Parser) atom(_p int) (localctx IAtomContext) {
 				{
 					p.SetState(73)
 					p.Match(Excellent3ParserRBRACK)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
 				}
 
+			case antlr.ATNInvalidAltNumber:
+				goto errorExit
 			}
 
 		}
 		p.SetState(79)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 6, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 6, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IParametersContext is an interface to support dynamic dispatch.
@@ -2201,21 +2324,25 @@ type IParametersContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsParametersContext differentiates from other interfaces.
 	IsParametersContext()
 }
 
 type ParametersContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyParametersContext() *ParametersContext {
 	var p = new(ParametersContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent3ParserRULE_parameters
 	return p
+}
+
+func InitEmptyParametersContext(p *ParametersContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent3ParserRULE_parameters
 }
 
 func (*ParametersContext) IsParametersContext() {}
@@ -2223,7 +2350,7 @@ func (*ParametersContext) IsParametersContext() {}
 func NewParametersContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ParametersContext {
 	var p = new(ParametersContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent3ParserRULE_parameters
@@ -2233,8 +2360,8 @@ func NewParametersContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *ParametersContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ParametersContext) CopyFrom(ctx *ParametersContext) {
-	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+func (s *ParametersContext) CopyAll(ctx *ParametersContext) {
+	s.CopyFrom(&ctx.BaseParserRuleContext)
 }
 
 func (s *ParametersContext) GetRuleContext() antlr.RuleContext {
@@ -2246,15 +2373,15 @@ func (s *ParametersContext) ToStringTree(ruleNames []string, recog antlr.Recogni
 }
 
 type FunctionParametersContext struct {
-	*ParametersContext
+	ParametersContext
 }
 
 func NewFunctionParametersContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FunctionParametersContext {
 	var p = new(FunctionParametersContext)
 
-	p.ParametersContext = NewEmptyParametersContext()
+	InitEmptyParametersContext(&p.ParametersContext)
 	p.parser = parser
-	p.CopyFrom(ctx.(*ParametersContext))
+	p.CopyAll(ctx.(*ParametersContext))
 
 	return p
 }
@@ -2335,28 +2462,9 @@ func (s *FunctionParametersContext) Accept(visitor antlr.ParseTreeVisitor) inter
 }
 
 func (p *Excellent3Parser) Parameters() (localctx IParametersContext) {
-	this := p
-	_ = this
-
 	localctx = NewParametersContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, Excellent3ParserRULE_parameters)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	localctx = NewFunctionParametersContext(p, localctx)
 	p.EnterOuterAlt(localctx, 1)
@@ -2366,12 +2474,19 @@ func (p *Excellent3Parser) Parameters() (localctx IParametersContext) {
 	}
 	p.SetState(85)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	for _la == Excellent3ParserCOMMA {
 		{
 			p.SetState(81)
 			p.Match(Excellent3ParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(82)
@@ -2380,10 +2495,23 @@ func (p *Excellent3Parser) Parameters() (localctx IParametersContext) {
 
 		p.SetState(87)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // INameListContext is an interface to support dynamic dispatch.
@@ -2393,20 +2521,31 @@ type INameListContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AllNAME() []antlr.TerminalNode
+	NAME(i int) antlr.TerminalNode
+	AllCOMMA() []antlr.TerminalNode
+	COMMA(i int) antlr.TerminalNode
+
 	// IsNameListContext differentiates from other interfaces.
 	IsNameListContext()
 }
 
 type NameListContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyNameListContext() *NameListContext {
 	var p = new(NameListContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = Excellent3ParserRULE_nameList
 	return p
+}
+
+func InitEmptyNameListContext(p *NameListContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = Excellent3ParserRULE_nameList
 }
 
 func (*NameListContext) IsNameListContext() {}
@@ -2414,7 +2553,7 @@ func (*NameListContext) IsNameListContext() {}
 func NewNameListContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NameListContext {
 	var p = new(NameListContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = Excellent3ParserRULE_nameList
@@ -2471,54 +2610,63 @@ func (s *NameListContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *Excellent3Parser) NameList() (localctx INameListContext) {
-	this := p
-	_ = this
-
 	localctx = NewNameListContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 8, Excellent3ParserRULE_nameList)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(88)
 		p.Match(Excellent3ParserNAME)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(93)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	for _la == Excellent3ParserCOMMA {
 		{
 			p.SetState(89)
 			p.Match(Excellent3ParserCOMMA)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(90)
 			p.Match(Excellent3ParserNAME)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 		p.SetState(95)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 func (p *Excellent3Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
@@ -2543,9 +2691,6 @@ func (p *Excellent3Parser) Sempred(localctx antlr.RuleContext, ruleIndex, predIn
 }
 
 func (p *Excellent3Parser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	this := p
-	_ = this
-
 	switch predIndex {
 	case 0:
 		return p.Precpred(p.GetParserRuleContext(), 12)
@@ -2571,9 +2716,6 @@ func (p *Excellent3Parser) Expression_Sempred(localctx antlr.RuleContext, predIn
 }
 
 func (p *Excellent3Parser) Atom_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	this := p
-	_ = this
-
 	switch predIndex {
 	case 6:
 		return p.Precpred(p.GetParserRuleContext(), 5)

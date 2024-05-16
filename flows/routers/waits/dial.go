@@ -64,7 +64,7 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	phone, _ := run.EvaluateTemplate(w.phone, log)
 	country := run.Session().MergedEnvironment().DefaultCountry()
 
-	urn, err := urns.ParsePhone(phone, country)
+	urn, err := urns.ParsePhone(phone, country, false, false)
 	if err != nil {
 		log(events.NewError(err))
 		return false

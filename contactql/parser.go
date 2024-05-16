@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 	"github.com/nyaruka/gocommon/i18n"
 	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
@@ -46,10 +46,10 @@ type PropertyType string
 
 const (
 	// PropertyTypeAttribute is builtin property
-	PropertyTypeAttribute PropertyType = "attribute"
+	PropertyTypeAttribute PropertyType = "attr"
 
-	// PropertyTypeScheme is a URN scheme
-	PropertyTypeScheme PropertyType = "scheme"
+	// PropertyTypeURN is a URN scheme
+	PropertyTypeURN PropertyType = "urn"
 
 	// PropertyTypeField is a custom contact field
 	PropertyTypeField PropertyType = "field"
@@ -72,26 +72,26 @@ type QueryNode interface {
 
 // Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
-	propKey  string
 	propType PropertyType
+	propKey  string
 	operator Operator
 	value    string
 }
 
-func NewCondition(propKey string, propType PropertyType, operator Operator, value string) *Condition {
+func NewCondition(propType PropertyType, propKey string, operator Operator, value string) *Condition {
 	return &Condition{
-		propKey:  propKey,
 		propType: propType,
+		propKey:  propKey,
 		operator: operator,
 		value:    value,
 	}
 }
 
-// PropertyKey returns the key for the property being queried
-func (c *Condition) PropertyKey() string { return c.propKey }
-
 // PropertyType returns the type (attribute, scheme, field)
 func (c *Condition) PropertyType() PropertyType { return c.propType }
+
+// PropertyKey returns the key for the property being queried
+func (c *Condition) PropertyKey() string { return c.propKey }
 
 // Operator returns the type of comparison being made
 func (c *Condition) Operator() Operator { return c.operator }
@@ -123,7 +123,7 @@ func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
 	switch c.propType {
 	case PropertyTypeAttribute:
 		return attributes[c.propKey]
-	case PropertyTypeScheme:
+	case PropertyTypeURN:
 		return assets.FieldTypeText
 	case PropertyTypeField:
 		field := resolver.ResolveField(c.propKey)
@@ -152,7 +152,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if len(tokenizeNameValue(c.value)) == 0 {
 				return NewQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
-		} else if c.propKey == AttributeURN || c.propType == PropertyTypeScheme {
+		} else if c.propKey == AttributeURN || c.propType == PropertyTypeURN {
 			if len(c.value) < minURNContainsLength {
 				return NewQueryError(ErrInvalidPartialURN, "contains operator on URN requires value of minimum length %d", minURNContainsLength).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
@@ -174,7 +174,7 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
 		}
 	} else {
-		// check values are valid for the property type
+		// check values are valid for the value type
 		if valueType == assets.FieldTypeNumber {
 			_, err := c.ValueAsNumber()
 			if err != nil {
@@ -185,27 +185,31 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if err != nil {
 				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
 			}
+		}
 
-		} else if c.propKey == AttributeGroup && resolver != nil {
-			group := c.ValueAsGroup(resolver)
-			if group == nil {
-				return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
-			}
-		} else if (c.propKey == AttributeFlow || c.propKey == AttributeHistory) && resolver != nil {
-			flow := c.ValueAsFlow(resolver)
-			if flow == nil {
-				return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
-			}
-		} else if c.propKey == AttributeStatus {
-			val := strings.ToLower(c.value)
-			if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
-				return NewQueryError(ErrInvalidStatus, "'%s' is not a valid contact status", c.value).withExtra("value", c.value)
-			}
-		} else if c.propKey == AttributeLanguage {
-			if c.value != "" {
-				_, err := i18n.ParseLanguage(c.value)
-				if err != nil {
-					return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
+		// for some text attributes, do some additional validation
+		if c.propType == PropertyTypeAttribute {
+			if c.propKey == AttributeGroup && resolver != nil {
+				group := c.ValueAsGroup(resolver)
+				if group == nil {
+					return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
+				}
+			} else if (c.propKey == AttributeFlow || c.propKey == AttributeHistory) && resolver != nil {
+				flow := c.ValueAsFlow(resolver)
+				if flow == nil {
+					return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
+				}
+			} else if c.propKey == AttributeStatus {
+				val := strings.ToLower(c.value)
+				if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
+					return NewQueryError(ErrInvalidStatus, "'%s' is not a valid contact status", c.value).withExtra("value", c.value)
+				}
+			} else if c.propKey == AttributeLanguage {
+				if c.value != "" {
+					_, err := i18n.ParseLanguage(c.value)
+					if err != nil {
+						return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
+					}
 				}
 			}
 		}
@@ -219,14 +223,22 @@ func (c *Condition) Simplify() QueryNode {
 }
 
 func (c *Condition) String() string {
+	property := c.propKey
 	value := c.value
+
+	// add prefix for fields and URNs
+	if c.propType == PropertyTypeField {
+		property = fmt.Sprintf(`fields.%s`, property)
+	} else if c.propType == PropertyTypeURN {
+		property = fmt.Sprintf(`urns.%s`, property)
+	}
 
 	if !isNumberRegex.MatchString(value) {
 		// if not a decimal then quote
 		value = strconv.Quote(value)
 	}
 
-	return fmt.Sprintf(`%s %s %s`, c.propKey, c.operator, value)
+	return fmt.Sprintf(`%s %s %s`, property, c.operator, value)
 }
 
 // BoolCombination is a AND or OR combination of multiple conditions

@@ -394,7 +394,8 @@ func TestContactQuery(t *testing.T) {
 		"name": "Ben Haggerty",
 		"fields": {
 			"gender": {"text": "Male"},
-			"age": {"text": "39!", "number": 39}
+			"age": {"text": "39!", "number": 39},
+			"language": {"text": "en"}
 		},
 		"groups": [
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -506,6 +507,10 @@ func TestContactQuery(t *testing.T) {
 		{`age != 39`, envs.RedactionPolicyNone, false, ""},
 		{`age = 60`, envs.RedactionPolicyNone, false, ""},
 		{`age != 60`, envs.RedactionPolicyNone, true, ""},
+
+		// field with key that conflicts with attribute has to be prefixed
+		{`fields.language = EN`, envs.RedactionPolicyNone, true, ""},
+		{`fields.language = FR`, envs.RedactionPolicyNone, false, ""},
 
 		// check querying on a field that isn't set for this contact
 		{`activation_token = ""`, envs.RedactionPolicyNone, true, ""},
