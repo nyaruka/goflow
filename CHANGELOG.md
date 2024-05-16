@@ -1,3 +1,7 @@
+v0.213.2 (2024-05-16)
+-------------------------
+ * Tweak releaser config
+
 v0.213.1 (2024-05-16)
 -------------------------
  * Switch to use goreleaser and update actions to latest versions
