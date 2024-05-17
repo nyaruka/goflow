@@ -237,3 +237,88 @@ func TestCloneOlderVersion(t *testing.T) {
 		"nodes": []
 	}`), cloneJSON, "cloned flow mismatch")
 }
+
+func TestMultiVersionMigration(t *testing.T) {
+	migrated, err := migrations.MigrateToLatest([]byte(`{
+		"uuid": "e91308d7-7c80-4b0b-9840-7a3484158c8e",
+		"name": "Test",
+        "spec_version": "13.2.0",
+        "type": "messaging",
+        "revision": 0,
+        "expire_after_minutes": 1440,
+        "language": "eng",
+        "nodes": [
+            {
+                "actions": [
+                    {
+                        "attachments": [],
+                        "quick_replies": [
+                            "1",
+                            "2"
+                        ],
+                        "templating": {
+                            "template": {
+                                "name": "daily_interaction",
+                                "uuid": "b4533c2d-d00d-4294-8f82-4027ed4c2b96"
+                            },
+                            "uuid": "656b5c50-7c71-4257-9db1-2fa9a3deb84d",
+                            "variables": [
+                                "@results.name"
+                            ]
+                        },
+                        "text": "BLAAAH",
+                        "type": "send_msg",
+                        "uuid": "929932aa-8414-4458-9504-f60e42395ca2"
+                    }
+                ],
+                "exits": [
+                    {
+                        "destination_uuid": "45091f3b-1b8a-4ae5-81eb-11426339e864",
+                        "uuid": "cdc71a39-6429-4edc-8439-d956084e5581"
+                    }
+                ],
+                "uuid": "12d205d2-4697-411a-9ec4-818ae4471598"
+            }
+        ]
+    }`), migrations.DefaultConfig)
+	require.NoError(t, err)
+
+	expected := fmt.Sprintf(`{
+        "uuid": "e91308d7-7c80-4b0b-9840-7a3484158c8e",
+		"name": "Test",
+        "spec_version": "%s",
+        "type": "messaging",
+        "revision": 0,
+        "expire_after_minutes": 1440,
+        "language": "eng",
+        "nodes": [
+            {
+                "actions": [
+                    {
+                        "attachments": [],
+                        "quick_replies": [
+                            "1",
+                            "2"
+                        ],
+                        "template": {
+                            "name": "daily_interaction",
+                            "uuid": "b4533c2d-d00d-4294-8f82-4027ed4c2b96"
+                        },
+                        "template_variables": ["@results.name"],
+                        "text": "BLAAAH",
+                        "type": "send_msg",
+                        "uuid": "929932aa-8414-4458-9504-f60e42395ca2"
+                    }
+                ],
+                "exits": [
+                    {
+                        "destination_uuid": "45091f3b-1b8a-4ae5-81eb-11426339e864",
+                        "uuid": "cdc71a39-6429-4edc-8439-d956084e5581"
+                    }
+                ],
+                "uuid": "12d205d2-4697-411a-9ec4-818ae4471598"
+            }
+        ]
+    }`, definition.CurrentSpecVersion)
+	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
+}
