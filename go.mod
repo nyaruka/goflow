@@ -10,7 +10,6 @@ require (
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/nyaruka/gocommon v1.54.9
-	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sergi/go-diff v1.3.1
 	github.com/shopspring/decimal v1.4.0
@@ -28,9 +27,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/gofrs/uuid v4.4.0+incompatible // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
-	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/nyaruka/null/v2 v2.0.3 // indirect
 	github.com/nyaruka/phonenumbers v1.3.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
