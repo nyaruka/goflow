@@ -96,10 +96,7 @@ func TestElasticQuery(t *testing.T) {
 		query := es.ToElasticQuery(env, mapper, parsed)
 		assert.NotNil(t, query, tc.Description)
 
-		source, err := query.Source()
-		require.NoError(t, err, "error requesting source for elastic query in ", testName)
-
-		asJSON, err := jsonx.Marshal(source)
+		asJSON, err := jsonx.Marshal(query)
 		require.NoError(t, err)
 
 		test.AssertEqualJSON(t, tc.Elastic, asJSON, "elastic mismatch in %s", testName)
