@@ -1,13 +1,16 @@
-package es
+package esq
 
+// Any is a shortcut for a bool query with a should clause
 func Any(queries ...map[string]any) map[string]any {
 	return map[string]any{"bool": map[string]any{"should": queries}}
 }
 
+// All is a shortcut for a bool query with a must clause
 func All(queries ...map[string]any) map[string]any {
 	return map[string]any{"bool": map[string]any{"must": queries}}
 }
 
+// Not is a shortcut for a bool query with a must_not clause
 func Not(query map[string]any) map[string]any {
 	return map[string]any{"bool": map[string]any{"must_not": query}}
 }
