@@ -6,7 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
-	esq "github.com/nyaruka/goflow/utils/elastic"
+	"github.com/nyaruka/goflow/utils/elastic"
 	"github.com/pkg/errors"
 )
 
@@ -14,7 +14,7 @@ import (
 func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (map[string]any, error) {
 	// default to most recent first by id
 	if sortBy == "" {
-		return esq.Sort("id", false), nil
+		return elastic.Sort("id", false), nil
 	}
 
 	// figure out if we are ascending or descending (default is ascending, can be changed with leading -)
@@ -29,12 +29,12 @@ func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (map[string]
 
 	// name needs to be sorted by keyword field
 	if property == contactql.AttributeName {
-		return esq.Sort("name.keyword", ascending), nil
+		return elastic.Sort("name.keyword", ascending), nil
 	}
 
 	// other attributes are straight sorts
 	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage {
-		return esq.Sort(property, ascending), nil
+		return elastic.Sort(property, ascending), nil
 	}
 
 	// we are sorting by a custom field
@@ -51,5 +51,5 @@ func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (map[string]
 		key = fmt.Sprintf("fields.%s", field.Type())
 	}
 
-	return esq.SortNested(key, esq.Term("fields.field", field.UUID()), "fields", ascending), nil
+	return elastic.SortNested(key, elastic.Term("fields.field", field.UUID()), "fields", ascending), nil
 }
