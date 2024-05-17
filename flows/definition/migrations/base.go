@@ -94,22 +94,24 @@ func migrate(data []byte, from *semver.Version, to *semver.Version, cfg *Config)
 	// sorted by earliest first
 	sort.SliceStable(versions, func(i, j int) bool { return versions[i].LessThan(versions[j]) })
 
-	migrated, err := ReadFlow(data)
-	if err != nil {
-		return nil, err
-	}
-
 	for _, version := range versions {
-		migrated, err = registered[version](migrated, cfg)
+		// we read the flow each time to ensure what we pass to the migration function uses the types it expects
+		flow, err := ReadFlow(data)
+		if err != nil {
+			return nil, err
+		}
+
+		flow, err = registered[version](flow, cfg)
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to migrate to version %s", version.String())
 		}
 
-		migrated["spec_version"] = version.String()
+		flow["spec_version"] = version.String()
+
+		data = jsonx.MustMarshal(flow)
 	}
 
-	// finally marshal back to JSON
-	return jsonx.Marshal(migrated)
+	return data, nil
 }
 
 // Clone clones the given flow definition by replacing all UUIDs using the provided mapping and
