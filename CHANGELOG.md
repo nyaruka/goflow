@@ -1,3 +1,8 @@
+v0.213.3 (2024-05-17)
+-------------------------
+ * Merge pull request #1255 from nyaruka/migration_fix
+ * Fix migrating directly from 13.2 to 13.5
+
 v0.213.2 (2024-05-16)
 -------------------------
  * Tweak releaser config
