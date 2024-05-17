@@ -1,3 +1,7 @@
+v0.214.0 (2024-05-17)
+-------------------------
+ * Rewrite contactql query conversion to ES to use simple maps instead of unmaintained library
+
 v0.213.3 (2024-05-17)
 -------------------------
  * Merge pull request #1255 from nyaruka/migration_fix
