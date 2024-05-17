@@ -11,10 +11,10 @@ import (
 )
 
 // ToElasticFieldSort returns the elastic FieldSort for the passed in sort by string
-func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (map[string]any, error) {
+func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, error) {
 	// default to most recent first by id
 	if sortBy == "" {
-		return elastic.Sort("id", false), nil
+		return elastic.SortBy("id", false), nil
 	}
 
 	// figure out if we are ascending or descending (default is ascending, can be changed with leading -)
@@ -29,12 +29,12 @@ func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (map[string]
 
 	// name needs to be sorted by keyword field
 	if property == contactql.AttributeName {
-		return elastic.Sort("name.keyword", ascending), nil
+		return elastic.SortBy("name.keyword", ascending), nil
 	}
 
 	// other attributes are straight sorts
 	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage {
-		return elastic.Sort(property, ascending), nil
+		return elastic.SortBy(property, ascending), nil
 	}
 
 	// we are sorting by a custom field

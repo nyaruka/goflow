@@ -26,7 +26,7 @@ var contactStatusCodes = map[string]string{
 }
 
 // ToElasticQuery converts a contactql query to an Elastic query
-func ToElasticQuery(env envs.Environment, mapper AssetMapper, query *contactql.ContactQuery) map[string]any {
+func ToElasticQuery(env envs.Environment, mapper AssetMapper, query *contactql.ContactQuery) elastic.Query {
 	if query.Resolver() == nil {
 		panic("can only convert queries parsed with a resolver")
 	}
@@ -34,7 +34,7 @@ func ToElasticQuery(env envs.Environment, mapper AssetMapper, query *contactql.C
 	return nodeToElastic(env, query.Resolver(), mapper, query.Root())
 }
 
-func nodeToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, node contactql.QueryNode) map[string]any {
+func nodeToElastic(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, node contactql.QueryNode) elastic.Query {
 	switch n := node.(type) {
 	case *contactql.BoolCombination:
 		return boolCombination(env, resolver, mapper, n)
@@ -45,8 +45,8 @@ func nodeToElastic(env envs.Environment, resolver contactql.Resolver, mapper Ass
 	}
 }
 
-func boolCombination(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, combination *contactql.BoolCombination) map[string]any {
-	queries := make([]map[string]any, len(combination.Children()))
+func boolCombination(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, combination *contactql.BoolCombination) elastic.Query {
+	queries := make([]elastic.Query, len(combination.Children()))
 	for i, child := range combination.Children() {
 		queries[i] = nodeToElastic(env, resolver, mapper, child)
 	}
@@ -58,7 +58,7 @@ func boolCombination(env envs.Environment, resolver contactql.Resolver, mapper A
 	return elastic.Any(queries...)
 }
 
-func condition(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) map[string]any {
+func condition(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) elastic.Query {
 	switch c.PropertyType() {
 	case contactql.PropertyTypeField:
 		return fieldCondition(env, resolver, c)
@@ -71,7 +71,7 @@ func condition(env envs.Environment, resolver contactql.Resolver, mapper AssetMa
 	}
 }
 
-func fieldCondition(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) map[string]any {
+func fieldCondition(env envs.Environment, resolver contactql.Resolver, c *contactql.Condition) elastic.Query {
 	field := resolver.ResolveField(c.PropertyKey())
 	fieldType := field.Type()
 	fieldQuery := elastic.Term("fields.field", field.UUID())
@@ -102,7 +102,7 @@ func fieldCondition(env envs.Environment, resolver contactql.Resolver, c *contac
 
 	} else if fieldType == assets.FieldTypeNumber {
 		value, _ := c.ValueAsNumber()
-		var query map[string]any
+		var query elastic.Query
 
 		switch c.Operator() {
 		case contactql.OpEqual:
@@ -130,7 +130,7 @@ func fieldCondition(env envs.Environment, resolver contactql.Resolver, c *contac
 	} else if fieldType == assets.FieldTypeDatetime {
 		value, _ := c.ValueAsDate(env)
 		start, end := dates.DayToUTCRange(value, value.Location())
-		var query map[string]any
+		var query elastic.Query
 
 		switch c.Operator() {
 		case contactql.OpEqual:
@@ -176,7 +176,7 @@ func fieldCondition(env envs.Environment, resolver contactql.Resolver, c *contac
 	panic(fmt.Sprintf("unsupported field type: %s", fieldType))
 }
 
-func attributeCondition(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) map[string]any {
+func attributeCondition(env envs.Environment, resolver contactql.Resolver, mapper AssetMapper, c *contactql.Condition) elastic.Query {
 	key := c.PropertyKey()
 	value := strings.ToLower(c.Value())
 
@@ -345,7 +345,7 @@ func attributeCondition(env envs.Environment, resolver contactql.Resolver, mappe
 	}
 }
 
-func schemeCondition(c *contactql.Condition) map[string]any {
+func schemeCondition(c *contactql.Condition) elastic.Query {
 	key := c.PropertyKey()
 	value := strings.ToLower(c.Value())
 
@@ -370,7 +370,7 @@ func schemeCondition(c *contactql.Condition) map[string]any {
 	}
 }
 
-func textAttributeQuery(c *contactql.Condition, name string, tx func(string) string) map[string]any {
+func textAttributeQuery(c *contactql.Condition, name string, tx func(string) string) elastic.Query {
 	value := tx(c.Value())
 
 	switch c.Operator() {
@@ -383,7 +383,7 @@ func textAttributeQuery(c *contactql.Condition, name string, tx func(string) str
 	}
 }
 
-func numericalAttributeQuery(c *contactql.Condition, name string) map[string]any {
+func numericalAttributeQuery(c *contactql.Condition, name string) elastic.Query {
 	value, _ := c.ValueAsNumber()
 
 	switch c.Operator() {
