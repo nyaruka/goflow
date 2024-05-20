@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,7 +50,7 @@ func TestToXTime(t *testing.T) {
 		hasError bool
 	}{
 		{nil, types.XTimeZero, true},
-		{types.NewXError(errors.Errorf("Error")), types.XTimeZero, true},
+		{types.NewXError(fmt.Errorf("Error")), types.XTimeZero, true},
 		{types.NewXNumberFromInt(123), types.XTimeZero, true},
 		{types.NewXNumberFromInt(23), types.NewXTime(dates.NewTimeOfDay(23, 0, 0, 0)), false},
 		{types.NewXNumberFromInt(24), types.XTimeZero, false},

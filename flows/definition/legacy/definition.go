@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -16,9 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/buger/jsonparser"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -507,7 +505,7 @@ func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLo
 
 		return newPlayAudioAction(a.UUID, migratedAudioURL), nil
 	default:
-		return nil, errors.Errorf("unable to migrate legacy action type: %s", a.Type)
+		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
 }
 
@@ -706,7 +704,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 			// check if we already have a configuration for this currency
 			existingAmount, alreadyDefined := currencyAmounts[countryCfg.CurrencyCode]
 			if alreadyDefined && existingAmount != countryCfg.Amount {
-				return nil, "", nil, errors.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
+				return nil, "", nil, fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
 			}
 
 			currencyAmounts[countryCfg.CurrencyCode] = countryCfg.Amount
@@ -721,7 +719,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 		uiType = UINodeTypeSplitByAirtime
 
 	default:
-		return nil, "", nil, errors.Errorf("unrecognized ruleset type: %s", r.Type)
+		return nil, "", nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
 	return newNode(r.UUID, newActions, router, exits), uiType, uiConfig, nil
@@ -967,7 +965,7 @@ func migrateRule(baseLanguage i18n.Language, r Rule, category migratedCategory, 
 		arguments = []string{migratedDistrict, migratedState}
 
 	default:
-		return nil, nil, errors.Errorf("migration of '%s' tests not supported", r.Test.Type)
+		return nil, nil, fmt.Errorf("migration of '%s' tests not supported", r.Test.Type)
 	}
 
 	return newCase(caseUUID, newType, arguments, category.UUID()), caseUI, err
@@ -981,7 +979,7 @@ func migrateActionSet(lang i18n.Language, a ActionSet, validDests map[uuids.UUID
 	for i := range a.Actions {
 		action, err := migrateAction(lang, a.Actions[i], localization, baseMediaURL)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error migrating action[type=%s]", a.Actions[i].Type)
+			return nil, fmt.Errorf("error migrating action[type=%s]: %w", a.Actions[i].Type, err)
 		}
 		actions[i] = action
 	}
@@ -1028,7 +1026,7 @@ func migrateNodes(f *Flow, baseMediaURL string) ([]migratedNode, map[uuids.UUID]
 	for i, actionSet := range f.ActionSets {
 		node, err := migrateActionSet(f.BaseLanguage, actionSet, validDestinations, localization, baseMediaURL)
 		if err != nil {
-			return nil, nil, nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
+			return nil, nil, nil, fmt.Errorf("error migrating action_set[uuid=%s]: %w", actionSet.UUID, err)
 		}
 		nodes[i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(UINodeTypeActionSet, actionSet.X, actionSet.Y, nil)
@@ -1037,7 +1035,7 @@ func migrateNodes(f *Flow, baseMediaURL string) ([]migratedNode, map[uuids.UUID]
 	for i, ruleSet := range f.RuleSets {
 		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, validDestinations, localization)
 		if err != nil {
-			return nil, nil, nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
+			return nil, nil, nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %w", ruleSet.UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
 		nodeUIs[node.UUID()] = NewNodeUI(uiType, ruleSet.X, ruleSet.Y, uiNodeConfig)
@@ -1132,7 +1130,7 @@ func IsPossibleDefinition(data json.RawMessage) bool {
 func MigrateDefinition(data json.RawMessage, baseMediaURL string) (json.RawMessage, error) {
 	legacyFlow, err := readLegacyFlow(data)
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to read legacy flow")
+		return nil, fmt.Errorf("unable to read legacy flow: %w", err)
 	}
 
 	return legacyFlow.Migrate(baseMediaURL)

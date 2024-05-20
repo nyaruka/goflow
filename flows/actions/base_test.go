@@ -2,6 +2,7 @@ package actions_test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -31,7 +32,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/smtpx"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -155,7 +155,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// now try to read the flow, and if we expect a read error, check that
 		flow, err := sa.Flows().Get(flowUUID)
 		if tc.ReadError != "" {
-			rootErr := errors.Cause(err)
+			rootErr := test.RootError(err)
 			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
 			continue
 		} else {
@@ -227,7 +227,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				if c.Type() == "wit" {
 					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
 				}
-				return nil, errors.Errorf("no classification service available for %s", c.Reference())
+				return nil, fmt.Errorf("no classification service available for %s", c.Reference())
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil

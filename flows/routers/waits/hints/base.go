@@ -2,11 +2,10 @@ package hints
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 var registeredTypes = map[string](func() flows.Hint){}
@@ -41,7 +40,7 @@ func ReadHint(data json.RawMessage) (flows.Hint, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	hint := f()

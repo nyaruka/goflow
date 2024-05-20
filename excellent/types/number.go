@@ -1,13 +1,14 @@
 package types
 
 import (
+	"errors"
+	"fmt"
 	"math"
 	"regexp"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -51,7 +52,7 @@ func NewXNumberFromInt64(value int64) *XNumber {
 func RequireXNumberFromString(value string) *XNumber {
 	num, err := newXNumberFromString(value)
 	if err != nil {
-		panic(errors.Wrapf(err, "error parsing '%s' as number", value))
+		panic(fmt.Errorf("error parsing '%s' as number: %w", value, err))
 	}
 	return num
 }

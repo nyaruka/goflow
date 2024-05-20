@@ -2,6 +2,8 @@ package triggers
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -11,8 +13,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // ReadFunc is a function that can read a trigger from JSON
@@ -74,7 +74,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
-		return errors.Wrapf(err, "unable to load %s", t.Flow())
+		return fmt.Errorf("unable to load %s: %w", t.Flow(), err)
 	}
 
 	if flow.Type() == flows.FlowTypeVoice && t.call == nil {
@@ -196,7 +196,7 @@ func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missin
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(sessionAssets, data, missing)
 }
@@ -212,18 +212,18 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.triggeredOn = e.TriggeredOn
 
 	if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
-		return errors.Wrap(err, "unable to read contact")
+		return fmt.Errorf("unable to read contact: %w", err)
 	}
 
 	if e.Environment != nil {
 		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
-			return errors.Wrap(err, "unable to read environment")
+			return fmt.Errorf("unable to read environment: %w", err)
 		}
 	}
 
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
-			return errors.Wrap(err, "unable to read params")
+			return fmt.Errorf("unable to read params: %w", err)
 		}
 	}
 

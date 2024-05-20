@@ -5,14 +5,12 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows/definition/legacy"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/Masterminds/semver"
-	"github.com/pkg/errors"
 )
 
 // MigrationFunc is a function that can migrate a flow definition from one version to another
@@ -62,7 +60,7 @@ func MigrateToVersion(data []byte, to *semver.Version, cfg *Config) ([]byte, err
 			var err error
 			data, err = legacy.MigrateDefinition(data, cfg.BaseMediaURL)
 			if err != nil {
-				return nil, errors.Wrap(err, "error migrating what appears to be a legacy definition")
+				return nil, fmt.Errorf("error migrating what appears to be a legacy definition: %w", err)
 			}
 		}
 
@@ -71,7 +69,7 @@ func MigrateToVersion(data []byte, to *semver.Version, cfg *Config) ([]byte, err
 	}
 
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to read flow header")
+		return nil, fmt.Errorf("unable to read flow header: %w", err)
 	}
 
 	return migrate(data, header.SpecVersion, to, cfg)
@@ -103,7 +101,7 @@ func migrate(data []byte, from *semver.Version, to *semver.Version, cfg *Config)
 
 		flow, err = registered[version](flow, cfg)
 		if err != nil {
-			return nil, errors.Wrapf(err, "unable to migrate to version %s", version.String())
+			return nil, fmt.Errorf("unable to migrate to version %s: %w", version.String(), err)
 		}
 
 		flow["spec_version"] = version.String()

@@ -2,6 +2,7 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
@@ -12,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 type node struct {
@@ -43,24 +43,24 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 
 		// check that this action is valid for this flow type
 		if !flow.Type().Allows(action) {
-			return errors.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), flow.Type())
+			return fmt.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), flow.Type())
 		}
 
 		uuidAlreadySeen := seenUUIDs[uuids.UUID(action.UUID())]
 		if uuidAlreadySeen {
-			return errors.Errorf("action UUID %s isn't unique", action.UUID())
+			return fmt.Errorf("action UUID %s isn't unique", action.UUID())
 		}
 		seenUUIDs[uuids.UUID(action.UUID())] = true
 
 		if err := action.Validate(); err != nil {
-			return errors.Wrapf(err, "invalid action[uuid=%s, type=%s]", action.UUID(), action.Type())
+			return fmt.Errorf("invalid action[uuid=%s, type=%s]: %w", action.UUID(), action.Type(), err)
 		}
 	}
 
 	// check the router if there is one
 	if n.Router() != nil {
 		if err := n.Router().Validate(flow, n.Exits()); err != nil {
-			return errors.Wrap(err, "invalid router")
+			return fmt.Errorf("invalid router: %w", err)
 		}
 	}
 
@@ -68,12 +68,12 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 	for _, exit := range n.Exits() {
 		uuidAlreadySeen := seenUUIDs[uuids.UUID(exit.UUID())]
 		if uuidAlreadySeen {
-			return errors.Errorf("exit UUID %s isn't unique", exit.UUID())
+			return fmt.Errorf("exit UUID %s isn't unique", exit.UUID())
 		}
 		seenUUIDs[uuids.UUID(exit.UUID())] = true
 
 		if exit.DestinationUUID() != "" && flow.GetNode(exit.DestinationUUID()) == nil {
-			return errors.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationUUID(), exit.UUID())
+			return fmt.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationUUID(), exit.UUID())
 		}
 	}
 
@@ -152,7 +152,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	e := &nodeEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
-		return errors.Wrap(err, "unable to read node")
+		return fmt.Errorf("unable to read node: %w", err)
 	}
 
 	n.uuid = e.UUID
@@ -161,7 +161,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	if e.Router != nil {
 		n.router, err = routers.ReadRouter(e.Router)
 		if err != nil {
-			return errors.Wrap(err, "unable to read router")
+			return fmt.Errorf("unable to read router: %w", err)
 		}
 	}
 
@@ -170,7 +170,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	for i := range e.Actions {
 		n.actions[i], err = actions.ReadAction(e.Actions[i])
 		if err != nil {
-			return errors.Wrap(err, "unable to read action")
+			return fmt.Errorf("unable to read action: %w", err)
 		}
 	}
 

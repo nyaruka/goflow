@@ -2,6 +2,7 @@ package waits
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
@@ -10,8 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -102,7 +101,7 @@ func readMsgWait(data json.RawMessage) (flows.Wait, error) {
 	var err error
 	if e.Hint != nil {
 		if w.hint, err = hints.ReadHint(e.Hint); err != nil {
-			return nil, errors.Wrap(err, "unable to read hint")
+			return nil, fmt.Errorf("unable to read hint: %w", err)
 		}
 	}
 

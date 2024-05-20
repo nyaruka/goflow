@@ -2,6 +2,7 @@ package runs
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -16,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 type run struct {
@@ -164,7 +164,7 @@ func (r *run) CreateStep(node flows.Node) flows.Step {
 
 func (r *run) PathLocation() (flows.Step, flows.Node, error) {
 	if r.Path() == nil {
-		return nil, nil, errors.Errorf("run has no location as path is empty")
+		return nil, nil, fmt.Errorf("run has no location as path is empty")
 	}
 
 	step := r.Path()[len(r.Path())-1]
@@ -175,7 +175,7 @@ func (r *run) PathLocation() (flows.Step, flows.Node, error) {
 		node = r.Flow().GetNode(step.NodeUUID())
 	}
 	if node == nil {
-		return nil, nil, errors.Errorf("run is located at a flow node that no longer exists")
+		return nil, nil, fmt.Errorf("run is located at a flow node that no longer exists")
 	}
 
 	return step, node, nil
@@ -426,7 +426,7 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 	var err error
 
 	if err = utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read run")
+		return nil, fmt.Errorf("unable to read run: %w", err)
 	}
 
 	r := &run{
@@ -467,7 +467,7 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 	r.events = make([]flows.Event, len(e.Events))
 	for i := range r.events {
 		if r.events[i], err = events.ReadEvent(e.Events[i]); err != nil {
-			return nil, errors.Wrap(err, "unable to read event")
+			return nil, fmt.Errorf("unable to read event: %w", err)
 		}
 	}
 
@@ -504,7 +504,7 @@ func (r *run) MarshalJSON() ([]byte, error) {
 	e.Events = make([]json.RawMessage, len(r.events))
 	for i := range r.events {
 		if e.Events[i], err = jsonx.Marshal(r.events[i]); err != nil {
-			return nil, errors.Wrapf(err, "unable to marshal event[type=%s]", r.events[i].Type())
+			return nil, fmt.Errorf("unable to marshal event[type=%s]: %w", r.events[i].Type(), err)
 		}
 	}
 

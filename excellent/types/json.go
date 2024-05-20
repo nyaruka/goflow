@@ -6,7 +6,6 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -53,7 +52,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 		return jsonToObject(data)
 	}
 
-	return NewXError(errors.Errorf("unknown JSON parsing error"))
+	return NewXError(fmt.Errorf("unknown JSON parsing error"))
 }
 
 func jsonToObject(data []byte) *XObject {

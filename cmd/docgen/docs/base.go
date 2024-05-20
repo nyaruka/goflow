@@ -8,8 +8,6 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/utils/po"
-
-	"github.com/pkg/errors"
 )
 
 const (
@@ -40,7 +38,7 @@ func Generate(baseDir, outputDir, localeDir string) error {
 	// extract all documented items from the source code
 	taggedItems, err := FindAllTaggedItems(baseDir)
 	if err != nil {
-		return errors.Wrap(err, "error extracting tagged items")
+		return fmt.Errorf("error extracting tagged items: %w", err)
 	}
 
 	for k, v := range taggedItems {
@@ -72,7 +70,7 @@ func Generate(baseDir, outputDir, localeDir string) error {
 
 	// and merge with existing locale files
 	if err := locales.Update(poDomain, pot); err != nil {
-		return errors.Wrap(err, "error updating locale files")
+		return fmt.Errorf("error updating locale files: %w", err)
 	}
 
 	return nil
@@ -92,7 +90,7 @@ func generateForLang(baseDir, outputDir string, items map[string][]*TaggedItem, 
 	// load PO file for translations
 	po, err := locales.Load(locale, poDomain)
 	if err != nil {
-		return errors.Wrapf(err, "error loading PO file for '%s'", locale)
+		return fmt.Errorf("error loading PO file for '%s': %w", locale, err)
 	}
 
 	// create gettext function which will keep track of all unique message IDs
@@ -108,7 +106,7 @@ func generateForLang(baseDir, outputDir string, items map[string][]*TaggedItem, 
 		fmt.Printf("Invoking generator: %s...\n", g.Name())
 
 		if err := g.Generate(baseDir, genDir, items, gettext); err != nil {
-			return errors.Wrapf(err, "error invoking generator %s", g.Name())
+			return fmt.Errorf("error invoking generator %s: %w", g.Name(), err)
 		}
 	}
 

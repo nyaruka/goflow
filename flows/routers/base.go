@@ -2,6 +2,8 @@ package routers
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -14,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 var registeredTypes = map[string](func() flows.Router){}
@@ -92,18 +93,18 @@ func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []st
 func (r *baseRouter) validate(flow flows.Flow, exits []flows.Exit) error {
 	// check wait timeout category is valid
 	if r.AllowTimeout() && !r.isValidCategory(r.wait.Timeout().CategoryUUID()) {
-		return errors.Errorf("timeout category %s is not a valid category", r.wait.Timeout().CategoryUUID())
+		return fmt.Errorf("timeout category %s is not a valid category", r.wait.Timeout().CategoryUUID())
 	}
 
 	// check each category points to a valid exit
 	for _, c := range r.categories {
 		if c.ExitUUID() != "" && !r.isValidExit(c.ExitUUID(), exits) {
-			return errors.Errorf("category exit %s is not a valid exit", c.ExitUUID())
+			return fmt.Errorf("category exit %s is not a valid exit", c.ExitUUID())
 		}
 	}
 
 	if r.wait != nil && !flow.Type().Allows(r.wait) {
-		return errors.Errorf("wait type '%s' is not allowed in a flow of type '%s'", r.wait.Type(), flow.Type())
+		return fmt.Errorf("wait type '%s' is not allowed in a flow of type '%s'", r.wait.Type(), flow.Type())
 	}
 
 	return nil
@@ -164,7 +165,7 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 	}
 
 	if category == nil {
-		return "", errors.Errorf("category %s is not a valid category", categoryUUID)
+		return "", fmt.Errorf("category %s is not a valid category", categoryUUID)
 	}
 
 	// save result if we have a result name
@@ -204,7 +205,7 @@ func ReadRouter(data json.RawMessage) (flows.Router, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	router := f()
@@ -228,7 +229,7 @@ func (r *baseRouter) unmarshal(e *baseRouterEnvelope) error {
 	if e.Wait != nil {
 		r.wait, err = waits.ReadWait(e.Wait)
 		if err != nil {
-			return errors.Wrap(err, "unable to read wait")
+			return fmt.Errorf("unable to read wait: %w", err)
 		}
 	}
 

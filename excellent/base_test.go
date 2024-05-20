@@ -1,6 +1,7 @@
 package excellent_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -9,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/test"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -229,7 +229,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			"missing": nil,
 		}),
 		"func": functions.Lookup("upper"),
-		"err":  types.NewXError(errors.Errorf("an error")),
+		"err":  types.NewXError(fmt.Errorf("an error")),
 		"object1": types.NewXObject(map[string]types.XValue{
 			"__default__": types.NewXText("123"),
 			"foo":         types.NewXNumberFromInt(123),

@@ -16,8 +16,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -63,7 +61,7 @@ func (g *htmlDocsGenerator) Name() string {
 
 func (g *htmlDocsGenerator) Generate(baseDir, outputDir string, items map[string][]*TaggedItem, gettext func(string) string) error {
 	if err := renderTemplateDocs(baseDir, outputDir, items); err != nil {
-		return errors.Wrap(err, "error rendering templates")
+		return fmt.Errorf("error rendering templates: %w", err)
 	}
 
 	// copy static resources to docs dir
@@ -71,7 +69,7 @@ func (g *htmlDocsGenerator) Generate(baseDir, outputDir string, items map[string
 		src := path.Join(baseDir, templateDir, res)
 		dst := path.Join(outputDir, res)
 		if err := copyFile(src, dst); err != nil {
-			return errors.Wrap(err, "error copying resource")
+			return fmt.Errorf("error copying resource: %w", err)
 		}
 		fmt.Printf(" > Copied %s > %s\n", src, dst)
 	}
@@ -82,7 +80,7 @@ func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*Ta
 	// render items as context for the main doc templates
 	context, err := buildTemplateContext(items)
 	if err != nil {
-		return errors.Wrap(err, "error building docs context")
+		return fmt.Errorf("error building docs context: %w", err)
 	}
 
 	// to post-process templates to resolve links between templates
@@ -102,14 +100,14 @@ func renderTemplateDocs(baseDir string, outputDir string, items map[string][]*Ta
 		htmlPath := path.Join(outputDir, template.Path[0:len(template.Path)-3]+".html")
 
 		if err := renderTemplate(templatePath, renderedPath, context, linkResolver, linkTargets); err != nil {
-			return errors.Wrapf(err, "error rendering template %s", templatePath)
+			return fmt.Errorf("error rendering template %s: %w", templatePath, err)
 		}
 
 		htmlTemplate := path.Join(baseDir, "cmd/docgen/templates/template.html")
 		htmlContext := map[string]string{"title": template.Title}
 
 		if err := renderHTML(renderedPath, htmlPath, htmlTemplate, template.TOC, htmlContext); err != nil {
-			return errors.Wrapf(err, "error rendering HTML from %s to %s", renderedPath, htmlPath)
+			return fmt.Errorf("error rendering HTML from %s to %s: %w", renderedPath, htmlPath, err)
 		}
 
 		fmt.Printf(" > Rendered %s > %s > %s\n", templatePath, renderedPath, htmlPath)
@@ -123,12 +121,12 @@ func renderTemplate(src, dst string, context map[string]string, resolver urlReso
 	// generate our complete docs
 	docTpl, err := template.ParseFiles(src)
 	if err != nil {
-		return errors.Wrap(err, "error reading template file")
+		return fmt.Errorf("error reading template file: %w", err)
 	}
 
 	output := &strings.Builder{}
 	if err := docTpl.Execute(output, context); err != nil {
-		return errors.Wrap(err, "error executing template")
+		return fmt.Errorf("error executing template: %w", err)
 	}
 
 	processed := resolveLinks(output.String(), resolver, linkTargets)
@@ -177,7 +175,7 @@ func createLinkResolver(items map[string][]*TaggedItem) (urlResolver, map[string
 	return func(tag string, val string) (string, error) {
 		linkTpl := typeTemplates[tag]
 		if linkTpl == "" {
-			return "", errors.Errorf("no link template for type %s", tag)
+			return "", fmt.Errorf("no link template for type %s", tag)
 		}
 		return fmt.Sprintf(linkTpl, val), nil
 	}, linkTargets
@@ -224,12 +222,12 @@ func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, er
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	if err != nil {
-		return nil, errors.Wrap(err, "error creating example session")
+		return nil, fmt.Errorf("error creating example session: %w", err)
 	}
 
 	voiceSession, _, err := test.CreateTestVoiceSession(server.URL)
 	if err != nil {
-		return nil, errors.Wrap(err, "error creating example session")
+		return nil, fmt.Errorf("error creating example session: %w", err)
 	}
 
 	context := make(map[string]string)

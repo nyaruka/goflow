@@ -2,8 +2,6 @@ package completion
 
 import (
 	"fmt"
-
-	"github.com/pkg/errors"
 )
 
 // types available in root of context even without a session
@@ -47,13 +45,13 @@ func (c *Completion) Validate() error {
 	for _, t := range c.Types {
 		for _, ref := range t.TypeRefs() {
 			if !knownTypes[ref] {
-				return errors.Errorf("context type %s references unknown type %s", t.Name(), ref)
+				return fmt.Errorf("context type %s references unknown type %s", t.Name(), ref)
 			}
 		}
 	}
 	for _, p := range c.Root {
 		if !knownTypes[p.Type] {
-			return errors.Errorf("context root references unknown type %s", p.Type)
+			return fmt.Errorf("context root references unknown type %s", p.Type)
 		}
 	}
 	return nil

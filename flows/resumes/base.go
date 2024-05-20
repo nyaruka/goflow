@@ -2,6 +2,7 @@ package resumes
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -12,8 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // ReadFunc is a function that can read a resume from JSON
@@ -126,7 +125,7 @@ func ReadResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(sessionAssets, data, missing)
 }
@@ -139,12 +138,12 @@ func (r *baseResume) unmarshal(sessionAssets flows.SessionAssets, e *baseResumeE
 
 	if e.Environment != nil {
 		if r.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
-			return errors.Wrap(err, "unable to read environment")
+			return fmt.Errorf("unable to read environment: %w", err)
 		}
 	}
 	if e.Contact != nil {
 		if r.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
-			return errors.Wrap(err, "unable to read contact")
+			return fmt.Errorf("unable to read contact: %w", err)
 		}
 	}
 	return nil

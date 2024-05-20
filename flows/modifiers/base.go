@@ -2,14 +2,14 @@ package modifiers
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // ErrNoModifier is the error instance returned when a modifier is read but due to missing assets can't be returned
@@ -80,7 +80,7 @@ func ReadModifier(assets flows.SessionAssets, data json.RawMessage, missing asse
 
 	f := RegisteredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(assets, data, missing)
 }

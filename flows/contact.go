@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -602,7 +601,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	var err error
 
 	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
-		return nil, errors.Wrap(err, "unable to read contact")
+		return nil, fmt.Errorf("unable to read contact: %w", err)
 	}
 
 	c := &Contact{
@@ -631,7 +630,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 		c.urns = make(URNList, 0)
 	} else {
 		if c.urns, err = ReadURNList(sa, envelope.URNs, missing); err != nil {
-			return nil, errors.Wrap(err, "error reading urns")
+			return nil, fmt.Errorf("error reading urns: %w", err)
 		}
 	}
 
@@ -641,7 +640,7 @@ func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingC
 	if envelope.Ticket != nil {
 		c.ticket, err = ReadTicket(sa, envelope.Ticket, missing)
 		if err != nil {
-			return nil, errors.Wrap(err, "unable to read ticket")
+			return nil, fmt.Errorf("unable to read ticket: %w", err)
 		}
 	}
 

@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // Translations is an inline translation map used for localization
@@ -86,7 +85,7 @@ func (s *StringOrNumber) UnmarshalJSON(data []byte) error {
 		// data is JSON number
 		*s = StringOrNumber(data)
 	} else {
-		return errors.Errorf("expected string or number, not %s", string(c))
+		return fmt.Errorf("expected string or number, not %s", string(c))
 	}
 	return nil
 }

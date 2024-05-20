@@ -18,8 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 var dynamicContextTypes = []string{"fields", "globals", "results", "urns"}
@@ -50,7 +48,7 @@ func createItemListContextFunc(tag string, renderer renderFunc) ContextFunc {
 
 		for _, item := range items[tag] {
 			if err := renderer(buffer, item, session, voiceSession); err != nil {
-				return nil, errors.Wrapf(err, "error rendering %s:%s", item.tagName, item.tagValue)
+				return nil, fmt.Errorf("error rendering %s:%s: %w", item.tagName, item.tagValue, err)
 			}
 		}
 
@@ -60,12 +58,12 @@ func createItemListContextFunc(tag string, renderer renderFunc) ContextFunc {
 
 func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
-		return errors.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
+		return fmt.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
 	}
 
 	marshaled, err := jsonx.MarshalPretty(json.RawMessage(strings.Join(item.examples, "\n")))
 	if err != nil {
-		return errors.Wrap(err, "unable to marshal example")
+		return fmt.Errorf("unable to marshal example: %w", err)
 	}
 
 	// try to load example as part of a static asset source
@@ -78,7 +76,7 @@ func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 
 	_, err = static.NewSource([]byte(assetSet))
 	if err != nil {
-		return errors.Wrap(err, "unable to load example into asset source")
+		return fmt.Errorf("unable to load example into asset source: %w", err)
 	}
 
 	output.WriteString(renderItemTitle(item))
@@ -94,7 +92,7 @@ func renderAssetDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 
 func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
-		return errors.Errorf("no examples found for type %s/%s", item.tagValue, item.typeName)
+		return fmt.Errorf("no examples found for type %s/%s", item.tagValue, item.typeName)
 	}
 
 	// check the examples
@@ -117,7 +115,7 @@ func renderTypeDoc(output *strings.Builder, item *TaggedItem, session flows.Sess
 
 func renderOperatorDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
-		return errors.Errorf("no examples found for operator %s/%s", item.tagValue, item.typeName)
+		return fmt.Errorf("no examples found for operator %s/%s", item.tagValue, item.typeName)
 	}
 
 	// check the examples
@@ -150,7 +148,7 @@ func renderContextDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	for _, propDesc := range item.examples {
 		prop := completion.ParseProperty(propDesc)
 		if prop == nil {
-			return errors.Errorf("invalid format for property description \"%s\"", propDesc)
+			return fmt.Errorf("invalid format for property description \"%s\"", propDesc)
 		}
 		if prop.Key == "__default__" {
 			defaultProp = prop
@@ -186,7 +184,7 @@ func renderRootContext(items map[string][]*TaggedItem, session flows.Session, vo
 	for _, propDesc := range root.examples {
 		prop := completion.ParseProperty(propDesc)
 		if prop == nil {
-			return nil, errors.Errorf("invalid format for property description \"%s\"", propDesc)
+			return nil, fmt.Errorf("invalid format for property description \"%s\"", propDesc)
 		}
 		properties = append(properties, prop)
 	}
@@ -211,13 +209,13 @@ func renderPropertyType(p *completion.Property) string {
 
 func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	if len(item.examples) == 0 {
-		return errors.Errorf("no examples found for function %s", item.tagValue)
+		return fmt.Errorf("no examples found for function %s", item.tagValue)
 	}
 
 	// check the function name is a registered function
 	_, exists := functions.XFUNCTIONS[item.tagValue]
 	if !exists {
-		return errors.Errorf("docstring function tag %s isn't a registered function", item.tagValue)
+		return fmt.Errorf("docstring function tag %s isn't a registered function", item.tagValue)
 	}
 
 	// check the examples
@@ -243,18 +241,18 @@ func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	event, err := events.ReadEvent(exampleJSON)
 	if err != nil {
-		return errors.Wrap(err, "unable to read event")
+		return fmt.Errorf("unable to read event: %w", err)
 	}
 
 	// validate it
 	err = utils.Validate(event)
 	if err != nil {
-		return errors.Wrap(err, "unable to validate example")
+		return fmt.Errorf("unable to validate example: %w", err)
 	}
 
 	exampleJSON, err = jsonx.MarshalPretty(event)
 	if err != nil {
-		return errors.Wrap(err, "unable to marshal example")
+		return fmt.Errorf("unable to marshal example: %w", err)
 	}
 
 	output.WriteString(renderItemTitle(item))
@@ -277,24 +275,24 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	action, err := actions.ReadAction(exampleJSON)
 	if err != nil {
-		return errors.Wrap(err, "unable to read action")
+		return fmt.Errorf("unable to read action: %w", err)
 	}
 
 	// validate it
 	err = utils.Validate(action)
 	if err != nil {
-		return errors.Wrap(err, "unable to validate example")
+		return fmt.Errorf("unable to validate example: %w", err)
 	}
 
 	exampleJSON, err = jsonx.MarshalPretty(action)
 	if err != nil {
-		return errors.Wrap(err, "unable to marshal example")
+		return fmt.Errorf("unable to marshal example: %w", err)
 	}
 
 	// get the events created by this action
 	events, err := eventsForAction(action, session, voiceSession)
 	if err != nil {
-		return errors.Wrap(err, "error running action")
+		return fmt.Errorf("error running action: %w", err)
 	}
 
 	output.WriteString(renderItemTitle(item))
@@ -323,18 +321,18 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
-		return errors.Wrap(err, "unable to read trigger")
+		return fmt.Errorf("unable to read trigger: %w", err)
 	}
 
 	// validate it
 	err = utils.Validate(trigger)
 	if err != nil {
-		return errors.Wrap(err, "unable to validate example")
+		return fmt.Errorf("unable to validate example: %w", err)
 	}
 
 	exampleJSON, err = jsonx.MarshalPretty(trigger)
 	if err != nil {
-		return errors.Wrap(err, "unable to marshal example")
+		return fmt.Errorf("unable to marshal example: %w", err)
 	}
 
 	output.WriteString(renderItemTitle(item))
@@ -353,17 +351,17 @@ func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
-		return errors.Wrap(err, "unable to read resume")
+		return fmt.Errorf("unable to read resume: %w", err)
 	}
 
 	// validate it
 	if err := utils.Validate(resume); err != nil {
-		return errors.Wrap(err, "unable to validate example")
+		return fmt.Errorf("unable to validate example: %w", err)
 	}
 
 	exampleJSON, err = jsonx.MarshalPretty(resume)
 	if err != nil {
-		return errors.Wrap(err, "unable to marshal example")
+		return fmt.Errorf("unable to marshal example: %w", err)
 	}
 
 	output.WriteString(renderItemTitle(item))
@@ -392,7 +390,7 @@ func renderItemTitle(item *TaggedItem) string {
 func checkExample(session flows.Session, line string) error {
 	pieces := strings.Split(line, "→")
 	if len(pieces) != 2 {
-		return errors.Errorf("unparseable example: %s", line)
+		return fmt.Errorf("unparseable example: %s", line)
 	}
 
 	example := strings.TrimSpace(pieces[0])
@@ -405,14 +403,14 @@ func checkExample(session flows.Session, line string) error {
 
 	if expected == "ERROR" {
 		if ok {
-			return errors.Errorf("expected example '%s' to error but it didn't", strconv.Quote(example))
+			return fmt.Errorf("expected example '%s' to error but it didn't", strconv.Quote(example))
 		}
 	} else {
 		if !ok {
-			return errors.Errorf("unexpected error from example '%s': %s", strconv.Quote(example), log.Error())
+			return fmt.Errorf("unexpected error from example '%s': %s", strconv.Quote(example), log.Error())
 		}
 		if val != expected {
-			return errors.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(example), strconv.Quote(val))
+			return fmt.Errorf("expected %s from example: %s, but got %s", strconv.Quote(expected), strconv.Quote(example), strconv.Quote(val))
 		}
 	}
 
@@ -456,7 +454,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 		// action examples aren't supposed to generate error events - if they have, something went wrong
 		if event.Type() == events.TypeError {
 			errEvent := event.(*events.ErrorEvent)
-			return nil, errors.Errorf("error event generated: %s", errEvent.Text)
+			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
 		}
 
 		eventJSON[i], err = jsonx.MarshalPretty(event)

@@ -3,13 +3,13 @@ package static
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // StaticSource is an asset source which loads assets from a static JSON file
@@ -40,7 +40,7 @@ func NewEmptySource() *StaticSource {
 func NewSource(data json.RawMessage) (*StaticSource, error) {
 	s := &StaticSource{}
 	if err := utils.UnmarshalAndValidate(data, &s.s); err != nil {
-		return nil, errors.Wrap(err, "unable to read assets")
+		return nil, fmt.Errorf("unable to read assets: %w", err)
 	}
 	return s, nil
 }
@@ -49,7 +49,7 @@ func NewSource(data json.RawMessage) (*StaticSource, error) {
 func LoadSource(path string) (*StaticSource, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error reading file '%s'", path)
+		return nil, fmt.Errorf("error reading file '%s': %w", path, err)
 	}
 	return NewSource(data)
 }
@@ -88,7 +88,7 @@ func (s *StaticSource) FlowByUUID(uuid assets.FlowUUID) (assets.Flow, error) {
 			return flow, nil
 		}
 	}
-	return nil, errors.Errorf("no such flow with UUID '%s'", uuid)
+	return nil, fmt.Errorf("no such flow with UUID '%s'", uuid)
 }
 
 // Flow returns the flow asset with the given UUID
@@ -98,7 +98,7 @@ func (s *StaticSource) FlowByName(name string) (assets.Flow, error) {
 			return flow, nil
 		}
 	}
-	return nil, errors.Errorf("no such flow with name '%s'", name)
+	return nil, fmt.Errorf("no such flow with name '%s'", name)
 }
 
 // Globals returns all global assets

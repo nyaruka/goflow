@@ -1,12 +1,12 @@
 package smtpx
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 	"strconv"
 
 	"github.com/Shopify/gomail"
-	"github.com/pkg/errors"
 )
 
 // Client is an SMTP client
@@ -46,7 +46,7 @@ func NewClientFromURL(connectionURL string) (*Client, error) {
 	if url.Port() != "" {
 		port, err = strconv.Atoi(url.Port())
 		if err != nil || port < 0 || port > 65535 {
-			return nil, errors.Errorf("%s is not a valid port number", url.Port())
+			return nil, fmt.Errorf("%s is not a valid port number", url.Port())
 		}
 	}
 

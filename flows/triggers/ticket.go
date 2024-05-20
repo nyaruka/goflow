@@ -2,6 +2,7 @@ package triggers
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -9,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -122,7 +122,7 @@ func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing ass
 	var err error
 	t.event.ticket, err = flows.ReadTicket(sa, e.Event.Ticket, missing)
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to read ticket")
+		return nil, fmt.Errorf("unable to read ticket: %w", err)
 	}
 
 	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {

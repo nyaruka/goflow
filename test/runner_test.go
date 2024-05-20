@@ -25,8 +25,6 @@ import (
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils/smtpx"
-
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -53,7 +51,7 @@ func loadTestCases() ([]runnerTest, error) {
 	directory := "testdata/runner/"
 	files, err := os.ReadDir(directory)
 	if err != nil {
-		return nil, errors.Wrap(err, "error reading test directory")
+		return nil, fmt.Errorf("error reading test directory: %w", err)
 	}
 
 	tests := make([]runnerTest, 0)
@@ -111,7 +109,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	trigger, err := triggers.ReadTrigger(sa, rawTrigger, assets.PanicOnMissing)
 	if err != nil {
-		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
+		return runResult{}, fmt.Errorf("error unmarshalling trigger: %w", err)
 	}
 
 	eng := engine.NewBuilder().
@@ -138,7 +136,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	for i, rawResume := range rawResumes {
 		sessionJSON, err := jsonx.MarshalPretty(session)
 		if err != nil {
-			return runResult{}, errors.Wrap(err, "error marshalling output")
+			return runResult{}, fmt.Errorf("error marshalling output: %w", err)
 		}
 
 		outputs = append(outputs, &Output{
@@ -149,12 +147,12 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
 		if err != nil {
-			return runResult{}, errors.Wrap(err, "error marshalling output")
+			return runResult{}, fmt.Errorf("error marshalling output: %w", err)
 		}
 
 		// if session isn't waiting for another resume, that's an error
 		if session.Status() != flows.SessionStatusWaiting {
-			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %d", len(rawResumes[i:]))
+			return runResult{}, fmt.Errorf("did not stop at expected wait, have unused resumes: %d", len(rawResumes[i:]))
 		}
 
 		resume, err := resumes.ReadResume(sa, rawResume, assets.PanicOnMissing)
@@ -170,7 +168,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	sessionJSON, err := jsonx.MarshalPretty(session)
 	if err != nil {
-		return runResult{}, errors.Wrap(err, "error marshalling output")
+		return runResult{}, fmt.Errorf("error marshalling output: %w", err)
 	}
 
 	outputs = append(outputs, &Output{

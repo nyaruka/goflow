@@ -1,19 +1,19 @@
 package types_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestXError(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
-	err1 := types.NewXError(errors.Errorf("I failed"))
+	err1 := types.NewXError(fmt.Errorf("I failed"))
 	assert.Equal(t, "error", err1.Describe())
 	assert.Equal(t, "I failed", err1.Render())
 	assert.Equal(t, "", err1.Format(env))

@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/engine"
 
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -153,7 +152,7 @@ type testSource struct {
 
 func (s *testSource) err(t string) error {
 	if t == s.currentErrType {
-		return errors.Errorf("unable to load %s assets", t)
+		return fmt.Errorf("unable to load %s assets", t)
 	}
 	return nil
 }

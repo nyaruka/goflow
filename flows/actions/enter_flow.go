@@ -1,11 +1,11 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -55,7 +55,7 @@ func (a *EnterFlowAction) Execute(run flows.Run, step flows.Step, logModifier fl
 	}
 
 	if run.Session().Type() != flow.Type() {
-		a.fail(run, errors.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), logEvent)
+		a.fail(run, fmt.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), logEvent)
 		return nil
 	}
 

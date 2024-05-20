@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
-	"github.com/pkg/errors"
 )
 
 // TemplateError is an error which occurs during evaluation of an expression
@@ -72,5 +71,5 @@ func (l *ErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 	lineOfError := lines[line-1]
 	contextOfError := lineOfError[column:min(column+10, len(lineOfError))]
 
-	l.errors = append(l.errors, errors.Errorf("syntax error at %s", contextOfError))
+	l.errors = append(l.errors, fmt.Errorf("syntax error at %s", contextOfError))
 }

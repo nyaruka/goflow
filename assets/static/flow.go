@@ -2,12 +2,11 @@ package static
 
 import (
 	"encoding/json"
-
-	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/assets"
+	"errors"
 
 	"github.com/buger/jsonparser"
-	"github.com/pkg/errors"
+	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/assets"
 )
 
 // Flow is a JSON serializable implementation of a flow asset
