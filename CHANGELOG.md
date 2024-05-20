@@ -1,3 +1,7 @@
+v0.214.1 (2024-05-20)
+-------------------------
+ * Move elastic utils to gocommon
+
 v0.214.0 (2024-05-17)
 -------------------------
  * Rewrite contactql query conversion to ES to use simple maps instead of unmaintained library
