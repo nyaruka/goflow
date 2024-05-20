@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/elastic"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/utils/elastic"
 )
 
 // AssetMapper is used to map engine assets to however ES identifies them

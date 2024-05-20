@@ -30,7 +30,7 @@ func TestElasticSort(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tcs {
-		sort, err := es.ToElasticFieldSort(tc.SortBy, resolver)
+		sort, err := es.ToElasticSort(tc.SortBy, resolver)
 
 		if tc.Error != "" {
 			assert.EqualError(t, err, tc.Error)

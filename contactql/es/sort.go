@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/elastic"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
-	"github.com/nyaruka/goflow/utils/elastic"
 	"github.com/pkg/errors"
 )
 
-// ToElasticFieldSort returns the elastic FieldSort for the passed in sort by string
-func ToElasticFieldSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, error) {
+// ToElasticSort returns the elastic sort for the passed in sort by string
+func ToElasticSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, error) {
 	// default to most recent first by id
 	if sortBy == "" {
 		return elastic.SortBy("id", false), nil
