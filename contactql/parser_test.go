@@ -278,19 +278,19 @@ func TestParsingErrors(t *testing.T) {
 		query    string
 		errMsg   string
 		errCode  string
-		errExtra map[string]string
+		errExtra map[string]any
 	}{
 		{
 			query:    `$`,
 			errMsg:   "mismatched input '$' expecting {'(', STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
-			errExtra: map[string]string{"token": "$"},
+			errExtra: map[string]any{"token": "$"},
 		},
 		{
 			query:    `name = `,
 			errMsg:   "mismatched input '<EOF>' expecting {STRING, PROPERTY, TEXT}",
 			errCode:  "unexpected_token",
-			errExtra: map[string]string{"token": "<EOF>"},
+			errExtra: map[string]any{"token": "<EOF>"},
 		},
 		{
 			query:    `name = "x`,
@@ -302,97 +302,97 @@ func TestParsingErrors(t *testing.T) {
 			query:    `nam/e = "x"`,
 			errMsg:   "mismatched input '=' expecting <EOF>", // because .name isn't valid NAME
 			errCode:  "unexpected_token",
-			errExtra: map[string]string{"token": "="},
+			errExtra: map[string]any{"token": "="},
 		},
 		{
 			query:    `name. = "x"`,
 			errMsg:   "mismatched input '=' expecting <EOF>",
 			errCode:  "unexpected_token",
-			errExtra: map[string]string{"token": "="},
+			errExtra: map[string]any{"token": "="},
 		},
 		{
 			query:    `.name != "x"`,
 			errMsg:   "mismatched input '!=' expecting <EOF>",
 			errCode:  "unexpected_token",
-			errExtra: map[string]string{"token": "!="},
+			errExtra: map[string]any{"token": "!="},
 		},
 		{
 			query:    `age = XZ`,
 			errMsg:   "can't convert 'XZ' to a number",
 			errCode:  "invalid_number",
-			errExtra: map[string]string{"value": "XZ"},
+			errExtra: map[string]any{"value": "XZ"},
 		},
 		{
 			query:    `dob = AB`,
 			errMsg:   "can't convert 'AB' to a date",
 			errCode:  "invalid_date",
-			errExtra: map[string]string{"value": "AB"},
+			errExtra: map[string]any{"value": "AB"},
 		},
 		{
 			query:    `created_on = AB`,
 			errMsg:   "can't convert 'AB' to a date",
 			errCode:  "invalid_date",
-			errExtra: map[string]string{"value": "AB"},
+			errExtra: map[string]any{"value": "AB"},
 		},
 		{
 			query:    `group = "Cool Kids"`,
 			errMsg:   "'Cool Kids' is not a valid group name",
 			errCode:  "invalid_group",
-			errExtra: map[string]string{"value": "Cool Kids"},
+			errExtra: map[string]any{"value": "Cool Kids"},
 		},
 		{
 			query:    `language = "zzzzzz"`,
 			errMsg:   "'zzzzzz' is not a valid language code",
 			errCode:  "invalid_language",
-			errExtra: map[string]string{"value": "zzzzzz"},
+			errExtra: map[string]any{"value": "zzzzzz"},
 		},
 		{
 			query:    `name ~ "x"`,
 			errMsg:   "contains operator on name requires token of minimum length 2",
 			errCode:  "invalid_partial_name",
-			errExtra: map[string]string{"min_token_length": "2"},
+			errExtra: map[string]any{"min_token_length": "2"},
 		},
 		{
 			query:    `urn ~ "23"`,
 			errMsg:   "contains operator on URN requires value of minimum length 3",
 			errCode:  "invalid_partial_urn",
-			errExtra: map[string]string{"min_value_length": "3"},
+			errExtra: map[string]any{"min_value_length": "3"},
 		},
 		{
 			query:    `uuid ~ 234`,
 			errMsg:   "contains conditions can only be used with name or URN values",
 			errCode:  "unsupported_contains",
-			errExtra: map[string]string{"property": "uuid"},
+			errExtra: map[string]any{"property": "uuid"},
 		},
 		{
 			query:    `uuid > 123`,
 			errMsg:   "comparisons with > can only be used with date and number fields",
 			errCode:  "unsupported_comparison",
-			errExtra: map[string]string{"property": "uuid", "operator": ">"},
+			errExtra: map[string]any{"property": "uuid", "operator": ">"},
 		},
 		{
 			query:    `uuid = ""`,
 			errMsg:   "can't check whether 'uuid' is set or not set",
 			errCode:  "unsupported_setcheck",
-			errExtra: map[string]string{"property": "uuid", "operator": "="},
+			errExtra: map[string]any{"property": "uuid", "operator": "="},
 		},
 		{
 			query:    `uuid != ""`,
 			errMsg:   "can't check whether 'uuid' is set or not set",
 			errCode:  "unsupported_setcheck",
-			errExtra: map[string]string{"property": "uuid", "operator": "!="},
+			errExtra: map[string]any{"property": "uuid", "operator": "!="},
 		},
 		{
 			query:    `beers = 12`,
 			errMsg:   "can't resolve 'beers' to attribute, scheme or field",
 			errCode:  "unknown_property",
-			errExtra: map[string]string{"property": "beers"},
+			errExtra: map[string]any{"property": "beers"},
 		},
 		{
 			query:    `xxx.age = 12`,
 			errMsg:   "unknown property type 'xxx'",
 			errCode:  "unknown_property_type",
-			errExtra: map[string]string{"type": "xxx"},
+			errExtra: map[string]any{"type": "xxx"},
 		},
 	}
 

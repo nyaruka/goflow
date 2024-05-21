@@ -30,7 +30,7 @@ const (
 type QueryError struct {
 	msg   string
 	code  string
-	extra map[string]string
+	extra map[string]any
 }
 
 // NewQueryError creates a new query error
@@ -38,9 +38,9 @@ func NewQueryError(code, err string, args ...any) *QueryError {
 	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
 }
 
-func (e *QueryError) withExtra(k, v string) *QueryError {
+func (e *QueryError) withExtra(k string, v any) *QueryError {
 	if e.extra == nil {
-		e.extra = make(map[string]string)
+		e.extra = make(map[string]any)
 	}
 	e.extra[k] = v
 	return e
@@ -57,7 +57,7 @@ func (e *QueryError) Code() string {
 }
 
 // Extra returns additional data about the error
-func (e *QueryError) Extra() map[string]string {
+func (e *QueryError) Extra() map[string]any {
 	return e.extra
 }
 

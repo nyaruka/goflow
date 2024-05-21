@@ -4,5 +4,5 @@ package utils
 type RichError interface {
 	error
 	Code() string
-	Extra() map[string]string
+	Extra() map[string]any
 }
