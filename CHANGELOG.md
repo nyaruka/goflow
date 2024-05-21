@@ -1,3 +1,7 @@
+v0.214.2 (2024-05-21)
+-------------------------
+ * Use std library errors
+
 v0.214.1 (2024-05-20)
 -------------------------
  * Move elastic utils to gocommon
