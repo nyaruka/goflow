@@ -1,3 +1,7 @@
+v0.214.3 (2024-05-21)
+-------------------------
+ * Tweak type of extra on query errors
+
 v0.214.2 (2024-05-21)
 -------------------------
  * Use std library errors
