@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -9,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 
-	"github.com/pkg/errors"
 	"golang.org/x/net/http/httpguts"
 )
 
@@ -75,7 +75,7 @@ func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers ma
 func (a *CallWebhookAction) Validate() error {
 	for key := range a.Headers {
 		if !httpguts.ValidHeaderFieldName(key) {
-			return errors.Errorf("header '%s' is not a valid HTTP header", key)
+			return fmt.Errorf("header '%s' is not a valid HTTP header", key)
 		}
 	}
 

@@ -2,13 +2,12 @@ package inputs
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Input, error)
@@ -65,7 +64,7 @@ func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing 
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	return f(sessionAssets, data, missing)

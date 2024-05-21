@@ -14,8 +14,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -98,18 +96,18 @@ func (r *SwitchRouter) Cases() []*Case { return r.cases }
 func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	// check the default category is valid
 	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
-		return errors.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
+		return fmt.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
 	}
 
 	for _, c := range r.cases {
 		// check each case points to a valid category
 		if !r.isValidCategory(c.CategoryUUID) {
-			return errors.Errorf("case category %s is not a valid category", c.CategoryUUID)
+			return fmt.Errorf("case category %s is not a valid category", c.CategoryUUID)
 		}
 
 		// and each case test is valid
 		if _, exists := cases.XTESTS[c.Type]; !exists {
-			return errors.Errorf("case test %s is not a registered test function", c.Type)
+			return fmt.Errorf("case test %s is not a registered test function", c.Type)
 		}
 	}
 
@@ -159,7 +157,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.X
 		// try to look up our function
 		xtest := cases.XTESTS[test]
 		if xtest == nil {
-			return "", "", nil, errors.Errorf("unknown case test '%s'", c.Type)
+			return "", "", nil, fmt.Errorf("unknown case test '%s'", c.Type)
 		}
 
 		// build our argument list which starts with the operand

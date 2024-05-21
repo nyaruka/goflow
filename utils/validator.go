@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/pkg/errors"
 )
 
 // our system validator, it can be shared across threads
@@ -142,7 +141,7 @@ func Validate(obj any) error {
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
 
-		newErrors[i] = errors.Errorf("field '%s' %s", location, problem)
+		newErrors[i] = fmt.Errorf("field '%s' %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
 }

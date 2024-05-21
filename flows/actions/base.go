@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // max number of bytes to be saved to extra on a result
@@ -385,7 +384,7 @@ func ReadAction(data json.RawMessage) (flows.Action, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, errors.Errorf("unknown type: '%s'", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	action := f()

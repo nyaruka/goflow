@@ -22,8 +22,6 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -85,7 +83,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		resume, err := resumes.ReadResume(sa, tc.Resume, assets.PanicOnMissing)
 
 		if tc.ReadError != "" {
-			rootErr := errors.Cause(err)
+			rootErr := test.RootError(err)
 			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
 			continue
 		} else {

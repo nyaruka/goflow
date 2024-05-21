@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -19,8 +20,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-
-	"github.com/pkg/errors"
 )
 
 var sessionAssets = `{
@@ -502,7 +501,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating test session")
+		return nil, nil, fmt.Errorf("error creating test session: %w", err)
 	}
 
 	// read our trigger
@@ -511,20 +510,20 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	trigger, err := triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error reading trigger")
+		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
 
 	eng := NewEngine()
 
 	session, _, err := eng.NewSession(sa, trigger)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error starting test session")
+		return nil, nil, fmt.Errorf("error starting test session: %w", err)
 	}
 
 	// read our resume
 	resume, err := resumes.ReadResume(sa, json.RawMessage(sessionResume), assets.PanicOnMissing)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error reading resume")
+		return nil, nil, fmt.Errorf("error reading resume: %w", err)
 	}
 
 	sprint, err := session.Resume(resume)
@@ -537,19 +536,19 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error creating test voice session assets")
+		return nil, nil, fmt.Errorf("error creating test voice session assets: %w", err)
 	}
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error reading trigger")
+		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
 
 	eng := NewEngine()
 	session, sprint, err := eng.NewSession(sa, trigger)
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "error starting test voice session")
+		return nil, nil, fmt.Errorf("error starting test voice session: %w", err)
 	}
 
 	return session, sprint.Events(), err
@@ -569,13 +568,13 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 	// read our assets into a source
 	source, err := static.NewSource(assetsJSON)
 	if err != nil {
-		return nil, errors.Wrap(err, "error loading test assets")
+		return nil, fmt.Errorf("error loading test assets: %w", err)
 	}
 
 	// create our engine session
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "error creating test session assets")
+		return nil, fmt.Errorf("error creating test session assets: %w", err)
 	}
 
 	return sa, nil
@@ -666,20 +665,20 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		if b.assetsPath != "" {
 			b.assetsJSON, err = os.ReadFile(b.assetsPath)
 			if err != nil {
-				errors.Wrapf(err, "error reading assets from %s", b.assetsPath)
+				return nil, nil, nil, fmt.Errorf("error reading assets from %s: %w", b.assetsPath, err)
 			}
 		}
 		if b.assetsJSON != nil {
 			sa, err = CreateSessionAssets(b.assetsJSON, "")
 			if err != nil {
-				return nil, nil, nil, errors.Wrap(err, "error creating session assets")
+				return nil, nil, nil, fmt.Errorf("error creating session assets: %w", err)
 			}
 		}
 	}
 
 	flow, err := sa.Flows().Get(b.flowUUID)
 	if err != nil {
-		return nil, nil, nil, errors.Wrapf(err, "error getting flow %s from assets", b.flowUUID)
+		return nil, nil, nil, fmt.Errorf("error getting flow %s from assets: %w", b.flowUUID, err)
 	}
 
 	var urnz []urns.URN
@@ -703,7 +702,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		assets.PanicOnMissing,
 	)
 	if err != nil {
-		return nil, nil, nil, errors.Wrap(err, "error creating contact")
+		return nil, nil, nil, fmt.Errorf("error creating contact: %w", err)
 	}
 
 	var trigger flows.Trigger

@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/translation"
-	"github.com/pkg/errors"
 )
 
 const usage = `usage: flowxgettext [flags] <flowfile>...`
@@ -65,7 +64,7 @@ func loadFlows(paths []string) ([]flows.Flow, error) {
 	for _, path := range paths {
 		fileJSON, err := os.ReadFile(path)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error reading flow file '%s'", path)
+			return nil, fmt.Errorf("error reading flow file '%s': %w", path, err)
 		}
 
 		var flowDefs []json.RawMessage
@@ -84,7 +83,7 @@ func loadFlows(paths []string) ([]flows.Flow, error) {
 		for _, flowDef := range flowDefs {
 			flow, err := definition.ReadFlow(flowDef, &migrations.Config{BaseMediaURL: "http://temba.io"})
 			if err != nil {
-				return nil, errors.Wrapf(err, "error reading flow '%s'", path)
+				return nil, fmt.Errorf("error reading flow '%s': %w", path, err)
 			}
 			flows = append(flows, flow)
 		}

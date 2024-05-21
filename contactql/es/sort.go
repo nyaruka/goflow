@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/gocommon/elastic"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
-	"github.com/pkg/errors"
 )
 
 // ToElasticSort returns the elastic sort for the passed in sort by string
@@ -40,7 +39,7 @@ func ToElasticSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, er
 	// we are sorting by a custom field
 	field := resolver.ResolveField(property)
 	if field == nil {
-		return nil, errors.Errorf("no such field with key: %s", property)
+		return nil, fmt.Errorf("no such field with key: %s", property)
 	}
 
 	var key string

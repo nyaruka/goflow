@@ -2,13 +2,12 @@ package actions
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
-	"github.com/pkg/errors"
 )
 
 // ResthookPayload is the POST payload used by resthooks
@@ -93,7 +92,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 
 	// check the payload is valid JSON - it ends up in the session so needs to be valid
 	if !json.Valid([]byte(payload)) {
-		return errors.Errorf("resthook payload evaluation produced invalid JSON: %s", payload)
+		return fmt.Errorf("resthook payload evaluation produced invalid JSON: %s", payload)
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent

@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -152,7 +152,7 @@ func TestXValue(t *testing.T) {
 			formatted: "1",
 			asBool:    true,
 		}, {
-			value:     types.NewXError(errors.Errorf("it failed")), // once an error, always an error
+			value:     types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
 			marshaled: `null`,
 			rendered:  "",
 			formatted: "",
@@ -232,8 +232,8 @@ func TestEquals(t *testing.T) {
 			false, // different value
 		},
 
-		{types.NewXError(errors.Errorf("Error")), types.NewXError(errors.Errorf("Error")), true},
-		{types.NewXError(errors.Errorf("Error")), types.XDateTimeZero, false},
+		{types.NewXError(fmt.Errorf("Error")), types.NewXError(fmt.Errorf("Error")), true},
+		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, false},
 
 		{types.NewXText("bob"), types.NewXText("bob"), true},
 		{types.NewXText("bob"), types.NewXText("abc"), false},

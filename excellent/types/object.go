@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -9,7 +10,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 const serializeDefaultAs = "__default__"

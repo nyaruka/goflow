@@ -15,7 +15,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -107,7 +106,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	if err != nil {
-		return errors.Wrap(err, "error parsing assets")
+		return fmt.Errorf("error parsing assets: %w", err)
 	}
 
 	eng := engine.NewBuilder().WithAirtimeServiceFactory(svcFactory).Build()

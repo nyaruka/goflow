@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
-	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -116,7 +116,7 @@ func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts m
 
 	amount, hasAmount := amounts[s.fixedCurrency]
 	if !hasAmount {
-		return nil, errors.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
+		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
 	transfer := &flows.AirtimeTransfer{

@@ -1,13 +1,13 @@
 package actions
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -99,7 +99,7 @@ func (a *SendEmailAction) Execute(run flows.Run, step flows.Step, logModifier fl
 
 	err = svc.Send(evaluatedAddresses, evaluatedSubject, evaluatedBody)
 	if err != nil {
-		logEvent(events.NewError(errors.Wrap(err, "unable to send email")))
+		logEvent(events.NewError(fmt.Errorf("unable to send email: %w", err)))
 	} else {
 		logEvent(events.NewEmailSent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}

@@ -1,10 +1,10 @@
 package contactql
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // error codes with values included in extra
@@ -63,12 +63,8 @@ func (e *QueryError) Extra() map[string]string {
 
 // IsQueryError is a utility to determine if the cause of an error was a query error
 func IsQueryError(err error) (bool, error) {
-	switch cause := errors.Cause(err).(type) {
-	case *QueryError:
-		return true, cause
-	default:
-		return false, nil
-	}
+	var qErr *QueryError
+	return errors.As(err, &qErr), qErr
 }
 
 var _ utils.RichError = (*QueryError)(nil)

@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/classification/luis"
 	"github.com/nyaruka/goflow/services/classification/wit"
-	"github.com/pkg/errors"
 )
 
 const usage = `usage: classify [flags] <input>`
@@ -72,7 +71,7 @@ func classify(svcs map[string]flows.ClassificationService, input string) (map[st
 	for t, s := range svcs {
 		c, err := s.Classify(nil, input, log.Log)
 		if err != nil {
-			return nil, log.Logs, errors.Wrapf(err, "error classifying with %s", t)
+			return nil, log.Logs, fmt.Errorf("error classifying with %s: %w", t, err)
 		}
 		res[t] = c
 	}

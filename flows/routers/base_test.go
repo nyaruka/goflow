@@ -17,8 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -89,7 +87,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// now try to read the flow, and if we expect a read error, check that
 		flow, err := sa.Flows().Get("16f6eee7-9843-4333-bad2-1d7fd636452c")
 		if tc.ReadError != "" {
-			rootErr := errors.Cause(err)
+			rootErr := test.RootError(err)
 			assert.EqualError(t, rootErr, tc.ReadError, "read error mismatch in %s", testName)
 			continue
 		} else {

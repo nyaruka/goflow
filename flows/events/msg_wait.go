@@ -2,13 +2,12 @@ package events
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -82,7 +81,7 @@ func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
 	var err error
 	if v.Hint != nil {
 		if e.Hint, err = hints.ReadHint(v.Hint); err != nil {
-			return errors.Wrap(err, "unable to read hint")
+			return fmt.Errorf("unable to read hint: %w", err)
 		}
 	}
 

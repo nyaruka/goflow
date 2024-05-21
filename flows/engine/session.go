@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -16,8 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 // used to spawn a new run or sub-flow in the event loop
@@ -88,7 +87,7 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.Run, error) {
 	if exists {
 		return run, nil
 	}
-	return nil, errors.Errorf("unable to find run with UUID '%s'", uuid)
+	return nil, fmt.Errorf("unable to find run with UUID '%s'", uuid)
 }
 
 func (s *session) FindStep(uuid flows.StepUUID) (flows.Run, flows.Step) {
@@ -222,7 +221,7 @@ func (s *session) prepareForSprint() error {
 		if hasRun {
 			r, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
 			if err != nil {
-				return errors.Wrap(err, "error reading parent run from trigger")
+				return fmt.Errorf("error reading parent run from trigger: %w", err)
 			}
 			s.parentRun = r
 		}
@@ -234,7 +233,7 @@ func (s *session) prepareForSprint() error {
 func (s *session) tryToResume(sprint *sprint, waitingRun flows.Run, resume flows.Resume) error {
 	failSession := func(msg string, args ...any) {
 		// put failure event in waiting run
-		failRun(sprint, waitingRun, nil, errors.Errorf(msg, args...))
+		failRun(sprint, waitingRun, nil, fmt.Errorf(msg, args...))
 
 		// but also fail any other non-exited runs
 		for _, r := range s.runs {
@@ -389,13 +388,13 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 						failRun(sprint, currentRun, nil, errors.New("can't resume run with missing flow asset"))
 					} else {
 						if exit, operand, err = s.findResumeExit(sprint, currentRun, false); err != nil {
-							failRun(sprint, currentRun, nil, errors.Wrapf(err, "can't resume run as node no longer exists"))
+							failRun(sprint, currentRun, nil, fmt.Errorf("can't resume run as node no longer exists: %w", err))
 						}
 					}
 				} else {
 					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					failRun(sprint, currentRun, step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.FlowReference().UUID))
+					failRun(sprint, currentRun, step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.FlowReference().UUID))
 				}
 
 			} else {
@@ -417,11 +416,11 @@ func (s *session) continueUntilWait(sprint *sprint, currentRun flows.Run, node f
 
 			if numNewSteps > s.engine.Options().MaxStepsPerSprint {
 				// we've hit the step limit - usually a sign of a loop
-				failRun(sprint, currentRun, step, errors.Errorf("reached maximum number of steps per sprint (%d)", s.engine.Options().MaxStepsPerSprint))
+				failRun(sprint, currentRun, step, fmt.Errorf("reached maximum number of steps per sprint (%d)", s.engine.Options().MaxStepsPerSprint))
 			} else {
 				node = currentRun.Flow().GetNode(destination)
 				if node == nil {
-					return errors.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
+					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}
 
 				step, exit, operand, err = s.visitNode(sprint, currentRun, node, trigger)
@@ -460,7 +459,7 @@ func (s *session) visitNode(sprint *sprint, run flows.Run, node flows.Node, trig
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
 			if err := action.Execute(run, step, sprint.logModifier, logEvent); err != nil {
-				return step, nil, "", errors.Wrapf(err, "error executing action[type=%s,uuid=%s]", action.Type(), action.UUID())
+				return step, nil, "", fmt.Errorf("error executing action[type=%s,uuid=%s]: %w", action.Type(), action.UUID(), err)
 			}
 
 			// check if this action has errored the run
@@ -512,11 +511,11 @@ func (s *session) pickNodeExit(sprint *sprint, run flows.Run, node flows.Node, s
 		}
 
 		if err != nil {
-			return nil, "", errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
+			return nil, "", fmt.Errorf("error routing from node[uuid=%s]: %w", node.UUID(), err)
 		}
 		// router didn't error.. but it failed to pick a category
 		if exitUUID == "" {
-			failRun(sprint, run, step, errors.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			failRun(sprint, run, step, fmt.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
 			return nil, "", nil
 		}
 	} else if len(node.Exits()) > 0 {
@@ -592,7 +591,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	var err error
 
 	if err = utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read session")
+		return nil, fmt.Errorf("unable to read session: %w", err)
 	}
 
 	s := &session{
@@ -607,20 +606,20 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	// read our environment
 	s.env, err = envs.ReadEnvironment(e.Environment)
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to read environment")
+		return nil, fmt.Errorf("unable to read environment: %w", err)
 	}
 
 	// read our trigger
 	if e.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger, missing); err != nil {
-			return nil, errors.Wrap(err, "unable to read trigger")
+			return nil, fmt.Errorf("unable to read trigger: %w", err)
 		}
 	}
 
 	// read our contact
 	if e.Contact != nil {
 		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, missing); err != nil {
-			return nil, errors.Wrap(err, "unable to read contact")
+			return nil, fmt.Errorf("unable to read contact: %w", err)
 		}
 	}
 
@@ -628,7 +627,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	for i := range e.Runs {
 		run, err := runs.ReadRun(s, e.Runs[i], missing)
 		if err != nil {
-			return nil, errors.Wrapf(err, "unable to read run %d", i)
+			return nil, fmt.Errorf("unable to read run %d: %w", i, err)
 		}
 		s.addRun(run)
 	}
@@ -636,7 +635,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 	// and our input
 	if e.Input != nil {
 		if s.input, err = inputs.ReadInput(s.Assets(), e.Input, missing); err != nil {
-			return nil, errors.Wrap(err, "unable to read input")
+			return nil, fmt.Errorf("unable to read input: %w", err)
 		}
 	}
 

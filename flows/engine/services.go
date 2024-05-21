@@ -1,9 +1,9 @@
 package engine
 
 import (
-	"github.com/nyaruka/goflow/flows"
+	"errors"
 
-	"github.com/pkg/errors"
+	"github.com/nyaruka/goflow/flows"
 )
 
 // EmailServiceFactory resolves a session to a email service

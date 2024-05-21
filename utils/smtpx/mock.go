@@ -3,8 +3,6 @@ package smtpx
 import (
 	"fmt"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // MockSender is a mocked sender for testing that just logs would-be commands
@@ -25,7 +23,7 @@ func (s *MockSender) Logs() []string {
 
 func (s *MockSender) Send(c *Client, m *Message) error {
 	if len(s.errs) == 0 {
-		panic(errors.Errorf("missing mock for send number %d", len(s.logs)))
+		panic(fmt.Errorf("missing mock for send number %d", len(s.logs)))
 	}
 
 	err := s.errs[0]

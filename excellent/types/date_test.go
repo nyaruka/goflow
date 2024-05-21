@@ -1,13 +1,13 @@
 package types_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -54,7 +54,7 @@ func TestToXDate(t *testing.T) {
 		hasError bool
 	}{
 		{nil, types.XDateZero, true},
-		{types.NewXError(errors.Errorf("Error")), types.XDateZero, true},
+		{types.NewXError(fmt.Errorf("Error")), types.XDateZero, true},
 		{types.NewXNumberFromInt(123), types.XDateZero, true},
 		{types.NewXText("2018-01-20"), types.NewXDate(dates.NewDate(2018, 1, 20)), false},
 		{types.NewXDate(dates.NewDate(2018, 4, 19)), types.NewXDate(dates.NewDate(2018, 4, 19)), false},

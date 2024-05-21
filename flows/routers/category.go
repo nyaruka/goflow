@@ -1,12 +1,12 @@
 package routers
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/pkg/errors"
 )
 
 type Category struct {
@@ -44,7 +44,7 @@ func ReadCategory(data []byte) (flows.Category, error) {
 	e := &categoryEnvelope{}
 
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, errors.Wrap(err, "unable to read category")
+		return nil, fmt.Errorf("unable to read category: %w", err)
 	}
 
 	return NewCategory(e.UUID, e.Name, e.ExitUUID), nil

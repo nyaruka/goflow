@@ -2,6 +2,7 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/i18n"
@@ -15,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 	"github.com/nyaruka/goflow/flows/inspect/issues"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
@@ -96,12 +96,12 @@ func (f *flow) validate() error {
 	for _, node := range f.nodes {
 		uuidAlreadySeen := seenUUIDs[uuids.UUID(node.UUID())]
 		if uuidAlreadySeen {
-			return errors.Errorf("node UUID %s isn't unique", node.UUID())
+			return fmt.Errorf("node UUID %s isn't unique", node.UUID())
 		}
 		seenUUIDs[uuids.UUID(node.UUID())] = true
 
 		if err := node.Validate(f, seenUUIDs); err != nil {
-			return errors.Wrapf(err, "invalid node[uuid=%s]", node.UUID())
+			return fmt.Errorf("invalid node[uuid=%s]: %w", node.UUID(), err)
 		}
 	}
 
@@ -345,7 +345,7 @@ func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows
 	jsonx.Unmarshal(data, header)
 
 	if !IsVersionSupported(header.SpecVersion) {
-		return nil, errors.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
+		return nil, fmt.Errorf("spec version %s is newer than this library (%s)", header.SpecVersion, CurrentSpecVersion)
 	}
 
 	e := &flowEnvelope{}

@@ -10,8 +10,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
-
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -90,7 +88,7 @@ func (g *editorSupportGenerator) buildContextCompletion(items map[string][]*Tagg
 		for i, propDesc := range item.examples {
 			prop := completion.ParseProperty(propDesc)
 			if prop == nil {
-				return nil, errors.Errorf("invalid format for property description \"%s\"", propDesc)
+				return nil, fmt.Errorf("invalid format for property description \"%s\"", propDesc)
 			}
 			prop.Help = gettext(prop.Help)
 			properties[i] = prop

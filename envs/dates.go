@@ -1,6 +1,7 @@
 package envs
 
 import (
+	"fmt"
 	"math"
 	"regexp"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -103,7 +103,7 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 		return dates.NewDate(year, month, day), remainder, nil
 	}
 
-	return dates.ZeroDate, str, errors.Errorf("string '%s' couldn't be parsed as a date", str)
+	return dates.ZeroDate, str, fmt.Errorf("string '%s' couldn't be parsed as a date", str)
 }
 
 // DateTimeFromString returns a datetime constructed from the passed in string, or an error if we
@@ -149,7 +149,7 @@ func DateFromString(env Environment, str string) (dates.Date, error) {
 func TimeFromString(str string) (dates.TimeOfDay, error) {
 	hasTime, timeOfDay := parseTime(str)
 	if !hasTime {
-		return dates.ZeroTimeOfDay, errors.Errorf("string '%s' couldn't be parsed as a time", str)
+		return dates.ZeroTimeOfDay, fmt.Errorf("string '%s' couldn't be parsed as a time", str)
 	}
 	return timeOfDay, nil
 }
@@ -175,7 +175,7 @@ func parseDate(env Environment, str string) (dates.Date, string, error) {
 		return dateFromFormats(currentYear, patternMonthDayYear, 2, 1, 3, str)
 	}
 
-	return dates.ZeroDate, "", errors.Errorf("unknown date format: %s", env.DateFormat())
+	return dates.ZeroDate, "", fmt.Errorf("unknown date format: %s", env.DateFormat())
 }
 
 func parseTime(str string) (bool, dates.TimeOfDay) {

@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -28,7 +29,6 @@ import (
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/pkg/errors"
 )
 
 const contactJSON = `{
@@ -107,7 +107,7 @@ func createEngine(witToken string) flows.Engine {
 func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang i18n.Language, in io.Reader, out io.Writer) (*Repro, error) {
 	assetsJSON, err := os.ReadFile(assetsPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error reading assets file '%s'", assetsPath)
+		return nil, fmt.Errorf("error reading assets file '%s': %w", assetsPath, err)
 	}
 
 	// if user didn't provide a flow UUID, look for the UUID of the first flow
@@ -126,7 +126,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	sa, err := engine.NewSessionAssets(envs.NewBuilder().Build(), source, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "error parsing assets")
+		return nil, fmt.Errorf("error parsing assets: %w", err)
 	}
 
 	flow, err := sa.Flows().Get(assets.FlowUUID(flowUUID))

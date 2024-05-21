@@ -1,10 +1,11 @@
 package migrations
 
 import (
+	"errors"
+
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/pkg/errors"
 )
 
 // Flow holds a flow definition

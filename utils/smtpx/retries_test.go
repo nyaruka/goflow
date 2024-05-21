@@ -1,12 +1,11 @@
 package smtpx_test
 
 import (
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/utils/smtpx"
-
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
