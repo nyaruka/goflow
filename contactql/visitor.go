@@ -10,6 +10,7 @@ import (
 	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
@@ -65,7 +66,7 @@ type visitor struct {
 	gen.BaseContactQLVisitor
 
 	env    envs.Environment
-	errors []error
+	errors []*utils.RichError
 }
 
 // creates a new ContactQL visitor
@@ -139,7 +140,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 			propType = PropertyTypeURN
 			propKey = parts[1]
 		} else {
-			v.addError(NewQueryError(ErrUnknownPropertyType, "unknown property type '%s'", parts[0]).withExtra("type", parts[0]))
+			v.addError(newQueryError(ErrUnknownPropertyType, "unknown property type '%s'", parts[0]).WithExtra("type", parts[0]))
 		}
 	} else {
 		propKey = propText
@@ -150,7 +151,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 			propType = PropertyTypeAttribute
 
 			if propKey == AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-				v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
+				v.addError(newQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 			}
 
 		} else if urns.IsValidScheme(propKey) {
@@ -158,7 +159,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 			propType = PropertyTypeURN
 
 			if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-				v.addError(NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
+				v.addError(newQueryError(ErrRedactedURNs, "cannot query on redacted URNs"))
 			}
 		} else {
 			propType = PropertyTypeField
@@ -214,6 +215,6 @@ func (v *visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) any {
 	return unquoted
 }
 
-func (v *visitor) addError(err error) {
+func (v *visitor) addError(err *utils.RichError) {
 	v.errors = append(v.errors, err)
 }

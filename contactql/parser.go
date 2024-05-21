@@ -143,27 +143,27 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 
 	valueType := c.resolveValueType(resolver)
 	if valueType == "" {
-		return NewQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", c.propKey).withExtra("property", c.propKey)
+		return newQueryError(ErrUnknownProperty, "can't resolve '%s' to attribute, scheme or field", c.propKey).WithExtra("property", c.propKey)
 	}
 
 	switch c.operator {
 	case OpContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return NewQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
+				return newQueryError(ErrInvalidPartialName, "contains operator on name requires token of minimum length %d", minNameTokenContainsLength).WithExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeURN {
 			if len(c.value) < minURNContainsLength {
-				return NewQueryError(ErrInvalidPartialURN, "contains operator on URN requires value of minimum length %d", minURNContainsLength).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
+				return newQueryError(ErrInvalidPartialURN, "contains operator on URN requires value of minimum length %d", minURNContainsLength).WithExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
-			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").withExtra("property", c.propKey)
+			return newQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").WithExtra("property", c.propKey)
 		}
 
 	case OpGreaterThan, OpGreaterThanOrEqual, OpLessThan, OpLessThanOrEqual:
 		if valueType != assets.FieldTypeNumber && valueType != assets.FieldTypeDatetime {
-			return NewQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.operator).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
+			return newQueryError(ErrUnsupportedComparison, "comparisons with %s can only be used with date and number fields", c.operator).WithExtra("property", c.propKey).WithExtra("operator", string(c.operator))
 		}
 	}
 
@@ -171,19 +171,19 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	if (c.operator == OpEqual || c.operator == OpNotEqual) && c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeStatus, AttributeCreatedOn, AttributeTickets:
-			return NewQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
+			return newQueryError(ErrUnsupportedSetCheck, "can't check whether '%s' is set or not set", c.propKey).WithExtra("property", c.propKey).WithExtra("operator", string(c.operator))
 		}
 	} else {
 		// check values are valid for the value type
 		if valueType == assets.FieldTypeNumber {
 			_, err := c.ValueAsNumber()
 			if err != nil {
-				return NewQueryError(ErrInvalidNumber, "can't convert '%s' to a number", c.value).withExtra("value", c.value)
+				return newQueryError(ErrInvalidNumber, "can't convert '%s' to a number", c.value).WithExtra("value", c.value)
 			}
 		} else if valueType == assets.FieldTypeDatetime {
 			_, err := c.ValueAsDate(env)
 			if err != nil {
-				return NewQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).withExtra("value", c.value)
+				return newQueryError(ErrInvalidDate, "can't convert '%s' to a date", c.value).WithExtra("value", c.value)
 			}
 		}
 
@@ -192,23 +192,23 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if c.propKey == AttributeGroup && resolver != nil {
 				group := c.ValueAsGroup(resolver)
 				if group == nil {
-					return NewQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).withExtra("value", c.value)
+					return newQueryError(ErrInvalidGroup, "'%s' is not a valid group name", c.value).WithExtra("value", c.value)
 				}
 			} else if (c.propKey == AttributeFlow || c.propKey == AttributeHistory) && resolver != nil {
 				flow := c.ValueAsFlow(resolver)
 				if flow == nil {
-					return NewQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).withExtra("value", c.value)
+					return newQueryError(ErrInvalidFlow, "'%s' is not a valid flow name", c.value).WithExtra("value", c.value)
 				}
 			} else if c.propKey == AttributeStatus {
 				val := strings.ToLower(c.value)
 				if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
-					return NewQueryError(ErrInvalidStatus, "'%s' is not a valid contact status", c.value).withExtra("value", c.value)
+					return newQueryError(ErrInvalidStatus, "'%s' is not a valid contact status", c.value).WithExtra("value", c.value)
 				}
 			} else if c.propKey == AttributeLanguage {
 				if c.value != "" {
 					_, err := i18n.ParseLanguage(c.value)
 					if err != nil {
-						return NewQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).withExtra("value", c.value)
+						return newQueryError(ErrInvalidLanguage, "'%s' is not a valid language code", c.value).WithExtra("value", c.value)
 					}
 				}
 			}
@@ -394,7 +394,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 type errorListener struct {
 	*antlr.DefaultErrorListener
 
-	errs []*QueryError
+	errs []*utils.RichError
 }
 
 func (l *errorListener) Error() error {
@@ -405,13 +405,13 @@ func (l *errorListener) Error() error {
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol any, line, column int, msg string, e antlr.RecognitionException) {
-	var err *QueryError
+	var err *utils.RichError
 	switch typed := e.(type) {
 	case *antlr.InputMisMatchException:
 		token := typed.GetOffendingToken().GetText()
-		err = NewQueryError(ErrUnexpectedToken, msg).withExtra("token", token)
+		err = newQueryError(ErrUnexpectedToken, msg).WithExtra("token", token)
 	default:
-		err = NewQueryError("", msg)
+		err = newQueryError(ErrSyntax, msg)
 	}
 
 	l.errs = append(l.errs, err)

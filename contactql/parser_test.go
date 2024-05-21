@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -295,7 +296,7 @@ func TestParsingErrors(t *testing.T) {
 		{
 			query:    `name = "x`,
 			errMsg:   "extraneous input '\"' expecting {STRING, PROPERTY, TEXT}",
-			errCode:  "",
+			errCode:  "syntax",
 			errExtra: nil,
 		},
 		{
@@ -407,14 +408,14 @@ func TestParsingErrors(t *testing.T) {
 		[]assets.Group{},
 	)
 
-	for _, tc := range tests {
+	for i, tc := range tests {
 		_, err := contactql.ParseQuery(env, tc.query, resolver)
 
-		assert.EqualError(t, err, tc.errMsg, "error mismatch for '%s'", tc.query)
+		assert.EqualError(t, err, tc.errMsg, "%d: error mismatch", i)
 
-		qerr := err.(*contactql.QueryError)
-		assert.Equal(t, tc.errCode, qerr.Code())
-		assert.Equal(t, tc.errExtra, qerr.Extra())
+		rerr := err.(*utils.RichError)
+		assert.Equal(t, tc.errCode, rerr.Code, "%d: code mismatch", i)
+		assert.Equal(t, tc.errExtra, rerr.Extra, "%d: extra mismatch", i)
 	}
 }
 

@@ -1,14 +1,12 @@
 package contactql
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/nyaruka/goflow/utils"
 )
 
 // error codes with values included in extra
 const (
+	ErrSyntax                = "syntax"
 	ErrUnexpectedToken       = "unexpected_token"       // `token` the unexpected token
 	ErrInvalidNumber         = "invalid_number"         // `value` the value we tried to parse as a number
 	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
@@ -26,45 +24,7 @@ const (
 	ErrRedactedURNs          = "redacted_urns"
 )
 
-// QueryError is used when an error is a result of an invalid query
-type QueryError struct {
-	msg   string
-	code  string
-	extra map[string]string
+// creates a new query error
+func newQueryError(code, err string, args ...any) *utils.RichError {
+	return utils.NewRichError("query", code, err, args...)
 }
-
-// NewQueryError creates a new query error
-func NewQueryError(code, err string, args ...any) *QueryError {
-	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
-}
-
-func (e *QueryError) withExtra(k, v string) *QueryError {
-	if e.extra == nil {
-		e.extra = make(map[string]string)
-	}
-	e.extra[k] = v
-	return e
-}
-
-// Error returns the error message
-func (e *QueryError) Error() string {
-	return e.msg
-}
-
-// Code returns a code representing this error condition
-func (e *QueryError) Code() string {
-	return e.code
-}
-
-// Extra returns additional data about the error
-func (e *QueryError) Extra() map[string]string {
-	return e.extra
-}
-
-// IsQueryError is a utility to determine if the cause of an error was a query error
-func IsQueryError(err error) (bool, error) {
-	var qErr *QueryError
-	return errors.As(err, &qErr), qErr
-}
-
-var _ utils.RichError = (*QueryError)(nil)
