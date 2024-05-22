@@ -1,3 +1,7 @@
+v0.214.4 (2024-05-22)
+-------------------------
+ * Ensure QueryError always has a code and use `syntax` as code for all parser errors
+
 v0.214.3 (2024-05-21)
 -------------------------
  * Tweak type of extra on query errors
