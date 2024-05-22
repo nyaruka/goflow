@@ -3,13 +3,11 @@ package contactql
 import (
 	"errors"
 	"fmt"
-
-	"github.com/nyaruka/goflow/utils"
 )
 
 // error codes with values included in extra
 const (
-	ErrUnexpectedToken       = "unexpected_token"       // `token` the unexpected token
+	ErrSyntax                = "syntax"
 	ErrInvalidNumber         = "invalid_number"         // `value` the value we tried to parse as a number
 	ErrInvalidDate           = "invalid_date"           // `value` the value we tried to parse as a date
 	ErrInvalidStatus         = "invalid_status"         // `value` the value we tried to parse as a contact status
@@ -66,5 +64,3 @@ func IsQueryError(err error) (bool, error) {
 	var qErr *QueryError
 	return errors.As(err, &qErr), qErr
 }
-
-var _ utils.RichError = (*QueryError)(nil)

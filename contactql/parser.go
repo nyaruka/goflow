@@ -405,16 +405,7 @@ func (l *errorListener) Error() error {
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol any, line, column int, msg string, e antlr.RecognitionException) {
-	var err *QueryError
-	switch typed := e.(type) {
-	case *antlr.InputMisMatchException:
-		token := typed.GetOffendingToken().GetText()
-		err = NewQueryError(ErrUnexpectedToken, msg).withExtra("token", token)
-	default:
-		err = NewQueryError("", msg)
-	}
-
-	l.errs = append(l.errs, err)
+	l.errs = append(l.errs, NewQueryError(ErrSyntax, msg))
 }
 
 func tokenizeNameValue(value string) []string {
