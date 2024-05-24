@@ -1,16 +1,23 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
 	"name": "GoFlow",
-	"image": "mcr.microsoft.com/devcontainers/go:1-1.22-bullseye",
+	"image": "golang:1.22-bullseye",
 	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installOhMyZsh": false,
+			"installOhMyZshConfig": false,
+			"configureZshAsDefaultShell": true,
+			"upgradePackages": "true"
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"version": "latest",
+			"ppa": "false"
+		},
 		"ghcr.io/devcontainers-contrib/features/pandoc:1": {
 			"version": "latest"
 		}
 	},
 	"runArgs": [
-		"--name",
-		"dev-goflow"
+		"--name=dev-goflow"
 	],
 	"customizations": {
 		"vscode": {
@@ -19,6 +26,7 @@
 				"lfs.vscode-emacs-friendly"
 			],
 			"settings": {
+				"terminal.integrated.defaultProfile.linux": "zsh",
 				"editor.formatOnSave": true,
 				"editor.rulers": [
 					120
