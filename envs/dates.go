@@ -71,22 +71,13 @@ var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
 var ZeroDateTime = time.Time{}
 
 func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (dates.Date, string, error) {
-
 	matches := pattern.FindAllStringSubmatchIndex(str, -1)
 	for _, match := range matches {
 		groups := utils.StringSlices(str, match)
 
-		// does our day look believable?
-		day, _ := strconv.Atoi(groups[d])
-		if day == 0 || day > 31 {
-			continue
-		}
-		month, _ := strconv.Atoi(groups[m])
-		if month == 0 || month > 12 {
-			continue
-		}
-
 		year, _ := strconv.Atoi(groups[y])
+		month, _ := strconv.Atoi(groups[m])
+		day, _ := strconv.Atoi(groups[d])
 
 		// convert to four digit year if necessary
 		if len(groups[y]) == 2 {
@@ -97,12 +88,21 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 			}
 		}
 
-		remainder := str[match[1]:]
-
-		_, err := time.Parse("2006-01-02", fmt.Sprintf("%d-%02d-%02d", year, month, day))
-		if err != nil {
-			return dates.ZeroDate, str, fmt.Errorf("string '%s' couldn't be parsed as a date", str)
+		// does our day and month look believable?
+		if day == 0 || day > 31 {
+			continue
 		}
+		if month == 0 || month > 12 {
+			continue
+		}
+
+		// lean time.Parse to check if the year, month and day values are valid together, i.e. no 30 of Feb
+		_, err := time.Parse("2006-1-2", fmt.Sprintf("%d-%d-%d", year, month, day))
+		if err != nil {
+			continue
+		}
+
+		remainder := str[match[1]:]
 
 		// looks believable, go for it
 		return dates.NewDate(year, month, day), remainder, nil
