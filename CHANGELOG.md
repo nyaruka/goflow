@@ -1,3 +1,7 @@
+v0.214.5 (2024-05-24)
+-------------------------
+ * Make date parsing stricter
+
 v0.214.4 (2024-05-22)
 -------------------------
  * Ensure QueryError always has a code and use `syntax` as code for all parser errors
