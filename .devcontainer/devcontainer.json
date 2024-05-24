@@ -1,17 +1,7 @@
 {
 	"name": "GoFlow",
-	"image": "golang:1.22-bullseye",
+	"image": "mcr.microsoft.com/devcontainers/go:1-1.22-bullseye",
 	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
-			"installOhMyZsh": false,
-			"installOhMyZshConfig": false,
-			"configureZshAsDefaultShell": true,
-			"upgradePackages": "true"
-		},
-		"ghcr.io/devcontainers/features/git:1": {
-			"version": "latest",
-			"ppa": "false"
-		},
 		"ghcr.io/devcontainers-contrib/features/pandoc:1": {
 			"version": "latest"
 		}
