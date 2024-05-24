@@ -10,7 +10,7 @@
 	},
 	"runArgs": [
 		"--name",
-		"devcontainer-goflow"
+		"dev-goflow"
 	],
 	"customizations": {
 		"vscode": {
