@@ -8,6 +8,10 @@
 			"version": "latest"
 		}
 	},
+	"runArgs": [
+		"--name",
+		"devcontainer-goflow"
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
