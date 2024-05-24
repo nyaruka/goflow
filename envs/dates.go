@@ -99,6 +99,11 @@ func dateFromFormats(currentYear int, pattern *regexp.Regexp, d int, m int, y in
 
 		remainder := str[match[1]:]
 
+		_, err := time.Parse("2006-01-02", fmt.Sprintf("%d-%02d-%02d", year, month, day))
+		if err != nil {
+			return dates.ZeroDate, str, fmt.Errorf("string '%s' couldn't be parsed as a date", str)
+		}
+
 		// looks believable, go for it
 		return dates.NewDate(year, month, day), remainder, nil
 	}

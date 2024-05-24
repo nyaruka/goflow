@@ -268,6 +268,10 @@ var testTests = []struct {
 	{"has_number_between", dmy, []types.XValue{xs("a string"), xs("10"), xs("not number")}, ERROR},
 	{"has_number_between", dmy, []types.XValue{}, ERROR},
 
+	{"has_date", dmy, []types.XValue{xs("31/02/2022")}, falseResult},
+	{"has_date", dmy, []types.XValue{xs("33/11/2022")}, falseResult},
+	{"has_date", dmy, []types.XValue{xs("31/11/2022")}, falseResult},
+	{"has_date", dmy, []types.XValue{xs("30/02/2022")}, falseResult},
 	{"has_date", dmy, []types.XValue{xs("last date was 1.10.2017")}, result(xd(time.Date(2017, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date", dmy, []types.XValue{xs("last date was 1.10.99")}, result(xd(time.Date(1999, 10, 1, 15, 24, 30, 123456000, kgl)))},
 	{"has_date", dmy, []types.XValue{xs("this isn't a valid date 33.2.99")}, falseResult},
