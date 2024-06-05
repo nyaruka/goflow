@@ -1,3 +1,7 @@
+v0.214.6 (2024-06-05)
+-------------------------
+ * Update goreleaser config to v2
+
 v0.214.5 (2024-05-24)
 -------------------------
  * Make date parsing stricter
