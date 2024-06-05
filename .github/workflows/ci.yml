@@ -53,7 +53,7 @@ jobs:
           git restore locale/
 
       - name: Publish release
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         if: ${{ !contains(github.ref, '-') }}
         with:
           args: release --clean
