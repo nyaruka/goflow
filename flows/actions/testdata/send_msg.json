@@ -791,9 +791,6 @@
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hey Ryan Lewis, your gender is saved as boy.",
-            "attachments": [
-                "http://example.com/red.jpg"
-            ],
             "quick_replies": [
                 "Yes",
                 "No"
@@ -833,7 +830,7 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Hola, Ryan Lewis, tu género está guardado como niño.",
+                    "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como niño.",
                     "quick_replies": [
                         "Sip",
                         "No"
@@ -882,7 +879,6 @@
         ],
         "templates": [
             "Hey Ryan Lewis, your gender is saved as boy.",
-            "http://example.com/red.jpg",
             "Yes",
             "No",
             "@contact.name",
@@ -896,7 +892,6 @@
         ],
         "localizables": [
             "Hey Ryan Lewis, your gender is saved as boy.",
-            "http://example.com/red.jpg",
             "Yes",
             "No",
             "@contact.name",
@@ -909,6 +904,103 @@
                 {
                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                     "name": "gender_update",
+                    "type": "template"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Template with header image component",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "The Maine Coone is the only native American long haired breed.",
+            "attachments": [
+                "image/jpeg:http://example.com/cat1.jpg"
+            ],
+            "template": {
+                "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                "name": "cat_fact"
+            },
+            "template_variables": [
+                "image/jpeg:http://example.com/cat2.jpg",
+                "The first true cats came into existence about 12 million years ago and were the Proailurus."
+            ]
+        },
+        "events": [
+            {
+                "type": "msg_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "msg": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
+                    "attachments": [
+                        "image/jpeg:http://example.com/cat2.jpg"
+                    ],
+                    "templating": {
+                        "template": {
+                            "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                            "name": "cat_fact"
+                        },
+                        "namespace": "",
+                        "components": [
+                            {
+                                "type": "header",
+                                "name": "header",
+                                "variables": {
+                                    "1": 0
+                                }
+                            },
+                            {
+                                "type": "body",
+                                "name": "body",
+                                "variables": {
+                                    "1": 1
+                                }
+                            }
+                        ],
+                        "variables": [
+                            {
+                                "type": "image",
+                                "value": "image/jpeg:http://example.com/cat2.jpg"
+                            },
+                            {
+                                "type": "text",
+                                "value": "The first true cats came into existence about 12 million years ago and were the Proailurus."
+                            }
+                        ]
+                    },
+                    "locale": "eng-US"
+                }
+            }
+        ],
+        "templates": [
+            "The Maine Coone is the only native American long haired breed.",
+            "image/jpeg:http://example.com/cat1.jpg",
+            "image/jpeg:http://example.com/cat2.jpg",
+            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+        ],
+        "localizables": [
+            "The Maine Coone is the only native American long haired breed.",
+            "image/jpeg:http://example.com/cat1.jpg",
+            "image/jpeg:http://example.com/cat2.jpg",
+            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                    "name": "cat_fact",
                     "type": "template"
                 }
             ],

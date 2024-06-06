@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -127,14 +128,16 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		evaluatedVariables[i] = v
 	}
 
-	// cross-reference with asset to get variable types
+	// cross-reference with asset to get variable types and filter out invalid values
 	variables := make([]*flows.TemplatingVariable, len(translation.Variables()))
 	for i, v := range translation.Variables() {
+		// we pad out any missing variables with empty values
+		value := ""
 		if i < len(evaluatedVariables) {
-			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: evaluatedVariables[i]}
-		} else {
-			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: ""}
+			value = evaluatedVariables[i]
 		}
+
+		variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: value}
 	}
 
 	// create a list of components that have variables
@@ -150,27 +153,33 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// the message we return is an approximate preview of what the channel will send using the template
-	var previewParts []string
+	var previewText []string
+	var previewAttachments []utils.Attachment
 	var previewQRs []string
 
 	for _, comp := range translation.Components() {
 		previewContent := comp.Content()
 		for key, index := range comp.Variables() {
-			previewContent = strings.ReplaceAll(previewContent, fmt.Sprintf("{{%s}}", key), variables[index].Value)
+			variable := variables[index]
+
+			if variable.Type == "text" {
+				previewContent = strings.ReplaceAll(previewContent, fmt.Sprintf("{{%s}}", key), variable.Value)
+			} else if variable.Type == "image" || variable.Type == "video" || variable.Type == "document" {
+				previewAttachments = append(previewAttachments, utils.Attachment(variable.Value))
+			}
 		}
 
 		if previewContent != "" {
 			if comp.Type() == "header" || comp.Type() == "body" || comp.Type() == "footer" {
-				previewParts = append(previewParts, previewContent)
+				previewText = append(previewText, previewContent)
 			} else if strings.HasPrefix(comp.Type(), "button/") {
 				previewQRs = append(previewQRs, stringsx.TruncateEllipsis(previewContent, maxQuickReplyLength))
 			}
 		}
 	}
 
-	previewText := strings.Join(previewParts, "\n\n")
 	locale := translation.Locale()
 	templating := flows.NewMsgTemplating(a.Template, translation.Namespace(), components, variables)
 
-	return flows.NewMsgOut(urn, channelRef, previewText, nil, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
+	return flows.NewMsgOut(urn, channelRef, strings.Join(previewText, "\n\n"), previewAttachments, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
 }

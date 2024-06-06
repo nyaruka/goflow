@@ -341,7 +341,7 @@
                         {
                             "type": "header",
                             "name": "header",
-                            "content": "",
+                            "content": "Update",
                             "variables": {}
                         },
                         {
@@ -384,7 +384,7 @@
                         {
                             "type": "header",
                             "name": "header",
-                            "content": "",
+                            "content": "Actualizar",
                             "variables": {}
                         },
                         {
@@ -417,6 +417,45 @@
                         },
                         {
                             "type": "text"
+                        },
+                        {
+                            "type": "text"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+            "name": "cat_fact",
+            "translations": [
+                {
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "locale": "eng-US",
+                    "components": [
+                        {
+                            "type": "header",
+                            "name": "header",
+                            "content": "",
+                            "variables": {
+                                "1": 0
+                            }
+                        },
+                        {
+                            "type": "body",
+                            "name": "body",
+                            "content": "{{1}}",
+                            "variables": {
+                                "1": 1
+                            }
+                        }
+                    ],
+                    "variables": [
+                        {
+                            "type": "image"
                         },
                         {
                             "type": "text"
