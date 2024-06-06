@@ -927,7 +927,7 @@
                 "name": "cat_fact"
             },
             "template_variables": [
-                "http://example.com/cat2.jpg",
+                "image/jpeg:http://example.com/cat2.jpg",
                 "The first true cats came into existence about 12 million years ago and were the Proailurus."
             ]
         },
@@ -945,7 +945,7 @@
                     },
                     "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
                     "attachments": [
-                        "image:http://example.com/cat2.jpg"
+                        "image/jpeg:http://example.com/cat2.jpg"
                     ],
                     "templating": {
                         "template": {
@@ -972,7 +972,7 @@
                         "variables": [
                             {
                                 "type": "image",
-                                "value": "http://example.com/cat2.jpg"
+                                "value": "image/jpeg:http://example.com/cat2.jpg"
                             },
                             {
                                 "type": "text",
@@ -987,13 +987,13 @@
         "templates": [
             "The Maine Coone is the only native American long haired breed.",
             "image/jpeg:http://example.com/cat1.jpg",
-            "http://example.com/cat2.jpg",
+            "image/jpeg:http://example.com/cat2.jpg",
             "The first true cats came into existence about 12 million years ago and were the Proailurus."
         ],
         "localizables": [
             "The Maine Coone is the only native American long haired breed.",
             "image/jpeg:http://example.com/cat1.jpg",
-            "http://example.com/cat2.jpg",
+            "image/jpeg:http://example.com/cat2.jpg",
             "The first true cats came into existence about 12 million years ago and were the Proailurus."
         ],
         "inspection": {

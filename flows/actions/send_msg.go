@@ -128,14 +128,16 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		evaluatedVariables[i] = v
 	}
 
-	// cross-reference with asset to get variable types
+	// cross-reference with asset to get variable types and filter out invalid values
 	variables := make([]*flows.TemplatingVariable, len(translation.Variables()))
 	for i, v := range translation.Variables() {
+		// we pad out any missing variables with empty values
+		value := ""
 		if i < len(evaluatedVariables) {
-			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: evaluatedVariables[i]}
-		} else {
-			variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: ""}
+			value = evaluatedVariables[i]
 		}
+
+		variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: value}
 	}
 
 	// create a list of components that have variables
@@ -159,10 +161,11 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		previewContent := comp.Content()
 		for key, index := range comp.Variables() {
 			variable := variables[index]
+
 			if variable.Type == "text" {
 				previewContent = strings.ReplaceAll(previewContent, fmt.Sprintf("{{%s}}", key), variable.Value)
-			} else if variable.Type == "image" && variable.Value != "" {
-				previewAttachments = append(previewAttachments, utils.Attachment("image:"+variable.Value))
+			} else if variable.Type == "image" || variable.Type == "video" || variable.Type == "document" {
+				previewAttachments = append(previewAttachments, utils.Attachment(variable.Value))
 			}
 		}
 
