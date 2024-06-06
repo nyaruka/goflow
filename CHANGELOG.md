@@ -1,3 +1,7 @@
+v0.215.0 (2024-06-06)
+-------------------------
+ * Support template header components of type image, video or document and use as attachments on preview message
+
 v0.214.6 (2024-06-05)
 -------------------------
  * Update goreleaser config to v2
