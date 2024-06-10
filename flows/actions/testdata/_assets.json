@@ -438,7 +438,7 @@
                     "components": [
                         {
                             "name": "header",
-                            "type": "header/image",
+                            "type": "header/media",
                             "content": "",
                             "variables": {
                                 "1": 0

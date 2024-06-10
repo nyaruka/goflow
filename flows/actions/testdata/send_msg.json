@@ -956,7 +956,7 @@
                         "components": [
                             {
                                 "name": "header",
-                                "type": "header/image",
+                                "type": "header/media",
                                 "variables": {
                                     "1": 0
                                 }
