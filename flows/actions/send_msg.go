@@ -170,7 +170,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 		}
 
 		if previewContent != "" {
-			if comp.Type() == "header" || comp.Type() == "body" || comp.Type() == "footer" {
+			if comp.Type() == "header" || comp.Type() == "header/text" || comp.Type() == "body" || comp.Type() == "body/text" || comp.Type() == "footer" || comp.Type() == "footer/text" {
 				previewText = append(previewText, previewContent)
 			} else if strings.HasPrefix(comp.Type(), "button/") {
 				previewQRs = append(previewQRs, stringsx.TruncateEllipsis(previewContent, maxQuickReplyLength))

@@ -843,8 +843,8 @@
                         "namespace": "",
                         "components": [
                             {
-                                "type": "body",
                                 "name": "body",
+                                "type": "body/text",
                                 "variables": {
                                     "1": 0,
                                     "2": 1
@@ -955,15 +955,15 @@
                         "namespace": "",
                         "components": [
                             {
-                                "type": "header",
                                 "name": "header",
+                                "type": "header/image",
                                 "variables": {
                                     "1": 0
                                 }
                             },
                             {
-                                "type": "body",
                                 "name": "body",
+                                "type": "body/text",
                                 "variables": {
                                     "1": 1
                                 }

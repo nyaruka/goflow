@@ -18,11 +18,11 @@ func TestTemplate(t *testing.T) {
 	assert.Equal(t, "text", v1.Type())
 	assert.Equal(t, "text", v2.Type())
 
-	c1 := static.NewTemplateComponent("body", "body", "Hello {{1}}", "", map[string]int{"1": 0})
-	c2 := static.NewTemplateComponent("button/url", "button.0", "http://google.com?q={{1}}", "Go", map[string]int{"1": 1})
+	c1 := static.NewTemplateComponent("body", "body/text", "Hello {{1}}", "", map[string]int{"1": 0})
+	c2 := static.NewTemplateComponent("button.0", "button/url", "http://google.com?q={{1}}", "Go", map[string]int{"1": 1})
 
-	assert.Equal(t, "body", c1.Type())
 	assert.Equal(t, "body", c1.Name())
+	assert.Equal(t, "body/text", c1.Type())
 	assert.Equal(t, "Hello {{1}}", c1.Content())
 	assert.Equal(t, "", c1.Display())
 	assert.Equal(t, map[string]int{"1": 0}, c1.Variables())
