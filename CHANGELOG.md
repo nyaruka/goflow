@@ -1,3 +1,7 @@
+v0.215.1 (2024-06-10)
+-------------------------
+ * Support template component types like header/* and body/*
+
 v0.215.0 (2024-06-06)
 -------------------------
  * Support template header components of type image, video or document and use as attachments on preview message
