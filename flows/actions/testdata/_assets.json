@@ -259,8 +259,8 @@
                     "locale": "eng-US",
                     "components": [
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "Hi {{1}}, who's an excellent {{2}}?",
                             "variables": {
                                 "1": 0,
@@ -285,8 +285,8 @@
                     "locale": "spa",
                     "components": [
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "Hola {{1}}, quien es un {{2}} excelente?",
                             "variables": {
                                 "1": 0,
@@ -317,8 +317,8 @@
                     "locale": "eng",
                     "components": [
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "Hi there, it's time to get up!",
                             "variables": {}
                         }

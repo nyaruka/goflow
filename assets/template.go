@@ -24,8 +24,8 @@ type TemplateUUID uuids.UUID
 //	       },
 //	       "components": [
 //	         {
-//	           "type": "body",
 //	           "name": "body",
+//	           "type": "body/text",
 //	           "content": "Hello {{1}}",
 //	           "variables": {"1": 0}
 //	         }
@@ -40,8 +40,8 @@ type TemplateUUID uuids.UUID
 //	       },
 //	       "components": [
 //	         {
-//	           "type": "body",
 //	           "name": "body",
+//	           "type": "body/text",
 //	           "content": "Bonjour {{1}}",
 //	           "variables": {"1": 0}
 //	         }

@@ -445,8 +445,8 @@
                         "namespace": "",
                         "components": [
                             {
-                                "type": "body",
                                 "name": "body",
+                                "type": "body/text",
                                 "variables": {
                                     "1": 0,
                                     "2": 1
@@ -538,8 +538,8 @@
                         "namespace": "",
                         "components": [
                             {
-                                "type": "body",
                                 "name": "body",
+                                "type": "body/text",
                                 "variables": {
                                     "1": 0,
                                     "2": 1
@@ -851,8 +851,8 @@
                                 }
                             },
                             {
-                                "type": "button/quick_reply",
                                 "name": "button.0",
+                                "type": "button/quick_reply",
                                 "variables": {
                                     "1": 2
                                 }
