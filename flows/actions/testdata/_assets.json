@@ -339,14 +339,14 @@
                     "locale": "eng-US",
                     "components": [
                         {
-                            "type": "header",
                             "name": "header",
+                            "type": "header/text",
                             "content": "Update",
                             "variables": {}
                         },
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "Hey {{1}}, your gender is saved as {{2}}.",
                             "variables": {
                                 "1": 0,
@@ -354,8 +354,8 @@
                             }
                         },
                         {
-                            "type": "button/quick_reply",
                             "name": "button.1",
+                            "type": "button/quick_reply",
                             "content": "{{1}}",
                             "variables": {
                                 "1": 2
@@ -382,14 +382,14 @@
                     "locale": "spa",
                     "components": [
                         {
-                            "type": "header",
                             "name": "header",
+                            "type": "header/text",
                             "content": "Actualizar",
                             "variables": {}
                         },
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "Hola, {{1}}, tu género está guardado como {{2}}.",
                             "variables": {
                                 "1": 0,
@@ -397,16 +397,16 @@
                             }
                         },
                         {
-                            "type": "button/quick_reply",
                             "name": "button.0",
+                            "type": "button/quick_reply",
                             "content": "{{1}}",
                             "variables": {
                                 "1": 2
                             }
                         },
                         {
-                            "type": "button/quick_reply",
                             "name": "button.1",
+                            "type": "button/quick_reply",
                             "content": "No",
                             "variables": {}
                         }
@@ -437,16 +437,16 @@
                     "locale": "eng-US",
                     "components": [
                         {
-                            "type": "header",
                             "name": "header",
+                            "type": "header/image",
                             "content": "",
                             "variables": {
                                 "1": 0
                             }
                         },
                         {
-                            "type": "body",
                             "name": "body",
+                            "type": "body/text",
                             "content": "{{1}}",
                             "variables": {
                                 "1": 1

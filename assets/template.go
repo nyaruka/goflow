@@ -63,8 +63,8 @@ type TemplateVariable interface {
 }
 
 type TemplateComponent interface {
-	Type() string
 	Name() string
+	Type() string
 	Content() string
 	Display() string
 	Variables() map[string]int
