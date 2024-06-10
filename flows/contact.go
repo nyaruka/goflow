@@ -413,6 +413,30 @@ func (c *Contact) PreferredChannel() *Channel {
 	return nil
 }
 
+type AirtimeSenderRecipient struct {
+	Sender    urns.URN
+	Recipient urns.URN
+}
+
+// GetAirtimeSenderRecipient gets the tel URN or WhatsApp URN and its channel we can use for airtime transfer
+func (c *Contact) GetAirtimeSenderRecipient() *AirtimeSenderRecipient {
+	for _, u := range c.urns {
+		scheme := u.URN().Scheme()
+		if scheme == urns.Phone.Prefix || scheme == urns.WhatsApp.Prefix {
+			channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
+			if channel != nil {
+				sender, _ := urns.Parse(scheme + ":" + channel.Address())
+				return &AirtimeSenderRecipient{
+					Recipient: u.URN(),
+					Sender:    sender,
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
 // UpdatePreferredChannel updates the preferred channel and returns whether any change was made
 func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 	oldURNs := c.urns.clone()

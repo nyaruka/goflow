@@ -3,7 +3,6 @@ package actions
 import (
 	"errors"
 
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/shopspring/decimal"
@@ -65,17 +64,9 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 	// fail if we don't have a contact
 	contact := run.Contact()
 
-	// fail if the contact doesn't have a tel URN
-	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix)
-	if len(telURNs) == 0 {
-		return nil, errors.New("can't transfer airtime to contact without a tel URN")
-	}
-
-	// if contact's preferred channel is a phone number, use that as the sender
-	var sender urns.URN
-	channel := contact.PreferredChannel()
-	if channel != nil && channel.SupportsScheme(urns.Phone.Prefix) {
-		sender, _ = urns.Parse("tel:" + channel.Address())
+	airtimeSenderRecipient := contact.GetAirtimeSenderRecipient()
+	if airtimeSenderRecipient == nil {
+		return nil, errors.New("can't transfer airtime to contact without a tel URN or whatsapp URN")
 	}
 
 	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())
@@ -85,7 +76,7 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(airtimeSenderRecipient.Sender, airtimeSenderRecipient.Recipient, a.Amounts, httpLogger.Log)
 	if transfer != nil {
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}
