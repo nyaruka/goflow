@@ -79,6 +79,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.LastSeenOn())
 	assert.Nil(t, contact.PreferredChannel())
+	assert.Nil(t, contact.GetAirtimeSenderRecipient())
 
 	contact.SetLastSeenOn(time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC))
 	assert.Equal(t, time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC), *contact.LastSeenOn())
@@ -151,6 +152,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
+	assert.Equal(t, &flows.AirtimeSenderRecipient{Sender: "tel:+17036975131", Recipient: "tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"}, clone.GetAirtimeSenderRecipient())
 	assert.NotNil(t, contact.Ticket())
 
 	// country can be resolved from tel urns if there's no preferred channel

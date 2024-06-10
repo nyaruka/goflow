@@ -165,7 +165,7 @@
                         }
                     ],
                     "recipient": "tel:+12065551212",
-                    "sender": "",
+                    "sender": "tel:+17036975131",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "airtime_transferred"
                 },
@@ -249,7 +249,7 @@
                                     }
                                 ],
                                 "recipient": "tel:+12065551212",
-                                "sender": "",
+                                "sender": "tel:+17036975131",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "airtime_transferred"
                             },
