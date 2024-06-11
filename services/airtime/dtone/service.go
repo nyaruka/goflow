@@ -94,7 +94,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	transfer.DesiredAmount = amounts[transfer.Currency]
 
 	// request synchronous confirmed transaction for this product
-	tx, trace, err := s.client.TransactionSync(string(transfer.UUID), product.ID, recipient.Path())
+	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipient.Path())
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

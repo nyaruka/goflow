@@ -74,10 +74,16 @@ type Operator struct {
 }
 
 // LookupMobileNumber see https://dvs-api-doc.dtone.com/#tag/Mobile-Number
-func (c *Client) LookupMobileNumber(tel string) ([]*Operator, *httpx.Trace, error) {
+func (c *Client) LookupMobileNumber(phoneNumber string) ([]*Operator, *httpx.Trace, error) {
 	var response []*Operator
 
-	trace, err := c.request("GET", fmt.Sprintf("lookup/mobile-number/%s", tel), nil, &response)
+	payload := &struct {
+		MobileNumber string `json:"mobile_number"`
+	}{
+		MobileNumber: phoneNumber,
+	}
+
+	trace, err := c.request("POST", "lookup/mobile-number", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}
@@ -142,8 +148,8 @@ type Transaction struct {
 	} `json:"status"`
 }
 
-// TransactionSync see https://dvs-api-doc.dtone.com/#tag/Transactions
-func (c *Client) TransactionSync(externalID string, productID int, mobileNumber string) (*Transaction, *httpx.Trace, error) {
+// TransactionAsync see https://dvs-api-doc.dtone.com/#tag/Transactions
+func (c *Client) TransactionAsync(externalID string, productID int, mobileNumber string) (*Transaction, *httpx.Trace, error) {
 	var response *Transaction
 
 	type creditPartyIdentifier struct {
@@ -164,7 +170,7 @@ func (c *Client) TransactionSync(externalID string, productID int, mobileNumber 
 		},
 	}
 
-	trace, err := c.request("POST", "sync/transactions", payload, &response)
+	trace, err := c.request("POST", "async/transactions", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}

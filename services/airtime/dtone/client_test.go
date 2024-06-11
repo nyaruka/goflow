@@ -344,14 +344,14 @@ func TestClient(t *testing.T) {
 	defer dates.SetNowSource(dates.DefaultNowSource)
 
 	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"https://dvs-api.dtone.com/v1/lookup/mobile-number/+593979123456": {
+		"https://dvs-api.dtone.com/v1/lookup/mobile-number": {
 			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)), // successful mobile number lookup
 			httpx.MockConnectionError,                                     // timeout
 		},
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
 			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 		},
-		"https://dvs-api.dtone.com/v1/sync/transactions": {
+		"https://dvs-api.dtone.com/v1/async/transactions": {
 			httpx.NewMockResponse(200, nil, []byte(transactionRejectedResponse)),
 		},
 	})
@@ -385,10 +385,10 @@ func TestClient(t *testing.T) {
 	test.AssertSnapshot(t, "products", string(trace.RequestTrace))
 
 	// create a synchronous transaction
-	tx, trace, err := cl.TransactionSync("EX12345", 6035, "+593979123456")
+	tx, trace, err := cl.TransactionAsync("EX12345", 6035, "+593979123456")
 	assert.NoError(t, err)
 	assert.Equal(t, int64(2237512891), tx.ID)
 	assert.Equal(t, "EX12345", tx.ExternalID)
 	assert.Equal(t, "REJECTED-OPERATOR-CURRENTLY-UNAVAILABLE", tx.Status.Message)
-	test.AssertSnapshot(t, "transaction_sync", string(trace.RequestTrace))
+	test.AssertSnapshot(t, "transaction_async", string(trace.RequestTrace))
 }
