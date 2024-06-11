@@ -3,6 +3,7 @@ package flows
 import (
 	"fmt"
 	"net/url"
+	"slices"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/urns"
@@ -173,11 +174,11 @@ func (l URNList) clone() URNList {
 	return urns
 }
 
-// WithScheme returns a new URN list containing of only URNs of the given scheme
-func (l URNList) WithScheme(scheme string) URNList {
+// WithScheme returns a new URN list containing of only URNs of the given schemes
+func (l URNList) WithScheme(schemes ...string) URNList {
 	var matching URNList
 	for _, u := range l {
-		if u.urn.Scheme() == scheme {
+		if slices.Contains(schemes, u.urn.Scheme()) {
 			matching = append(matching, u)
 		}
 	}
