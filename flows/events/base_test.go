@@ -57,6 +57,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			events.NewAirtimeTransferred(
 				&flows.AirtimeTransfer{
+					UUID:          flows.AirtimeTransferUUID("4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d"),
 					Sender:        urns.URN("tel:+593979099111"),
 					Recipient:     urns.URN("tel:+593979099222"),
 					Currency:      "USD",
@@ -98,7 +99,8 @@ func TestEventMarshaling(t *testing.T) {
 				],
 				"recipient": "tel:+593979099222",
         	    "sender": "tel:+593979099111",
-				"type": "airtime_transferred"
+				"type": "airtime_transferred",
+				"transfer_uuid": "4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d"
 			}`,
 		},
 		{
