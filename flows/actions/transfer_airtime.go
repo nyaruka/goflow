@@ -66,16 +66,18 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 	contact := run.Contact()
 
 	// fail if the contact doesn't have a tel URN
-	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix)
+	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix)
 	if len(telURNs) == 0 {
-		return nil, errors.New("can't transfer airtime to contact without a tel URN")
+		return nil, errors.New("can't transfer airtime to contact without a phone number")
 	}
+
+	recipient := telURNs[0].URN()
 
 	// if contact's preferred channel is a phone number, use that as the sender
 	var sender urns.URN
 	channel := contact.PreferredChannel()
-	if channel != nil && channel.SupportsScheme(urns.Phone.Prefix) {
-		sender, _ = urns.Parse("tel:" + channel.Address())
+	if channel != nil && channel.SupportsScheme(recipient.Scheme()) {
+		sender, _ = urns.Parse(recipient.Scheme() + ":" + channel.Address())
 	}
 
 	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())
@@ -85,7 +87,7 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(sender, telURNs[0].URN(), a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(sender, recipient, a.Amounts, httpLogger.Log)
 	if transfer != nil {
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}

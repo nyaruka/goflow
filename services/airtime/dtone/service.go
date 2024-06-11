@@ -3,6 +3,7 @@ package dtone
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/stringsx"
@@ -34,8 +35,12 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 		DesiredAmount: decimal.Zero,
 		ActualAmount:  decimal.Zero,
 	}
+	recipientPhoneNumber := recipient.Path()
+	if !strings.HasPrefix(recipientPhoneNumber, "+") {
+		recipientPhoneNumber = "+" + recipientPhoneNumber
+	}
 
-	operators, trace, err := s.client.LookupMobileNumber(recipient.Path())
+	operators, trace, err := s.client.LookupMobileNumber(recipientPhoneNumber)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
@@ -52,7 +57,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 		}
 	}
 	if operator == nil {
-		return transfer, fmt.Errorf("unable to find operator for number %s", recipient.Path())
+		return transfer, fmt.Errorf("unable to find operator for number %s", recipientPhoneNumber)
 	}
 
 	// fetch available products for this operator
@@ -94,7 +99,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	transfer.DesiredAmount = amounts[transfer.Currency]
 
 	// request synchronous confirmed transaction for this product
-	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipient.Path())
+	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipientPhoneNumber)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
