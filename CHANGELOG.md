@@ -1,3 +1,8 @@
+v0.216.0 (2024-06-11)
+-------------------------
+ * Support sending for WhatsApp URNs
+ * Update DT One requests
+
 v0.215.1 (2024-06-10)
 -------------------------
  * Support template component types like header/* and body/*
