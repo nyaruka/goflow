@@ -31,7 +31,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Reward Transfer",
-                "value": "0",
+                "value": "",
                 "category": "Failure"
             }
         ],
@@ -327,7 +327,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Reward Transfer",
-                "value": "0",
+                "value": "",
                 "category": "Failure"
             }
         ],
