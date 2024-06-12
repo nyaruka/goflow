@@ -58,6 +58,50 @@
     {
         "description": "Transfer and set result events if transfer made",
         "http_mocks": {
+            "https://dvs-api.dtone.com/v1/async/transactions": [
+                {
+                    "status": 200,
+                    "body": {
+                        "confirmation_date": "2021-03-24T20:05:06.111631000Z",
+                        "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
+                        "creation_date": "2021-03-24T20:05:05.883561000Z",
+                        "credit_party_identifier": {
+                            "mobile_number": "+593979123456"
+                        },
+                        "external_id": "EX12345",
+                        "id": 2237512891,
+                        "product": {
+                            "description": "",
+                            "id": 6035,
+                            "name": "3 USD",
+                            "operator": {
+                                "country": {
+                                    "iso_code": "ECU",
+                                    "name": "Ecuador",
+                                    "regions": null
+                                },
+                                "id": 1596,
+                                "name": "Claro Ecuador",
+                                "regions": null
+                            },
+                            "regions": null,
+                            "service": {
+                                "id": 1,
+                                "name": "Mobile"
+                            },
+                            "type": "FIXED_VALUE_RECHARGE"
+                        },
+                        "status": {
+                            "class": {
+                                "id": 2,
+                                "message": "CONFIRMED"
+                            },
+                            "id": 20000,
+                            "message": "CONFIRMED"
+                        }
+                    }
+                }
+            ],
             "https://dvs-api.dtone.com/v1/lookup/mobile-number": [
                 {
                     "status": 200,
@@ -136,50 +180,6 @@
                         }
                     ]
                 }
-            ],
-            "https://dvs-api.dtone.com/v1/async/transactions": [
-                {
-                    "status": 200,
-                    "body": {
-                        "confirmation_date": "2021-03-24T20:05:06.111631000Z",
-                        "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
-                        "creation_date": "2021-03-24T20:05:05.883561000Z",
-                        "credit_party_identifier": {
-                            "mobile_number": "+593979123456"
-                        },
-                        "external_id": "EX12345",
-                        "id": 2237512891,
-                        "product": {
-                            "description": "",
-                            "id": 6035,
-                            "name": "3 USD",
-                            "operator": {
-                                "country": {
-                                    "iso_code": "ECU",
-                                    "name": "Ecuador",
-                                    "regions": null
-                                },
-                                "id": 1596,
-                                "name": "Claro Ecuador",
-                                "regions": null
-                            },
-                            "regions": null,
-                            "service": {
-                                "id": 1,
-                                "name": "Mobile"
-                            },
-                            "type": "FIXED_VALUE_RECHARGE"
-                        },
-                        "status": {
-                            "class": {
-                                "id": 2,
-                                "message": "CONFIRMED"
-                            },
-                            "id": 20000,
-                            "message": "CONFIRMED"
-                        }
-                    }
-                }
             ]
         },
         "action": {
@@ -194,9 +194,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "USD",
@@ -293,9 +293,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "",
