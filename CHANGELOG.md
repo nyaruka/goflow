@@ -1,3 +1,7 @@
+v0.216.1 (2024-06-12)
+-------------------------
+ * Add transfer UUID field to airtime transfer
+
 v0.216.0 (2024-06-11)
 -------------------------
  * Support sending for WhatsApp URNs
