@@ -158,6 +158,7 @@ const (
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
 	UUID          AirtimeTransferUUID
+	ExternalID    string
 	Sender        urns.URN
 	Recipient     urns.URN
 	Currency      string
