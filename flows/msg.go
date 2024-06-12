@@ -174,8 +174,8 @@ type TemplatingVariable struct {
 }
 
 type TemplatingComponent struct {
-	Type      string         `json:"type"`
 	Name      string         `json:"name"`
+	Type      string         `json:"type"`
 	Variables map[string]int `json:"variables"`
 }
 
