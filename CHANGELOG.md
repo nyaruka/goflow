@@ -1,3 +1,8 @@
+v0.216.2 (2024-06-12)
+-------------------------
+ * Save airtime transfer transaction id as result and on event as external_id
+ * Remove support for old template component types
+
 v0.216.1 (2024-06-12)
 -------------------------
  * Add transfer UUID field to airtime transfer
