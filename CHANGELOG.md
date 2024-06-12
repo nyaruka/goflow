@@ -1,3 +1,7 @@
+v0.216.3 (2024-06-12)
+-------------------------
+ * Use empty value for airtime failure result
+
 v0.216.2 (2024-06-12)
 -------------------------
  * Save airtime transfer transaction id as result and on event as external_id
