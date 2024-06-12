@@ -167,7 +167,8 @@
                     "recipient": "tel:+12065551212",
                     "sender": "",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "type": "airtime_transferred"
+                    "type": "airtime_transferred",
+                    "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "category": "Success",
@@ -251,7 +252,8 @@
                                 "recipient": "tel:+12065551212",
                                 "sender": "",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                                "type": "airtime_transferred"
+                                "type": "airtime_transferred",
+                                "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "category": "Success",

@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -120,6 +121,7 @@ func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts m
 	}
 
 	transfer := &flows.AirtimeTransfer{
+		UUID:          flows.AirtimeTransferUUID(uuids.New()),
 		Sender:        sender,
 		Recipient:     recipient,
 		Currency:      s.fixedCurrency,

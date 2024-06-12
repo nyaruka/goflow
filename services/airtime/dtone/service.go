@@ -29,9 +29,10 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, se
 
 func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
-		UUID:          uuids.New(),
+		UUID:          flows.AirtimeTransferUUID(uuids.New()),
 		Sender:        sender,
 		Recipient:     recipient,
+		Currency:      "",
 		DesiredAmount: decimal.Zero,
 		ActualAmount:  decimal.Zero,
 	}

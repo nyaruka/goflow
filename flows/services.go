@@ -143,6 +143,9 @@ type TicketService interface {
 	Open(env envs.Environment, contact *Contact, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
 }
 
+// AirtimeTransferUUID is the UUID of a airtime transfer
+type AirtimeTransferUUID uuids.UUID
+
 // AirtimeTransferStatus is a status of a airtime transfer
 type AirtimeTransferStatus string
 
@@ -154,7 +157,7 @@ const (
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	UUID          uuids.UUID
+	UUID          AirtimeTransferUUID
 	Sender        urns.URN
 	Recipient     urns.URN
 	Currency      string
