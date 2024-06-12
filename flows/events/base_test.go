@@ -57,7 +57,8 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			events.NewAirtimeTransferred(
 				&flows.AirtimeTransfer{
-					UUID:          flows.AirtimeTransferUUID("4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d"),
+					UUID:          "4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d",
+					ExternalID:    "98765432",
 					Sender:        urns.URN("tel:+593979099111"),
 					Recipient:     urns.URN("tel:+593979099222"),
 					Currency:      "USD",
@@ -85,6 +86,7 @@ func TestEventMarshaling(t *testing.T) {
         	    "created_on": "2018-10-18T14:20:30.000123456Z",
         	    "currency": "USD",
         	    "desired_amount": 1.2,
+				"external_id": "98765432",
 				"http_logs": [
 					{
 						"url": "https://send.money.com/topup",

@@ -1,5 +1,49 @@
 {
     "http_mocks": {
+        "https://dvs-api.dtone.com/v1/async/transactions": [
+            {
+                "body": {
+                    "confirmation_date": "2021-03-24T20:05:06.111631000Z",
+                    "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
+                    "creation_date": "2021-03-24T20:05:05.883561000Z",
+                    "credit_party_identifier": {
+                        "mobile_number": "+593979123456"
+                    },
+                    "external_id": "EX12345",
+                    "id": 2237512891,
+                    "product": {
+                        "description": "",
+                        "id": 6035,
+                        "name": "3 USD",
+                        "operator": {
+                            "country": {
+                                "iso_code": "ECU",
+                                "name": "Ecuador",
+                                "regions": null
+                            },
+                            "id": 1596,
+                            "name": "Claro Ecuador",
+                            "regions": null
+                        },
+                        "regions": null,
+                        "service": {
+                            "id": 1,
+                            "name": "Mobile"
+                        },
+                        "type": "FIXED_VALUE_RECHARGE"
+                    },
+                    "status": {
+                        "class": {
+                            "id": 2,
+                            "message": "CONFIRMED"
+                        },
+                        "id": 20000,
+                        "message": "CONFIRMED"
+                    }
+                },
+                "status": 200
+            }
+        ],
         "https://dvs-api.dtone.com/v1/lookup/mobile-number": [
             {
                 "body": [
@@ -78,50 +122,6 @@
                 ],
                 "status": 200
             }
-        ],
-        "https://dvs-api.dtone.com/v1/async/transactions": [
-            {
-                "body": {
-                    "confirmation_date": "2021-03-24T20:05:06.111631000Z",
-                    "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
-                    "creation_date": "2021-03-24T20:05:05.883561000Z",
-                    "credit_party_identifier": {
-                        "mobile_number": "+593979123456"
-                    },
-                    "external_id": "EX12345",
-                    "id": 2237512891,
-                    "product": {
-                        "description": "",
-                        "id": 6035,
-                        "name": "3 USD",
-                        "operator": {
-                            "country": {
-                                "iso_code": "ECU",
-                                "name": "Ecuador",
-                                "regions": null
-                            },
-                            "id": 1596,
-                            "name": "Claro Ecuador",
-                            "regions": null
-                        },
-                        "regions": null,
-                        "service": {
-                            "id": 1,
-                            "name": "Mobile"
-                        },
-                        "type": "FIXED_VALUE_RECHARGE"
-                    },
-                    "status": {
-                        "class": {
-                            "id": 2,
-                            "message": "CONFIRMED"
-                        },
-                        "id": 20000,
-                        "message": "CONFIRMED"
-                    }
-                },
-                "status": 200
-            }
         ]
     },
     "outputs": [
@@ -132,6 +132,7 @@
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "currency": "USD",
                     "desired_amount": 3.5,
+                    "external_id": "2237512891",
                     "http_logs": [
                         {
                             "created_on": "2018-07-06T12:30:02.123456789Z",
@@ -167,8 +168,8 @@
                     "recipient": "tel:+12065551212",
                     "sender": "",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "type": "airtime_transferred",
-                    "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "airtime_transferred"
                 },
                 {
                     "category": "Success",
@@ -176,7 +177,7 @@
                     "name": "Transfer",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
-                    "value": "3"
+                    "value": "2237512891"
                 }
             ],
             "segments": [],
@@ -217,11 +218,12 @@
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "currency": "USD",
                                 "desired_amount": 3.5,
+                                "external_id": "2237512891",
                                 "http_logs": [
                                     {
                                         "created_on": "2018-07-06T12:30:02.123456789Z",
                                         "elapsed_ms": 1000,
-                                        "request": "POST /v1/lookup/mobile-number HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 32\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"mobile_number\":\"+12065551212\"}",                                        
+                                        "request": "POST /v1/lookup/mobile-number HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 32\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"mobile_number\":\"+12065551212\"}",
                                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 191\r\n\r\n[\n                    {\n                        \"id\": 1596,\n                        \"identified\": true,\n                        \"name\": \"Claro Ecuador\"\n                    }\n                ]",
                                         "retries": 0,
                                         "status": "success",
@@ -252,8 +254,8 @@
                                 "recipient": "tel:+12065551212",
                                 "sender": "",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                                "type": "airtime_transferred",
-                                "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "transfer_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "airtime_transferred"
                             },
                             {
                                 "category": "Success",
@@ -261,7 +263,7 @@
                                 "name": "Transfer",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
-                                "value": "3"
+                                "value": "2237512891"
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:14.123456789Z",
@@ -284,7 +286,7 @@
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "name": "Transfer",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
-                                "value": "3"
+                                "value": "2237512891"
                             }
                         },
                         "status": "completed",

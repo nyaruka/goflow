@@ -197,6 +197,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "external_id": "2237512891",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "USD",
@@ -240,7 +241,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Reward Transfer",
-                "value": "3",
+                "value": "2237512891",
                 "category": "Success"
             }
         ],
@@ -296,6 +297,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "external_id": "",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "",

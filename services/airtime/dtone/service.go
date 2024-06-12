@@ -99,7 +99,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	transfer.Currency = product.Destination.Unit
 	transfer.DesiredAmount = amounts[transfer.Currency]
 
-	// request synchronous confirmed transaction for this product
+	// request asynchronous confirmed transaction for this product
 	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipientPhoneNumber)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
@@ -112,6 +112,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 		return transfer, fmt.Errorf("transaction to send product %d on operator %d ended with status %s", product.ID, operator.ID, tx.Status.Message)
 	}
 
+	transfer.ExternalID = fmt.Sprintf("%d", tx.ID)
 	transfer.ActualAmount = product.Destination.Amount
 
 	return transfer, nil

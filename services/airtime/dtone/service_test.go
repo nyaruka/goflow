@@ -58,7 +58,8 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
-		UUID:          flows.AirtimeTransferUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"),
+		UUID:          "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		ExternalID:    "2237512891",
 		Sender:        urns.URN("tel:+593979000000"),
 		Recipient:     urns.URN("tel:+593979123456"),
 		Currency:      "USD",

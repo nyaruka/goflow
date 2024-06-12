@@ -96,7 +96,7 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 }
 
 func (a *TransferAirtimeAction) saveSuccess(run flows.Run, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, transfer.ActualAmount.String(), CategorySuccess, "", "", nil, logEvent)
+	a.saveResult(run, step, a.ResultName, transfer.ExternalID, CategorySuccess, "", "", nil, logEvent)
 }
 
 func (a *TransferAirtimeAction) saveFailure(run flows.Run, step flows.Step, logEvent flows.EventCallback) {
