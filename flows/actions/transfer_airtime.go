@@ -65,8 +65,8 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 	// fail if we don't have a contact
 	contact := run.Contact()
 
-	// fail if the contact doesn't have a tel URN
-	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix)
+	// fail if the contact doesn't have a phone URN
+	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix)
 	if len(telURNs) == 0 {
 		return nil, errors.New("can't transfer airtime to contact without a phone number")
 	}
