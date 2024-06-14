@@ -1,3 +1,7 @@
+v0.216.4 (2024-06-14)
+-------------------------
+ * Revert adding support for sending airtime to WhatsApp
+
 v0.216.3 (2024-06-12)
 -------------------------
  * Use empty value for airtime failure result
