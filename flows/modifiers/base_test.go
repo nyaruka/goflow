@@ -50,8 +50,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		Events       json.RawMessage `json:"events"`
 	}{}
 
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)

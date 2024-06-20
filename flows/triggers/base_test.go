@@ -54,8 +54,7 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 		Context     json.RawMessage `json:"context,omitempty"`
 	}{}
 
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)

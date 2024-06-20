@@ -52,8 +52,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		Error      string          `json:"error,omitempty"`
 	}{}
 
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	for i, tc := range tests {
 		var run flows.Run
@@ -114,8 +113,8 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 		Output string `json:"output,omitempty"`
 		Error  string `json:"error,omitempty"`
 	}{}
-	jsonx.Unmarshal(testFile, &tests)
-	require.NoError(b, err)
+
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	logEvent := func(e flows.Event) {}
 

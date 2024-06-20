@@ -313,8 +313,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 
 	testFile, err := os.ReadFile("testdata/smart_groups.json")
 	require.NoError(t, err)
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	for _, tc := range tests {
 		envBuilder := envs.NewBuilder().

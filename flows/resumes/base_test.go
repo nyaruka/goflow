@@ -59,8 +59,7 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		SessionStatus flows.SessionStatus `json:"session_status,omitempty"`
 	}{}
 
-	err = jsonx.Unmarshal(testFile, &tests)
-	require.NoError(t, err)
+	jsonx.MustUnmarshal(testFile, &tests)
 
 	defer dates.SetNowSource(dates.DefaultNowSource)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
