@@ -1,3 +1,7 @@
+v0.217.0 (2024-06-26)
+-------------------------
+ * Drop db support on flows.BroadcastTranslations
+
 v0.216.4 (2024-06-14)
 -------------------------
  * Revert adding support for sending airtime to WhatsApp
