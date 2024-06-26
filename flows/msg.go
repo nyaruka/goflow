@@ -1,9 +1,6 @@
 package flows
 
 import (
-	"database/sql/driver"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"slices"
 
@@ -220,14 +217,3 @@ func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLa
 	// finally return the base language
 	return b[baseLanguage], baseLanguage
 }
-
-// Scan supports reading translation values from JSON in database
-func (t *BroadcastTranslations) Scan(value any) error {
-	b, ok := value.([]byte)
-	if !ok {
-		return errors.New("failed type assertion to []byte")
-	}
-	return json.Unmarshal(b, &t)
-}
-
-func (t BroadcastTranslations) Value() (driver.Value, error) { return json.Marshal(t) }

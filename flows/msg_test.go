@@ -146,15 +146,6 @@ func TestBroadcastTranslations(t *testing.T) {
 	assertTranslation("kin", []i18n.Language{"eng", "spa"}, "Hello", "eng")   // uses default flow language
 	assertTranslation("kin", []i18n.Language{"spa", "eng"}, "Hola", "spa")    // uses default flow language
 	assertTranslation("kin", []i18n.Language{"kin"}, "Hello", "eng")          // uses base language
-
-	val, err := bcastTrans.Value()
-	assert.NoError(t, err)
-	assert.JSONEq(t, `{"eng": {"text": "Hello"}, "fra": {"text": "Bonjour"}, "spa": {"text": "Hola"}}`, string(val.([]byte)))
-
-	var bt flows.BroadcastTranslations
-	err = bt.Scan([]byte(`{"spa": {"text": "Adios"}}`))
-	assert.NoError(t, err)
-	assert.Equal(t, flows.BroadcastTranslations{"spa": {Text: "Adios"}}, bt)
 }
 
 func TestMsgTemplating(t *testing.T) {
