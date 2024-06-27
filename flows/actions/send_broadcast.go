@@ -74,12 +74,8 @@ func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifie
 	for _, language := range languages {
 		languages := []i18n.Language{language, run.Flow().Language()}
 
-		evaluatedText, evaluatedAttachments, evaluatedQuickReplies, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
-		translations[language] = &flows.BroadcastTranslation{
-			Text:         evaluatedText,
-			Attachments:  evaluatedAttachments,
-			QuickReplies: evaluatedQuickReplies,
-		}
+		content, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
+		translations[language] = content
 	}
 
 	// if we don't have any recipients, noop

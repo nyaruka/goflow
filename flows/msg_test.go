@@ -123,9 +123,9 @@ func TestIVRMsgOut(t *testing.T) {
 
 func TestBroadcastTranslations(t *testing.T) {
 	bcastTrans := flows.BroadcastTranslations{
-		"eng": &flows.BroadcastTranslation{Text: "Hello"},
-		"fra": &flows.BroadcastTranslation{Text: "Bonjour"},
-		"spa": &flows.BroadcastTranslation{Text: "Hola"},
+		"eng": &flows.MsgContent{Text: "Hello"},
+		"fra": &flows.MsgContent{Text: "Bonjour"},
+		"spa": &flows.MsgContent{Text: "Hola"},
 	}
 	baseLanguage := i18n.Language("eng")
 

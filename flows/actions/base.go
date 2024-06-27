@@ -81,7 +81,7 @@ func (a *baseAction) Validate() error { return nil }
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (string, []utils.Attachment, []string, i18n.Language) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (*flows.MsgContent, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], logEvent)
@@ -126,7 +126,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 		lang = qrsLang
 	}
 
-	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies, lang
+	return &flows.MsgContent{Text: evaluatedText, Attachments: evaluatedAttachments, QuickReplies: evaluatedQuickReplies}, lang
 }
 
 // helper to save a run result and log it as an event

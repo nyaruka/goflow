@@ -189,17 +189,17 @@ func NewMsgTemplating(template *assets.TemplateReference, namespace string, comp
 	return &MsgTemplating{Template: template, Namespace: namespace, Components: components, Variables: variables}
 }
 
-// BroadcastTranslation is the broadcast content in a particular language
-type BroadcastTranslation struct {
+// MsgContent is message content in a particular language
+type MsgContent struct {
 	Text         string             `json:"text"`
 	Attachments  []utils.Attachment `json:"attachments,omitempty"`
 	QuickReplies []string           `json:"quick_replies,omitempty"`
 }
 
-type BroadcastTranslations map[i18n.Language]*BroadcastTranslation
+type BroadcastTranslations map[i18n.Language]*MsgContent
 
 // ForContact is a utility to help callers select the translation for a contact
-func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage i18n.Language) (*BroadcastTranslation, i18n.Language) {
+func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage i18n.Language) (*MsgContent, i18n.Language) {
 	// first try the contact language if it is valid
 	if c.Language() != i18n.NilLanguage && slices.Contains(e.AllowedLanguages(), c.Language()) {
 		t := b[c.Language()]
