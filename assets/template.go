@@ -73,7 +73,6 @@ type TemplateComponent interface {
 // TemplateTranslation represents a single translation for a specific template and channel
 type TemplateTranslation interface {
 	Locale() i18n.Locale
-	Namespace() string
 	Channel() *ChannelReference
 	Components() []TemplateComponent
 	Variables() []TemplateVariable

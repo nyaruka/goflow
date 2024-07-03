@@ -185,14 +185,13 @@ type TemplatingComponent struct {
 // MsgTemplating represents any substituted message template that should be applied when sending this message
 type MsgTemplating struct {
 	Template   *assets.TemplateReference `json:"template"`
-	Namespace  string                    `json:"namespace"`
 	Components []*TemplatingComponent    `json:"components,omitempty"`
 	Variables  []*TemplatingVariable     `json:"variables,omitempty"`
 }
 
 // NewMsgTemplating creates and returns a new msg template
-func NewMsgTemplating(template *assets.TemplateReference, namespace string, components []*TemplatingComponent, variables []*TemplatingVariable) *MsgTemplating {
-	return &MsgTemplating{Template: template, Namespace: namespace, Components: components, Variables: variables}
+func NewMsgTemplating(template *assets.TemplateReference, components []*TemplatingComponent, variables []*TemplatingVariable) *MsgTemplating {
+	return &MsgTemplating{Template: template, Components: components, Variables: variables}
 }
 
 // MsgContent is message content in a particular language
