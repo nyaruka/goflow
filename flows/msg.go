@@ -198,22 +198,41 @@ type MsgContent struct {
 
 type BroadcastTranslations map[i18n.Language]*MsgContent
 
-// ForContact is a utility to help callers select the translation for a contact
-func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage i18n.Language) (*MsgContent, i18n.Language) {
-	// first try the contact language if it is valid
+// ForContact is a utility to help callers get the message content for a contact
+func (b BroadcastTranslations) ForContact(e envs.Environment, c *Contact, baseLanguage i18n.Language) (*MsgContent, i18n.Locale) {
+	// get the set of languages to merge translations from
+	languages := make([]i18n.Language, 0, 3)
+
+	// highest priority is the contact language if it is valid
 	if c.Language() != i18n.NilLanguage && slices.Contains(e.AllowedLanguages(), c.Language()) {
-		t := b[c.Language()]
-		if t != nil {
-			return t, c.Language()
+		languages = append(languages, c.Language())
+	}
+
+	// then the default workspace language, then the base language
+	languages = append(languages, e.DefaultLanguage(), baseLanguage)
+
+	content := &MsgContent{}
+	language := i18n.NilLanguage
+	country := e.DefaultCountry()
+	if c.Country() != i18n.NilCountry {
+		country = c.Country()
+	}
+
+	for _, lang := range languages {
+		trans := b[lang]
+		if trans != nil {
+			if content.Text == "" && trans.Text != "" {
+				content.Text = trans.Text
+				language = lang
+			}
+			if len(content.Attachments) == 0 && len(trans.Attachments) > 0 {
+				content.Attachments = trans.Attachments
+			}
+			if len(content.QuickReplies) == 0 && len(trans.QuickReplies) > 0 {
+				content.QuickReplies = trans.QuickReplies
+			}
 		}
 	}
 
-	// second try the default flow language
-	t := b[e.DefaultLanguage()]
-	if t != nil {
-		return t, e.DefaultLanguage()
-	}
-
-	// finally return the base language
-	return b[baseLanguage], baseLanguage
+	return content, i18n.NewLocale(language, country)
 }
