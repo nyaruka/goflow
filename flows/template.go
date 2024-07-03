@@ -1,8 +1,13 @@
 package flows
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // Template represents messaging templates used by channels types such as WhatsApp
@@ -57,6 +62,36 @@ func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
 
 // Asset returns the underlying asset
 func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }
+
+// Preview returns message content which will act as a preview of a message sent with this template
+func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
+	var text []string
+	var attachments []utils.Attachment
+	var quickReplies []string
+
+	for _, comp := range t.Components() {
+		content := comp.Content()
+		for key, index := range comp.Variables() {
+			variable := vars[index]
+
+			if variable.Type == "text" {
+				content = strings.ReplaceAll(content, fmt.Sprintf("{{%s}}", key), variable.Value)
+			} else if variable.Type == "image" || variable.Type == "video" || variable.Type == "document" {
+				attachments = append(attachments, utils.Attachment(variable.Value))
+			}
+		}
+
+		if content != "" {
+			if comp.Type() == "header/text" || comp.Type() == "body/text" || comp.Type() == "footer/text" {
+				text = append(text, content)
+			} else if strings.HasPrefix(comp.Type(), "button/") {
+				quickReplies = append(quickReplies, stringsx.TruncateEllipsis(content, MaxQuickReplyLength))
+			}
+		}
+	}
+
+	return &MsgContent{Text: strings.Join(text, "\n\n"), Attachments: attachments, QuickReplies: quickReplies}
+}
 
 // TemplateAssets is our type for all the templates in an environment
 type TemplateAssets struct {

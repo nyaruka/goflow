@@ -1,17 +1,12 @@
 package actions
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/nyaruka/gocommon/i18n"
-	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -153,33 +148,9 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	}
 
 	// the message we return is an approximate preview of what the channel will send using the template
-	var previewText []string
-	var previewAttachments []utils.Attachment
-	var previewQRs []string
-
-	for _, comp := range translation.Components() {
-		previewContent := comp.Content()
-		for key, index := range comp.Variables() {
-			variable := variables[index]
-
-			if variable.Type == "text" {
-				previewContent = strings.ReplaceAll(previewContent, fmt.Sprintf("{{%s}}", key), variable.Value)
-			} else if variable.Type == "image" || variable.Type == "video" || variable.Type == "document" {
-				previewAttachments = append(previewAttachments, utils.Attachment(variable.Value))
-			}
-		}
-
-		if previewContent != "" {
-			if comp.Type() == "header/text" || comp.Type() == "body/text" || comp.Type() == "footer/text" {
-				previewText = append(previewText, previewContent)
-			} else if strings.HasPrefix(comp.Type(), "button/") {
-				previewQRs = append(previewQRs, stringsx.TruncateEllipsis(previewContent, maxQuickReplyLength))
-			}
-		}
-	}
-
+	preview := translation.Preview(variables)
 	locale := translation.Locale()
 	templating := flows.NewMsgTemplating(a.Template, translation.Namespace(), components, variables)
 
-	return flows.NewMsgOut(urn, channelRef, strings.Join(previewText, "\n\n"), previewAttachments, previewQRs, templating, flows.NilMsgTopic, locale, unsendableReason)
+	return flows.NewMsgOut(urn, channelRef, preview.Text, preview.Attachments, preview.QuickReplies, templating, flows.NilMsgTopic, locale, unsendableReason)
 }
