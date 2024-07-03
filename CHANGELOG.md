@@ -1,3 +1,7 @@
+v0.218.0 (2024-07-03)
+-------------------------
+ * Rework broadcast translation selection to merge across text, attachments and quick replies
+
 v0.217.0 (2024-06-26)
 -------------------------
  * Drop db support on flows.BroadcastTranslations
