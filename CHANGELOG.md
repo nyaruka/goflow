@@ -1,3 +1,8 @@
+v0.218.1 (2024-07-03)
+-------------------------
+ * Remove namespace on template translations as it's not needed by engine and can be added by mailroom when queueing
+ * Move functionality to generate preview content for template message from send_msg action to TemplateTranslation
+
 v0.218.0 (2024-07-03)
 -------------------------
  * Rework broadcast translation selection to merge across text, attachments and quick replies
