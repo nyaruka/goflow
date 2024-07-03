@@ -122,30 +122,92 @@ func TestIVRMsgOut(t *testing.T) {
 }
 
 func TestBroadcastTranslations(t *testing.T) {
-	bcastTrans := flows.BroadcastTranslations{
-		"eng": &flows.MsgContent{Text: "Hello"},
-		"fra": &flows.MsgContent{Text: "Bonjour"},
-		"spa": &flows.MsgContent{Text: "Hola"},
+	tcs := []struct {
+		env             envs.Environment
+		translations    flows.BroadcastTranslations
+		baseLanguage    i18n.Language
+		contactLanguage i18n.Language
+		expectedContent *flows.MsgContent
+		expectedLocale  i18n.Locale
+	}{
+		{ // 0: uses contact language
+			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
+			translations: flows.BroadcastTranslations{
+				"eng": &flows.MsgContent{Text: "Hello"},
+				"spa": &flows.MsgContent{Text: "Hola"},
+			},
+			baseLanguage:    "eng",
+			contactLanguage: "spa",
+			expectedContent: &flows.MsgContent{Text: "Hola"},
+			expectedLocale:  "spa-US",
+		},
+		{ // 1: ignores contact language because it's not in allowed languages, uses env default
+			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("RW").Build(),
+			translations: flows.BroadcastTranslations{
+				"eng": &flows.MsgContent{Text: "Hello"},
+				"kin": &flows.MsgContent{Text: "Muraho"},
+			},
+			baseLanguage:    "eng",
+			contactLanguage: "kin",
+			expectedContent: &flows.MsgContent{Text: "Hello"},
+			expectedLocale:  "eng-RW",
+		},
+		{ // 2: ignores contact language because it's not translations, uses env default
+			env: envs.NewBuilder().WithAllowedLanguages("spa", "fra", "eng").WithDefaultCountry("US").Build(),
+			translations: flows.BroadcastTranslations{
+				"eng": &flows.MsgContent{Text: "Hello"},
+				"spa": &flows.MsgContent{Text: "Hola"},
+			},
+			baseLanguage:    "eng",
+			contactLanguage: "kin",
+			expectedContent: &flows.MsgContent{Text: "Hola"},
+			expectedLocale:  "spa-US",
+		},
+		{ // 3: ignores contact language because it's not translations, uses base language
+			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
+			translations: flows.BroadcastTranslations{
+				"fra": &flows.MsgContent{Text: "Bonjour"},
+			},
+			baseLanguage:    "fra",
+			contactLanguage: "eng",
+			expectedContent: &flows.MsgContent{Text: "Bonjour"},
+			expectedLocale:  "fra-US",
+		},
+		{ // 4: merges content from different translations
+			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
+			translations: flows.BroadcastTranslations{
+				"eng": &flows.MsgContent{Text: "Hello", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []string{"Yes", "No"}},
+				"spa": &flows.MsgContent{Text: "Hola"},
+			},
+			baseLanguage:    "eng",
+			contactLanguage: "spa",
+			expectedContent: &flows.MsgContent{Text: "Hola", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []string{"Yes", "No"}},
+			expectedLocale:  "spa-US",
+		},
+		{ // 5: merges content from different translations
+			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
+			translations: flows.BroadcastTranslations{
+				"eng": &flows.MsgContent{QuickReplies: []string{"Yes", "No"}},
+				"spa": &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}},
+				"kin": &flows.MsgContent{Text: "Muraho"},
+			},
+			baseLanguage:    "kin",
+			contactLanguage: "spa",
+			expectedContent: &flows.MsgContent{Text: "Muraho", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}, QuickReplies: []string{"Yes", "No"}},
+			expectedLocale:  "kin-US",
+		},
 	}
-	baseLanguage := i18n.Language("eng")
 
-	assertTranslation := func(contactLanguage i18n.Language, allowedLanguages []i18n.Language, expectedText string, expectedLang i18n.Language) {
-		env := envs.NewBuilder().WithAllowedLanguages(allowedLanguages...).Build()
-		sa, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	for i, tc := range tcs {
+		sa, err := engine.NewSessionAssets(tc.env, static.NewEmptySource(), nil)
 		require.NoError(t, err)
 
-		contact := flows.NewEmptyContact(sa, "Bob", contactLanguage, nil)
-		trans, lang := bcastTrans.ForContact(env, contact, baseLanguage)
+		contact := flows.NewEmptyContact(sa, "Bob", tc.contactLanguage, nil)
+		content, locale := tc.translations.ForContact(tc.env, contact, tc.baseLanguage)
 
-		assert.Equal(t, expectedText, trans.Text)
-		assert.Equal(t, expectedLang, lang)
+		assert.Equal(t, tc.expectedContent, content, "%d: content mismatch", i)
+		assert.Equal(t, tc.expectedLocale, locale, "%d: locale mismatch", i)
 	}
-
-	assertTranslation("eng", []i18n.Language{"eng"}, "Hello", "eng")          // uses contact language
-	assertTranslation("fra", []i18n.Language{"eng", "fra"}, "Bonjour", "fra") // uses contact language
-	assertTranslation("kin", []i18n.Language{"eng", "spa"}, "Hello", "eng")   // uses default flow language
-	assertTranslation("kin", []i18n.Language{"spa", "eng"}, "Hola", "spa")    // uses default flow language
-	assertTranslation("kin", []i18n.Language{"kin"}, "Hello", "eng")          // uses base language
 }
 
 func TestMsgTemplating(t *testing.T) {
