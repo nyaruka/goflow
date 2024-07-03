@@ -22,12 +22,6 @@ import (
 // max number of bytes to be saved to extra on a result
 const resultExtraMaxBytes = 10000
 
-// max length of a message attachment (type:url)
-const maxAttachmentLength = 2048
-
-// max length of a quick reply
-const maxQuickReplyLength = 64
-
 // common category names
 const (
 	CategorySuccess = "Success"
@@ -96,8 +90,8 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 			logEvent(events.NewErrorf("attachment text evaluated to empty string, skipping"))
 			continue
 		}
-		if len(evaluatedAttachment) > maxAttachmentLength {
-			logEvent(events.NewErrorf("evaluated attachment is longer than %d limit, skipping", maxAttachmentLength))
+		if len(evaluatedAttachment) > flows.MaxAttachmentLength {
+			logEvent(events.NewErrorf("evaluated attachment is longer than %d limit, skipping", flows.MaxAttachmentLength))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))
@@ -112,7 +106,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 			logEvent(events.NewErrorf("quick reply text evaluated to empty string, skipping"))
 			continue
 		}
-		evaluatedQuickReplies = append(evaluatedQuickReplies, stringsx.TruncateEllipsis(evaluatedQuickReply, maxQuickReplyLength))
+		evaluatedQuickReplies = append(evaluatedQuickReplies, stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength))
 	}
 
 	// although it's possible for the different parts of the message to have different languages, we want to resolve

@@ -22,6 +22,12 @@ func init() {
 type UnsendableReason string
 
 const (
+	// max length of a message attachment (type:url)
+	MaxAttachmentLength = 2048
+
+	// max length of a quick reply
+	MaxQuickReplyLength = 64
+
 	NilUnsendableReason           UnsendableReason = ""
 	UnsendableReasonNoDestination UnsendableReason = "no_destination" // no sendable channel+URN pair
 	UnsendableReasonContactStatus UnsendableReason = "contact_status" // contact is blocked or stopped or archived
