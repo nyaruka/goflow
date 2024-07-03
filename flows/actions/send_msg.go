@@ -150,7 +150,7 @@ func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *
 	// the message we return is an approximate preview of what the channel will send using the template
 	preview := translation.Preview(variables)
 	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Template, translation.Namespace(), components, variables)
+	templating := flows.NewMsgTemplating(a.Template, components, variables)
 
 	return flows.NewMsgOut(urn, channelRef, preview.Text, preview.Attachments, preview.QuickReplies, templating, flows.NilMsgTopic, locale, unsendableReason)
 }

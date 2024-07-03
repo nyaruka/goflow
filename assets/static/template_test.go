@@ -27,10 +27,9 @@ func TestTemplate(t *testing.T) {
 	assert.Equal(t, "", c1.Display())
 	assert.Equal(t, map[string]int{"1": 0}, c1.Variables())
 
-	translation := static.NewTemplateTranslation(channel, i18n.Locale("eng-US"), "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", []*static.TemplateComponent{c1, c2}, []*static.TemplateVariable{v1, v2})
+	translation := static.NewTemplateTranslation(channel, i18n.Locale("eng-US"), []*static.TemplateComponent{c1, c2}, []*static.TemplateVariable{v1, v2})
 	assert.Equal(t, channel, translation.Channel())
 	assert.Equal(t, i18n.Locale("eng-US"), translation.Locale())
-	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", translation.Namespace())
 	assert.Equal(t, []assets.TemplateComponent{
 		(assets.TemplateComponent)(c1),
 		(assets.TemplateComponent)(c2),
@@ -51,5 +50,4 @@ func TestTemplate(t *testing.T) {
 
 	assert.Equal(t, copy.Name(), template.Name())
 	assert.Equal(t, copy.UUID(), template.UUID())
-	assert.Equal(t, copy.Translations()[0].Namespace(), template.Translations()[0].Namespace())
 }

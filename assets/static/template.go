@@ -40,16 +40,14 @@ func (t *Template) Translations() []assets.TemplateTranslation {
 type TemplateTranslation struct {
 	Channel_    *assets.ChannelReference `json:"channel"      validate:"required"`
 	Locale_     i18n.Locale              `json:"locale"       validate:"required"`
-	Namespace_  string                   `json:"namespace"`
 	Components_ []*TemplateComponent     `json:"components"`
 	Variables_  []*TemplateVariable      `json:"variables"`
 }
 
 // NewTemplateTranslation creates a new template translation
-func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, namespace string, components []*TemplateComponent, variables []*TemplateVariable) *TemplateTranslation {
+func NewTemplateTranslation(channel *assets.ChannelReference, locale i18n.Locale, components []*TemplateComponent, variables []*TemplateVariable) *TemplateTranslation {
 	return &TemplateTranslation{
 		Channel_:    channel,
-		Namespace_:  namespace,
 		Locale_:     locale,
 		Components_: components,
 		Variables_:  variables,
@@ -74,10 +72,7 @@ func (t *TemplateTranslation) Variables() []assets.TemplateVariable {
 	return vs
 }
 
-// Namespace returns the namespace for this template
-func (t *TemplateTranslation) Namespace() string { return t.Namespace_ }
-
-// Language returns the locale this translation is in
+// Locale returns the locale this translation is in
 func (t *TemplateTranslation) Locale() i18n.Locale { return t.Locale_ }
 
 // Channel returns the channel this template translation is for

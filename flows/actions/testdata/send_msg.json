@@ -442,7 +442,6 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
-                        "namespace": "",
                         "components": [
                             {
                                 "name": "body",
@@ -535,7 +534,6 @@
                             "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
                             "name": "affirmation"
                         },
-                        "namespace": "",
                         "components": [
                             {
                                 "name": "body",
@@ -615,8 +613,7 @@
                         "template": {
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
-                        },
-                        "namespace": ""
+                        }
                     },
                     "locale": "eng"
                 }
@@ -679,8 +676,7 @@
                         "template": {
                             "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
                             "name": "wakeup"
-                        },
-                        "namespace": ""
+                        }
                     },
                     "locale": "eng"
                 }
@@ -840,7 +836,6 @@
                             "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
                             "name": "gender_update"
                         },
-                        "namespace": "",
                         "components": [
                             {
                                 "name": "body",
@@ -952,7 +947,6 @@
                             "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
                             "name": "cat_fact"
                         },
-                        "namespace": "",
                         "components": [
                             {
                                 "name": "header",

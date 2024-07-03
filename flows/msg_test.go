@@ -218,13 +218,11 @@ func TestMsgTemplating(t *testing.T) {
 
 	msgTemplating := flows.NewMsgTemplating(
 		templateRef,
-		"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
 		[]*flows.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}},
 		[]*flows.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}},
 	)
 
 	assert.Equal(t, templateRef, msgTemplating.Template)
-	assert.Equal(t, "0162a7f4_dfe4_4c96_be07_854d5dba3b2b", msgTemplating.Namespace)
 	assert.Equal(t, []*flows.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}}, msgTemplating.Components)
 	assert.Equal(t, []*flows.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}, msgTemplating.Variables)
 
@@ -237,7 +235,6 @@ func TestMsgTemplating(t *testing.T) {
 		  "name":"Affirmation",
 		  "uuid":"61602f3e-f603-4c70-8a8f-c477505bf4bf"
 		},
-		"namespace":"0162a7f4_dfe4_4c96_be07_854d5dba3b2b",
 		"components":[
 			{
 				"name": "body",
