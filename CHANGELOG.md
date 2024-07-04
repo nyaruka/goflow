@@ -1,3 +1,7 @@
+v0.218.3 (2024-07-04)
+-------------------------
+ * Change flos.NewMsgOut to take flows.MsgContent
+
 v0.218.2 (2024-07-04)
 -------------------------
  * Move code to generate templating into flows.Template
