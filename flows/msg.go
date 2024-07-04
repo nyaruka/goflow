@@ -87,16 +87,16 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, quickReplies []string, templating *MsgTemplating, topic MsgTopic, locale i18n.Locale, reason UnsendableReason) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, topic MsgTopic, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(uuids.New()),
 			URN_:         urn,
 			Channel_:     channel,
-			Text_:        text,
-			Attachments_: attachments,
+			Text_:        content.Text,
+			Attachments_: content.Attachments,
 		},
-		QuickReplies_:     quickReplies,
+		QuickReplies_:     content.QuickReplies,
 		Templating_:       templating,
 		Topic_:            topic,
 		Locale_:           locale,
@@ -199,6 +199,10 @@ type MsgContent struct {
 	Text         string             `json:"text"`
 	Attachments  []utils.Attachment `json:"attachments,omitempty"`
 	QuickReplies []string           `json:"quick_replies,omitempty"`
+}
+
+func (c *MsgContent) Empty() bool {
+	return c.Text == "" && len(c.Attachments) == 0 && len(c.QuickReplies) == 0
 }
 
 type BroadcastTranslations map[i18n.Language]*MsgContent

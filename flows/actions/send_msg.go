@@ -107,12 +107,12 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 				preview := translation.Preview(templating.Variables)
 				locale := translation.Locale()
 
-				msg = flows.NewMsgOut(urn, channelRef, preview.Text, preview.Attachments, preview.QuickReplies, templating, flows.NilMsgTopic, locale, unsendableReason)
+				msg = flows.NewMsgOut(urn, channelRef, preview, templating, flows.NilMsgTopic, locale, unsendableReason)
 			}
 		}
 
 		if msg == nil {
-			msg = flows.NewMsgOut(urn, channelRef, content.Text, content.Attachments, content.QuickReplies, nil, a.Topic, locale, unsendableReason)
+			msg = flows.NewMsgOut(urn, channelRef, content, nil, a.Topic, locale, unsendableReason)
 		}
 
 		logEvent(events.NewMsgCreated(msg))
@@ -121,7 +121,7 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, content.Text, content.Attachments, content.QuickReplies, nil, a.Topic, locale, flows.UnsendableReasonNoDestination)
+		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, a.Topic, locale, flows.UnsendableReasonNoDestination)
 		logEvent(events.NewMsgCreated(msg))
 	}
 

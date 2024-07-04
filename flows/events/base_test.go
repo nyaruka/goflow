@@ -450,8 +450,8 @@ func TestEventMarshaling(t *testing.T) {
 				flows.NewMsgOut(
 					urns.URN("tel:+12345678900"),
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-					"Hi there",
-					nil, nil, nil,
+					&flows.MsgContent{Text: "Hi there"},
+					nil,
 					flows.NilMsgTopic,
 					i18n.NilLocale,
 					flows.NilUnsendableReason,
@@ -476,9 +476,11 @@ func TestEventMarshaling(t *testing.T) {
 				flows.NewMsgOut(
 					urns.URN("tel:+12345678900"),
 					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-					"Hi there",
-					[]utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
-					[]string{"yes", "no"},
+					&flows.MsgContent{
+						Text:         "Hi there",
+						Attachments:  []utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
+						QuickReplies: []string{"yes", "no"},
+					},
 					nil,
 					flows.MsgTopicAgent,
 					"eng-US",

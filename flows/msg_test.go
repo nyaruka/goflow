@@ -68,12 +68,10 @@ func TestMsgOut(t *testing.T) {
 	msg := flows.NewMsgOut(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
-		"Hi there",
-		[]utils.Attachment{
-			utils.Attachment("image/jpeg:https://example.com/test.jpg"),
-			utils.Attachment("audio/mp3:https://example.com/test.mp3"),
+		&flows.MsgContent{
+			Text:        "Hi there",
+			Attachments: []utils.Attachment{"image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"},
 		},
-		nil,
 		nil,
 		flows.MsgTopicAgent,
 		"eng-US",
@@ -119,6 +117,13 @@ func TestIVRMsgOut(t *testing.T) {
 		"attachments": ["audio:https://example.com/test.mp3"],
 		"locale": "eng-US"
 	}`), marshaled, "JSON mismatch")
+}
+
+func TestMsgContent(t *testing.T) {
+	assert.True(t, (&flows.MsgContent{}).Empty())
+	assert.False(t, (&flows.MsgContent{Text: "hi"}).Empty())
+	assert.False(t, (&flows.MsgContent{Attachments: []utils.Attachment{"image:https://test.jpg"}}).Empty())
+	assert.False(t, (&flows.MsgContent{QuickReplies: []string{"Ok"}}).Empty())
 }
 
 func TestBroadcastTranslations(t *testing.T) {
