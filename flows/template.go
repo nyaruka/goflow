@@ -50,16 +50,15 @@ func (t *Template) FindTranslation(channel *Channel, locales []i18n.Locale) *Tem
 	return candidates[match]
 }
 
+// Templating generates a templating object for the passed in translation and variables
 func (t *Template) Templating(tt *TemplateTranslation, vars []string) *MsgTemplating {
-	// cross-reference with asset to get variable types and filter out invalid values
+	// cross-reference with asset to get variable types and pad out any missing variables
 	variables := make([]*TemplatingVariable, len(tt.Variables()))
 	for i, v := range tt.Variables() {
-		// we pad out any missing variables with empty values
 		value := ""
 		if i < len(vars) {
 			value = vars[i]
 		}
-
 		variables[i] = &TemplatingVariable{Type: v.Type(), Value: value}
 	}
 
