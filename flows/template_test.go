@@ -59,127 +59,325 @@ func TestFindTranslation(t *testing.T) {
 	assert.Equal(t, (*assets.TemplateReference)(nil), (*flows.Template)(nil).Reference())
 }
 
-func TestTemplateTranslationPreview(t *testing.T) {
+func TestTemplating(t *testing.T) {
+	channel := flows.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
+
 	tcs := []struct {
-		translation []byte
-		variables   []*flows.TemplatingVariable
-		expected    *flows.MsgContent
+		template           []byte
+		variables          []string
+		expectedTemplating *flows.MsgTemplating
+		expectedPreview    *flows.MsgContent
 	}{
 		{ // 0: empty translation
-			translation: []byte(`{
-				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
-				"locale": "eng",
-				"components": [],
-				"variables": []
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
+					{
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
+						"locale": "eng",
+						"components": [],
+						"variables": []
+					}
+				]
 			}`),
-			variables: []*flows.TemplatingVariable{},
-			expected:  &flows.MsgContent{},
+			variables: []string{},
+			expectedTemplating: &flows.MsgTemplating{
+				Template:   assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{},
+				Variables:  []*flows.TemplatingVariable{},
+			},
+			expectedPreview: &flows.MsgContent{},
 		},
 		{ // 1: body only
-			translation: []byte(`{
-				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
-				"locale": "eng",
-				"components": [
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
 					{
-						"name": "body",
-						"type": "body/text",
-						"content": "Hi {{1}}, who's a good {{2}}?",
-						"variables": {"1": 0, "2": 1}
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "body",
+								"type": "body/text",
+								"content": "Hi {{1}}, who's a good {{2}}?",
+								"variables": {"1": 0, "2": 1}
+							}
+						],
+						"variables": [
+							{"type": "text"},
+							{"type": "text"}
+						]
 					}
-				],
-				"variables": [
-					{"type": "text"},
-					{"type": "text"}
 				]
 			}`),
-			variables: []*flows.TemplatingVariable{{Type: "text", Value: "Chef"}, {Type: "text", Value: "boy"}},
-			expected:  &flows.MsgContent{Text: "Hi Chef, who's a good boy?"},
+			variables: []string{"Chef", "boy"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "body",
+						Type:      "body/text",
+						Variables: map[string]int{"1": 0, "2": 1},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "text", Value: "Chef"},
+					{Type: "text", Value: "boy"},
+				},
+			},
+			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good boy?"},
 		},
 		{ // 2: multiple text component types
-			translation: []byte(`{
-				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
-				"locale": "eng",
-				"components": [
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
 					{
-						"name": "header",
-						"type": "header/text",
-						"content": "Header {{1}}",
-						"variables": {"1": 0}
-					},
-					{
-						"name": "body",
-						"type": "body/text",
-						"content": "Body {{1}}",
-						"variables": {"1": 1}
-					},
-					{
-						"name": "footer",
-						"type": "footer/text",
-						"content": "Footer {{1}}",
-						"variables": {"1": 2}
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "header",
+								"type": "header/text",
+								"content": "Header {{1}}",
+								"variables": {"1": 0}
+							},
+							{
+								"name": "body",
+								"type": "body/text",
+								"content": "Body {{1}}",
+								"variables": {"1": 1}
+							},
+							{
+								"name": "footer",
+								"type": "footer/text",
+								"content": "Footer {{1}}",
+								"variables": {"1": 2}
+							}
+						],
+						"variables": [
+							{"type": "text"},
+							{"type": "text"},
+							{"type": "text"}
+						]
 					}
-				],
-				"variables": [
-					{"type": "text"},
-					{"type": "text"},
-					{"type": "text"}
 				]
 			}`),
-			variables: []*flows.TemplatingVariable{{Type: "text", Value: "A"}, {Type: "text", Value: "B"}, {Type: "text", Value: "C"}},
-			expected:  &flows.MsgContent{Text: "Header A\n\nBody B\n\nFooter C"},
+			variables: []string{"A", "B", "C"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "header",
+						Type:      "header/text",
+						Variables: map[string]int{"1": 0},
+					},
+					{
+						Name:      "body",
+						Type:      "body/text",
+						Variables: map[string]int{"1": 1},
+					},
+					{
+						Name:      "footer",
+						Type:      "footer/text",
+						Variables: map[string]int{"1": 2},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "text", Value: "A"},
+					{Type: "text", Value: "B"},
+					{Type: "text", Value: "C"},
+				},
+			},
+			expectedPreview: &flows.MsgContent{Text: "Header A\n\nBody B\n\nFooter C"},
 		},
 		{ // 3: buttons become quick replies
-			translation: []byte(`{
-				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
-				"locale": "eng",
-				"components": [
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
 					{
-						"name": "button.1",
-						"type": "button/quick_reply",
-						"content": "{{1}}",
-						"variables": {"1": 0}
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "button.1",
+								"type": "button/quick_reply",
+								"content": "{{1}}",
+								"variables": {"1": 0}
+							},
+							{
+								"name": "button.2",
+								"type": "button/quick_reply",
+								"content": "{{1}}",
+								"variables": {"1": 1}
+							}
+						],
+						"variables": [
+							{"type": "text"},
+							{"type": "text"}
+						]
+					}
+				]
+			}`),
+			variables: []string{"Yes", "No"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "button.1",
+						Type:      "button/quick_reply",
+						Variables: map[string]int{"1": 0},
 					},
 					{
-						"name": "button.2",
-						"type": "button/quick_reply",
-						"content": "{{1}}",
-						"variables": {"1": 1}
-					}
-				],
-				"variables": [
-					{"type": "text"},
-					{"type": "text"}
-				]
-			}`),
-			variables: []*flows.TemplatingVariable{{Type: "text", Value: "Yes"}, {Type: "text", Value: "No"}},
-			expected:  &flows.MsgContent{QuickReplies: []string{"Yes", "No"}},
+						Name:      "button.2",
+						Type:      "button/quick_reply",
+						Variables: map[string]int{"1": 1},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "text", Value: "Yes"},
+					{Type: "text", Value: "No"},
+				},
+			},
+			expectedPreview: &flows.MsgContent{QuickReplies: []string{"Yes", "No"}},
 		},
 		{ // 4: header image becomes an attachment
-			translation: []byte(`{
-				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"}, 
-				"locale": "eng",
-				"components": [
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
 					{
-						"name": "header",
-						"type": "header/image",
-						"content": "{{1}}",
-						"variables": {"1": 0}
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "header",
+								"type": "header/image",
+								"content": "{{1}}",
+								"variables": {"1": 0}
+							}
+						],
+						"variables": [
+							{"type": "image"}
+						]
 					}
-				],
-				"variables": [
-					{"type": "image"}
 				]
 			}`),
-			variables: []*flows.TemplatingVariable{{Type: "image", Value: "image/jpeg:http://example.com/test.jpg"}},
-			expected:  &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:http://example.com/test.jpg"}},
+			variables: []string{"image/jpeg:http://example.com/test.jpg"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "header",
+						Type:      "header/image",
+						Variables: map[string]int{"1": 0},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "image", Value: "image/jpeg:http://example.com/test.jpg"},
+				},
+			},
+			expectedPreview: &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:http://example.com/test.jpg"}},
+		},
+		{ // 5: missing variables padded with empty
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
+					{
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "body",
+								"type": "body/text",
+								"content": "Hi {{1}}, who's a good {{2}}?",
+								"variables": {"1": 0, "2": 1}
+							}
+						],
+						"variables": [
+							{"type": "text"},
+							{"type": "text"}
+						]
+					}
+				]
+			}`),
+			variables: []string{"Chef"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "body",
+						Type:      "body/text",
+						Variables: map[string]int{"1": 0, "2": 1},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "text", Value: "Chef"},
+					{Type: "text", Value: ""},
+				},
+			},
+			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good ?"},
+		},
+		{ // 6: excess variables ignored
+			template: []byte(`{
+				"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+				"name": "greeting",
+				"translations": [
+					{
+						"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+						"locale": "eng",
+						"components": [
+							{
+								"name": "body",
+								"type": "body/text",
+								"content": "Hi {{1}}, who's a good {{2}}?",
+								"variables": {"1": 0, "2": 1}
+							}
+						],
+						"variables": [
+							{"type": "text"},
+							{"type": "text"}
+						]
+					}
+				]
+			}`),
+			variables: []string{"Chef", "boy", "dog"},
+			expectedTemplating: &flows.MsgTemplating{
+				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
+				Components: []*flows.TemplatingComponent{
+					{
+						Name:      "body",
+						Type:      "body/text",
+						Variables: map[string]int{"1": 0, "2": 1},
+					},
+				},
+				Variables: []*flows.TemplatingVariable{
+					{Type: "text", Value: "Chef"},
+					{Type: "text", Value: "boy"},
+				},
+			},
+			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good boy?"},
 		},
 	}
 
 	for i, tc := range tcs {
-		trans := &static.TemplateTranslation{}
-		jsonx.MustUnmarshal(tc.translation, trans)
+		tplAsset := &static.Template{}
+		jsonx.MustUnmarshal(tc.template, tplAsset)
 
-		actual := flows.NewTemplateTranslation(trans).Preview(tc.variables)
-		assert.Equal(t, tc.expected, actual, "%d: preview mismatch", i)
+		tpl := flows.NewTemplate(tplAsset)
+		trans := tpl.FindTranslation(channel, []i18n.Locale{"eng"})
+		if assert.NotNil(t, trans, "%d: translation not found", i) {
+			// check templating
+			templating := tpl.Templating(trans, tc.variables)
+
+			if assert.Equal(t, tc.expectedTemplating, templating, "%d: preview mismatch", i) {
+				actualPreview := flows.NewTemplateTranslation(trans).Preview(templating.Variables)
+				assert.Equal(t, tc.expectedPreview, actualPreview, "%d: preview mismatch", i)
+			}
+		}
 	}
 }
