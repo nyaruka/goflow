@@ -1,3 +1,7 @@
+v0.218.2 (2024-07-04)
+-------------------------
+ * Move code to generate templating into flows.Template
+
 v0.218.1 (2024-07-03)
 -------------------------
  * Remove namespace on template translations as it's not needed by engine and can be added by mailroom when queueing
