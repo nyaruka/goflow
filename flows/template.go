@@ -50,6 +50,34 @@ func (t *Template) FindTranslation(channel *Channel, locales []i18n.Locale) *Tem
 	return candidates[match]
 }
 
+func (t *Template) Templating(tt *TemplateTranslation, vars []string) *MsgTemplating {
+	// cross-reference with asset to get variable types and filter out invalid values
+	variables := make([]*TemplatingVariable, len(tt.Variables()))
+	for i, v := range tt.Variables() {
+		// we pad out any missing variables with empty values
+		value := ""
+		if i < len(vars) {
+			value = vars[i]
+		}
+
+		variables[i] = &TemplatingVariable{Type: v.Type(), Value: value}
+	}
+
+	// create a list of components that have variables
+	components := make([]*TemplatingComponent, 0, len(tt.Components()))
+	for _, comp := range tt.Components() {
+		if len(comp.Variables()) > 0 {
+			components = append(components, &TemplatingComponent{
+				Type:      comp.Type(),
+				Name:      comp.Name(),
+				Variables: comp.Variables(),
+			})
+		}
+	}
+
+	return NewMsgTemplating(t.Reference(), components, variables)
+}
+
 // TemplateTranslation represents a single translation for a template
 type TemplateTranslation struct {
 	assets.TemplateTranslation

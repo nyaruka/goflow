@@ -85,13 +85,29 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	for _, dest := range destinations {
 		urn := dest.URN.URN()
 		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
-
 		var msg *flows.MsgOut
+
 		if template != nil {
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
-			templateTranslation := template.FindTranslation(dest.Channel, locales)
-			if templateTranslation != nil {
-				msg = a.getTemplateMsg(run, urn, channelRef, templateTranslation, unsendableReason, logEvent)
+			translation := template.FindTranslation(dest.Channel, locales)
+			if translation != nil {
+				// TODO in future we won't be localizing template variables
+				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.UUID()), "template_variables", a.TemplateVariables, nil)
+
+				// evaluate the variables
+				evaluatedVariables := make([]string, len(localizedVariables))
+				for i, varExp := range localizedVariables {
+					v, _ := run.EvaluateTemplate(varExp, logEvent)
+					evaluatedVariables[i] = v
+				}
+
+				templating := template.Templating(translation, evaluatedVariables)
+
+				// the message we return is an approximate preview of what the channel will send using the template
+				preview := translation.Preview(templating.Variables)
+				locale := translation.Locale()
+
+				msg = flows.NewMsgOut(urn, channelRef, preview.Text, preview.Attachments, preview.QuickReplies, templating, flows.NilMsgTopic, locale, unsendableReason)
 			}
 		}
 
@@ -110,47 +126,4 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 	}
 
 	return nil
-}
-
-// for message actions that specify a template, this generates a mesage with templating information and content that can
-// be used as a preview
-func (a *SendMsgAction) getTemplateMsg(run flows.Run, urn urns.URN, channelRef *assets.ChannelReference, translation *flows.TemplateTranslation, unsendableReason flows.UnsendableReason, logEvent flows.EventCallback) *flows.MsgOut {
-	// localize and evaluate the variables
-	localizedVariables, _ := run.GetTextArray(uuids.UUID(a.UUID()), "template_variables", a.TemplateVariables, nil)
-	evaluatedVariables := make([]string, len(localizedVariables))
-	for i, varExp := range localizedVariables {
-		v, _ := run.EvaluateTemplate(varExp, logEvent)
-		evaluatedVariables[i] = v
-	}
-
-	// cross-reference with asset to get variable types and filter out invalid values
-	variables := make([]*flows.TemplatingVariable, len(translation.Variables()))
-	for i, v := range translation.Variables() {
-		// we pad out any missing variables with empty values
-		value := ""
-		if i < len(evaluatedVariables) {
-			value = evaluatedVariables[i]
-		}
-
-		variables[i] = &flows.TemplatingVariable{Type: v.Type(), Value: value}
-	}
-
-	// create a list of components that have variables
-	components := make([]*flows.TemplatingComponent, 0, len(translation.Components()))
-	for _, comp := range translation.Components() {
-		if len(comp.Variables()) > 0 {
-			components = append(components, &flows.TemplatingComponent{
-				Type:      comp.Type(),
-				Name:      comp.Name(),
-				Variables: comp.Variables(),
-			})
-		}
-	}
-
-	// the message we return is an approximate preview of what the channel will send using the template
-	preview := translation.Preview(variables)
-	locale := translation.Locale()
-	templating := flows.NewMsgTemplating(a.Template, components, variables)
-
-	return flows.NewMsgOut(urn, channelRef, preview.Text, preview.Attachments, preview.QuickReplies, templating, flows.NilMsgTopic, locale, unsendableReason)
 }
