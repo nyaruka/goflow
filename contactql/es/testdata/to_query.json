@@ -10,7 +10,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                    "fields.field": {
+                                        "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                    }
                                 }
                             },
                             {
@@ -22,7 +24,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "text field is not set",
@@ -37,7 +40,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                            "fields.field": {
+                                                "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                            }
                                         }
                                     },
                                     {
@@ -51,7 +56,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "text field equality",
@@ -64,19 +70,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                    "fields.field": {
+                                        "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "fields.text": "red"
+                                    "fields.text": {
+                                        "value": "red"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "text field inequality",
@@ -91,12 +102,16 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                            "fields.field": {
+                                                "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                            }
                                         }
                                     },
                                     {
                                         "term": {
-                                            "fields.text": "red"
+                                            "fields.text": {
+                                                "value": "red"
+                                            }
                                         }
                                     },
                                     {
@@ -110,7 +125,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field is set",
@@ -123,7 +139,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
@@ -135,7 +153,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field is not set",
@@ -150,7 +169,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                            "fields.field": {
+                                                "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                            }
                                         }
                                     },
                                     {
@@ -164,7 +185,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field equality",
@@ -177,7 +199,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
@@ -191,7 +215,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field inequality",
@@ -206,7 +231,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                            "fields.field": {
+                                                "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                            }
                                         }
                                     },
                                     {
@@ -222,7 +249,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field less than or equal",
@@ -235,16 +263,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": null,
-                                        "include_lower": true,
-                                        "include_upper": true,
-                                        "to": 10
+                                        "lte": 10
                                     }
                                 }
                             }
@@ -252,7 +279,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field greater than or equal",
@@ -265,16 +293,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": 10,
-                                        "include_lower": true,
-                                        "include_upper": true,
-                                        "to": null
+                                        "gte": 10
                                     }
                                 }
                             }
@@ -282,7 +309,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field less than",
@@ -295,16 +323,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": null,
-                                        "include_lower": true,
-                                        "include_upper": false,
-                                        "to": 10
+                                        "lt": 10
                                     }
                                 }
                             }
@@ -312,7 +339,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "number field greater than",
@@ -325,16 +353,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    "fields.field": {
+                                        "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.number": {
-                                        "from": 10,
-                                        "include_lower": false,
-                                        "include_upper": true,
-                                        "to": null
+                                        "gt": 10
                                     }
                                 }
                             }
@@ -342,7 +369,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field is set",
@@ -355,7 +383,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
@@ -367,7 +397,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field is not set",
@@ -382,7 +413,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                            "fields.field": {
+                                                "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                            }
                                         }
                                     },
                                     {
@@ -396,7 +429,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field equality",
@@ -409,16 +443,16 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.datetime": {
-                                        "from": "2018-06-23T00:00:00-04:00",
-                                        "include_lower": true,
-                                        "include_upper": false,
-                                        "to": "2018-06-24T00:00:00-04:00"
+                                        "gte": "2018-06-23T00:00:00-04:00",
+                                        "lt": "2018-06-24T00:00:00-04:00"
                                     }
                                 }
                             }
@@ -426,7 +460,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field inequality",
@@ -441,16 +476,16 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                            "fields.field": {
+                                                "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                            }
                                         }
                                     },
                                     {
                                         "range": {
                                             "fields.datetime": {
-                                                "from": "2018-06-23T00:00:00-04:00",
-                                                "include_lower": true,
-                                                "include_upper": false,
-                                                "to": "2018-06-24T00:00:00-04:00"
+                                                "gte": "2018-06-23T00:00:00-04:00",
+                                                "lt": "2018-06-24T00:00:00-04:00"
                                             }
                                         }
                                     }
@@ -460,7 +495,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field greater than",
@@ -473,16 +509,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.datetime": {
-                                        "from": "2018-06-24T00:00:00-04:00",
-                                        "include_lower": true,
-                                        "include_upper": true,
-                                        "to": null
+                                        "gte": "2018-06-24T00:00:00-04:00"
                                     }
                                 }
                             }
@@ -490,7 +525,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field greater than",
@@ -503,16 +539,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.datetime": {
-                                        "from": "2018-06-23T00:00:00-04:00",
-                                        "include_lower": true,
-                                        "include_upper": true,
-                                        "to": null
+                                        "gte": "2018-06-23T00:00:00-04:00"
                                     }
                                 }
                             }
@@ -520,7 +555,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field less than",
@@ -533,16 +569,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.datetime": {
-                                        "from": null,
-                                        "include_lower": true,
-                                        "include_upper": false,
-                                        "to": "2018-06-23T00:00:00-04:00"
+                                        "lt": "2018-06-23T00:00:00-04:00"
                                     }
                                 }
                             }
@@ -550,7 +585,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "date field less than or equal",
@@ -563,16 +599,15 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    "fields.field": {
+                                        "value": "cbd3fc0e-9b74-4207-a8c7-248082bb4572"
+                                    }
                                 }
                             },
                             {
                                 "range": {
                                     "fields.datetime": {
-                                        "from": null,
-                                        "include_lower": true,
-                                        "include_upper": false,
-                                        "to": "2018-06-24T00:00:00-04:00"
+                                        "lt": "2018-06-24T00:00:00-04:00"
                                     }
                                 }
                             }
@@ -580,7 +615,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "implicit name",
@@ -591,31 +627,32 @@
                     "query": "will"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "implicit name with URN redaction",
         "query": "will",
-        "redact_urns": true,
         "elastic": {
             "match": {
                 "name": {
                     "query": "will"
                 }
             }
-        }
+        },
+        "redact_urns": true
     },
     {
         "description": "implicit id with URN redaction",
         "query": "7979",
-        "redact_urns": true,
         "elastic": {
             "ids": {
                 "values": [
                     "7979"
                 ]
             }
-        }
+        },
+        "redact_urns": true
     },
     {
         "description": "implicit tel",
@@ -635,14 +672,17 @@
                             },
                             {
                                 "term": {
-                                    "urns.scheme": "tel"
+                                    "urns.scheme": {
+                                        "value": "tel"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "state field is set",
@@ -655,7 +695,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    "fields.field": {
+                                        "value": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    }
                                 }
                             },
                             {
@@ -667,7 +709,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "state field is not set",
@@ -682,7 +725,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                            "fields.field": {
+                                                "value": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                            }
                                         }
                                     },
                                     {
@@ -696,7 +741,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "state field equality",
@@ -709,19 +755,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    "fields.field": {
+                                        "value": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "fields.state_keyword": "washington"
+                                    "fields.state_keyword": {
+                                        "value": "washington"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "state field equality with punctuation",
@@ -734,19 +785,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    "fields.field": {
+                                        "value": "67663ad1-3abc-42dd-a162-09df2dea66ec"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "fields.state_keyword": "nord-kivu"
+                                    "fields.state_keyword": {
+                                        "value": "nord-kivu"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "state field inequality",
@@ -761,7 +817,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.state_keyword": "washington"
+                                            "fields.state_keyword": {
+                                                "value": "washington"
+                                            }
                                         }
                                     },
                                     {
@@ -775,7 +833,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "district field is set",
@@ -788,7 +847,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "54c72635-d747-4e45-883c-099d57dd998e"
+                                    "fields.field": {
+                                        "value": "54c72635-d747-4e45-883c-099d57dd998e"
+                                    }
                                 }
                             },
                             {
@@ -800,7 +861,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "district field is unset",
@@ -815,7 +877,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "54c72635-d747-4e45-883c-099d57dd998e"
+                                            "fields.field": {
+                                                "value": "54c72635-d747-4e45-883c-099d57dd998e"
+                                            }
                                         }
                                     },
                                     {
@@ -829,7 +893,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "district field equality",
@@ -842,19 +907,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "54c72635-d747-4e45-883c-099d57dd998e"
+                                    "fields.field": {
+                                        "value": "54c72635-d747-4e45-883c-099d57dd998e"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "fields.district_keyword": "chelan"
+                                    "fields.district_keyword": {
+                                        "value": "chelan"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "district field inequality",
@@ -869,7 +939,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.district_keyword": "chelan"
+                                            "fields.district_keyword": {
+                                                "value": "chelan"
+                                            }
                                         }
                                     },
                                     {
@@ -883,7 +955,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "ward field is set",
@@ -896,7 +969,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "fde8f740-c337-421b-8abb-83b954897c80"
+                                    "fields.field": {
+                                        "value": "fde8f740-c337-421b-8abb-83b954897c80"
+                                    }
                                 }
                             },
                             {
@@ -908,7 +983,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "ward field is unset",
@@ -923,7 +999,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.field": "fde8f740-c337-421b-8abb-83b954897c80"
+                                            "fields.field": {
+                                                "value": "fde8f740-c337-421b-8abb-83b954897c80"
+                                            }
                                         }
                                     },
                                     {
@@ -937,7 +1015,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "ward field equality",
@@ -950,19 +1029,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "fields.field": "fde8f740-c337-421b-8abb-83b954897c80"
+                                    "fields.field": {
+                                        "value": "fde8f740-c337-421b-8abb-83b954897c80"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "fields.ward_keyword": "stevens"
+                                    "fields.ward_keyword": {
+                                        "value": "stevens"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "ward field inequality",
@@ -977,7 +1061,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "fields.ward_keyword": "stevens"
+                                            "fields.ward_keyword": {
+                                                "value": "stevens"
+                                            }
                                         }
                                     },
                                     {
@@ -991,16 +1077,20 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "name equality",
         "query": "name=chef",
         "elastic": {
             "term": {
-                "name.keyword": "chef"
+                "name.keyword": {
+                    "value": "chef"
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "name inequality",
@@ -1009,11 +1099,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "name.keyword": "chef"
+                        "name.keyword": {
+                            "value": "chef"
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "name is set",
@@ -1030,14 +1123,17 @@
                         "bool": {
                             "must_not": {
                                 "term": {
-                                    "name.keyword": ""
+                                    "name.keyword": {
+                                        "value": ""
+                                    }
                                 }
                             }
                         }
                     }
                 ]
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "name is not set",
@@ -1056,7 +1152,9 @@
                                 "bool": {
                                     "must_not": {
                                         "term": {
-                                            "name.keyword": ""
+                                            "name.keyword": {
+                                                "value": ""
+                                            }
                                         }
                                     }
                                 }
@@ -1065,7 +1163,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "name contains",
@@ -1076,16 +1175,20 @@
                     "query": "chef"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "uuid equality",
         "query": "uuid=bbe6dba0-818b-4c5a-be51-10432095e27a",
         "elastic": {
             "term": {
-                "uuid": "bbe6dba0-818b-4c5a-be51-10432095e27a"
+                "uuid": {
+                    "value": "bbe6dba0-818b-4c5a-be51-10432095e27a"
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "uuid inequality",
@@ -1094,11 +1197,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "uuid": "bbe6dba0-818b-4c5a-be51-10432095e27a"
+                        "uuid": {
+                            "value": "bbe6dba0-818b-4c5a-be51-10432095e27a"
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "id equality",
@@ -1109,7 +1215,8 @@
                     "123"
                 ]
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "id inequality",
@@ -1124,16 +1231,20 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "status equality",
         "query": "status=active",
         "elastic": {
             "term": {
-                "status": "A"
+                "status": {
+                    "value": "A"
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "status inequality",
@@ -1142,20 +1253,26 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "status": "B"
+                        "status": {
+                            "value": "B"
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "language equality",
         "query": "language=spa",
         "elastic": {
             "term": {
-                "language": "spa"
+                "language": {
+                    "value": "spa"
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "language inequality",
@@ -1164,11 +1281,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "language": "fra"
+                        "language": {
+                            "value": "fra"
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "language is set",
@@ -1185,14 +1305,17 @@
                         "bool": {
                             "must_not": {
                                 "term": {
-                                    "language.keyword": ""
+                                    "language.keyword": {
+                                        "value": ""
+                                    }
                                 }
                             }
                         }
                     }
                 ]
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "language is not set",
@@ -1211,7 +1334,9 @@
                                 "bool": {
                                     "must_not": {
                                         "term": {
-                                            "language.keyword": ""
+                                            "language.keyword": {
+                                                "value": ""
+                                            }
                                         }
                                     }
                                 }
@@ -1220,7 +1345,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on greater than",
@@ -1228,13 +1354,11 @@
         "elastic": {
             "range": {
                 "created_on": {
-                    "from": "2018-06-24T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": null
+                    "gte": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on greater than or equal",
@@ -1242,13 +1366,11 @@
         "elastic": {
             "range": {
                 "created_on": {
-                    "from": "2018-06-23T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": null
+                    "gte": "2018-06-23T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on less than",
@@ -1256,13 +1378,11 @@
         "elastic": {
             "range": {
                 "created_on": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-23T00:00:00-04:00"
+                    "lt": "2018-06-23T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on less than or equal",
@@ -1270,13 +1390,11 @@
         "elastic": {
             "range": {
                 "created_on": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-24T00:00:00-04:00"
+                    "lt": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on equality",
@@ -1284,13 +1402,12 @@
         "elastic": {
             "range": {
                 "created_on": {
-                    "from": "2018-06-23T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-24T00:00:00-04:00"
+                    "gte": "2018-06-23T00:00:00-04:00",
+                    "lt": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "created_on inequality",
@@ -1300,15 +1417,14 @@
                 "must_not": {
                     "range": {
                         "created_on": {
-                            "from": "2018-06-23T00:00:00-04:00",
-                            "include_lower": true,
-                            "include_upper": false,
-                            "to": "2018-06-24T00:00:00-04:00"
+                            "gte": "2018-06-23T00:00:00-04:00",
+                            "lt": "2018-06-24T00:00:00-04:00"
                         }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on greater than",
@@ -1316,13 +1432,11 @@
         "elastic": {
             "range": {
                 "last_seen_on": {
-                    "from": "2018-06-24T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": null
+                    "gte": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on greater than or equal",
@@ -1330,13 +1444,11 @@
         "elastic": {
             "range": {
                 "last_seen_on": {
-                    "from": "2018-06-23T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": null
+                    "gte": "2018-06-23T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on less than",
@@ -1344,13 +1456,11 @@
         "elastic": {
             "range": {
                 "last_seen_on": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-23T00:00:00-04:00"
+                    "lt": "2018-06-23T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on less than or equal",
@@ -1358,13 +1468,11 @@
         "elastic": {
             "range": {
                 "last_seen_on": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-24T00:00:00-04:00"
+                    "lt": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on equality",
@@ -1372,13 +1480,12 @@
         "elastic": {
             "range": {
                 "last_seen_on": {
-                    "from": "2018-06-23T00:00:00-04:00",
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": "2018-06-24T00:00:00-04:00"
+                    "gte": "2018-06-23T00:00:00-04:00",
+                    "lt": "2018-06-24T00:00:00-04:00"
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on inequality",
@@ -1388,15 +1495,14 @@
                 "must_not": {
                     "range": {
                         "last_seen_on": {
-                            "from": "2018-06-23T00:00:00-04:00",
-                            "include_lower": true,
-                            "include_upper": false,
-                            "to": "2018-06-24T00:00:00-04:00"
+                            "gte": "2018-06-23T00:00:00-04:00",
+                            "lt": "2018-06-24T00:00:00-04:00"
                         }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on is set",
@@ -1405,7 +1511,8 @@
             "exists": {
                 "field": "last_seen_on"
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "last_seen_on is not set",
@@ -1418,7 +1525,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme is set",
@@ -1431,7 +1539,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "urns.scheme": "tel"
+                                    "urns.scheme": {
+                                        "value": "tel"
+                                    }
                                 }
                             },
                             {
@@ -1443,7 +1553,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme is not set",
@@ -1458,7 +1569,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "urns.scheme": "tel"
+                                            "urns.scheme": {
+                                                "value": "tel"
+                                            }
                                         }
                                     },
                                     {
@@ -1472,7 +1585,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme equality",
@@ -1485,19 +1599,24 @@
                         "must": [
                             {
                                 "term": {
-                                    "urns.path.keyword": "12345"
+                                    "urns.path.keyword": {
+                                        "value": "12345"
+                                    }
                                 }
                             },
                             {
                                 "term": {
-                                    "urns.scheme": "tel"
+                                    "urns.scheme": {
+                                        "value": "tel"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme inequality",
@@ -1512,12 +1631,16 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "urns.path.keyword": "12345"
+                                            "urns.path.keyword": {
+                                                "value": "12345"
+                                            }
                                         }
                                     },
                                     {
                                         "term": {
-                                            "urns.scheme": "tel"
+                                            "urns.scheme": {
+                                                "value": "tel"
+                                            }
                                         }
                                     }
                                 ]
@@ -1526,7 +1649,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme contains",
@@ -1546,19 +1670,21 @@
                             },
                             {
                                 "term": {
-                                    "urns.scheme": "tel"
+                                    "urns.scheme": {
+                                        "value": "tel"
+                                    }
                                 }
                             }
                         ]
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tel scheme is set with URN redaction",
         "query": "tel!=\"\"",
-        "redact_urns": true,
         "elastic": {
             "nested": {
                 "path": "urns",
@@ -1567,7 +1693,9 @@
                         "must": [
                             {
                                 "term": {
-                                    "urns.scheme": "tel"
+                                    "urns.scheme": {
+                                        "value": "tel"
+                                    }
                                 }
                             },
                             {
@@ -1579,12 +1707,12 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": true
     },
     {
         "description": "tel scheme is not set with URN redaction",
         "query": "tel=\"\"",
-        "redact_urns": true,
         "elastic": {
             "bool": {
                 "must_not": {
@@ -1595,7 +1723,9 @@
                                 "must": [
                                     {
                                         "term": {
-                                            "urns.scheme": "tel"
+                                            "urns.scheme": {
+                                                "value": "tel"
+                                            }
                                         }
                                     },
                                     {
@@ -1609,7 +1739,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": true
     },
     {
         "description": "urn is set",
@@ -1623,7 +1754,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "urn is not set",
@@ -1641,7 +1773,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "urn attribute equality",
@@ -1651,11 +1784,14 @@
                 "path": "urns",
                 "query": {
                     "term": {
-                        "urns.path.keyword": "+12067799192"
+                        "urns.path.keyword": {
+                            "value": "+12067799192"
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "urn attribute inequality",
@@ -1667,13 +1803,16 @@
                         "path": "urns",
                         "query": {
                             "term": {
-                                "urns.path.keyword": "+12067799192"
+                                "urns.path.keyword": {
+                                    "value": "+12067799192"
+                                }
                             }
                         }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "urn attribute contains",
@@ -1689,16 +1828,20 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "group equality",
         "query": "group = \"U-Reporters\"",
         "elastic": {
             "term": {
-                "group_ids": 345
+                "group_ids": {
+                    "value": 345
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "group inequality",
@@ -1707,11 +1850,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "group_ids": 345
+                        "group_ids": {
+                            "value": 345
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "group is set",
@@ -1720,7 +1866,8 @@
             "exists": {
                 "field": "group_ids"
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "group is not set",
@@ -1733,16 +1880,20 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "flow equality",
         "query": "flow = \"registration\"",
         "elastic": {
             "term": {
-                "flow_id": 234
+                "flow_id": {
+                    "value": 234
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "flow inequality",
@@ -1751,11 +1902,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "flow_id": 234
+                        "flow_id": {
+                            "value": 234
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "flow is set",
@@ -1764,7 +1918,8 @@
             "exists": {
                 "field": "flow_id"
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "flow is not set",
@@ -1777,16 +1932,20 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "history equality",
         "query": "history = \"registration\"",
         "elastic": {
             "term": {
-                "flow_history_ids": 234
+                "flow_history_ids": {
+                    "value": 234
+                }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "flow inequality",
@@ -1795,11 +1954,14 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "flow_history_ids": 234
+                        "flow_history_ids": {
+                            "value": 234
+                        }
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "history is set",
@@ -1808,7 +1970,8 @@
             "exists": {
                 "field": "flow_history_ids"
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "history is not set",
@@ -1821,7 +1984,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "bool and",
@@ -1837,12 +2001,16 @@
                                     "must": [
                                         {
                                             "term": {
-                                                "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                                "fields.field": {
+                                                    "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                                }
                                             }
                                         },
                                         {
                                             "term": {
-                                                "fields.text": "red"
+                                                "fields.text": {
+                                                    "value": "red"
+                                                }
                                             }
                                         }
                                     ]
@@ -1858,16 +2026,15 @@
                                     "must": [
                                         {
                                             "term": {
-                                                "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                                "fields.field": {
+                                                    "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                                }
                                             }
                                         },
                                         {
                                             "range": {
                                                 "fields.number": {
-                                                    "from": 10,
-                                                    "include_lower": false,
-                                                    "include_upper": true,
-                                                    "to": null
+                                                    "gt": 10
                                                 }
                                             }
                                         }
@@ -1878,7 +2045,8 @@
                     }
                 ]
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "bool or",
@@ -1894,12 +2062,16 @@
                                     "must": [
                                         {
                                             "term": {
-                                                "fields.field": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                                "fields.field": {
+                                                    "value": "ecc7b13b-c698-4f46-8a90-24a8fab6fe34"
+                                                }
                                             }
                                         },
                                         {
                                             "term": {
-                                                "fields.text": "red"
+                                                "fields.text": {
+                                                    "value": "red"
+                                                }
                                             }
                                         }
                                     ]
@@ -1915,16 +2087,15 @@
                                     "must": [
                                         {
                                             "term": {
-                                                "fields.field": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                                "fields.field": {
+                                                    "value": "6b6a43fa-a26d-4017-bede-328bcdd5c93b"
+                                                }
                                             }
                                         },
                                         {
                                             "range": {
                                                 "fields.number": {
-                                                    "from": 10,
-                                                    "include_lower": false,
-                                                    "include_upper": true,
-                                                    "to": null
+                                                    "gt": 10
                                                 }
                                             }
                                         }
@@ -1935,7 +2106,8 @@
                     }
                 ]
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets equality",
@@ -1946,7 +2118,8 @@
                     "query": 2
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets inequality",
@@ -1961,7 +2134,8 @@
                     }
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets greater than",
@@ -1969,13 +2143,11 @@
         "elastic": {
             "range": {
                 "tickets": {
-                    "from": 0,
-                    "include_lower": false,
-                    "include_upper": true,
-                    "to": null
+                    "gt": 0
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets greater than or equal",
@@ -1983,13 +2155,11 @@
         "elastic": {
             "range": {
                 "tickets": {
-                    "from": 1,
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": null
+                    "gte": 1
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets less than",
@@ -1997,13 +2167,11 @@
         "elastic": {
             "range": {
                 "tickets": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": false,
-                    "to": 1
+                    "lt": 1
                 }
             }
-        }
+        },
+        "redact_urns": false
     },
     {
         "description": "tickets less than or equal",
@@ -2011,12 +2179,10 @@
         "elastic": {
             "range": {
                 "tickets": {
-                    "from": null,
-                    "include_lower": true,
-                    "include_upper": true,
-                    "to": 1
+                    "lte": 1
                 }
             }
-        }
+        },
+        "redact_urns": false
     }
 ]

@@ -81,7 +81,7 @@ func TestElasticQuery(t *testing.T) {
 
 	ny, _ := time.LoadLocation("America/New_York")
 
-	for _, tc := range tcs {
+	for i, tc := range tcs {
 		testName := fmt.Sprintf("test '%s' for query '%s'", tc.Description, tc.Query)
 
 		redactionPolicy := envs.RedactionPolicyNone
@@ -99,6 +99,22 @@ func TestElasticQuery(t *testing.T) {
 		asJSON, err := jsonx.Marshal(query)
 		require.NoError(t, err)
 
-		test.AssertEqualJSON(t, tc.Elastic, asJSON, "elastic mismatch in %s", testName)
+		// clone test case and populate with actual values
+		actual := tc
+		actual.Elastic = asJSON
+
+		if !test.UpdateSnapshots {
+			test.AssertEqualJSON(t, tc.Elastic, actual.Elastic, "elastic mismatch in %s", testName)
+		} else {
+			tcs[i] = actual
+		}
+	}
+
+	if test.UpdateSnapshots {
+		actualJSON, err := jsonx.MarshalPretty(tcs)
+		require.NoError(t, err)
+
+		err = os.WriteFile("testdata/to_query.json", actualJSON, 0666)
+		require.NoError(t, err)
 	}
 }
