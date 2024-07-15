@@ -1,3 +1,7 @@
+v0.219.0 (2024-07-15)
+-------------------------
+ * Update to latest gocommon which changes contact ql conversion to ES
+
 v0.218.3 (2024-07-04)
 -------------------------
  * Change flos.NewMsgOut to take flows.MsgContent
