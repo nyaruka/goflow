@@ -1,3 +1,7 @@
+v0.219.2 (2024-07-16)
+-------------------------
+ * Add validation of attachment values in flow definitions
+
 v0.219.1 (2024-07-16)
 -------------------------
  * Don't use template variables as attachments unless they're valid
