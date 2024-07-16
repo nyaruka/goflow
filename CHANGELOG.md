@@ -1,3 +1,7 @@
+v0.219.1 (2024-07-16)
+-------------------------
+ * Don't use template variables as attachments unless they're valid
+
 v0.219.0 (2024-07-15)
 -------------------------
  * Update to latest gocommon which changes contact ql conversion to ES
