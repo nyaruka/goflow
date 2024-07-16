@@ -42,3 +42,9 @@ func (a Attachment) URL() string {
 	_, url := a.ToParts()
 	return url
 }
+
+// IsValidAttachment returns whether the given string is a valid attachment
+func IsValidAttachment(s string) bool {
+	typ, url := Attachment(s).ToParts()
+	return typ != "" && url != ""
+}

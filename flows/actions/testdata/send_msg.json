@@ -1003,5 +1003,93 @@
             "waiting_exits": [],
             "parent_refs": []
         }
+    },
+    {
+        "description": "Image parameter value ignored if not valid attachment",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "The Maine Coone is the only native American long haired breed.",
+            "template": {
+                "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                "name": "cat_fact"
+            },
+            "template_variables": [
+                "cat",
+                "The first true cats came into existence about 12 million years ago and were the Proailurus."
+            ]
+        },
+        "events": [
+            {
+                "type": "msg_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "msg": {
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
+                    "templating": {
+                        "template": {
+                            "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                            "name": "cat_fact"
+                        },
+                        "components": [
+                            {
+                                "name": "header",
+                                "type": "header/media",
+                                "variables": {
+                                    "1": 0
+                                }
+                            },
+                            {
+                                "name": "body",
+                                "type": "body/text",
+                                "variables": {
+                                    "1": 1
+                                }
+                            }
+                        ],
+                        "variables": [
+                            {
+                                "type": "image",
+                                "value": "cat"
+                            },
+                            {
+                                "type": "text",
+                                "value": "The first true cats came into existence about 12 million years ago and were the Proailurus."
+                            }
+                        ]
+                    },
+                    "locale": "eng-US"
+                }
+            }
+        ],
+        "templates": [
+            "The Maine Coone is the only native American long haired breed.",
+            "cat",
+            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+        ],
+        "localizables": [
+            "The Maine Coone is the only native American long haired breed.",
+            "cat",
+            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
+                    "name": "cat_fact",
+                    "type": "template"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
     }
 ]

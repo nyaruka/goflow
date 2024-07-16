@@ -103,7 +103,7 @@ func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 
 			if variable.Type == "text" {
 				content = strings.ReplaceAll(content, fmt.Sprintf("{{%s}}", key), variable.Value)
-			} else if variable.Type == "image" || variable.Type == "video" || variable.Type == "document" {
+			} else if (variable.Type == "image" || variable.Type == "video" || variable.Type == "document") && utils.IsValidAttachment(variable.Value) {
 				attachments = append(attachments, utils.Attachment(variable.Value))
 			}
 		}
