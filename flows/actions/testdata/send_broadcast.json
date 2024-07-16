@@ -251,7 +251,7 @@
             ],
             "text": "Hi there!",
             "attachments": [
-                "http://example.com/red.jpg"
+                "image:http://example.com/red.jpg"
             ],
             "quick_replies": [
                 "Yes",
@@ -265,7 +265,7 @@
                         "Hola!"
                     ],
                     "attachments": [
-                        "http://example.com/rojo.jpg"
+                        "image:http://example.com/rojo.jpg"
                     ],
                     "quick_replies": [
                         "Si",
@@ -283,7 +283,7 @@
                     "eng": {
                         "text": "Hi there!",
                         "attachments": [
-                            "http://example.com/red.jpg"
+                            "image:http://example.com/red.jpg"
                         ],
                         "quick_replies": [
                             "Yes",
@@ -293,7 +293,7 @@
                     "spa": {
                         "text": "Hola!",
                         "attachments": [
-                            "http://example.com/rojo.jpg"
+                            "image:http://example.com/rojo.jpg"
                         ],
                         "quick_replies": [
                             "Si",
@@ -310,8 +310,8 @@
         "templates": [
             "Hi there!",
             "Hola!",
-            "http://example.com/red.jpg",
-            "http://example.com/rojo.jpg",
+            "image:http://example.com/red.jpg",
+            "image:http://example.com/rojo.jpg",
             "Yes",
             "No",
             "Si",

@@ -40,3 +40,17 @@ func TestAttachment(t *testing.T) {
 	assertParse("HTTPS://test.jpg", "", "HTTPS://test.jpg", false)
 	assertParse(":http://test.jpg", "", ":http://test.jpg", false)
 }
+
+func TestAttachmentValidation(t *testing.T) {
+	type testStruct struct {
+		Valid   string `json:"valid"   validate:"attachment"`
+		Invalid string `json:"invalid" validate:"attachment"`
+	}
+
+	obj := testStruct{
+		Valid:   "image:http://test.jpg",
+		Invalid: "xyz",
+	}
+	err := utils.Validate(obj)
+	assert.EqualError(t, err, "field 'invalid' is not a valid attachment")
+}

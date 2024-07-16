@@ -86,8 +86,8 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	for _, a := range translatedAttachments {
 		evaluatedAttachment, _ := run.EvaluateTemplate(a, logEvent)
 		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
-		if evaluatedAttachment == "" {
-			logEvent(events.NewErrorf("attachment text evaluated to empty string, skipping"))
+		if !utils.IsValidAttachment(evaluatedAttachment) {
+			logEvent(events.NewErrorf("attachment evaluated to invalid value, skipping"))
 			continue
 		}
 		if len(evaluatedAttachment) > flows.MaxAttachmentLength {
@@ -103,7 +103,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, logEvent)
 		if evaluatedQuickReply == "" {
-			logEvent(events.NewErrorf("quick reply text evaluated to empty string, skipping"))
+			logEvent(events.NewErrorf("quick reply evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength))
@@ -261,9 +261,9 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text" validate:"required" engine:"localized,evaluated"`
-	Attachments  []string `json:"attachments,omitempty" engine:"localized,evaluated"`
-	QuickReplies []string `json:"quick_replies,omitempty" engine:"localized,evaluated"`
+	Text         string   `json:"text"                    validate:"required"        engine:"localized,evaluated"`
+	Attachments  []string `json:"attachments,omitempty"   validate:"dive,attachment" engine:"localized,evaluated"`
+	QuickReplies []string `json:"quick_replies,omitempty"                            engine:"localized,evaluated"`
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
