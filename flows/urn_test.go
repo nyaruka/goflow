@@ -17,14 +17,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type testStruct struct {
-	ValidURN      string `json:"valid_urn" validate:"urn"`
-	InvalidURN    string `json:"invalid_urn" validate:"urn"`
-	ValidScheme   string `json:"valid_scheme" validate:"urnscheme"`
-	InvalidScheme string `json:"invalid_scheme" validate:"urnscheme"`
-}
-
 func TestURNValidation(t *testing.T) {
+	type testStruct struct {
+		ValidURN      string `json:"valid_urn" validate:"urn"`
+		InvalidURN    string `json:"invalid_urn" validate:"urn"`
+		ValidScheme   string `json:"valid_scheme" validate:"urnscheme"`
+		InvalidScheme string `json:"invalid_scheme" validate:"urnscheme"`
+	}
+
 	obj := testStruct{
 		ValidURN:      "tel:+123456789",
 		InvalidURN:    "xyz",

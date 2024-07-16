@@ -3,7 +3,20 @@ package utils
 import (
 	"regexp"
 	"strings"
+
+	"github.com/go-playground/validator/v10"
 )
+
+func init() {
+	RegisterValidatorTag("attachment",
+		func(fl validator.FieldLevel) bool {
+			return IsValidAttachment(fl.Field().String())
+		},
+		func(validator.FieldError) string {
+			return "is not a valid attachment"
+		},
+	)
+}
 
 // Attachment is a media attachment on a message in the format <content-type>:<url>. Content type may be a full
 // media type or may omit the subtype when it is unknown.

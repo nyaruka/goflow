@@ -6,7 +6,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "",
             "attachments": [
-                "http://example.com/red.jpg"
+                "image:http://example.com/red.jpg"
             ]
         },
         "read_error": "field 'text' is required"
@@ -28,8 +28,8 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there @(1 / 0)",
             "attachments": [
-                "http://example.com/red.jpg@(1 / 0)",
-                "@(xxxxx)"
+                "image:http://example.com/red.jpg@(1 / 0)",
+                "image:@(xxxxx)"
             ],
             "quick_replies": [
                 "Red@(1 / 0)",
@@ -60,7 +60,7 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "attachment text evaluated to empty string, skipping"
+                "text": "attachment evaluated to invalid value, skipping"
             },
             {
                 "type": "error",
@@ -78,7 +78,7 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "quick reply text evaluated to empty string, skipping"
+                "text": "quick reply evaluated to empty string, skipping"
             },
             {
                 "type": "msg_created",
@@ -93,7 +93,7 @@
                     },
                     "text": "Hi there ",
                     "attachments": [
-                        "http://example.com/red.jpg"
+                        "image:http://example.com/red.jpg"
                     ],
                     "quick_replies": [
                         "Red",
@@ -111,7 +111,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there",
             "attachments": [
-                "@(\" \")"
+                "image:@(\" \")"
             ],
             "quick_replies": [
                 "@(\"\")"
@@ -122,13 +122,13 @@
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "attachment text evaluated to empty string, skipping"
+                "text": "attachment evaluated to invalid value, skipping"
             },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "text": "quick reply text evaluated to empty string, skipping"
+                "text": "quick reply evaluated to empty string, skipping"
             },
             {
                 "type": "msg_created",
@@ -154,7 +154,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there",
             "attachments": [
-                "@(json(run) & json(run) & json(run))",
+                "image:@(json(run) & json(run) & json(run))",
                 "image/jpeg:http://exacmple.com/test.jpg"
             ]
         },
@@ -710,7 +710,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there!",
             "attachments": [
-                "http://example.com/red.jpg"
+                "image:http://example.com/red.jpg"
             ],
             "quick_replies": [
                 "Yes",
@@ -724,7 +724,7 @@
                         "Hola!"
                     ],
                     "attachments": [
-                        "http://example.com/rojo.jpg"
+                        "image:http://example.com/rojo.jpg"
                     ],
                     "quick_replies": [
                         "Si",
@@ -747,7 +747,7 @@
                     },
                     "text": "Hola!",
                     "attachments": [
-                        "http://example.com/rojo.jpg"
+                        "image:http://example.com/rojo.jpg"
                     ],
                     "quick_replies": [
                         "Si",
@@ -760,8 +760,8 @@
         "templates": [
             "Hi there!",
             "Hola!",
-            "http://example.com/red.jpg",
-            "http://example.com/rojo.jpg",
+            "image:http://example.com/red.jpg",
+            "image:http://example.com/rojo.jpg",
             "Yes",
             "No",
             "Si",
@@ -769,7 +769,7 @@
         ],
         "localizables": [
             "Hi there!",
-            "http://example.com/red.jpg",
+            "image:http://example.com/red.jpg",
             "Yes",
             "No"
         ],
