@@ -54,12 +54,14 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, body str
 func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	sa := run.Session().Assets()
 
+	// get topic or fallback to default
 	var topic *flows.Topic
 	if a.Topic != nil {
 		topic = sa.Topics().Get(a.Topic.UUID)
 	} else {
-		topic = sa.Topics().FindByName("General") // TODO remove when editor adds topics
+		topic = sa.Topics().FindByName("General")
 	}
+
 	var assignee *flows.User
 	if a.Assignee != nil {
 		assignee = resolveUser(run, a.Assignee, logEvent)
