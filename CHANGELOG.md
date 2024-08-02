@@ -1,3 +1,7 @@
+v0.220.0 (2024-08-02)
+-------------------------
+ * Update to latest gocommon
+
 v0.219.2 (2024-07-16)
 -------------------------
  * Add validation of attachment values in flow definitions
