@@ -13,16 +13,15 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestRunSummary(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC), time.Second))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()

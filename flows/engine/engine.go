@@ -20,7 +20,7 @@ type engine struct {
 // NewSession creates a new session
 func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
 	s := &session{
-		uuid:       flows.SessionUUID(uuids.New()),
+		uuid:       flows.SessionUUID(uuids.NewV4()),
 		env:        envs.NewBuilder().Build(),
 		engine:     e,
 		assets:     sa,

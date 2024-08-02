@@ -19,7 +19,7 @@ import (
 func TestSprint(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	source, err := static.NewSource([]byte(`{
 		"flows": [
@@ -82,7 +82,7 @@ func TestSprint(t *testing.T) {
 	event1 := events.NewError(errors.New("error 1"))
 	event2 := events.NewError(errors.New("error 1"))
 
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)))
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), time.Second))
 
 	sprint := newEmptySprint()
 	sprint.logSegment(flow, node1, node1Exit1, "yes", node2)

@@ -112,7 +112,7 @@ var sessionTrigger = `{
 }`
 
 func TestRun(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	server := test.NewTestHTTPServer(49999)
@@ -150,11 +150,11 @@ func TestRun(t *testing.T) {
 }
 
 func TestRunContext(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
 
 	// create a run with no parent or child
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
@@ -286,8 +286,8 @@ func TestSaveResult(t *testing.T) {
 
 	run := session.Runs()[0]
 
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC)))
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
 
 	// no results means empty object with default of empty string
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"__default__": types.XTextEmpty}), flows.Context(session.Environment(), run.Results()))

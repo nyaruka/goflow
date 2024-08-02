@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
@@ -10,14 +11,13 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 )
 
 func TestChannel(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}

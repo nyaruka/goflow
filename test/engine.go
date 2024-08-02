@@ -121,7 +121,7 @@ func (s *airtimeService) Transfer(sender urns.URN, recipient urns.URN, amounts m
 	}
 
 	transfer := &flows.AirtimeTransfer{
-		UUID:          flows.AirtimeTransferUUID(uuids.New()),
+		UUID:          flows.AirtimeTransferUUID(uuids.NewV4()),
 		Sender:        sender,
 		Recipient:     recipient,
 		Currency:      s.fixedCurrency,

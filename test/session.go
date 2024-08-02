@@ -610,7 +610,7 @@ func NewSessionBuilder() *SessionBuilder {
 		assetsJSON:  []byte(sessionAssets),
 		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		engine:      NewEngine(),
-		contactUUID: flows.ContactUUID(uuids.New()),
+		contactUUID: flows.ContactUUID(uuids.NewV4()),
 		contactID:   flows.ContactID(123),
 		contactName: "Bob",
 		contactLang: "eng",
@@ -707,7 +707,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
-		msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil)
+		msg := flows.NewMsgIn(flows.MsgUUID(uuids.NewV4()), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil)
 		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Msg(msg).Build()
 	} else {
 		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
@@ -741,7 +741,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 		return nil, nil, err
 	}
 
-	msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), urns.NilURN, nil, msgText, nil)
+	msg := flows.NewMsgIn(flows.MsgUUID(uuids.NewV4()), urns.NilURN, nil, msgText, nil)
 
 	sprint, err := session.Resume(resumes.NewMsg(session.Environment(), session.Contact(), msg))
 

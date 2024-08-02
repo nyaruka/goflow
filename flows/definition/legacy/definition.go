@@ -543,7 +543,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 		flowRef := assets.NewFlowReference(assets.FlowUUID(config.Flow.UUID), config.Flow.Name)
 
 		newActions = []migratedAction{
-			newEnterFlowAction(uuids.New(), flowRef, false),
+			newEnterFlowAction(uuids.NewV4(), flowRef, false),
 		}
 
 		// subflow rulesets operate on the child flow status
@@ -572,7 +572,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 		}
 
 		newActions = []migratedAction{
-			newCallWebhookAction(uuids.New(), method, migratedURL, headers, body, resultName),
+			newCallWebhookAction(uuids.NewV4(), method, migratedURL, headers, body, resultName),
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
@@ -582,7 +582,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 
 	case "resthook":
 		newActions = []migratedAction{
-			newCallResthookAction(uuids.New(), config.Resthook, resultName),
+			newCallResthookAction(uuids.NewV4(), config.Resthook, resultName),
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
@@ -711,7 +711,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 		}
 
 		newActions = []migratedAction{
-			newTransferAirtimeAction(uuids.New(), currencyAmounts, resultName),
+			newTransferAirtimeAction(uuids.NewV4(), currencyAmounts, resultName),
 		}
 
 		operand := fmt.Sprintf("@results.%s", utils.Snakify(resultName))
@@ -781,7 +781,7 @@ func migrateRules(baseLanguage i18n.Language, r RuleSet, validDests map[uuids.UU
 			exit := newExit(rule.UUID, destinationUUID)
 			exits = append(exits, exit)
 
-			category := newCategory(uuids.New(), baseName, exit.UUID())
+			category := newCategory(uuids.NewV4(), baseName, exit.UUID())
 			categories = append(categories, category)
 
 			converted = &categoryAndExit{category, exit}
@@ -835,7 +835,7 @@ func migrateRule(baseLanguage i18n.Language, r Rule, category migratedCategory, 
 	var arguments []string
 	var err error
 
-	caseUUID := uuids.New()
+	caseUUID := uuids.NewV4()
 	var caseUI map[string]any
 
 	switch r.Test.Type {
@@ -1094,7 +1094,7 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 	if uuid == "" {
 		uuid = f.UUID
 		if uuid == "" {
-			uuid = uuids.New()
+			uuid = uuids.NewV4()
 		}
 	}
 	if name == "" {

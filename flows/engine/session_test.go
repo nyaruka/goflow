@@ -33,10 +33,10 @@ func TestEvaluateTemplate(t *testing.T) {
 	server := test.NewTestHTTPServer(49992)
 	defer server.Close()
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
@@ -274,10 +274,10 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 }
 
 func TestWaitTimeout(t *testing.T) {
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
-	dates.SetNowSource(dates.NewFixedNowSource(t1))
+	dates.SetNowFunc(dates.NewFixedNow(t1))
 
 	_, session, sprint := test.NewSessionBuilder().WithAssetsPath("testdata/timeout_test.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
@@ -387,7 +387,7 @@ func TestMaxResumesPerSession(t *testing.T) {
 
 	numResumes := 0
 	for {
-		msg := flows.NewMsgIn(flows.MsgUUID(uuids.New()), "tel:+593979123456", nil, "Teal", nil)
+		msg := flows.NewMsgIn(flows.MsgUUID(uuids.NewV4()), "tel:+593979123456", nil, "Teal", nil)
 		resume := resumes.NewMsg(nil, nil, msg)
 		numResumes++
 

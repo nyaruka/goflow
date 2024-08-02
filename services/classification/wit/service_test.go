@@ -19,11 +19,11 @@ import (
 
 func TestService(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC), time.Second))
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://api.wit.ai/message?v=20200513&q=book+flight+to+Quito": {
 			httpx.NewMockResponse(200, nil, []byte(`{

@@ -779,10 +779,10 @@ func TestFunctions(t *testing.T) {
 	}
 
 	defer random.SetGenerator(random.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	random.SetGenerator(random.NewSeededGenerator(123456))
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, tc := range funcTests {
 		testID := fmt.Sprintf("%s(%#v)", tc.name, tc.args)

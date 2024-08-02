@@ -20,7 +20,7 @@ type step struct {
 // NewStep creates a new step
 func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		stepUUID:  flows.StepUUID(uuids.New()),
+		stepUUID:  flows.StepUUID(uuids.NewV4()),
 		nodeUUID:  node.UUID(),
 		arrivedOn: arrivedOn,
 	}

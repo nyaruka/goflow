@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -49,7 +50,7 @@ func TestMigrateToVersion(t *testing.T) {
 		for _, tc := range tests {
 			testName := fmt.Sprintf("version %s with '%s'", version, tc.Description)
 
-			uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+			uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 			actual, err := migrations.MigrateToVersion(tc.Original, version, cfg)
 			assert.NoError(t, err, "unexpected error in %s", testName)
@@ -154,7 +155,7 @@ func TestClone(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 		defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 		flow, err := test.LoadFlowFromAssets(env, tc.path, assets.FlowUUID(tc.uuid))
@@ -180,9 +181,9 @@ func TestClone(t *testing.T) {
 		assert.Equal(t, flow.Revision(), clone.Revision())
 		assert.Equal(t, len(flow.Nodes()), len(clone.Nodes()))
 
-		// extract all UUIDs from originaland cloned definitions
-		originalUUIDs := uuids.V4Regex.FindAllString(string(flowJSON), -1)
-		cloneUUIDs := uuids.V4Regex.FindAllString(string(cloneJSON), -1)
+		// extract all UUIDs from original and cloned definitions
+		originalUUIDs := uuids.Regex.FindAllString(string(flowJSON), -1)
+		cloneUUIDs := uuids.Regex.FindAllString(string(cloneJSON), -1)
 
 		assert.Equal(t, len(originalUUIDs), len(cloneUUIDs))
 		assert.NotContains(t, cloneUUIDs, []string{"2aad21f6-30b7-42c5-bd7f-1b720c154817"}) // group used in has_group test
@@ -210,7 +211,7 @@ func TestClone(t *testing.T) {
 }
 
 func TestCloneOlderVersion(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	cloneJSON, err := migrations.Clone([]byte(`{

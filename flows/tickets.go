@@ -32,7 +32,7 @@ func NewTicket(uuid TicketUUID, topic *Topic, body string, assignee *User) *Tick
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, body string, assignee *User) *Ticket {
-	return NewTicket(TicketUUID(uuids.New()), topic, body, assignee)
+	return NewTicket(TicketUUID(uuids.NewV4()), topic, body, assignee)
 }
 
 func (t *Ticket) UUID() TicketUUID { return t.uuid }

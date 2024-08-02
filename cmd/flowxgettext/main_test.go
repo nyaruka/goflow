@@ -13,8 +13,8 @@ import (
 )
 
 func TestFlowXGetText(t *testing.T) {
-	defer dates.SetNowSource(dates.DefaultNowSource)
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2020, 3, 25, 13, 57, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2020, 3, 25, 13, 57, 30, 123456789, time.UTC)))
 
 	out := &strings.Builder{}
 

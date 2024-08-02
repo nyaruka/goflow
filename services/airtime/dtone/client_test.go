@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -341,7 +340,7 @@ var transactionRejectedResponse = `{
 
 func TestClient(t *testing.T) {
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://dvs-api.dtone.com/v1/lookup/mobile-number": {
@@ -357,7 +356,7 @@ func TestClient(t *testing.T) {
 	})
 
 	httpx.SetRequestor(mocks)
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC)))
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2019, 10, 9, 15, 25, 30, 123456789, time.UTC), time.Second))
 
 	cl := dtone.NewClient(http.DefaultClient, nil, "key123", "sesame")
 

@@ -12,13 +12,12 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestStep(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	node := definition.NewNode(flows.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)

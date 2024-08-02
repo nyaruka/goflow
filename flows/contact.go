@@ -107,7 +107,7 @@ func NewContact(
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:       ContactUUID(uuids.New()),
+		uuid:       ContactUUID(uuids.NewV4()),
 		name:       name,
 		language:   language,
 		status:     ContactStatusActive,

@@ -94,7 +94,7 @@ func Migrate13_4(f Flow, cfg *Config) (Flow, error) {
 				templating, _ := action["templating"].(map[string]any)
 				if templating != nil {
 					templatingUUID := GetObjectUUID(templating)
-					bodyCompUUID := uuids.New()
+					bodyCompUUID := uuids.NewV4()
 					variables, _ := templating["variables"].([]any)
 					if variables == nil {
 						variables = []any{}
@@ -167,7 +167,7 @@ func Migrate13_1(f Flow, cfg *Config) (Flow, error) {
 			if action.Type() == "send_msg" {
 				templating, _ := action["templating"].(map[string]any)
 				if templating != nil {
-					templating["uuid"] = uuids.New()
+					templating["uuid"] = uuids.NewV4()
 				}
 			}
 		}

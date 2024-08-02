@@ -31,11 +31,11 @@ import (
 )
 
 func TestEventMarshaling(t *testing.T) {
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)

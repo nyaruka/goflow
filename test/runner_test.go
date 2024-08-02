@@ -186,7 +186,7 @@ func TestFlows(t *testing.T) {
 	require.True(t, len(testCases) > 0)
 
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
@@ -194,8 +194,8 @@ func TestFlows(t *testing.T) {
 		var httpMocksCopy *httpx.MockRequestor
 		fmt.Printf("running %s\n", tc)
 
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
-		dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
+		dates.SetNowFunc(dates.NewSequentialNow(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC), time.Second))
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
 		testJSON, err := os.ReadFile(tc.outputFile)
