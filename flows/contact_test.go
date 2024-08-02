@@ -52,14 +52,14 @@ func TestContact(t *testing.T) {
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	tz, _ := time.LoadLocation("America/Bogota")
 
 	contact, err := flows.NewContact(
 		sa,
-		flows.ContactUUID(uuids.New()),
+		flows.ContactUUID(uuids.NewV4()),
 		flows.ContactID(12345),
 		"Joe Bloggs",
 		i18n.Language("eng"),
@@ -225,7 +225,7 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
 		sa,
-		flows.ContactUUID(uuids.New()),
+		flows.ContactUUID(uuids.NewV4()),
 		flows.ContactID(1234),
 		"",
 		i18n.NilLanguage,

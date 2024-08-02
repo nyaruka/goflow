@@ -56,12 +56,12 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for i, tc := range tests {
-		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 
 		testName := fmt.Sprintf("test '%s' for trigger type '%s'", tc.Description, typeName)
 
@@ -165,10 +165,10 @@ var assetsJSON = `{
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
-	defer dates.SetNowSource(dates.DefaultNowSource)
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(1234))
+	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	env := envs.NewBuilder().Build()

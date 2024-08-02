@@ -50,7 +50,7 @@ func (u *UI) AddNode(uuid uuids.UUID, nodeDetails *NodeUI) {
 
 // AddSticky adds a new sticky note
 func (u *UI) AddSticky(sticky Sticky) {
-	u.Stickies[uuids.New()] = sticky
+	u.Stickies[uuids.NewV4()] = sticky
 }
 
 // Position is a position of a node in the editor canvas

@@ -85,8 +85,8 @@ func TestDateTimeFromString(t *testing.T) {
 		{envs.DateFormatYearMonthDay, envs.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
 	}
 
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
 
 	for _, tc := range testCases {
 		timezone, err := time.LoadLocation(tc.Timezone)

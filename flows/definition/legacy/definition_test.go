@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -139,7 +140,7 @@ func TestFlowMigration(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 		migratedFlowJSON, err := legacy.MigrateDefinition(tc.Legacy, "https://myfiles.com")
 		require.NoError(t, err)
@@ -188,7 +189,7 @@ func TestTestMigration(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
 		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
@@ -232,7 +233,7 @@ func TestRuleSetMigration(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	for _, tc := range tests {
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456))
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
 		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")

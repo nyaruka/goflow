@@ -374,8 +374,8 @@ func TestLegacyTests(t *testing.T) {
 
 			env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithTimezone(tz).Build()
 			if tc.Context.Now != nil {
-				dates.SetNowSource(dates.NewFixedNowSource(*tc.Context.Now))
-				defer dates.SetNowSource(dates.DefaultNowSource)
+				dates.SetNowFunc(dates.NewFixedNow(*tc.Context.Now))
+				defer dates.SetNowFunc(time.Now)
 			}
 
 			migratedVars := tc.Context.Variables.Migrate().Context(env)

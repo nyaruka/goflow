@@ -140,7 +140,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 		}
 		mapped, exists := mapping[u]
 		if !exists {
-			mapped = uuids.New()
+			mapped = uuids.NewV4()
 			mapping[u] = mapped
 		}
 		return mapped
@@ -157,7 +157,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 				if isString {
 					obj[p] = replaceUUID(uuids.UUID(asString))
 				}
-			} else if uuids.IsV4(p) {
+			} else if uuids.Is(p) {
 				newProperty := string(replaceUUID(uuids.UUID(p)))
 				obj[newProperty] = v
 				delete(obj, p)
@@ -168,7 +168,7 @@ func remapUUIDs(data map[string]any, depMapping map[uuids.UUID]uuids.UUID) {
 	arrayCallback := func(path string, arr []any) {
 		for i, v := range arr {
 			asString, isString := v.(string)
-			if isString && uuids.IsV4(asString) {
+			if isString && uuids.Is(asString) {
 				arr[i] = replaceUUID(uuids.UUID(asString))
 			}
 		}

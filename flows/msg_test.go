@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
@@ -62,7 +63,7 @@ func TestMsgIn(t *testing.T) {
 }
 
 func TestMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	msg := flows.NewMsgOut(
@@ -94,7 +95,7 @@ func TestMsgOut(t *testing.T) {
 }
 
 func TestIVRMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	msg := flows.NewIVRMsgOut(
@@ -216,7 +217,7 @@ func TestBroadcastTranslations(t *testing.T) {
 }
 
 func TestMsgTemplating(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")

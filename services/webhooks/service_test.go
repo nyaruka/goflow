@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -224,8 +223,8 @@ func TestAccessRestrictions(t *testing.T) {
 func TestGzipEncoding(t *testing.T) {
 	_, session, _ := test.NewSessionBuilder().MustBuild()
 
-	defer dates.SetNowSource(dates.DefaultNowSource)
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC), time.Second))
 
 	server := test.NewTestHTTPServer(52025)
 

@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -17,7 +18,7 @@ import (
 
 func TestOptIns(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 
 	env := envs.NewBuilder().Build()
 

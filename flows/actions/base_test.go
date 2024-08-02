@@ -104,14 +104,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for i, tc := range tests {
-		dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345))
+		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 
 		var clonedMocks *httpx.MockRequestor
 		if tc.HTTPMocks != nil {
@@ -751,10 +751,10 @@ func TestReadAction(t *testing.T) {
 }
 
 func TestResthookPayload(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456))
-	dates.SetNowSource(dates.NewSequentialNowSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
+	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC), time.Second))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	defer dates.SetNowFunc(time.Now)
 
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()

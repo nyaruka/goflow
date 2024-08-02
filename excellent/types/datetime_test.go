@@ -109,8 +109,8 @@ func TestToXDateTime(t *testing.T) {
 }
 
 func TestToXDateTimeWithTimeFill(t *testing.T) {
-	dates.SetNowSource(dates.NewFixedNowSource(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
-	defer dates.SetNowSource(dates.DefaultNowSource)
+	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
+	defer dates.SetNowFunc(time.Now)
 
 	env := envs.NewBuilder().Build()
 	result, err := types.ToXDateTimeWithTimeFill(env, types.NewXText("2018/12/20"))
