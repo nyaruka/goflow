@@ -611,15 +611,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewTicketNoteAdded("this is weird"),
-			`{
-				"type": "ticket_note_added",
-				"created_on": "2018-10-18T14:20:30.000123456Z",
-				"note": "this is weird"
-			}`,
-		},
-		{
-			events.NewTicketOpened(ticket),
+			events.NewTicketOpened(ticket, "this is weird"),
 			`{
 				"type": "ticket_opened",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -633,7 +625,8 @@ func TestEventMarshaling(t *testing.T) {
 						"email": "bob@nyaruka.com",
 						"name": "Bob"
 					}
-				}
+				},
+				"note": "this is weird"
 			}`,
 		},
 	}
