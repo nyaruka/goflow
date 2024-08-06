@@ -16,42 +16,41 @@ type TicketUUID uuids.UUID
 type Ticket struct {
 	uuid     TicketUUID
 	topic    *Topic
-	body     string
 	assignee *User
+	note     string
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, topic *Topic, body string, assignee *User) *Ticket {
+func NewTicket(uuid TicketUUID, topic *Topic, assignee *User, note string) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		topic:    topic,
-		body:     body,
 		assignee: assignee,
+		note:     note,
 	}
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
-func OpenTicket(topic *Topic, body string, assignee *User) *Ticket {
-	return NewTicket(TicketUUID(uuids.NewV4()), topic, body, assignee)
+func OpenTicket(topic *Topic, assignee *User, note string) *Ticket {
+	return NewTicket(TicketUUID(uuids.NewV4()), topic, assignee, note)
 }
 
 func (t *Ticket) UUID() TicketUUID { return t.uuid }
 func (t *Ticket) Topic() *Topic    { return t.topic }
-func (t *Ticket) Body() string     { return t.body }
 func (t *Ticket) Assignee() *User  { return t.assignee }
+func (t *Ticket) Note() string     { return t.note }
 
 // Context returns the properties available in expressions
 //
 //	uuid:text -> the UUID of the ticket
-//	subject:text -> the subject of the ticket
-//	body:text -> the body of the ticket
+//	topic:any -> the topic of the ticket
+//	assignee:any -> the assignee of the ticket
 //
 // @context ticket
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":     types.NewXText(string(t.uuid)),
 		"topic":    Context(env, t.topic),
-		"body":     types.NewXText(t.body),
 		"assignee": Context(env, t.assignee),
 	}
 }
@@ -63,8 +62,8 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 type ticketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid4"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Body     string                 `json:"body"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
+	Note     string                 `json:"note,omitempty"`
 }
 
 // ReadTicket decodes a contact from the passed in JSON. If the topic or assigned user can't
@@ -92,12 +91,7 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		}
 	}
 
-	return &Ticket{
-		uuid:     e.UUID,
-		topic:    topic,
-		body:     e.Body,
-		assignee: assignee,
-	}, nil
+	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee, note: e.Note}, nil
 }
 
 // MarshalJSON marshals this ticket into JSON
@@ -115,7 +109,7 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketEnvelope{
 		UUID:     t.uuid,
 		Topic:    topicRef,
-		Body:     t.body,
 		Assignee: assigneeRef,
+		Note:     t.note,
 	})
 }

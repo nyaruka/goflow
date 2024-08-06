@@ -35,10 +35,10 @@
         },
         "issues": [
             {
+                "type": "legacy_vars",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "action_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
                 "description": "use of expressions instead of contact query",
-                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "type": "legacy_vars",
                 "vars": [
                     "@contact.uuid",
                     "@fields.friend_tel"

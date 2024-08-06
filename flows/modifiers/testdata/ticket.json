@@ -14,11 +14,12 @@
                 "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                 "name": "Computers"
             },
-            "body": "Where are my keys?",
             "assignee": {
                 "email": "bob@nyaruka.com",
                 "name": "Bob"
-            }
+            },
+            "note": "this is a note",
+            "body": "this is a note"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -31,11 +32,11 @@
                     "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                     "name": "Computers"
                 },
-                "body": "Where are my keys?",
                 "assignee": {
                     "email": "bob@nyaruka.com",
                     "name": "Bob"
-                }
+                },
+                "note": "this is a note"
             }
         },
         "events": [
@@ -48,11 +49,11 @@
                         "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                         "name": "Computers"
                     },
-                    "body": "Where are my keys?",
                     "assignee": {
                         "email": "bob@nyaruka.com",
                         "name": "Bob"
-                    }
+                    },
+                    "note": "this is a note"
                 }
             }
         ]
@@ -71,7 +72,7 @@
                     "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                     "name": "Computers"
                 },
-                "body": "Where are my keys?",
+                "body": "this is a note",
                 "assignee": {
                     "email": "bob@nyaruka.com",
                     "name": "Bob"
@@ -84,8 +85,9 @@
                 "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                 "name": "Computers"
             },
-            "body": "Should fail",
-            "assignee": null
+            "assignee": null,
+            "note": "Should fail",
+            "body": "Should fail"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -98,7 +100,6 @@
                     "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                     "name": "Computers"
                 },
-                "body": "Where are my keys?",
                 "assignee": {
                     "email": "bob@nyaruka.com",
                     "name": "Bob"

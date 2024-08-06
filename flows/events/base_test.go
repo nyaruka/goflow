@@ -48,7 +48,7 @@ func TestEventMarshaling(t *testing.T) {
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, "Where are my cookies?", user)
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, user, "this is weird")
 
 	eventTests := []struct {
 		event     flows.Event
@@ -309,16 +309,15 @@ func TestEventMarshaling(t *testing.T) {
 					"name": "Ryan Lewis",
 					"status": "active",
 					"ticket": {
-						"assignee": {
-							"email": "bob@nyaruka.com",
-							"name": "Bob"
-						},
-						"body": "What day is it?",
+						"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
 						"topic": {
 							"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 							"name": "Weather"
 						},
-						"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69"
+						"assignee": {
+							"email": "bob@nyaruka.com",
+							"name": "Bob"
+						}
 					},
 					"timezone": "America/Guayaquil",
 					"urns": [
@@ -622,11 +621,11 @@ func TestEventMarshaling(t *testing.T) {
 						"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
          				"name": "Weather"
 					},
-					"body": "Where are my cookies?",
 					"assignee": {
 						"email": "bob@nyaruka.com",
 						"name": "Bob"
-					}
+					},
+					"note": "this is weird"
 				}
 			}`,
 		},

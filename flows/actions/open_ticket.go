@@ -67,9 +67,9 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 		assignee = resolveUser(run, a.Assignee, logEvent)
 	}
 
-	evaluatedBody, _ := run.EvaluateTemplate(a.Body, logEvent)
+	evaluatedNote, _ := run.EvaluateTemplate(a.Body, logEvent)
 
-	ticket := a.open(run, topic, evaluatedBody, assignee, logModifier, logEvent)
+	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
 	if ticket != nil {
 		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
 	} else {
@@ -79,7 +79,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, body string, assignee *flows.User, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewErrorf("can't open tickets during batch starts"))
 		return nil
@@ -90,7 +90,7 @@ func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, body string, 
 		return nil
 	}
 
-	mod := modifiers.NewTicket(topic, body, assignee)
+	mod := modifiers.NewTicket(topic, assignee, note)
 
 	if a.applyModifier(run, mod, logModifier, logEvent) {
 		// if we were able to open a ticket, return it

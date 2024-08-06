@@ -139,7 +139,7 @@ func TestContact(t *testing.T) {
 	assert.Nil(t, contact.Ticket())
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
-	ticket := flows.OpenTicket(weather, "I have issues", nil)
+	ticket := flows.OpenTicket(weather, nil, "spam?")
 	contact.SetTicket(ticket)
 
 	assert.NotNil(t, contact.Ticket())

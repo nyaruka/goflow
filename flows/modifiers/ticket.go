@@ -23,17 +23,17 @@ type TicketModifier struct {
 	baseModifier
 
 	topic    *flows.Topic
-	body     string
 	assignee *flows.User
+	note     string
 }
 
 // NewTicket creates a new ticket modifier
-func NewTicket(topic *flows.Topic, body string, assignee *flows.User) *TicketModifier {
+func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *TicketModifier {
 	return &TicketModifier{
 		baseModifier: newBaseModifier(TypeTicket),
 		topic:        topic,
-		body:         body,
 		assignee:     assignee,
+		note:         note,
 	}
 }
 
@@ -44,7 +44,7 @@ func (m *TicketModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 		return false
 	}
 
-	ticket := flows.OpenTicket(m.topic, m.body, m.assignee)
+	ticket := flows.OpenTicket(m.topic, m.assignee, m.note)
 	log(events.NewTicketOpened(ticket))
 
 	contact.SetTicket(ticket)
@@ -61,14 +61,20 @@ type ticketModifierEnvelope struct {
 	utils.TypedEnvelope
 
 	Topic    *assets.TopicReference `json:"topic" validate:"required"`
-	Body     string                 `json:"body"`
 	Assignee *assets.UserReference  `json:"assignee"`
+	Note     string                 `json:"note"`
+
+	Body string `json:"body"` // deprecated
 }
 
 func readTicketModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &ticketModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
+	}
+
+	if e.Note == "" && e.Body != "" {
+		e.Note = e.Body
 	}
 
 	topic := assets.Topics().Get(e.Topic.UUID)
@@ -85,14 +91,15 @@ func readTicketModifier(assets flows.SessionAssets, data json.RawMessage, missin
 		}
 	}
 
-	return NewTicket(topic, e.Body, assignee), nil
+	return NewTicket(topic, assignee, e.Note), nil
 }
 
 func (m *TicketModifier) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketModifierEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Topic:         m.topic.Reference(),
-		Body:          m.body,
 		Assignee:      m.assignee.Reference(),
+		Note:          m.note,
+		Body:          m.note,
 	})
 }
