@@ -1,3 +1,7 @@
+v0.221.0 (2024-08-06)
+-------------------------
+ * Replace ticket body with initial note
+
 v0.220.0 (2024-08-02)
 -------------------------
  * Update to latest gocommon
