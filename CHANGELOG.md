@@ -1,3 +1,7 @@
+v0.221.1 (2024-08-06)
+-------------------------
+ * On second thoughts, better to just bundle the note with the open ticket event
+
 v0.221.0 (2024-08-06)
 -------------------------
  * Replace ticket body with initial note
