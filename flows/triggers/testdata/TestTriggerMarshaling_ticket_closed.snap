@@ -34,8 +34,7 @@
             "assignee": {
                 "email": "bob@nyaruka.com",
                 "name": "Bob McTickets"
-            },
-            "note": "this is weird"
+            }
         }
     }
 }

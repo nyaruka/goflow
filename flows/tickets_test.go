@@ -68,15 +68,13 @@ func TestTickets(t *testing.T) {
 	ticket1, err := flows.ReadTicket(sa, []byte(`{
 		"uuid": "349c851f-3f8e-4353-8bf2-8e90b6d73530", 
 		"topic": {"uuid": "fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "name": "Deleted"},
-		"assignee": {"email": "dave@nyaruka.com", "name": "Dave"},
-		"note": "this is weird"
+		"assignee": {"email": "dave@nyaruka.com", "name": "Dave"}
 	}`), missing)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
 	assert.Nil(t, ticket1.Assignee())
-	assert.Equal(t, "this is weird", ticket1.Note())
 
 	// check that missing topic and assignee are logged as a missing dependencies
 	assert.Equal(t, 2, len(missingRefs))
@@ -88,18 +86,16 @@ func TestTickets(t *testing.T) {
 	ticket2, err := flows.ReadTicket(sa, []byte(`{
 		"uuid": "5a4af021-d2c2-47fc-9abc-abbb8635d8c0", 
 		"topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"},
-		"assignee": {"email": "bob@nyaruka.com", "name": "Bob"},
-		"note": "this is weird"
+		"assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
 	}`), missing)
 	require.NoError(t, err)
 
 	assert.Equal(t, 0, len(missingRefs))
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
-	ticket3 := flows.OpenTicket(weather, bob, "spam?")
+	ticket3 := flows.OpenTicket(weather, bob)
 
 	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
-	assert.Equal(t, ticket3.Note(), "spam?")
 }

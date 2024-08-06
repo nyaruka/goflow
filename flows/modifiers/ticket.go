@@ -44,8 +44,11 @@ func (m *TicketModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 		return false
 	}
 
-	ticket := flows.OpenTicket(m.topic, m.assignee, m.note)
+	ticket := flows.OpenTicket(m.topic, m.assignee)
 	log(events.NewTicketOpened(ticket))
+	if m.note != "" {
+		log(events.NewTicketNoteAdded(m.note))
+	}
 
 	contact.SetTicket(ticket)
 	return true

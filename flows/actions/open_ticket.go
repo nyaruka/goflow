@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strings"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -34,7 +36,7 @@ type OpenTicketAction struct {
 	onlineAction
 
 	Topic      *assets.TopicReference `json:"topic" validate:"omitempty"`
-	Body       string                 `json:"body" engine:"evaluated"`
+	Body       string                 `json:"body" engine:"evaluated"` // TODO will become "note" in future migration
 	Assignee   *assets.UserReference  `json:"assignee" validate:"omitempty"`
 	ResultName string                 `json:"result_name" validate:"required"`
 }
@@ -68,6 +70,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 	}
 
 	evaluatedNote, _ := run.EvaluateTemplate(a.Body, logEvent)
+	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
 	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
 	if ticket != nil {

@@ -17,28 +17,25 @@ type Ticket struct {
 	uuid     TicketUUID
 	topic    *Topic
 	assignee *User
-	note     string
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, topic *Topic, assignee *User, note string) *Ticket {
+func NewTicket(uuid TicketUUID, topic *Topic, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		topic:    topic,
 		assignee: assignee,
-		note:     note,
 	}
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
-func OpenTicket(topic *Topic, assignee *User, note string) *Ticket {
-	return NewTicket(TicketUUID(uuids.NewV4()), topic, assignee, note)
+func OpenTicket(topic *Topic, assignee *User) *Ticket {
+	return NewTicket(TicketUUID(uuids.NewV4()), topic, assignee)
 }
 
 func (t *Ticket) UUID() TicketUUID { return t.uuid }
 func (t *Ticket) Topic() *Topic    { return t.topic }
 func (t *Ticket) Assignee() *User  { return t.assignee }
-func (t *Ticket) Note() string     { return t.note }
 
 // Context returns the properties available in expressions
 //
@@ -63,7 +60,6 @@ type ticketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid4"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
-	Note     string                 `json:"note,omitempty"`
 }
 
 // ReadTicket decodes a contact from the passed in JSON. If the topic or assigned user can't
@@ -91,7 +87,7 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		}
 	}
 
-	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee, note: e.Note}, nil
+	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee}, nil
 }
 
 // MarshalJSON marshals this ticket into JSON
@@ -110,6 +106,5 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 		UUID:     t.uuid,
 		Topic:    topicRef,
 		Assignee: assigneeRef,
-		Note:     t.note,
 	})
 }

@@ -48,7 +48,7 @@ func TestEventMarshaling(t *testing.T) {
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("bob@nyaruka.com")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, user, "this is weird")
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, user)
 
 	eventTests := []struct {
 		event     flows.Event
@@ -611,6 +611,14 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewTicketNoteAdded("this is weird"),
+			`{
+				"type": "ticket_note_added",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"note": "this is weird"
+			}`,
+		},
+		{
 			events.NewTicketOpened(ticket),
 			`{
 				"type": "ticket_opened",
@@ -624,8 +632,7 @@ func TestEventMarshaling(t *testing.T) {
 					"assignee": {
 						"email": "bob@nyaruka.com",
 						"name": "Bob"
-					},
-					"note": "this is weird"
+					}
 				}
 			}`,
 		},

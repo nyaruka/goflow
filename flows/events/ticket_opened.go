@@ -16,7 +16,6 @@ type Ticket struct {
 	UUID     flows.TicketUUID       `json:"uuid"                   validate:"required,uuid4"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
-	Note     string                 `json:"note,omitempty"`
 }
 
 // TicketOpenedEvent events are created when a new ticket is opened.
@@ -30,8 +29,7 @@ type Ticket struct {
 //	      "uuid": "add17edf-0b6e-4311-bcd7-a64b2a459157",
 //	      "name": "Weather"
 //	    },
-//	    "assignee": {"email": "bob@nyaruka.com", "name": "Bob"},
-//	    "note": "this is weird"
+//	    "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
 //	  }
 //	}
 //
@@ -50,7 +48,6 @@ func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 			UUID:     ticket.UUID(),
 			Topic:    ticket.Topic().Reference(),
 			Assignee: ticket.Assignee().Reference(),
-			Note:     ticket.Note(),
 		},
 	}
 }
