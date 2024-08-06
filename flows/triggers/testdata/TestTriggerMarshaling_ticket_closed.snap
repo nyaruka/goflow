@@ -31,7 +31,6 @@
         "ticket": {
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
             "topic": null,
-            "body": "Where are my shoes?",
             "assignee": {
                 "email": "bob@nyaruka.com",
                 "name": "Bob McTickets"

@@ -163,7 +163,6 @@
                     "created_on": "2018-07-06T12:30:18.123456789Z",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "ticket": {
-                        "body": "Last message: Rats",
                         "topic": {
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
@@ -173,16 +172,22 @@
                     "type": "ticket_opened"
                 },
                 {
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "note": "Last message: Rats",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "ticket_note_added"
+                },
+                {
                     "category": "Success",
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "name": "Ticket",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"body\":\"Last message: Rats\",\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "to": [
@@ -206,7 +211,7 @@
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "operand": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                    "time": "2018-07-06T12:30:24.123456789Z"
+                    "time": "2018-07-06T12:30:26.123456789Z"
                 }
             ],
             "session": {
@@ -218,7 +223,6 @@
                     "name": "Ben Haggerty",
                     "status": "active",
                     "ticket": {
-                        "body": "Last message: Rats",
                         "topic": {
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
@@ -295,7 +299,6 @@
                                 "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "ticket": {
-                                    "body": "Last message: Rats",
                                     "topic": {
                                         "name": "Weather",
                                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
@@ -305,16 +308,22 @@
                                 "type": "ticket_opened"
                             },
                             {
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "note": "Last message: Rats",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "ticket_note_added"
+                            },
+                            {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "name": "Ticket",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "body": "[{\"assignee\":null,\"body\":\"Last message: Rats\",\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"5ecda5fc-951c-437b-a17e-f85e49829fb9\"}]",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "subject": "New ticket: 5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "to": [
@@ -323,12 +332,12 @@
                                 "type": "email_sent"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:28.123456789Z",
+                        "exited_on": "2018-07-06T12:30:30.123456789Z",
                         "flow": {
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
-                        "modified_on": "2018-07-06T12:30:28.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -349,7 +358,7 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:25.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:27.123456789Z",
                                 "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
                                 "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -366,7 +375,7 @@
                             },
                             "ticket": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "name": "Ticket",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "value": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
