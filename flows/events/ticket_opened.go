@@ -30,7 +30,8 @@ type Ticket struct {
 //	      "name": "Weather"
 //	    },
 //	    "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
-//	  }
+//	  },
+//	  "note": "this is weird"
 //	}
 //
 // @event ticket_opened
@@ -38,10 +39,11 @@ type TicketOpenedEvent struct {
 	BaseEvent
 
 	Ticket *Ticket `json:"ticket"`
+	Note   string  `json:"note,omitempty"`
 }
 
 // NewTicketOpened returns a new ticket opened event
-func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
+func NewTicketOpened(ticket *flows.Ticket, note string) *TicketOpenedEvent {
 	return &TicketOpenedEvent{
 		BaseEvent: NewBaseEvent(TypeTicketOpened),
 		Ticket: &Ticket{
@@ -49,5 +51,6 @@ func NewTicketOpened(ticket *flows.Ticket) *TicketOpenedEvent {
 			Topic:    ticket.Topic().Reference(),
 			Assignee: ticket.Assignee().Reference(),
 		},
+		Note: note,
 	}
 }

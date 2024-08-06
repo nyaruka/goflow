@@ -52,11 +52,7 @@
                         "email": "bob@nyaruka.com",
                         "name": "Bob"
                     }
-                }
-            },
-            {
-                "type": "ticket_note_added",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                },
                 "note": "this is a note"
             }
         ]
