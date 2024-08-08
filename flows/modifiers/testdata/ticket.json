@@ -18,8 +18,7 @@
                 "email": "bob@nyaruka.com",
                 "name": "Bob"
             },
-            "note": "this is a note",
-            "body": "this is a note"
+            "note": "this is a note"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -85,8 +84,7 @@
                 "name": "Computers"
             },
             "assignee": null,
-            "note": "Should fail",
-            "body": "Should fail"
+            "note": "Should fail"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",

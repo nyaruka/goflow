@@ -63,18 +63,12 @@ type ticketModifierEnvelope struct {
 	Topic    *assets.TopicReference `json:"topic" validate:"required"`
 	Assignee *assets.UserReference  `json:"assignee"`
 	Note     string                 `json:"note"`
-
-	Body string `json:"body"` // deprecated
 }
 
 func readTicketModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &ticketModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
-	}
-
-	if e.Note == "" && e.Body != "" {
-		e.Note = e.Body
 	}
 
 	topic := assets.Topics().Get(e.Topic.UUID)
@@ -100,6 +94,5 @@ func (m *TicketModifier) MarshalJSON() ([]byte, error) {
 		Topic:         m.topic.Reference(),
 		Assignee:      m.assignee.Reference(),
 		Note:          m.note,
-		Body:          m.note,
 	})
 }
