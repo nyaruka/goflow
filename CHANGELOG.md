@@ -1,3 +1,8 @@
+v0.222.0 (2024-08-19)
+-------------------------
+ * Enable to send airtime to WhatsApp URNs
+ * Remove old body field on ticket modifier
+
 v0.221.1 (2024-08-06)
 -------------------------
  * On second thoughts, better to just bundle the note with the open ticket event
