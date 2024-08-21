@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -91,12 +90,9 @@ func (a *SendMsgAction) Execute(run flows.Run, step flows.Step, logModifier flow
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
 			translation := template.FindTranslation(dest.Channel, locales)
 			if translation != nil {
-				// TODO in future we won't be localizing template variables
-				localizedVariables, _ := run.GetTextArray(uuids.UUID(a.UUID()), "template_variables", a.TemplateVariables, nil)
-
 				// evaluate the variables
-				evaluatedVariables := make([]string, len(localizedVariables))
-				for i, varExp := range localizedVariables {
+				evaluatedVariables := make([]string, len(a.TemplateVariables))
+				for i, varExp := range a.TemplateVariables {
 					v, _ := run.EvaluateTemplate(varExp, logEvent)
 					evaluatedVariables[i] = v
 				}

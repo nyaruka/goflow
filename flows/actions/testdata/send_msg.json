@@ -492,100 +492,6 @@
         }
     },
     {
-        "description": "Msg with a matching template with localized variables",
-        "action": {
-            "type": "send_msg",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "text": "Hi Ryan Lewis, who's a good boy?",
-            "template": {
-                "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
-                "name": "affirmation"
-            },
-            "template_variables": [
-                "@contact.name",
-                "boy"
-            ]
-        },
-        "localization": {
-            "spa": {
-                "ad154980-7bf7-4ab8-8728-545fd6378912": {
-                    "template_variables": [
-                        "@contact.name",
-                        "niño"
-                    ]
-                }
-            }
-        },
-        "events": [
-            {
-                "type": "msg_created",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "msg": {
-                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                    "channel": {
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
-                    },
-                    "text": "Hola Ryan Lewis, quien es un niño excelente?",
-                    "templating": {
-                        "template": {
-                            "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
-                            "name": "affirmation"
-                        },
-                        "components": [
-                            {
-                                "name": "body",
-                                "type": "body/text",
-                                "variables": {
-                                    "1": 0,
-                                    "2": 1
-                                }
-                            }
-                        ],
-                        "variables": [
-                            {
-                                "type": "text",
-                                "value": "Ryan Lewis"
-                            },
-                            {
-                                "type": "text",
-                                "value": "niño"
-                            }
-                        ]
-                    },
-                    "locale": "spa"
-                }
-            }
-        ],
-        "templates": [
-            "Hi Ryan Lewis, who's a good boy?",
-            "@contact.name",
-            "boy",
-            "@contact.name",
-            "niño"
-        ],
-        "localizables": [
-            "Hi Ryan Lewis, who's a good boy?",
-            "@contact.name",
-            "boy"
-        ],
-        "inspection": {
-            "dependencies": [
-                {
-                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
-                    "name": "affirmation",
-                    "type": "template"
-                }
-            ],
-            "issues": [],
-            "results": [],
-            "waiting_exits": [],
-            "parent_refs": []
-        }
-    },
-    {
         "description": "Msg with template but no variables",
         "action": {
             "type": "send_msg",
@@ -803,16 +709,7 @@
             ]
         },
         "localization": {
-            "spa": {
-                "ad154980-7bf7-4ab8-8728-545fd6378912": {
-                    "template_variables": [
-                        "@contact.name",
-                        "niño",
-                        "Sip",
-                        "Nop"
-                    ]
-                }
-            }
+            "spa": {}
         },
         "events": [
             {
@@ -826,9 +723,9 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
                     },
-                    "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como niño.",
+                    "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como boy.",
                     "quick_replies": [
-                        "Sip",
+                        "Yeah",
                         "No"
                     ],
                     "templating": {
@@ -860,11 +757,11 @@
                             },
                             {
                                 "type": "text",
-                                "value": "niño"
+                                "value": "boy"
                             },
                             {
                                 "type": "text",
-                                "value": "Sip"
+                                "value": "Yeah"
                             }
                         ]
                     },
@@ -879,11 +776,7 @@
             "@contact.name",
             "boy",
             "Yeah",
-            "Nope",
-            "@contact.name",
-            "niño",
-            "Sip",
-            "Nop"
+            "Nope"
         ],
         "localizables": [
             "Hey Ryan Lewis, your gender is saved as boy.",
