@@ -15,6 +15,7 @@ func TestParsePhoneNumber(t *testing.T) {
 	assert.Equal(t, "", utils.ParsePhoneNumber("tel = +250788383383", "RW"))
 	assert.Equal(t, "", utils.ParsePhoneNumber("Hi my number is +250788383383 thanks", "RW"))
 	assert.Equal(t, "", utils.ParsePhoneNumber("Hi my phone is (202) 456-1111 thanks", "US"))
+	assert.Equal(t, "", utils.ParsePhoneNumber("+810000000977123456", "CD"))
 
 	assert.Equal(t, "+250788383383", utils.ParsePhoneNumber("+250788383383", ""))
 	assert.Equal(t, "+250788383383", utils.ParsePhoneNumber("0788 383 383", "RW"))
