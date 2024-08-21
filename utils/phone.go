@@ -24,7 +24,15 @@ func ParsePhoneNumber(s string, country i18n.Country) string {
 		return ""
 	}
 
-	return formatted
+	// TODO there is a problem in urns package where a number +810000000977123456 is considered valid because it allows
+	// unlimited zeros between the country code and the number... but our validation for phone URNs thinks it's too
+	// long, so we validate explicitly here
+	urn, err := urns.New(urns.Phone, formatted)
+	if err != nil {
+		return ""
+	}
+
+	return urn.Path()
 }
 
 // FindPhoneNumbers finds phone numbers anywhere in the given string
