@@ -1,3 +1,8 @@
+v0.222.1 (2024-08-21)
+-------------------------
+ * Add workaround for numbers that pass urns.ParseNumber but fail phone URN valdiation
+ * Drop support for localizing template variables in send_msg actions
+
 v0.222.0 (2024-08-19)
 -------------------------
  * Enable to send airtime to WhatsApp URNs
