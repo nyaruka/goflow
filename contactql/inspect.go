@@ -1,6 +1,9 @@
 package contactql
 
 import (
+	"maps"
+	"slices"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -69,8 +72,8 @@ func Inspect(query *ContactQuery) *Inspection {
 	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeStatus] || attributes[AttributeGroup] || attributes[AttributeFlow] || attributes[AttributeHistory])
 
 	return &Inspection{
-		Attributes:   utils.SortedKeys(attributes),
-		Schemes:      utils.SortedKeys(schemes),
+		Attributes:   utils.EnsureNonNil(slices.Sorted(maps.Keys(attributes))),
+		Schemes:      utils.EnsureNonNil(slices.Sorted(maps.Keys(schemes))),
 		Fields:       fieldRefs,
 		Groups:       groupRefs,
 		AllowAsGroup: allowAsGroup,

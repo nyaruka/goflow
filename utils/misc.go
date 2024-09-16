@@ -1,10 +1,7 @@
 package utils
 
 import (
-	"slices"
-
 	"golang.org/x/exp/constraints"
-	"golang.org/x/exp/maps"
 )
 
 // Set converts a slice to a set (a K > bool map)
@@ -16,11 +13,13 @@ func Set[K constraints.Ordered](s []K) map[K]bool {
 	return m
 }
 
-// SortedKeys returns the keys of a set in lexical order
-func SortedKeys[K constraints.Ordered, V any](m map[K]V) []K {
-	keys := maps.Keys(m)
-	slices.Sort(keys)
-	return keys
+// Until encoding/json/v2 there's no easy way to ensure nil slices are marshalled as empty arrays
+// see https://github.com/golang/go/discussions/63397
+func EnsureNonNil[T any](s []T) []T {
+	if s == nil {
+		return []T{}
+	}
+	return s
 }
 
 // Typed is an interface of objects that are marshalled as typed envelopes
