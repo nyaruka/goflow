@@ -1,6 +1,6 @@
 module github.com/nyaruka/goflow
 
-go 1.22
+go 1.23
 
 require (
 	github.com/Masterminds/semver v1.5.0
@@ -9,7 +9,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.22.0
-	github.com/nyaruka/gocommon v1.57.1
+	github.com/nyaruka/gocommon v1.59.0
 	github.com/sergi/go-diff v1.3.1
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.9.0

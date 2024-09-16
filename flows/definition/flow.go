@@ -3,6 +3,8 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
+	"slices"
 
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/i18n"
@@ -268,7 +270,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 		})
 	}
 
-	return templates, assetRefs, utils.SortedKeys(parentRefs)
+	return templates, assetRefs, utils.EnsureNonNil(slices.Sorted(maps.Keys(parentRefs)))
 }
 
 // extracts all result specs
