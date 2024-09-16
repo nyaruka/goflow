@@ -1,3 +1,8 @@
+v0.222.2 (2024-09-16)
+-------------------------
+ * Update dependencies
+ * Update to go 1.23
+
 v0.222.1 (2024-08-21)
 -------------------------
  * Add workaround for numbers that pass urns.ParseNumber but fail phone URN valdiation
