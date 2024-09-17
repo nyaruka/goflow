@@ -1,3 +1,7 @@
+v0.222.3 (2024-09-17)
+-------------------------
+ * Validate result name/category fields in actions that create results
+
 v0.222.2 (2024-09-16)
 -------------------------
  * Update dependencies
