@@ -34,8 +34,8 @@ type TransferAirtimeAction struct {
 	baseAction
 	onlineAction
 
-	Amounts    map[string]decimal.Decimal `json:"amounts" validate:"required"`
-	ResultName string                     `json:"result_name" validate:"required"`
+	Amounts    map[string]decimal.Decimal `json:"amounts"     validate:"required"`
+	ResultName string                     `json:"result_name" validate:"required,max=128"`
 }
 
 // NewTransferAirtime creates a new airtime transfer action

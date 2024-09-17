@@ -1,5 +1,20 @@
 [
     {
+        "description": "Read fails when result name is too long",
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "topic": {
+                "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
+                "name": "Deleted"
+            },
+            "body": "Where are my cookies?",
+            "assignee": null,
+            "result_name": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+        },
+        "read_error": "field 'result_name' must be less than or equal to 128"
+    },
+    {
         "description": "Error event for invalid topic reference",
         "action": {
             "type": "open_ticket",

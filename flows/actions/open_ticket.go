@@ -35,10 +35,10 @@ type OpenTicketAction struct {
 	baseAction
 	onlineAction
 
-	Topic      *assets.TopicReference `json:"topic" validate:"omitempty"`
+	Topic      *assets.TopicReference `json:"topic"                   validate:"omitempty"`
 	Body       string                 `json:"body" engine:"evaluated"` // TODO will become "note" in future migration
-	Assignee   *assets.UserReference  `json:"assignee" validate:"omitempty"`
-	ResultName string                 `json:"result_name" validate:"required"`
+	Assignee   *assets.UserReference  `json:"assignee"                validate:"omitempty"`
+	ResultName string                 `json:"result_name"             validate:"required,max=128"`
 }
 
 // NewOpenTicket creates a new open ticket action

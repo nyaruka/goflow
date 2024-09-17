@@ -32,9 +32,9 @@ type SetRunResultAction struct {
 	baseAction
 	universalAction
 
-	Name     string `json:"name" validate:"required"`
-	Value    string `json:"value" engine:"evaluated"`
-	Category string `json:"category,omitempty" engine:"localized"`
+	Name     string `json:"name"                                  validate:"required,max=128"`
+	Value    string `json:"value"              engine:"evaluated"`
+	Category string `json:"category,omitempty" engine:"localized" validate:"max=128"`
 }
 
 // NewSetRunResult creates a new set run result action
