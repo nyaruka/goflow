@@ -52,11 +52,11 @@ type CallWebhookAction struct {
 	baseAction
 	onlineAction
 
-	Method     string            `json:"method" validate:"required,http_method"`
-	URL        string            `json:"url" validate:"required" engine:"evaluated"`
-	Headers    map[string]string `json:"headers,omitempty" engine:"evaluated"`
-	Body       string            `json:"body,omitempty" engine:"evaluated"`
-	ResultName string            `json:"result_name,omitempty"`
+	Method     string            `json:"method"                                   validate:"required,http_method"`
+	URL        string            `json:"url"                   engine:"evaluated" validate:"required"`
+	Headers    map[string]string `json:"headers,omitempty"     engine:"evaluated"`
+	Body       string            `json:"body,omitempty"        engine:"evaluated"`
+	ResultName string            `json:"result_name,omitempty"                    validate:"max=128"`
 }
 
 // NewCallWebhook creates a new call webhook action

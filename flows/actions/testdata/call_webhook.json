@@ -24,6 +24,21 @@
         "read_error": "header 'Accept:' is not a valid HTTP header"
     },
     {
+        "description": "Read fails when result name is too long",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://temba.io/",
+            "body": "Hi there!",
+            "headers": {
+                "Accept:": "something"
+            },
+            "result_name": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+        },
+        "read_error": "field 'result_name' must be less than or equal to 128"
+    },
+    {
         "description": "Error events created if URL, header or body contain expression errors",
         "http_mocks": {
             "http://temba.io/?q=": [
