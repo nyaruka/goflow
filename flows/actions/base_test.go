@@ -510,13 +510,14 @@ func TestConstructors(t *testing.T) {
 				"Hi there",
 				[]string{"http://example.com/red.jpg"},
 				[]string{"Red", "Blue"},
-				[]urns.URN{"twitter:nyaruka"},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
-				},
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
 				},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
+				},
+				"fields.age > 20",
+				[]urns.URN{"twitter:nyaruka"},
 				nil,
 			),
 			`{
@@ -525,19 +526,20 @@ func TestConstructors(t *testing.T) {
 			"text": "Hi there",
 			"attachments": ["http://example.com/red.jpg"],
 			"quick_replies": ["Red", "Blue"],
-			"urns": ["twitter:nyaruka"],
+			"groups": [
+				{
+					"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+					"name": "Testers"
+				}
+			],
             "contacts": [
 				{
 					"uuid": "cbe87f5c-cda2-4f90-b5dd-0ac93a884950",
 					"name": "Bob Smith"
 				}
 			],
-			"groups": [
-				{
-					"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-					"name": "Testers"
-				}
-			]
+			"contact_query": "fields.age > 20",
+			"urns": ["twitter:nyaruka"]
 		}`,
 		},
 		{
@@ -695,13 +697,15 @@ func TestConstructors(t *testing.T) {
 			actions.NewStartSession(
 				actionUUID,
 				assets.NewFlowReference(assets.FlowUUID("fece6eac-9127-4343-9269-56e88f391562"), "Parent"),
-				[]urns.URN{"twitter:nyaruka"},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
-				},
+
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
 				},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
+				},
+				"fields.age > 20",
+				[]urns.URN{"twitter:nyaruka"},
 				nil,  // legacy vars
 				true, // create new contact
 			),
@@ -712,19 +716,20 @@ func TestConstructors(t *testing.T) {
 				"uuid": "fece6eac-9127-4343-9269-56e88f391562",
 				"name": "Parent"
 			},
-			"urns": ["twitter:nyaruka"],
-            "contacts": [
-				{
-					"uuid": "cbe87f5c-cda2-4f90-b5dd-0ac93a884950",
-					"name": "Bob Smith"
-				}
-			],
 			"groups": [
 				{
 					"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 					"name": "Testers"
 				}
 			],
+            "contacts": [
+				{
+					"uuid": "cbe87f5c-cda2-4f90-b5dd-0ac93a884950",
+					"name": "Bob Smith"
+				}
+			],
+			"contact_query": "fields.age > 20",
+			"urns": ["twitter:nyaruka"],
 			"exclusions": {},
 			"create_contact": true
 		}`,

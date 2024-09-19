@@ -43,14 +43,15 @@ type StartSessionAction struct {
 }
 
 // NewStartSession creates a new start session action
-func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) *StartSessionAction {
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSessionAction {
 	return &StartSessionAction{
 		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{
-			URNs:       urns,
-			Contacts:   contacts,
-			Groups:     groups,
-			LegacyVars: legacyVars,
+			Groups:       groups,
+			Contacts:     contacts,
+			ContactQuery: contactQuery,
+			URNs:         urns,
+			LegacyVars:   legacyVars,
 		},
 		Flow:          flow,
 		CreateContact: createContact,

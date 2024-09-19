@@ -37,14 +37,15 @@ type SendBroadcastAction struct {
 }
 
 // NewSendBroadcast creates a new send broadcast action
-func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string) *SendBroadcastAction {
 	return &SendBroadcastAction{
 		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
-			URNs:       urns,
-			Contacts:   contacts,
-			Groups:     groups,
-			LegacyVars: legacyVars,
+			Groups:       groups,
+			Contacts:     contacts,
+			ContactQuery: contactQuery,
+			URNs:         urns,
+			LegacyVars:   legacyVars,
 		},
 		createMsgAction: createMsgAction{
 			Text:         text,

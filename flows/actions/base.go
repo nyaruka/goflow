@@ -196,10 +196,10 @@ func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
 
 // utility struct for actions which operate on other contacts
 type otherContactsAction struct {
-	URNs         []urns.URN                `json:"urns,omitempty"`
 	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	ContactQuery string                    `json:"contact_query,omitempty" engine:"evaluated"`
+	URNs         []urns.URN                `json:"urns,omitempty"`
 	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
