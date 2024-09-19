@@ -1,3 +1,7 @@
+v0.222.4 (2024-09-19)
+-------------------------
+ * Add query to trigger_session and create_broadcast action constructors
+
 v0.222.3 (2024-09-17)
 -------------------------
  * Validate result name/category fields in actions that create results
