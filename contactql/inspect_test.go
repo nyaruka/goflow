@@ -102,6 +102,17 @@ func TestInspect(t *testing.T) {
 				AllowAsGroup: false,
 			},
 		},
+		{
+			query:    "group = \"\"", // group presence parsed with resolver
+			resolver: resolver,
+			inspection: &contactql.Inspection{
+				Attributes:   []string{"group"},
+				Schemes:      []string{},
+				Fields:       []*assets.FieldReference{},
+				Groups:       []*assets.GroupReference{},
+				AllowAsGroup: false,
+			},
+		},
 	}
 
 	for _, tc := range tests {
