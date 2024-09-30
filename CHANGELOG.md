@@ -1,3 +1,7 @@
+v0.222.5 (2024-09-30)
+-------------------------
+ * Fix inspection of contact queries using group = "" or group != ""
+
 v0.222.4 (2024-09-19)
 -------------------------
  * Add query to trigger_session and create_broadcast action constructors
