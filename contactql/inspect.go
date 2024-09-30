@@ -36,7 +36,7 @@ func Inspect(query *ContactQuery) *Inspection {
 		case PropertyTypeAttribute:
 			attributes[c.propKey] = true
 
-			if c.propKey == AttributeGroup {
+			if c.propKey == AttributeGroup && c.value != "" {
 				if query.resolver != nil {
 					group := query.resolver.ResolveGroup(c.value)
 					addRef(assets.NewGroupReference(group.UUID(), group.Name()))
