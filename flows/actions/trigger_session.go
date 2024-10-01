@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -21,8 +23,8 @@ const TypeTriggerSession string = "trigger_session"
 
 // TriggerSessionAction can be used to trigger sessions for another contact. A [event:session_triggered] event will be
 // created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
-// The contact can be specified via a concrete reference or as a URN via the scheme and path fields. In the latter case
-// the contact will be created if they don't exist.
+// The contact can be specified via a reference or as a URN. In the latter case the contact will be created if they
+// don't exist.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -37,26 +39,36 @@ type TriggerSessionAction struct {
 	baseAction
 	onlineAction
 
-	Flow      *assets.FlowReference   `json:"flow"    validate:"required"`
-	Contact   *flows.ContactReference `json:"contact" validate:"required"`
+	Flow      *assets.FlowReference   `json:"flow"               validate:"required"`
+	Contact   *flows.ContactReference `json:"contact,omitempty"`
+	URN       string                  `json:"urn,omitempty"      engine:"evaluated"`
 	Interrupt bool                    `json:"interrupt"`
 }
 
 // NewTriggerSession creates a new trigger session action
-func NewTriggerSession(uuid flows.ActionUUID, flow *assets.FlowReference, contact *flows.ContactReference, interrupt bool) *TriggerSessionAction {
+func NewTriggerSession(uuid flows.ActionUUID, flow *assets.FlowReference, contact *flows.ContactReference, urn string, interrupt bool) *TriggerSessionAction {
 	return &TriggerSessionAction{
 		baseAction: newBaseAction(TypeTriggerSession, uuid),
 		Flow:       flow,
 		Contact:    contact,
+		URN:        urn,
 		Interrupt:  interrupt,
 	}
 }
 
+// Validate validates our action is valid
+func (a *TriggerSessionAction) Validate() error {
+	if (a.Contact != nil && a.URN != "") || (a.Contact == nil && a.URN == "") {
+		return fmt.Errorf("must specify either contact or urn")
+	}
+	return nil
+}
+
 // Execute runs our action
 func (a *TriggerSessionAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	contact := a.resolveContact(run, logEvent)
-	if contact == nil {
-		logEvent(events.NewDependencyError(a.Contact))
+	urn := a.resolveURN(run, logEvent)
+
+	if urn == urns.NilURN && a.Contact == nil {
 		return nil
 	}
 
@@ -81,34 +93,33 @@ func (a *TriggerSessionAction) Execute(run flows.Run, step flows.Step, logModifi
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(flow.Reference(false), contact, a.Interrupt, runSnapshot, history))
+	logEvent(events.NewSessionTriggered(flow.Reference(false), a.Contact, urn, a.Interrupt, runSnapshot, history))
 	return nil
 }
 
-func (a *TriggerSessionAction) resolveContact(run flows.Run, logEvent flows.EventCallback) *flows.ContactReference {
-	// if this is a concrete reference, return as is
-	if !a.Contact.Variable() {
-		return a.Contact
+func (a *TriggerSessionAction) resolveURN(run flows.Run, logEvent flows.EventCallback) urns.URN {
+	if a.URN == "" {
+		return urns.NilURN
 	}
 
 	// otherwise this is a variable reference so evaluate it
-	evaluatedURN, ok := run.EvaluateTemplate(a.Contact.URNMatch, logEvent)
+	evaluatedURN, ok := run.EvaluateTemplate(a.URN, logEvent)
 	if !ok {
-		return nil
+		return urns.NilURN
 	}
 
 	// if we have a valid URN now, return it
 	urn := urns.URN(evaluatedURN)
 	if urn.Validate() == nil {
-		return &flows.ContactReference{URNMatch: string(urn.Normalize())}
+		return urn.Normalize()
 	}
 
 	// otherwise try to parse as phone number
 	parsedTel := utils.ParsePhoneNumber(evaluatedURN, run.Session().MergedEnvironment().DefaultCountry())
 	if parsedTel != "" {
 		urn, _ := urns.New(urns.Phone, parsedTel)
-		return &flows.ContactReference{URNMatch: string(urn.Normalize())}
+		return urn.Normalize()
 	}
 
-	return nil
+	return urns.NilURN
 }

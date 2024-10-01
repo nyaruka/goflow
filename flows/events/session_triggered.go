@@ -58,6 +58,7 @@ type SessionTriggeredEvent struct {
 
 	Flow       *assets.FlowReference   `json:"flow" validate:"required"`
 	Contact    *flows.ContactReference `json:"contact,omitempty"`
+	URN        urns.URN                `json:"urn,omitempty" validate:"omitempty,urn"`
 	Interrupt  bool                    `json:"interrupt,omitempty"`
 	RunSummary json.RawMessage         `json:"run_summary"`
 	History    *flows.SessionHistory   `json:"history"`
@@ -72,11 +73,12 @@ type SessionTriggeredEvent struct {
 }
 
 // NewSessionTriggered returns a new session triggered event
-func NewSessionTriggered(flow *assets.FlowReference, contact *flows.ContactReference, interrupt bool, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
+func NewSessionTriggered(flow *assets.FlowReference, contact *flows.ContactReference, urn urns.URN, interrupt bool, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent:  NewBaseEvent(TypeSessionTriggered),
 		Flow:       flow,
 		Contact:    contact,
+		URN:        urn,
 		Interrupt:  interrupt,
 		RunSummary: runSummary,
 		History:    history,

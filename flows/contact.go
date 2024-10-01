@@ -544,9 +544,8 @@ var _ contactql.Queryable = (*Contact)(nil)
 
 // ContactReference is used to reference a contact
 type ContactReference struct {
-	UUID     ContactUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name     string      `json:"name,omitempty"`
-	URNMatch string      `json:"urn_match,omitempty" engine:"evaluated"`
+	UUID ContactUUID `json:"uuid" validate:"required,uuid4"`
+	Name string      `json:"name"`
 }
 
 // NewContactReference creates a new contact reference with the given UUID and name
