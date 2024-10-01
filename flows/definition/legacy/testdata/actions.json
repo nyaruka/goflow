@@ -474,8 +474,7 @@
                     "name": "Horatio"
                 },
                 {
-                    "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42",
-                    "name": ""
+                    "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42"
                 }
             ],
             "groups": [
@@ -596,12 +595,10 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "contacts": [
                 {
-                    "uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
-                    "name": ""
+                    "uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f"
                 },
                 {
-                    "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42",
-                    "name": ""
+                    "uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42"
                 }
             ],
             "groups": [

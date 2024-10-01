@@ -195,8 +195,7 @@
                         "name": "Stavros"
                     },
                     {
-                        "uuid": "11708c34-d4ab-4b04-b82a-2578f6e0013c",
-                        "name": ""
+                        "uuid": "11708c34-d4ab-4b04-b82a-2578f6e0013c"
                     }
                 ],
                 "contact_query": "name = \"Bob\"",

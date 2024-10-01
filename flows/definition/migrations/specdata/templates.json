@@ -37,6 +37,7 @@
             "send_broadcast": [
                 ".attachments[*]",
                 ".contact_query",
+                ".contacts[*].urn_match",
                 ".groups[*].name_match",
                 ".legacy_vars[*]",
                 ".quick_replies[*]",
@@ -72,10 +73,14 @@
             ],
             "start_session": [
                 ".contact_query",
+                ".contacts[*].urn_match",
                 ".groups[*].name_match",
                 ".legacy_vars[*]"
             ],
-            "transfer_airtime": []
+            "transfer_airtime": [],
+            "trigger_session": [
+                ".contact.urn_match"
+            ]
         },
         "routers": {
             "random": [
