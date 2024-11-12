@@ -1,3 +1,8 @@
+v0.223.0 (2024-11-12)
+-------------------------
+ * Change transfer_airtime to fail when no exact matching amount
+ * Update deps
+
 v0.222.5 (2024-09-30)
 -------------------------
  * Fix inspection of contact queries using group = "" or group != ""
