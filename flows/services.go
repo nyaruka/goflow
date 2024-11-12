@@ -157,13 +157,12 @@ const (
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	UUID          AirtimeTransferUUID
-	ExternalID    string
-	Sender        urns.URN
-	Recipient     urns.URN
-	Currency      string
-	DesiredAmount decimal.Decimal
-	ActualAmount  decimal.Decimal
+	UUID       AirtimeTransferUUID
+	ExternalID string
+	Sender     urns.URN
+	Recipient  urns.URN
+	Currency   string
+	Amount     decimal.Decimal
 }
 
 // AirtimeService provides airtime functionality to the engine

@@ -50,20 +50,19 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 		urns.URN("tel:+593979000000"),
 		urns.URN("tel:+593979123456"),
 		map[string]decimal.Decimal{
-			"USD": decimal.RequireFromString("3.5"),
+			"USD": decimal.RequireFromString("3"),
 			"RWF": decimal.RequireFromString("5000"),
 		},
 		httpLogger.Log,
 	)
 	assert.NoError(t, err)
 	assert.Equal(t, &flows.AirtimeTransfer{
-		UUID:          "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
-		ExternalID:    "2237512891",
-		Sender:        urns.URN("tel:+593979000000"),
-		Recipient:     urns.URN("tel:+593979123456"),
-		Currency:      "USD",
-		DesiredAmount: decimal.RequireFromString("3.5"),
-		ActualAmount:  decimal.RequireFromString("3"), // closest product
+		UUID:       "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		ExternalID: "2237512891",
+		Sender:     urns.URN("tel:+593979000000"),
+		Recipient:  urns.URN("tel:+593979123456"),
+		Currency:   "USD",
+		Amount:     decimal.RequireFromString("3"),
 	}, transfer)
 
 	assert.Equal(t, 3, len(httpLogger.Logs))
@@ -85,10 +84,12 @@ func TestServiceFailedTransfers(t *testing.T) {
 			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
 			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
 			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
+			httpx.NewMockResponse(200, nil, []byte(lookupNumberResponse)),
 		},
 		"https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": {
 			httpx.NewMockResponse(400, nil, errorResp(1003001, "Product is not available in your account")),
 			httpx.NewMockResponse(200, nil, []byte(`[]`)), // no products
+			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 			httpx.NewMockResponse(200, nil, []byte(productsResponse)),
 		},
@@ -106,15 +107,14 @@ func TestServiceFailedTransfers(t *testing.T) {
 	svc := dtone.NewService(http.DefaultClient, nil, "key123", "sesame")
 
 	httpLogger := &flows.HTTPLogger{}
-	amounts := map[string]decimal.Decimal{"USD": decimal.RequireFromString("3.5")}
+	amounts := map[string]decimal.Decimal{"USD": decimal.RequireFromString("3")}
 
 	// try when phone number lookup gives a connection error
 	transfer, err := svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "number lookup failed: unable to connect to server")
 	assert.Equal(t, urns.URN("tel:+593979000000"), transfer.Sender)
 	assert.Equal(t, urns.URN("tel:+593979123456"), transfer.Recipient)
-	assert.Equal(t, decimal.Zero, transfer.DesiredAmount)
-	assert.Equal(t, decimal.Zero, transfer.ActualAmount)
+	assert.Equal(t, decimal.Zero, transfer.Amount)
 
 	// try when phone number lookup fails
 	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
@@ -133,6 +133,11 @@ func TestServiceFailedTransfers(t *testing.T) {
 
 	// try when we can't find any suitable products
 	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	assert.EqualError(t, err, "unable to find a suitable product for operator 'Claro Ecuador'")
+	assert.NotNil(t, transfer)
+
+	// try when we can't find any suitable products (there are products but none match the amount)
+	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), map[string]decimal.Decimal{"USD": decimal.RequireFromString("2")}, httpLogger.Log)
 	assert.EqualError(t, err, "unable to find a suitable product for operator 'Claro Ecuador'")
 	assert.NotNil(t, transfer)
 

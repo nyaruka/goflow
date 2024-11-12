@@ -29,12 +29,11 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, se
 
 func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
-		UUID:          flows.AirtimeTransferUUID(uuids.NewV4()),
-		Sender:        sender,
-		Recipient:     recipient,
-		Currency:      "",
-		DesiredAmount: decimal.Zero,
-		ActualAmount:  decimal.Zero,
+		UUID:      flows.AirtimeTransferUUID(uuids.NewV4()),
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  "",
+		Amount:    decimal.Zero,
 	}
 	recipientPhoneNumber := recipient.Path()
 	if !strings.HasPrefix(recipientPhoneNumber, "+") {
@@ -70,34 +69,24 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 		return transfer, fmt.Errorf("product fetch failed: %w", err)
 	}
 
-	// closest product for each currency we have a desired amount for
-	closestProducts := make(map[string]*Product, len(amounts))
-
+	// find a matching product in any currency we have a desired amount for
+	var product *Product
 	for currency, desiredAmount := range amounts {
-		for _, product := range products {
-			if product.Destination.Unit == currency {
-				closest := closestProducts[currency]
-				prodAmount := product.Destination.Amount
-
-				if (closest == nil || prodAmount.GreaterThan(closest.Destination.Amount)) && prodAmount.LessThanOrEqual(desiredAmount) {
-					closestProducts[currency] = product
+		for _, p := range products {
+			if p.Destination.Unit == currency {
+				if p.Destination.Amount.Equal(desiredAmount) {
+					product = p
+					break
 				}
 			}
 		}
 	}
-	if len(closestProducts) == 0 {
+	if product == nil {
 		return transfer, fmt.Errorf("unable to find a suitable product for operator '%s'", operator.Name)
 	}
 
-	// it's possible we have more than one supported currency/product.. use any
-	var product *Product
-	for i := range closestProducts {
-		product = closestProducts[i]
-		break
-	}
-
 	transfer.Currency = product.Destination.Unit
-	transfer.DesiredAmount = amounts[transfer.Currency]
+	transfer.Amount = product.Destination.Amount
 
 	// request asynchronous confirmed transaction for this product
 	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipientPhoneNumber)
@@ -113,7 +102,6 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	}
 
 	transfer.ExternalID = fmt.Sprintf("%d", tx.ID)
-	transfer.ActualAmount = product.Destination.Amount
 
 	return transfer, nil
 }
