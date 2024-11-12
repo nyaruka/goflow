@@ -23,8 +23,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //	  "sender": "tel:4748",
 //	  "recipient": "tel:+1242563637",
 //	  "currency": "RWF",
-//	  "desired_amount": 120,
-//	  "actual_amount": 100,
+//	  "amount": 100,
 //	  "http_logs": [
 //	    {
 //	      "url": "https://dvs-api.dtone.com/v1/sync/transactions",
@@ -41,27 +40,25 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	BaseEvent
 
-	TransferUUID  flows.AirtimeTransferUUID `json:"transfer_uuid"`
-	ExternalID    string                    `json:"external_id"`
-	Sender        urns.URN                  `json:"sender"`
-	Recipient     urns.URN                  `json:"recipient"`
-	Currency      string                    `json:"currency"`
-	DesiredAmount decimal.Decimal           `json:"desired_amount"`
-	ActualAmount  decimal.Decimal           `json:"actual_amount"`
-	HTTPLogs      []*flows.HTTPLog          `json:"http_logs"`
+	TransferUUID flows.AirtimeTransferUUID `json:"transfer_uuid"`
+	ExternalID   string                    `json:"external_id"`
+	Sender       urns.URN                  `json:"sender"`
+	Recipient    urns.URN                  `json:"recipient"`
+	Currency     string                    `json:"currency"`
+	Amount       decimal.Decimal           `json:"amount"`
+	HTTPLogs     []*flows.HTTPLog          `json:"http_logs"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
-		BaseEvent:     NewBaseEvent(TypeAirtimeTransferred),
-		TransferUUID:  t.UUID,
-		ExternalID:    t.ExternalID,
-		Sender:        t.Sender,
-		Recipient:     t.Recipient,
-		Currency:      t.Currency,
-		DesiredAmount: t.DesiredAmount,
-		ActualAmount:  t.ActualAmount,
-		HTTPLogs:      httpLogs,
+		BaseEvent:    NewBaseEvent(TypeAirtimeTransferred),
+		TransferUUID: t.UUID,
+		ExternalID:   t.ExternalID,
+		Sender:       t.Sender,
+		Recipient:    t.Recipient,
+		Currency:     t.Currency,
+		Amount:       t.Amount,
+		HTTPLogs:     httpLogs,
 	}
 }

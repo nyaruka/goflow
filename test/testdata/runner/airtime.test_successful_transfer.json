@@ -128,10 +128,9 @@
         {
             "events": [
                 {
-                    "actual_amount": 3,
+                    "amount": 3,
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "currency": "USD",
-                    "desired_amount": 3.5,
                     "external_id": "2237512891",
                     "http_logs": [
                         {
@@ -214,10 +213,9 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "actual_amount": 3,
+                                "amount": 3,
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "currency": "USD",
-                                "desired_amount": 3.5,
                                 "external_id": "2237512891",
                                 "http_logs": [
                                     {

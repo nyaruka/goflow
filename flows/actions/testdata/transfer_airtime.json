@@ -187,7 +187,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "amounts": {
                 "RWF": 500,
-                "USD": 3.5
+                "USD": 3
             },
             "result_name": "Reward Transfer"
         },
@@ -201,8 +201,7 @@
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "USD",
-                "desired_amount": 3.5,
-                "actual_amount": 3,
+                "amount": 3,
                 "http_logs": [
                     {
                         "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number",
@@ -301,8 +300,7 @@
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "currency": "",
-                "desired_amount": 0,
-                "actual_amount": 0,
+                "amount": 0,
                 "http_logs": [
                     {
                         "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number",
