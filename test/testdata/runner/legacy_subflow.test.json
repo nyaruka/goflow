@@ -162,7 +162,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "xx",
                     "name": "Number",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
@@ -275,7 +274,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "xx",
                                 "name": "Number",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
@@ -402,7 +400,6 @@
                 {
                     "category": "Numeric",
                     "created_on": "2018-07-06T12:30:32.123456789Z",
-                    "input": "13",
                     "name": "Number",
                     "previous": {
                         "category": "Other",
@@ -486,7 +483,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "xx",
                                 "name": "Number",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
@@ -522,7 +518,6 @@
                             {
                                 "category": "Numeric",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
-                                "input": "13",
                                 "name": "Number",
                                 "previous": {
                                     "category": "Other",

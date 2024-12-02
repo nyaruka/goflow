@@ -162,7 +162,6 @@
                 {
                     "category": "Blue",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "I like blue!",
                     "name": "Color",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
@@ -277,7 +276,6 @@
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "I like blue!",
                                 "name": "Color",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -406,7 +404,6 @@
                 {
                     "category": "Pilsner",
                     "created_on": "2018-07-06T12:30:32.123456789Z",
-                    "input": "Pilsner",
                     "name": "Beer",
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "run_result_changed",
@@ -508,7 +505,6 @@
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "I like blue!",
                                 "name": "Color",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -548,7 +544,6 @@
                             {
                                 "category": "Pilsner",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
-                                "input": "Pilsner",
                                 "name": "Beer",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "run_result_changed",

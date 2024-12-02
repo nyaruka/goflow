@@ -170,7 +170,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "3",
                     "name": "Result 1",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -299,7 +298,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "3",
                                 "name": "Result 1",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -436,7 +434,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:34.123456789Z",
-                    "input": "5",
                     "name": "Result 1",
                     "previous": {
                         "category": "Other",
@@ -569,7 +566,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "3",
                                 "name": "Result 1",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -609,7 +605,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
-                                "input": "5",
                                 "name": "Result 1",
                                 "previous": {
                                     "category": "Other",
@@ -768,7 +763,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:53.123456789Z",
-                    "input": "22",
                     "name": "Result 1",
                     "previous": {
                         "category": "Other",
@@ -888,7 +882,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "3",
                                 "name": "Result 1",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -928,7 +921,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
-                                "input": "5",
                                 "name": "Result 1",
                                 "previous": {
                                     "category": "Other",
@@ -972,7 +964,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:53.123456789Z",
-                                "input": "22",
                                 "name": "Result 1",
                                 "previous": {
                                     "category": "Other",

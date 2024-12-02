@@ -194,8 +194,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Favorite Color",
                 "value": "YES",
-                "category": "Yes",
-                "input": "YES!!"
+                "category": "Yes"
             }
         ],
         "templates": [
@@ -284,8 +283,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Is Member",
                 "value": "[]",
-                "category": "Other",
-                "input": "[]"
+                "category": "Other"
             }
         ],
         "templates": [
@@ -374,8 +372,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "In Group",
                 "value": "[]",
-                "category": "Other",
-                "input": "[]"
+                "category": "Other"
             }
         ],
         "templates": [
@@ -483,8 +480,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Favorite Color",
                 "value": "YES",
-                "category": "Yes",
-                "input": "YES!!"
+                "category": "Yes"
             }
         ],
         "templates": [

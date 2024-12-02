@@ -153,7 +153,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:14.123456789Z",
-                    "input": "Rats",
                     "name": "Response 1",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -284,7 +283,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
-                                "input": "Rats",
                                 "name": "Response 1",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",

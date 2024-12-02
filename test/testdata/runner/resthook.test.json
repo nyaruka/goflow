@@ -86,7 +86,6 @@
                             "bad_request"
                         ]
                     },
-                    "input": "POST http://localhost/?cmd=badrequest",
                     "name": "Response 1",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -216,7 +215,6 @@
                                         "bad_request"
                                     ]
                                 },
-                                "input": "POST http://localhost/?cmd=badrequest",
                                 "name": "Response 1",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",

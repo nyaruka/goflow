@@ -173,7 +173,6 @@
                 {
                     "category": "Valid",
                     "created_on": "2018-07-06T12:30:13.123456789Z",
-                    "input": "I was born on 1977.06.23 at 3:34 pm",
                     "name": "Birth Date",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -313,7 +312,6 @@
                             {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
-                                "input": "I was born on 1977.06.23 at 3:34 pm",
                                 "name": "Birth Date",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",

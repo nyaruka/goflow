@@ -175,7 +175,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:21.123456789Z",
-                    "input": "30",
                     "name": "Older",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
@@ -263,7 +262,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
-                                "input": "30",
                                 "name": "Older",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",

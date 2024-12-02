@@ -24,8 +24,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Intent",
                 "value": "0",
-                "category": "Failure",
-                "input": "Hi everybody"
+                "category": "Failure"
             }
         ],
         "templates": [
@@ -179,7 +178,6 @@
                 "name": "Intent",
                 "value": "book_flight",
                 "category": "Success",
-                "input": "Hi everybody",
                 "extra": {
                     "intents": [
                         {
@@ -283,8 +281,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Intent",
                 "value": "0",
-                "category": "Failure",
-                "input": "Hi everybody"
+                "category": "Failure"
             }
         ],
         "templates": [
@@ -370,8 +367,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Intent",
                 "value": "0",
-                "category": "Failure",
-                "input": "Hi everybody"
+                "category": "Failure"
             }
         ],
         "templates": [

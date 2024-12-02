@@ -250,7 +250,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:23.123456789Z",
-                    "input": "Dwayne",
                     "name": "First Name",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
@@ -469,7 +468,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
-                                "input": "Dwayne",
                                 "name": "First Name",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -569,7 +567,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:43.123456789Z",
-                    "input": "Douglas",
                     "name": "Middle Name",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_result_changed",
@@ -772,7 +769,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:43.123456789Z",
-                                "input": "Douglas",
                                 "name": "Middle Name",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
@@ -853,7 +849,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
-                                "input": "Dwayne",
                                 "name": "First Name",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -953,7 +948,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:31:03.123456789Z",
-                    "input": "Johnson",
                     "name": "Last Name",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
@@ -1050,7 +1044,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:31:03.123456789Z",
-                                "input": "Johnson",
                                 "name": "Last Name",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -1147,7 +1140,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:43.123456789Z",
-                                "input": "Douglas",
                                 "name": "Middle Name",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
@@ -1228,7 +1220,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
-                                "input": "Dwayne",
                                 "name": "First Name",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
