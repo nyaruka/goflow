@@ -438,6 +438,10 @@
                     "created_on": "2018-07-06T12:30:34.123456789Z",
                     "input": "5",
                     "name": "Result 1",
+                    "previous": {
+                        "category": "Other",
+                        "value": "3"
+                    },
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
                     "value": "5"
@@ -607,6 +611,10 @@
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "input": "5",
                                 "name": "Result 1",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "3"
+                                },
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
                                 "value": "5"
@@ -762,6 +770,10 @@
                     "created_on": "2018-07-06T12:30:53.123456789Z",
                     "input": "22",
                     "name": "Result 1",
+                    "previous": {
+                        "category": "Other",
+                        "value": "5"
+                    },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "run_result_changed",
                     "value": "22"
@@ -918,6 +930,10 @@
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "input": "5",
                                 "name": "Result 1",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "3"
+                                },
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
                                 "value": "5"
@@ -958,6 +974,10 @@
                                 "created_on": "2018-07-06T12:30:53.123456789Z",
                                 "input": "22",
                                 "name": "Result 1",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "5"
+                                },
                                 "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                                 "type": "run_result_changed",
                                 "value": "22"

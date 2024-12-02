@@ -178,8 +178,10 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 			extraJSON, _ = jsonx.Marshal(extra)
 		}
 		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), operand, extraJSON, dates.Now())
-		prev := run.SaveResult(result)
-		logEvent(events.NewRunResultChanged(result, prev))
+		prev, changed := run.SaveResult(result)
+		if changed {
+			logEvent(events.NewRunResultChanged(result, prev))
+		}
 	}
 
 	return category.ExitUUID(), nil

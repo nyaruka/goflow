@@ -13,6 +13,11 @@ func init() {
 // TypeRunResultChanged is the type of our run result event
 const TypeRunResultChanged string = "run_result_changed"
 
+type PreviousResult struct {
+	Value    string `json:"value"`
+	Category string `json:"category"`
+}
+
 // RunResultChangedEvent events are created when a run result is saved. They contain not only
 // the name, value and category of the result, but also the UUID of the node where
 // the result was generated.
@@ -38,13 +43,19 @@ type RunResultChangedEvent struct {
 	CategoryLocalized string          `json:"category_localized,omitempty"`
 	Input             string          `json:"input,omitempty"`
 	Extra             json.RawMessage `json:"extra,omitempty"`
-
-	// not included in JSON - used internally to track changes
-	Previous *flows.Result `json:"-"`
+	Previous          *PreviousResult `json:"previous,omitempty"`
 }
 
 // NewRunResultChanged returns a new save result event for the passed in values
 func NewRunResultChanged(result, prev *flows.Result) *RunResultChangedEvent {
+	var p *PreviousResult
+	if prev != nil {
+		p = &PreviousResult{
+			Value:    prev.Value,
+			Category: prev.Category,
+		}
+	}
+
 	return &RunResultChangedEvent{
 		BaseEvent:         NewBaseEvent(TypeRunResultChanged),
 		Name:              result.Name,
@@ -53,6 +64,6 @@ func NewRunResultChanged(result, prev *flows.Result) *RunResultChangedEvent {
 		CategoryLocalized: result.CategoryLocalized,
 		Input:             result.Input,
 		Extra:             result.Extra,
-		Previous:          prev,
+		Previous:          p,
 	}
 }
