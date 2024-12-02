@@ -1,3 +1,8 @@
+v0.224.0 (2024-12-02)
+-------------------------
+ * Update deps
+ * Include previous result value on run_result_changed events
+
 v0.223.0 (2024-11-12)
 -------------------------
  * Change transfer_airtime to fail when no exact matching amount
