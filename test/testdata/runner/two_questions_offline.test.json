@@ -155,7 +155,6 @@
                 {
                     "category": "Red",
                     "created_on": "2018-07-06T12:30:12.123456789Z",
-                    "input": "red",
                     "name": "Favorite Color",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -264,7 +263,6 @@
                             {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
-                                "input": "red",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -382,7 +380,6 @@
                 {
                     "category": "Pepsi",
                     "created_on": "2018-07-06T12:30:26.123456789Z",
-                    "input": "pepsi",
                     "name": "Soda",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -494,7 +491,6 @@
                             {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
-                                "input": "red",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -529,7 +525,6 @@
                             {
                                 "category": "Pepsi",
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "input": "pepsi",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -745,7 +740,6 @@
                             {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
-                                "input": "red",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -780,7 +774,6 @@
                             {
                                 "category": "Pepsi",
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
-                                "input": "pepsi",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",

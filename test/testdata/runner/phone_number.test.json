@@ -170,7 +170,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "135532",
                     "name": "Backup Phone",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -291,7 +290,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "135532",
                                 "name": "Backup Phone",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -422,8 +420,11 @@
                 {
                     "category": "Has Phone",
                     "created_on": "2018-07-06T12:30:32.123456789Z",
-                    "input": "718-456-7890",
                     "name": "Backup Phone",
+                    "previous": {
+                        "category": "Other",
+                        "value": "135532"
+                    },
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
                     "value": "+17184567890"
@@ -559,7 +560,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "135532",
                                 "name": "Backup Phone",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -599,8 +599,11 @@
                             {
                                 "category": "Has Phone",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
-                                "input": "718-456-7890",
                                 "name": "Backup Phone",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "135532"
+                                },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "+17184567890"

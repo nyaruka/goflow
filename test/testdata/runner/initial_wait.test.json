@@ -15,7 +15,6 @@
                 {
                     "category": "Ping",
                     "created_on": "2018-07-06T12:30:06.123456789Z",
-                    "input": "PING",
                     "name": "Command",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -103,7 +102,6 @@
                             {
                                 "category": "Ping",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "input": "PING",
                                 "name": "Command",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",

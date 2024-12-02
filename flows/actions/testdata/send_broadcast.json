@@ -128,9 +128,6 @@
         "action": {
             "type": "send_broadcast",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "urns": [
-                "tel:+1234567890"
-            ],
             "groups": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -144,6 +141,9 @@
                 }
             ],
             "contact_query": "name = \"Bob\"",
+            "urns": [
+                "tel:+1234567890"
+            ],
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",

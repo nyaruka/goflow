@@ -246,7 +246,6 @@
                 {
                     "category": "Name",
                     "created_on": "2018-07-06T12:30:18.123456789Z",
-                    "input": "Ryan Lewis",
                     "name": "Name",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -460,7 +459,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:18.123456789Z",
-                                "input": "Ryan Lewis",
                                 "name": "Name",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",

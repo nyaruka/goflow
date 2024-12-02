@@ -160,7 +160,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:14.123456789Z",
-                    "input": "I'd like to book a flight to Quito",
                     "name": "Response 1",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -211,7 +210,6 @@
                             }
                         ]
                     },
-                    "input": "I'd like to book a flight to Quito",
                     "name": "_Intent Classification",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -223,7 +221,6 @@
                     "extra": {
                         "location": "Quito"
                     },
-                    "input": "book_flight",
                     "name": "Intent",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -330,7 +327,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
-                                "input": "I'd like to book a flight to Quito",
                                 "name": "Response 1",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -381,7 +377,6 @@
                                         }
                                     ]
                                 },
-                                "input": "I'd like to book a flight to Quito",
                                 "name": "_Intent Classification",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
@@ -393,7 +388,6 @@
                                 "extra": {
                                     "location": "Quito"
                                 },
-                                "input": "book_flight",
                                 "name": "Intent",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",

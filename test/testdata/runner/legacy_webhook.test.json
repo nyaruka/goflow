@@ -29,7 +29,6 @@
                     "extra": {
                         "foo": "bar"
                     },
-                    "input": "POST http://localhost/?cmd=foo",
                     "name": "Webhook Result",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
@@ -114,7 +113,6 @@
                                 "extra": {
                                     "foo": "bar"
                                 },
-                                "input": "POST http://localhost/?cmd=foo",
                                 "name": "Webhook Result",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",

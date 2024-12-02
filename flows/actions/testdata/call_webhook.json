@@ -252,7 +252,6 @@
                 "name": "My Webhook",
                 "value": "200",
                 "category": "Success",
-                "input": "POST http://temba.io/",
                 "extra": {
                     "ok": true
                 }
@@ -391,8 +390,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "My Webhook",
                 "value": "200",
-                "category": "Success",
-                "input": "GET http://temba.io/"
+                "category": "Success"
             }
         ],
         "webhook": {
@@ -463,8 +461,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "My Webhook",
                 "value": "200",
-                "category": "Success",
-                "input": "GET http://temba.io/"
+                "category": "Success"
             }
         ],
         "webhook": {
@@ -537,7 +534,6 @@
                 "name": "My Webhook",
                 "value": "400",
                 "category": "Failure",
-                "input": "POST http://temba.io/",
                 "extra": {
                     "errors": [
                         "bad_request"
@@ -615,8 +611,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "My Webhook",
                 "value": "0",
-                "category": "Failure",
-                "input": "POST http://temba.io/"
+                "category": "Failure"
             }
         ],
         "webhook": {
@@ -693,8 +688,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "My Webhook",
                 "value": "200",
-                "category": "Failure",
-                "input": "GET http://temba.io/"
+                "category": "Failure"
             }
         ],
         "webhook": {

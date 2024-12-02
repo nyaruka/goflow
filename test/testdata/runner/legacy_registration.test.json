@@ -162,7 +162,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "Bobby",
                     "name": "Name",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_result_changed",
@@ -281,7 +280,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "Bobby",
                                 "name": "Name",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
@@ -414,7 +412,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:34.123456789Z",
-                    "input": "123",
                     "name": "Age",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
@@ -527,7 +524,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "Bobby",
                                 "name": "Name",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
@@ -569,7 +565,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
-                                "input": "123",
                                 "name": "Age",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -716,8 +711,11 @@
                 {
                     "category": "10 - 100",
                     "created_on": "2018-07-06T12:30:51.123456789Z",
-                    "input": "18",
                     "name": "Age",
+                    "previous": {
+                        "category": "Other",
+                        "value": "123"
+                    },
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "run_result_changed",
                     "value": "18"
@@ -736,7 +734,6 @@
                 {
                     "category": "Youth",
                     "created_on": "2018-07-06T12:31:01.123456789Z",
-                    "input": "18",
                     "name": "Response 3",
                     "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "run_result_changed",
@@ -857,7 +854,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "Bobby",
                                 "name": "Name",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
@@ -899,7 +895,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
-                                "input": "123",
                                 "name": "Age",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -935,8 +930,11 @@
                             {
                                 "category": "10 - 100",
                                 "created_on": "2018-07-06T12:30:51.123456789Z",
-                                "input": "18",
                                 "name": "Age",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "123"
+                                },
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "run_result_changed",
                                 "value": "18"
@@ -955,7 +953,6 @@
                             {
                                 "category": "Youth",
                                 "created_on": "2018-07-06T12:31:01.123456789Z",
-                                "input": "18",
                                 "name": "Response 3",
                                 "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                                 "type": "run_result_changed",
