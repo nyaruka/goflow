@@ -21,7 +21,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.5.0")
+var CurrentSpecVersion = semver.MustParse("13.6.0")
 
 // IsVersionSupported checks the given version is supported
 func IsVersionSupported(v *semver.Version) bool {
