@@ -1,3 +1,8 @@
+v0.224.1 (2024-12-02)
+-------------------------
+ * Remove unused fields from run result events
+ * Only generate run_result_changed event when value or category changes
+
 v0.224.0 (2024-12-02)
 -------------------------
  * Update deps
