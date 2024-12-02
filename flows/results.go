@@ -100,9 +100,12 @@ func (r Results) Clone() Results {
 	return clone
 }
 
-// Save saves a new result in our map. The key is saved in a snakified format
-func (r Results) Save(result *Result) {
-	r[utils.Snakify(result.Name)] = result
+// Save saves a new result in our map using the snakified name as the key. Returns the old result if it existed.
+func (r Results) Save(result *Result) *Result {
+	key := utils.Snakify(result.Name)
+	old := r[key]
+	r[key] = result
+	return old
 }
 
 // Get returns the result with the given key
