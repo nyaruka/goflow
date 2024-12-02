@@ -424,6 +424,10 @@
                     "created_on": "2018-07-06T12:30:32.123456789Z",
                     "input": "718-456-7890",
                     "name": "Backup Phone",
+                    "previous": {
+                        "category": "Other",
+                        "value": "135532"
+                    },
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
                     "value": "+17184567890"
@@ -601,6 +605,10 @@
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "718-456-7890",
                                 "name": "Backup Phone",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "135532"
+                                },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "+17184567890"

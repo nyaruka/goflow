@@ -71,7 +71,7 @@ func (r *run) Contact() *flows.Contact              { return r.session.Contact()
 func (r *run) Events() []flows.Event                { return r.events }
 
 func (r *run) Results() flows.Results { return r.results }
-func (r *run) SaveResult(result *flows.Result) *flows.Result {
+func (r *run) SaveResult(result *flows.Result) (*flows.Result, bool) {
 	// truncate value if necessary
 	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 

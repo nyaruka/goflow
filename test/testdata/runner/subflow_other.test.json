@@ -604,6 +604,10 @@
                     "created_on": "2018-07-06T12:30:38.123456789Z",
                     "input": "yes",
                     "name": "Answer",
+                    "previous": {
+                        "category": "Other",
+                        "value": "neither"
+                    },
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_result_changed",
                     "value": "yes"
@@ -889,6 +893,10 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "neither"
+                                },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -1360,6 +1368,10 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "neither"
+                                },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -1504,6 +1516,10 @@
                     "created_on": "2018-07-06T12:31:15.123456789Z",
                     "input": "no",
                     "name": "Answer",
+                    "previous": {
+                        "category": "Other",
+                        "value": "never"
+                    },
                     "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
                     "type": "run_result_changed",
                     "value": "no"
@@ -1696,6 +1712,10 @@
                                 "created_on": "2018-07-06T12:31:15.123456789Z",
                                 "input": "no",
                                 "name": "Answer",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "never"
+                                },
                                 "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
                                 "type": "run_result_changed",
                                 "value": "no"
@@ -1864,6 +1884,10 @@
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "neither"
+                                },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",
                                 "value": "yes"

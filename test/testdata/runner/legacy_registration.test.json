@@ -718,6 +718,10 @@
                     "created_on": "2018-07-06T12:30:51.123456789Z",
                     "input": "18",
                     "name": "Age",
+                    "previous": {
+                        "category": "Other",
+                        "value": "123"
+                    },
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "run_result_changed",
                     "value": "18"
@@ -937,6 +941,10 @@
                                 "created_on": "2018-07-06T12:30:51.123456789Z",
                                 "input": "18",
                                 "name": "Age",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "123"
+                                },
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "run_result_changed",
                                 "value": "18"

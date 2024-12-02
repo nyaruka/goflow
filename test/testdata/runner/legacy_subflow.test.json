@@ -404,6 +404,10 @@
                     "created_on": "2018-07-06T12:30:32.123456789Z",
                     "input": "13",
                     "name": "Number",
+                    "previous": {
+                        "category": "Other",
+                        "value": "xx"
+                    },
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "run_result_changed",
                     "value": "13"
@@ -520,6 +524,10 @@
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "13",
                                 "name": "Number",
+                                "previous": {
+                                    "category": "Other",
+                                    "value": "xx"
+                                },
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "13"
