@@ -32,7 +32,6 @@
                 {
                     "category": "Success",
                     "created_on": "2018-07-06T12:30:08.123456789Z",
-                    "input": "GET http://temba.io/1",
                     "name": "Call 1",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -117,7 +116,6 @@
                             {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
-                                "input": "GET http://temba.io/1",
                                 "name": "Call 1",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -221,7 +219,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:25.123456789Z",
-                    "input": "Ok",
                     "name": "Response",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -263,7 +260,6 @@
                     "extra": {
                         "greeting": "hello"
                     },
-                    "input": "GET http://temba.io/2",
                     "name": "Call 2",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
@@ -371,7 +367,6 @@
                             {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
-                                "input": "GET http://temba.io/1",
                                 "name": "Call 1",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -407,7 +402,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:25.123456789Z",
-                                "input": "Ok",
                                 "name": "Response",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
@@ -449,7 +443,6 @@
                                 "extra": {
                                     "greeting": "hello"
                                 },
-                                "input": "GET http://temba.io/2",
                                 "name": "Call 2",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -596,7 +589,6 @@
                 {
                     "category": "All Responses",
                     "created_on": "2018-07-06T12:30:58.123456789Z",
-                    "input": "Sure",
                     "name": "Response 2",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_result_changed",
@@ -682,7 +674,6 @@
                             {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
-                                "input": "GET http://temba.io/1",
                                 "name": "Call 1",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -718,7 +709,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:25.123456789Z",
-                                "input": "Ok",
                                 "name": "Response",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
@@ -760,7 +750,6 @@
                                 "extra": {
                                     "greeting": "hello"
                                 },
-                                "input": "GET http://temba.io/2",
                                 "name": "Call 2",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -796,7 +785,6 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:58.123456789Z",
-                                "input": "Sure",
                                 "name": "Response 2",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "run_result_changed",

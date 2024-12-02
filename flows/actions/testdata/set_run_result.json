@@ -208,8 +208,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "Preference",
                 "value": "yeah",
-                "category": "Yes",
-                "category_localized": "Si"
+                "category": "Yes"
             }
         ],
         "templates": [

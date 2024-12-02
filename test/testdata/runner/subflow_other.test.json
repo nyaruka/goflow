@@ -273,7 +273,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:22.123456789Z",
-                    "input": "neither",
                     "name": "Answer",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
@@ -460,7 +459,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "input": "neither",
                                 "name": "Answer",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -602,7 +600,6 @@
                 {
                     "category": "Yes",
                     "created_on": "2018-07-06T12:30:38.123456789Z",
-                    "input": "yes",
                     "name": "Answer",
                     "previous": {
                         "category": "Other",
@@ -848,7 +845,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "input": "neither",
                                 "name": "Answer",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -891,7 +887,6 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
-                                "input": "yes",
                                 "name": "Answer",
                                 "previous": {
                                     "category": "Other",
@@ -1039,7 +1034,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:59.123456789Z",
-                    "input": "never",
                     "name": "Answer",
                     "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "run_result_changed",
@@ -1200,7 +1194,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:59.123456789Z",
-                                "input": "never",
                                 "name": "Answer",
                                 "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                                 "type": "run_result_changed",
@@ -1323,7 +1316,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "input": "neither",
                                 "name": "Answer",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -1366,7 +1358,6 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
-                                "input": "yes",
                                 "name": "Answer",
                                 "previous": {
                                     "category": "Other",
@@ -1514,7 +1505,6 @@
                 {
                     "category": "No",
                     "created_on": "2018-07-06T12:31:15.123456789Z",
-                    "input": "no",
                     "name": "Answer",
                     "previous": {
                         "category": "Other",
@@ -1667,7 +1657,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:59.123456789Z",
-                                "input": "never",
                                 "name": "Answer",
                                 "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                                 "type": "run_result_changed",
@@ -1710,7 +1699,6 @@
                             {
                                 "category": "No",
                                 "created_on": "2018-07-06T12:31:15.123456789Z",
-                                "input": "no",
                                 "name": "Answer",
                                 "previous": {
                                     "category": "Other",
@@ -1839,7 +1827,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "input": "neither",
                                 "name": "Answer",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "run_result_changed",
@@ -1882,7 +1869,6 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
-                                "input": "yes",
                                 "name": "Answer",
                                 "previous": {
                                     "category": "Other",

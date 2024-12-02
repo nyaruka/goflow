@@ -13,7 +13,6 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:10.123456789Z",
-                    "input": "[]",
                     "name": "Group Check",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
@@ -22,7 +21,6 @@
                 {
                     "category": "Valid",
                     "created_on": "2018-07-06T12:30:16.123456789Z",
-                    "input": "I live in gasabo",
                     "name": "District Check",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -144,7 +142,6 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "input": "[]",
                                 "name": "Group Check",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
@@ -153,7 +150,6 @@
                             {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
-                                "input": "I live in gasabo",
                                 "name": "District Check",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",

@@ -147,7 +147,6 @@
                 {
                     "category": "Busy",
                     "created_on": "2018-07-06T12:30:11.123456789Z",
-                    "input": "busy",
                     "name": "Redirect",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -215,7 +214,6 @@
                             {
                                 "category": "Busy",
                                 "created_on": "2018-07-06T12:30:11.123456789Z",
-                                "input": "busy",
                                 "name": "Redirect",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",

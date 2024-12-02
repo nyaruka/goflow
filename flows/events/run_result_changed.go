@@ -18,32 +18,25 @@ type PreviousResult struct {
 	Category string `json:"category"`
 }
 
-// RunResultChangedEvent events are created when a run result is saved. They contain not only
-// the name, value and category of the result, but also the UUID of the node where
-// the result was generated.
+// RunResultChangedEvent events are created when a run result is changed.
 //
 //	{
 //	  "type": "run_result_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "name": "Gender",
 //	  "value": "m",
-//	  "category": "Male",
-//	  "category_localized": "Homme",
-//	  "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//	  "input": "M"
+//	  "category": "Male"
 //	}
 //
 // @event run_result_changed
 type RunResultChangedEvent struct {
 	BaseEvent
 
-	Name              string          `json:"name" validate:"required"`
-	Value             string          `json:"value"`
-	Category          string          `json:"category"`
-	CategoryLocalized string          `json:"category_localized,omitempty"`
-	Input             string          `json:"input,omitempty"`
-	Extra             json.RawMessage `json:"extra,omitempty"`
-	Previous          *PreviousResult `json:"previous,omitempty"`
+	Name     string          `json:"name" validate:"required"`
+	Value    string          `json:"value"`
+	Category string          `json:"category"`
+	Extra    json.RawMessage `json:"extra,omitempty"`
+	Previous *PreviousResult `json:"previous,omitempty"`
 }
 
 // NewRunResultChanged returns a new save result event for the passed in values
@@ -57,13 +50,11 @@ func NewRunResultChanged(result, prev *flows.Result) *RunResultChangedEvent {
 	}
 
 	return &RunResultChangedEvent{
-		BaseEvent:         NewBaseEvent(TypeRunResultChanged),
-		Name:              result.Name,
-		Value:             result.Value,
-		Category:          result.Category,
-		CategoryLocalized: result.CategoryLocalized,
-		Input:             result.Input,
-		Extra:             result.Extra,
-		Previous:          p,
+		BaseEvent: NewBaseEvent(TypeRunResultChanged),
+		Name:      result.Name,
+		Value:     result.Value,
+		Category:  result.Category,
+		Extra:     result.Extra,
+		Previous:  p,
 	}
 }

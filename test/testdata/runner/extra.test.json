@@ -39,7 +39,6 @@
                         "1": "Ben",
                         "2": "Haggerty"
                     },
-                    "input": "Ben Haggerty",
                     "name": "Name Check",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -85,7 +84,6 @@
                     "extra": {
                         "ok": "true"
                     },
-                    "input": "GET http://localhost/?cmd=extra",
                     "name": "webhook",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -192,7 +190,6 @@
                                     "1": "Ben",
                                     "2": "Haggerty"
                                 },
-                                "input": "Ben Haggerty",
                                 "name": "Name Check",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -238,7 +235,6 @@
                                 "extra": {
                                     "ok": "true"
                                 },
-                                "input": "GET http://localhost/?cmd=extra",
                                 "name": "webhook",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
@@ -376,7 +372,6 @@
                 {
                     "category": "",
                     "created_on": "2018-07-06T12:30:38.123456789Z",
-                    "input": "Ryan Lewis",
                     "name": "Continue",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
@@ -483,7 +478,6 @@
                                     "1": "Ben",
                                     "2": "Haggerty"
                                 },
-                                "input": "Ben Haggerty",
                                 "name": "Name Check",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -529,7 +523,6 @@
                                 "extra": {
                                     "ok": "true"
                                 },
-                                "input": "GET http://localhost/?cmd=extra",
                                 "name": "webhook",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
@@ -578,7 +571,6 @@
                             {
                                 "category": "",
                                 "created_on": "2018-07-06T12:30:38.123456789Z",
-                                "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",

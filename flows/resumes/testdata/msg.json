@@ -52,8 +52,7 @@
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "name": "Favorite Color",
                 "value": "red",
-                "category": "Red",
-                "input": "red"
+                "category": "Red"
             }
         ],
         "run_status": "completed",

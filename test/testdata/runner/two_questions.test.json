@@ -233,7 +233,6 @@
                 {
                     "category": "Blue",
                     "created_on": "2018-07-06T12:30:16.123456789Z",
-                    "input": "I like blue!",
                     "name": "Favorite Color",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
@@ -421,7 +420,6 @@
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
-                                "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -552,9 +550,7 @@
                 },
                 {
                     "category": "Coke",
-                    "category_localized": "Coke",
                     "created_on": "2018-07-06T12:30:32.123456789Z",
-                    "input": "Coke",
                     "name": "Soda",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -744,7 +740,6 @@
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
-                                "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
@@ -792,9 +787,7 @@
                             },
                             {
                                 "category": "Coke",
-                                "category_localized": "Coke",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
-                                "input": "Coke",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",

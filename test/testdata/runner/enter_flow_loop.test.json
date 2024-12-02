@@ -160,7 +160,6 @@
                 {
                     "category": "Name",
                     "created_on": "2018-07-06T12:30:15.123456789Z",
-                    "input": "name",
                     "name": "Command",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
@@ -324,7 +323,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -545,7 +543,6 @@
                 {
                     "category": "Name",
                     "created_on": "2018-07-06T12:30:51.123456789Z",
-                    "input": "name",
                     "name": "Command",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "run_result_changed",
@@ -703,7 +700,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -855,7 +851,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:51.123456789Z",
-                                "input": "name",
                                 "name": "Command",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -1071,7 +1066,6 @@
                 {
                     "category": "Exit",
                     "created_on": "2018-07-06T12:31:29.123456789Z",
-                    "input": "exit",
                     "name": "Command",
                     "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "run_result_changed",
@@ -1149,7 +1143,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:15.123456789Z",
-                                "input": "name",
                                 "name": "Command",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
@@ -1301,7 +1294,6 @@
                             {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:51.123456789Z",
-                                "input": "name",
                                 "name": "Command",
                                 "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                                 "type": "run_result_changed",
@@ -1448,7 +1440,6 @@
                             {
                                 "category": "Exit",
                                 "created_on": "2018-07-06T12:31:29.123456789Z",
-                                "input": "exit",
                                 "name": "Command",
                                 "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                                 "type": "run_result_changed",

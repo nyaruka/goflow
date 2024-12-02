@@ -263,8 +263,7 @@
                 "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
                 "name": "My Result",
                 "value": "503",
-                "category": "Failure",
-                "input": "POST http://unavailable.com/"
+                "category": "Failure"
             }
         ],
         "webhook": {
@@ -411,7 +410,6 @@
                 "name": "My Result",
                 "value": "200",
                 "category": "Success",
-                "input": "POST http://temba.io/",
                 "extra": {
                     "ok": "true"
                 }
@@ -643,7 +641,6 @@
                 "name": "My Result",
                 "value": "503",
                 "category": "Failure",
-                "input": "POST http://unavailable.com/",
                 "extra": {
                     "errors": [
                         "service unavailable"
