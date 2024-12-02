@@ -38,10 +38,13 @@ type RunResultChangedEvent struct {
 	CategoryLocalized string          `json:"category_localized,omitempty"`
 	Input             string          `json:"input,omitempty"`
 	Extra             json.RawMessage `json:"extra,omitempty"`
+
+	// not included in JSON - used internally to track changes
+	Previous *flows.Result `json:"-"`
 }
 
 // NewRunResultChanged returns a new save result event for the passed in values
-func NewRunResultChanged(result *flows.Result) *RunResultChangedEvent {
+func NewRunResultChanged(result, prev *flows.Result) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
 		BaseEvent:         NewBaseEvent(TypeRunResultChanged),
 		Name:              result.Name,
@@ -50,5 +53,6 @@ func NewRunResultChanged(result *flows.Result) *RunResultChangedEvent {
 		CategoryLocalized: result.CategoryLocalized,
 		Input:             result.Input,
 		Extra:             result.Extra,
+		Previous:          prev,
 	}
 }

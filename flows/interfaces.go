@@ -410,7 +410,7 @@ type Run interface {
 	FlowReference() *assets.FlowReference
 
 	Session() Session
-	SaveResult(*Result)
+	SaveResult(*Result) *Result
 	SetStatus(RunStatus)
 	Webhook() *WebhookCall
 	SetWebhook(*WebhookCall)

@@ -71,14 +71,14 @@ func (r *run) Contact() *flows.Contact              { return r.session.Contact()
 func (r *run) Events() []flows.Event                { return r.events }
 
 func (r *run) Results() flows.Results { return r.results }
-func (r *run) SaveResult(result *flows.Result) {
+func (r *run) SaveResult(result *flows.Result) *flows.Result {
 	// truncate value if necessary
 	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 
-	r.results.Save(result)
 	r.modifiedOn = dates.Now()
-
 	r.legacyExtra.addResult(result)
+
+	return r.results.Save(result)
 }
 
 func (r *run) Exit(status flows.RunStatus) {

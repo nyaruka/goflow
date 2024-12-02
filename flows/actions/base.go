@@ -126,8 +126,8 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 // helper to save a run result and log it as an event
 func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
-	run.SaveResult(result)
-	logEvent(events.NewRunResultChanged(result))
+	prev := run.SaveResult(result)
+	logEvent(events.NewRunResultChanged(result, prev))
 }
 
 // helper to save a run result based on a webhook call and log it as an event
