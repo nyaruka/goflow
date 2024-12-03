@@ -1,3 +1,7 @@
+v0.225.0 (2024-12-03)
+-------------------------
+ * Add new 13.6 flow migration to truncate result names and categories
+
 v0.224.1 (2024-12-02)
 -------------------------
  * Remove unused fields from run result events
