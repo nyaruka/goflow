@@ -11,17 +11,6 @@
         "read_error": "field 'name' is required"
     },
     {
-        "description": "Read fails when category is too long",
-        "action": {
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "type": "set_run_result",
-            "name": "Foo",
-            "value": "bar",
-            "category": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
-        },
-        "read_error": "field 'category' must be less than or equal to 128"
-    },
-    {
         "description": "Error event and action skipped if value contains expression error",
         "action": {
             "type": "set_run_result",

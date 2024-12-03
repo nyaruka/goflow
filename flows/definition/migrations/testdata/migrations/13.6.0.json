@@ -1,0 +1,302 @@
+[
+    {
+        "description": "set_run_result action with name and category that exceed limit",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "My result name That is too long for goflow why do people do this to me",
+                            "value": "Values can be long that is fine with me 12345678901234567890123456789012345678901234567890",
+                            "category": "Once again this too long why people why just use something short"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "My result name That is too long for goflow why do people do this",
+                            "value": "Values can be long that is fine with me 12345678901234567890123456789012345678901234567890",
+                            "category": "Once again this too long why people"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "set_run_result action with no value or category (valid for clearing)",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "My Result"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "My Result"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "switch router with result name and category that exceed limit",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Toooooooooooooooooooooooooooooo longgggggggggggggggggggggggg",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "Other",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Names should be catchy and short pleaseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+                                "type": "has_text",
+                                "category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Toooooooooooooooooooooooooooooo long",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "Other",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "result_name": "Names should be catchy and short pleaseeeeeeeeeeeeeeeeeeeeeeeeee",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+                                "type": "has_text",
+                                "category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "switch router with no result name and missing category name",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "Other",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+                                "type": "has_text",
+                                "category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "Other",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                            }
+                        ],
+                        "default_category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+                                "type": "has_text",
+                                "category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "43accf99-4940-44f7-926b-a8b35d9403d6"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

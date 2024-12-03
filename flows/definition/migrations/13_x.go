@@ -1,18 +1,72 @@
 package migrations
 
 import (
+	"strings"
+
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/excellent/refactor"
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
 	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
 	registerMigration(semver.MustParse("13.4.0"), Migrate13_4)
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_6 ensures that names of results and categories respect definition limits.
+//
+// @version 13_6 "13.6"
+func Migrate13_6(f Flow, cfg *Config) (Flow, error) {
+	const maxResultName = 64
+	const maxCategoryName = 36
+
+	truncate := func(s string, max int) string {
+		return strings.TrimSpace(stringsx.Truncate(s, max)) // so we don't leave trailing spaces
+	}
+
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "set_run_result" {
+				name, _ := action["name"].(string)
+				category, _ := action["category"].(string)
+
+				if len(name) > maxResultName {
+					action["name"] = truncate(name, maxResultName)
+				}
+				if len(category) > maxCategoryName {
+					action["category"] = truncate(category, maxCategoryName)
+				}
+			}
+		}
+
+		router := node.Router()
+		if router != nil {
+			resultName, _ := router["result_name"].(string)
+			categories, _ := router["categories"].([]any)
+
+			if len(resultName) > maxResultName {
+				router["result_name"] = truncate(resultName, maxResultName)
+			}
+
+			for _, cat := range categories {
+				category, _ := cat.(map[string]any)
+				if category != nil {
+					name, _ := category["name"].(string)
+
+					if len(name) > maxCategoryName {
+						category["name"] = truncate(name, maxCategoryName)
+					}
+				}
+			}
+		}
+	}
+	return f, nil
 }
 
 // Migrate13_5 converts the `templating` object in [action:send_msg] actions to use a merged list of variables.

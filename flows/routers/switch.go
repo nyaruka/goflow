@@ -129,7 +129,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, log flows.EventCall
 	}
 
 	// find first matching case
-	match, categoryUUID, extra, err := r.matchCase(run, step, operand, log)
+	match, categoryUUID, extra, err := r.matchCase(run, operand, log)
 	if err != nil {
 		return "", "", err
 	}
@@ -150,7 +150,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, log flows.EventCall
 	return exit, operandAsStr, err
 }
 
-func (r *SwitchRouter) matchCase(run flows.Run, step flows.Step, operand types.XValue, log flows.EventCallback) (string, flows.CategoryUUID, *types.XObject, error) {
+func (r *SwitchRouter) matchCase(run flows.Run, operand types.XValue, log flows.EventCallback) (string, flows.CategoryUUID, *types.XObject, error) {
 	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 
