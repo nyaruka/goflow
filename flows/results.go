@@ -124,11 +124,10 @@ func (r Results) Clone() Results {
 	return clone
 }
 
-// Save saves a new result in our map using the snakified name as the key. Returns the old result if it existed.
+// Save saves a new result in our map. Returns the old result if it existed.
 func (r Results) Save(result *Result) (*Result, bool) {
-	key := utils.Snakify(result.Name)
-	old := r[key]
-	r[key] = result
+	old := r[result.Name]
+	r[result.Name] = result
 
 	if old == nil || (old.Value != result.Value || old.Category != result.Category) {
 		return old, true
@@ -136,9 +135,9 @@ func (r Results) Save(result *Result) (*Result, bool) {
 	return nil, false
 }
 
-// Get returns the result with the given key
-func (r Results) Get(key string) *Result {
-	return r[key]
+// Get returns the result with the given name
+func (r Results) Get(name string) *Result {
+	return r[name]
 }
 
 // Context returns the properties available in expressions
@@ -146,8 +145,8 @@ func (r Results) Context(env envs.Environment) map[string]types.XValue {
 	entries := make(map[string]types.XValue, len(r)+1)
 	entries["__default__"] = types.NewXText(r.format())
 
-	for k, v := range r {
-		entries[k] = Context(env, v)
+	for name, v := range r {
+		entries[utils.Snakify(name)] = Context(env, v)
 	}
 	return entries
 }
@@ -160,4 +159,20 @@ func (r Results) format() string {
 
 	sort.Strings(lines)
 	return strings.Join(lines, "\n")
+}
+func (r *Results) UnmarshalJSON(data []byte) error {
+	// load map which may be by snakified name or name
+	var m map[string]*Result
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+
+	*r = make(Results, len(m))
+
+	// use actual name as key
+	for _, v := range m {
+		(*r)[v.Name] = v
+	}
+
+	return nil
 }

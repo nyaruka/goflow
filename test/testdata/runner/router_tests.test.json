@@ -218,7 +218,7 @@
                             }
                         ],
                         "results": {
-                            "district_check": {
+                            "District Check": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "input": "I live in gasabo",
@@ -226,7 +226,7 @@
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                                 "value": "Rwanda > Kigali City > Gasabo"
                             },
-                            "group_check": {
+                            "Group Check": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "input": "[]",
@@ -234,7 +234,7 @@
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                                 "value": "[]"
                             },
-                            "urn_check": {
+                            "URN Check": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:02.123456789Z",
                                 "name": "URN Check",

@@ -342,7 +342,7 @@
                             }
                         ],
                         "results": {
-                            "name": {
+                            "Name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "Bobby",
@@ -633,7 +633,7 @@
                             }
                         ],
                         "results": {
-                            "age": {
+                            "Age": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "123",
@@ -641,7 +641,7 @@
                                 "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                                 "value": "123"
                             },
-                            "name": {
+                            "Name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "Bobby",
@@ -1034,7 +1034,7 @@
                             }
                         ],
                         "results": {
-                            "age": {
+                            "Age": {
                                 "category": "10 - 100",
                                 "created_on": "2018-07-06T12:30:49.123456789Z",
                                 "input": "18",
@@ -1042,7 +1042,7 @@
                                 "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607",
                                 "value": "18"
                             },
-                            "name": {
+                            "Name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "Bobby",
@@ -1050,7 +1050,7 @@
                                 "node_uuid": "797e66c1-99bf-4d65-8944-812e723be5f1",
                                 "value": "Bobby"
                             },
-                            "response_3": {
+                            "Response 3": {
                                 "category": "Youth",
                                 "created_on": "2018-07-06T12:30:59.123456789Z",
                                 "input": "18",

@@ -296,7 +296,7 @@
                             }
                         ],
                         "results": {
-                            "older": {
+                            "Older": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "30",
@@ -304,7 +304,7 @@
                                 "node_uuid": "cfb8674d-1a45-4271-8deb-40b2f6994949",
                                 "value": "30"
                             },
-                            "take_part": {
+                            "Take Part": {
                                 "category": "No Response",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "name": "Take Part",

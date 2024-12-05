@@ -296,9 +296,8 @@ func TestSaveResult(t *testing.T) {
 	assert.Nil(t, prev)
 	assert.True(t, changed)
 
-	// name is snaked
-	assert.Equal(t, "red", run.Results().Get("response_1").Value)
-	assert.Equal(t, "Red", run.Results().Get("response_1").Category)
+	assert.Equal(t, "red", run.Results().Get("Response 1").Value)
+	assert.Equal(t, "Red", run.Results().Get("Response 1").Category)
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
 	prev, changed = run.SaveResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
@@ -308,8 +307,8 @@ func TestSaveResult(t *testing.T) {
 	assert.True(t, changed)
 
 	// result is overwritten
-	assert.Equal(t, "blue", run.Results().Get("response_1").Value)
-	assert.Equal(t, "Blue", run.Results().Get("response_1").Category)
+	assert.Equal(t, "blue", run.Results().Get("Response 1").Value)
+	assert.Equal(t, "Blue", run.Results().Get("Response 1").Category)
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
 	// try saving new result with same value and category again
@@ -322,7 +321,7 @@ func TestSaveResult(t *testing.T) {
 	assert.NotNil(t, prev)
 	assert.True(t, changed)
 
-	assert.Equal(t, strings.Repeat("創", 640), run.Results().Get("response_1").Value)
+	assert.Equal(t, strings.Repeat("創", 640), run.Results().Get("Response 1").Value)
 }
 
 func TestTranslation(t *testing.T) {

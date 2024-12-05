@@ -295,7 +295,7 @@
                             }
                         ],
                         "results": {
-                            "country": {
+                            "Country": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "input": "valid",
@@ -303,7 +303,7 @@
                                 "node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
                                 "value": "valid"
                             },
-                            "country_response": {
+                            "Country Response": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "input": "Ryan Lewis",
@@ -311,7 +311,7 @@
                                 "node_uuid": "5b5abbf2-5f12-4f83-a804-90695e6c4302",
                                 "value": "Ryan Lewis"
                             },
-                            "country_webhook": {
+                            "Country Webhook": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "extra": {

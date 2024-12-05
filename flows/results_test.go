@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -23,8 +24,8 @@ func TestResults(t *testing.T) {
 	results.Save(result1)
 	results.Save(result2)
 
-	assert.Equal(t, result1, results.Get("beer"))
-	assert.Equal(t, result2, results.Get("empty"))
+	assert.Equal(t, result1, results.Get("Beer"))
+	assert.Equal(t, result2, results.Get("Empty"))
 	assert.Nil(t, results.Get("xxx"))
 
 	resultsAsContext := flows.Context(env, results)
@@ -60,6 +61,19 @@ func TestResults(t *testing.T) {
 			"values":               types.NewXArray(types.NewXText("")),
 		}),
 	}), resultsAsContext)
+
+	// test marshalling
+	marshaled, err := json.Marshal(results)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{
+		"Beer": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
+		"Empty": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
+	}`, string(marshaled))
+
+	var unmarshaled flows.Results
+	err = json.Unmarshal(marshaled, &unmarshaled)
+	assert.NoError(t, err)
+	assert.Equal(t, results, unmarshaled)
 }
 
 func TestResultNameAndCategoryValidation(t *testing.T) {

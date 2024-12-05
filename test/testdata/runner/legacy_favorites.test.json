@@ -332,7 +332,7 @@
                             }
                         ],
                         "results": {
-                            "color": {
+                            "Color": {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "I like blue!",
@@ -601,7 +601,7 @@
                             }
                         ],
                         "results": {
-                            "beer": {
+                            "Beer": {
                                 "category": "Pilsner",
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "Pilsner",
@@ -609,7 +609,7 @@
                                 "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d",
                                 "value": "Pilsner"
                             },
-                            "color": {
+                            "Color": {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "I like blue!",

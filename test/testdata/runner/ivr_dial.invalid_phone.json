@@ -87,7 +87,7 @@
                             }
                         ],
                         "results": {
-                            "redirect": {
+                            "Redirect": {
                                 "category": "Failed",
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "name": "Redirect",

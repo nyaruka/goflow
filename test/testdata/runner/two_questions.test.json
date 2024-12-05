@@ -472,7 +472,7 @@
                             }
                         ],
                         "results": {
-                            "favorite_color": {
+                            "Favorite Color": {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "input": "I like blue!",
@@ -849,7 +849,7 @@
                             }
                         ],
                         "results": {
-                            "favorite_color": {
+                            "Favorite Color": {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "input": "I like blue!",
@@ -857,7 +857,7 @@
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "value": "blue"
                             },
-                            "soda": {
+                            "Soda": {
                                 "category": "Coke",
                                 "category_localized": "Coke",
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
