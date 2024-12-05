@@ -3,19 +3,43 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	resultNameRegex := regexp.MustCompile(`^[a-zA-Z0-9\-_\s]{1,64}$`)
+	resultCategoryRegex := regexp.MustCompile(`^.{1,36}$`)
+
+	utils.RegisterValidatorTag("result_name",
+		func(fl validator.FieldLevel) bool {
+			return resultNameRegex.MatchString(fl.Field().String())
+		},
+		func(validator.FieldError) string {
+			return "is not a valid result name"
+		},
+	)
+	utils.RegisterValidatorTag("result_category",
+		func(fl validator.FieldLevel) bool {
+			return resultCategoryRegex.MatchString(fl.Field().String())
+		},
+		func(validator.FieldError) string {
+			return "is not a valid result category"
+		},
+	)
+}
+
 // Result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
 // created by a [set_run_result](#action:set_run_result) action.
 type Result struct {
-	Name              string          `json:"name" validate:"required"`
+	Name              string          `json:"name" validate:"required,result_name"`
 	Value             string          `json:"value"`
 	Category          string          `json:"category,omitempty"`
 	CategoryLocalized string          `json:"category_localized,omitempty"`

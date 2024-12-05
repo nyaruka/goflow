@@ -34,9 +34,9 @@
             "headers": {
                 "Accept:": "something"
             },
-            "result_name": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+            "result_name": "12345678901234567890123456789012345678901234567890123456789012345"
         },
-        "read_error": "field 'result_name' must be less than or equal to 128"
+        "read_error": "field 'result_name' is not a valid result name"
     },
     {
         "description": "Error events created if URL, header or body contain expression errors",
