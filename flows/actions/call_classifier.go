@@ -38,7 +38,7 @@ type CallClassifierAction struct {
 
 	Classifier *assets.ClassifierReference `json:"classifier" validate:"required"`
 	Input      string                      `json:"input" validate:"required" engine:"evaluated"`
-	ResultName string                      `json:"result_name" validate:"required,max=128"`
+	ResultName string                      `json:"result_name" validate:"required,result_name"`
 }
 
 // NewCallClassifier creates a new call classifier action

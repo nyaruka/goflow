@@ -67,7 +67,7 @@ type CallResthookAction struct {
 	onlineAction
 
 	Resthook   string `json:"resthook"              validate:"required"`
-	ResultName string `json:"result_name,omitempty" validate:"max=128"`
+	ResultName string `json:"result_name,omitempty" validate:"omitempty,result_name"`
 }
 
 // NewCallResthook creates a new call resthook action

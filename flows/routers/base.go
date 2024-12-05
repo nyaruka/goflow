@@ -194,8 +194,8 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 type baseRouterEnvelope struct {
 	Type       string            `json:"type"                  validate:"required"`
 	Wait       json.RawMessage   `json:"wait,omitempty"`
-	ResultName string            `json:"result_name,omitempty"`
-	Categories []json.RawMessage `json:"categories,omitempty"  validate:"required,min=1"`
+	ResultName string            `json:"result_name,omitempty" validate:"omitempty,result_name"`
+	Categories []json.RawMessage `json:"categories,omitempty"  validate:"required,min=1,dive,result_category"`
 }
 
 // ReadRouter reads a router from the given JSON

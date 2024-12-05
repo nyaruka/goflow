@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -59,4 +60,22 @@ func TestResults(t *testing.T) {
 			"values":               types.NewXArray(types.NewXText("")),
 		}),
 	}), resultsAsContext)
+}
+
+func TestResultNameAndCategoryValidation(t *testing.T) {
+	type testStruct struct {
+		ValidName       string `json:"valid_name"       validate:"result_name"`
+		InvalidName     string `json:"invalid_name"     validate:"result_name"`
+		ValidCategory   string `json:"valid_category"   validate:"result_category"`
+		InvalidCategory string `json:"invalid_category" validate:"result_category"`
+	}
+
+	obj := testStruct{
+		ValidName:       "Color",
+		InvalidName:     "#",
+		ValidCategory:   "Blue",
+		InvalidCategory: "1234567890123456789012345678901234567",
+	}
+	err := utils.Validate(obj)
+	assert.EqualError(t, err, "field 'invalid_name' is not a valid result name, field 'invalid_category' is not a valid result category")
 }

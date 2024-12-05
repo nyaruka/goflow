@@ -56,7 +56,7 @@ type CallWebhookAction struct {
 	URL        string            `json:"url"                   engine:"evaluated" validate:"required"`
 	Headers    map[string]string `json:"headers,omitempty"     engine:"evaluated"`
 	Body       string            `json:"body,omitempty"        engine:"evaluated"`
-	ResultName string            `json:"result_name,omitempty"                    validate:"max=128"`
+	ResultName string            `json:"result_name,omitempty"                    validate:"omitempty,result_name"`
 }
 
 // NewCallWebhook creates a new call webhook action
