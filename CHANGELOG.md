@@ -1,3 +1,7 @@
+v0.225.1 (2024-12-05)
+-------------------------
+ * Add custom validators for result name and category and make them match current floweditor validation
+
 v0.225.0 (2024-12-03)
 -------------------------
  * Add new 13.6 flow migration to truncate result names and categories
