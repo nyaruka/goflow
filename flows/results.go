@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -39,7 +40,7 @@ func init() {
 // Result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
 // created by a [set_run_result](#action:set_run_result) action.
 type Result struct {
-	Name              string          `json:"name" validate:"required,result_name"`
+	Name              string          `json:"name" validate:"required"` // TODO add result_name validation when we're sure sessions no longer have invalid result names
 	Value             string          `json:"value"`
 	Category          string          `json:"category,omitempty"`
 	CategoryLocalized string          `json:"category_localized,omitempty"`
@@ -160,4 +161,21 @@ func (r Results) format() string {
 
 	sort.Strings(lines)
 	return strings.Join(lines, "\n")
+}
+
+func (r *Results) UnmarshalJSON(data []byte) error {
+	var m map[string]*Result
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+
+	*r = make(Results, len(m))
+
+	// we enforce result names being at most 64 chars but old sessions may have longer names
+	for _, v := range m {
+		v.Name = strings.TrimSpace(stringsx.Truncate(v.Name, 64))
+		(*r)[utils.Snakify(v.Name)] = v
+	}
+
+	return nil
 }
