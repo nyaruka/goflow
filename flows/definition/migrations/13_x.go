@@ -7,16 +7,52 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/refactor"
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
 	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
 	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
 	registerMigration(semver.MustParse("13.4.0"), Migrate13_4)
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_6_1 fixes result lookups that need to be truncated.
+//
+// @version 13_6_1 "13.6.1"
+func Migrate13_6_1(f Flow, cfg *Config) (Flow, error) {
+	const maxResultRef = 64
+
+	RewriteTemplates(f, GetTemplateCatalog(semver.MustParse("13.6.0")), func(s string) string {
+		// refactor any @result.* or @(...) template to find result lookups that need to be truncated
+		refactored, _ := refactor.Template(s, []string{"results"}, func(exp excellent.Expression) bool {
+			changed := false
+
+			exp.Visit(func(e excellent.Expression) {
+				switch typed := e.(type) {
+				case *excellent.DotLookup:
+					if asRef, isRef := typed.Container.(*excellent.ContextReference); isRef {
+						if asRef.Name == "results" {
+							old := typed.Lookup
+							typed.Lookup = stringsx.Truncate(old, maxResultRef)
+							if typed.Lookup != old {
+								changed = true
+							}
+						}
+					}
+				}
+			})
+
+			return changed
+		})
+
+		return refactored
+	})
+	return f, nil
 }
 
 // Migrate13_6 ensures that names of results and categories respect definition limits.
