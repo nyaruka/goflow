@@ -1,3 +1,7 @@
+v0.225.2 (2024-12-09)
+-------------------------
+ * Allow reading of results in sessions with invalid names
+
 v0.225.1 (2024-12-05)
 -------------------------
  * Add custom validators for result name and category and make them match current floweditor validation
