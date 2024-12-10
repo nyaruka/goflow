@@ -24,8 +24,8 @@ func TestResults(t *testing.T) {
 	results.Save(result1)
 	results.Save(result2)
 
-	assert.Equal(t, result1, results.Get("beer"))
-	assert.Equal(t, result2, results.Get("empty"))
+	assert.Equal(t, result1, results.Get("Beer"))
+	assert.Equal(t, result2, results.Get("Empty"))
 	assert.Nil(t, results.Get("xxx"))
 
 	resultsAsContext := flows.Context(env, results)
@@ -66,8 +66,8 @@ func TestResults(t *testing.T) {
 	marshaled, err := json.Marshal(results)
 	assert.NoError(t, err)
 	assert.JSONEq(t, `{
-		"beer": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
-		"empty": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
+		"Beer": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
+		"Empty": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
 	}`, string(marshaled))
 
 	var unmarshaled flows.Results
@@ -77,12 +77,12 @@ func TestResults(t *testing.T) {
 
 	// test unmarshalling with result names/keys that are too long
 	err = json.Unmarshal([]byte(`{
-		"beer_123456789012345678901234567890123456789012345678901234567890": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
-		"empty_123456789012345678901234567890123456789012345678901234567890": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
+		"Beer 123456789012345678901234567890123456789012345678901234567890": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
+		"Empty 123456789012345678901234567890123456789012345678901234567890": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
 	}`), &unmarshaled)
 	assert.NoError(t, err)
-	assert.Equal(t, "Beer 12345678901234567890123456789012345678901234567890123456789", unmarshaled.Get("beer_12345678901234567890123456789012345678901234567890123456789").Name)
-	assert.Equal(t, "Empty 1234567890123456789012345678901234567890123456789012345678", unmarshaled.Get("empty_1234567890123456789012345678901234567890123456789012345678").Name)
+	assert.Equal(t, "Skol", unmarshaled.Get("Beer 12345678901234567890123456789012345678901234567890123456789").Category)
+	assert.Equal(t, "", unmarshaled.Get("Empty 1234567890123456789012345678901234567890123456789012345678").Category)
 }
 
 func TestResultNameAndCategoryValidation(t *testing.T) {

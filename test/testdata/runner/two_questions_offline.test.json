@@ -305,7 +305,7 @@
                             }
                         ],
                         "results": {
-                            "favorite_color": {
+                            "Favorite Color": {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "input": "red",
@@ -576,7 +576,7 @@
                             }
                         ],
                         "results": {
-                            "favorite_color": {
+                            "Favorite Color": {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "input": "red",
@@ -584,7 +584,7 @@
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "value": "red"
                             },
-                            "soda": {
+                            "Soda": {
                                 "category": "Pepsi",
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "input": "pepsi",
@@ -839,7 +839,7 @@
                             }
                         ],
                         "results": {
-                            "favorite_color": {
+                            "Favorite Color": {
                                 "category": "Red",
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "input": "red",
@@ -847,7 +847,7 @@
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "value": "red"
                             },
-                            "soda": {
+                            "Soda": {
                                 "category": "Pepsi",
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "input": "pepsi",

@@ -518,7 +518,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "neither",
@@ -952,7 +952,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "yes",
@@ -1264,7 +1264,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:57.123456789Z",
                                 "input": "never",
@@ -1423,7 +1423,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "yes",
@@ -1775,7 +1775,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "No",
                                 "created_on": "2018-07-06T12:31:13.123456789Z",
                                 "input": "no",
@@ -1934,7 +1934,7 @@
                             }
                         ],
                         "results": {
-                            "answer": {
+                            "Answer": {
                                 "category": "Yes",
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "yes",
