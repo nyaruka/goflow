@@ -1,3 +1,8 @@
+v0.225.5 (2024-12-10)
+-------------------------
+ * Update deps
+ * Revert keying results by name rather than snakified name
+
 v0.225.4 (2024-12-10)
 -------------------------
  * Rework results so they're keyed by name rather than snakified name
