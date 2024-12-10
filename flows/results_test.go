@@ -74,6 +74,15 @@ func TestResults(t *testing.T) {
 	err = json.Unmarshal(marshaled, &unmarshaled)
 	assert.NoError(t, err)
 	assert.Equal(t, results, unmarshaled)
+
+	// test unmarshalling with result names/keys that are too long
+	err = json.Unmarshal([]byte(`{
+		"Beer 123456789012345678901234567890123456789012345678901234567890": {"category": "Skol", "created_on":"2019-04-05T14:16:30.000123456Z", "name": "Beer 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": "skol!"}, 
+		"Empty 123456789012345678901234567890123456789012345678901234567890": {"created_on":"2019-04-05T14:16:30.000123456Z", "name": "Empty 123456789012345678901234567890123456789012345678901234567890", "node_uuid": "26493ebb-a254-4461-a28d-c7761784e276", "value": ""}
+	}`), &unmarshaled)
+	assert.NoError(t, err)
+	assert.Equal(t, "Skol", unmarshaled.Get("Beer 12345678901234567890123456789012345678901234567890123456789").Category)
+	assert.Equal(t, "", unmarshaled.Get("Empty 1234567890123456789012345678901234567890123456789012345678").Category)
 }
 
 func TestResultNameAndCategoryValidation(t *testing.T) {

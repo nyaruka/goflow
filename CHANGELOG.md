@@ -1,3 +1,15 @@
+v0.225.3 (2024-12-09)
+-------------------------
+ * Add patch flow migration to fix result references in expressions that need to be truncated
+
+v0.225.2 (2024-12-09)
+-------------------------
+ * Allow reading of results in sessions with invalid names
+
+v0.225.1 (2024-12-05)
+-------------------------
+ * Add custom validators for result name and category and make them match current floweditor validation
+
 v0.225.0 (2024-12-03)
 -------------------------
  * Add new 13.6 flow migration to truncate result names and categories

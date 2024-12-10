@@ -1,0 +1,71 @@
+[
+    {
+        "description": "flow with localization",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "9d9290a7-3713-4c22-8821-4af0a64c0821": {
+                        "text": [
+                            "Hola @results.this_single_variable_is_too_long_and_needs_to_be_truncated_to_match_the_flow @(if(results.this_in_a_complex_expression_is_also_too_long_and_needs_to_be_truncated.value))"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "send_msg",
+                            "text": "Hi @results.this_single_variable_is_too_long_and_needs_to_be_truncated_to_match_the_flow @(if(results.this_in_a_complex_expression_is_also_too_long_and_needs_to_be_truncated.value))"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "9d9290a7-3713-4c22-8821-4af0a64c0821": {
+                        "text": [
+                            "Hola @results.this_single_variable_is_too_long_and_needs_to_be_truncated_to_ma @(if(results.this_in_a_complex_expression_is_also_too_long_and_needs_to_be_tr.value))"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "send_msg",
+                            "text": "Hi @results.this_single_variable_is_too_long_and_needs_to_be_truncated_to_ma @(if(results.this_in_a_complex_expression_is_also_too_long_and_needs_to_be_tr.value))"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
