@@ -158,7 +158,7 @@
                             }
                         ],
                         "results": {
-                            "Webhook Result": {
+                            "webhook_result": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "extra": {

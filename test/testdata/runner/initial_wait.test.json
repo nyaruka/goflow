@@ -144,7 +144,7 @@
                             }
                         ],
                         "results": {
-                            "Command": {
+                            "command": {
                                 "category": "Ping",
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "input": "PING",

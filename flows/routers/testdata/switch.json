@@ -178,7 +178,7 @@
             "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
         },
         "results": {
-            "Favorite Color": {
+            "favorite_color": {
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes",
@@ -267,7 +267,7 @@
             "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
         },
         "results": {
-            "Is Member": {
+            "is_member": {
                 "name": "Is Member",
                 "value": "[]",
                 "category": "Other",
@@ -356,7 +356,7 @@
             "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
         },
         "results": {
-            "In Group": {
+            "in_group": {
                 "name": "In Group",
                 "value": "[]",
                 "category": "Other",
@@ -464,7 +464,7 @@
             "default_category_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
         },
         "results": {
-            "Favorite Color": {
+            "favorite_color": {
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes",

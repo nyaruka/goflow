@@ -438,26 +438,7 @@
                             }
                         ],
                         "results": {
-                            "Intent": {
-                                "category": "Book Flight",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
-                                "extra": {
-                                    "location": "Quito"
-                                },
-                                "input": "book_flight",
-                                "name": "Intent",
-                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
-                                "value": "book_flight"
-                            },
-                            "Response 1": {
-                                "category": "All Responses",
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
-                                "input": "I'd like to book a flight to Quito",
-                                "name": "Response 1",
-                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                                "value": "I'd like to book a flight to Quito"
-                            },
-                            "_Intent Classification": {
+                            "_intent_classification": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "extra": {
@@ -484,6 +465,25 @@
                                 "name": "_Intent Classification",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "value": "book_flight"
+                            },
+                            "intent": {
+                                "category": "Book Flight",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "extra": {
+                                    "location": "Quito"
+                                },
+                                "input": "book_flight",
+                                "name": "Intent",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "value": "book_flight"
+                            },
+                            "response_1": {
+                                "category": "All Responses",
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "input": "I'd like to book a flight to Quito",
+                                "name": "Response 1",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "value": "I'd like to book a flight to Quito"
                             }
                         },
                         "status": "completed",

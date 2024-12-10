@@ -293,7 +293,7 @@
                             }
                         ],
                         "results": {
-                            "Name Check": {
+                            "name_check": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "extra": {
@@ -631,14 +631,14 @@
                             }
                         ],
                         "results": {
-                            "Continue": {
+                            "continue": {
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "value": "Ryan Lewis"
                             },
-                            "Name Check": {
+                            "name_check": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "extra": {

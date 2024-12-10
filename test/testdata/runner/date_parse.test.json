@@ -367,7 +367,7 @@
                             }
                         ],
                         "results": {
-                            "Birth Date": {
+                            "birth_date": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "I was born on 1977.06.23 at 3:34 pm",

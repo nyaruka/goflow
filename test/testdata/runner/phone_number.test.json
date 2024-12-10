@@ -350,7 +350,7 @@
                             }
                         ],
                         "results": {
-                            "Backup Phone": {
+                            "backup_phone": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "135532",
@@ -686,7 +686,7 @@
                             }
                         ],
                         "results": {
-                            "Backup Phone": {
+                            "backup_phone": {
                                 "category": "Has Phone",
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "718-456-7890",

@@ -497,7 +497,7 @@
                             }
                         ],
                         "results": {
-                            "First Name": {
+                            "first_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "input": "Dwayne",
@@ -804,7 +804,7 @@
                             }
                         ],
                         "results": {
-                            "Middle Name": {
+                            "middle_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "input": "Douglas",
@@ -878,7 +878,7 @@
                             }
                         ],
                         "results": {
-                            "First Name": {
+                            "first_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "input": "Dwayne",
@@ -1078,7 +1078,7 @@
                             }
                         ],
                         "results": {
-                            "Last Name": {
+                            "last_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:31:01.123456789Z",
                                 "input": "Johnson",
@@ -1175,7 +1175,7 @@
                             }
                         ],
                         "results": {
-                            "Middle Name": {
+                            "middle_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:41.123456789Z",
                                 "input": "Douglas",
@@ -1249,7 +1249,7 @@
                             }
                         ],
                         "results": {
-                            "First Name": {
+                            "first_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "input": "Dwayne",

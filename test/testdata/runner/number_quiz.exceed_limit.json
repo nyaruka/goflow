@@ -364,7 +364,7 @@
                             }
                         ],
                         "results": {
-                            "Result 1": {
+                            "result_1": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "3",
@@ -693,7 +693,7 @@
                             }
                         ],
                         "results": {
-                            "Result 1": {
+                            "result_1": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "input": "5",
@@ -1059,7 +1059,7 @@
                             }
                         ],
                         "results": {
-                            "Result 1": {
+                            "result_1": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:51.123456789Z",
                                 "input": "22",

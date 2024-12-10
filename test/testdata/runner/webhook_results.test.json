@@ -166,7 +166,7 @@
                             }
                         ],
                         "results": {
-                            "Call 1": {
+                            "call_1": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "GET http://temba.io/1",
@@ -517,7 +517,7 @@
                             }
                         ],
                         "results": {
-                            "Call 1": {
+                            "call_1": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "GET http://temba.io/1",
@@ -525,7 +525,7 @@
                                 "node_uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
                                 "value": "200"
                             },
-                            "Call 2": {
+                            "call_2": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "extra": {
@@ -536,7 +536,7 @@
                                 "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                                 "value": "200"
                             },
-                            "Response": {
+                            "response": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "input": "Ok",
@@ -866,7 +866,7 @@
                             }
                         ],
                         "results": {
-                            "Call 1": {
+                            "call_1": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "GET http://temba.io/1",
@@ -874,7 +874,7 @@
                                 "node_uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
                                 "value": "200"
                             },
-                            "Call 2": {
+                            "call_2": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "extra": {
@@ -885,7 +885,7 @@
                                 "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
                                 "value": "200"
                             },
-                            "Response": {
+                            "response": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "input": "Ok",
@@ -893,7 +893,7 @@
                                 "node_uuid": "763f3570-bc76-4e6e-85fb-da62cc112cd4",
                                 "value": "Ok"
                             },
-                            "Response 2": {
+                            "response_2": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:56.123456789Z",
                                 "input": "Sure",

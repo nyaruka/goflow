@@ -373,7 +373,7 @@
                             }
                         ],
                         "results": {
-                            "Contact Name": {
+                            "contact_name": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "input": "Ryan Lewis",

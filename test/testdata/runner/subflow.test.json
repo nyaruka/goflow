@@ -502,7 +502,7 @@
                             }
                         ],
                         "results": {
-                            "Name": {
+                            "name": {
                                 "category": "Name",
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "Ryan Lewis",

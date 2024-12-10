@@ -910,7 +910,7 @@
                             }
                         ],
                         "results": {
-                            "Gender": {
+                            "gender": {
                                 "category": "Male",
                                 "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "name": "Gender",

@@ -235,7 +235,7 @@
                             }
                         ],
                         "results": {
-                            "Redirect": {
+                            "redirect": {
                                 "category": "Busy",
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "input": "busy",

@@ -353,7 +353,7 @@
                             }
                         ],
                         "results": {
-                            "Response 1": {
+                            "response_1": {
                                 "category": "All Responses",
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "input": "Rats",
@@ -361,7 +361,7 @@
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                                 "value": "Rats"
                             },
-                            "Ticket": {
+                            "ticket": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "name": "Ticket",

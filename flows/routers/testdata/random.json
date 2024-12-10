@@ -23,7 +23,7 @@
             ]
         },
         "results": {
-            "Random Result": {
+            "random_result": {
                 "name": "Random Result",
                 "value": "1",
                 "category": "No",
