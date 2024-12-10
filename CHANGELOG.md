@@ -1,3 +1,7 @@
+v0.225.4 (2024-12-10)
+-------------------------
+ * Rework results so they're keyed by name rather than snakified name
+
 v0.225.3 (2024-12-09)
 -------------------------
  * Add patch flow migration to fix result references in expressions that need to be truncated
