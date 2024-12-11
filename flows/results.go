@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	resultNameRegex := regexp.MustCompile(`^[a-zA-Z0-9\-_\s]{1,64}$`)
+	resultNameRegex := regexp.MustCompile(`^[a-zA-Z0-9\-_\s&:/@%?]{1,64}$`)
 	resultCategoryRegex := regexp.MustCompile(`^.{1,36}$`)
 
 	utils.RegisterValidatorTag("result_name",
