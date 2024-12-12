@@ -95,7 +95,7 @@ func TestResultNameAndCategoryValidation(t *testing.T) {
 
 	obj := testStruct{
 		ValidName:       "Color",
-		InvalidName:     "#",
+		InvalidName:     "1234567890123456789012345678901234567890123456789012345678901234567890",
 		ValidCategory:   "Blue",
 		InvalidCategory: "1234567890123456789012345678901234567",
 	}
