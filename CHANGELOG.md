@@ -1,3 +1,7 @@
+v0.225.8 (2024-12-12)
+-------------------------
+ * Completely relax requirements for result names
+
 v0.225.7 (2024-12-11)
 -------------------------
  * Allow more characters in result names
