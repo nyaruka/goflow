@@ -45,7 +45,6 @@
                     ]
                 }
             ],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -92,7 +91,6 @@
                     ]
                 }
             ],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -133,7 +131,6 @@
                     ]
                 }
             ],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -168,7 +165,6 @@
                     ]
                 }
             ],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -218,7 +214,6 @@
                     ]
                 }
             ],
-            "waiting_exits": [],
             "parent_refs": []
         }
     }

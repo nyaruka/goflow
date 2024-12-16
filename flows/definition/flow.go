@@ -117,7 +117,6 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 	return &flows.Inspection{
 		Dependencies: inspect.NewDependencies(assetRefs, sa),
 		Results:      flows.NewResultSpecs(f.extractResults()),
-		WaitingExits: f.extractExitsFromWaits(),
 		ParentRefs:   parentRefs,
 		Issues:       issues.Check(sa, f, templates, assetRefs),
 	}
@@ -284,21 +283,6 @@ func (f *flow) extractResults() []flows.ExtractedResult {
 	}
 
 	return results
-}
-
-// extracts all exits coming from nodes with waits
-func (f *flow) extractExitsFromWaits() []flows.ExitUUID {
-	exitUUIDs := make([]flows.ExitUUID, 0)
-	include := func(e flows.ExitUUID) { exitUUIDs = append(exitUUIDs, e) }
-
-	for _, n := range f.nodes {
-		if n.Router() != nil && n.Router().Wait() != nil {
-			for _, e := range n.Exits() {
-				include(e.UUID())
-			}
-		}
-	}
-	return exitUUIDs
 }
 
 // Asset returns the asset from which this flow was created if there was one

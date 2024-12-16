@@ -17,7 +17,6 @@
             "dependencies": [],
             "issues": [],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -68,7 +67,6 @@
                 }
             ],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -237,7 +235,6 @@
             ],
             "issues": [],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -321,7 +318,6 @@
             "dependencies": [],
             "issues": [],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     }
