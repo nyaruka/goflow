@@ -1,3 +1,7 @@
+v0.226.0 (2024-12-16)
+-------------------------
+ * Remove waiting_exits from flow inspection as it's no longer needed
+
 v0.225.8 (2024-12-12)
 -------------------------
  * Completely relax requirements for result names
