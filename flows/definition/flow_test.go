@@ -332,10 +332,6 @@ func TestNewFlow(t *testing.T) {
 					"a58be63b-907d-4a1a-856b-0bb5579d7507"
 				]
 			}
-		],
-		"waiting_exits": [
-			"023a5c10-d74a-4fad-9560-990caead8170",
-			"8943c032-2a91-456c-8080-2a249f1b420c"
 		]
 	}`), infoJSON, "inspection mismatch")
 }
@@ -368,8 +364,7 @@ func TestEmptyFlow(t *testing.T) {
 		"dependencies": [],
 		"issues": [],
 		"parent_refs": [],
-		"results": [],
-		"waiting_exits": []
+		"results": []
 	}`), infoJSON, "inspection mismatch")
 }
 

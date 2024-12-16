@@ -51,7 +51,6 @@ type Inspection struct {
 	Dependencies []Dependency  `json:"dependencies"`
 	Issues       []Issue       `json:"issues"`
 	Results      []*ResultSpec `json:"results"`
-	WaitingExits []ExitUUID    `json:"waiting_exits"`
 	ParentRefs   []string      `json:"parent_refs"`
 }
 

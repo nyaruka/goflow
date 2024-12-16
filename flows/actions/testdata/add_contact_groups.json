@@ -42,7 +42,6 @@
                 }
             ],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -93,7 +92,6 @@
             "dependencies": [],
             "issues": [],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
@@ -123,7 +121,6 @@
             "dependencies": [],
             "issues": [],
             "results": [],
-            "waiting_exits": [],
             "parent_refs": []
         }
     },
