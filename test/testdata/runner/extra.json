@@ -94,10 +94,12 @@
                         "categories": [
                             {
                                 "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "name": "Has Text",
                                 "exit_uuid": "e63af3a0-4c7c-469e-8c5a-01cc38ab872d"
                             },
                             {
                                 "uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+                                "name": "No Text",
                                 "exit_uuid": "7f156979-1f47-49cd-98b9-e5e6fe0e3baf"
                             }
                         ],

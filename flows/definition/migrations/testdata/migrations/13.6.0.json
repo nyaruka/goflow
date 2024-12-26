@@ -205,7 +205,7 @@
         }
     },
     {
-        "description": "switch router with no result name and missing category name",
+        "description": "switch router with no result name",
         "original": {
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
             "name": "Test Flow",
@@ -223,6 +223,7 @@
                         "categories": [
                             {
                                 "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Blue",
                                 "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
                             },
                             {
@@ -269,6 +270,7 @@
                         "categories": [
                             {
                                 "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Blue",
                                 "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
                             },
                             {
