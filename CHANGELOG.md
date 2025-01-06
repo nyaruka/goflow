@@ -1,3 +1,8 @@
+v0.226.1 (2025-01-06)
+-------------------------
+ * Disallow empty categories
+ * Allow category names of up to 64 chars
+
 v0.226.0 (2024-12-16)
 -------------------------
  * Remove waiting_exits from flow inspection as it's no longer needed
