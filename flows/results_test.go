@@ -97,7 +97,7 @@ func TestResultNameAndCategoryValidation(t *testing.T) {
 		ValidName:       "Color",
 		InvalidName:     "1234567890123456789012345678901234567890123456789012345678901234567890",
 		ValidCategory:   "Blue",
-		InvalidCategory: "1234567890123456789012345678901234567",
+		InvalidCategory: "1234567890123456789012345678901234567890123456789012345678901234567890",
 	}
 	err := utils.Validate(obj)
 	assert.EqualError(t, err, "field 'invalid_name' is not a valid result name, field 'invalid_category' is not a valid result category")

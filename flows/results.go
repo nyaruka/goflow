@@ -3,7 +3,6 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -16,24 +15,13 @@ import (
 )
 
 func init() {
-	resultNameRegex := regexp.MustCompile(`^.{1,64}$`)
-	resultCategoryRegex := regexp.MustCompile(`^.{1,36}$`)
-
-	utils.RegisterValidatorTag("result_name",
-		func(fl validator.FieldLevel) bool {
-			return resultNameRegex.MatchString(fl.Field().String())
-		},
-		func(validator.FieldError) string {
-			return "is not a valid result name"
-		},
+	utils.RegisterValidatorAlias("result_name", "min=1,max=64",
+		func(validator.FieldError) string { return "is not a valid result name" },
 	)
-	utils.RegisterValidatorTag("result_category",
-		func(fl validator.FieldLevel) bool {
-			return resultCategoryRegex.MatchString(fl.Field().String())
-		},
-		func(validator.FieldError) string {
-			return "is not a valid result category"
-		},
+
+	// editor enforces max length of 36 for user defined categories but routers like split by group can set the category to a longer value like a group name
+	utils.RegisterValidatorAlias("result_category", "min=1,max=64",
+		func(validator.FieldError) string { return "is not a valid result category" },
 	)
 }
 
