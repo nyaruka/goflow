@@ -1,3 +1,7 @@
+v0.227.0 (2025-01-08)
+-------------------------
+ * Enforce a limit of 50 URNs per contact
+
 v0.226.1 (2025-01-06)
 -------------------------
  * Disallow empty categories
