@@ -41,6 +41,9 @@ const (
 
 	// ContactStatusArchived is the contact status of archived
 	ContactStatusArchived ContactStatus = "archived"
+
+	// MaxContactURNs is maximum number of URNs a contact can have
+	MaxContactURNs = 50
 )
 
 // Contact represents a person who is interacting with the flow

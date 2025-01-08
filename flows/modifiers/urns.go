@@ -60,9 +60,16 @@ func (m *URNsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 			log(events.NewErrorf("'%s' is not valid URN", urn))
 		} else {
 			if m.Modification == URNsAppend || m.Modification == URNsSet {
-				modified = contact.AddURN(urn, nil)
+				if len(contact.URNs()) >= flows.MaxContactURNs {
+					log(events.NewErrorf("contact has too many URNs, limit is %d", flows.MaxContactURNs))
+					break
+				} else if contact.AddURN(urn, nil) {
+					modified = true
+				}
 			} else {
-				modified = contact.RemoveURN(urn)
+				if contact.RemoveURN(urn) {
+					modified = true
+				}
 			}
 		}
 	}
