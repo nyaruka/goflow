@@ -111,7 +111,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:31.123456789Z",
+                    "expires_on": "2018-07-13T12:30:30.123456789Z",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_wait"
                 }
@@ -262,7 +263,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
+                                "expires_on": "2018-07-13T12:30:30.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_wait"
                             }
@@ -272,7 +274,7 @@
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:32.123456789Z",
+                        "modified_on": "2018-07-06T12:30:33.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -356,7 +358,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "created_on": "2018-07-06T12:30:35.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -371,20 +373,20 @@
                 },
                 {
                     "category": "Has Text",
-                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "created_on": "2018-07-06T12:30:39.123456789Z",
                     "name": "Continue",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:42.123456789Z",
+                    "created_on": "2018-07-06T12:30:43.123456789Z",
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "text": "deprecated context value accessed: legacy_extra",
                     "type": "warning"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "created_on": "2018-07-06T12:30:45.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -406,7 +408,7 @@
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "Ryan Lewis",
-                    "time": "2018-07-06T12:30:40.123456789Z"
+                    "time": "2018-07-06T12:30:41.123456789Z"
                 }
             ],
             "session": {
@@ -550,12 +552,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
+                                "expires_on": "2018-07-13T12:30:30.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:34.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -570,20 +573,20 @@
                             },
                             {
                                 "category": "Has Text",
-                                "created_on": "2018-07-06T12:30:38.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "name": "Continue",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:42.123456789Z",
+                                "created_on": "2018-07-06T12:30:43.123456789Z",
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "text": "deprecated context value accessed: legacy_extra",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:44.123456789Z",
+                                "created_on": "2018-07-06T12:30:45.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -598,12 +601,12 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:46.123456789Z",
+                        "exited_on": "2018-07-06T12:30:47.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:46.123456789Z",
+                        "modified_on": "2018-07-06T12:30:47.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -624,7 +627,7 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:41.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:42.123456789Z",
                                 "exit_uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
                                 "node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -633,7 +636,7 @@
                         "results": {
                             "continue": {
                                 "category": "Has Text",
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:37.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

@@ -86,11 +86,21 @@ func (f *flow) SpecVersion() *semver.Version           { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() i18n.Language                { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
-func (f *flow) ExpireAfter() time.Duration             { return f.expireAfter }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() json.RawMessage                    { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
+
+func (f *flow) ExpireAfter() time.Duration {
+	if f.expireAfter == 0 {
+		if f.flowType == flows.FlowTypeMessaging {
+			return 10080 * time.Minute
+		} else if f.flowType == flows.FlowTypeVoice {
+			return 5 * time.Minute
+		}
+	}
+	return f.expireAfter
+}
 
 func (f *flow) validate() error {
 	// track UUIDs used by nodes and actions to ensure that they are unique
