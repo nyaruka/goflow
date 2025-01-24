@@ -1,3 +1,9 @@
+v0.228.0 (2025-01-24)
+-------------------------
+ * Make expires_on non-nil on waits
+ * Add fallback values for expires after for messaging and voice flow types
+ * Use time.Duration internally for flow wait expire value
+
 v0.227.0 (2025-01-08)
 -------------------------
  * Enforce a limit of 50 URNs per contact
