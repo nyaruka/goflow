@@ -40,13 +40,13 @@ type MsgWaitEvent struct {
 	TimeoutSeconds *int `json:"timeout_seconds,omitempty"`
 
 	// When this wait expires and the whole run can be expired
-	ExpiresOn *time.Time `json:"expires_on,omitempty"`
+	ExpiresOn time.Time `json:"expires_on,omitempty"`
 
 	Hint flows.Hint `json:"hint,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutSeconds *int, expiresOn *time.Time, hint flows.Hint) *MsgWaitEvent {
+func NewMsgWait(timeoutSeconds *int, expiresOn time.Time, hint flows.Hint) *MsgWaitEvent {
 	return &MsgWaitEvent{
 		BaseEvent:      NewBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
@@ -63,7 +63,7 @@ type msgWaitEnvelope struct {
 	BaseEvent
 
 	TimeoutSeconds *int            `json:"timeout_seconds,omitempty"`
-	ExpiresOn      *time.Time      `json:"expires_on,omitempty"`
+	ExpiresOn      time.Time       `json:"expires_on,omitempty"`
 	Hint           json.RawMessage `json:"hint,omitempty"`
 }
 

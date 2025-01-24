@@ -14,7 +14,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "expires_on": "2018-07-06T12:30:04.123456789Z",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "msg_wait"
                 }
@@ -71,7 +72,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "expires_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             }
@@ -81,7 +83,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
-                        "modified_on": "2018-07-06T12:30:06.123456789Z",
+                        "modified_on": "2018-07-06T12:30:07.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -143,7 +145,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "msg": {
                         "text": "red",
                         "urn": "tel:+12065551212",
@@ -154,14 +156,14 @@
                 },
                 {
                     "category": "Red",
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "name": "Favorite Color",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
                     "value": "red"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Red it is! What is your favorite soda? (pepsi/coke)",
@@ -172,7 +174,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "expires_on": "2018-07-06T12:30:19.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait"
                 }
@@ -184,7 +187,7 @@
                     "flow_uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "red",
-                    "time": "2018-07-06T12:30:14.123456789Z"
+                    "time": "2018-07-06T12:30:15.123456789Z"
                 }
             ],
             "session": {
@@ -246,12 +249,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "expires_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "msg": {
                                     "text": "red",
                                     "urn": "tel:+12065551212",
@@ -262,14 +266,14 @@
                             },
                             {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
@@ -280,7 +284,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "expires_on": "2018-07-06T12:30:19.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             }
@@ -290,7 +295,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
-                        "modified_on": "2018-07-06T12:30:20.123456789Z",
+                        "modified_on": "2018-07-06T12:30:22.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -299,7 +304,7 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:15.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:16.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
@@ -307,7 +312,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -368,7 +373,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "msg": {
                         "text": "pepsi",
                         "urn": "tel:+12065551212",
@@ -379,14 +384,14 @@
                 },
                 {
                     "category": "Pepsi",
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "name": "Soda",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "value": "pepsi"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Great, you like pepsi. Finish by sending us a selfie!",
@@ -397,7 +402,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "created_on": "2018-07-06T12:30:35.123456789Z",
+                    "expires_on": "2018-07-06T12:30:34.123456789Z",
                     "hint": {
                         "type": "image"
                     },
@@ -412,7 +418,7 @@
                     "flow_uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "pepsi",
-                    "time": "2018-07-06T12:30:28.123456789Z"
+                    "time": "2018-07-06T12:30:30.123456789Z"
                 }
             ],
             "session": {
@@ -474,12 +480,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "expires_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "msg": {
                                     "text": "red",
                                     "urn": "tel:+12065551212",
@@ -490,14 +497,14 @@
                             },
                             {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
@@ -508,12 +515,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "expires_on": "2018-07-06T12:30:19.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "text": "pepsi",
                                     "urn": "tel:+12065551212",
@@ -524,14 +532,14 @@
                             },
                             {
                                 "category": "Pepsi",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
                                 "value": "pepsi"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
@@ -542,7 +550,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "expires_on": "2018-07-06T12:30:34.123456789Z",
                                 "hint": {
                                     "type": "image"
                                 },
@@ -555,7 +564,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
-                        "modified_on": "2018-07-06T12:30:34.123456789Z",
+                        "modified_on": "2018-07-06T12:30:37.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -564,13 +573,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:15.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:16.123456789Z",
                                 "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
@@ -578,7 +587,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -586,7 +595,7 @@
                             },
                             "soda": {
                                 "category": "Pepsi",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "input": "pepsi",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -647,7 +656,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "created_on": "2018-07-06T12:30:39.123456789Z",
                     "msg": {
                         "attachments": [
                             "image/jpeg:http://s3.com/selfie.jpg"
@@ -723,12 +732,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "expires_on": "2018-07-06T12:30:04.123456789Z",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "msg": {
                                     "text": "red",
                                     "urn": "tel:+12065551212",
@@ -739,14 +749,14 @@
                             },
                             {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "name": "Favorite Color",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "red"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
@@ -757,12 +767,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "expires_on": "2018-07-06T12:30:19.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "msg": {
                                     "text": "pepsi",
                                     "urn": "tel:+12065551212",
@@ -773,14 +784,14 @@
                             },
                             {
                                 "category": "Pepsi",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "name": "Soda",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "run_result_changed",
                                 "value": "pepsi"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:32.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Great, you like pepsi. Finish by sending us a selfie!",
@@ -791,7 +802,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:32.123456789Z",
+                                "created_on": "2018-07-06T12:30:35.123456789Z",
+                                "expires_on": "2018-07-06T12:30:34.123456789Z",
                                 "hint": {
                                     "type": "image"
                                 },
@@ -799,7 +811,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:36.123456789Z",
+                                "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "msg": {
                                     "attachments": [
                                         "image/jpeg:http://s3.com/selfie.jpg"
@@ -812,12 +824,12 @@
                                 "type": "msg_received"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "exited_on": "2018-07-06T12:30:41.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
-                        "modified_on": "2018-07-06T12:30:38.123456789Z",
+                        "modified_on": "2018-07-06T12:30:41.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -826,13 +838,13 @@
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:15.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:16.123456789Z",
                                 "exit_uuid": "3bd19c40-1114-4b83-b12e-f0c38054ba3f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:31.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -841,7 +853,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Red",
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "red",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -849,7 +861,7 @@
                             },
                             "soda": {
                                 "category": "Pepsi",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "input": "pepsi",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

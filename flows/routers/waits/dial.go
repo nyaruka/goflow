@@ -74,7 +74,7 @@ func (w *DialWait) Begin(run flows.Run, log flows.EventCallback) bool {
 	// flow so calculate an expiry guaranteed to be after the wait returns
 	expiresOn := dates.Now().Add(w.dialLimit + w.callLimit + time.Second*30)
 
-	log(events.NewDialWait(urn, int(w.dialLimit/time.Second), int(w.callLimit/time.Second), &expiresOn))
+	log(events.NewDialWait(urn, int(w.dialLimit/time.Second), int(w.callLimit/time.Second), expiresOn))
 
 	return true
 }
