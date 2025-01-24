@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"maps"
 	"slices"
+	"time"
 
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/i18n"
@@ -31,15 +32,15 @@ func IsVersionSupported(v *semver.Version) bool {
 
 type flow struct {
 	// spec properties
-	uuid               assets.FlowUUID
-	name               string
-	specVersion        *semver.Version
-	language           i18n.Language
-	flowType           flows.FlowType
-	revision           int
-	expireAfterMinutes int
-	localization       flows.Localization
-	nodes              []flows.Node
+	uuid         assets.FlowUUID
+	name         string
+	specVersion  *semver.Version
+	language     i18n.Language
+	flowType     flows.FlowType
+	revision     int
+	expireAfter  time.Duration
+	localization flows.Localization
+	nodes        []flows.Node
 
 	// optional properties not used by engine itself
 	ui json.RawMessage
@@ -52,20 +53,20 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType flows.FlowType, revision int, expireAfter time.Duration, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
 	f := &flow{
-		uuid:               uuid,
-		name:               name,
-		specVersion:        CurrentSpecVersion,
-		language:           language,
-		flowType:           flowType,
-		revision:           revision,
-		expireAfterMinutes: expireAfterMinutes,
-		localization:       localization,
-		nodes:              nodes,
-		nodeMap:            make(map[flows.NodeUUID]flows.Node, len(nodes)),
-		ui:                 ui,
-		asset:              a,
+		uuid:         uuid,
+		name:         name,
+		specVersion:  CurrentSpecVersion,
+		language:     language,
+		flowType:     flowType,
+		revision:     revision,
+		expireAfter:  expireAfter,
+		localization: localization,
+		nodes:        nodes,
+		nodeMap:      make(map[flows.NodeUUID]flows.Node, len(nodes)),
+		ui:           ui,
+		asset:        a,
 	}
 
 	for _, node := range f.nodes {
@@ -85,7 +86,7 @@ func (f *flow) SpecVersion() *semver.Version           { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() i18n.Language                { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
-func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
+func (f *flow) ExpireAfter() time.Duration             { return f.expireAfter }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) UI() json.RawMessage                    { return f.ui }
@@ -348,7 +349,7 @@ func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows
 		e.Localization = make(localization)
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, e.UI, a)
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -362,7 +363,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		Language:           f.language,
 		Type:               f.flowType,
 		Revision:           f.revision,
-		ExpireAfterMinutes: f.expireAfterMinutes,
+		ExpireAfterMinutes: int(f.expireAfter / time.Minute),
 		Localization:       f.localization.(localization),
 		Nodes:              make([]*node, len(f.nodes)),
 		UI:                 f.ui,

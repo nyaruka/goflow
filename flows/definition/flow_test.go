@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/i18n"
@@ -219,8 +220,8 @@ func TestNewFlow(t *testing.T) {
 		"Test Flow",          // name
 		i18n.Language("eng"), // base language
 		flows.FlowTypeMessaging,
-		123, // revision
-		30,  // expires after minutes
+		123,            // revision
+		30*time.Minute, // expires after minutes
 		definition.NewLocalization(),
 		[]flows.Node{
 			definition.NewNode(
