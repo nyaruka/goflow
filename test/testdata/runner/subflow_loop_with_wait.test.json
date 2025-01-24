@@ -44,7 +44,8 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "expires_on": "2018-07-13T12:30:12.123456789Z",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait"
                 }
@@ -165,7 +166,8 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "expires_on": "2018-07-13T12:30:12.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             }
@@ -175,7 +177,7 @@
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2018-07-06T12:30:14.123456789Z",
+                        "modified_on": "2018-07-06T12:30:15.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -238,7 +240,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "msg": {
                         "text": "Ben",
                         "urn": "tel:+12065551212",
@@ -248,7 +250,7 @@
                     "type": "msg_received"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "field": {
                         "key": "activation_token",
                         "name": "Activation Token"
@@ -261,7 +263,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "flow": {
                         "name": "Parent Flow",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -272,7 +274,7 @@
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:27.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -287,7 +289,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -309,14 +311,14 @@
                     "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
                     "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                     "operand": "Ben",
-                    "time": "2018-07-06T12:30:18.123456789Z"
+                    "time": "2018-07-06T12:30:19.123456789Z"
                 },
                 {
                     "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                     "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                    "time": "2018-07-06T12:30:31.123456789Z"
+                    "time": "2018-07-06T12:30:32.123456789Z"
                 }
             ],
             "session": {
@@ -397,7 +399,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -412,12 +414,12 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:35.123456789Z",
+                        "exited_on": "2018-07-06T12:30:36.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:35.123456789Z",
+                        "modified_on": "2018-07-06T12:30:36.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -432,7 +434,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:33.123456789Z",
                                 "exit_uuid": "1a26ab25-fc6d-4324-865b-1d8e7d73bf52",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
@@ -460,12 +462,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "expires_on": "2018-07-13T12:30:12.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "msg": {
                                     "text": "Ben",
                                     "urn": "tel:+12065551212",
@@ -475,7 +478,7 @@
                                 "type": "msg_received"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "field": {
                                     "key": "activation_token",
                                     "name": "Activation Token"
@@ -488,7 +491,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "flow": {
                                     "name": "Parent Flow",
                                     "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -499,12 +502,12 @@
                                 "type": "flow_entered"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:30.123456789Z",
+                        "exited_on": "2018-07-06T12:30:31.123456789Z",
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2018-07-06T12:30:30.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "parent_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                         "path": [
                             {
@@ -514,7 +517,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
                                 "exit_uuid": "f7ed461f-2392-4549-aaba-f69beb1bdc50",
                                 "node_uuid": "f1ecb42a-cf88-47dd-81b1-d7568ef0d219",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -524,10 +527,10 @@
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:25.123456789Z",
+                        "created_on": "2018-07-06T12:30:26.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -542,16 +545,16 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:29.123456789Z",
+                        "exited_on": "2018-07-06T12:30:30.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2018-07-06T12:30:29.123456789Z",
+                        "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "parent_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:26.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:27.123456789Z",
                                 "exit_uuid": "5e11ad89-2ed0-44e5-b5ff-38448983bf15",
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"

@@ -136,7 +136,7 @@ type Flow interface {
 	Revision() int
 	Language() i18n.Language
 	Type() FlowType
-	ExpireAfterMinutes() int
+	ExpireAfter() time.Duration
 	Localization() Localization
 	UI() json.RawMessage
 	Nodes() []Node

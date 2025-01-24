@@ -34,11 +34,11 @@ type DialWaitEvent struct {
 	CallLimitSeconds int      `json:"call_limit_seconds"`
 
 	// when this wait expires and the whole run can be expired
-	ExpiresOn *time.Time `json:"expires_on,omitempty"`
+	ExpiresOn time.Time `json:"expires_on,omitempty"`
 }
 
 // NewDialWait returns a new dial wait with the passed in URN
-func NewDialWait(urn urns.URN, dialLimitSeconds, callLimitSeconds int, expiresOn *time.Time) *DialWaitEvent {
+func NewDialWait(urn urns.URN, dialLimitSeconds, callLimitSeconds int, expiresOn time.Time) *DialWaitEvent {
 	return &DialWaitEvent{
 		BaseEvent:        NewBaseEvent(TypeDialWait),
 		URN:              urn,

@@ -42,7 +42,6 @@ func TestEventMarshaling(t *testing.T) {
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
 	timeout := 500
-	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 	gender := session.Assets().Fields().Get("gender")
 	jotd := session.Assets().OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
@@ -504,7 +503,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewMsgWait(&timeout, &expiresOn, hints.NewImageHint()),
+			events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImageHint()),
 			`{
 				"type": "msg_wait",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -532,7 +531,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, &expiresOn),
+			events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)),
 			`{
 				"type": "dial_wait",
 				"created_on": "2018-10-18T14:20:30.000123456Z",

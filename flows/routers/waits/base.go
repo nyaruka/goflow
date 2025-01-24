@@ -54,13 +54,8 @@ func (w *baseWait) Timeout() flows.Timeout {
 	return w.timeout
 }
 
-func (w *baseWait) expiresOn(run flows.Run) *time.Time {
-	expiresAfterMins := run.Flow().ExpireAfterMinutes()
-	if expiresAfterMins > 0 {
-		dt := dates.Now().Add(time.Duration(int64(expiresAfterMins) * int64(time.Minute)))
-		return &dt
-	}
-	return nil
+func (w *baseWait) expiresOn(run flows.Run) time.Time {
+	return dates.Now().Add(run.Flow().ExpireAfter())
 }
 
 //------------------------------------------------------------------------------------------
