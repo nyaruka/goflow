@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -48,6 +49,7 @@ func (s *segment) MarshalJSON() ([]byte, error) {
 var _ flows.Segment = (*segment)(nil)
 
 type sprint struct {
+	uuid      flows.SprintUUID
 	modifiers []flows.Modifier
 	events    []flows.Event
 	segments  []flows.Segment
@@ -56,17 +58,14 @@ type sprint struct {
 // creates a new empty sprint
 func newEmptySprint() *sprint {
 	return &sprint{
+		uuid:      flows.SprintUUID(uuids.NewV4()),
 		modifiers: make([]flows.Modifier, 0, 10),
 		events:    make([]flows.Event, 0, 10),
 		segments:  make([]flows.Segment, 0, 10),
 	}
 }
 
-// NewSprint creates a new sprint - engine doesn't use this but we do it when handling surveyor responses
-func NewSprint(modifiers []flows.Modifier, events []flows.Event, segments []flows.Segment) flows.Sprint {
-	return &sprint{modifiers: modifiers, events: events, segments: segments}
-}
-
+func (s *sprint) UUID() flows.SprintUUID      { return s.uuid }
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
 func (s *sprint) Segments() []flows.Segment   { return s.segments }

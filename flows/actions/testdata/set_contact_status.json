@@ -34,13 +34,13 @@
             {
                 "type": "contact_status_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "status": "blocked"
             },
             {
                 "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",

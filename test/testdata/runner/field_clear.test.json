@@ -8,7 +8,7 @@
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_field_changed",
                     "value": {
                         "text": "M"
@@ -20,7 +20,7 @@
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_field_changed",
                     "value": null
                 },
@@ -30,9 +30,9 @@
                         "locale": "eng-US",
                         "text": "It's a !",
                         "unsendable_reason": "no_destination",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 }
             ],
@@ -77,7 +77,7 @@
                                     "key": "gender",
                                     "name": "Gender"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_field_changed",
                                 "value": {
                                     "text": "M"
@@ -89,7 +89,7 @@
                                     "key": "gender",
                                     "name": "Gender"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_field_changed",
                                 "value": null
                             },
@@ -99,9 +99,9 @@
                                     "locale": "eng-US",
                                     "text": "It's a !",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             }
                         ],
@@ -116,11 +116,11 @@
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "c7c85cef-12d1-4225-afb0-91d1a72cf7b9",
                                 "node_uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",

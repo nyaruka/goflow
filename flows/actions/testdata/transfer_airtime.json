@@ -23,13 +23,13 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "can't transfer airtime to contact without a phone number"
             },
             {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "name": "Reward Transfer",
                 "value": "",
                 "category": "Failure"
@@ -194,8 +194,8 @@
             {
                 "type": "airtime_transferred",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "external_id": "2237512891",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -225,7 +225,7 @@
                     {
                         "url": "https://dvs-api.dtone.com/v1/async/transactions",
                         "status_code": 200,
-                        "request": "POST /v1/async/transactions HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 151\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"9688d21d-95aa-4bed-afc7-f31b35731a3d\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
+                        "request": "POST /v1/async/transactions HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 151\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"297611a6-b583-45c3-8587-d4e530c948f0\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
                         "response": "HTTP/1.0 200 OK\r\nContent-Length: 1746\r\n\r\n{\n                        \"confirmation_date\": \"2021-03-24T20:05:06.111631000Z\",\n                        \"confirmation_expiration_date\": \"2021-03-24T21:05:05.883561000Z\",\n                        \"creation_date\": \"2021-03-24T20:05:05.883561000Z\",\n                        \"credit_party_identifier\": {\n                            \"mobile_number\": \"+593979123456\"\n                        },\n                        \"external_id\": \"EX12345\",\n                        \"id\": 2237512891,\n                        \"product\": {\n                            \"description\": \"\",\n                            \"id\": 6035,\n                            \"name\": \"3 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"regions\": null,\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        },\n                        \"status\": {\n                            \"class\": {\n                                \"id\": 2,\n                                \"message\": \"CONFIRMED\"\n                            },\n                            \"id\": 20000,\n                            \"message\": \"CONFIRMED\"\n                        }\n                    }",
                         "elapsed_ms": 0,
                         "retries": 0,
@@ -237,7 +237,7 @@
             {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "name": "Reward Transfer",
                 "value": "2237512891",
                 "category": "Success"
@@ -292,8 +292,8 @@
             {
                 "type": "airtime_transferred",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
-                "transfer_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "external_id": "",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -315,13 +315,13 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "number lookup failed: that didn't work"
             },
             {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "name": "Reward Transfer",
                 "value": "",
                 "category": "Failure"

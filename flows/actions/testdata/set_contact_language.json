@@ -10,7 +10,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
@@ -35,7 +35,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "iso-639-3 codes must be 3 characters, got: xxxxxxxxxx"
             }
         ],
@@ -69,7 +69,7 @@
             {
                 "type": "contact_language_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "language": ""
             }
         ],
@@ -112,13 +112,13 @@
             {
                 "type": "contact_language_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "language": "fra"
             },
             {
                 "type": "contact_groups_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "groups_added": [
                     {
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",

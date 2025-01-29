@@ -429,7 +429,7 @@ func TestEventMarshaling(t *testing.T) {
 				"type": "ivr_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
-					"uuid": "20cc4181-48cf-4344-9751-99419796decd",
+					"uuid": "94f0e964-be11-4d7b-866b-323926b4c6a0",
 					"urn": "tel:+12345678900",
 					"channel": {
 						"name": "My Android Phone",
@@ -457,7 +457,7 @@ func TestEventMarshaling(t *testing.T) {
 				"type": "msg_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
-					"uuid": "04e910a5-d2e3-448b-958a-630e35c62431",
+					"uuid": "5b835baa-3607-48cb-a489-7cc248dc15c5",
 					"urn": "tel:+12345678900",
 					"channel": {
 						"name": "My Android Phone",
@@ -487,7 +487,7 @@ func TestEventMarshaling(t *testing.T) {
 				"type": "msg_created",
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"msg": {
-					"uuid": "94f0e964-be11-4d7b-866b-323926b4c6a0",
+					"uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2",
 					"urn": "tel:+12345678900",
 					"channel": {
 						"name": "My Android Phone",

@@ -9,14 +9,14 @@
                         "urn": "tel:+12065551212",
                         "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_received"
                 },
                 {
                     "category": "Ping",
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "name": "Command",
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
                     "value": "PING"
                 },
@@ -30,9 +30,9 @@
                         "locale": "eng-US",
                         "text": "You said PING",
                         "urn": "tel:+12065551212",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created"
                 }
             ],
@@ -96,14 +96,14 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Ping",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "name": "Command",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "PING"
                             },
@@ -117,9 +117,9 @@
                                     "locale": "eng-US",
                                     "text": "You said PING",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                                 },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_created"
                             }
                         ],
@@ -134,13 +134,13 @@
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "1ca74fca-1803-4ae7-8ae9-336e75276cd6",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:09.123456789Z",
                                 "exit_uuid": "b6da70e0-fe8e-46fc-8b4c-fcc5173706c1",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
                         ],
                         "results": {
@@ -154,7 +154,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",

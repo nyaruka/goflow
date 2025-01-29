@@ -27,7 +27,7 @@
             {
                 "type": "dial_ended",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "dial": {
                     "status": "answered",
                     "duration": 5
@@ -36,7 +36,7 @@
             {
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "name": "Redirect",
                 "value": "answered",
                 "category": "Success"

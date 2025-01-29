@@ -14,25 +14,25 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "to": [
                     "bob@example.com"
                 ],
@@ -71,7 +71,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "email subject evaluated to empty string, skipping"
             }
         ]
@@ -91,7 +91,7 @@
             {
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "to": [
                     "bob@example.com"
                 ],
@@ -115,7 +115,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "email body evaluated to empty string, skipping"
             }
         ]
@@ -135,7 +135,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "email address evaluated to empty string, skipping"
             }
         ]
@@ -155,7 +155,7 @@
             {
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "to": [
                     "bob@example.com"
                 ],
@@ -191,7 +191,7 @@
             {
                 "type": "email_sent",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "to": [
                     "bob@example.com"
                 ],
@@ -233,7 +233,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "unable to send email: oops can't send"
             }
         ]
