@@ -127,8 +127,8 @@ func TestRun(t *testing.T) {
 	run := session.Runs()[0]
 
 	checkRun := func(r flows.Run) {
-		assert.Equal(t, string(flows.RunUUID("e7187099-7d38-4f60-955c-325957214c42")), string(r.UUID()))
-		assert.Equal(t, string(flows.RunStatusCompleted), string(r.Status()))
+		assert.Equal(t, flows.RunUUID("59d74b86-3e2f-4a93-aece-b05d2fdcde0c"), r.UUID())
+		assert.Equal(t, flows.RunStatusCompleted, r.Status())
 		assert.Equal(t, flow, r.Flow())
 		assert.Equal(t, flow.Reference(true), r.FlowReference())
 		assert.Equal(t, 10, len(r.Events()))
@@ -168,7 +168,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `9688d21d-95aa-4bed-afc7-f31b35731a3d`},
+		{`@child.uuid`, `297611a6-b583-45c3-8587-d4e530c948f0`},
 		{`@child.run`, `{status: completed}`}, // to be removed in 13.2
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.flow.name`, "Collect Age"},

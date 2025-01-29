@@ -44,6 +44,9 @@ type InputUUID uuids.UUID
 // SessionUUID is the UUID of a session
 type SessionUUID uuids.UUID
 
+// SprintUUID is the UUID of a sprint
+type SprintUUID uuids.UUID
+
 // MsgID is the ID of a message
 type MsgID int64
 
@@ -351,6 +354,7 @@ type Segment interface {
 
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
 type Sprint interface {
+	UUID() SprintUUID
 	Modifiers() []Modifier
 	Events() []Event
 	Segments() []Segment

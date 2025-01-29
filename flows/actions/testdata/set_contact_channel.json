@@ -25,7 +25,7 @@
             {
                 "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
                     "twitterid:54784326227#nyaruka"
@@ -47,7 +47,7 @@
             {
                 "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "twitterid:54784326227?channel=8e21f093-99aa-413b-b55b-758b54308fcb#nyaruka",
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123"
@@ -66,7 +66,7 @@
             {
                 "type": "contact_urns_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "tel:+12065551212?id=123",
                     "twitterid:54784326227#nyaruka"
@@ -88,7 +88,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
             }
         ],
@@ -132,7 +132,7 @@
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "can't set channel that can't send as the preferred channel"
             }
         ]

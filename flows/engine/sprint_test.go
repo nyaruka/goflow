@@ -110,10 +110,4 @@ func TestSprint(t *testing.T) {
 		`{"flow_uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02","node_uuid":"d6cdbd1b-d7db-4a38-a22b-9ec357fa228c","exit_uuid":"c0f31cdf-bc9a-404f-88c3-9d6c39d345c9","operand":"yes","destination_uuid":"1747f81b-3692-4ef0-81c9-921c1124cf61","time":"2021-12-08T10:13:30Z"}`,
 		string(jsonx.MustMarshal(seg)),
 	)
-
-	assert.Equal(t, sprint, NewSprint(
-		[]flows.Modifier{mod1, mod2},
-		[]flows.Event{event1, event2},
-		[]flows.Segment{seg1, seg2},
-	))
 }

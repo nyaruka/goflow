@@ -24,15 +24,15 @@
                         ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                         "urn": "tel:+12065551212",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:05.123456789Z",
                     "expires_on": "2018-07-13T12:30:04.123456789Z",
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "timeout_seconds": 600,
                     "type": "msg_wait"
                 }
@@ -91,15 +91,15 @@
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "expires_on": "2018-07-13T12:30:04.123456789Z",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             }
@@ -114,11 +114,11 @@
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "waiting",
@@ -187,7 +187,7 @@
                         "time_format": "hh:mm",
                         "timezone": "America/New_York"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "environment_refreshed"
                 },
                 {
@@ -215,7 +215,7 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2018-07-06T12:30:10.123456789Z",
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_refreshed"
                 },
                 {
@@ -229,21 +229,21 @@
                         "urn": "tel:+12065551212",
                         "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_received"
                 },
                 {
                     "category": "Blue",
                     "created_on": "2018-07-06T12:30:17.123456789Z",
                     "name": "Favorite Color",
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
                     "value": "blue"
                 },
                 {
                     "created_on": "2018-07-06T12:30:21.123456789Z",
                     "language": "fra",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "contact_language_changed"
                 },
                 {
@@ -256,15 +256,15 @@
                         "locale": "fra-US",
                         "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                         "urn": "tel:+12065551212",
-                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                        "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created"
                 },
                 {
                     "created_on": "2018-07-06T12:30:26.123456789Z",
                     "expires_on": "2018-07-13T12:30:25.123456789Z",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait"
                 }
             ],
@@ -347,15 +347,15 @@
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "expires_on": "2018-07-13T12:30:04.123456789Z",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
@@ -376,7 +376,7 @@
                                     "time_format": "hh:mm",
                                     "timezone": "America/New_York"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "environment_refreshed"
                             },
                             {
@@ -404,7 +404,7 @@
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_refreshed"
                             },
                             {
@@ -418,21 +418,21 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "name": "Favorite Color",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "language": "fra",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "contact_language_changed"
                             },
                             {
@@ -445,15 +445,15 @@
                                     "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "expires_on": "2018-07-13T12:30:25.123456789Z",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             }
                         ],
@@ -468,12 +468,12 @@
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:20.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
                         ],
                         "results": {
@@ -487,7 +487,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "waiting",
@@ -550,14 +550,14 @@
                         "urn": "tel:+12065551212",
                         "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_received"
                 },
                 {
                     "category": "Coke",
                     "created_on": "2018-07-06T12:30:34.123456789Z",
                     "name": "Soda",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "value": "Coke"
                 },
@@ -570,7 +570,7 @@
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=success"
                 },
@@ -584,9 +584,9 @@
                         "locale": "fra-US",
                         "text": "Parfait, vous avez finis et tu aimes Coke",
                         "urn": "tel:+12065551212",
-                        "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                        "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                     },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
                 }
             ],
@@ -669,15 +669,15 @@
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "expires_on": "2018-07-13T12:30:04.123456789Z",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "timeout_seconds": 600,
                                 "type": "msg_wait"
                             },
@@ -698,7 +698,7 @@
                                     "time_format": "hh:mm",
                                     "timezone": "America/New_York"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "environment_refreshed"
                             },
                             {
@@ -726,7 +726,7 @@
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
                                 "created_on": "2018-07-06T12:30:10.123456789Z",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_refreshed"
                             },
                             {
@@ -740,21 +740,21 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Blue",
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "name": "Favorite Color",
-                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "language": "fra",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "contact_language_changed"
                             },
                             {
@@ -767,15 +767,15 @@
                                     "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                                 },
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "expires_on": "2018-07-13T12:30:25.123456789Z",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             },
                             {
@@ -789,14 +789,14 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                                 },
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Coke",
                                 "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "name": "Soda",
-                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "run_result_changed",
                                 "value": "Coke"
                             },
@@ -809,7 +809,7 @@
                                 "retries": 0,
                                 "status": "success",
                                 "status_code": 200,
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "webhook_called",
                                 "url": "http://localhost/?cmd=success"
                             },
@@ -823,9 +823,9 @@
                                     "locale": "fra-US",
                                     "text": "Parfait, vous avez finis et tu aimes Coke",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                                    "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
                                 },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created"
                             }
                         ],
@@ -840,19 +840,19 @@
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
                                 "exit_uuid": "dcdc29b6-4671-4c10-a614-5b1507f3df97",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:20.123456789Z",
                                 "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:37.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             }
                         ],
                         "results": {
@@ -875,7 +875,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",
