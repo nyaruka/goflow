@@ -124,7 +124,7 @@ func TestMsgContent(t *testing.T) {
 	assert.True(t, (&flows.MsgContent{}).Empty())
 	assert.False(t, (&flows.MsgContent{Text: "hi"}).Empty())
 	assert.False(t, (&flows.MsgContent{Attachments: []utils.Attachment{"image:https://test.jpg"}}).Empty())
-	assert.False(t, (&flows.MsgContent{QuickReplies: []string{"Ok"}}).Empty())
+	assert.False(t, (&flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Ok"}}}).Empty())
 }
 
 func TestBroadcastTranslations(t *testing.T) {
@@ -182,24 +182,24 @@ func TestBroadcastTranslations(t *testing.T) {
 		{ // 4: merges content from different translations
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
 			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{Text: "Hello", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []string{"Yes", "No"}},
+				"eng": &flows.MsgContent{Text: "Hello", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 				"spa": &flows.MsgContent{Text: "Hola"},
 			},
 			baseLanguage:    "eng",
 			contactLanguage: "spa",
-			expectedContent: &flows.MsgContent{Text: "Hola", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []string{"Yes", "No"}},
+			expectedContent: &flows.MsgContent{Text: "Hola", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 			expectedLocale:  "spa-US",
 		},
 		{ // 5: merges content from different translations
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
 			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{QuickReplies: []string{"Yes", "No"}},
+				"eng": &flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 				"spa": &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}},
 				"kin": &flows.MsgContent{Text: "Muraho"},
 			},
 			baseLanguage:    "kin",
 			contactLanguage: "spa",
-			expectedContent: &flows.MsgContent{Text: "Muraho", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}, QuickReplies: []string{"Yes", "No"}},
+			expectedContent: &flows.MsgContent{Text: "Muraho", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 			expectedLocale:  "kin-US",
 		},
 	}
@@ -259,4 +259,21 @@ func TestMsgTemplating(t *testing.T) {
 			}
 		]
 	  }`), marshaled, "JSON mismatch")
+}
+
+func TestQuickReplies(t *testing.T) {
+	// can unmarshal from a string
+	qr1 := flows.QuickReply{}
+	jsonx.MustUnmarshal([]byte(`"Yes"`), &qr1)
+	assert.Equal(t, flows.QuickReply{Text: "Yes"}, qr1)
+
+	// can unmarshal from a struct
+	qr2 := flows.QuickReply{}
+	jsonx.MustUnmarshal([]byte(`{"text": "No"}`), &qr2)
+	assert.Equal(t, flows.QuickReply{Text: "No"}, qr2)
+
+	// always marshals as a string for now
+	assert.Equal(t, []byte(`"Yes"`), jsonx.MustMarshal(qr1))
+	assert.Equal(t, []byte(`"No"`), jsonx.MustMarshal(qr2))
+	assert.Equal(t, []byte(`["Yes","No"]`), jsonx.MustMarshal([]flows.QuickReply{qr1, qr2}))
 }

@@ -242,7 +242,7 @@ func TestTemplating(t *testing.T) {
 					{Type: "text", Value: "No"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{QuickReplies: []string{"Yes", "No"}},
+			expectedPreview: &flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 		},
 		{ // 4: header image becomes an attachment
 			template: []byte(`{
