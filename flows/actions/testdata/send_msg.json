@@ -96,8 +96,12 @@
                         "image:http://example.com/red.jpg"
                     ],
                     "quick_replies": [
-                        "Red",
-                        "Blue"
+                        {
+                            "text": "Red"
+                        },
+                        {
+                            "text": "Blue"
+                        }
                     ],
                     "locale": "eng-US"
                 }
@@ -210,8 +214,12 @@
                     },
                     "text": "Hi there",
                     "quick_replies": [
-                        "yes",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+                        {
+                            "text": "yes"
+                        },
+                        {
+                            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+                        }
                     ],
                     "locale": "eng-US"
                 }
@@ -651,8 +659,12 @@
                         "image:http://example.com/rojo.jpg"
                     ],
                     "quick_replies": [
-                        "Si",
-                        "No"
+                        {
+                            "text": "Si"
+                        },
+                        {
+                            "text": "No"
+                        }
                     ],
                     "locale": "spa-US"
                 }
@@ -719,8 +731,12 @@
                     },
                     "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como boy.",
                     "quick_replies": [
-                        "Yeah",
-                        "No"
+                        {
+                            "text": "Yeah"
+                        },
+                        {
+                            "text": "No"
+                        }
                     ],
                     "templating": {
                         "template": {

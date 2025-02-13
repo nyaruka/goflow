@@ -495,7 +495,7 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"text": "Hi there",
 					"attachments": ["image/jpeg:http://s3.amazon.com/bucket/test.jpg"],
-					"quick_replies": ["yes", "no"],
+					"quick_replies": [{"text": "yes"}, {"text": "no"}],
 					"topic": "agent",
 					"locale": "eng-US",
 					"unsendable_reason": "contact_status"

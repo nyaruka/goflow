@@ -272,8 +272,7 @@ func TestQuickReplies(t *testing.T) {
 	jsonx.MustUnmarshal([]byte(`{"text": "No"}`), &qr2)
 	assert.Equal(t, flows.QuickReply{Text: "No"}, qr2)
 
-	// always marshals as a string for now
-	assert.Equal(t, []byte(`"Yes"`), jsonx.MustMarshal(qr1))
-	assert.Equal(t, []byte(`"No"`), jsonx.MustMarshal(qr2))
-	assert.Equal(t, []byte(`["Yes","No"]`), jsonx.MustMarshal([]flows.QuickReply{qr1, qr2}))
+	assert.Equal(t, []byte(`{"text":"Yes"}`), jsonx.MustMarshal(qr1))
+	assert.Equal(t, []byte(`{"text":"No"}`), jsonx.MustMarshal(qr2))
+	assert.Equal(t, []byte(`[{"text":"Yes"},{"text":"No"}]`), jsonx.MustMarshal([]flows.QuickReply{qr1, qr2}))
 }

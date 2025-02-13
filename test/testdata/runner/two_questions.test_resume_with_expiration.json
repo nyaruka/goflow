@@ -11,8 +11,12 @@
                         },
                         "locale": "eng-US",
                         "quick_replies": [
-                            "Red",
-                            "Blue"
+                            {
+                                "text": "Red"
+                            },
+                            {
+                                "text": "Blue"
+                            }
                         ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
                         "urn": "tel:+12024561111",
@@ -78,8 +82,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Red",
-                                        "Blue"
+                                        {
+                                            "text": "Red"
+                                        },
+                                        {
+                                            "text": "Blue"
+                                        }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
                                     "urn": "tel:+12024561111",
@@ -218,8 +226,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Red",
-                                        "Blue"
+                                        {
+                                            "text": "Red"
+                                        },
+                                        {
+                                            "text": "Blue"
+                                        }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
                                     "urn": "tel:+12024561111",

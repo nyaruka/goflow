@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 	"slices"
 
@@ -200,13 +199,8 @@ type QuickReply struct {
 	Text string `json:"text"`
 }
 
-func (q QuickReply) MarshalJSON() ([]byte, error) {
-	// TODO for now we always marshal as a string but once everything can unmarshal as a struct we can change this
-	return json.Marshal(q.Text)
-}
-
 func (q *QuickReply) UnmarshalJSON(d []byte) error {
-	// if we have a string we unmarshal it into the text field
+	// if we just have a string we unmarshal it into the text field
 	if len(d) > 2 && d[0] == '"' && d[len(d)-1] == '"' {
 		return jsonx.Unmarshal(d, &q.Text)
 	}

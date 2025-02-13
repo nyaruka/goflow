@@ -19,8 +19,12 @@
                         },
                         "locale": "eng-US",
                         "quick_replies": [
-                            "Red",
-                            "Blue"
+                            {
+                                "text": "Red"
+                            },
+                            {
+                                "text": "Blue"
+                            }
                         ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                         "urn": "tel:+12065551212",
@@ -86,8 +90,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Red",
-                                        "Blue"
+                                        {
+                                            "text": "Red"
+                                        },
+                                        {
+                                            "text": "Blue"
+                                        }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
@@ -342,8 +350,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Red",
-                                        "Blue"
+                                        {
+                                            "text": "Red"
+                                        },
+                                        {
+                                            "text": "Blue"
+                                        }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
@@ -664,8 +676,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Red",
-                                        "Blue"
+                                        {
+                                            "text": "Red"
+                                        },
+                                        {
+                                            "text": "Blue"
+                                        }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
