@@ -1,3 +1,7 @@
+v0.229.0 (2025-02-13)
+-------------------------
+ * Convert quick replies into structs
+
 v0.228.1 (2025-01-29)
 -------------------------
  * Add UUID to sprints
