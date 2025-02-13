@@ -1,3 +1,7 @@
+v0.229.1 (2025-02-13)
+-------------------------
+ * Marshal quick replies as structs
+
 v0.229.0 (2025-02-13)
 -------------------------
  * Convert quick replies into structs
