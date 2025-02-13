@@ -323,8 +323,12 @@
                         },
                         "locale": "eng-US",
                         "quick_replies": [
-                            "Yes",
-                            "No"
+                            {
+                                "text": "Yes"
+                            },
+                            {
+                                "text": "No"
+                            }
                         ],
                         "text": "This is a reply with attachments and quick replies",
                         "urn": "tel:+12065551212",
@@ -803,8 +807,12 @@
                                     },
                                     "locale": "eng-US",
                                     "quick_replies": [
-                                        "Yes",
-                                        "No"
+                                        {
+                                            "text": "Yes"
+                                        },
+                                        {
+                                            "text": "No"
+                                        }
                                     ],
                                     "text": "This is a reply with attachments and quick replies",
                                     "urn": "tel:+12065551212",

@@ -283,8 +283,12 @@
                             "image:http://example.com/red.jpg"
                         ],
                         "quick_replies": [
-                            "Yes",
-                            "No"
+                            {
+                                "text": "Yes"
+                            },
+                            {
+                                "text": "No"
+                            }
                         ]
                     },
                     "spa": {
@@ -293,8 +297,12 @@
                             "image:http://example.com/rojo.jpg"
                         ],
                         "quick_replies": [
-                            "Si",
-                            "No"
+                            {
+                                "text": "Si"
+                            },
+                            {
+                                "text": "No"
+                            }
                         ]
                     }
                 },
