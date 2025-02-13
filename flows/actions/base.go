@@ -99,14 +99,14 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 
 	// localize and evaluate the quick replies
 	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
-	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
+	evaluatedQuickReplies := make([]flows.QuickReply, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, logEvent)
 		if evaluatedQuickReply == "" {
 			logEvent(events.NewErrorf("quick reply evaluated to empty string, skipping"))
 			continue
 		}
-		evaluatedQuickReplies = append(evaluatedQuickReplies, stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength))
+		evaluatedQuickReplies = append(evaluatedQuickReplies, flows.QuickReply{Text: stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength)})
 	}
 
 	// although it's possible for the different parts of the message to have different languages, we want to resolve

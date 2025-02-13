@@ -352,7 +352,7 @@ func TestTranslation(t *testing.T) {
 		msgAction            []byte
 		expectedText         string
 		expectedAttachments  []utils.Attachment
-		expectedQuickReplies []string
+		expectedQuickReplies []flows.QuickReply
 	}{
 		{
 			description:  "contact language is valid and is flow base language, msg action has all fields",
@@ -364,7 +364,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []string{"yes", "no"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action has all fields",
@@ -375,7 +375,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []string{"si"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "si"}},
 		},
 		{
 			description:  "contact language is allowed but no translations exist, msg action has all fields",
@@ -387,7 +387,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []string{"yes", "no"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
 		},
 		{
 			description:  "contact language is not allowed and translations exist, msg action has all fields",
@@ -399,7 +399,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []string{"yes", "no"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
 		},
 		{
 			description:          "contact language is valid and is flow base language, msg action only has text",
@@ -408,7 +408,7 @@ func TestTranslation(t *testing.T) {
 			msgAction:            msgAction2,
 			expectedText:         "Hello",
 			expectedAttachments:  []utils.Attachment{},
-			expectedQuickReplies: []string{},
+			expectedQuickReplies: []flows.QuickReply{},
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action only has text",
@@ -419,7 +419,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []string{"si"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "si"}},
 		},
 		{
 			description:  "attachments and quick replies translations are single empty strings and should be ignored",
@@ -431,7 +431,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []string{"yes", "no"},
+			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
 		},
 	}
 

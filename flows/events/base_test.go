@@ -475,7 +475,7 @@ func TestEventMarshaling(t *testing.T) {
 					&flows.MsgContent{
 						Text:         "Hi there",
 						Attachments:  []utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
-						QuickReplies: []string{"yes", "no"},
+						QuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
 					},
 					nil,
 					flows.MsgTopicAgent,

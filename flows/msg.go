@@ -1,11 +1,13 @@
 package flows
 
 import (
+	"encoding/json"
 	"fmt"
 	"slices"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -66,7 +68,7 @@ type MsgIn struct {
 type MsgOut struct {
 	BaseMsg
 
-	QuickReplies_     []string         `json:"quick_replies,omitempty"`
+	QuickReplies_     []QuickReply     `json:"quick_replies,omitempty"`
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
 	Topic_            MsgTopic         `json:"topic,omitempty"`
 	Locale_           i18n.Locale      `json:"locale,omitempty"`
@@ -157,7 +159,7 @@ func (m *MsgIn) ExternalID() string { return m.ExternalID_ }
 func (m *MsgIn) SetExternalID(id string) { m.ExternalID_ = id }
 
 // QuickReplies returns the quick replies of this outgoing message
-func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
+func (m *MsgOut) QuickReplies() []QuickReply { return m.QuickReplies_ }
 
 // Templating returns the templating to use to send this message (if any)
 func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
@@ -194,11 +196,32 @@ func NewMsgTemplating(template *assets.TemplateReference, components []*Templati
 	return &MsgTemplating{Template: template, Components: components, Variables: variables}
 }
 
+type QuickReply struct {
+	Text string `json:"text"`
+}
+
+func (q QuickReply) MarshalJSON() ([]byte, error) {
+	// TODO for now we always marshal as a string but once everything can unmarshal as a struct we can change this
+	return json.Marshal(q.Text)
+}
+
+func (q *QuickReply) UnmarshalJSON(d []byte) error {
+	// if we have a string we unmarshal it into the text field
+	if len(d) > 2 && d[0] == '"' && d[len(d)-1] == '"' {
+		return jsonx.Unmarshal(d, &q.Text)
+	}
+
+	// alias our type so we don't end up here again
+	type alias QuickReply
+
+	return jsonx.Unmarshal(d, (*alias)(q))
+}
+
 // MsgContent is message content in a particular language
 type MsgContent struct {
 	Text         string             `json:"text"`
 	Attachments  []utils.Attachment `json:"attachments,omitempty"`
-	QuickReplies []string           `json:"quick_replies,omitempty"`
+	QuickReplies []QuickReply       `json:"quick_replies,omitempty"`
 }
 
 func (c *MsgContent) Empty() bool {

@@ -94,7 +94,7 @@ func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.Temp
 func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 	var text []string
 	var attachments []utils.Attachment
-	var quickReplies []string
+	var quickReplies []QuickReply
 
 	for _, comp := range t.Components() {
 		content := comp.Content()
@@ -112,7 +112,7 @@ func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 			if comp.Type() == "header/text" || comp.Type() == "body/text" || comp.Type() == "footer/text" {
 				text = append(text, content)
 			} else if strings.HasPrefix(comp.Type(), "button/") {
-				quickReplies = append(quickReplies, stringsx.TruncateEllipsis(content, MaxQuickReplyLength))
+				quickReplies = append(quickReplies, QuickReply{Text: stringsx.TruncateEllipsis(content, MaxQuickReplyLength)})
 			}
 		}
 	}
