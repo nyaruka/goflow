@@ -392,7 +392,7 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
-			events.NewError(errors.New("I'm an error")),
+			events.NewError("I'm an error"),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"text": "I'm an error",

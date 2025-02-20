@@ -57,7 +57,7 @@ func (a *SetContactLanguageAction) Execute(run flows.Run, step flows.Step, logMo
 	if language != "" {
 		lang, err = i18n.ParseLanguage(language)
 		if err != nil {
-			logEvent(events.NewError(err))
+			logEvent(events.NewError(err.Error()))
 			return nil
 		}
 	}

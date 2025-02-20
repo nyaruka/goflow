@@ -47,7 +47,7 @@ func (a *AddInputLabelsAction) Execute(run flows.Run, step flows.Step, logModifi
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		logEvent(events.NewErrorf("no input to add labels to"))
+		logEvent(events.NewError("no input to add labels to"))
 		return nil
 	}
 
