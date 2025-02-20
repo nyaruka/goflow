@@ -29,20 +29,15 @@ type ErrorEvent struct {
 	Text string `json:"text" validate:"required"`
 }
 
-// NewError returns a new error event for the passed in error
-func NewError(err error) *ErrorEvent {
-	return NewErrorf(err.Error())
-}
-
-// NewErrorf returns a new error event for the passed in format string and args
-func NewErrorf(format string, a ...any) *ErrorEvent {
+// NewError returns a new error event for the passed in text
+func NewError(text string) *ErrorEvent {
 	return &ErrorEvent{
 		BaseEvent: NewBaseEvent(TypeError),
-		Text:      fmt.Sprintf(format, a...),
+		Text:      text,
 	}
 }
 
 // NewDependencyError returns an error event for a missing dependency
 func NewDependencyError(ref assets.Reference) *ErrorEvent {
-	return NewErrorf("missing dependency: %s", ref.String())
+	return NewError(fmt.Sprintf("missing dependency: %s", ref.String()))
 }

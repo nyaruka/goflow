@@ -84,7 +84,7 @@ func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier f
 
 func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
-		logEvent(events.NewErrorf("can't open tickets during batch starts"))
+		logEvent(events.NewError("can't open tickets during batch starts"))
 		return nil
 	}
 

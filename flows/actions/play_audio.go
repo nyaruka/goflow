@@ -52,7 +52,7 @@ func (a *PlayAudioAction) Execute(run flows.Run, step flows.Step, logModifier fl
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		logEvent(events.NewErrorf("audio URL evaluated to empty, skipping"))
+		logEvent(events.NewError("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 

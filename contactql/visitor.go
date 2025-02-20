@@ -1,6 +1,7 @@
 package contactql
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -139,7 +140,7 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 			propType = PropertyTypeURN
 			propKey = parts[1]
 		} else {
-			v.addError(NewQueryError(ErrUnknownPropertyType, "unknown property type '%s'", parts[0]).withExtra("type", parts[0]))
+			v.addError(NewQueryError(ErrUnknownPropertyType, fmt.Sprintf("unknown property type '%s'", parts[0])).withExtra("type", parts[0]))
 		}
 	} else {
 		propKey = propText

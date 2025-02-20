@@ -2,7 +2,6 @@ package contactql
 
 import (
 	"errors"
-	"fmt"
 )
 
 // error codes with values included in extra
@@ -32,8 +31,8 @@ type QueryError struct {
 }
 
 // NewQueryError creates a new query error
-func NewQueryError(code, err string, args ...any) *QueryError {
-	return &QueryError{code: code, msg: fmt.Sprintf(err, args...)}
+func NewQueryError(code, msg string) *QueryError {
+	return &QueryError{code: code, msg: msg}
 }
 
 func (e *QueryError) withExtra(k string, v any) *QueryError {

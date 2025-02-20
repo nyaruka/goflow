@@ -88,11 +88,11 @@ func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier 
 	url = strings.TrimSpace(url)
 
 	if url == "" {
-		logEvent(events.NewErrorf("webhook URL evaluated to empty string"))
+		logEvent(events.NewError("webhook URL evaluated to empty string"))
 		return nil
 	}
 	if !isValidURL(url) {
-		logEvent(events.NewErrorf("webhook URL evaluated to an invalid URL: '%s'", url))
+		logEvent(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url)))
 		return nil
 	}
 
@@ -125,14 +125,14 @@ func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, bo
 
 	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 	if err != nil {
-		logEvent(events.NewError(err))
+		logEvent(events.NewError(err.Error()))
 		return nil
 	}
 
 	call, err := svc.Call(req)
 
 	if err != nil {
-		logEvent(events.NewError(err))
+		logEvent(events.NewError(err.Error()))
 	}
 	if call != nil {
 		run.SetWebhook(call)

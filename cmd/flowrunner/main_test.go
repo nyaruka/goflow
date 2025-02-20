@@ -80,7 +80,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewDialWait(urns.URN(`tel:+1234567890`), 20, 120, expiresOn), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewEnvironmentRefreshed(session.Environment()), `⚙️ environment refreshed on resume`},
-		{events.NewErrorf("this didn't work"), `⚠️ this didn't work`},
+		{events.NewError("this didn't work"), `⚠️ this didn't work`},
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
 		{events.NewFlowEntered(flow.Reference(false), "", false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},

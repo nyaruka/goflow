@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -57,7 +58,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.Run, step flows.Step, logMo
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			logEvent(events.NewErrorf("unrecognized timezone: '%s'", timezone))
+			logEvent(events.NewError(fmt.Sprintf("unrecognized timezone: '%s'", timezone)))
 			return nil
 		}
 	}
