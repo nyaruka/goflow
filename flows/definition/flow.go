@@ -94,7 +94,7 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 func (f *flow) ExpireAfter() time.Duration {
 	if f.expireAfter == 0 {
 		if f.flowType == flows.FlowTypeMessaging {
-			return 10080 * time.Minute
+			return 3 * 24 * time.Hour // 3 days
 		} else if f.flowType == flows.FlowTypeVoice {
 			return 5 * time.Minute
 		}
