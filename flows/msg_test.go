@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -262,17 +263,42 @@ func TestMsgTemplating(t *testing.T) {
 }
 
 func TestQuickReplies(t *testing.T) {
-	// can unmarshal from a string
-	qr1 := flows.QuickReply{}
-	jsonx.MustUnmarshal([]byte(`"Yes"`), &qr1)
-	assert.Equal(t, flows.QuickReply{Text: "Yes"}, qr1)
+	texts := []struct {
+		text     string
+		expected flows.QuickReply
+	}{
+		{"", flows.QuickReply{Text: ""}},
+		{"Yes", flows.QuickReply{Text: "Yes"}},
+		{"Yes\nReally", flows.QuickReply{Text: "Yes", Extra: "Really"}},
+	}
+	for _, tc := range texts {
+		qr := flows.QuickReply{}
+		err := qr.UnmarshalText([]byte(tc.text))
+		require.NoError(t, err)
+		assert.Equal(t, tc.expected, qr)
 
-	// can unmarshal from a struct
-	qr2 := flows.QuickReply{}
-	jsonx.MustUnmarshal([]byte(`{"text": "No"}`), &qr2)
-	assert.Equal(t, flows.QuickReply{Text: "No"}, qr2)
+		marshaled, err := qr.MarshalText()
+		require.NoError(t, err)
+		assert.Equal(t, tc.text, string(marshaled))
+	}
 
-	assert.Equal(t, []byte(`{"text":"Yes"}`), jsonx.MustMarshal(qr1))
-	assert.Equal(t, []byte(`{"text":"No"}`), jsonx.MustMarshal(qr2))
-	assert.Equal(t, []byte(`[{"text":"Yes"},{"text":"No"}]`), jsonx.MustMarshal([]flows.QuickReply{qr1, qr2}))
+	jsons := []struct {
+		json     []byte
+		expected flows.QuickReply
+	}{
+		{[]byte(`"Yes"`), flows.QuickReply{Text: "Yes"}},
+		{[]byte(`{"text": "Yes"}`), flows.QuickReply{Text: "Yes"}},
+		{[]byte(`{"text": "Yes", "extra": "Really"}`), flows.QuickReply{Text: "Yes", Extra: "Really"}},
+	}
+	for _, tc := range jsons {
+		qr := flows.QuickReply{}
+		err := json.Unmarshal(tc.json, &qr)
+		require.NoError(t, err)
+		assert.Equal(t, tc.expected, qr)
+	}
+
+	// marshaling is always as struct
+	assert.Equal(t, []byte(`{"text":"Yes"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes"}))
+	assert.Equal(t, []byte(`{"text":"Yes","extra":"Really"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes", Extra: "Really"}))
+	assert.Equal(t, []byte(`[{"text":"Yes"},{"text":"No"}]`), jsonx.MustMarshal([]flows.QuickReply{{Text: "Yes"}, {Text: "No"}}))
 }
