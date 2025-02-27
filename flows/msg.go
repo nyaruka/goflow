@@ -50,7 +50,6 @@ const (
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
 	UUID_        MsgUUID                  `json:"uuid"`
-	ID_          MsgID                    `json:"id,omitempty"`
 	URN_         urns.URN                 `json:"urn,omitempty" validate:"omitempty,urn"`
 	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
 	Text_        string                   `json:"text"`
@@ -130,12 +129,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 
 // UUID returns the UUID of this message
 func (m *BaseMsg) UUID() MsgUUID { return m.UUID_ }
-
-// ID returns the internal ID of this message
-func (m *BaseMsg) ID() MsgID { return m.ID_ }
-
-// SetID sets the internal ID of this message
-func (m *BaseMsg) SetID(id MsgID) { m.ID_ = id }
 
 // URN returns the URN of this message
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }
