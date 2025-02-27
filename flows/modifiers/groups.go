@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -47,7 +48,7 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *GroupsMo
 // Apply applies this modification to the given contact
 func (m *GroupsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
-		log(events.NewErrorf("can't add blocked or stopped contacts to groups"))
+		log(events.NewError("can't add blocked or stopped contacts to groups"))
 		return false
 	}
 
@@ -56,7 +57,7 @@ func (m *GroupsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {
 			if group.UsesQuery() {
-				log(events.NewErrorf("can't add contacts to the query based group '%s'", group.Name()))
+				log(events.NewError(fmt.Sprintf("can't add contacts to the query based group '%s'", group.Name())))
 				continue
 			}
 
@@ -78,7 +79,7 @@ func (m *GroupsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 	} else if m.modification == GroupsRemove {
 		for _, group := range m.groups {
 			if group.UsesQuery() {
-				log(events.NewErrorf("can't remove contacts from the query based group '%s'", group.Name()))
+				log(events.NewError(fmt.Sprintf("can't remove contacts from the query based group '%s'", group.Name())))
 				continue
 			}
 

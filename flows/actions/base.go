@@ -87,11 +87,11 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 		evaluatedAttachment, _ := run.EvaluateTemplate(a, logEvent)
 		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
 		if !utils.IsValidAttachment(evaluatedAttachment) {
-			logEvent(events.NewErrorf("attachment evaluated to invalid value, skipping"))
+			logEvent(events.NewError("attachment evaluated to invalid value, skipping"))
 			continue
 		}
 		if len(evaluatedAttachment) > flows.MaxAttachmentLength {
-			logEvent(events.NewErrorf("evaluated attachment is longer than %d limit, skipping", flows.MaxAttachmentLength))
+			logEvent(events.NewError(fmt.Sprintf("evaluated attachment is longer than %d limit, skipping", flows.MaxAttachmentLength)))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))
@@ -103,7 +103,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, logEvent)
 		if evaluatedQuickReply == "" {
-			logEvent(events.NewErrorf("quick reply evaluated to empty string, skipping"))
+			logEvent(events.NewError("quick reply evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, flows.QuickReply{Text: stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength)})
@@ -248,7 +248,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 					urn, _ := urns.New(urns.Phone, parsedTel)
 					urnList = append(urnList, urn)
 				} else {
-					logEvent(events.NewErrorf("'%s' couldn't be resolved to a contact, group or URN", evaluatedLegacyVar))
+					logEvent(events.NewError(fmt.Sprintf("'%s' couldn't be resolved to a contact, group or URN", evaluatedLegacyVar)))
 				}
 			}
 		}
@@ -284,7 +284,7 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent 
 				// look up the set of all groups to see if such a group exists
 				group = groupAssets.FindByName(evaluatedName)
 				if group == nil {
-					logEvent(events.NewErrorf("no such group with name '%s'", evaluatedName))
+					logEvent(events.NewError(fmt.Sprintf("no such group with name '%s'", evaluatedName)))
 				}
 			}
 		} else {
@@ -318,7 +318,7 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent 
 				// look up the set of all labels to see if such a label exists
 				label = labelAssets.FindByName(evaluatedName)
 				if label == nil {
-					logEvent(events.NewErrorf("no such label with name '%s'", evaluatedName))
+					logEvent(events.NewError(fmt.Sprintf("no such label with name '%s'", evaluatedName)))
 				}
 			}
 		} else {
@@ -349,7 +349,7 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 			// look up to see if such a user exists
 			user = userAssets.Get(evaluatedEmail)
 			if user == nil {
-				logEvent(events.NewErrorf("no such user with email '%s'", evaluatedEmail))
+				logEvent(events.NewError(fmt.Sprintf("no such user with email '%s'", evaluatedEmail)))
 			}
 		}
 	} else {

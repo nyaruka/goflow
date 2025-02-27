@@ -309,7 +309,7 @@ func (r *run) EvaluateTemplateValue(template string, log flows.EventCallback) (t
 
 	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
 	if err != nil {
-		log(events.NewError(err))
+		log(events.NewError(err.Error()))
 	}
 	for _, w := range warnings {
 		log(events.NewWarning(w))
@@ -323,7 +323,7 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 
 	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
 	if err != nil {
-		log(events.NewError(err))
+		log(events.NewError(err.Error()))
 	}
 	for _, w := range warnings {
 		log(events.NewWarning(w))

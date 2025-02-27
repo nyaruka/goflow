@@ -104,7 +104,7 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
-			logEvent(events.NewError(err))
+			logEvent(events.NewError(err.Error()))
 			return nil
 		}
 
@@ -112,14 +112,14 @@ func (a *CallResthookAction) Execute(run flows.Run, step flows.Step, logModifier
 
 		svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 		if err != nil {
-			logEvent(events.NewError(err))
+			logEvent(events.NewError(err.Error()))
 			return nil
 		}
 
 		call, err := svc.Call(req)
 
 		if err != nil {
-			logEvent(events.NewError(err))
+			logEvent(events.NewError(err.Error()))
 		}
 		if call != nil {
 			calls = append(calls, call)

@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -57,11 +58,11 @@ func (m *URNsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 		urn := urn.Normalize()
 
 		if err := urn.Validate(); err != nil {
-			log(events.NewErrorf("'%s' is not valid URN", urn))
+			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn)))
 		} else {
 			if m.Modification == URNsAppend || m.Modification == URNsSet {
 				if len(contact.URNs()) >= flows.MaxContactURNs {
-					log(events.NewErrorf("contact has too many URNs, limit is %d", flows.MaxContactURNs))
+					log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs)))
 					break
 				} else if contact.AddURN(urn, nil) {
 					modified = true

@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"errors"
 	"testing"
 	"time"
 
@@ -79,8 +78,8 @@ func TestSprint(t *testing.T) {
 	mod1 := modifiers.NewName("Bob")
 	mod2 := modifiers.NewName("Joe")
 
-	event1 := events.NewError(errors.New("error 1"))
-	event2 := events.NewError(errors.New("error 1"))
+	event1 := events.NewError("error 1")
+	event2 := events.NewError("error 1")
 
 	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), time.Second))
 

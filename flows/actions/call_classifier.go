@@ -73,7 +73,7 @@ func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifi
 
 func (a *CallClassifierAction) classify(run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
-		logEvent(events.NewErrorf("can't classify empty input, skipping classification"))
+		logEvent(events.NewError("can't classify empty input, skipping classification"))
 		return nil, true
 	}
 	if classifier == nil {
@@ -83,7 +83,7 @@ func (a *CallClassifierAction) classify(run flows.Run, input string, classifier 
 
 	svc, err := run.Session().Engine().Services().Classification(classifier)
 	if err != nil {
-		logEvent(events.NewError(err))
+		logEvent(events.NewError(err.Error()))
 		return nil, false
 	}
 
@@ -96,7 +96,7 @@ func (a *CallClassifierAction) classify(run flows.Run, input string, classifier 
 	}
 
 	if err != nil {
-		logEvent(events.NewError(err))
+		logEvent(events.NewError(err.Error()))
 		return nil, false
 	}
 

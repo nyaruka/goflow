@@ -139,7 +139,7 @@ func (r *SwitchRouter) Route(run flows.Run, step flows.Step, log flows.EventCall
 		// evaluate our operand as a string
 		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
-			log(events.NewError(xerr))
+			log(events.NewError(xerr.Error()))
 		}
 
 		match = value.Native()
@@ -182,7 +182,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, operand types.XValue, log flows.
 		switch typed := result.(type) {
 		case *types.XError:
 			// test functions can return an error
-			log(events.NewErrorf("error calling test %s: %s", xtest.Describe(), typed.Error()))
+			log(events.NewError(fmt.Sprintf("error calling test %s: %s", xtest.Describe(), typed.Error())))
 		case *types.XObject:
 			matched := typed.Truthy()
 			if !matched {
@@ -194,7 +194,7 @@ func (r *SwitchRouter) matchCase(run flows.Run, operand types.XValue, log flows.
 
 			extraAsObject, isObject := extra.(*types.XObject)
 			if extra != nil && !isObject {
-				log(events.NewErrorf("test %s returned non-object extra", strings.ToUpper(test)))
+				log(events.NewError(fmt.Sprintf("test %s returned non-object extra", strings.ToUpper(test))))
 			}
 
 			resultAsStr, xerr := types.ToXText(run.Session().MergedEnvironment(), match)
