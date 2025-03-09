@@ -1,3 +1,9 @@
+v0.230.0 (2025-02-27)
+-------------------------
+ * Add extra field to quick replies and support encoding as text using new line
+ * Rewrite places we use non-constant format strings
+ * Change flow expires after default to 3 days
+
 v0.229.1 (2025-02-13)
 -------------------------
  * Marshal quick replies as structs

@@ -3,6 +3,7 @@ package flows
 import (
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
@@ -196,7 +197,34 @@ func NewMsgTemplating(template *assets.TemplateReference, components []*Templati
 }
 
 type QuickReply struct {
-	Text string `json:"text"`
+	Text  string `json:"text"`
+	Extra string `json:"extra,omitempty"`
+}
+
+// MarshalText marshals a quick reply into a text representation using a new line if extra is present
+func (q QuickReply) MarshalText() (text []byte, err error) {
+	vs := []string{q.Text}
+	if q.Extra != "" {
+		vs = append(vs, q.Extra)
+	}
+	return []byte(strings.Join(vs, "\n")), nil
+}
+
+func (q *QuickReply) UnmarshalText(text []byte) error {
+	vs := strings.SplitN(string(text), "\n", 2)
+	q.Text = vs[0]
+	if len(vs) > 1 {
+		q.Extra = vs[1]
+	}
+	return nil
+}
+
+func (q QuickReply) MarshalJSON() ([]byte, error) {
+	// alias our type so we don't end up here again
+	type alias QuickReply
+
+	// we need to provide a MarshalJSON or the json package uses our MarshalText
+	return jsonx.Marshal((alias)(q))
 }
 
 func (q *QuickReply) UnmarshalJSON(d []byte) error {
