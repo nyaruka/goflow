@@ -28,7 +28,7 @@ session, sprint, err := eng.NewSession(assets, trigger)
 
 ## Sessions
 
-Sessions can be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+Sessions can be persisted between sprints by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
 
 ## Utilities
 
