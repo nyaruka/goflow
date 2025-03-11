@@ -1,3 +1,8 @@
+v0.231.0 (2025-03-11)
+-------------------------
+ * Add limits for nodes per flow, actions per node, categories and exits
+ * Update deps
+
 v0.230.0 (2025-02-27)
 -------------------------
  * Add extra field to quick replies and support encoding as text using new line
