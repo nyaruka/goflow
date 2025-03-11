@@ -21,6 +21,12 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const (
+	maxNodesPerFlow   = 1000 // max number of nodes in a flow
+	maxActionsPerNode = 100  // max number of actions in a node
+	maxExitsPerNode   = 100  // max number of exits in a node
+)
+
 // CurrentSpecVersion is the flow spec version supported by this library
 var CurrentSpecVersion = semver.MustParse("13.6.1")
 
@@ -103,6 +109,10 @@ func (f *flow) ExpireAfter() time.Duration {
 }
 
 func (f *flow) validate() error {
+	if len(f.nodes) > maxNodesPerFlow {
+		return fmt.Errorf("flow can't have more than %d nodes", maxNodesPerFlow)
+	}
+
 	// track UUIDs used by nodes and actions to ensure that they are unique
 	seenUUIDs := make(map[uuids.UUID]bool)
 
