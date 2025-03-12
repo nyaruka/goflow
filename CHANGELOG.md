@@ -1,3 +1,7 @@
+v0.231.1 (2025-03-12)
+-------------------------
+ * Allow flows.MsgContent to be unmarshalled from string
+
 v0.231.0 (2025-03-11)
 -------------------------
  * Add limits for nodes per flow, actions per node, categories and exits
