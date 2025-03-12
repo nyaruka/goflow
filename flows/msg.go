@@ -250,6 +250,18 @@ func (c *MsgContent) Empty() bool {
 	return c.Text == "" && len(c.Attachments) == 0 && len(c.QuickReplies) == 0
 }
 
+func (c *MsgContent) UnmarshalJSON(d []byte) error {
+	// if we just have a string we unmarshal it into the text field
+	if len(d) > 2 && d[0] == '"' && d[len(d)-1] == '"' {
+		return jsonx.Unmarshal(d, &c.Text)
+	}
+
+	// alias our type so we don't end up here again
+	type alias MsgContent
+
+	return jsonx.Unmarshal(d, (*alias)(c))
+}
+
 type BroadcastTranslations map[i18n.Language]*MsgContent
 
 // ForContact is a utility to help callers get the message content for a contact
