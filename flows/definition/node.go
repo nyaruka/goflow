@@ -38,6 +38,13 @@ func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 
 func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
+	if len(n.actions) > maxActionsPerNode {
+		return fmt.Errorf("node can't have more than %d actions", maxActionsPerNode)
+	}
+	if len(n.exits) > maxExitsPerNode {
+		return fmt.Errorf("node can't have more than %d exits", maxExitsPerNode)
+	}
+
 	// validate all the node's actions
 	for _, action := range n.Actions() {
 

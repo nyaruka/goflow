@@ -100,6 +100,22 @@ func TestBrokenFlows(t *testing.T) {
 			"invalid_exit_dest.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
 		},
+		{
+			"too_many_nodes.json",
+			"flow can't have more than 1000 nodes",
+		},
+		{
+			"too_many_actions.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 actions",
+		},
+		{
+			"too_many_exits.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 exits",
+		},
+		{
+			"too_many_categories.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: router can't have more than 100 categories",
+		},
 	}
 
 	for _, tc := range testCases {

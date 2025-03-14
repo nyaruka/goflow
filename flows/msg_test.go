@@ -126,6 +126,13 @@ func TestMsgContent(t *testing.T) {
 	assert.False(t, (&flows.MsgContent{Text: "hi"}).Empty())
 	assert.False(t, (&flows.MsgContent{Attachments: []utils.Attachment{"image:https://test.jpg"}}).Empty())
 	assert.False(t, (&flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Ok"}}}).Empty())
+
+	// can unmarshal from object
+	var c flows.MsgContent
+	err := json.Unmarshal([]byte(`{"text": "test1", "attachments": ["image:https://test.jpg"]}`), &c)
+	assert.NoError(t, err)
+	assert.Equal(t, "test1", c.Text)
+	assert.Equal(t, []utils.Attachment{"image:https://test.jpg"}, c.Attachments)
 }
 
 func TestBroadcastTranslations(t *testing.T) {
