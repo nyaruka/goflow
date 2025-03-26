@@ -114,6 +114,17 @@ func TestReferences(t *testing.T) {
 		"field 'uuid' is mutually exclusive with 'name_match', field 'name_match' is mutually exclusive with 'uuid'",
 	)
 
+	llmRef := assets.NewLLMReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "GPT-4")
+	assert.Equal(t, "llm", llmRef.Type())
+	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", llmRef.Identity())
+	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), llmRef.GenericUUID())
+	assert.Equal(t, "llm[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=GPT-4]", llmRef.String())
+	assert.False(t, llmRef.Variable())
+	assert.NoError(t, utils.Validate(llmRef))
+
+	// LLM references must always be concrete
+	assert.EqualError(t, utils.Validate(assets.NewLLMReference("", "GPT-4")), "field 'uuid' is required")
+
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 	assert.Equal(t, "template", templateRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", templateRef.Identity())

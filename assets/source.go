@@ -10,6 +10,7 @@ type Source interface {
 	Globals() ([]Global, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
+	LLMs() ([]LLM, error)
 	Locations() ([]LocationHierarchy, error)
 	OptIns() ([]OptIn, error)
 	Resthooks() ([]Resthook, error)

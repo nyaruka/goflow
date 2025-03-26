@@ -112,6 +112,7 @@ type SessionAssets interface {
 	Globals() *GlobalAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
+	LLMs() *LLMAssets
 	Locations() *LocationAssets
 	OptIns() *OptInAssets
 	Resthooks() *ResthookAssets
