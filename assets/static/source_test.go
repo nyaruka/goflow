@@ -49,6 +49,13 @@ var assetsJSON = `{
 			"name": "Spam"
 		}
 	],
+	"llms": [
+		{
+			"uuid": "ae823e89-b0cc-40eb-a711-b8700fe34882",
+			"name": "GPT-4",
+			"type": "openai"
+		}
+	],
 	"optins": [
         {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
@@ -108,6 +115,10 @@ func TestSource(t *testing.T) {
 	labels, err := src.Labels()
 	assert.NoError(t, err)
 	assert.Len(t, labels, 1)
+
+	llms, err := src.LLMs()
+	assert.NoError(t, err)
+	assert.Len(t, llms, 1)
 
 	locations, err := src.Locations()
 	assert.NoError(t, err)

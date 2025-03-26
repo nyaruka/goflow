@@ -54,6 +54,13 @@ var assetsJSON = `{
 			"name": "Spam"
 		}
 	],
+	"llms": [
+		{
+			"uuid": "ae823e89-b0cc-40eb-a711-b8700fe34882",
+			"name": "GPT-4",
+			"type": "openai"
+		}
+	],
 	"optins": [
         {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
@@ -84,6 +91,12 @@ func TestSessionAssets(t *testing.T) {
 	label := sa.Labels().Get("18644b27-fb7f-40e1-b8f4-4ea8999129ef")
 	assert.Equal(t, assets.LabelUUID("18644b27-fb7f-40e1-b8f4-4ea8999129ef"), label.UUID())
 	assert.Equal(t, "Spam", label.Name())
+
+	assert.Nil(t, sa.Labels().Get("xyz"))
+
+	llm := sa.LLMs().Get("ae823e89-b0cc-40eb-a711-b8700fe34882")
+	assert.Equal(t, assets.LLMUUID("ae823e89-b0cc-40eb-a711-b8700fe34882"), llm.UUID())
+	assert.Equal(t, "GPT-4", llm.Name())
 
 	assert.Nil(t, sa.Labels().Get("xyz"))
 
@@ -138,7 +151,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 	_, err = sa.Flows().FindByName("Catch All")
 	assert.EqualError(t, err, "unable to load flow assets")
 
-	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "locations", "optins", "resthooks", "templates", "users"} {
+	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "llms", "locations", "optins", "resthooks", "templates", "users"} {
 		source.currentErrType = errType
 		_, err = engine.NewSessionAssets(env, source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
@@ -187,6 +200,10 @@ func (s *testSource) Groups() ([]assets.Group, error) {
 
 func (s *testSource) Labels() ([]assets.Label, error) {
 	return nil, s.err("labels")
+}
+
+func (s *testSource) LLMs() ([]assets.LLM, error) {
+	return nil, s.err("llms")
 }
 
 func (s *testSource) Locations() ([]assets.LocationHierarchy, error) {

@@ -19,6 +19,7 @@ type sessionAssets struct {
 	globals     *flows.GlobalAssets
 	groups      *flows.GroupAssets
 	labels      *flows.LabelAssets
+	llms        *flows.LLMAssets
 	locations   *flows.LocationAssets
 	optIns      *flows.OptInAssets
 	resthooks   *flows.ResthookAssets
@@ -52,6 +53,10 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		return nil, err
 	}
 	labels, err := source.Labels()
+	if err != nil {
+		return nil, err
+	}
+	llms, err := source.LLMs()
 	if err != nil {
 		return nil, err
 	}
@@ -92,6 +97,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		globals:     flows.NewGlobalAssets(globals),
 		groups:      groupAssets,
 		labels:      flows.NewLabelAssets(labels),
+		llms:        flows.NewLLMAssets(llms),
 		locations:   flows.NewLocationAssets(locations),
 		optIns:      flows.NewOptInAssets(optIns),
 		resthooks:   flows.NewResthookAssets(resthooks),
@@ -109,6 +115,7 @@ func (s *sessionAssets) Flows() flows.FlowAssets              { return s.flows }
 func (s *sessionAssets) Globals() *flows.GlobalAssets         { return s.globals }
 func (s *sessionAssets) Groups() *flows.GroupAssets           { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets           { return s.labels }
+func (s *sessionAssets) LLMs() *flows.LLMAssets               { return s.llms }
 func (s *sessionAssets) Locations() *flows.LocationAssets     { return s.locations }
 func (s *sessionAssets) OptIns() *flows.OptInAssets           { return s.optIns }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets     { return s.resthooks }
