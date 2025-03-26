@@ -90,6 +90,12 @@ func (b *Builder) WithClassificationServiceFactory(f ClassificationServiceFactor
 	return b
 }
 
+// WithLLMServiceFactory sets the LLM service factory
+func (b *Builder) WithLLMServiceFactory(f LLMServiceFactory) *Builder {
+	b.eng.services.llm = f
+	return b
+}
+
 // WithAirtimeServiceFactory sets the airtime service factory
 func (b *Builder) WithAirtimeServiceFactory(f AirtimeServiceFactory) *Builder {
 	b.eng.services.airtime = f

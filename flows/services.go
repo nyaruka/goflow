@@ -21,6 +21,7 @@ type Services interface {
 	Email(SessionAssets) (EmailService, error)
 	Webhook(SessionAssets) (WebhookService, error)
 	Classification(*Classifier) (ClassificationService, error)
+	LLM(*LLM) (LLMService, error)
 	Airtime(SessionAssets) (AirtimeService, error)
 }
 
@@ -135,6 +136,11 @@ type Classification struct {
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
 	Classify(env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
+}
+
+// LLMService provides LLM functionality to the engine
+type LLMService interface {
+	Response(env envs.Environment, instructions, input string, logHTTP HTTPLogCallback) (string, error)
 }
 
 // TicketService provides ticketing functionality to the engine
