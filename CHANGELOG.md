@@ -1,3 +1,9 @@
+v0.232.0 (2025-03-26)
+-------------------------
+ * Add support for LLM assets
+ * Update phonenumbers library
+ * Udpate to go 1.24
+
 v0.231.1 (2025-03-12)
 -------------------------
  * Allow flows.MsgContent to be unmarshalled from string
