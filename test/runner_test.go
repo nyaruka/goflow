@@ -24,6 +24,7 @@ import (
 	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
+	"github.com/nyaruka/goflow/test/services"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -118,7 +119,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
-			return newClassificationService(c), nil
+			return services.NewClassification(c), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
