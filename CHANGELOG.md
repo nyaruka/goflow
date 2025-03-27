@@ -1,3 +1,7 @@
+v0.232.3 (2025-03-27)
+-------------------------
+ * Reorg test services
+
 v0.232.2 (2025-03-27)
 -------------------------
  * Tweak signature of LLMService.Response
