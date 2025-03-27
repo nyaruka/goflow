@@ -1,3 +1,7 @@
+v0.232.2 (2025-03-27)
+-------------------------
+ * Tweak signature of LLMService.Response
+
 v0.232.1 (2025-03-27)
 -------------------------
  * Add LLM service
