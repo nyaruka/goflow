@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -103,25 +104,10 @@ func newLLMService(llm *flows.LLM) *llmService {
 	return &llmService{llm: llm}
 }
 
-func (s *llmService) Response(env envs.Environment, instructions, input string, logHTTP flows.HTTPLogCallback) (string, error) {
+func (s *llmService) Response(ctx context.Context, env envs.Environment, instructions, input string) (string, error) {
 	// get last word from the instructions and return that.. because we're not a real LLM!
 	words := strings.Fields(instructions)
 	output := words[len(words)-1]
-
-	logHTTP(&flows.HTTPLog{
-		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-			LogWithoutTime: &httpx.LogWithoutTime{
-				URL:        "http://test.acme.ai?complete",
-				StatusCode: 200,
-				Request:    "GET /?complete HTTP/1.1\r\nHost: test.acme.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-				Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"message\":\"\"}",
-				ElapsedMS:  1000,
-				Retries:    0,
-			},
-			Status: flows.CallStatusSuccess,
-		},
-		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
-	})
 
 	return output, nil
 }
