@@ -1,3 +1,7 @@
+v0.232.4 (2025-03-27)
+-------------------------
+ * Tweak LLM service implementation for testing to just echo input back
+
 v0.232.3 (2025-03-27)
 -------------------------
  * Reorg test services
