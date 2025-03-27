@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -140,7 +141,7 @@ type ClassificationService interface {
 
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(env envs.Environment, instructions, input string, logHTTP HTTPLogCallback) (string, error)
+	Response(ctx context.Context, env envs.Environment, instructions, input string) (string, error)
 }
 
 // TicketService provides ticketing functionality to the engine
