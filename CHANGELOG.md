@@ -1,3 +1,7 @@
+v0.233.0 (2025-03-28)
+-------------------------
+ * Make engine context.Context aware and pass down into services
+
 v0.232.4 (2025-03-27)
 -------------------------
  * Tweak LLM service implementation for testing to just echo input back
