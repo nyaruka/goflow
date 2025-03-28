@@ -1,6 +1,7 @@
 package docs
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -444,7 +445,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 		eventList = append(eventList, e)
 	}
 
-	err = action.Execute(run, step, modifierLog, eventLog)
+	err = action.Execute(context.Background(), run, step, modifierLog, eventLog)
 	if err != nil {
 		return nil, err
 	}

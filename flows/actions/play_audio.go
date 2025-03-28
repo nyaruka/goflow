@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -42,7 +43,7 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudioAction {
 }
 
 // Execute runs this action
-func (a *PlayAudioAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *PlayAudioAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, logEvent)

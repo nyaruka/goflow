@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -56,7 +58,7 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 }
 
 // Execute runs this action
-func (a *SendBroadcastAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendBroadcastAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err

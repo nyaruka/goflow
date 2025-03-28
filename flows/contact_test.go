@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"testing"
@@ -338,7 +339,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
-		session, _, _ := eng.NewSession(sa, trigger)
+		session, _, _ := eng.NewSession(context.Background(), sa, trigger)
 		afterJSON := jsonx.MustMarshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)

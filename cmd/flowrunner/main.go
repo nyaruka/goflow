@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -105,6 +106,8 @@ func createEngine(witToken string) flows.Engine {
 
 // RunFlow steps through a flow
 func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang i18n.Language, in io.Reader, out io.Writer) (*Repro, error) {
+	ctx := context.Background()
+
 	assetsJSON, err := os.ReadFile(assetsPath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading assets file '%s': %w", assetsPath, err)
@@ -163,7 +166,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
-	session, sprint, err := eng.NewSession(sa, repro.Trigger)
+	session, sprint, err := eng.NewSession(ctx, sa, repro.Trigger)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +196,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 		repro.Resumes = append(repro.Resumes, resume)
 
-		sprint, err := session.Resume(resume)
+		sprint, err := session.Resume(ctx, resume)
 		if err != nil {
 			return nil, err
 		}

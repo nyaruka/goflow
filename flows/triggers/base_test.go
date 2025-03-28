@@ -1,6 +1,7 @@
 package triggers_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -81,7 +82,7 @@ func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) 
 
 		// start a session with this trigger
 		eng := engine.NewBuilder().Build()
-		session, sprint, err := eng.NewSession(sa, trigger)
+		session, sprint, err := eng.NewSession(context.Background(), sa, trigger)
 		assert.NoError(t, err)
 
 		assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -190,7 +191,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
 	history := flows.NewChildHistory(session)
@@ -398,7 +399,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Equal(t, params, trigger.Params())
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -414,7 +415,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Nil(t, trigger.Contact())
 	assert.Nil(t, trigger.Params())
 
-	session, _, err = eng.NewSession(sa, trigger)
+	session, _, err = eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())

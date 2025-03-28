@@ -1,6 +1,7 @@
 package actions_test
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -234,7 +235,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			Build()
 
 		// create session
-		session, _, err := eng.NewSession(sa, trigger)
+		session, _, err := eng.NewSession(context.Background(), sa, trigger)
 		require.NoError(t, err)
 
 		// check all http mocks were used
@@ -827,7 +828,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	_, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	_, sprint, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
@@ -846,7 +847,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 		if event != nil {
 			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
 
-			session, sprint, err = eng.NewSession(sa, trigger)
+			session, sprint, err = eng.NewSession(context.Background(), sa, trigger)
 			require.NoError(t, err)
 
 			sessions = append(sessions, session)
@@ -864,6 +865,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 }
 
 func TestStartSessionLoopProtectionWithInput(t *testing.T) {
+	ctx := context.Background()
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
@@ -954,7 +956,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, sprint, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session, sprint, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
@@ -965,7 +967,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			sprint, err = session.Resume(resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil)))
+			sprint, err = session.Resume(ctx, resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil)))
 			require.NoError(t, err)
 		}
 
@@ -981,7 +983,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		if event != nil {
 			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
 
-			session, sprint, err = eng.NewSession(sa, trigger)
+			session, sprint, err = eng.NewSession(ctx, sa, trigger)
 			require.NoError(t, err)
 
 			sessions = append(sessions, session)

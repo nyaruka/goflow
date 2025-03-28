@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -46,7 +47,7 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 }
 
 // Execute runs the labeling action
-func (a *AddContactURNAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddContactURNAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	evaluatedPath, _ := run.EvaluateTemplate(a.Path, logEvent)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {

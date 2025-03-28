@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -53,7 +54,7 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, body str
 }
 
 // Execute runs this action
-func (a *OpenTicketAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default

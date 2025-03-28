@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"context"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -42,7 +44,7 @@ func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReferenc
 }
 
 // Execute runs our action
-func (a *SetContactChannelAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactChannelAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	var channel *flows.Channel
 	if a.Channel != nil {
 		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)

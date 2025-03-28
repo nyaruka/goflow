@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"context"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
@@ -38,7 +40,7 @@ func NewSetContactStatus(uuid flows.ActionUUID, status flows.ContactStatus) *Set
 }
 
 // Execute runs this action
-func (a *SetContactStatusAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactStatusAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	a.applyModifier(run, modifiers.NewStatus(a.Status), logModifier, logEvent)
 	return nil
 }

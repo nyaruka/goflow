@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"context"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -42,7 +44,7 @@ func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference)
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddContactGroupsAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	groups := resolveGroups(run, a.Groups, logEvent)
 
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logModifier, logEvent)

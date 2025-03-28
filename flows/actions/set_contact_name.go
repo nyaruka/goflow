@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -41,7 +42,7 @@ func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactNameAction
 }
 
 // Execute runs this action
-func (a *SetContactNameAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactNameAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	name, ok := run.EvaluateTemplate(a.Name, logEvent)
 	name = strings.TrimSpace(name)
 

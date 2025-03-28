@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -47,7 +48,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 }
 
 // Execute runs this action
-func (a *SayMsgAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SayMsgAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText, logEvent)

@@ -1,6 +1,7 @@
 package resumes_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -102,12 +103,12 @@ func testResumeType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			tb = tb.WithCall(channel.Reference(), urns.URN("tel:+12065551212"))
 		}
 		trigger := tb.Build()
-		session, _, err := eng.NewSession(sa, trigger)
+		session, _, err := eng.NewSession(context.Background(), sa, trigger)
 		require.NoError(t, err)
 		require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
 		// resume with our resume...
-		sprint, err := session.Resume(resume)
+		sprint, err := session.Resume(context.Background(), resume)
 
 		actual := tc
 		actual.Resume = jsonx.MustMarshal(resume) // re-marshal the resume

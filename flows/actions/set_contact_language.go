@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -43,7 +44,7 @@ func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLa
 }
 
 // Execute runs this action
-func (a *SetContactLanguageAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactLanguageAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	language, ok := run.EvaluateTemplate(a.Language, logEvent)
 	language = strings.TrimSpace(language)
 
