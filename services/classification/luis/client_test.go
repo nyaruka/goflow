@@ -1,6 +1,7 @@
 package luis_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -15,6 +16,8 @@ import (
 var dec = decimal.RequireFromString
 
 func TestPredict(t *testing.T) {
+	ctx := context.Background()
+
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
 		"https://luismm2.cognitiveservices.azure.com/luis/prediction/v3.0/apps/f96abf2f-3b53-4766-8ea6-09a655222a02/slots/production/predict?subscription-key=3246231&verbose=true&show-all-intents=true&log=true&query=book+flight+to+Quito": {
 			httpx.NewMockResponse(200, nil, []byte(`xx`)), // non-JSON response
@@ -73,19 +76,19 @@ func TestPredict(t *testing.T) {
 		"production",
 	)
 
-	response, trace, err := client.Predict("book flight to Quito")
+	response, trace, err := client.Predict(ctx, "book flight to Quito")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	test.AssertSnapshot(t, "predict_request", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
-	response, trace, err = client.Predict("book flight to Quito")
+	response, trace, err = client.Predict(ctx, "book flight to Quito")
 	assert.EqualError(t, err, `field 'prediction' is required`)
 	assert.NotNil(t, trace)
 	assert.Nil(t, response)
 
-	response, trace, err = client.Predict("book flight to Quito")
+	response, trace, err = client.Predict(ctx, "book flight to Quito")
 	assert.NoError(t, err)
 	assert.NotNil(t, trace)
 	assert.Equal(t, "book a flight to Quito", response.Query)

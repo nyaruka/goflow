@@ -8,13 +8,13 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
-	github.com/go-playground/validator/v10 v10.25.0
-	github.com/nyaruka/gocommon v1.60.5
+	github.com/go-playground/validator/v10 v10.26.0
+	github.com/nyaruka/gocommon v1.61.1
 	github.com/sergi/go-diff v1.3.1
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.38.0
 	golang.org/x/text v0.23.0
 )
 
@@ -32,7 +32,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

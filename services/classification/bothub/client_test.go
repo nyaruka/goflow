@@ -1,6 +1,7 @@
 package bothub_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,6 +14,8 @@ import (
 )
 
 func TestParse(t *testing.T) {
+	ctx := context.Background()
+
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
@@ -58,19 +61,19 @@ func TestParse(t *testing.T) {
 
 	client := bothub.NewClient(http.DefaultClient, nil, "123e4567-e89b-12d3-a456-426655440000")
 
-	response, trace, err := client.Parse("Hello", "en_us")
+	response, trace, err := client.Parse(ctx, "Hello", "en_us")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	test.AssertSnapshot(t, "parse_request", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
-	response, trace, err = client.Parse("Hello", "en_us")
+	response, trace, err = client.Parse(ctx, "Hello", "en_us")
 	assert.EqualError(t, err, `field 'intent_ranking' is required`)
 	assert.NotNil(t, trace)
 	assert.Nil(t, response)
 
-	response, trace, err = client.Parse("book a flight to Quito", "en_us")
+	response, trace, err = client.Parse(ctx, "book a flight to Quito", "en_us")
 	assert.NoError(t, err)
 	assert.NotNil(t, trace)
 	assert.Equal(t, bothub.IntentMatch{"book_flight", decimal.RequireFromString(`0.8341536248216568`)}, response.Intent)

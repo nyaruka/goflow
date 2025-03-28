@@ -61,7 +61,7 @@ func (a *CallClassifierAction) Execute(ctx context.Context, run flows.Run, step 
 	// substitute any variables in our input
 	input, _ := run.EvaluateTemplate(a.Input, logEvent)
 
-	classification, skipped := a.classify(run, input, classifier, logEvent)
+	classification, skipped := a.classify(ctx, run, input, classifier, logEvent)
 	if classification != nil {
 		a.saveSuccess(run, step, input, classification, logEvent)
 	} else if skipped {
@@ -73,7 +73,7 @@ func (a *CallClassifierAction) Execute(ctx context.Context, run flows.Run, step 
 	return nil
 }
 
-func (a *CallClassifierAction) classify(run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
+func (a *CallClassifierAction) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
 		logEvent(events.NewError("can't classify empty input, skipping classification"))
 		return nil, true
@@ -91,7 +91,7 @@ func (a *CallClassifierAction) classify(run flows.Run, input string, classifier 
 
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(run.Session().MergedEnvironment(), input, httpLogger.Log)
+	classification, err := svc.Classify(ctx, run.Session().MergedEnvironment(), input, httpLogger.Log)
 
 	if len(httpLogger.Logs) > 0 {
 		logEvent(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))

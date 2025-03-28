@@ -50,7 +50,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 
 // Execute executes the transfer action
 func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	transfer, err := a.transfer(run, logEvent)
+	transfer, err := a.transfer(ctx, run, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
 
@@ -62,7 +62,7 @@ func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step
 	return nil
 }
 
-func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (a *TransferAirtimeAction) transfer(ctx context.Context, run flows.Run, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
 
@@ -88,7 +88,7 @@ func (a *TransferAirtimeAction) transfer(run flows.Run, logEvent flows.EventCall
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(sender, recipient, a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(ctx, sender, recipient, a.Amounts, httpLogger.Log)
 	if transfer != nil {
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}

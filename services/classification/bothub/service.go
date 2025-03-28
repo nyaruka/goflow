@@ -1,6 +1,7 @@
 package bothub
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -26,7 +27,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 	}
 }
 
-func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *service) Classify(ctx context.Context, env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	// eng-US -> en_us
 	lang := env.DefaultLanguage().ISO639_1()
 	if lang == "" {
@@ -37,7 +38,7 @@ func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTT
 		lang += ("_" + country)
 	}
 
-	response, trace, err := s.client.Parse(input, lang)
+	response, trace, err := s.client.Parse(ctx, input, lang)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

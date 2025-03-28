@@ -2,6 +2,7 @@ package dtone
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -74,7 +75,7 @@ type Operator struct {
 }
 
 // LookupMobileNumber see https://dvs-api-doc.dtone.com/#tag/Mobile-Number
-func (c *Client) LookupMobileNumber(phoneNumber string) ([]*Operator, *httpx.Trace, error) {
+func (c *Client) LookupMobileNumber(ctx context.Context, phoneNumber string) ([]*Operator, *httpx.Trace, error) {
 	var response []*Operator
 
 	payload := &struct {
@@ -83,7 +84,7 @@ func (c *Client) LookupMobileNumber(phoneNumber string) ([]*Operator, *httpx.Tra
 		MobileNumber: phoneNumber,
 	}
 
-	trace, err := c.request("POST", "lookup/mobile-number", payload, &response)
+	trace, err := c.request(ctx, "POST", "lookup/mobile-number", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}
@@ -118,12 +119,12 @@ type Product struct {
 }
 
 // Products see https://dvs-api-doc.dtone.com/#tag/Products
-func (c *Client) Products(_type string, operatorID int) ([]*Product, *httpx.Trace, error) {
+func (c *Client) Products(ctx context.Context, _type string, operatorID int) ([]*Product, *httpx.Trace, error) {
 	var response []*Product
 
 	// TODO endpoint could return more than 100 products in which case we need to page
 
-	trace, err := c.request("GET", fmt.Sprintf("products?type=%s&operator_id=%d&per_page=100", _type, operatorID), nil, &response)
+	trace, err := c.request(ctx, "GET", fmt.Sprintf("products?type=%s&operator_id=%d&per_page=100", _type, operatorID), nil, &response)
 	if err != nil {
 		return nil, trace, err
 	}
@@ -149,7 +150,7 @@ type Transaction struct {
 }
 
 // TransactionAsync see https://dvs-api-doc.dtone.com/#tag/Transactions
-func (c *Client) TransactionAsync(externalID string, productID int, mobileNumber string) (*Transaction, *httpx.Trace, error) {
+func (c *Client) TransactionAsync(ctx context.Context, externalID string, productID int, mobileNumber string) (*Transaction, *httpx.Trace, error) {
 	var response *Transaction
 
 	type creditPartyIdentifier struct {
@@ -170,7 +171,7 @@ func (c *Client) TransactionAsync(externalID string, productID int, mobileNumber
 		},
 	}
 
-	trace, err := c.request("POST", "async/transactions", payload, &response)
+	trace, err := c.request(ctx, "POST", "async/transactions", payload, &response)
 	if err != nil {
 		return nil, trace, err
 	}
@@ -178,7 +179,7 @@ func (c *Client) TransactionAsync(externalID string, productID int, mobileNumber
 	return response, trace, nil
 }
 
-func (c *Client) request(method, endpoint string, payload any, response any) (*httpx.Trace, error) {
+func (c *Client) request(ctx context.Context, method, endpoint string, payload any, response any) (*httpx.Trace, error) {
 	url := apiURL + endpoint
 	headers := map[string]string{}
 	var body io.Reader
@@ -192,7 +193,7 @@ func (c *Client) request(method, endpoint string, payload any, response any) (*h
 		headers["Content-Type"] = "application/json"
 	}
 
-	req, err := httpx.NewRequest(method, url, body, headers)
+	req, err := httpx.NewRequest(ctx, method, url, body, headers)
 	if err != nil {
 		return nil, err
 	}

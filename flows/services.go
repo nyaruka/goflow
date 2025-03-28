@@ -136,7 +136,7 @@ type Classification struct {
 
 // ClassificationService provides NLU functionality to the engine
 type ClassificationService interface {
-	Classify(env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
+	Classify(ctx context.Context, env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 // LLMService provides LLM functionality to the engine
@@ -175,7 +175,7 @@ type AirtimeTransfer struct {
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
 	// Transfer transfers airtime to the given URN
-	Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
 // HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time

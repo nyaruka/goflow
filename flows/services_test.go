@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"context"
 	"net/http"
 	"strings"
 	"testing"
@@ -16,6 +17,8 @@ import (
 )
 
 func TestHTTPLogs(t *testing.T) {
+	ctx := context.Background()
+
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
@@ -29,22 +32,22 @@ func TestHTTPLogs(t *testing.T) {
 		},
 	}))
 
-	req1, err := httpx.NewRequest("GET", "http://temba.io/", nil, nil)
+	req1, err := httpx.NewRequest(ctx, "GET", "http://temba.io/", nil, nil)
 	require.NoError(t, err)
 	trace1, err := httpx.DoTrace(http.DefaultClient, req1, nil, nil, -1)
 	require.NoError(t, err)
 
-	req2, err := httpx.NewRequest("GET", "http://temba.io/", nil, nil)
+	req2, err := httpx.NewRequest(ctx, "GET", "http://temba.io/", nil, nil)
 	require.NoError(t, err)
 	trace2, err := httpx.DoTrace(http.DefaultClient, req2, nil, nil, -1)
 	require.NoError(t, err)
 
-	req3, err := httpx.NewRequest("GET", "http://temba.io/", nil, nil)
+	req3, err := httpx.NewRequest(ctx, "GET", "http://temba.io/", nil, nil)
 	require.NoError(t, err)
 	trace3, err := httpx.DoTrace(http.DefaultClient, req3, nil, nil, -1)
 	require.EqualError(t, err, "unable to connect to server")
 
-	req4, err := httpx.NewRequest("GET", "http://temba.io/?x="+strings.Repeat("x", 3000), nil, nil) // URL exceeds limit
+	req4, err := httpx.NewRequest(ctx, "GET", "http://temba.io/?x="+strings.Repeat("x", 3000), nil, nil) // URL exceeds limit
 	require.NoError(t, err)
 	trace4, err := httpx.DoTrace(http.DefaultClient, req4, nil, nil, -1)
 	require.NoError(t, err)
@@ -64,6 +67,8 @@ func TestHTTPLogs(t *testing.T) {
 }
 
 func TestWebhookCall(t *testing.T) {
+	ctx := context.Background()
+
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
@@ -82,7 +87,7 @@ func TestWebhookCall(t *testing.T) {
 	require.NoError(t, err)
 
 	request := func(method string) *flows.WebhookCall {
-		req1, err := httpx.NewRequest(method, "http://temba.io/", nil, nil)
+		req1, err := httpx.NewRequest(ctx, method, "http://temba.io/", nil, nil)
 		require.NoError(t, err)
 
 		call, err := svc.Call(req1)

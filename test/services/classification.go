@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -18,7 +19,7 @@ func NewClassification(classifier *flows.Classifier) *Classification {
 	return &Classification{classifier: classifier}
 }
 
-func (s *Classification) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+func (s *Classification) Classify(ctx context.Context, env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
 	classifierIntents := s.classifier.Intents()
 	extractedIntents := make([]flows.ExtractedIntent, len(s.classifier.Intents()))
 	confidence := decimal.RequireFromString("0.5")

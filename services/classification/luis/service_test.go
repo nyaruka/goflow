@@ -1,6 +1,7 @@
 package luis_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 	"time"
@@ -17,6 +18,8 @@ import (
 )
 
 func TestService(t *testing.T) {
+	ctx := context.Background()
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -82,7 +85,7 @@ func TestService(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	httpLogger := &flows.HTTPLogger{}
 
-	classification, err := svc.Classify(env, "book flight to Quito", httpLogger.Log)
+	classification, err := svc.Classify(ctx, env, "book flight to Quito", httpLogger.Log)
 	assert.NoError(t, err)
 	assert.Equal(t, []flows.ExtractedIntent{
 		{Name: "Book Flight", Confidence: dec(`0.9106805`)},
