@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"net/http"
@@ -115,7 +116,7 @@ func transferAirtime(destination urns.URN, amount decimal.Decimal, currency stri
 
 	trigger := triggers.NewBuilder(env, assets.NewFlowReference(assets.FlowUUID("2374f60d-7412-442c-9177-585967afa972"), "Airtime"), contact).Manual().Build()
 
-	_, sprint, err := eng.NewSession(sa, trigger)
+	_, sprint, err := eng.NewSession(context.Background(), sa, trigger)
 	if err != nil {
 		return err
 	}

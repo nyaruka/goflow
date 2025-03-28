@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"context"
 	"encoding/json"
 	"time"
 
@@ -177,7 +178,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(Run, Step, ModifierCallback, EventCallback) error
+	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
 	Validate() error
 }
 
@@ -335,7 +336,7 @@ type EngineOptions struct {
 
 // Engine provides callers with session starting and resuming
 type Engine interface {
-	NewSession(SessionAssets, Trigger) (Session, Sprint, error)
+	NewSession(context.Context, SessionAssets, Trigger) (Session, Sprint, error)
 	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
@@ -385,7 +386,7 @@ type Session interface {
 	BatchStart() bool
 	PushFlow(Flow, Run, bool)
 
-	Resume(Resume) (Sprint, error)
+	Resume(context.Context, Resume) (Sprint, error)
 	Runs() []Run
 	GetRun(RunUUID) (Run, error)
 	FindStep(uuid StepUUID) (Run, Step)

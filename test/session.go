@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -495,6 +496,7 @@ var voiceSessionTrigger = `{
 
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
+	ctx := context.Background()
 	assetsJSON := json.RawMessage(sessionAssets)
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
@@ -513,7 +515,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	eng := NewEngine()
 
-	session, _, err := eng.NewSession(sa, trigger)
+	session, _, err := eng.NewSession(ctx, sa, trigger)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test session: %w", err)
 	}
@@ -524,7 +526,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 		return nil, nil, fmt.Errorf("error reading resume: %w", err)
 	}
 
-	sprint, err := session.Resume(resume)
+	sprint, err := session.Resume(ctx, resume)
 	return session, sprint.Events(), err
 }
 
@@ -544,7 +546,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 	}
 
 	eng := NewEngine()
-	session, sprint, err := eng.NewSession(sa, trigger)
+	session, sprint, err := eng.NewSession(context.Background(), sa, trigger)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test voice session: %w", err)
 	}
@@ -711,7 +713,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
 	}
 
-	s, sp, err := b.engine.NewSession(sa, trigger)
+	s, sp, err := b.engine.NewSession(context.Background(), sa, trigger)
 	return sa, s, sp, err
 }
 
@@ -725,6 +727,8 @@ func (b *SessionBuilder) MustBuild() (flows.SessionAssets, flows.Session, flows.
 
 // ResumeSession resumes the given session with potentially different assets
 func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string) (flows.Session, flows.Sprint, error) {
+	ctx := context.Background()
+
 	// reload session with new assets
 	sessionJSON, err := jsonx.Marshal(session)
 	if err != nil {
@@ -741,7 +745,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 
 	msg := flows.NewMsgIn(flows.MsgUUID(uuids.NewV4()), urns.NilURN, nil, msgText, nil)
 
-	sprint, err := session.Resume(resumes.NewMsg(session.Environment(), session.Contact(), msg))
+	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), session.Contact(), msg))
 
 	return session, sprint, err
 }

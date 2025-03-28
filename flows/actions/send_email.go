@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"strings"
@@ -51,7 +52,7 @@ func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, bod
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendEmailAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	localizedSubject, _ := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, _ := run.EvaluateTemplate(localizedSubject, logEvent)
 

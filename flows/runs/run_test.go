@@ -1,6 +1,7 @@
 package runs_test
 
 import (
+	"context"
 	"os"
 	"strings"
 	"testing"
@@ -246,7 +247,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -281,7 +282,7 @@ func TestSaveResult(t *testing.T) {
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

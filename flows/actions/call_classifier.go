@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -52,7 +54,7 @@ func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierRefer
 }
 
 // Execute runs this action
-func (a *CallClassifierAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifierAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 

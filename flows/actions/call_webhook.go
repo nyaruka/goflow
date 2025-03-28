@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -83,7 +84,7 @@ func (a *CallWebhookAction) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallWebhookAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	url, _ := run.EvaluateTemplate(a.URL, logEvent)
 	url = strings.TrimSpace(url)
 

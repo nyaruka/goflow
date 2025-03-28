@@ -1,6 +1,7 @@
 package routers_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -100,7 +101,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		trigger := triggers.NewBuilder(envs.NewBuilder().Build(), flow.Reference(false), contact).Manual().Build()
 
 		eng := test.NewEngine()
-		session, _, err := eng.NewSession(sa, trigger)
+		session, _, err := eng.NewSession(context.Background(), sa, trigger)
 		require.NoError(t, err)
 
 		// clone test case and populate with actual values

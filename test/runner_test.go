@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -102,6 +103,8 @@ type runResult struct {
 }
 
 func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
+	ctx := context.Background()
+
 	// load the test specific assets
 	sa, err := LoadSessionAssets(envs.NewBuilder().Build(), assetsPath)
 	if err != nil {
@@ -126,7 +129,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		}).
 		Build()
 
-	session, sprint, err := eng.NewSession(sa, trigger)
+	session, sprint, err := eng.NewSession(ctx, sa, trigger)
 	if err != nil {
 		return runResult{}, err
 	}
@@ -161,7 +164,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return runResult{}, err
 		}
 
-		sprint, err = session.Resume(resume)
+		sprint, err = session.Resume(ctx, resume)
 		if err != nil {
 			return runResult{}, err
 		}

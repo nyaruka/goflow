@@ -1,6 +1,7 @@
 package engine_test
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"sort"
@@ -202,7 +203,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", ""), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, sprint, err := eng.NewSession(sa, trigger)
+	session, sprint, err := eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, len(sprint.Events()))
@@ -292,7 +293,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err := session.Resume(resumes.NewWaitTimeout(nil, nil))
+	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(nil, nil))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -306,6 +307,8 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
+	ctx := context.Background()
+
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/subflow_loop_with_wait.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	assert.Equal(t, string(flows.SessionStatusWaiting), string(session.Status()))
@@ -323,7 +326,7 @@ func TestCurrentContext(t *testing.T) {
 	assert.NoError(t, err)
 
 	// end it
-	session.Resume(resumes.NewRunExpiration(nil, nil))
+	session.Resume(ctx, resumes.NewRunExpiration(nil, nil))
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
 
 	// can still get context of completed session
@@ -361,7 +364,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()
-	session1, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session1, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.EmptyHistory, session1.History())
@@ -371,7 +374,7 @@ func TestSessionHistory(t *testing.T) {
 	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())
+	session2, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())
 	require.NoError(t, err)
 
 	assert.Equal(t, &flows.SessionHistory{
@@ -382,6 +385,7 @@ func TestSessionHistory(t *testing.T) {
 }
 
 func TestMaxResumesPerSession(t *testing.T) {
+	ctx := context.Background()
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/two_questions.json").WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
@@ -391,7 +395,7 @@ func TestMaxResumesPerSession(t *testing.T) {
 		resume := resumes.NewMsg(nil, nil, msg)
 		numResumes++
 
-		_, err := session.Resume(resume)
+		_, err := session.Resume(ctx, resume)
 		require.NoError(t, err)
 
 		if session.Status() == flows.SessionStatusFailed {
@@ -416,11 +420,13 @@ func TestFindStep(t *testing.T) {
 }
 
 func TestEngineErrors(t *testing.T) {
+	ctx := context.Background()
+
 	// create a completed session and try to resume it
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/empty.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
 
-	_, err := session.Resume(nil)
+	_, err := session.Resume(ctx, nil)
 	assert.EqualError(t, err, "only waiting sessions can be resumed")
 	assert.Equal(t, engine.ErrorResumeNonWaitingSession, err.(*engine.Error).Code())
 
@@ -428,7 +434,7 @@ func TestEngineErrors(t *testing.T) {
 	_, session, _ = test.NewSessionBuilder().MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
-	_, err = session.Resume(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 10)))
+	_, err = session.Resume(ctx, resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 10)))
 	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
 	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
 }

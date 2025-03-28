@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -18,7 +19,7 @@ type engine struct {
 }
 
 // NewSession creates a new session
-func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
+func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
 	s := &session{
 		uuid:       flows.SessionUUID(uuids.NewV4()),
 		env:        envs.NewBuilder().Build(),
@@ -30,7 +31,7 @@ func (e *engine) NewSession(sa flows.SessionAssets, trigger flows.Trigger) (flow
 		runsByUUID: make(map[flows.RunUUID]flows.Run),
 	}
 
-	sprint, err := s.start(trigger)
+	sprint, err := s.start(ctx, trigger)
 
 	return s, sprint, err
 }

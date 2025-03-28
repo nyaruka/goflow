@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -44,7 +45,7 @@ func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTi
 }
 
 // Execute runs this action
-func (a *SetContactTimezoneAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactTimezoneAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	timezone, ok := run.EvaluateTemplate(a.Timezone, logEvent)
 	timezone = strings.TrimSpace(timezone)
 

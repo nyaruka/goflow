@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"errors"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -48,7 +49,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 }
 
 // Execute executes the transfer action
-func (a *TransferAirtimeAction) Execute(run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	transfer, err := a.transfer(run, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
