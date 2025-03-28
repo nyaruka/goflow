@@ -1,6 +1,7 @@
 package dtone_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 	"time"
@@ -339,6 +340,8 @@ var transactionRejectedResponse = `{
 }`
 
 func TestClient(t *testing.T) {
+	ctx := context.Background()
+
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer dates.SetNowFunc(time.Now)
 
@@ -361,7 +364,7 @@ func TestClient(t *testing.T) {
 	cl := dtone.NewClient(http.DefaultClient, nil, "key123", "sesame")
 
 	// test lookup mobile number
-	operators, trace, err := cl.LookupMobileNumber("+593979123456")
+	operators, trace, err := cl.LookupMobileNumber(ctx, "+593979123456")
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(operators))
 	assert.Equal(t, 1596, operators[0].ID)
@@ -369,12 +372,12 @@ func TestClient(t *testing.T) {
 	test.AssertSnapshot(t, "lookup_mobile_number", string(trace.RequestTrace))
 
 	// test with error
-	operators, _, err = cl.LookupMobileNumber("+593979123456")
+	operators, _, err = cl.LookupMobileNumber(ctx, "+593979123456")
 	assert.EqualError(t, err, "unable to connect to server")
 	assert.Nil(t, operators)
 
 	// fetch products for that operator
-	products, trace, err := cl.Products("FIXED_VALUE_RECHARGE", 1596)
+	products, trace, err := cl.Products(ctx, "FIXED_VALUE_RECHARGE", 1596)
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(products))
 	assert.Equal(t, 6035, products[0].ID)
@@ -384,7 +387,7 @@ func TestClient(t *testing.T) {
 	test.AssertSnapshot(t, "products", string(trace.RequestTrace))
 
 	// create a synchronous transaction
-	tx, trace, err := cl.TransactionAsync("EX12345", 6035, "+593979123456")
+	tx, trace, err := cl.TransactionAsync(ctx, "EX12345", 6035, "+593979123456")
 	assert.NoError(t, err)
 	assert.Equal(t, int64(2237512891), tx.ID)
 	assert.Equal(t, "EX12345", tx.ExternalID)

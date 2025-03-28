@@ -1,6 +1,7 @@
 package wit
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -26,8 +27,8 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, classif
 	}
 }
 
-func (s *service) Classify(env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
-	response, trace, err := s.client.Message(input)
+func (s *service) Classify(ctx context.Context, env envs.Environment, input string, logHTTP flows.HTTPLogCallback) (*flows.Classification, error) {
+	response, trace, err := s.client.Message(ctx, input)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

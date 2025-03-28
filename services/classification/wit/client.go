@@ -1,6 +1,7 @@
 package wit
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -67,10 +68,10 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, accessTo
 }
 
 // Message gets the meaning of a message
-func (c *Client) Message(q string) (*MessageResponse, *httpx.Trace, error) {
+func (c *Client) Message(ctx context.Context, q string) (*MessageResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/message?v=%s&q=%s", apiBaseURL, version, url.QueryEscape(q))
 
-	request, err := httpx.NewRequest("GET", endpoint, nil, c.headers)
+	request, err := httpx.NewRequest(ctx, "GET", endpoint, nil, c.headers)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -1,6 +1,7 @@
 package bothub
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -56,7 +57,7 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, accessTo
 }
 
 // Parse does a parse of the given text in the given language (e.g. pt_br)
-func (c *Client) Parse(text, language string) (*ParseResponse, *httpx.Trace, error) {
+func (c *Client) Parse(ctx context.Context, text, language string) (*ParseResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%s/parse", apiBaseURL)
 
 	form := url.Values{}
@@ -70,7 +71,7 @@ func (c *Client) Parse(text, language string) (*ParseResponse, *httpx.Trace, err
 		"Authorization": fmt.Sprintf("Bearer %s", c.accessToken),
 	}
 
-	request, err := httpx.NewRequest("POST", endpoint, strings.NewReader(form.Encode()), headers)
+	request, err := httpx.NewRequest(ctx, "POST", endpoint, strings.NewReader(form.Encode()), headers)
 	if err != nil {
 		return nil, nil, err
 	}

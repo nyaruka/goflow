@@ -1,6 +1,7 @@
 package dtone_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 	"time"
@@ -21,6 +22,8 @@ func errorResp(code int, message string) []byte {
 }
 
 func TestServiceWithSuccessfulTranfer(t *testing.T) {
+	ctx := context.Background()
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -47,6 +50,7 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 	httpLogger := &flows.HTTPLogger{}
 
 	transfer, err := svc.Transfer(
+		ctx,
 		urns.URN("tel:+593979000000"),
 		urns.URN("tel:+593979123456"),
 		map[string]decimal.Decimal{
@@ -71,6 +75,8 @@ func TestServiceWithSuccessfulTranfer(t *testing.T) {
 }
 
 func TestServiceFailedTransfers(t *testing.T) {
+	ctx := context.Background()
+
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -110,44 +116,44 @@ func TestServiceFailedTransfers(t *testing.T) {
 	amounts := map[string]decimal.Decimal{"USD": decimal.RequireFromString("3")}
 
 	// try when phone number lookup gives a connection error
-	transfer, err := svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "number lookup failed: unable to connect to server")
 	assert.Equal(t, urns.URN("tel:+593979000000"), transfer.Sender)
 	assert.Equal(t, urns.URN("tel:+593979123456"), transfer.Recipient)
 	assert.Equal(t, decimal.Zero, transfer.Amount)
 
 	// try when phone number lookup fails
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "number lookup failed: Credit party mobile number is invalid")
 	assert.NotNil(t, transfer)
 
 	// try when phone number lookup returns no matches
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "unable to find operator for number +593979123456")
 	assert.NotNil(t, transfer)
 
 	// try when product fetch fails
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "product fetch failed: Product is not available in your account")
 	assert.NotNil(t, transfer)
 
 	// try when we can't find any suitable products
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "unable to find a suitable product for operator 'Claro Ecuador'")
 	assert.NotNil(t, transfer)
 
 	// try when we can't find any suitable products (there are products but none match the amount)
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), map[string]decimal.Decimal{"USD": decimal.RequireFromString("2")}, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), map[string]decimal.Decimal{"USD": decimal.RequireFromString("2")}, httpLogger.Log)
 	assert.EqualError(t, err, "unable to find a suitable product for operator 'Claro Ecuador'")
 	assert.NotNil(t, transfer)
 
 	// try when transaction request errors
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "transaction creation failed: Something went wrong")
 	assert.NotNil(t, transfer)
 
 	// try when transaction is rejected
-	transfer, err = svc.Transfer(urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
+	transfer, err = svc.Transfer(ctx, urns.URN("tel:+593979000000"), urns.URN("tel:+593979123456"), amounts, httpLogger.Log)
 	assert.EqualError(t, err, "transaction to send product 6035 on operator 1596 ended with status REJECTED-OPERATOR-CURRENTLY-UNAVAILABLE")
 	assert.NotNil(t, transfer)
 }

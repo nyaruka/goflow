@@ -1,6 +1,7 @@
 package luis
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -100,10 +101,10 @@ func NewClient(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcce
 }
 
 // Predict gets the published endpoint predictions for the given query
-func (c *Client) Predict(q string) (*PredictResponse, *httpx.Trace, error) {
+func (c *Client) Predict(ctx context.Context, q string) (*PredictResponse, *httpx.Trace, error) {
 	endpoint := fmt.Sprintf("%sluis/prediction/v3.0/apps/%s/slots/%s/predict?subscription-key=%s&verbose=true&show-all-intents=true&log=true&query=%s", c.endpoint, c.appID, c.slot, c.key, url.QueryEscape(q))
 
-	request, err := httpx.NewRequest("GET", endpoint, nil, nil)
+	request, err := httpx.NewRequest(ctx, "GET", endpoint, nil, nil)
 	if err != nil {
 		return nil, nil, err
 	}

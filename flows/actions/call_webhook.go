@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 
@@ -106,13 +107,13 @@ func (a *CallWebhookAction) Execute(ctx context.Context, run flows.Run, step flo
 		body, _ = run.EvaluateTemplateText(body, nil, false, logEvent)
 	}
 
-	return a.call(run, step, url, method, body, logEvent)
+	return a.call(ctx, run, step, url, method, body, logEvent)
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) call(run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
+func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
 	// build our request
-	req, err := http.NewRequest(method, url, strings.NewReader(body))
+	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
 		return err
 	}

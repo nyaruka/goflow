@@ -1,6 +1,7 @@
 package dtone
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -27,7 +28,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, key, se
 	}
 }
 
-func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *service) Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
 		UUID:      flows.AirtimeTransferUUID(uuids.NewV4()),
 		Sender:    sender,
@@ -40,7 +41,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 		recipientPhoneNumber = "+" + recipientPhoneNumber
 	}
 
-	operators, trace, err := s.client.LookupMobileNumber(recipientPhoneNumber)
+	operators, trace, err := s.client.LookupMobileNumber(ctx, recipientPhoneNumber)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
@@ -61,7 +62,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	}
 
 	// fetch available products for this operator
-	products, trace, err := s.client.Products("FIXED_VALUE_RECHARGE", operator.ID)
+	products, trace, err := s.client.Products(ctx, "FIXED_VALUE_RECHARGE", operator.ID)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}
@@ -89,7 +90,7 @@ func (s *service) Transfer(sender urns.URN, recipient urns.URN, amounts map[stri
 	transfer.Amount = product.Destination.Amount
 
 	// request asynchronous confirmed transaction for this product
-	tx, trace, err := s.client.TransactionAsync(string(transfer.UUID), product.ID, recipientPhoneNumber)
+	tx, trace, err := s.client.TransactionAsync(ctx, string(transfer.UUID), product.ID, recipientPhoneNumber)
 	if trace != nil {
 		logHTTP(flows.NewHTTPLog(trace, flows.HTTPStatusFromCode, s.redactor))
 	}

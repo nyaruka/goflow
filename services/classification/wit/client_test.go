@@ -1,6 +1,7 @@
 package wit_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,6 +14,8 @@ import (
 )
 
 func TestMessage(t *testing.T) {
+	ctx := context.Background()
+
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 
 	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
@@ -59,19 +62,19 @@ func TestMessage(t *testing.T) {
 
 	client := wit.NewClient(http.DefaultClient, nil, "3246231")
 
-	response, trace, err := client.Message("Hello")
+	response, trace, err := client.Message(ctx, "Hello")
 	assert.EqualError(t, err, `invalid character 'x' looking for beginning of value`)
 	test.AssertSnapshot(t, "message_request", string(trace.RequestTrace))
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n", string(trace.ResponseTrace))
 	assert.Equal(t, "xx", string(trace.ResponseBody))
 	assert.Nil(t, response)
 
-	response, trace, err = client.Message("Hello")
+	response, trace, err = client.Message(ctx, "Hello")
 	assert.EqualError(t, err, `field 'intents' is required`)
 	assert.NotNil(t, trace)
 	assert.Nil(t, response)
 
-	response, trace, err = client.Message("Hello")
+	response, trace, err = client.Message(ctx, "Hello")
 	assert.NoError(t, err)
 	assert.NotNil(t, trace)
 	assert.Equal(t, "I want to book a flight to Quito", response.Text)

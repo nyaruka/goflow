@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -20,7 +21,7 @@ func NewAirtime(currency string) *Airtime {
 	return &Airtime{fixedCurrency: currency}
 }
 
-func (s *Airtime) Transfer(sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *Airtime) Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	logHTTP(&flows.HTTPLog{
 		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
