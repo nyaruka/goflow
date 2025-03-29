@@ -1,3 +1,7 @@
+v0.233.1 (2025-03-29)
+-------------------------
+ * Tweak test LLM service
+
 v0.233.0 (2025-03-28)
 -------------------------
  * Make engine context.Context aware and pass down into services
