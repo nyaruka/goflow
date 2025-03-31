@@ -1,3 +1,15 @@
+v0.234.2 (2025-03-31)
+-------------------------
+ * Tweak tokensused to be int64
+
+v0.234.1 (2025-03-31)
+-------------------------
+ * LLM services should return tokens used as well as the response
+
+v0.234.0 (2025-03-31)
+-------------------------
+ * Allow embedding of _ui bods in item translations
+
 v0.233.1 (2025-03-29)
 -------------------------
  * Tweak test LLM service

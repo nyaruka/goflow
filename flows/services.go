@@ -139,9 +139,14 @@ type ClassificationService interface {
 	Classify(ctx context.Context, env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
+type LLMResponse struct {
+	Output     string
+	TokensUsed int64
+}
+
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(ctx context.Context, env envs.Environment, instructions, input string) (string, error)
+	Response(ctx context.Context, env envs.Environment, instructions, input string) (*LLMResponse, error)
 }
 
 // TicketService provides ticketing functionality to the engine
