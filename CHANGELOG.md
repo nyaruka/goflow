@@ -1,3 +1,7 @@
+v0.234.2 (2025-03-31)
+-------------------------
+ * Tweak tokensused to be int64
+
 v0.234.1 (2025-03-31)
 -------------------------
  * LLM services should return tokens used as well as the response
