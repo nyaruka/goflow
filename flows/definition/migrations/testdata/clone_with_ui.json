@@ -8,6 +8,20 @@
       "revision": 11,
       "expire_after_minutes": 10080,
       "type": "messaging",
+      "localization": {
+        "spa": {
+          "5179bc35-93fe-4381-82d2-2edf86f0700d": {
+            "text": [
+              "Hola, tienes @fields.age años"
+            ],
+            "_ui": {
+              "auto_translated": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
       "nodes": [
         {
           "uuid": "56e0cd46-6383-4779-9150-76f49025dab2",
@@ -42,11 +56,11 @@
               "value": "M"
             },
             {
-              "attachments": [],
-              "text": "Hi you are @fields.age years old",
+              "uuid": "5179bc35-93fe-4381-82d2-2edf86f0700d",
               "type": "send_msg",
-              "quick_replies": [],
-              "uuid": "5179bc35-93fe-4381-82d2-2edf86f0700d"
+              "text": "Hi you are @fields.age years old",
+              "attachments": [],
+              "quick_replies": []
             },
             {
               "uuid": "c350ce82-6a85-40a6-8655-f54d82572dea",
