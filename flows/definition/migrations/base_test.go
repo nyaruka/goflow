@@ -248,6 +248,16 @@ func TestMultiVersionMigration(t *testing.T) {
         "revision": 0,
         "expire_after_minutes": 1440,
         "language": "eng",
+        "localization": {
+            "spa": {
+                "5179bc35-93fe-4381-82d2-2edf86f0700d": {
+                    "text": ["Hola, tienes @fields.age años"],
+                    "_ui": {
+                        "auto_translated": ["text"]
+                    }
+                }
+            }
+        },
         "nodes": [
             {
                 "actions": [
@@ -280,7 +290,14 @@ func TestMultiVersionMigration(t *testing.T) {
                 ],
                 "uuid": "12d205d2-4697-411a-9ec4-818ae4471598"
             }
-        ]
+        ],
+        "_ui": {
+            "nodes": {
+                "56e0cd46-6383-4779-9150-76f49025dab2": {
+                    "type": "execute_actions"
+                }
+            }
+        }
     }`), migrations.DefaultConfig)
 	require.NoError(t, err)
 
@@ -292,6 +309,16 @@ func TestMultiVersionMigration(t *testing.T) {
         "revision": 0,
         "expire_after_minutes": 1440,
         "language": "eng",
+        "localization": {
+            "spa": {
+                "5179bc35-93fe-4381-82d2-2edf86f0700d": {
+                    "text": ["Hola, tienes @fields.age años"],
+                    "_ui": {
+                        "auto_translated": ["text"]
+                    }
+                }
+            }
+        },
         "nodes": [
             {
                 "actions": [
@@ -319,7 +346,14 @@ func TestMultiVersionMigration(t *testing.T) {
                 ],
                 "uuid": "12d205d2-4697-411a-9ec4-818ae4471598"
             }
-        ]
+        ],
+        "_ui": {
+            "nodes": {
+                "56e0cd46-6383-4779-9150-76f49025dab2": {
+                    "type": "execute_actions"
+                }
+            }
+        }
     }`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 }

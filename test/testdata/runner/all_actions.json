@@ -11,7 +11,12 @@
                     "ac110f56-a66c-4462-921c-b2c6d1c6dadb": {
                         "text": [
                             "Hola @contact.name, ¿estás listo?"
-                        ]
+                        ],
+                        "_ui": {
+                            "auto_translated": [
+                                "text"
+                            ]
+                        }
                     }
                 }
             },
