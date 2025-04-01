@@ -15,7 +15,7 @@ func NewLLM() *LLMService {
 	return &LLMService{}
 }
 
-func (s *LLMService) Response(ctx context.Context, env envs.Environment, instructions, input string) (*flows.LLMResponse, error) {
+func (s *LLMService) Response(ctx context.Context, env envs.Environment, instructions, input string, maxTokens int) (*flows.LLMResponse, error) {
 	var output string
 	if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will return "foo"
 		output = input[8:]
