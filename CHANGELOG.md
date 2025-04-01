@@ -1,3 +1,7 @@
+v0.234.3 (2025-04-01)
+-------------------------
+ * Add maxTokens param to LLMService.Response and remove unused TicketService
+
 v0.234.2 (2025-03-31)
 -------------------------
  * Tweak tokensused to be int64
