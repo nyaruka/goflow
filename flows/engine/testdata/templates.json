@@ -551,6 +551,7 @@
                 "revision": 123,
                 "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7"
             },
+            "locals": {},
             "path": [
                 {
                     "arrived_on": "2018-04-11T13:24:30.123456Z",

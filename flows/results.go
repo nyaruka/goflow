@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"maps"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/envs"
@@ -107,9 +109,7 @@ func NewResults() Results {
 // Clone returns a clone of this results set
 func (r Results) Clone() Results {
 	clone := make(Results, len(r))
-	for k, v := range r {
-		clone[k] = v
-	}
+	maps.Copy(clone, r)
 	return clone
 }
 

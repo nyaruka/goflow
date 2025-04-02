@@ -72,6 +72,7 @@ func (g *editorSupportGenerator) buildContextCompletion(items map[string][]*Tagg
 	types := []completion.Type{
 		// the dynamic types in the context aren't described in the code so we add them manually here
 		completion.NewDynamicType("fields", "fields", completion.NewProperty("{key}", gettext("{key} for the contact"), "any")),
+		completion.NewDynamicType("locals", "locals", completion.NewProperty("{key}", gettext("the local variable {key}"), "any")),
 		completion.NewDynamicType("results", "results", completion.NewProperty("{key}", gettext("the result for {key}"), "result")),
 		completion.NewDynamicType("globals", "globals", completion.NewProperty("{key}", gettext("the global value {key}"), "text")),
 
@@ -140,6 +141,7 @@ func createContextPathListFile(outputDir string, c *completion.Completion) error
 	context := completion.NewContext(map[string][]string{
 		"fields":  {"age", "gender"},
 		"globals": {"org_name"},
+		"locals":  {"foo"},
 		"results": {"response_1"},
 	})
 	nodes := c.EnumerateNodes(context)
