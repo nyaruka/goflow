@@ -112,7 +112,7 @@ func (x *XNumber) Native() decimal.Decimal { return x.native }
 func (x *XNumber) Equals(o XValue) bool {
 	other := o.(*XNumber)
 
-	return x.Native().Equals(other.Native())
+	return x.Native().Equal(other.Native())
 }
 
 // Compare compares this number to another

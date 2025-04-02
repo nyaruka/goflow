@@ -2216,7 +2216,7 @@ func ForEach(env envs.Environment, args ...types.XValue) types.XValue {
 	otherArgs := args[2:]
 	result := make([]types.XValue, array.Count())
 
-	for i := 0; i < array.Count(); i++ {
+	for i := range array.Count() {
 		oldItem := array.Get(i)
 		funcArgs := append([]types.XValue{oldItem}, otherArgs...)
 
