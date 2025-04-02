@@ -73,13 +73,6 @@ func (r *Result) Context(env envs.Environment) map[string]types.XValue {
 		categoryLocalized = r.Category
 	}
 
-	values := types.NewXArray(types.NewXText(r.Value))
-	values.SetDeprecated("result.values: use value instead")
-	categories := types.NewXArray(types.NewXText(r.Category))
-	categories.SetDeprecated("result.categories: use category instead")
-	categoriesLocalized := types.NewXArray(types.NewXText(categoryLocalized))
-	categoriesLocalized.SetDeprecated("result.categories_localized: use category_localized instead")
-
 	return map[string]types.XValue{
 		"__default__":        types.NewXText(r.Value),
 		"name":               types.NewXText(r.Name),
@@ -90,11 +83,6 @@ func (r *Result) Context(env envs.Environment) map[string]types.XValue {
 		"extra":              types.JSONToXValue(r.Extra),
 		"node_uuid":          types.NewXText(string(r.NodeUUID)),
 		"created_on":         types.NewXDateTime(r.CreatedOn),
-
-		// deprecated
-		"values":               values,
-		"categories":           categories,
-		"categories_localized": categoriesLocalized,
 	}
 }
 
