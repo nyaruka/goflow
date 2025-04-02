@@ -12,6 +12,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("13.7.0"), Migrate13_7)
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
 	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
 	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
@@ -19,6 +20,13 @@ func init() {
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate13_7 is a noop because version only adds a new action (call_llm).
+//
+// @version 13_7 "13.7"
+func Migrate13_7(f Flow, cfg *Config) (Flow, error) {
+	return f, nil
 }
 
 // Migrate13_6_1 fixes result lookups that need to be truncated.

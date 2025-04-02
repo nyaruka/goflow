@@ -1,0 +1,108 @@
+[
+    {
+        "description": "Error event for invalid LLM reference",
+        "action": {
+            "type": "call_llm",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                "name": "Deleted"
+            },
+            "instructions": "Categorize the following text as positive or negative",
+            "input": "@input.text"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "text": "missing dependency: llm[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+            }
+        ],
+        "templates": [
+            "Categorize the following text as positive or negative",
+            "@input.text"
+        ],
+        "locals": {
+            "_llm": {
+                "status": "failure"
+            }
+        },
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                    "name": "Deleted",
+                    "type": "llm",
+                    "missing": true
+                }
+            ],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing llm dependency '63998ee7-a7a5-4cc5-be67-c773e1b6b9b1'",
+                    "dependency": {
+                        "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                        "name": "Deleted",
+                        "type": "llm"
+                    }
+                }
+            ],
+            "results": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "llm_called event if successful",
+        "action": {
+            "type": "call_llm",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "instructions": "Categorize the following text as positive or negative",
+            "input": "@input.text"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "input": "Hi everybody",
+                "instructions": "Categorize the following text as positive or negative",
+                "llm": {
+                    "name": "Claude",
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966"
+                },
+                "output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "tokens_used": 123,
+                "type": "llm_called"
+            }
+        ],
+        "templates": [
+            "Categorize the following text as positive or negative",
+            "@input.text"
+        ],
+        "locals": {
+            "_llm": {
+                "status": "success",
+                "output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody"
+            }
+        },
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    }
+]

@@ -220,6 +220,18 @@
             "name": "Spam"
         }
     ],
+    "llms": [
+        {
+            "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
+            "name": "GPT-4",
+            "type": "openai"
+        },
+        {
+            "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+            "name": "Claude",
+            "type": "anthropic"
+        }
+    ],
     "optins": [
         {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
