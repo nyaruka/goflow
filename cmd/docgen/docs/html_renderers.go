@@ -21,7 +21,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-var dynamicContextTypes = []string{"fields", "globals", "results", "urns"}
+var dynamicContextTypes = []string{"fields", "globals", "locals", "results", "urns"}
 
 // function that can render a single tagged item
 type renderFunc func(*strings.Builder, *TaggedItem, flows.Session, flows.Session) error

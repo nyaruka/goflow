@@ -46,10 +46,10 @@ func TestGenerateDocs(t *testing.T) {
 	assert.Equal(t, 88, len(functions))
 
 	types := context["types"].([]any)
-	assert.Equal(t, 20, len(types))
+	assert.Equal(t, 21, len(types))
 
 	root := context["root"].([]any)
-	assert.Equal(t, 14, len(root))
+	assert.Equal(t, 15, len(root))
 }
 
 func readJSONOutput(t *testing.T, file ...string) any {
