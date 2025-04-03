@@ -60,7 +60,7 @@
                                 "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                                 "name": "Claude"
                             },
-                            "instructions": "@(llm_prompt(\"categorize\", node.categories))",
+                            "instructions": "@(llm_prompt(\"categorize\", slice(node.categories, 0, -2)))",
                             "input": "@results.response_1"
                         }
                     ],
@@ -94,7 +94,7 @@
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                                "type": "has_only_phrase",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Flights"
                                 ],
@@ -102,7 +102,7 @@
                             },
                             {
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "has_only_phrase",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "Hotels"
                                 ],
@@ -110,7 +110,7 @@
                             },
                             {
                                 "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
-                                "type": "has_only_phrase",
+                                "type": "has_only_text",
                                 "arguments": [
                                     "<FAILED>"
                                 ],
