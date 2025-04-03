@@ -412,6 +412,11 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
 		{"legacy_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
 
+		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Positive, Negative")},
+		{"llm_prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: <no value>")},
+		{"llm_prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
+		{"llm_prompt", dmy, []types.XValue{}, ERROR},
+
 		{"lower", dmy, []types.XValue{xs("HEllo")}, xs("hello")},
 		{"lower", dmy, []types.XValue{xs("  HELLO  WORLD")}, xs("  hello  world")},
 		{"lower", dmy, []types.XValue{xs("")}, xs("")},

@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"text/template"
 	"time"
 	"unicode"
 	"unicode/utf8"
@@ -127,6 +128,9 @@ func init() {
 		"format_location": OneTextFunction(FormatLocation),
 		"format_number":   MinAndMaxArgsCheck(1, 3, FormatNumber),
 		"format_urn":      OneTextFunction(FormatURN),
+
+		// LLM support
+		"llm_prompt": InitialTextFunction(0, 10, LLMPrompt),
 
 		// utility functions
 		"is_error":       OneArgFunction(IsError),
@@ -2061,6 +2065,40 @@ func FormatURN(env envs.Environment, arg *types.XText) types.XValue {
 	}
 
 	return types.NewXText(urn.Format())
+}
+
+//------------------------------------------------------------------------------------------
+// LLM support
+//------------------------------------------------------------------------------------------
+
+// TODO store these on the enviroment so they can be passed in from mailroom?
+var prompts = map[string]*template.Template{
+	"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg0 }}")),
+}
+
+// LLMPrompt returns a pre-defined LLM prompt.
+//
+//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Positive, Negative
+//	@(llm_prompt("xx")) -> ERROR
+//
+// @function llm_prompt(name, args...)
+func LLMPrompt(env envs.Environment, name *types.XText, args ...types.XValue) types.XValue {
+	prompt := prompts[name.Native()]
+	if prompt == nil {
+		return types.NewXErrorf("unknown LLM prompt %s", name.Native())
+	}
+
+	tplArgs := make(map[string]string, len(args))
+	for i, arg := range args {
+		tplArgs[fmt.Sprintf("arg%d", i)] = arg.Format(env)
+	}
+
+	var buf strings.Builder
+	if err := prompt.Execute(&buf, tplArgs); err != nil {
+		return types.NewXErrorf("unable to render LLM prompt")
+	}
+
+	return types.NewXText(buf.String())
 }
 
 //------------------------------------------------------------------------------------------
