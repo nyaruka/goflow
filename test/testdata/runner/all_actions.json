@@ -168,6 +168,20 @@
                             ]
                         },
                         {
+                            "uuid": "7f29126a-e9cd-455b-bc7b-fc92c05e8ef1",
+                            "type": "set_run_local",
+                            "name": "counter",
+                            "value": "1",
+                            "operation": "increment"
+                        },
+                        {
+                            "uuid": "9441f2d0-8f30-45bd-a2d2-0bf3c6d3df35",
+                            "type": "set_run_local",
+                            "name": "counter",
+                            "value": "1",
+                            "operation": "increment"
+                        },
+                        {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
                             "type": "set_run_result",
                             "name": "Gender",
@@ -177,7 +191,7 @@
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
                             "type": "set_contact_name",
-                            "name": "Jeff Jefferson"
+                            "name": "Jeff Jefferson @locals.counter"
                         },
                         {
                             "uuid": "e0ae5679-5145-4bdd-9737-3481932bf095",

@@ -38,6 +38,33 @@
         }
     },
     {
+        "description": "Error event and action skipped if incrementing with non number",
+        "action": {
+            "type": "set_run_local",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "counter",
+            "value": "xxx",
+            "operation": "increment"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "text": "increment value is not an integer"
+            }
+        ],
+        "templates": [
+            "xxx"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    },
+    {
         "description": "Non-existent local updated via set",
         "action": {
             "type": "set_run_local",

@@ -1,6 +1,6 @@
 {
     "http_mocks": {
-        "http://localhost/?cmd=success&name=Jeff%20Jefferson": [
+        "http://localhost/?cmd=success&name=Jeff%20Jefferson%202": [
             {
                 "body": "{ \"ok\": \"true\" }",
                 "status": 200
@@ -347,7 +347,7 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:43.123456789Z",
-                    "name": "Jeff Jefferson",
+                    "name": "Jeff Jefferson 2",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_name_changed"
                 },
@@ -398,14 +398,14 @@
                     "created_on": "2018-07-06T12:30:57.123456789Z",
                     "elapsed_ms": 1000,
                     "extraction": "valid",
-                    "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+                    "request": "GET /?cmd=success&name=Jeff%20Jefferson%202 HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "webhook_called",
-                    "url": "http://localhost/?cmd=success&name=Jeff%20Jefferson"
+                    "url": "http://localhost/?cmd=success&name=Jeff%20Jefferson%202"
                 },
                 {
                     "created_on": "2018-07-06T12:30:59.123456789Z",
@@ -454,7 +454,7 @@
                     ],
                     "id": 1234567,
                     "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Jeff Jefferson",
+                    "name": "Jeff Jefferson 2",
                     "status": "active",
                     "timezone": "America/Guayaquil",
                     "urns": [
@@ -831,7 +831,7 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:43.123456789Z",
-                                "name": "Jeff Jefferson",
+                                "name": "Jeff Jefferson 2",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_name_changed"
                             },
@@ -882,14 +882,14 @@
                                 "created_on": "2018-07-06T12:30:57.123456789Z",
                                 "elapsed_ms": 1000,
                                 "extraction": "valid",
-                                "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
+                                "request": "GET /?cmd=success&name=Jeff%20Jefferson%202 HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                                 "retries": 0,
                                 "status": "success",
                                 "status_code": 200,
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "webhook_called",
-                                "url": "http://localhost/?cmd=success&name=Jeff%20Jefferson"
+                                "url": "http://localhost/?cmd=success&name=Jeff%20Jefferson%202"
                             },
                             {
                                 "created_on": "2018-07-06T12:30:59.123456789Z",
@@ -907,6 +907,9 @@
                         "flow": {
                             "name": "All Actions",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
+                        },
+                        "locals": {
+                            "counter": "2"
                         },
                         "modified_on": "2018-07-06T12:31:03.123456789Z",
                         "path": [
