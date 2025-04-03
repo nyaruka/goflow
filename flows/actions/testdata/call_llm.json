@@ -25,7 +25,8 @@
         ],
         "locals": {
             "_llm": {
-                "status": "failure"
+                "status": "failure",
+                "output": ""
             }
         },
         "inspection": {

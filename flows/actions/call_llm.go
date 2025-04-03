@@ -63,6 +63,7 @@ func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	} else {
 		run.SaveLocal("_llm", types.NewXObject(map[string]types.XValue{
 			"status": types.NewXText("failure"),
+			"output": types.XTextEmpty,
 		}))
 	}
 
