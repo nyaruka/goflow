@@ -73,13 +73,13 @@ func (r *run) Contact() *flows.Contact              { return r.session.Contact()
 func (r *run) Events() []flows.Event                { return r.events }
 
 func (r *run) Locals() *flows.Locals { return r.locals }
-func (r *run) SaveLocal(name string, value types.XValue) {
+func (r *run) SetLocal(name string, value types.XValue) {
 	r.locals.Set(name, value)
 	r.modifiedOn = dates.Now()
 }
 
 func (r *run) Results() flows.Results { return r.results }
-func (r *run) SaveResult(result *flows.Result) (*flows.Result, bool) {
+func (r *run) SetResult(result *flows.Result) (*flows.Result, bool) {
 	// truncate value if necessary
 	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 

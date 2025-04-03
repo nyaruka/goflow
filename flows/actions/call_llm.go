@@ -62,9 +62,9 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
-		run.SaveLocal(LLMOutputLocal, types.NewXText(resp.Output))
+		run.SetLocal(LLMOutputLocal, types.NewXText(resp.Output))
 	} else {
-		run.SaveLocal(LLMOutputLocal, types.NewXText(LLMOutputFailed))
+		run.SetLocal(LLMOutputLocal, types.NewXText(LLMOutputFailed))
 	}
 
 	return nil

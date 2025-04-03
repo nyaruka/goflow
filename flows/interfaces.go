@@ -417,8 +417,8 @@ type Run interface {
 
 	Session() Session
 	Locals() *Locals
-	SaveLocal(string, types.XValue)
-	SaveResult(*Result) (*Result, bool)
+	SetLocal(string, types.XValue)
+	SetResult(*Result) (*Result, bool)
 	SetStatus(RunStatus)
 	Webhook() *WebhookCall
 	SetWebhook(*WebhookCall)
