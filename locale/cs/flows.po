@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-02 15:22-0500\n"
+"POT-Creation-Date: 2025-04-03 14:28-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -68,6 +68,11 @@ msgstr ""
 
 msgid "Encodes `text` for use as a URL parameter."
 msgstr "Zakóduje `text` pro použití jako parametr URL."
+
+#, fuzzy
+#| msgid "Extracts a sub-sequence of words from `text`."
+msgid "Extracts a sub-sequence of items from `array`."
+msgstr "Extrahuje dílčí posloupnost slov z `text`."
 
 msgid "Extracts a sub-sequence of words from `text`."
 msgstr "Extrahuje dílčí posloupnost slov z `text`."
@@ -344,6 +349,9 @@ msgstr "Vrátí nové pole s hodnotami `array` seřazenými."
 msgid "Returns a new datetime with the time part replaced by the `time`."
 msgstr "Vrátí nový datetime s časovou částí nahrazenou hodnotou `time`."
 
+msgid "Returns a pre-defined LLM prompt."
+msgstr ""
+
 msgid "Returns a single random number between [0.0-1.0)."
 msgstr "Vrátí jedno náhodné číslo v rozsahu [0.0-1.0)."
 
@@ -593,6 +601,16 @@ msgid ""
 "The return value will be -1 if `text1` comes before `text2`, 0 if they are equal\n"
 "and 1 if `text1` comes after `text2`."
 msgstr "Návratová hodnota bude -1, pokud je `text1` před `text2`, 0, pokud jsou stejné, a 1, pokud je `text1` za `text2`."
+
+#, fuzzy
+#| msgid ""
+#| "The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+#| "end value means that all words after the start should be returned. There is an optional final parameter `delimiters`\n"
+#| "which is string of characters used to split the text into words."
+msgid ""
+"The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+"end value counts back from the end."
+msgstr "Vrácená slova jsou slova od `start` až po `end`, ale bez něj. Indexy začínají nulou a záporná hodnota konce znamená, že by měla být vrácena všechna slova po začátku. K dispozici je nepovinný koncový parametr `delimiters`, což je řetězec znaků použitý k rozdělení textu na slova."
 
 msgid "The returned number can contain fractional seconds."
 msgstr "Vrácené číslo může obsahovat zlomky sekund."

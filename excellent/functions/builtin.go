@@ -104,14 +104,14 @@ func init() {
 
 		// array functions
 		"slice":    InitialArrayFunction(1, 2, Slice),
-		"contains": TwoArgFunction(Contains),
-		"join":     TwoArgFunction(Join),
+		"contains": InitialArrayFunction(1, 1, Contains),
+		"join":     InitialArrayFunction(1, 1, Join),
 		"reverse":  OneArrayFunction(Reverse),
 		"sort":     OneArrayFunction(Sort),
 		"sum":      OneArrayFunction(Sum),
 		"unique":   OneArrayFunction(Unique),
 		"concat":   TwoArrayFunction(Concat),
-		"filter":   TwoArgFunction(Filter),
+		"filter":   InitialArrayFunction(1, 1, Filter),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1561,17 +1561,13 @@ func Slice(env envs.Environment, array *types.XArray, args ...types.XValue) type
 //	@(contains(array(1, 2, 3), 4)) -> false
 //
 // @function contains(array, value)
-func Contains(env envs.Environment, arg1 types.XValue, value types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	if types.IsXError(value) {
-		return value
+func Contains(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	if types.IsXError(args[0]) {
+		return args[0]
 	}
 
-	for i := 0; i < array.Count(); i++ {
-		if types.Equals(array.Get(i), value) {
+	for i := range array.Count() {
+		if types.Equals(array.Get(i), args[0]) {
 			return types.XBooleanTrue
 		}
 	}
@@ -1585,13 +1581,8 @@ func Contains(env envs.Environment, arg1 types.XValue, value types.XValue) types
 //	@(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-
-	separator, xerr := types.ToXText(env, arg2)
+func Join(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	separator, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1737,12 +1728,8 @@ func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) ty
 //	@(filter(array("a", "b", "c"), (x) => x != "c")) -> [a, b]
 //
 // @function filter(array, func)
-func Filter(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	function, xerr := types.ToXFunction(arg2)
+func Filter(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	function, xerr := types.ToXFunction(args[0])
 	if xerr != nil {
 		return xerr
 	}
