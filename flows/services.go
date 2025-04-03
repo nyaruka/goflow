@@ -146,13 +146,7 @@ type LLMResponse struct {
 
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(ctx context.Context, env envs.Environment, instructions, input string) (*LLMResponse, error)
-}
-
-// TicketService provides ticketing functionality to the engine
-type TicketService interface {
-	// Open tries to open a new ticket
-	Open(env envs.Environment, contact *Contact, topic *Topic, body string, assignee *User, logHTTP HTTPLogCallback) (*Ticket, error)
+	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
 // AirtimeTransferUUID is the UUID of a airtime transfer

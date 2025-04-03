@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 15:09-0500\n"
+"POT-Creation-Date: 2025-04-02 15:22-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -745,8 +745,10 @@ msgstr "el UUID del tema"
 msgid "the address of the channel"
 msgstr "la dirección del canal"
 
-msgid "the body of the ticket"
-msgstr "el cuerpo del ticket"
+#, fuzzy
+#| msgid "the subject of the ticket"
+msgid "the assignee of the ticket"
+msgstr "el asunto del ticket"
 
 msgid "the category of the result"
 msgstr "la categoría del resultado"
@@ -792,6 +794,11 @@ msgstr "la reanudación actual que continuó esta sesión"
 
 msgid "the current run"
 msgstr "la ejecución actual"
+
+#, fuzzy
+#| msgid "the current run results"
+msgid "the current run local variables"
+msgstr "los resultados de la ejecución actual"
 
 msgid "the current run results"
 msgstr "los resultados de la ejecución actual"
@@ -851,6 +858,16 @@ msgstr "la fecha de última vista del contacto"
 #| msgid "the last child run"
 msgid "the last webhook call "
 msgstr "la última ejecución de hijo"
+
+#, fuzzy
+#| msgid "the global value {key}"
+msgid "the local variable {key}"
+msgstr "el valor global {key}"
+
+#, fuzzy
+#| msgid "the URN values of the run"
+msgid "the local variables of the run"
+msgstr "los valores URN de la ejecución"
 
 msgid "the localized category of the result"
 msgstr "la categoría localizada del resultado"
@@ -948,8 +965,10 @@ msgstr "el número de revisión del flujo"
 msgid "the status of the contact"
 msgstr "el nombre del contacto"
 
-msgid "the subject of the ticket"
-msgstr "el asunto del ticket"
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the status of the run"
+msgstr "el estado actual de la ejecución"
 
 msgid "the text and attachments"
 msgstr "el texto y los archivos adjuntos"
@@ -959,6 +978,11 @@ msgstr "la parte de texto de la entrada"
 
 msgid "the ticket if this is a ticket trigger"
 msgstr "el ticket si es un activador de tickets"
+
+#, fuzzy
+#| msgid "the body of the ticket"
+msgid "the topic of the ticket"
+msgstr "el cuerpo del ticket"
 
 msgid "the trigger that started this session"
 msgstr "el activador que inició esta sesión"

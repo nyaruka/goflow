@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 15:09-0500\n"
+"POT-Creation-Date: 2025-04-02 15:22-0500\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -582,7 +582,7 @@ msgstr ""
 msgid "the address of the channel"
 msgstr ""
 
-msgid "the body of the ticket"
+msgid "the assignee of the ticket"
 msgstr ""
 
 msgid "the category of the result"
@@ -628,6 +628,9 @@ msgid "the current resume that continued this session"
 msgstr ""
 
 msgid "the current run"
+msgstr ""
+
+msgid "the current run local variables"
 msgstr ""
 
 msgid "the current run results"
@@ -685,6 +688,12 @@ msgid "the last seen date of the contact"
 msgstr ""
 
 msgid "the last webhook call "
+msgstr ""
+
+msgid "the local variable {key}"
+msgstr ""
+
+msgid "the local variables of the run"
 msgstr ""
 
 msgid "the localized category of the result"
@@ -771,7 +780,7 @@ msgstr ""
 msgid "the status of the contact"
 msgstr ""
 
-msgid "the subject of the ticket"
+msgid "the status of the run"
 msgstr ""
 
 msgid "the text and attachments"
@@ -781,6 +790,9 @@ msgid "the text part of the input"
 msgstr ""
 
 msgid "the ticket if this is a ticket trigger"
+msgstr ""
+
+msgid "the topic of the ticket"
 msgstr ""
 
 msgid "the trigger that started this session"

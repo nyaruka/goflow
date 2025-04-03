@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"maps"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/envs"
@@ -71,13 +73,6 @@ func (r *Result) Context(env envs.Environment) map[string]types.XValue {
 		categoryLocalized = r.Category
 	}
 
-	values := types.NewXArray(types.NewXText(r.Value))
-	values.SetDeprecated("result.values: use value instead")
-	categories := types.NewXArray(types.NewXText(r.Category))
-	categories.SetDeprecated("result.categories: use category instead")
-	categoriesLocalized := types.NewXArray(types.NewXText(categoryLocalized))
-	categoriesLocalized.SetDeprecated("result.categories_localized: use category_localized instead")
-
 	return map[string]types.XValue{
 		"__default__":        types.NewXText(r.Value),
 		"name":               types.NewXText(r.Name),
@@ -88,11 +83,6 @@ func (r *Result) Context(env envs.Environment) map[string]types.XValue {
 		"extra":              types.JSONToXValue(r.Extra),
 		"node_uuid":          types.NewXText(string(r.NodeUUID)),
 		"created_on":         types.NewXDateTime(r.CreatedOn),
-
-		// deprecated
-		"values":               values,
-		"categories":           categories,
-		"categories_localized": categoriesLocalized,
 	}
 }
 
@@ -107,9 +97,7 @@ func NewResults() Results {
 // Clone returns a clone of this results set
 func (r Results) Clone() Results {
 	clone := make(Results, len(r))
-	for k, v := range r {
-		clone[k] = v
-	}
+	maps.Copy(clone, r)
 	return clone
 }
 

@@ -43,6 +43,7 @@ var RunContextTopLevels = []string{
 	"legacy_extra",
 	"node",
 	"parent",
+	"locals",
 	"results",
 	"resume",
 	"run",

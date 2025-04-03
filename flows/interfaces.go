@@ -416,6 +416,8 @@ type Run interface {
 	FlowReference() *assets.FlowReference
 
 	Session() Session
+	Locals() *Locals
+	SaveLocal(string, types.XValue)
 	SaveResult(*Result) (*Result, bool)
 	SetStatus(RunStatus)
 	Webhook() *WebhookCall

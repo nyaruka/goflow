@@ -31,6 +31,7 @@ import (
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/test/services"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/stretchr/testify/assert"
@@ -100,6 +101,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
 		Templates         []string        `json:"templates,omitempty"`
 		LocalizedText     []string        `json:"localizables,omitempty"`
+		Locals            json.RawMessage `json:"locals,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -229,6 +231,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				}
 				return nil, fmt.Errorf("no classification service available for %s", c.Reference())
 			}).
+			WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
+				return services.NewLLM(), nil
+			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 			}).
@@ -268,6 +273,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.LocalizedText != nil {
 			actual.LocalizedText = flow.ExtractLocalizables()
 		}
+		if tc.Locals != nil {
+			actual.Locals, _ = jsonx.Marshal(run.Locals())
+		}
 		if tc.Inspection != nil {
 			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 		}
@@ -297,6 +305,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			// check extracted localized text
 			if tc.LocalizedText != nil {
 				assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
+			}
+
+			// check locals match
+			if tc.Locals != nil {
+				test.AssertEqualJSON(t, tc.Locals, actual.Locals, "locals mismatch in %s", testName)
 			}
 
 			// check inspection results

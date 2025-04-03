@@ -28,12 +28,13 @@ const (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("13.6.1")
+var CurrentSpecVersion = semver.MustParse("14.0.0")
+var CurrentSupportedSpecs, _ = semver.NewConstraint(">= 11.0.0, < 14.1.0")
 
 // IsVersionSupported checks the given version is supported
 func IsVersionSupported(v *semver.Version) bool {
-	// can't do anything with a pre-11 flow or a newer major version
-	return v.Major() >= 11 && v.Major() <= CurrentSpecVersion.Major()
+	// can't do anything with a pre-11 flow or a newer minor version
+	return CurrentSupportedSpecs.Check(v)
 }
 
 type flow struct {

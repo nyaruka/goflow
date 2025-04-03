@@ -27,6 +27,7 @@ type run struct {
 	flowRef *assets.FlowReference
 
 	parent  flows.Run
+	locals  *flows.Locals
 	results flows.Results
 	path    Path
 	events  []flows.Event
@@ -49,6 +50,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run 
 		flow:       flow,
 		flowRef:    flow.Reference(true),
 		parent:     parent,
+		locals:     flows.NewLocals(),
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,
 		events:     make([]flows.Event, 0),
@@ -69,6 +71,12 @@ func (r *run) Flow() flows.Flow                     { return r.flow }
 func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
 func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
 func (r *run) Events() []flows.Event                { return r.events }
+
+func (r *run) Locals() *flows.Locals { return r.locals }
+func (r *run) SaveLocal(name string, value types.XValue) {
+	r.locals.Set(name, value)
+	r.modifiedOn = dates.Now()
+}
 
 func (r *run) Results() flows.Results { return r.results }
 func (r *run) SaveResult(result *flows.Result) (*flows.Result, bool) {
@@ -190,6 +198,7 @@ func (r *run) ExitedOn() *time.Time  { return r.exitedOn }
 //	contact:contact -> the contact
 //	fields:fields -> the custom field values of the contact
 //	urns:urns -> the URN values of the contact
+//	locals:locals -> the current run local variables
 //	results:results -> the current run results
 //	input:input -> the current input from the contact
 //	run:run -> the current run
@@ -235,6 +244,7 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 
 		// shortcuts to things on the current run or contact
 		"contact": flows.Context(env, r.Contact()),
+		"locals":  flows.Context(env, r.Locals()),
 		"results": flows.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
@@ -257,7 +267,8 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 //	uuid:text -> the UUID of the run
 //	contact:contact -> the contact of the run
 //	flow:flow -> the flow of the run
-//	status:text -> the current status of the run
+//	status:text -> the status of the run
+//	locals:locals -> the local variables of the run
 //	results:results -> the results saved by the run
 //	created_on:datetime -> the creation date of the run
 //	exited_on:datetime -> the exit date of the run
@@ -275,6 +286,7 @@ func (r *run) Context(env envs.Environment) map[string]types.XValue {
 		"contact":     flows.Context(env, r.Contact()),
 		"flow":        flows.Context(env, r.Flow()),
 		"status":      types.NewXText(string(r.Status())),
+		"locals":      flows.Context(env, r.Locals()),
 		"results":     flows.Context(env, r.Results()),
 		"path":        r.path.ToXValue(env),
 		"created_on":  types.NewXDateTime(r.CreatedOn()),
@@ -420,6 +432,7 @@ type runEnvelope struct {
 	Flow       *assets.FlowReference `json:"flow" validate:"required"`
 	Path       []*step               `json:"path" validate:"dive"`
 	Events     []json.RawMessage     `json:"events,omitempty"`
+	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`
 	Status     flows.RunStatus       `json:"status" validate:"required"`
 	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
@@ -461,6 +474,11 @@ func ReadRun(session flows.Session, data json.RawMessage, missing assets.Missing
 		}
 	}
 
+	if e.Locals != nil {
+		r.locals = e.Locals
+	} else {
+		r.locals = flows.NewLocals()
+	}
 	if e.Results != nil {
 		r.results = e.Results
 	} else {
@@ -495,11 +513,12 @@ func (r *run) MarshalJSON() ([]byte, error) {
 	e := &runEnvelope{
 		UUID:       r.uuid,
 		Flow:       r.flowRef,
+		Locals:     r.locals,
+		Results:    r.results,
 		Status:     r.status,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,
 		ExitedOn:   r.exitedOn,
-		Results:    r.results,
 	}
 
 	if r.parent != nil {

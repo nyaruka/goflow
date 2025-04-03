@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 15:09-0500\n"
+"POT-Creation-Date: 2025-04-02 15:22-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -622,8 +622,10 @@ msgstr ""
 msgid "the address of the channel"
 msgstr "o endereço do canal"
 
-msgid "the body of the ticket"
-msgstr ""
+#, fuzzy
+#| msgid "the name of the contact"
+msgid "the assignee of the ticket"
+msgstr "o nome do contato"
 
 msgid "the category of the result"
 msgstr "a categoria do resultado"
@@ -669,6 +671,11 @@ msgstr "o resumo atual que continuou esta sessão"
 
 msgid "the current run"
 msgstr "a execução atual"
+
+#, fuzzy
+#| msgid "the current run results"
+msgid "the current run local variables"
+msgstr "os resultados da execução atual"
 
 msgid "the current run results"
 msgstr "os resultados da execução atual"
@@ -728,6 +735,16 @@ msgstr "a última data vista do contato"
 #| msgid "the last child run"
 msgid "the last webhook call "
 msgstr "a última execução do filho"
+
+#, fuzzy
+#| msgid "the global value {key}"
+msgid "the local variable {key}"
+msgstr "o valor global {key}"
+
+#, fuzzy
+#| msgid "the URN values of the run"
+msgid "the local variables of the run"
+msgstr "os valores de URN da execução"
 
 msgid "the localized category of the result"
 msgstr "a categoria localizada do resultado"
@@ -825,8 +842,10 @@ msgstr "o número de revisão do fluxo"
 msgid "the status of the contact"
 msgstr "o nome do contato"
 
-msgid "the subject of the ticket"
-msgstr ""
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the status of the run"
+msgstr "o status da atual execução"
 
 msgid "the text and attachments"
 msgstr "o texto e anexos"
@@ -836,6 +855,11 @@ msgstr "a parte de texto da entrada"
 
 msgid "the ticket if this is a ticket trigger"
 msgstr ""
+
+#, fuzzy
+#| msgid "the name of the contact"
+msgid "the topic of the ticket"
+msgstr "o nome do contato"
 
 msgid "the trigger that started this session"
 msgstr "o gatilho que iniciou a sessão"

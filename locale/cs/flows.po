@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2024-03-04 15:09-0500\n"
+"POT-Creation-Date: 2025-04-02 15:22-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -709,8 +709,10 @@ msgstr "UUID tématu"
 msgid "the address of the channel"
 msgstr "adresa kanálu"
 
-msgid "the body of the ticket"
-msgstr "tělo tiketu"
+#, fuzzy
+#| msgid "the subject of the ticket"
+msgid "the assignee of the ticket"
+msgstr "předmět tiketu"
 
 msgid "the category of the result"
 msgstr "kategorie výsledku"
@@ -756,6 +758,11 @@ msgstr "aktuální pokračování, které navázalo na toto sezení."
 
 msgid "the current run"
 msgstr "aktuální běh"
+
+#, fuzzy
+#| msgid "the current run results"
+msgid "the current run local variables"
+msgstr "výsledky aktuálního běhu"
 
 msgid "the current run results"
 msgstr "výsledky aktuálního běhu"
@@ -815,6 +822,16 @@ msgstr "datum posledního setkání s kontaktem"
 #| msgid "the last child run"
 msgid "the last webhook call "
 msgstr "poslední běh podřazeného"
+
+#, fuzzy
+#| msgid "the global value {key}"
+msgid "the local variable {key}"
+msgstr "globální hodnota {key}"
+
+#, fuzzy
+#| msgid "the URN values of the run"
+msgid "the local variables of the run"
+msgstr "hodnoty URN běhu"
 
 msgid "the localized category of the result"
 msgstr "lokalizovaná kategorie výsledku"
@@ -912,8 +929,10 @@ msgstr "číslo revize toku"
 msgid "the status of the contact"
 msgstr "jméno kontaktu"
 
-msgid "the subject of the ticket"
-msgstr "předmět tiketu"
+#, fuzzy
+#| msgid "the current status of the run"
+msgid "the status of the run"
+msgstr "aktuální stav běhu"
 
 msgid "the text and attachments"
 msgstr "text a přílohy"
@@ -923,6 +942,11 @@ msgstr "textová část vstupu"
 
 msgid "the ticket if this is a ticket trigger"
 msgstr "tiket, pokud se jedná o spouštěč tiketů"
+
+#, fuzzy
+#| msgid "the body of the ticket"
+msgid "the topic of the ticket"
+msgstr "tělo tiketu"
 
 msgid "the trigger that started this session"
 msgstr "spouštěč, který zahájil tuto relaci"
