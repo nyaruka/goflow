@@ -2,26 +2,40 @@ package flows
 
 import (
 	"encoding/json"
+	"regexp"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
+
+var localNamePattern = regexp.MustCompile(`^[a-z_][a-z0-9_]{0,63}$`)
+
+func init() {
+	utils.RegisterValidatorTag("local_name",
+		func(fl validator.FieldLevel) bool {
+			return localNamePattern.MatchString(fl.Field().String())
+		},
+		func(validator.FieldError) string { return "is not a valid local variable name" },
+	)
+}
 
 // Locals is a map of local variables for a run
 type Locals struct {
-	vals map[string]types.XValue
+	vals map[string]string
 }
 
 // NewLocals creates a new empty locals instance
 func NewLocals() *Locals {
-	return &Locals{make(map[string]types.XValue)}
+	return &Locals{make(map[string]string)}
 }
 
-func (l *Locals) Get(key string) types.XValue {
+func (l *Locals) Get(key string) string {
 	return l.vals[key]
 }
 
-func (l *Locals) Set(key string, value types.XValue) {
+func (l *Locals) Set(key string, value string) {
 	l.vals[key] = value
 }
 
@@ -31,7 +45,11 @@ func (l *Locals) IsZero() bool {
 
 // Context returns the properties available in expressions
 func (l *Locals) Context(env envs.Environment) map[string]types.XValue {
-	return l.vals
+	vals := make(map[string]types.XValue)
+	for k, v := range l.vals {
+		vals[k] = types.NewXText(v)
+	}
+	return vals
 }
 
 //------------------------------------------------------------------------------------------
@@ -43,14 +61,5 @@ func (l *Locals) MarshalJSON() ([]byte, error) {
 }
 
 func (l *Locals) UnmarshalJSON(data []byte) error {
-	obj, err := types.ReadXObject(data)
-	if err != nil {
-		return err
-	}
-
-	l.vals = make(map[string]types.XValue)
-	for _, p := range obj.Properties() {
-		l.vals[p], _ = obj.Get(p)
-	}
-	return nil
+	return json.Unmarshal(data, &l.vals)
 }

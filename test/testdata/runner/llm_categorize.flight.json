@@ -179,14 +179,14 @@
                 },
                 {
                     "category": "Hotels",
-                    "created_on": "2018-07-06T12:30:26.123456789Z",
+                    "created_on": "2018-07-06T12:30:25.123456789Z",
                     "name": "Intent",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
                     "value": "Hotels"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "So you'd like to book a hotel?",
@@ -212,7 +212,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "operand": "Hotels",
-                    "time": "2018-07-06T12:30:28.123456789Z"
+                    "time": "2018-07-06T12:30:27.123456789Z"
                 }
             ],
             "session": {
@@ -306,14 +306,14 @@
                             },
                             {
                                 "category": "Hotels",
-                                "created_on": "2018-07-06T12:30:26.123456789Z",
+                                "created_on": "2018-07-06T12:30:25.123456789Z",
                                 "name": "Intent",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "Hotels"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "So you'd like to book a hotel?",
@@ -324,7 +324,7 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:32.123456789Z",
+                        "exited_on": "2018-07-06T12:30:31.123456789Z",
                         "flow": {
                             "name": "LLM Categorize",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
@@ -332,7 +332,7 @@
                         "locals": {
                             "_llm_output": "Hotels"
                         },
-                        "modified_on": "2018-07-06T12:30:32.123456789Z",
+                        "modified_on": "2018-07-06T12:30:31.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:01.123456789Z",
@@ -353,7 +353,7 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:29.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:28.123456789Z",
                                 "exit_uuid": "9b907a0d-8aee-4ade-a9a8-fd5df3aaf386",
                                 "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -362,7 +362,7 @@
                         "results": {
                             "intent": {
                                 "category": "Hotels",
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "input": "Hotels",
                                 "name": "Intent",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
