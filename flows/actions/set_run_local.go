@@ -33,7 +33,7 @@ type SetRunLocalAction struct {
 	universalAction
 
 	Name      string `json:"name"                         validate:"required,local_name"`
-	Value     string `json:"value"     engine:"evaluated"`
+	Value     string `json:"value"     engine:"evaluated" validate:"max=1000"`
 	Operation string `json:"operation"                    validate:"required,eq=set|eq=increment"`
 }
 
@@ -57,7 +57,7 @@ func (a *SetRunLocalAction) Execute(ctx context.Context, run flows.Run, step flo
 		existing, _ := strconv.Atoi(run.Locals().Get(a.Name))
 		increment, err := strconv.Atoi(value)
 		if err != nil {
-			logEvent(events.NewError("unable to convert value to an integer"))
+			logEvent(events.NewError("increment value is not an integer"))
 		} else {
 			run.Locals().Set(a.Name, fmt.Sprint(existing+increment))
 		}
