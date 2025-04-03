@@ -103,6 +103,7 @@ func init() {
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// array functions
+		"slice":    InitialArrayFunction(1, 2, Slice),
 		"contains": TwoArgFunction(Contains),
 		"join":     TwoArgFunction(Join),
 		"reverse":  OneArrayFunction(Reverse),
@@ -1517,6 +1518,42 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 //------------------------------------------------------------------------------------------
 // Array Functions
 //------------------------------------------------------------------------------------------
+
+// Slice extracts a sub-sequence of items from `array`.
+//
+// The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative
+// end value counts back from the end.
+//
+//	@(slice(array("a", "b", "c"), 0, 2)) -> [a, b]
+//	@(slice(array("a", "b", "c"), 1, 3)) -> [b, c]
+//	@(slice(array("a", "b", "c"), 0, -1)) -> [a, b]
+//	@(slice(array("a", "b", "c"), 1)) -> [b, c]
+//	@(slice(array("a", "b", "c"), 10)) -> []
+//
+// @function slice(array, start, [,end])
+func Slice(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	start, xerr := types.ToInteger(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	if start < 0 {
+		return types.NewXErrorf("must start with a positive index")
+	}
+
+	end := array.Count()
+	if len(args) == 2 {
+		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
+			return xerr
+		}
+	}
+
+	start = min(start, array.Count())
+	if end < 0 {
+		end = max(start, array.Count()+end)
+	}
+
+	return array.Slice(start, end)
+}
 
 // Contains returns whether `array` contains `value`.
 //

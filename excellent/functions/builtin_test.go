@@ -586,6 +586,14 @@ func TestFunctions(t *testing.T) {
 		{"round_up", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_up", dmy, []types.XValue{}, ERROR},
 
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(2)}, xa(xs("a"), xs("b"))},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(1), xi(3)}, xa(xs("b"), xs("c"))},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(1)}, xa(xs("b"), xs("c"))},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(-1)}, xa(xs("a"), xs("b"))},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(10)}, xa()},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(-10)}, xa()},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(-1)}, ERROR},
+
 		{"sort", dmy, []types.XValue{xa()}, xa()},
 		{"sort", dmy, []types.XValue{xa(xn("3"))}, xa(xn("3"))},
 		{"sort", dmy, []types.XValue{xa(xn("3"), xn("1"), xn("2"))}, xa(xn("1"), xn("2"), xn("3"))},
