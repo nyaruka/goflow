@@ -124,6 +124,9 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
 			return services.NewClassification(c), nil
 		}).
+		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
+			return services.NewLLM(), nil
+		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
 		}).

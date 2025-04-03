@@ -18,6 +18,9 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 	var output string
 	if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will return "foo"
 		output = input[8:]
+	} else if strings.HasPrefix(input, "Categorize") { // instructions like "Categorize... Category2, Category3" will return "Category3"
+		words := strings.Fields(instructions)
+		output = words[len(words)-1]
 	} else {
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}

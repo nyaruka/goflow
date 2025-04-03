@@ -24,10 +24,7 @@
             "@input.text"
         ],
         "locals": {
-            "_llm": {
-                "status": "failure",
-                "output": ""
-            }
+            "_llm_output": "<FAILED>"
         },
         "inspection": {
             "dependencies": [
@@ -88,10 +85,7 @@
             "@input.text"
         ],
         "locals": {
-            "_llm": {
-                "status": "success",
-                "output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody"
-            }
+            "_llm_output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody"
         },
         "inspection": {
             "dependencies": [
