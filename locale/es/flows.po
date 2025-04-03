@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-02 15:22-0500\n"
+"POT-Creation-Date: 2025-04-03 14:28-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -70,6 +70,11 @@ msgstr ""
 
 msgid "Encodes `text` for use as a URL parameter."
 msgstr "Codifica `text` para utilizarlo como parámetro de URL."
+
+#, fuzzy
+#| msgid "Extracts a sub-sequence of words from `text`."
+msgid "Extracts a sub-sequence of items from `array`."
+msgstr "Extrae una subsecuencia de palabras de `text`."
 
 msgid "Extracts a sub-sequence of words from `text`."
 msgstr "Extrae una subsecuencia de palabras de `text`."
@@ -360,6 +365,9 @@ msgstr "Devuelve un nuevo array de los valores de `array` ordenados."
 msgid "Returns a new datetime with the time part replaced by the `time`."
 msgstr "Devuelve una nueva fecha y hora con la parte de la hora reemplazada por `hour`."
 
+msgid "Returns a pre-defined LLM prompt."
+msgstr ""
+
 msgid "Returns a single random number between [0.0-1.0)."
 msgstr "Devuelve un solo número aleatorio entre [0.0-1.0)."
 
@@ -618,6 +626,19 @@ msgid ""
 msgstr ""
 "El valor de retorno será -1 si `text1` viene antes de` text2`, 0 si son iguales\n"
 "y 1 si `text1` viene después de` text2`."
+
+#, fuzzy
+#| msgid ""
+#| "The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+#| "end value means that all words after the start should be returned. There is an optional final parameter `delimiters`\n"
+#| "which is string of characters used to split the text into words."
+msgid ""
+"The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+"end value counts back from the end."
+msgstr ""
+"Las palabras devueltas son las que van desde `start` hasta `end`, pero sin incluirlas. Los índices comienzan en cero y en negativo.\n"
+"valor final significa que se deben devolver todas las palabras después del inicio. Hay un parámetro final opcional `delimiters`\n"
+"que es una cadena de caracteres utilizada para dividir el texto en palabras."
 
 msgid "The returned number can contain fractional seconds."
 msgstr "El número devuelto puede contener fracciones de segundo."

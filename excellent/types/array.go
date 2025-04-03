@@ -44,6 +44,11 @@ func (x *XArray) Get(index int) XValue {
 	return x.values()[index]
 }
 
+// Get is called when this object is indexed
+func (x *XArray) Slice(start, end int) *XArray {
+	return NewXArray(x.values()[start:end]...)
+}
+
 // Count is called when the length of this object is requested in an expression
 func (x *XArray) Count() int {
 	return len(x.values())
