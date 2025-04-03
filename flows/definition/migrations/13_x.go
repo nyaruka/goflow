@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerMigration(semver.MustParse("13.7.0"), Migrate13_7)
+	registerMigration(semver.MustParse("14.0.0"), Migrate14_0)
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
 	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
 	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
@@ -22,10 +22,10 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate13_7 is a noop because version only adds a new action (call_llm).
+// Migrate14.0 is a noop because spec only adds new features.
 //
-// @version 13_7 "13.7"
-func Migrate13_7(f Flow, cfg *Config) (Flow, error) {
+// @version 14_0 "14.0"
+func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 

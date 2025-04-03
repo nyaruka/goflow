@@ -1,5 +1,5 @@
 {
-    "13.7.0": {
+    "14.0.0": {
         "actions": {
             "add_contact_groups": [
                 ".groups[*].name_match"
