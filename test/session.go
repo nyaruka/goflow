@@ -250,6 +250,10 @@ var sessionAssets = `{
     "labels": [
         {"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"}
     ],
+    "llms": [
+        {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4", "type": "openai"},
+        {"uuid": "51ade705-8338-40a9-8a77-37657a936966", "name": "Claude", "type": "anthropic"}
+    ],
     "locations": [
         {
             "name": "Rwanda",

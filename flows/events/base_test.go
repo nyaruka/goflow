@@ -48,6 +48,7 @@ func TestEventMarshaling(t *testing.T) {
 	user := session.Assets().Users().Get("bob@nyaruka.com")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
 	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, user)
+	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
 
 	eventTests := []struct {
 		event     flows.Event
@@ -439,6 +440,31 @@ func TestEventMarshaling(t *testing.T) {
 					"attachments": ["audio:http://example.com/hi.mp3"],
 					"locale": "eng"
 				}
+			}`,
+		},
+		{
+			events.NewLLMCalled(
+				gpt4,
+				"Categorize the following text as Positive or Negative",
+				"Please stop messaging me",
+				&flows.LLMResponse{
+					Output:     "Positive",
+					TokensUsed: 567,
+				},
+				123*time.Millisecond,
+			),
+			`{
+				"type": "llm_called",
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"llm": {
+					"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", 
+					"name": "GPT-4"
+				},
+				"instructions": "Categorize the following text as Positive or Negative",
+				"input": "Please stop messaging me",
+				"output": "Positive",
+				"tokens_used": 567,
+				"elapsed_ms": 123
 			}`,
 		},
 		{

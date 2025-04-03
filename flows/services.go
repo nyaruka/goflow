@@ -146,7 +146,7 @@ type LLMResponse struct {
 
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(ctx context.Context, env envs.Environment, instructions, input string, maxTokens int) (*LLMResponse, error)
+	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
 // AirtimeTransferUUID is the UUID of a airtime transfer

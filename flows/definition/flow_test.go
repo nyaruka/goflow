@@ -32,7 +32,8 @@ func TestIsVersionSupported(t *testing.T) {
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("11.9")))
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("13.0.0")))
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("13.3.0")))
-	assert.False(t, definition.IsVersionSupported(semver.MustParse("14.0.0")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("14.0.0")))
+	assert.False(t, definition.IsVersionSupported(semver.MustParse("15.0.0")))
 }
 
 func TestBrokenFlows(t *testing.T) {

@@ -12,6 +12,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.0.0"), Migrate14_0)
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
 	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
 	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
@@ -19,6 +20,13 @@ func init() {
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate14.0 is a noop because spec only adds new features.
+//
+// @version 14_0 "14.0"
+func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
+	return f, nil
 }
 
 // Migrate13_6_1 fixes result lookups that need to be truncated.
