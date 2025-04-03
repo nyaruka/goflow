@@ -43,7 +43,7 @@ func TestGenerateDocs(t *testing.T) {
 	context := completion["context"].(map[string]any)
 	functions := completion["functions"].([]any)
 
-	assert.Equal(t, 89, len(functions))
+	assert.Equal(t, 90, len(functions))
 
 	types := context["types"].([]any)
 	assert.Equal(t, 21, len(types))

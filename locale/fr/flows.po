@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-02 15:22-0500\n"
+"POT-Creation-Date: 2025-04-03 14:28-0500\n"
 "Language-Team: French (https://www.transifex.com/rapidpro/teams/226/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -61,6 +61,9 @@ msgid ""
 msgstr ""
 
 msgid "Encodes `text` for use as a URL parameter."
+msgstr ""
+
+msgid "Extracts a sub-sequence of items from `array`."
 msgstr ""
 
 msgid "Extracts a sub-sequence of words from `text`."
@@ -274,6 +277,9 @@ msgstr ""
 msgid "Returns a new datetime with the time part replaced by the `time`."
 msgstr ""
 
+msgid "Returns a pre-defined LLM prompt."
+msgstr ""
+
 msgid "Returns a single random number between [0.0-1.0)."
 msgstr ""
 
@@ -467,6 +473,11 @@ msgstr ""
 msgid ""
 "The return value will be -1 if `text1` comes before `text2`, 0 if they are equal\n"
 "and 1 if `text1` comes after `text2`."
+msgstr ""
+
+msgid ""
+"The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+"end value counts back from the end."
 msgstr ""
 
 msgid "The returned number can contain fractional seconds."

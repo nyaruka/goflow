@@ -103,14 +103,15 @@ func init() {
 		"time_from_parts": ThreeIntegerFunction(TimeFromParts),
 
 		// array functions
-		"contains": TwoArgFunction(Contains),
-		"join":     TwoArgFunction(Join),
+		"slice":    InitialArrayFunction(1, 2, Slice),
+		"contains": InitialArrayFunction(1, 1, Contains),
+		"join":     InitialArrayFunction(1, 1, Join),
 		"reverse":  OneArrayFunction(Reverse),
 		"sort":     OneArrayFunction(Sort),
 		"sum":      OneArrayFunction(Sum),
 		"unique":   OneArrayFunction(Unique),
 		"concat":   TwoArrayFunction(Concat),
-		"filter":   TwoArgFunction(Filter),
+		"filter":   InitialArrayFunction(1, 1, Filter),
 
 		// encoded text functions
 		"urn_parts":        OneTextFunction(URNParts),
@@ -1518,23 +1519,55 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 // Array Functions
 //------------------------------------------------------------------------------------------
 
+// Slice extracts a sub-sequence of items from `array`.
+//
+// The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative
+// end value counts back from the end.
+//
+//	@(slice(array("a", "b", "c"), 0, 2)) -> [a, b]
+//	@(slice(array("a", "b", "c"), 1, 3)) -> [b, c]
+//	@(slice(array("a", "b", "c"), 0, -1)) -> [a, b]
+//	@(slice(array("a", "b", "c"), 1)) -> [b, c]
+//	@(slice(array("a", "b", "c"), 10)) -> []
+//
+// @function slice(array, start, [,end])
+func Slice(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	start, xerr := types.ToInteger(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+	if start < 0 {
+		return types.NewXErrorf("must start with a positive index")
+	}
+
+	end := array.Count()
+	if len(args) == 2 {
+		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
+			return xerr
+		}
+	}
+
+	start = min(start, array.Count())
+	if end < 0 {
+		end = max(start, array.Count()+end)
+	}
+
+	return array.Slice(start, end)
+}
+
 // Contains returns whether `array` contains `value`.
 //
 //	@(contains(array("a", "b", "c"), "a")) -> true
 //	@(contains(array(1, 2, 3), 4)) -> false
 //
 // @function contains(array, value)
-func Contains(env envs.Environment, arg1 types.XValue, value types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	if types.IsXError(value) {
-		return value
+func Contains(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	if types.IsXError(args[0]) {
+		return args[0]
 	}
 
-	for i := 0; i < array.Count(); i++ {
-		if types.Equals(array.Get(i), value) {
+	for i := range array.Count() {
+		if types.Equals(array.Get(i), args[0]) {
 			return types.XBooleanTrue
 		}
 	}
@@ -1548,13 +1581,8 @@ func Contains(env envs.Environment, arg1 types.XValue, value types.XValue) types
 //	@(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, separator)
-func Join(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-
-	separator, xerr := types.ToXText(env, arg2)
+func Join(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	separator, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1700,12 +1728,8 @@ func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) ty
 //	@(filter(array("a", "b", "c"), (x) => x != "c")) -> [a, b]
 //
 // @function filter(array, func)
-func Filter(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	array, xerr := types.ToXArray(env, arg1)
-	if xerr != nil {
-		return xerr
-	}
-	function, xerr := types.ToXFunction(arg2)
+func Filter(env envs.Environment, array *types.XArray, args ...types.XValue) types.XValue {
+	function, xerr := types.ToXFunction(args[0])
 	if xerr != nil {
 		return xerr
 	}
