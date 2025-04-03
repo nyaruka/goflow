@@ -53,7 +53,7 @@ func TestLegacyExtra(t *testing.T) {
 
 	// can also add something which is an array
 	result := flows.NewResult("webhook", "200", "Success", "", flows.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), dates.Now())
-	run.SaveResult(result)
+	run.SetResult(result)
 
 	log := test.NewEventLog()
 	output, _ := run.EvaluateTemplate(`@(legacy_extra[0])`, log.Log)

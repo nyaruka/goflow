@@ -274,7 +274,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 }
 
-func TestSaveResult(t *testing.T) {
+func TestSetResult(t *testing.T) {
 	sa, err := test.CreateSessionAssets([]byte(sessionAssets), "")
 	require.NoError(t, err)
 
@@ -293,7 +293,7 @@ func TestSaveResult(t *testing.T) {
 	// no results means empty object with default of empty string
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"__default__": types.XTextEmpty}), flows.Context(session.Environment(), run.Results()))
 
-	prev, changed := run.SaveResult(flows.NewResult("Response 1", "red", "Red", "Rojo", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like red", nil, dates.Now()))
+	prev, changed := run.SetResult(flows.NewResult("Response 1", "red", "Red", "Rojo", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like red", nil, dates.Now()))
 	assert.Nil(t, prev)
 	assert.True(t, changed)
 
@@ -302,7 +302,7 @@ func TestSaveResult(t *testing.T) {
 	assert.Equal(t, "Red", run.Results().Get("response_1").Category)
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
-	prev, changed = run.SaveResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
+	prev, changed = run.SetResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
 	if assert.NotNil(t, prev) {
 		assert.Equal(t, "Red", prev.Category)
 	}
@@ -314,12 +314,12 @@ func TestSaveResult(t *testing.T) {
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
 	// try saving new result with same value and category again
-	prev, changed = run.SaveResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6f53c6ae-b66e-44dc-af9e-638e26ad05e9", "blue", nil, dates.Now()))
+	prev, changed = run.SetResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6f53c6ae-b66e-44dc-af9e-638e26ad05e9", "blue", nil, dates.Now()))
 	assert.Nil(t, prev)
 	assert.False(t, changed)
 
 	// long values should truncated
-	prev, changed = run.SaveResult(flows.NewResult("Response 1", strings.Repeat("創", 700), "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
+	prev, changed = run.SetResult(flows.NewResult("Response 1", strings.Repeat("創", 700), "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
 	assert.NotNil(t, prev)
 	assert.True(t, changed)
 

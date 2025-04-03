@@ -56,12 +56,12 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
-		run.SaveLocal("_llm", types.NewXObject(map[string]types.XValue{
+		run.SetLocal("_llm", types.NewXObject(map[string]types.XValue{
 			"status": types.NewXText("success"),
 			"output": types.NewXText(resp.Output),
 		}))
 	} else {
-		run.SaveLocal("_llm", types.NewXObject(map[string]types.XValue{
+		run.SetLocal("_llm", types.NewXObject(map[string]types.XValue{
 			"status": types.NewXText("failure"),
 			"output": types.XTextEmpty,
 		}))
