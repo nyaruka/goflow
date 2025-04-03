@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -56,15 +55,11 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
-		run.SetLocal("_llm", types.NewXObject(map[string]types.XValue{
-			"status": types.NewXText("success"),
-			"output": types.NewXText(resp.Output),
-		}))
+		run.Locals().Set("_llm_status", "success")
+		run.Locals().Set("_llm_output", resp.Output)
 	} else {
-		run.SetLocal("_llm", types.NewXObject(map[string]types.XValue{
-			"status": types.NewXText("failure"),
-			"output": types.XTextEmpty,
-		}))
+		run.Locals().Set("_llm_status", "failure")
+		run.Locals().Set("_llm_output", "")
 	}
 
 	return nil

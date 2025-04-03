@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,24 +13,39 @@ func TestLocals(t *testing.T) {
 	l1 := flows.NewLocals()
 	assert.True(t, l1.IsZero())
 
-	l1.Set("foo", types.NewXText("bar"))
-	l1.Set("int", types.NewXNumberFromInt(42))
-	l1.Set("obj", types.NewXObject(map[string]types.XValue{"sub": types.NewXText("baz")}))
+	l1.Set("foo", "bar")
+	l1.Set("zed", "123")
 
-	assert.Equal(t, types.NewXText("bar"), l1.Get("foo"))
-	assert.Equal(t, types.NewXNumberFromInt(42), l1.Get("int"))
-	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"sub": types.NewXText("baz")}), l1.Get("obj"))
+	assert.Equal(t, "bar", l1.Get("foo"))
+	assert.Equal(t, "123", l1.Get("zed"))
 	assert.False(t, l1.IsZero())
 
 	marshaled, err := json.Marshal(l1)
 	assert.NoError(t, err)
-	assert.JSONEq(t, `{"foo":"bar","int":42,"obj":{"sub":"baz"}}`, string(marshaled))
+	assert.JSONEq(t, `{"foo":"bar","zed":"123"}`, string(marshaled))
 
 	var l2 flows.Locals
 	err = json.Unmarshal(marshaled, &l2)
 	assert.NoError(t, err)
 
-	assert.Equal(t, types.NewXText("bar"), l2.Get("foo"))
-	assert.Equal(t, types.NewXNumberFromInt(42), l2.Get("int"))
-	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"sub": types.NewXText("baz")}), l2.Get("obj"))
+	assert.Equal(t, "bar", l2.Get("foo"))
+	assert.Equal(t, "123", l2.Get("zed"))
+}
+
+func TestLocalNameValidation(t *testing.T) {
+	type testStruct struct {
+		Valid1   string `json:"valid1"   validate:"local_name"`
+		Valid2   string `json:"valid2"   validate:"local_name"`
+		Invalid1 string `json:"invalid1" validate:"local_name"`
+		Invalid2 string `json:"invalid2" validate:"local_name"`
+	}
+
+	obj := testStruct{
+		Valid1:   "color123",
+		Valid2:   "_llm_output",
+		Invalid1: "1234567890123456789012345678901234567890123456789012345678901234567890", // too long
+		Invalid2: "1foo",                                                                   // starts with a number
+	}
+	err := utils.Validate(obj)
+	assert.EqualError(t, err, "field 'invalid1' is not a valid local variable name, field 'invalid2' is not a valid local variable name")
 }

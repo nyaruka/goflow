@@ -1,0 +1,92 @@
+[
+    {
+        "description": "Read fails when name or operation is empty",
+        "action": {
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "type": "set_run_local",
+            "name": "",
+            "value": "bar",
+            "operation": ""
+        },
+        "read_error": "field 'name' is required, field 'operation' is required"
+    },
+    {
+        "description": "Error event and action skipped if value contains expression error",
+        "action": {
+            "type": "set_run_local",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "my_var",
+            "value": "@(1 / 0)",
+            "operation": "set"
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "text": "error evaluating @(1 / 0): division by zero"
+            }
+        ],
+        "templates": [
+            "@(1 / 0)"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Non-existent local updated via set",
+        "action": {
+            "type": "set_run_local",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "my_var",
+            "value": "@fields.Gender",
+            "operation": "set"
+        },
+        "events": [],
+        "locals": {
+            "my_var": "Male"
+        },
+        "templates": [
+            "@fields.Gender"
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
+                }
+            ],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Non-existent local updated via increment",
+        "action": {
+            "type": "set_run_local",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "counter",
+            "value": "@(3 + 4)",
+            "operation": "increment"
+        },
+        "events": [],
+        "locals": {
+            "counter": "7"
+        },
+        "templates": [
+            "@(3 + 4)"
+        ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    }
+]

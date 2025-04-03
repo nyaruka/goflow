@@ -72,12 +72,7 @@ func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
 func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
 func (r *run) Events() []flows.Event                { return r.events }
 
-func (r *run) Locals() *flows.Locals { return r.locals }
-func (r *run) SetLocal(name string, value types.XValue) {
-	r.locals.Set(name, value)
-	r.modifiedOn = dates.Now()
-}
-
+func (r *run) Locals() *flows.Locals  { return r.locals }
 func (r *run) Results() flows.Results { return r.results }
 func (r *run) SetResult(result *flows.Result) (*flows.Result, bool) {
 	// truncate value if necessary

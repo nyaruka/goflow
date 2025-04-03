@@ -71,6 +71,9 @@
             "set_contact_timezone": [
                 ".timezone"
             ],
+            "set_run_local": [
+                ".value"
+            ],
             "set_run_result": [
                 ".value"
             ],
