@@ -1,14 +1,12 @@
 package envs_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -18,27 +16,27 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	// can't create with invalid date format
-	_, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "YYYYYYYYYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "YYYYYYYYYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	assert.Error(t, err)
 
 	// can't create with invalid time format
-	_, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Africa/Kigali"}`))
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Africa/Kigali"}`))
 	assert.Error(t, err)
 
 	// can't create with invalid language
-	_, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "allowed_languages": ["elvish"]}`))
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "allowed_languages": ["elvish"]}`))
 	assert.Error(t, err)
 
 	// can't create with invalid country
-	_, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "default_country": "Narnia"}`))
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "default_country": "Narnia"}`))
 	assert.Error(t, err)
 
 	// can't create with invalid timzeone
-	_, err = envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
 	assert.Error(t, err)
 
 	// empty environment uses all defaults
-	env, err := envs.ReadEnvironment(json.RawMessage(`{}`))
+	env, err := envs.ReadEnvironment([]byte(`{}`))
 	assert.NoError(t, err)
 	assert.Equal(t, envs.DateFormatYearMonthDay, env.DateFormat())
 	assert.Equal(t, envs.TimeFormatHourMinute, env.TimeFormat())
@@ -49,7 +47,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Nil(t, env.LocationResolver())
 
 	// can create with valid values
-	env, err = envs.ReadEnvironment(json.RawMessage(`{
+	env, err = envs.ReadEnvironment([]byte(`{
 		"date_format": "DD-MM-YYYY", 
 		"time_format": "tt:mm:ss", 
 		"allowed_languages": ["eng", "fra"], 
@@ -74,13 +72,13 @@ func TestEnvironmentMarshaling(t *testing.T) {
 }
 
 func TestEnvironmentEqual(t *testing.T) {
-	env1, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
+	env1, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	require.NoError(t, err)
 
-	env2, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
+	env2, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
 	require.NoError(t, err)
 
-	env3, err := envs.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kampala"}`))
+	env3, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kampala"}`))
 	require.NoError(t, err)
 
 	assert.True(t, env1.Equal(env2))

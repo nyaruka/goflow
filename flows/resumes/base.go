@@ -117,7 +117,7 @@ type baseResumeEnvelope struct {
 }
 
 // ReadResume reads a resume from the given JSON
-func ReadResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {
+func ReadResume(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -127,10 +127,10 @@ func ReadResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing
 	if f == nil {
 		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(sessionAssets, data, missing)
+	return f(sa, data, missing)
 }
 
-func (r *baseResume) unmarshal(sessionAssets flows.SessionAssets, e *baseResumeEnvelope, missing assets.MissingCallback) error {
+func (r *baseResume) unmarshal(sa flows.SessionAssets, e *baseResumeEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	r.type_ = e.Type
@@ -142,7 +142,7 @@ func (r *baseResume) unmarshal(sessionAssets flows.SessionAssets, e *baseResumeE
 		}
 	}
 	if e.Contact != nil {
-		if r.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
+		if r.contact, err = flows.ReadContact(sa, e.Contact, missing); err != nil {
 			return fmt.Errorf("unable to read contact: %w", err)
 		}
 	}
