@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-03 14:28-0500\n"
+"POT-Creation-Date: 2025-04-04 10:18-0500\n"
 "Language-Team: French (https://www.transifex.com/rapidpro/teams/226/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -63,9 +63,6 @@ msgstr ""
 msgid "Encodes `text` for use as a URL parameter."
 msgstr ""
 
-msgid "Extracts a sub-sequence of items from `array`."
-msgstr ""
-
 msgid "Extracts a sub-sequence of words from `text`."
 msgstr ""
 
@@ -100,7 +97,12 @@ msgid "If `count` is omitted or is less than 0 then all occurrences are replaced
 msgstr ""
 
 msgid ""
-"If `end` is not specified then the entire rest of `text` will be included. Negative values\n"
+"If `end` is not specified then the entire remainder of `array` will be included. Negative values\n"
+"for `start` or `end` start at the end of `array`."
+msgstr ""
+
+msgid ""
+"If `end` is not specified then the entire remainder of `text` will be included. Negative values\n"
 "for `start` or `end` start at the end of `text`."
 msgstr ""
 
@@ -349,6 +351,9 @@ msgstr ""
 msgid "Returns the result of concatenating two arrays."
 msgstr ""
 
+msgid "Returns the sub-sequence of `array` between `start` (inclusive) and `end` (exclusive)."
+msgstr ""
+
 msgid "Returns the unique values in `array`."
 msgstr ""
 
@@ -473,11 +478,6 @@ msgstr ""
 msgid ""
 "The return value will be -1 if `text1` comes before `text2`, 0 if they are equal\n"
 "and 1 if `text1` comes after `text2`."
-msgstr ""
-
-msgid ""
-"The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
-"end value counts back from the end."
 msgstr ""
 
 msgid "The returned number can contain fractional seconds."

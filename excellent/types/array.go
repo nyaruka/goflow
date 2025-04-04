@@ -41,17 +41,12 @@ func NewXLazyArray(source func() []XValue) *XArray {
 
 // Get is called when this object is indexed
 func (x *XArray) Get(index int) XValue {
-	return x.values()[index]
-}
-
-// Get is called when this object is indexed
-func (x *XArray) Slice(start, end int) *XArray {
-	return NewXArray(x.values()[start:end]...)
+	return x.Values()[index]
 }
 
 // Count is called when the length of this object is requested in an expression
 func (x *XArray) Count() int {
-	return len(x.values())
+	return len(x.Values())
 }
 
 // Describe returns a representation of this type for error messages
@@ -65,7 +60,7 @@ func (x *XArray) Truthy() bool {
 // Render returns the canonical text representation
 func (x *XArray) Render() string {
 	parts := make([]string, x.Count())
-	for i, v := range x.values() {
+	for i, v := range x.Values() {
 		parts[i] = Render(v)
 	}
 	return "[" + strings.Join(parts, ", ") + "]"
@@ -76,7 +71,7 @@ func (x *XArray) Format(env envs.Environment) string {
 	parts := make([]string, x.Count())
 	multiline := false
 
-	for i, v := range x.values() {
+	for i, v := range x.Values() {
 		parts[i] = Format(env, v)
 		if strings.ContainsRune(parts[i], '\n') {
 			multiline = true
@@ -98,7 +93,7 @@ func (x *XArray) Format(env envs.Environment) string {
 // MarshalJSON converts this type to internal JSON
 func (x *XArray) MarshalJSON() ([]byte, error) {
 	marshaled := make([]json.RawMessage, x.Count())
-	for i, v := range x.values() {
+	for i, v := range x.Values() {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
 			marshaled[i] = json.RawMessage(asJSON.Native())
@@ -110,7 +105,7 @@ func (x *XArray) MarshalJSON() ([]byte, error) {
 // String returns the native string representation of this type
 func (x *XArray) String() string {
 	parts := make([]string, x.Count())
-	for i, v := range x.values() {
+	for i, v := range x.Values() {
 		parts[i] = String(v)
 	}
 	return `XArray[` + strings.Join(parts, ", ") + `]`
@@ -124,15 +119,15 @@ func (x *XArray) Equals(o XValue) bool {
 		return false
 	}
 
-	for i, v := range x.values() {
-		if !Equals(v, other.values()[i]) {
+	for i, v := range x.Values() {
+		if !Equals(v, other.Values()[i]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (x *XArray) values() []XValue {
+func (x *XArray) Values() []XValue {
 	if x.data == nil {
 		x.data = x.source()
 	}

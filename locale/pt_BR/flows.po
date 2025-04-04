@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-03 14:28-0500\n"
+"POT-Creation-Date: 2025-04-04 10:18-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -70,11 +70,6 @@ msgstr ""
 msgid "Encodes `text` for use as a URL parameter."
 msgstr "Codifica o `text` para ser usado como uma URL de parâmetro."
 
-#, fuzzy
-#| msgid "Extracts a sub-sequence of words from `text`."
-msgid "Extracts a sub-sequence of items from `array`."
-msgstr "Extrai uma sub sequência de palavras de `text`."
-
 msgid "Extracts a sub-sequence of words from `text`."
 msgstr "Extrai uma sub sequência de palavras de `text`."
 
@@ -108,8 +103,23 @@ msgstr "HTML decodifica `text`"
 msgid "If `count` is omitted or is less than 0 then all occurrences are replaced."
 msgstr "If `count` é omitido ou menor do que 0, então todas as ocorrências serão substituídas."
 
+#, fuzzy
+#| msgid ""
+#| "If `end` is not specified then the entire rest of `text` will be included. Negative values\n"
+#| "for `start` or `end` start at the end of `text`."
 msgid ""
-"If `end` is not specified then the entire rest of `text` will be included. Negative values\n"
+"If `end` is not specified then the entire remainder of `array` will be included. Negative values\n"
+"for `start` or `end` start at the end of `array`."
+msgstr ""
+"Se o `end` não foi especificado, então todo o resto de `text` será incluido. Valores negativos\n"
+"para `start` ou `end`, começarão no final do `text`."
+
+#, fuzzy
+#| msgid ""
+#| "If `end` is not specified then the entire rest of `text` will be included. Negative values\n"
+#| "for `start` or `end` start at the end of `text`."
+msgid ""
+"If `end` is not specified then the entire remainder of `text` will be included. Negative values\n"
 "for `start` or `end` start at the end of `text`."
 msgstr ""
 "Se o `end` não foi especificado, então todo o resto de `text` será incluido. Valores negativos\n"
@@ -372,6 +382,11 @@ msgstr "Retorna o resto da divisão de `dividend` pelo `divisor`."
 msgid "Returns the result of concatenating two arrays."
 msgstr ""
 
+#, fuzzy
+#| msgid "Returns the portion of `text` between `start` (inclusive) and `end` (exclusive)."
+msgid "Returns the sub-sequence of `array` between `start` (inclusive) and `end` (exclusive)."
+msgstr "Retorna a porção de `text` entre `start` (inclusivo) e `end` (exclusivo)."
+
 msgid "Returns the unique values in `array`."
 msgstr ""
 
@@ -503,19 +518,6 @@ msgid ""
 msgstr ""
 "O valor de retorno será -1 se `text1` vier antes de `text2`, 0 se forem iguais\n"
 "e 1 se `text1` vier depois de `text2`."
-
-#, fuzzy
-#| msgid ""
-#| "The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
-#| "end value means that all words after the start should be returned. There is an optional final parameter `delimiters`\n"
-#| "which is string of characters used to split the text into words."
-msgid ""
-"The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
-"end value counts back from the end."
-msgstr ""
-"As palavras retornadas são aquelas de `start` até, mas não incluindo, `end`. Índices começam no zero e um valor final\n"
-"negativo significa que todas as palavras após o início devem ser retornadas. Existe um parâmetro final opcional `delimiter`\n"
-"que é uma string com caracteres utilizados para dividir o texto em palavras."
 
 msgid "The returned number can contain fractional seconds."
 msgstr "O número retornado pode conter segundos fracionados."
@@ -905,6 +907,24 @@ msgstr "{key} para o contato"
 
 msgid "{type} URN for the contact"
 msgstr "{type} URN para o contato"
+
+#, fuzzy
+#~| msgid "Extracts a sub-sequence of words from `text`."
+#~ msgid "Extracts a sub-sequence of items from `array`."
+#~ msgstr "Extrai uma sub sequência de palavras de `text`."
+
+#, fuzzy
+#~| msgid ""
+#~| "The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+#~| "end value means that all words after the start should be returned. There is an optional final parameter `delimiters`\n"
+#~| "which is string of characters used to split the text into words."
+#~ msgid ""
+#~ "The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative\n"
+#~ "end value counts back from the end."
+#~ msgstr ""
+#~ "As palavras retornadas são aquelas de `start` até, mas não incluindo, `end`. Índices começam no zero e um valor final\n"
+#~ "negativo significa que todas as palavras após o início devem ser retornadas. Existe um parâmetro final opcional `delimiter`\n"
+#~ "que é uma string com caracteres utilizados para dividir o texto em palavras."
 
 #~ msgid "the extra data of the result such as a webhook response"
 #~ msgstr "os dados extras do resultado como resposta de webhook"
