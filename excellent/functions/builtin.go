@@ -719,36 +719,19 @@ func Clean(env envs.Environment, text *types.XText) types.XValue {
 //
 // @function text_slice(text, start [, end])
 func TextSlice(env envs.Environment, text *types.XText, args ...types.XValue) types.XValue {
-	length := utf8.RuneCountInString(text.Native())
-
 	start, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
-	if start < 0 {
-		start = length + start
-	}
 
-	end := length
+	end := text.Length()
 	if len(args) == 2 {
 		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
 			return xerr
 		}
 	}
-	if end < 0 {
-		end = length + end
-	}
 
-	var output bytes.Buffer
-	i := 0
-	for _, r := range text.Native() {
-		if i >= start && i < end {
-			output.WriteRune(r)
-		}
-		i++
-	}
-
-	return types.NewXText(output.String())
+	return types.NewXText(string(slice([]rune(text.Native()), start, end)))
 }
 
 // Lower converts `text` to lowercase.
@@ -1536,9 +1519,6 @@ func Slice(env envs.Environment, array *types.XArray, args ...types.XValue) type
 	if xerr != nil {
 		return xerr
 	}
-	if start < 0 {
-		return types.NewXErrorf("must start with a positive index")
-	}
 
 	end := array.Count()
 	if len(args) == 2 {
@@ -1547,12 +1527,7 @@ func Slice(env envs.Environment, array *types.XArray, args ...types.XValue) type
 		}
 	}
 
-	start = min(start, array.Count())
-	if end < 0 {
-		end = max(start, array.Count()+end)
-	}
-
-	return array.Slice(start, end)
+	return types.NewXArray(slice(array.Values(), start, end)...)
 }
 
 // Contains returns whether `array` contains `value`.

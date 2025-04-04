@@ -592,7 +592,9 @@ func TestFunctions(t *testing.T) {
 		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(-1)}, xa(xs("a"), xs("b"))},
 		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(10)}, xa()},
 		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(-10)}, xa()},
-		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(-1)}, ERROR},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c"), xs("d")), xi(-3), xi(-1)}, xa(xs("b"), xs("c"))},
+		{"slice", dmy, []types.XValue{ERROR, xi(1)}, ERROR},
+		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), ERROR}, ERROR},
 
 		{"sort", dmy, []types.XValue{xa()}, xa()},
 		{"sort", dmy, []types.XValue{xa(xn("3"))}, xa(xn("3"))},
