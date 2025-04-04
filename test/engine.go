@@ -2,6 +2,7 @@ package test
 
 import (
 	"net/http"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -17,6 +18,9 @@ func NewEngine() flows.Engine {
 
 	return engine.NewBuilder().
 		WithMaxFieldChars(256).
+		WithLLMPrompts(map[string]*template.Template{
+			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg0 }}")),
+		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil

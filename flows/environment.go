@@ -2,6 +2,7 @@ package flows
 
 import (
 	"slices"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -62,4 +63,9 @@ func (e *sessionEnvironment) DefaultLocale() i18n.Locale {
 
 func (e *sessionEnvironment) LocationResolver() envs.LocationResolver {
 	return e.session.Assets().Locations()
+}
+
+// LLMPrompt overrides the base environment to fetch LLM prompts from engine options
+func (e *sessionEnvironment) LLMPrompt(name string) *template.Template {
+	return e.session.Engine().Options().LLMPrompts[name]
 }
