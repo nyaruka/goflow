@@ -188,7 +188,7 @@ type baseTriggerEnvelope struct {
 }
 
 // ReadTrigger reads a trigger from the given JSON
-func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func ReadTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -198,10 +198,10 @@ func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missin
 	if f == nil {
 		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(sessionAssets, data, missing)
+	return f(sa, data, missing)
 }
 
-func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTriggerEnvelope, missing assets.MissingCallback) error {
+func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	t.type_ = e.Type
@@ -211,7 +211,7 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
-	if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
+	if t.contact, err = flows.ReadContact(sa, e.Contact, missing); err != nil {
 		return fmt.Errorf("unable to read contact: %w", err)
 	}
 

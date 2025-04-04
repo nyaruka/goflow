@@ -587,7 +587,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -597,7 +597,7 @@ func readSession(eng flows.Engine, sessionAssets flows.SessionAssets, data json.
 
 	s := &session{
 		engine:     eng,
-		assets:     sessionAssets,
+		assets:     sa,
 		uuid:       e.UUID,
 		type_:      e.Type,
 		status:     e.Status,

@@ -68,7 +68,7 @@ var assetsJSON = `{
     ]
 }`
 
-func TestAssetsEnvironment(t *testing.T) {
+func TestLocationResolver(t *testing.T) {
 	env := envs.NewBuilder().WithDefaultCountry("RW").Build()
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
@@ -84,14 +84,12 @@ func TestAssetsEnvironment(t *testing.T) {
 	session, _, err := eng.NewSession(context.Background(), sa, trigger)
 	require.NoError(t, err)
 
-	aenv := flows.NewAssetsEnvironment(env, session.Assets().Locations())
-	assert.Equal(t, i18n.Country("RW"), aenv.DefaultCountry())
-	require.NotNil(t, aenv.LocationResolver())
+	resolver := session.Assets().Locations()
 
-	kigali := aenv.LocationResolver().LookupLocation("Rwanda > Kigali City")
+	kigali := resolver.LookupLocation("Rwanda > Kigali City")
 	assert.Equal(t, "Kigali City", kigali.Name())
 
-	matches := aenv.LocationResolver().FindLocationsFuzzy(env, "gisozi town", flows.LocationLevelWard, nil)
+	matches := resolver.FindLocationsFuzzy(env, "gisozi town", flows.LocationLevelWard, nil)
 	assert.Equal(t, 1, len(matches))
 	assert.Equal(t, "Gisozi", matches[0].Name())
 }

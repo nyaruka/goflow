@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/envs"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
