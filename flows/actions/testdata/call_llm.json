@@ -24,7 +24,7 @@
             "@input.text"
         ],
         "locals": {
-            "_llm_output": "\u003cFAILED\u003e"
+            "_llm_output": "\u003cERROR\u003e"
         },
         "inspection": {
             "dependencies": [

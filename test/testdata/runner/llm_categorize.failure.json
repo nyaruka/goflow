@@ -175,7 +175,7 @@
                     "name": "Intent",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
-                    "value": "<FAILED>"
+                    "value": "<ERROR>"
                 }
             ],
             "segments": [
@@ -275,7 +275,7 @@
                                 "name": "Intent",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
-                                "value": "<FAILED>"
+                                "value": "<ERROR>"
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:26.123456789Z",
@@ -284,7 +284,7 @@
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
                         "locals": {
-                            "_llm_output": "<FAILED>"
+                            "_llm_output": "<ERROR>"
                         },
                         "modified_on": "2018-07-06T12:30:26.123456789Z",
                         "path": [
@@ -311,10 +311,10 @@
                             "intent": {
                                 "category": "Failure",
                                 "created_on": "2018-07-06T12:30:22.123456789Z",
-                                "input": "<FAILED>",
+                                "input": "<ERROR>",
                                 "name": "Intent",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
-                                "value": "<FAILED>"
+                                "value": "<ERROR>"
                             },
                             "response_1": {
                                 "category": "All Responses",

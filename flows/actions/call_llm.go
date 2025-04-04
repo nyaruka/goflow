@@ -19,8 +19,8 @@ const TypeCallLLM string = "call_llm"
 // LLMOutputLocal is the local variable name used to store the LLM output
 const LLMOutputLocal = "_llm_output"
 
-// LLMOutputFailed is the output used when the LLM call fails
-const LLMOutputFailed = "<FAILED>"
+// LLMErrorOutput is the output used when the LLM call fails
+const LLMErrorOutput = "<ERROR>"
 
 // CallLLMAction can be used to call an LLM.
 //
@@ -63,7 +63,7 @@ func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	if resp != nil {
 		run.Locals().Set(LLMOutputLocal, resp.Output)
 	} else {
-		run.Locals().Set(LLMOutputLocal, LLMOutputFailed)
+		run.Locals().Set(LLMOutputLocal, LLMErrorOutput)
 	}
 
 	return nil
