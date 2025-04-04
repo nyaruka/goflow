@@ -292,6 +292,7 @@ func (r *run) Context(env envs.Environment) map[string]types.XValue {
 // returns the context representation of the current node
 //
 //	uuid:text -> the UUID of the node
+//	categories:[]text -> the category names of the node
 //	visit_count:number -> the count of visits to the node in this run
 //
 // @context node
@@ -304,8 +305,17 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 		}
 	}
 
+	var categories []types.XValue
+	if node.Router() != nil {
+		categories = make([]types.XValue, len(node.Router().Categories()))
+		for i, c := range node.Router().Categories() {
+			categories[i] = types.NewXText(c.Name())
+		}
+	}
+
 	return map[string]types.XValue{
 		"uuid":        types.NewXText(string(node.UUID())),
+		"categories":  types.NewXArray(categories...),
 		"visit_count": types.NewXNumberFromInt(visitCount),
 	}
 }

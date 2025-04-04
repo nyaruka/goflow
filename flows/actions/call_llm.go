@@ -16,6 +16,12 @@ func init() {
 // TypeCallLLM is the type for the call LLM action
 const TypeCallLLM string = "call_llm"
 
+// LLMOutputLocal is the local variable name used to store the LLM output
+const LLMOutputLocal = "_llm_output"
+
+// LLMErrorOutput is the output used when the LLM call fails
+const LLMErrorOutput = "<ERROR>"
+
 // CallLLMAction can be used to call an LLM.
 //
 // An [event:llm_called] event will be created if the LLM could be called.
@@ -55,11 +61,9 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
-		run.Locals().Set("_llm_status", "success")
-		run.Locals().Set("_llm_output", resp.Output)
+		run.Locals().Set(LLMOutputLocal, resp.Output)
 	} else {
-		run.Locals().Set("_llm_status", "failure")
-		run.Locals().Set("_llm_output", "")
+		run.Locals().Set(LLMOutputLocal, LLMErrorOutput)
 	}
 
 	return nil
