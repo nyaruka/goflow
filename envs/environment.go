@@ -1,7 +1,6 @@
 package envs
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -70,14 +69,15 @@ type environment struct {
 	inputCollation   Collation
 }
 
-func (e *environment) DateFormat() DateFormat            { return e.dateFormat }
-func (e *environment) TimeFormat() TimeFormat            { return e.timeFormat }
-func (e *environment) Timezone() *time.Location          { return e.timezone }
-func (e *environment) AllowedLanguages() []i18n.Language { return e.allowedLanguages }
-func (e *environment) DefaultCountry() i18n.Country      { return e.defaultCountry }
-func (e *environment) NumberFormat() *NumberFormat       { return e.numberFormat }
-func (e *environment) InputCollation() Collation         { return e.inputCollation }
-func (e *environment) RedactionPolicy() RedactionPolicy  { return e.redactionPolicy }
+func (e *environment) DateFormat() DateFormat             { return e.dateFormat }
+func (e *environment) TimeFormat() TimeFormat             { return e.timeFormat }
+func (e *environment) Timezone() *time.Location           { return e.timezone }
+func (e *environment) AllowedLanguages() []i18n.Language  { return e.allowedLanguages }
+func (e *environment) DefaultCountry() i18n.Country       { return e.defaultCountry }
+func (e *environment) NumberFormat() *NumberFormat        { return e.numberFormat }
+func (e *environment) InputCollation() Collation          { return e.inputCollation }
+func (e *environment) RedactionPolicy() RedactionPolicy   { return e.redactionPolicy }
+func (e *environment) LocationResolver() LocationResolver { return nil }
 
 // DefaultLanguage is the first allowed language
 func (e *environment) DefaultLanguage() i18n.Language {
@@ -91,8 +91,6 @@ func (e *environment) DefaultLanguage() i18n.Language {
 func (e *environment) DefaultLocale() i18n.Locale {
 	return i18n.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
 }
-
-func (e *environment) LocationResolver() LocationResolver { return nil }
 
 // Now gets the current time in the eonvironment's timezone
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
@@ -120,7 +118,7 @@ type envEnvelope struct {
 }
 
 // ReadEnvironment reads an environment from the given JSON
-func ReadEnvironment(data json.RawMessage) (Environment, error) {
+func ReadEnvironment(data []byte) (Environment, error) {
 	// create new env with defaults
 	env := NewBuilder().Build().(*environment)
 	envelope := env.toEnvelope()
