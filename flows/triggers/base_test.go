@@ -420,7 +420,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
 	assert.Nil(t, session.Contact())
-	assert.Equal(t, defaultEnv, session.Environment()) // uses defaults
+	assert.True(t, session.Environment().Equal(defaultEnv)) // uses defaults
 }
 
 func TestTriggerContext(t *testing.T) {

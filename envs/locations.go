@@ -149,7 +149,7 @@ func (h *LocationHierarchy) initializeFromRoot(env Environment, root *Location, 
 	h.levelLookups = make([]locationNameLookup, numLevels)
 	h.pathLookup = make(locationPathLookup)
 
-	for i := 0; i < numLevels; i++ {
+	for i := range numLevels {
 		h.levelLookups[i] = make(locationNameLookup)
 	}
 

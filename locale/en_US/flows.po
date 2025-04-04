@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-04 10:18-0500\n"
+"POT-Creation-Date: 2025-04-04 15:29-0500\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -219,6 +219,9 @@ msgid "It will return an error if it is passed an item which isn't countable."
 msgstr ""
 
 msgid "Joins the given `array` of strings with `separator` to make text."
+msgstr ""
+
+msgid "Note that the actual prompt text may differ from the examples below."
 msgstr ""
 
 msgid "Parses `text` into a date using the given `format`."

@@ -3,6 +3,7 @@ package engine
 import (
 	"context"
 	"encoding/json"
+	"text/template"
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -68,6 +69,7 @@ func NewBuilder() *Builder {
 				MaxTemplateChars:     10000,
 				MaxFieldChars:        640,
 				MaxResultChars:       640,
+				LLMPrompts:           make(map[string]*template.Template),
 			},
 		},
 	}
@@ -130,6 +132,12 @@ func (b *Builder) WithMaxFieldChars(max int) *Builder {
 // WithMaxResultChars sets the maximum number of characters allowed in a result value
 func (b *Builder) WithMaxResultChars(max int) *Builder {
 	b.eng.options.MaxResultChars = max
+	return b
+}
+
+// WithLLMPrompts sets the LLM prompts to use with LLM services
+func (b *Builder) WithLLMPrompts(prompts map[string]*template.Template) *Builder {
+	b.eng.options.LLMPrompts = prompts
 	return b
 }
 

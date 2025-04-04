@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -117,6 +118,9 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	}
 
 	eng := engine.NewBuilder().
+		WithLLMPrompts(map[string]*template.Template{
+			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg0 }}")),
+		}).
 		WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).

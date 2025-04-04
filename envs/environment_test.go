@@ -2,6 +2,7 @@ package envs_test
 
 import (
 	"testing"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -106,6 +107,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
+		WithLLMPromptResolver(envs.NewLLMPromptResolver(map[string]*template.Template{"hello": template.Must(template.New("").Parse("Say hello"))})).
 		Build()
 
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
@@ -116,4 +118,20 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
 	assert.Nil(t, env.LocationResolver())
+	assert.Nil(t, env.LLMPrompt("xxxx"))
+	assert.NotNil(t, env.LLMPrompt("hello"))
+
+	// using defaults
+	env = envs.NewBuilder().Build()
+
+	assert.Equal(t, envs.DateFormatYearMonthDay, env.DateFormat())
+	assert.Equal(t, envs.TimeFormatHourMinute, env.TimeFormat())
+	assert.Equal(t, time.UTC, env.Timezone())
+	assert.Equal(t, []i18n.Language(nil), env.AllowedLanguages())
+	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
+	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: ".", DigitGroupingSymbol: ","}, env.NumberFormat())
+	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
+	assert.Nil(t, env.LocationResolver())
+	assert.Nil(t, env.LLMPrompt("xxxx"))
+	assert.Nil(t, env.LLMPrompt("hello"))
 }
