@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"testing"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -18,6 +19,9 @@ import (
 
 var errorArg = types.NewXErrorf("I am error")
 var la, _ = time.LoadLocation("America/Los_Angeles")
+var prompts = map[string]*template.Template{
+	"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg0 }}")),
+}
 
 var xs = types.NewXText
 var xn = types.RequireXNumberFromString
@@ -31,7 +35,10 @@ var xf = functions.Lookup
 var ERROR = types.NewXErrorf("any error")
 
 func TestFunctions(t *testing.T) {
-	dmy := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).Build()
+	dmy := envs.NewBuilder().
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithLLMPromptResolver(envs.NewLLMPromptResolver(prompts)).
+		Build()
 	mdy := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatMonthDayYear).
 		WithTimeFormat(envs.TimeFormatHourMinuteAmPm).
@@ -412,8 +419,8 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
 		{"legacy_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
 
-		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Positive, Negative")},
-		{"llm_prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: <no value>")},
+		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: Positive, Negative")},
+		{"llm_prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
 		{"llm_prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"llm_prompt", dmy, []types.XValue{}, ERROR},
 

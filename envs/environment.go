@@ -1,6 +1,7 @@
 package envs
 
 import (
+	"text/template"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -47,13 +48,14 @@ type Environment interface {
 	InputCollation() Collation
 	RedactionPolicy() RedactionPolicy
 
+	// non-marshalled properties
+	LocationResolver() LocationResolver
+	LLMPrompt(string) *template.Template
+
+	// utility methods
 	DefaultLanguage() i18n.Language
 	DefaultLocale() i18n.Locale
-
-	LocationResolver() LocationResolver
-
-	// Convenience method to get the current time in the env timezone
-	Now() time.Time
+	Now() time.Time // current time in the env timezone
 
 	Equal(Environment) bool
 }
@@ -67,17 +69,20 @@ type environment struct {
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
 	inputCollation   Collation
+	locationResolver LocationResolver
+	promptResolver   LLMPromptResolver
 }
 
-func (e *environment) DateFormat() DateFormat             { return e.dateFormat }
-func (e *environment) TimeFormat() TimeFormat             { return e.timeFormat }
-func (e *environment) Timezone() *time.Location           { return e.timezone }
-func (e *environment) AllowedLanguages() []i18n.Language  { return e.allowedLanguages }
-func (e *environment) DefaultCountry() i18n.Country       { return e.defaultCountry }
-func (e *environment) NumberFormat() *NumberFormat        { return e.numberFormat }
-func (e *environment) InputCollation() Collation          { return e.inputCollation }
-func (e *environment) RedactionPolicy() RedactionPolicy   { return e.redactionPolicy }
-func (e *environment) LocationResolver() LocationResolver { return nil }
+func (e *environment) DateFormat() DateFormat                   { return e.dateFormat }
+func (e *environment) TimeFormat() TimeFormat                   { return e.timeFormat }
+func (e *environment) Timezone() *time.Location                 { return e.timezone }
+func (e *environment) AllowedLanguages() []i18n.Language        { return e.allowedLanguages }
+func (e *environment) DefaultCountry() i18n.Country             { return e.defaultCountry }
+func (e *environment) NumberFormat() *NumberFormat              { return e.numberFormat }
+func (e *environment) InputCollation() Collation                { return e.inputCollation }
+func (e *environment) RedactionPolicy() RedactionPolicy         { return e.redactionPolicy }
+func (e *environment) LocationResolver() LocationResolver       { return e.locationResolver }
+func (e *environment) LLMPrompt(name string) *template.Template { return e.promptResolver(name) }
 
 // DefaultLanguage is the first allowed language
 func (e *environment) DefaultLanguage() i18n.Language {
@@ -183,6 +188,7 @@ func NewBuilder() *EnvironmentBuilder {
 			numberFormat:     DefaultNumberFormat,
 			inputCollation:   CollationDefault,
 			redactionPolicy:  RedactionPolicyNone,
+			promptResolver:   EmptyLLMPromptResolver,
 		},
 	}
 }
@@ -226,6 +232,16 @@ func (b *EnvironmentBuilder) WithInputCollation(col Collation) *EnvironmentBuild
 
 func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy) *EnvironmentBuilder {
 	b.env.redactionPolicy = redactionPolicy
+	return b
+}
+
+func (b *EnvironmentBuilder) WithLocationResolver(resolver LocationResolver) *EnvironmentBuilder {
+	b.env.locationResolver = resolver
+	return b
+}
+
+func (b *EnvironmentBuilder) WithLLMPromptResolver(resolver LLMPromptResolver) *EnvironmentBuilder {
+	b.env.promptResolver = resolver
 	return b
 }
 

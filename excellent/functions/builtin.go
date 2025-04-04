@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"text/template"
 	"time"
 	"unicode"
 	"unicode/utf8"
@@ -2070,19 +2069,16 @@ func FormatURN(env envs.Environment, arg *types.XText) types.XValue {
 // LLM support
 //------------------------------------------------------------------------------------------
 
-// TODO store these on the enviroment so they can be passed in from mailroom?
-var prompts = map[string]*template.Template{
-	"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg0 }}")),
-}
-
 // LLMPrompt returns a pre-defined LLM prompt.
 //
-//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Positive, Negative
+// Note that the actual prompt text may differ from the examples below.
+//
+//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following: Positive, Negative
 //	@(llm_prompt("xx")) -> ERROR
 //
 // @function llm_prompt(name, args...)
 func LLMPrompt(env envs.Environment, name *types.XText, args ...types.XValue) types.XValue {
-	prompt := prompts[name.Native()]
+	prompt := env.LLMPrompt(name.Native())
 	if prompt == nil {
 		return types.NewXErrorf("unknown LLM prompt %s", name.Native())
 	}

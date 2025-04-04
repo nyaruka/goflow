@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-04 10:18-0500\n"
+"POT-Creation-Date: 2025-04-04 15:29-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -249,6 +249,9 @@ msgstr "Isso retornará um erro se for passado um item que não é contabilizáv
 
 msgid "Joins the given `array` of strings with `separator` to make text."
 msgstr "Junta o `array` dado de strings com o `separator` para fazer o texto."
+
+msgid "Note that the actual prompt text may differ from the examples below."
+msgstr ""
 
 msgid "Parses `text` into a date using the given `format`."
 msgstr "Analisa o `text` em uma data usando um `format` dado."

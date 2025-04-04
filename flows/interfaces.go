@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"encoding/json"
+	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -332,6 +333,7 @@ type EngineOptions struct {
 	MaxTemplateChars     int
 	MaxFieldChars        int
 	MaxResultChars       int
+	LLMPrompts           map[string]*template.Template
 }
 
 // Engine provides callers with session starting and resuming

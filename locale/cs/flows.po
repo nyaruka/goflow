@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-04 10:18-0500\n"
+"POT-Creation-Date: 2025-04-04 15:29-0500\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -298,6 +298,9 @@ msgstr "Pokud bude předána položka, která není spočitatelná, vrátí chyb
 
 msgid "Joins the given `array` of strings with `separator` to make text."
 msgstr "Spojí zadaný řetězec `array` s `separator` a vytvoří z něj text."
+
+msgid "Note that the actual prompt text may differ from the examples below."
+msgstr ""
 
 msgid "Parses `text` into a date using the given `format`."
 msgstr "Zpracuje `text` na datum pomocí zadaného `format`."
