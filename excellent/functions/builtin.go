@@ -709,7 +709,7 @@ func Clean(env envs.Environment, text *types.XText) types.XValue {
 
 // TextSlice returns the portion of `text` between `start` (inclusive) and `end` (exclusive).
 //
-// If `end` is not specified then the entire rest of `text` will be included. Negative values
+// If `end` is not specified then the entire remainder of `text` will be included. Negative values
 // for `start` or `end` start at the end of `text`.
 //
 //	@(text_slice("hello", 2)) -> llo
@@ -1502,10 +1502,10 @@ func TimeFromParts(env envs.Environment, hour, minute, second int) types.XValue 
 // Array Functions
 //------------------------------------------------------------------------------------------
 
-// Slice extracts a sub-sequence of items from `array`.
+// Slice returns the sub-sequence of `array` between `start` (inclusive) and `end` (exclusive).
 //
-// The returned items are those from `start` up to but not-including `end`. Indexes start at zero and a negative
-// end value counts back from the end.
+// If `end` is not specified then the entire remainder of `array` will be included. Negative values
+// for `start` or `end` start at the end of `array`.
 //
 //	@(slice(array("a", "b", "c"), 0, 2)) -> [a, b]
 //	@(slice(array("a", "b", "c"), 1, 3)) -> [b, c]
