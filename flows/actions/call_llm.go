@@ -16,9 +16,6 @@ func init() {
 // TypeCallLLM is the type for the call LLM action
 const TypeCallLLM string = "call_llm"
 
-// LLMOutputLocal is the local variable name used to store the LLM output
-const LLMOutputLocal = "_llm_output"
-
 // LLMErrorOutput is the output used when the LLM call fails
 const LLMErrorOutput = "<ERROR>"
 
@@ -34,7 +31,8 @@ const LLMErrorOutput = "<ERROR>"
 //	    "name": "GPT-4"
 //	  },
 //	  "instructions": "Categorize the following text as positive or negative",
-//	  "input": "@input.text"
+//	  "input": "@input.text",
+//	  "output_local": "_llm_output"
 //	}
 //
 // @action call_llm
@@ -42,18 +40,20 @@ type CallLLMAction struct {
 	baseAction
 	onlineAction
 
-	LLM          *assets.LLMReference `json:"llm" validate:"required"`
-	Instructions string               `json:"instructions" validate:"required" engine:"evaluated"`
-	Input        string               `json:"input" validate:"required" engine:"evaluated"`
+	LLM          *assets.LLMReference `json:"llm"          validate:"required"`
+	Instructions string               `json:"instructions" validate:"required"            engine:"evaluated"`
+	Input        string               `json:"input"                                       engine:"evaluated"`
+	OutputLocal  string               `json:"output_local" validate:"required,local_name"`
 }
 
 // NewCallLLM creates a new call LLM action
-func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, input string) *CallLLMAction {
+func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, input, outputLocal string) *CallLLMAction {
 	return &CallLLMAction{
 		baseAction:   newBaseAction(TypeCallLLM, uuid),
 		LLM:          llm,
 		Instructions: instructions,
 		Input:        input,
+		OutputLocal:  outputLocal,
 	}
 }
 
@@ -61,9 +61,9 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
-		run.Locals().Set(LLMOutputLocal, resp.Output)
+		run.Locals().Set(a.OutputLocal, resp.Output)
 	} else {
-		run.Locals().Set(LLMOutputLocal, LLMErrorOutput)
+		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
 	}
 
 	return nil

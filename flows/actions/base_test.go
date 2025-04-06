@@ -401,7 +401,7 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewCallClassifier(
 				actionUUID,
-				assets.NewClassifierReference(assets.ClassifierUUID("0baee364-07a7-4c93-9778-9f55a35903bb"), "Booking"),
+				assets.NewClassifierReference("0baee364-07a7-4c93-9778-9f55a35903bb", "Booking"),
 				"@input.text",
 				"Intent",
 			),
@@ -414,6 +414,26 @@ func TestConstructors(t *testing.T) {
 			},
 			"input": "@input.text",
 			"result_name": "Intent"
+		}`,
+		},
+		{
+			actions.NewCallLLM(
+				actionUUID,
+				assets.NewLLMReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
+				"Tell a joke about a person with this name",
+				"@contact.name",
+				"the_joke",
+			),
+			`{
+			"type": "call_llm",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"llm": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "GPT-4"
+			},
+			"instructions": "Tell a joke about a person with this name",
+			"input": "@contact.name",
+			"output_local": "the_joke"
 		}`,
 		},
 		{

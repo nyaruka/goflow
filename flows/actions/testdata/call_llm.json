@@ -9,7 +9,8 @@
                 "name": "Deleted"
             },
             "instructions": "Categorize the following text as positive or negative",
-            "input": "@input.text"
+            "input": "@input.text",
+            "output_local": "_llm_output"
         },
         "events": [
             {
@@ -62,7 +63,8 @@
                 "name": "Claude"
             },
             "instructions": "Categorize the following text as positive or negative",
-            "input": "@input.text"
+            "input": "@input.text",
+            "output_local": "_llm_output"
         },
         "events": [
             {
