@@ -11,6 +11,12 @@ import (
 // Flow holds a flow definition
 type Flow map[string]any
 
+// Type returns the type of this flow
+func (f Flow) Type() string {
+	d, _ := f["type"].(string)
+	return d
+}
+
 // Localization returns the localization of this flow
 func (f Flow) Localization() Localization {
 	d, _ := f["localization"].(map[string]any)
