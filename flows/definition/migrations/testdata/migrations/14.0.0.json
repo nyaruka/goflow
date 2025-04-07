@@ -1,1 +1,92 @@
-[]
+[
+    {
+        "description": "flow with no expires",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        }
+    },
+    {
+        "description": "messaging flow with expires that's invalid",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "expire_after_minutes": 1234567,
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "expire_after_minutes": 20160,
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        }
+    },
+    {
+        "description": "messaging flow with expires that's valid",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "expire_after_minutes": 10080,
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "expire_after_minutes": 10080,
+            "type": "messaging",
+            "localization": {},
+            "nodes": []
+        }
+    },
+    {
+        "description": "voice flow with expires that's invalid",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "expire_after_minutes": 123,
+            "type": "voice",
+            "localization": {},
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "expire_after_minutes": 15,
+            "type": "voice",
+            "localization": {},
+            "nodes": []
+        }
+    }
+]

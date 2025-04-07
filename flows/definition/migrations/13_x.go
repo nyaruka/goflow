@@ -1,6 +1,8 @@
 package migrations
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/Masterminds/semver"
@@ -22,10 +24,27 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate14.0 is a noop because spec only adds new features.
+// Migrate14.0 fixes invalid expires values. Note that this is a major version change because of other additions to the
+// flow spec that don't require migration.
 //
 // @version 14_0 "14.0"
 func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
+	maxExpires := map[string]int{
+		"messaging": 20160, // two weeks
+		"voice":     15,
+	}
+
+	expires, ok := f["expire_after_minutes"]
+	if ok {
+		expiresNum, ok := expires.(json.Number)
+		if ok {
+			expiresInt, err := expiresNum.Int64()
+			if err == nil {
+				f["expire_after_minutes"] = json.Number(fmt.Sprint(min(int(expiresInt), maxExpires[f.Type()])))
+			}
+		}
+	}
+
 	return f, nil
 }
 
