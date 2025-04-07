@@ -1,3 +1,7 @@
+v0.235.1 (2025-04-07)
+-------------------------
+ * Put flows.NewAssetsEnvironment back as we need it for non-flow contact modifications
+
 v0.235.0 (2025-04-07)
 -------------------------
  * Bump spec version to 14.0.0
