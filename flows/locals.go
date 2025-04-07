@@ -13,11 +13,11 @@ import (
 var localNamePattern = regexp.MustCompile(`^[a-z_][a-z0-9_]{0,63}$`)
 
 func init() {
-	utils.RegisterValidatorTag("local_name",
+	utils.RegisterValidatorTag("local_ref",
 		func(fl validator.FieldLevel) bool {
 			return localNamePattern.MatchString(fl.Field().String())
 		},
-		func(validator.FieldError) string { return "is not a valid local variable name" },
+		func(validator.FieldError) string { return "is not a valid local variable reference" },
 	)
 }
 
@@ -37,6 +37,10 @@ func (l *Locals) Get(key string) string {
 
 func (l *Locals) Set(key string, value string) {
 	l.vals[key] = value
+}
+
+func (l *Locals) Clear(key string) {
+	delete(l.vals, key)
 }
 
 func (l *Locals) IsZero() bool {

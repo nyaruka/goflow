@@ -1,21 +1,21 @@
 [
     {
-        "description": "Read fails when name or operation is empty",
+        "description": "Read fails when local or operation is empty",
         "action": {
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "type": "set_run_local",
-            "name": "",
+            "local": "",
             "value": "bar",
             "operation": ""
         },
-        "read_error": "field 'name' is required, field 'operation' is required"
+        "read_error": "field 'local' is required, field 'operation' is required"
     },
     {
         "description": "Error event and action skipped if value contains expression error",
         "action": {
             "type": "set_run_local",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "name": "my_var",
+            "local": "my_var",
             "value": "@(1 / 0)",
             "operation": "set"
         },
@@ -42,7 +42,7 @@
         "action": {
             "type": "set_run_local",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "name": "counter",
+            "local": "counter",
             "value": "xxx",
             "operation": "increment"
         },
@@ -65,16 +65,16 @@
         }
     },
     {
-        "description": "Non-existent local updated via set",
+        "description": "Non-existent local set",
         "action": {
             "type": "set_run_local",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "name": "my_var",
+            "local": "my_var",
             "value": "@fields.Gender",
             "operation": "set"
         },
         "events": [],
-        "locals": {
+        "locals_after": {
             "my_var": "Male"
         },
         "templates": [
@@ -94,21 +94,39 @@
         }
     },
     {
-        "description": "Non-existent local updated via increment",
+        "description": "Non-existent local incremented",
         "action": {
             "type": "set_run_local",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "name": "counter",
+            "local": "counter",
             "value": "@(3 + 4)",
             "operation": "increment"
         },
         "events": [],
-        "locals": {
+        "locals_after": {
             "counter": "7"
         },
         "templates": [
             "@(3 + 4)"
         ],
+        "inspection": {
+            "dependencies": [],
+            "issues": [],
+            "results": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Non-existent local cleared",
+        "action": {
+            "type": "set_run_local",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "local": "counter",
+            "operation": "clear"
+        },
+        "events": [],
+        "locals_after": {},
+        "templates": [],
         "inspection": {
             "dependencies": [],
             "issues": [],

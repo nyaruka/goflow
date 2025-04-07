@@ -100,9 +100,9 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Events            json.RawMessage `json:"events,omitempty"`
 		Webhook           json.RawMessage `json:"webhook,omitempty"`
 		ContactAfter      json.RawMessage `json:"contact_after,omitempty"`
+		LocalsAfter       json.RawMessage `json:"locals_after,omitempty"`
 		Templates         []string        `json:"templates,omitempty"`
 		LocalizedText     []string        `json:"localizables,omitempty"`
-		Locals            json.RawMessage `json:"locals,omitempty"`
 		Inspection        json.RawMessage `json:"inspection,omitempty"`
 	}{}
 
@@ -271,14 +271,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		if tc.ContactAfter != nil {
 			actual.ContactAfter, _ = jsonx.Marshal(session.Contact())
 		}
+		if tc.LocalsAfter != nil {
+			actual.LocalsAfter, _ = jsonx.Marshal(run.Locals())
+		}
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()
 		}
 		if tc.LocalizedText != nil {
 			actual.LocalizedText = flow.ExtractLocalizables()
-		}
-		if tc.Locals != nil {
-			actual.Locals, _ = jsonx.Marshal(run.Locals())
 		}
 		if tc.Inspection != nil {
 			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
@@ -301,6 +301,11 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				test.AssertEqualJSON(t, tc.ContactAfter, actual.ContactAfter, "contact mismatch in %s", testName)
 			}
 
+			// check locals match
+			if tc.LocalsAfter != nil {
+				test.AssertEqualJSON(t, tc.LocalsAfter, actual.LocalsAfter, "locals mismatch in %s", testName)
+			}
+
 			// check extracted templates
 			if tc.Templates != nil {
 				assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
@@ -309,11 +314,6 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			// check extracted localized text
 			if tc.LocalizedText != nil {
 				assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
-			}
-
-			// check locals match
-			if tc.Locals != nil {
-				test.AssertEqualJSON(t, tc.Locals, actual.Locals, "locals mismatch in %s", testName)
 			}
 
 			// check inspection results

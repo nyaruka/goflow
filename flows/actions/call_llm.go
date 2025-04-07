@@ -43,7 +43,7 @@ type CallLLMAction struct {
 	LLM          *assets.LLMReference `json:"llm"          validate:"required"`
 	Instructions string               `json:"instructions" validate:"required"            engine:"evaluated"`
 	Input        string               `json:"input"                                       engine:"evaluated"`
-	OutputLocal  string               `json:"output_local" validate:"required,local_name"`
+	OutputLocal  string               `json:"output_local" validate:"required,local_ref"`
 }
 
 // NewCallLLM creates a new call LLM action

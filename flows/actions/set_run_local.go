@@ -16,13 +16,21 @@ func init() {
 // TypeSetRunLocal is the type for the set run result action
 const TypeSetRunLocal string = "set_run_local"
 
+type LocalOperation string
+
+const (
+	LocalOperationSet       LocalOperation = "set"
+	LocalOperationIncrement LocalOperation = "increment"
+	LocalOperationClear     LocalOperation = "clear"
+)
+
 // SetRunLocalAction can be used to save a local variable. The local will be available in the context
-// for the run as @locals.[name]. The value field can be a template and will be evaluated.
+// for the run as @locals.[local]. The value field can be a template and will be evaluated.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "set_run_local",
-//	  "name": "my_var",
+//	  "local": "my_var",
 //	  "value": "1",
 //	  "operation": "increment"
 //	}
@@ -32,16 +40,16 @@ type SetRunLocalAction struct {
 	baseAction
 	universalAction
 
-	Name      string `json:"name"                         validate:"required,local_name"`
-	Value     string `json:"value"     engine:"evaluated" validate:"max=1000"`
-	Operation string `json:"operation"                    validate:"required,eq=set|eq=increment"`
+	Local     string         `json:"local"                               validate:"required,local_ref"`
+	Value     string         `json:"value,omitempty" engine:"evaluated" validate:"max=1000"`
+	Operation LocalOperation `json:"operation"                          validate:"required,eq=set|eq=increment|eq=clear"`
 }
 
 // NewSetRunLocal creates a new set run local action
-func NewSetRunLocal(uuid flows.ActionUUID, name, value string) *SetRunLocalAction {
+func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocalAction {
 	return &SetRunLocalAction{
 		baseAction: newBaseAction(TypeSetRunLocal, uuid),
-		Name:       name,
+		Local:      local,
 		Value:      value,
 	}
 }
@@ -53,16 +61,18 @@ func (a *SetRunLocalAction) Execute(ctx context.Context, run flows.Run, step flo
 		return nil
 	}
 
-	if a.Operation == "increment" {
-		existing, _ := strconv.Atoi(run.Locals().Get(a.Name))
+	if a.Operation == LocalOperationSet {
+		run.Locals().Set(a.Local, value)
+	} else if a.Operation == LocalOperationIncrement {
+		existing, _ := strconv.Atoi(run.Locals().Get(a.Local))
 		increment, err := strconv.Atoi(value)
 		if err != nil {
 			logEvent(events.NewError("increment value is not an integer"))
 		} else {
-			run.Locals().Set(a.Name, fmt.Sprint(existing+increment))
+			run.Locals().Set(a.Local, fmt.Sprint(existing+increment))
 		}
 	} else {
-		run.Locals().Set(a.Name, value)
+		run.Locals().Clear(a.Local)
 	}
 
 	return nil
