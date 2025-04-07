@@ -1,3 +1,10 @@
+v0.235.0 (2025-04-07)
+-------------------------
+ * Bump spec version to 14.0.0
+ * Add call_llm action with corresponding llm_called event.
+ * Add local variables to runs and expose in context
+ * Add @node.categories as the list of category names on the current node
+
 v0.234.3 (2025-04-01)
 -------------------------
  * Add maxTokens param to LLMService.Response and remove unused TicketService
