@@ -1,3 +1,7 @@
+v0.235.2 (2025-04-07)
+-------------------------
+ * Fix invalid expires values in 14.0.0 migration
+
 v0.235.1 (2025-04-07)
 -------------------------
  * Put flows.NewAssetsEnvironment back as we need it for non-flow contact modifications
