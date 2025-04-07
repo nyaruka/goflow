@@ -9,6 +9,21 @@ import (
 	"github.com/nyaruka/goflow/envs"
 )
 
+type assetsEnvironment struct {
+	envs.Environment
+
+	sa SessionAssets
+}
+
+// NewAssetsEnvironment creates a new environment that has access to assets which can be used for resolving locations.
+func NewAssetsEnvironment(base envs.Environment, sa SessionAssets) envs.Environment {
+	return &assetsEnvironment{Environment: base, sa: sa}
+}
+
+func (e *assetsEnvironment) LocationResolver() envs.LocationResolver {
+	return e.sa.Locations()
+}
+
 type sessionEnvironment struct {
 	envs.Environment
 
@@ -19,7 +34,7 @@ type sessionEnvironment struct {
 // those from the contact.
 func NewSessionEnvironment(s Session) envs.Environment {
 	return &sessionEnvironment{
-		Environment: s.Environment(),
+		Environment: NewAssetsEnvironment(s.Environment(), s.Assets()),
 		session:     s,
 	}
 }
@@ -59,10 +74,6 @@ func (e *sessionEnvironment) DefaultCountry() i18n.Country {
 
 func (e *sessionEnvironment) DefaultLocale() i18n.Locale {
 	return i18n.NewLocale(e.DefaultLanguage(), e.DefaultCountry())
-}
-
-func (e *sessionEnvironment) LocationResolver() envs.LocationResolver {
-	return e.session.Assets().Locations()
 }
 
 // LLMPrompt overrides the base environment to fetch LLM prompts from engine options
