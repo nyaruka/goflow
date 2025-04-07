@@ -170,14 +170,14 @@
                         {
                             "uuid": "7f29126a-e9cd-455b-bc7b-fc92c05e8ef1",
                             "type": "set_run_local",
-                            "name": "counter",
+                            "local": "counter",
                             "value": "1",
                             "operation": "increment"
                         },
                         {
                             "uuid": "9441f2d0-8f30-45bd-a2d2-0bf3c6d3df35",
                             "type": "set_run_local",
-                            "name": "counter",
+                            "local": "counter",
                             "value": "1",
                             "operation": "increment"
                         },

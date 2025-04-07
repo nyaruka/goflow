@@ -15,10 +15,14 @@ func TestLocals(t *testing.T) {
 
 	l1.Set("foo", "bar")
 	l1.Set("zed", "123")
+	l1.Set("tmp", "xyz")
 
 	assert.Equal(t, "bar", l1.Get("foo"))
 	assert.Equal(t, "123", l1.Get("zed"))
+	assert.Equal(t, "xyz", l1.Get("tmp"))
 	assert.False(t, l1.IsZero())
+
+	l1.Clear("tmp")
 
 	marshaled, err := json.Marshal(l1)
 	assert.NoError(t, err)
@@ -32,12 +36,12 @@ func TestLocals(t *testing.T) {
 	assert.Equal(t, "123", l2.Get("zed"))
 }
 
-func TestLocalNameValidation(t *testing.T) {
+func TestLocalRefValidation(t *testing.T) {
 	type testStruct struct {
-		Valid1   string `json:"valid1"   validate:"local_name"`
-		Valid2   string `json:"valid2"   validate:"local_name"`
-		Invalid1 string `json:"invalid1" validate:"local_name"`
-		Invalid2 string `json:"invalid2" validate:"local_name"`
+		Valid1   string `json:"valid1"   validate:"local_ref"`
+		Valid2   string `json:"valid2"   validate:"local_ref"`
+		Invalid1 string `json:"invalid1" validate:"local_ref"`
+		Invalid2 string `json:"invalid2" validate:"local_ref"`
 	}
 
 	obj := testStruct{
@@ -47,5 +51,5 @@ func TestLocalNameValidation(t *testing.T) {
 		Invalid2: "1foo",                                                                   // starts with a number
 	}
 	err := utils.Validate(obj)
-	assert.EqualError(t, err, "field 'invalid1' is not a valid local variable name, field 'invalid2' is not a valid local variable name")
+	assert.EqualError(t, err, "field 'invalid1' is not a valid local variable reference, field 'invalid2' is not a valid local variable reference")
 }

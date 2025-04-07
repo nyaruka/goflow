@@ -9,7 +9,8 @@
                 "name": "Deleted"
             },
             "instructions": "Categorize the following text as positive or negative",
-            "input": "@input.text"
+            "input": "@input.text",
+            "output_local": "_llm_output"
         },
         "events": [
             {
@@ -24,8 +25,7 @@
             "@input.text"
         ],
         "locals": {
-            "_llm_status": "failure",
-            "_llm_output": ""
+            "_llm_output": "\u003cERROR\u003e"
         },
         "inspection": {
             "dependencies": [
@@ -63,22 +63,23 @@
                 "name": "Claude"
             },
             "instructions": "Categorize the following text as positive or negative",
-            "input": "@input.text"
+            "input": "@input.text",
+            "output_local": "_llm_output"
         },
         "events": [
             {
+                "type": "llm_called",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
-                "elapsed_ms": 0,
-                "input": "Hi everybody",
-                "instructions": "Categorize the following text as positive or negative",
-                "llm": {
-                    "name": "Claude",
-                    "uuid": "51ade705-8338-40a9-8a77-37657a936966"
-                },
-                "output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "llm": {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude"
+                },
+                "instructions": "Categorize the following text as positive or negative",
+                "input": "Hi everybody",
+                "output": "negative",
                 "tokens_used": 123,
-                "type": "llm_called"
+                "elapsed_ms": 0
             }
         ],
         "templates": [
@@ -86,8 +87,7 @@
             "@input.text"
         ],
         "locals": {
-            "_llm_status": "success",
-            "_llm_output": "You asked:\n\nCategorize the following text as positive or negative\n\nHi everybody"
+            "_llm_output": "negative"
         },
         "inspection": {
             "dependencies": [

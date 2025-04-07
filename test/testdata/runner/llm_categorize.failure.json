@@ -1,0 +1,420 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:02.123456789Z",
+                    "msg": {
+                        "locale": "eng-US",
+                        "text": "Hi! What can I help you with?",
+                        "unsendable_reason": "no_destination",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                    },
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "expires_on": "2018-07-09T12:30:06.123456789Z",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_wait"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+                    "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "time": "2018-07-06T12:30:04.123456789Z"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "input_collation": "default",
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "msg": {
+                                    "locale": "eng-US",
+                                    "text": "Hi! What can I help you with?",
+                                    "unsendable_reason": "no_destination",
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                },
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "expires_on": "2018-07-09T12:30:06.123456789Z",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "flow": {
+                            "name": "LLM Categorize",
+                            "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                        },
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
+                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "input_collation": "default",
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "LLM Categorize",
+                        "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "msg": {
+                        "text": "\\error this is an error",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
+                    },
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "All Responses",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "name": "Response 1",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "run_result_changed",
+                    "value": "\\error this is an error"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "text": "this is an error",
+                    "type": "error"
+                },
+                {
+                    "category": "Failure",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "name": "Intent",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "run_result_changed",
+                    "value": "<ERROR>"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                    "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
+                    "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "operand": "\\error this is an error",
+                    "time": "2018-07-06T12:30:17.123456789Z"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2018-01-01T12:00:00Z",
+                    "id": 1234567,
+                    "language": "eng",
+                    "last_seen_on": "2019-10-04T12:20:49.046879-05:00",
+                    "name": "Ben Haggerty",
+                    "status": "active",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "eng"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "input_collation": "default",
+                    "number_format": {
+                        "decimal_symbol": ".",
+                        "digit_grouping_symbol": ","
+                    },
+                    "redaction_policy": "none",
+                    "time_format": "tt:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "created_on": "2019-10-04T12:20:49.046879-05:00",
+                    "text": "\\error this is an error",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "msg": {
+                                    "locale": "eng-US",
+                                    "text": "Hi! What can I help you with?",
+                                    "unsendable_reason": "no_destination",
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                },
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "expires_on": "2018-07-09T12:30:06.123456789Z",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "msg": {
+                                    "text": "\\error this is an error",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
+                                },
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "All Responses",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "name": "Response 1",
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "run_result_changed",
+                                "value": "\\error this is an error"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "text": "this is an error",
+                                "type": "error"
+                            },
+                            {
+                                "category": "Failure",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "name": "Intent",
+                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                                "type": "run_result_changed",
+                                "value": "<ERROR>"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:26.123456789Z",
+                        "flow": {
+                            "name": "LLM Categorize",
+                            "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                        },
+                        "locals": {
+                            "_llm_output": "<ERROR>"
+                        },
+                        "modified_on": "2018-07-06T12:30:26.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
+                                "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
+                                "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                            },
+                            {
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                            }
+                        ],
+                        "results": {
+                            "intent": {
+                                "category": "Failure",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "input": "<ERROR>",
+                                "name": "Intent",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "value": "<ERROR>"
+                            },
+                            "response_1": {
+                                "category": "All Responses",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "input": "\\error this is an error",
+                                "name": "Response 1",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "value": "\\error this is an error"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2018-01-01T12:00:00Z",
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "eng"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "input_collation": "default",
+                        "number_format": {
+                            "decimal_symbol": ".",
+                            "digit_grouping_symbol": ","
+                        },
+                        "redaction_policy": "none",
+                        "time_format": "tt:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "LLM Categorize",
+                        "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "text": "\\error this is an error",
+                "urn": "tel:+12065551212",
+                "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
+            },
+            "resumed_on": "2019-10-04T12:20:49.046879-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2018-01-01T12:00:00Z",
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "eng"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "number_format": {
+                "decimal_symbol": ".",
+                "digit_grouping_symbol": ","
+            },
+            "redaction_policy": "none",
+            "time_format": "tt:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "LLM Categorize",
+            "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+        },
+        "params": {},
+        "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+        "type": "manual"
+    }
+}
