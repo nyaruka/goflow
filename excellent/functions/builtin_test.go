@@ -20,7 +20,7 @@ import (
 var errorArg = types.NewXErrorf("I am error")
 var la, _ = time.LoadLocation("America/Los_Angeles")
 var prompts = map[string]*template.Template{
-	"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg0 }}")),
+	"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg1 }}")),
 }
 
 var xs = types.NewXText
@@ -419,7 +419,7 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
 		{"legacy_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
 
-		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: Positive, Negative")},
+		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
 		{"llm_prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
 		{"llm_prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"llm_prompt", dmy, []types.XValue{}, ERROR},

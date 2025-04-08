@@ -167,7 +167,7 @@
                     "created_on": "2018-07-06T12:30:21.123456789Z",
                     "elapsed_ms": 1000,
                     "input": "I'd like to book a flight to Quito",
-                    "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Flights, Hotels",
+                    "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: [Flights, Hotels]",
                     "llm": {
                         "name": "Claude",
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
@@ -294,7 +294,7 @@
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "elapsed_ms": 1000,
                                 "input": "I'd like to book a flight to Quito",
-                                "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: Flights, Hotels",
+                                "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: [Flights, Hotels]",
                                 "llm": {
                                     "name": "Claude",
                                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"

@@ -23,7 +23,7 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 		output = input[8:]
 	} else if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3" will return "Category3"
 		words := strings.Fields(instructions)
-		output = words[len(words)-1]
+		output = strings.TrimSuffix(words[len(words)-1], "]")
 	} else {
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}

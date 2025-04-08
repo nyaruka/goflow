@@ -2073,7 +2073,7 @@ func FormatURN(env envs.Environment, arg *types.XText) types.XValue {
 //
 // Note that the actual prompt text may differ from the examples below.
 //
-//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following: Positive, Negative
+//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following: [Positive, Negative]
 //	@(llm_prompt("xx")) -> ERROR
 //
 // @function llm_prompt(name, args...)
@@ -2085,7 +2085,7 @@ func LLMPrompt(env envs.Environment, name *types.XText, args ...types.XValue) ty
 
 	tplArgs := make(map[string]string, len(args))
 	for i, arg := range args {
-		tplArgs[fmt.Sprintf("arg%d", i)] = arg.Format(env)
+		tplArgs[fmt.Sprintf("arg%d", i+1)] = arg.Render()
 	}
 
 	var buf strings.Builder
