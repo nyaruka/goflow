@@ -1,3 +1,8 @@
+v0.235.3 (2025-04-08)
+-------------------------
+ * Simplify naming llm_prompt to prompt
+ * Tweak llm_prompt so onus is on the caller to format args
+
 v0.235.2 (2025-04-07)
 -------------------------
  * Fix invalid expires values in 14.0.0 migration
