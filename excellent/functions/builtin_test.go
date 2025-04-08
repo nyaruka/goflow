@@ -37,7 +37,7 @@ var ERROR = types.NewXErrorf("any error")
 func TestFunctions(t *testing.T) {
 	dmy := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatDayMonthYear).
-		WithLLMPromptResolver(envs.NewLLMPromptResolver(prompts)).
+		WithPromptResolver(envs.NewPromptResolver(prompts)).
 		Build()
 	mdy := envs.NewBuilder().
 		WithDateFormat(envs.DateFormatMonthDayYear).
@@ -419,11 +419,6 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", mdy, []types.XValue{xs("03-10-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 3, 11, 1, 0, 0, 0, la))},
 		{"legacy_add", mdy, []types.XValue{xs("11-03-2019 1:00am"), xn("1")}, xdt(time.Date(2019, 11, 4, 1, 0, 0, 0, la))},
 
-		{"llm_prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
-		{"llm_prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
-		{"llm_prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
-		{"llm_prompt", dmy, []types.XValue{}, ERROR},
-
 		{"lower", dmy, []types.XValue{xs("HEllo")}, xs("hello")},
 		{"lower", dmy, []types.XValue{xs("  HELLO  WORLD")}, xs("  hello  world")},
 		{"lower", dmy, []types.XValue{xs("")}, xs("")},
@@ -502,6 +497,11 @@ func TestFunctions(t *testing.T) {
 		{"percent", dmy, []types.XValue{xs("1.246")}, xs("125%")},
 		{"percent", dmy, []types.XValue{xs("")}, ERROR},
 		{"percent", dmy, []types.XValue{}, ERROR},
+
+		{"prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
+		{"prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
+		{"prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
+		{"prompt", dmy, []types.XValue{}, ERROR},
 
 		{"rand", dmy, []types.XValue{}, xn("0.3849275689214193")},
 		{"rand", dmy, []types.XValue{}, xn("0.6075520156746239")},

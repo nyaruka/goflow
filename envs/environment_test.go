@@ -107,7 +107,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
-		WithLLMPromptResolver(envs.NewLLMPromptResolver(map[string]*template.Template{"hello": template.Must(template.New("").Parse("Say hello"))})).
+		WithPromptResolver(envs.NewPromptResolver(map[string]*template.Template{"hello": template.Must(template.New("").Parse("Say hello"))})).
 		Build()
 
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())

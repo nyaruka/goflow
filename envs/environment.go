@@ -70,7 +70,7 @@ type environment struct {
 	redactionPolicy  RedactionPolicy
 	inputCollation   Collation
 	locationResolver LocationResolver
-	promptResolver   LLMPromptResolver
+	promptResolver   PromptResolver
 }
 
 func (e *environment) DateFormat() DateFormat                   { return e.dateFormat }
@@ -188,7 +188,7 @@ func NewBuilder() *EnvironmentBuilder {
 			numberFormat:     DefaultNumberFormat,
 			inputCollation:   CollationDefault,
 			redactionPolicy:  RedactionPolicyNone,
-			promptResolver:   EmptyLLMPromptResolver,
+			promptResolver:   EmptyPromptResolver,
 		},
 	}
 }
@@ -240,7 +240,7 @@ func (b *EnvironmentBuilder) WithLocationResolver(resolver LocationResolver) *En
 	return b
 }
 
-func (b *EnvironmentBuilder) WithLLMPromptResolver(resolver LLMPromptResolver) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithPromptResolver(resolver PromptResolver) *EnvironmentBuilder {
 	b.env.promptResolver = resolver
 	return b
 }

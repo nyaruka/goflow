@@ -60,7 +60,7 @@
                                 "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                                 "name": "Claude"
                             },
-                            "instructions": "@(llm_prompt(\"categorize\", slice(node.categories, 0, -2)))",
+                            "instructions": "@(prompt(\"categorize\", slice(node.categories, 0, -2)))",
                             "input": "@results.response_1",
                             "output_local": "_llm_output"
                         }

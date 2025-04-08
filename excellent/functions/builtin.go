@@ -130,7 +130,7 @@ func init() {
 		"format_urn":      OneTextFunction(FormatURN),
 
 		// LLM support
-		"llm_prompt": InitialTextFunction(0, 10, LLMPrompt),
+		"prompt": InitialTextFunction(0, 10, Prompt),
 
 		// utility functions
 		"is_error":       OneArgFunction(IsError),
@@ -2069,15 +2069,15 @@ func FormatURN(env envs.Environment, arg *types.XText) types.XValue {
 // LLM support
 //------------------------------------------------------------------------------------------
 
-// LLMPrompt returns a pre-defined LLM prompt.
+// Prompt returns a pre-defined LLM prompt.
 //
 // Note that the actual prompt text may differ from the examples below.
 //
-//	@(llm_prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following: [Positive, Negative]
-//	@(llm_prompt("xx")) -> ERROR
+//	@(prompt("categorize", array("Positive", "Negative"))) -> Categorize the following text into one of the following: [Positive, Negative]
+//	@(prompt("xx")) -> ERROR
 //
-// @function llm_prompt(name, args...)
-func LLMPrompt(env envs.Environment, name *types.XText, args ...types.XValue) types.XValue {
+// @function prompt(name, args...)
+func Prompt(env envs.Environment, name *types.XText, args ...types.XValue) types.XValue {
 	prompt := env.LLMPrompt(name.Native())
 	if prompt == nil {
 		return types.NewXErrorf("unknown LLM prompt %s", name.Native())
