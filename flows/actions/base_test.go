@@ -223,7 +223,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		// create an engine instance
 		eng := engine.NewBuilder().
 			WithLLMPrompts(map[string]*template.Template{
-				"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg0 }}")),
+				"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg1 }}")),
 			}).
 			WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
