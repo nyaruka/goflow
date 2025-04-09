@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"encoding/json"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -124,7 +123,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 }
 
 // helper to save a run result and log it as an event
-func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra json.RawMessage, logEvent flows.EventCallback) {
+func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra []byte, logEvent flows.EventCallback) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	prev, changed := run.SetResult(result)
 	if changed {
@@ -134,17 +133,13 @@ func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, cat
 
 // helper to save a run result based on a webhook call and log it as an event
 func (a *baseAction) saveWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
-	input := fmt.Sprintf("%s %s", call.Request.Method, call.Request.URL.String())
-	value := "0"
+	input := fmt.Sprintf("%s %s", call.Method, call.URL)
+	value := strconv.Itoa(call.ResponseStatus)
 	category := webhookStatusCategories[status]
-	var extra json.RawMessage
 
-	if call.Response != nil {
-		value = strconv.Itoa(call.Response.StatusCode)
-
-		if len(call.ResponseJSON) > 0 && len(call.ResponseJSON) < resultExtraMaxBytes {
-			extra = call.ResponseJSON
-		}
+	var extra []byte
+	if len(call.ResponseJSON) > 0 && len(call.ResponseJSON) < resultExtraMaxBytes {
+		extra = call.ResponseJSON
 	}
 
 	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
@@ -372,7 +367,7 @@ func currentLocale(run flows.Run, lang i18n.Language) i18n.Locale {
 //------------------------------------------------------------------------------------------
 
 // ReadAction reads an action from the given JSON
-func ReadAction(data json.RawMessage) (flows.Action, error) {
+func ReadAction(data []byte) (flows.Action, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

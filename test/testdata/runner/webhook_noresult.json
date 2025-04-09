@@ -1,0 +1,170 @@
+{
+  "flows": [
+    {
+      "name": "Webhook Results",
+      "uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
+      "spec_version": "14.0.0",
+      "language": "eng",
+      "type": "messaging",
+      "nodes": [
+        {
+          "uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
+          "actions": [
+            {
+              "uuid": "7d340340-ed35-48a0-a70e-189220771668",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "type": "call_webhook",
+              "url": "http://temba.io/good",
+              "method": "GET"
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@webhook.status",
+            "cases": [
+              {
+                "uuid": "625b1f82-e438-466f-b798-8842686e3ce0",
+                "type": "has_number_between",
+                "arguments": [
+                  "200",
+                  "299"
+                ],
+                "category_uuid": "03da9c06-3cd5-4d29-864b-2ce4a75b3b41"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "03da9c06-3cd5-4d29-864b-2ce4a75b3b41",
+                "name": "Success",
+                "exit_uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801"
+              },
+              {
+                "uuid": "b8ac20bf-1e7e-42f6-a66a-56103dc128a8",
+                "name": "Failure",
+                "exit_uuid": "bdcc24ba-2947-43f6-b868-45a523952209"
+              }
+            ],
+            "default_category_uuid": "b8ac20bf-1e7e-42f6-a66a-56103dc128a8"
+          },
+          "exits": [
+            {
+              "uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801",
+              "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83"
+            },
+            {
+              "uuid": "bdcc24ba-2947-43f6-b868-45a523952209",
+              "destination_uuid": "48541207-c17a-4207-8c3c-0be96a571b83"
+            }
+          ]
+        },
+        {
+          "uuid": "48541207-c17a-4207-8c3c-0be96a571b83",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "@webhook.json.greeting",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "b36af7e9-69ad-488e-acf2-2f0481ba1c91"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "007f0b86-4e2d-451f-88cc-4ce1f8395ffe",
+              "destination_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723"
+            }
+          ]
+        },
+        {
+          "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+          "actions": [
+            {
+              "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "type": "call_webhook",
+              "url": "http://temba.io/bad",
+              "method": "GET"
+            }
+          ],
+          "router": {
+            "type": "switch",
+            "operand": "@webhook.status",
+            "cases": [
+              {
+                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                "type": "has_only_text",
+                "arguments": [
+                  "Success"
+                ],
+                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+              }
+            ],
+            "categories": [
+              {
+                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                "name": "Success",
+                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+              },
+              {
+                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                "name": "Failure",
+                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+              }
+            ],
+            "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+          },
+          "exits": [
+            {
+              "uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
+              "destination_uuid": null
+            },
+            {
+              "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e",
+              "destination_uuid": "1fd2cd66-1a4b-4ab7-bc0c-1a14eab92cc8"
+            }
+          ]
+        },
+        {
+          "uuid": "1fd2cd66-1a4b-4ab7-bc0c-1a14eab92cc8",
+          "actions": [
+            {
+              "attachments": [],
+              "text": "Failed call to @webhook",
+              "type": "send_msg",
+              "quick_replies": [],
+              "uuid": "2363131b-82c0-4dff-90b3-d1291baceb29"
+            }
+          ],
+          "exits": [
+            {
+              "uuid": "d55ddca8-5273-4f7b-9893-ab4c09bf311a",
+              "destination_uuid": null
+            }
+          ]
+        }
+      ],
+      "revision": 23,
+      "expire_after_minutes": 10080,
+      "localization": {}
+    }
+  ],
+  "channels": [
+    {
+      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "name": "Android Channel",
+      "address": "+17036975131",
+      "schemes": [
+        "tel"
+      ],
+      "roles": [
+        "send",
+        "receive"
+      ],
+      "country": "US"
+    }
+  ]
+}

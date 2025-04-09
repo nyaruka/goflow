@@ -118,8 +118,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "success",
-                "resthook": "new-registration",
-                "extraction": "valid"
+                "resthook": "new-registration"
             },
             {
                 "type": "webhook_called",
@@ -132,8 +131,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "response_error",
-                "resthook": "new-registration",
-                "extraction": "ignored"
+                "resthook": "new-registration"
             }
         ],
         "inspection": {
@@ -238,8 +236,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "success",
-                "resthook": "new-registration",
-                "extraction": "valid"
+                "resthook": "new-registration"
             },
             {
                 "type": "webhook_called",
@@ -252,8 +249,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "response_error",
-                "resthook": "new-registration",
-                "extraction": "ignored"
+                "resthook": "new-registration"
             },
             {
                 "type": "run_result_changed",
@@ -383,8 +379,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "success",
-                "resthook": "registration-complete",
-                "extraction": "valid"
+                "resthook": "registration-complete"
             },
             {
                 "type": "webhook_called",
@@ -397,8 +392,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "subscriber_gone",
-                "resthook": "registration-complete",
-                "extraction": "valid"
+                "resthook": "registration-complete"
             },
             {
                 "type": "run_result_changed",
@@ -612,8 +606,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "success",
-                "resthook": "new-registration",
-                "extraction": "valid"
+                "resthook": "new-registration"
             },
             {
                 "type": "webhook_called",
@@ -626,8 +619,7 @@
                 "elapsed_ms": 0,
                 "retries": 0,
                 "status": "response_error",
-                "resthook": "new-registration",
-                "extraction": "valid"
+                "resthook": "new-registration"
             },
             {
                 "type": "run_result_changed",

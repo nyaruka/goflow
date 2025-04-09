@@ -1,8 +1,6 @@
 package webhooks
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -36,7 +34,7 @@ func NewService(httpClient *http.Client, httpRetries *httpx.RetryConfig, httpAcc
 	}
 }
 
-func (s *service) Call(request *http.Request) (*flows.WebhookCall, error) {
+func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 	// set any headers with defaults
 	for k, v := range s.defaultHeaders {
 		if request.Header.Get(k) == "" {
@@ -51,39 +49,13 @@ func (s *service) Call(request *http.Request) (*flows.WebhookCall, error) {
 	}
 
 	trace, err := httpx.DoTrace(s.httpClient, request, s.httpRetries, s.httpAccess, s.maxBodyBytes)
-	if trace != nil {
-		call := &flows.WebhookCall{Trace: trace}
-
+	if err != nil && trace != nil && trace.Response == nil {
 		// throw away any error that happened prior to getting a response.. these will be surfaced to the user
 		// as connection_error status on the response
-		if trace.Response == nil {
-			return call, nil
-		}
-
-		if len(call.ResponseBody) > 0 {
-			call.ResponseJSON, call.ResponseCleaned = ExtractJSON(call.ResponseBody)
-		}
-
-		return call, err
+		return trace, nil
 	}
 
-	return nil, err
-}
-
-func ExtractJSON(body []byte) ([]byte, bool) {
-	// we make a best effort to turn the body into JSON, so we strip out:
-	//  1. any invalid UTF-8 sequences
-	//  2. null chars
-	//  3. escaped null chars (\u0000)
-	cleaned := bytes.ToValidUTF8(body, nil)
-	cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
-	cleaned = []byte(httpx.ReplaceEscapedNulls(string(cleaned), ""))
-
-	if json.Valid(cleaned) {
-		changed := !bytes.Equal(body, cleaned)
-		return cleaned, changed
-	}
-	return nil, false
+	return trace, err
 }
 
 var _ flows.WebhookService = (*service)(nil)

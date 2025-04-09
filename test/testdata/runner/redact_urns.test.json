@@ -28,7 +28,6 @@
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "elapsed_ms": 1000,
-                    "extraction": "valid",
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "retries": 0,
@@ -100,7 +99,6 @@
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "elapsed_ms": 1000,
-                                "extraction": "valid",
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                                 "retries": 0,
