@@ -1,3 +1,7 @@
+v0.235.4 (2025-04-09)
+-------------------------
+ * Allow users to manage the whatsapp channels by using the preferred channel action
+
 v0.235.3 (2025-04-08)
 -------------------------
  * Simplify naming llm_prompt to prompt
