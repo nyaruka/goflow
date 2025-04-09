@@ -46,6 +46,9 @@ const (
 	MaxContactURNs = 50
 )
 
+// schemes of URNs that aren't tied to a specific channel
+var portableURNSchemes = map[string]bool{urns.Phone.Prefix: true, urns.WhatsApp.Prefix: true}
+
 // Contact represents a person who is interacting with the flow
 type Contact struct {
 	uuid       ContactUUID
@@ -434,8 +437,8 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 		otherURNs := make([]*ContactURN, 0)
 
 		for _, urn := range c.urns {
-			// tel URNs can be re-assigned, other URN schemes are considered channel specific
-			if urn.URN().Scheme() == urns.Phone.Prefix && channel.SupportsScheme(urns.Phone.Prefix) {
+			// portable URNs can be re-assigned when supported by channel
+			if portableURNSchemes[urn.URN().Scheme()] && channel.SupportsScheme(urn.URN().Scheme()) {
 				urn.SetChannel(channel)
 			}
 
