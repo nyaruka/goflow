@@ -263,11 +263,14 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	android2 := test.NewTelChannel("Android", "+250961111112", receive_roles, nil, "RW", nil, false)
 	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
+	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"), nil)
 	contact.AddURN(urns.URN("tel:+12345678999"), nil)
 	contact.AddURN(urns.URN("tel:+18005555777"), nil)
+	contact.AddURN(urns.URN("whatsapp:18005555888"), nil)
 
 	contact.UpdatePreferredChannel(android)
 
@@ -285,6 +288,12 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 	contact.UpdatePreferredChannel(twitter2)
 	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+
+	contact.UpdatePreferredChannel(whatsapp1)
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].URN())
+
+	contact.UpdatePreferredChannel(whatsapp2)
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].URN())
 
 	// if they are already associated with the channel, then they become the preferred URN
 	contact.UpdatePreferredChannel(android)
