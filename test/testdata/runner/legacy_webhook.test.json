@@ -13,7 +13,6 @@
                 {
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "elapsed_ms": 1000,
-                    "extraction": "valid",
                     "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:01.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}}",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                     "retries": 0,
@@ -97,7 +96,6 @@
                             {
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "elapsed_ms": 1000,
-                                "extraction": "valid",
                                 "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2018-07-06T12:30:01.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2018-07-06T12:30:00.123456Z\",\"uuid\":\"312d3af0-a565-4c96-ba00-bd7f0d08e671\"}}",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                                 "retries": 0,

@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -10,15 +11,6 @@ func init() {
 
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
-
-type Extraction string
-
-const (
-	ExtractionNone    Extraction = "none"    // no response or body was empty
-	ExtractionValid   Extraction = "valid"   // body was valid JSON
-	ExtractionCleaned Extraction = "cleaned" // body could be made into JSON with some cleaning
-	ExtractionIgnored Extraction = "ignored" // body couldn't be made into JSON and was ignored
-)
 
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the URL and the status of the response, as well as a full dump of the
@@ -33,8 +25,7 @@ const (
 //	  "elapsed_ms": 123,
 //	  "retries": 0,
 //	  "request": "GET /?format=json HTTP/1.1",
-//	  "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
-//	  "extraction": "valid"
+//	  "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 //	}
 //
 // @event webhook_called
@@ -43,29 +34,14 @@ type WebhookCalledEvent struct {
 
 	*flows.HTTPLogWithoutTime
 
-	Resthook   string     `json:"resthook,omitempty"`
-	Extraction Extraction `json:"extraction"`
+	Resthook string `json:"resthook,omitempty"`
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(call *flows.WebhookCall, status flows.CallStatus, resthook string) *WebhookCalledEvent {
-	extraction := ExtractionNone
-	if len(call.ResponseBody) > 0 {
-		if len(call.ResponseJSON) > 0 {
-			if call.ResponseCleaned {
-				extraction = ExtractionCleaned
-			} else {
-				extraction = ExtractionValid
-			}
-		} else {
-			extraction = ExtractionIgnored
-		}
-	}
-
+func NewWebhookCalled(trace *httpx.Trace, status flows.CallStatus, resthook string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
 		BaseEvent:          NewBaseEvent(TypeWebhookCalled),
-		HTTPLogWithoutTime: flows.NewHTTPLogWithoutTime(call.Trace, status, nil),
+		HTTPLogWithoutTime: flows.NewHTTPLogWithoutTime(trace, status, nil),
 		Resthook:           resthook,
-		Extraction:         extraction,
 	}
 }

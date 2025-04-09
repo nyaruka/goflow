@@ -2,8 +2,6 @@ package flows
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -12,7 +10,6 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/excellent/types"
 
 	"github.com/shopspring/decimal"
 )
@@ -48,72 +45,9 @@ const (
 	CallStatusSubscriberGone CallStatus = "subscriber_gone"
 )
 
-// WebhookCall is the result of a webhook call
-type WebhookCall struct {
-	*httpx.Trace
-	ResponseJSON    []byte
-	ResponseCleaned bool // whether response had to be cleaned to make it valid JSON
-	Recreated       bool // whether the call was recreated from a result
-}
-
-// Context returns the properties available in expressions
-//
-//	__default__:text -> the method and URL
-//	status:number -> the response status code
-//	headers:any -> the response headers
-//	json:any -> the response body if valid JSON
-//
-// @context webhook
-func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
-	status := types.NewXNumberFromInt(0)
-	headers := types.XObjectEmpty
-	var json types.XValue
-
-	// TODO remove when users stop relying on this
-	if w.Recreated {
-		json = types.JSONToXValue(w.ResponseJSON)
-		if types.IsXError(json) {
-			json = nil
-		}
-		if json != nil {
-			json.SetDeprecated("webhook recreated from extra")
-		}
-
-		return map[string]types.XValue{"json": json}
-	}
-
-	if w.Response != nil {
-		status = types.NewXNumberFromInt(w.Response.StatusCode)
-
-		headers = types.NewXLazyObject(func() map[string]types.XValue {
-			values := make(map[string]types.XValue, len(w.Response.Header))
-			for k := range w.Response.Header {
-				values[k] = types.NewXText(w.Response.Header.Get(k))
-			}
-			return values
-		})
-
-		json = types.JSONToXValue(w.ResponseJSON)
-		if types.IsXError(json) {
-			json = nil
-		}
-	}
-
-	return map[string]types.XValue{
-		"__default__": types.NewXText(fmt.Sprintf("%s %s", w.Request.Method, w.Request.URL.String())),
-		"status":      status,
-		"headers":     headers,
-		"json":        json,
-	}
-}
-
-func (w *WebhookCall) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Context(nil))
-}
-
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
-	Call(request *http.Request) (*WebhookCall, error)
+	Call(request *http.Request) (*httpx.Trace, error)
 }
 
 // ExtractedIntent models an intent match

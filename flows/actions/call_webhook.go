@@ -107,15 +107,20 @@ func (a *CallWebhookAction) Execute(ctx context.Context, run flows.Run, step flo
 		body, _ = run.EvaluateTemplateText(body, nil, false, logEvent)
 	}
 
-	return a.call(ctx, run, step, url, method, body, logEvent)
+	call := a.call(ctx, run, step, url, method, body, logEvent)
+	run.SetWebhook(call)
+
+	return nil
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) error {
+func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) *flows.WebhookCall {
 	// build our request
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
-		return err
+		// in theory this can't happen because we're already validating the method and the URL.. but just in case
+		logEvent(events.NewError(err.Error()))
+		return nil
 	}
 
 	// add the custom headers, substituting any template vars
@@ -131,21 +136,22 @@ func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.
 		return nil
 	}
 
-	call, err := svc.Call(req)
-
+	trace, err := svc.Call(req)
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
 	}
-	if call != nil {
-		run.SetWebhook(call)
 
-		status := callStatus(call, err, false)
+	if trace != nil {
+		call := flows.NewWebhookCall(trace)
+		status := callStatus(trace, err, false)
 
-		logEvent(events.NewWebhookCalled(call, status, ""))
+		logEvent(events.NewWebhookCalled(trace, status, ""))
 
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
 		}
+
+		return call
 	}
 
 	return nil
@@ -159,15 +165,15 @@ func (a *CallWebhookAction) Results(include func(*flows.ResultInfo)) {
 }
 
 // determines the webhook status from the HTTP status code
-func callStatus(call *flows.WebhookCall, err error, isResthook bool) flows.CallStatus {
-	if call.Response == nil || err != nil {
+func callStatus(t *httpx.Trace, err error, isResthook bool) flows.CallStatus {
+	if t.Response == nil || err != nil {
 		return flows.CallStatusConnectionError
 	}
-	if isResthook && call.Response.StatusCode == http.StatusGone {
+	if isResthook && t.Response.StatusCode == http.StatusGone {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
 		return flows.CallStatusSubscriberGone
 	}
-	if call.Response.StatusCode/100 == 2 {
+	if t.Response.StatusCode/100 == 2 {
 		return flows.CallStatusSuccess
 	}
 	return flows.CallStatusResponseError

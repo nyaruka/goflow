@@ -732,7 +732,6 @@ func TestWebhookCalledEventValid(t *testing.T) {
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 14\r\nHeader: hello\r\n\r\n{\"foo\": \"bar\"}", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
-	assert.Equal(t, events.ExtractionValid, event.Extraction)
 }
 
 func TestWebhookCalledEventNullChar(t *testing.T) {
@@ -756,7 +755,6 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 23\r\n\r\nabc � � \\� \\\\u0000", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
-	assert.Equal(t, events.ExtractionIgnored, event.Extraction)
 }
 
 func TestWebhookCalledEventBadUTF8(t *testing.T) {
@@ -779,7 +777,6 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 13\r\nBad-Header: �\r\n\r\n...", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
-	assert.Equal(t, events.ExtractionCleaned, event.Extraction)
 }
 
 func TestDeprecatedEvents(t *testing.T) {

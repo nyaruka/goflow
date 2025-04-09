@@ -1,13 +1,11 @@
 package runs
 
 import (
-	"net/http"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
-	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -112,10 +110,10 @@ func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
 			if resultEvent != nil {
 				asResultEvent := resultEvent.(*events.RunResultChangedEvent)
 				if asResultEvent.Extra != nil {
-					return &flows.WebhookCall{
-						Trace:        &httpx.Trace{Response: &http.Response{}},
-						ResponseJSON: asResultEvent.Extra,
-						Recreated:    true,
+					return &flows.WebhookCall{ // they just get the fields to recreate @webhook.json
+						ResponseStatus: typed.StatusCode,
+						ResponseJSON:   asResultEvent.Extra,
+						Recreated:      true,
 					}
 				}
 			}
