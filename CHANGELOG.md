@@ -1,3 +1,7 @@
+v0.236.0 (2025-04-09)
+-------------------------
+ * Refactor webhooks to 1) to clear run.webhook in case of error and 2) let run.webhook be more easily restored
+
 v0.235.4 (2025-04-09)
 -------------------------
  * Allow users to manage the whatsapp channels by using the preferred channel action
