@@ -167,7 +167,7 @@
                     "exit_uuid": "96a1ff26-af04-4698-a4bd-40939bf2e7ab",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "d02536d0-7e86-47ab-8c60-fcf2678abc2b",
-                    "operand": "Success",
+                    "operand": "200",
                     "time": "2018-07-06T12:30:23.123456789Z"
                 }
             ],

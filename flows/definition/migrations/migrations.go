@@ -3,6 +3,7 @@ package migrations
 import (
 	"encoding/json"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/Masterminds/semver"
@@ -14,6 +15,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.1.0"), Migrate14_1)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0)
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
 	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
@@ -22,6 +24,40 @@ func init() {
 	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
 	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+}
+
+// Migrate14.1 changes webhook nodes to split on @webhook instead of the action's result.
+//
+// @version 14_1 "14.1"
+func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
+	webhookActions := []string{"call_webhook", "call_resthook"}
+
+	for _, node := range f.Nodes() {
+		actions := node.Actions()
+		router := node.Router()
+
+		// ignore if this isn't a webhook or resthook split
+		if len(actions) != 1 || !slices.Contains(webhookActions, actions[0].Type()) || router == nil || router.Type() != "switch" {
+			continue
+		}
+
+		operand, _ := router["operand"].(string)
+		cases, _ := router["cases"].([]any)
+
+		// ignore if it already isn't splitting on a result
+		if !strings.HasPrefix(operand, "@results.") || len(cases) == 0 {
+			continue
+		}
+
+		case0, _ := cases[0].(map[string]any)
+		case0["type"] = "has_number_between"
+		case0["arguments"] = []any{"200", "299"}
+
+		router["operand"] = "@webhook.status"
+		router["cases"] = []any{case0}
+	}
+
+	return f, nil
 }
 
 // Migrate14.0 fixes invalid expires values and categories with missing names.
