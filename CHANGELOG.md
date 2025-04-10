@@ -1,3 +1,7 @@
+v0.236.3 (2025-04-10)
+-------------------------
+ * Amend 14.0 migration to also fix empty category names
+
 v0.236.2 (2025-04-10)
 -------------------------
  * Move dtone airtime service out of this repo and use mock in tests
