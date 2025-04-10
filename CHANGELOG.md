@@ -1,3 +1,7 @@
+v0.236.2 (2025-04-10)
+-------------------------
+ * Move dtone airtime service out of this repo and use mock in tests
+
 v0.236.1 (2025-04-09)
 -------------------------
  * Remove luis and bothub classification services
