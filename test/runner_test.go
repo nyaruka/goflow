@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -23,7 +24,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test/services"
@@ -132,7 +132,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 			return services.NewLLM(), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
-			return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
+			return services.NewAirtime("RWF"), nil
 		}).
 		Build()
 
@@ -196,6 +196,7 @@ func TestFlows(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, len(testCases) > 0)
 
+	defer random.SetGenerator(random.DefaultGenerator)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
@@ -205,6 +206,7 @@ func TestFlows(t *testing.T) {
 		var httpMocksCopy *httpx.MockRequestor
 		fmt.Printf("running %s\n", tc)
 
+		random.SetGenerator(random.NewSeededGenerator(123456))
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 		dates.SetNowFunc(dates.NewSequentialNow(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC), time.Second))
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
@@ -229,6 +231,11 @@ func TestFlows(t *testing.T) {
 		if err != nil {
 			t.Errorf("error running flow for flow '%s' and output '%s': %s", tc.assetsFile, tc.outputFile, err)
 			continue
+		}
+
+		// check all http mocks were used
+		if flowTest.HTTPMocks != nil {
+			require.False(t, flowTest.HTTPMocks.HasUnused(), "unused HTTP mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
 		}
 
 		if UpdateSnapshots {

@@ -56,131 +56,6 @@
     },
     {
         "description": "Transfer and set result events if transfer made",
-        "http_mocks": {
-            "https://dvs-api.dtone.com/v1/async/transactions": [
-                {
-                    "status": 200,
-                    "body": {
-                        "confirmation_date": "2021-03-24T20:05:06.111631000Z",
-                        "confirmation_expiration_date": "2021-03-24T21:05:05.883561000Z",
-                        "creation_date": "2021-03-24T20:05:05.883561000Z",
-                        "credit_party_identifier": {
-                            "mobile_number": "+593979123456"
-                        },
-                        "external_id": "EX12345",
-                        "id": 2237512891,
-                        "product": {
-                            "description": "",
-                            "id": 6035,
-                            "name": "3 USD",
-                            "operator": {
-                                "country": {
-                                    "iso_code": "ECU",
-                                    "name": "Ecuador",
-                                    "regions": null
-                                },
-                                "id": 1596,
-                                "name": "Claro Ecuador",
-                                "regions": null
-                            },
-                            "regions": null,
-                            "service": {
-                                "id": 1,
-                                "name": "Mobile"
-                            },
-                            "type": "FIXED_VALUE_RECHARGE"
-                        },
-                        "status": {
-                            "class": {
-                                "id": 2,
-                                "message": "CONFIRMED"
-                            },
-                            "id": 20000,
-                            "message": "CONFIRMED"
-                        }
-                    }
-                }
-            ],
-            "https://dvs-api.dtone.com/v1/lookup/mobile-number": [
-                {
-                    "status": 200,
-                    "body": [
-                        {
-                            "id": 1596,
-                            "name": "Claro Ecuador",
-                            "identified": true
-                        }
-                    ]
-                }
-            ],
-            "https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100": [
-                {
-                    "status": 200,
-                    "body": [
-                        {
-                            "description": "",
-                            "destination": {
-                                "amount": 3,
-                                "unit": "USD",
-                                "unit_type": "CURRENCY"
-                            },
-                            "id": 6035,
-                            "name": "3 USD",
-                            "operator": {
-                                "country": {
-                                    "iso_code": "ECU",
-                                    "name": "Ecuador",
-                                    "regions": null
-                                },
-                                "id": 1596,
-                                "name": "Claro Ecuador",
-                                "regions": null
-                            },
-                            "service": {
-                                "id": 1,
-                                "name": "Mobile"
-                            },
-                            "source": {
-                                "amount": 3.6,
-                                "unit": "USD",
-                                "unit_type": "CURRENCY"
-                            },
-                            "type": "FIXED_VALUE_RECHARGE"
-                        },
-                        {
-                            "description": "",
-                            "destination": {
-                                "amount": 6,
-                                "unit": "USD",
-                                "unit_type": "CURRENCY"
-                            },
-                            "id": 6036,
-                            "name": "6 USD",
-                            "operator": {
-                                "country": {
-                                    "iso_code": "ECU",
-                                    "name": "Ecuador",
-                                    "regions": null
-                                },
-                                "id": 1596,
-                                "name": "Claro Ecuador",
-                                "regions": null
-                            },
-                            "service": {
-                                "id": 1,
-                                "name": "Mobile"
-                            },
-                            "source": {
-                                "amount": 6.3,
-                                "unit": "USD",
-                                "unit_type": "CURRENCY"
-                            },
-                            "type": "FIXED_VALUE_RECHARGE"
-                        }
-                    ]
-                }
-            ]
-        },
         "action": {
             "type": "transfer_airtime",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -196,41 +71,21 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "external_id": "2237512891",
+                "external_id": "5OKA5LEG5N",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "currency": "USD",
-                "amount": 3,
+                "currency": "RWF",
+                "amount": 500,
                 "http_logs": [
                     {
-                        "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number",
+                        "url": "http://send.airtime.com",
                         "status_code": 200,
-                        "request": "POST /v1/lookup/mobile-number HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 32\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"mobile_number\":\"+12065551212\"}",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 215\r\n\r\n[\n                        {\n                            \"id\": 1596,\n                            \"name\": \"Claro Ecuador\",\n                            \"identified\": true\n                        }\n                    ]",
+                        "request": "GET / HTTP/1.1\r\nHost: send.airtime.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 15\r\n\r\n{\"status\":\"ok\"}",
                         "elapsed_ms": 0,
                         "retries": 0,
                         "status": "success",
-                        "created_on": "2018-10-18T14:20:30.000123456Z"
-                    },
-                    {
-                        "url": "https://dvs-api.dtone.com/v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100",
-                        "status_code": 200,
-                        "request": "GET /v1/products?type=FIXED_VALUE_RECHARGE&operator_id=1596&per_page=100 HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nAccept-Encoding: gzip\r\n\r\n",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 2652\r\n\r\n[\n                        {\n                            \"description\": \"\",\n                            \"destination\": {\n                                \"amount\": 3,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"id\": 6035,\n                            \"name\": \"3 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"source\": {\n                                \"amount\": 3.6,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        },\n                        {\n                            \"description\": \"\",\n                            \"destination\": {\n                                \"amount\": 6,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"id\": 6036,\n                            \"name\": \"6 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"source\": {\n                                \"amount\": 6.3,\n                                \"unit\": \"USD\",\n                                \"unit_type\": \"CURRENCY\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        }\n                    ]",
-                        "elapsed_ms": 0,
-                        "retries": 0,
-                        "status": "success",
-                        "created_on": "2018-10-18T14:20:30.000123456Z"
-                    },
-                    {
-                        "url": "https://dvs-api.dtone.com/v1/async/transactions",
-                        "status_code": 200,
-                        "request": "POST /v1/async/transactions HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 151\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"external_id\":\"297611a6-b583-45c3-8587-d4e530c948f0\",\"product_id\":6035,\"auto_confirm\":true,\"credit_party_identifier\":{\"mobile_number\":\"+12065551212\"}}",
-                        "response": "HTTP/1.0 200 OK\r\nContent-Length: 1746\r\n\r\n{\n                        \"confirmation_date\": \"2021-03-24T20:05:06.111631000Z\",\n                        \"confirmation_expiration_date\": \"2021-03-24T21:05:05.883561000Z\",\n                        \"creation_date\": \"2021-03-24T20:05:05.883561000Z\",\n                        \"credit_party_identifier\": {\n                            \"mobile_number\": \"+593979123456\"\n                        },\n                        \"external_id\": \"EX12345\",\n                        \"id\": 2237512891,\n                        \"product\": {\n                            \"description\": \"\",\n                            \"id\": 6035,\n                            \"name\": \"3 USD\",\n                            \"operator\": {\n                                \"country\": {\n                                    \"iso_code\": \"ECU\",\n                                    \"name\": \"Ecuador\",\n                                    \"regions\": null\n                                },\n                                \"id\": 1596,\n                                \"name\": \"Claro Ecuador\",\n                                \"regions\": null\n                            },\n                            \"regions\": null,\n                            \"service\": {\n                                \"id\": 1,\n                                \"name\": \"Mobile\"\n                            },\n                            \"type\": \"FIXED_VALUE_RECHARGE\"\n                        },\n                        \"status\": {\n                            \"class\": {\n                                \"id\": 2,\n                                \"message\": \"CONFIRMED\"\n                            },\n                            \"id\": 20000,\n                            \"message\": \"CONFIRMED\"\n                        }\n                    }",
-                        "elapsed_ms": 0,
-                        "retries": 0,
-                        "status": "success",
-                        "created_on": "2018-10-18T14:20:30.000123456Z"
+                        "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
             },
@@ -239,7 +94,7 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "name": "Reward Transfer",
-                "value": "2237512891",
+                "value": "5OKA5LEG5N",
                 "category": "Success"
             }
         ],
@@ -264,20 +119,17 @@
     },
     {
         "description": "Transfer failed if lookup number API request returns error response",
-        "http_mocks": {
-            "https://dvs-api.dtone.com/v1/lookup/mobile-number": [
-                {
-                    "status": 400,
-                    "body": {
-                        "errors": [
-                            {
-                                "code": 50000,
-                                "message": "that didn't work"
-                            }
-                        ]
-                    }
-                }
-            ]
+        "contact": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+17036000666"
+            ],
+            "groups": [],
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789-00:00"
         },
         "action": {
             "type": "transfer_airtime",
@@ -296,27 +148,16 @@
                 "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "external_id": "",
                 "sender": "tel:+17036975131",
-                "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "recipient": "tel:+17036000666",
                 "currency": "",
                 "amount": 0,
-                "http_logs": [
-                    {
-                        "url": "https://dvs-api.dtone.com/v1/lookup/mobile-number",
-                        "status_code": 400,
-                        "request": "POST /v1/lookup/mobile-number HTTP/1.1\r\nHost: dvs-api.dtone.com\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 32\r\nAuthorization: Basic bnlhcnVrYToxMjM0NTY3ODk=\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"mobile_number\":\"+12065551212\"}",
-                        "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 254\r\n\r\n{\n                        \"errors\": [\n                            {\n                                \"code\": 50000,\n                                \"message\": \"that didn't work\"\n                            }\n                        ]\n                    }",
-                        "elapsed_ms": 0,
-                        "retries": 0,
-                        "status": "response_error",
-                        "created_on": "2018-10-18T14:20:30.000123456Z"
-                    }
-                ]
+                "http_logs": null
             },
             {
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "text": "number lookup failed: that didn't work"
+                "text": "invalid recipient number"
             },
             {
                 "type": "run_result_changed",

@@ -3,9 +3,11 @@ package services
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
@@ -22,6 +24,18 @@ func NewAirtime(currency string) *Airtime {
 }
 
 func (s *Airtime) Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+	transfer := &flows.AirtimeTransfer{
+		UUID:      flows.AirtimeTransferUUID(uuids.NewV4()),
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  "",
+		Amount:    decimal.Zero,
+	}
+
+	if strings.Contains(string(recipient), "666") {
+		return transfer, fmt.Errorf("invalid recipient number")
+	}
+
 	logHTTP(&flows.HTTPLog{
 		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
@@ -42,13 +56,9 @@ func (s *Airtime) Transfer(ctx context.Context, sender urns.URN, recipient urns.
 		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
-	transfer := &flows.AirtimeTransfer{
-		UUID:      flows.AirtimeTransferUUID(uuids.NewV4()),
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  s.fixedCurrency,
-		Amount:    amount,
-	}
+	transfer.ExternalID = random.String(10, []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
+	transfer.Currency = s.fixedCurrency
+	transfer.Amount = amount
 
 	return transfer, nil
 }
