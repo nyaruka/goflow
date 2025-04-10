@@ -1,9 +1,0 @@
-POST /v1/async/transactions HTTP/1.1
-Host: dvs-api.dtone.com
-User-Agent: Go-http-client/1.1
-Content-Length: 123
-Authorization: Basic a2V5MTIzOnNlc2FtZQ==
-Content-Type: application/json
-Accept-Encoding: gzip
-
-{"external_id":"EX12345","product_id":6035,"auto_confirm":true,"credit_party_identifier":{"mobile_number":"+593979123456"}}

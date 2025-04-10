@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -27,7 +28,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/services/airtime/dtone"
 	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -108,12 +108,14 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
+	defer random.SetGenerator(random.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for i, tc := range tests {
+		random.SetGenerator(random.NewSeededGenerator(123456))
 		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
 
@@ -239,7 +241,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 				return services.NewLLM(), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
-				return dtone.NewService(http.DefaultClient, nil, "nyaruka", "123456789"), nil
+				return services.NewAirtime("RWF"), nil
 			}).
 			Build()
 

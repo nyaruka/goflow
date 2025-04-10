@@ -24,9 +24,6 @@
             "Categorize the following text as positive or negative",
             "@input.text"
         ],
-        "locals": {
-            "_llm_output": "\u003cERROR\u003e"
-        },
         "inspection": {
             "dependencies": [
                 {
@@ -86,9 +83,6 @@
             "Categorize the following text as positive or negative",
             "@input.text"
         ],
-        "locals": {
-            "_llm_output": "negative"
-        },
         "inspection": {
             "dependencies": [
                 {

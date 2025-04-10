@@ -1,9 +1,0 @@
-POST /v1/lookup/mobile-number HTTP/1.1
-Host: dvs-api.dtone.com
-User-Agent: Go-http-client/1.1
-Content-Length: 33
-Authorization: Basic a2V5MTIzOnNlc2FtZQ==
-Content-Type: application/json
-Accept-Encoding: gzip
-
-{"mobile_number":"+593979123456"}
