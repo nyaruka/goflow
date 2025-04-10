@@ -88,5 +88,86 @@
             "localization": {},
             "nodes": []
         }
+    },
+    {
+        "description": "flow with empty category name",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4c83851e-f0bf-4c59-ba11-220ecccfcebb",
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "3c9edf35-7386-4d1c-9d37-fd1b4fa68792",
+                                "name": "",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Other",
+                                "exit_uuid": "d3356ec1-1686-4c64-8a51-ee36129e48ae"
+                            }
+                        ],
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "d3356ec1-1686-4c64-8a51-ee36129e48ae"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4c83851e-f0bf-4c59-ba11-220ecccfcebb",
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "3c9edf35-7386-4d1c-9d37-fd1b4fa68792",
+                                "name": "Match",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            },
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "Other",
+                                "exit_uuid": "d3356ec1-1686-4c64-8a51-ee36129e48ae"
+                            }
+                        ],
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        },
+                        {
+                            "uuid": "d3356ec1-1686-4c64-8a51-ee36129e48ae"
+                        }
+                    ]
+                }
+            ]
+        }
     }
 ]
