@@ -24,8 +24,8 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate14.0 fixes invalid expires values. Note that this is a major version change because of other additions to the
-// flow spec that don't require migration.
+// Migrate14.0 fixes invalid expires values and categories with missing names.
+// Note that this is a major version change because of other additions to the flow spec that don't require migration.
 //
 // @version 14_0 "14.0"
 func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
@@ -41,6 +41,22 @@ func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
 			expiresInt, err := expiresNum.Int64()
 			if err == nil {
 				f["expire_after_minutes"] = json.Number(fmt.Sprint(min(int(expiresInt), maxExpires[f.Type()])))
+			}
+		}
+	}
+
+	for _, node := range f.Nodes() {
+		router := node.Router()
+		if router != nil {
+			categories, _ := router["categories"].([]any)
+			for _, cat := range categories {
+				category, _ := cat.(map[string]any)
+				if category != nil {
+					name, _ := category["name"].(string)
+					if name == "" {
+						category["name"] = "Match"
+					}
+				}
 			}
 		}
 	}
