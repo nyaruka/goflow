@@ -1,25 +1,51 @@
 [
     {
-        "description": "Read fails when text is empty",
+        "description": "Read fails when text is empty or too many attachments",
         "action": {
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "",
             "attachments": [
-                "image:http://example.com/red.jpg"
+                "image:http://example.com/1.jpg",
+                "image:http://example.com/2.jpg",
+                "image:http://example.com/3.jpg",
+                "image:http://example.com/4.jpg",
+                "image:http://example.com/5.jpg",
+                "image:http://example.com/6.jpg",
+                "image:http://example.com/7.jpg",
+                "image:http://example.com/8.jpg",
+                "image:http://example.com/9.jpg",
+                "image:http://example.com/10.jpg",
+                "image:http://example.com/11.jpg"
+            ],
+            "quick_replies": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11"
             ]
         },
-        "read_error": "field 'text' is required"
+        "read_error": "field 'text' is required, field 'attachments' must have a maximum of 10 items, field 'quick_replies' must have a maximum of 10 items"
     },
     {
-        "description": "Read fails when topic is invalid",
+        "description": "Read fails when topic is invalid or a quick reply is too long",
         "action": {
             "type": "send_msg",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "hi there",
-            "topic": "spam"
+            "topic": "spam",
+            "quick_replies": [
+                "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+            ]
         },
-        "read_error": "field 'topic' is not a valid message topic"
+        "read_error": "field 'quick_replies[0]' must be less than or equal to 64, field 'topic' is not a valid message topic"
     },
     {
         "description": "Error events if msg text, attachments and quick replies have expression errors",
@@ -197,7 +223,7 @@
             "text": "Hi there",
             "quick_replies": [
                 "yes",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                "@(repeat(\"1234567890\", 10))"
             ]
         },
         "events": [
@@ -218,7 +244,7 @@
                             "text": "yes"
                         },
                         {
-                            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+                            "text": "1234567890123456789012345678901234567890123456789012345678901..."
                         }
                     ],
                     "locale": "eng-US"
