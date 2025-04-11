@@ -43,6 +43,10 @@ func TestBrokenFlows(t *testing.T) {
 		err  string
 	}{
 		{
+			"invalid_name.json",
+			"unable to read flow header: field 'name' must be less than or equal to 64",
+		},
+		{
 			"null_node.json",
 			"field 'nodes[1]' is required",
 		},
@@ -117,6 +121,10 @@ func TestBrokenFlows(t *testing.T) {
 		{
 			"too_many_categories.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: router can't have more than 100 categories (has 101)",
+		},
+		{
+			"too_many_cases.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: switch router can't have more than 100 cases (has 101)",
 		},
 	}
 
@@ -399,7 +407,7 @@ func TestReferences(t *testing.T) {
 func TestReadFlow(t *testing.T) {
 	// try reading something without a flow header
 	_, err := definition.ReadFlow([]byte(`{"nodes":[]}`), nil)
-	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'spec_version' is required")
+	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'name' is required, field 'spec_version' is required")
 
 	// try reading a definition with a newer major version
 	_, err = definition.ReadFlow([]byte(`{

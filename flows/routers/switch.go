@@ -94,6 +94,10 @@ func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
+	if len(r.cases) > flows.MaxCategoriesPerRouter {
+		return fmt.Errorf("switch router can't have more than %d cases (has %d)", flows.MaxCategoriesPerRouter, len(r.cases))
+	}
+
 	// check the default category is valid
 	if r.defaultCategoryUUID != "" && !r.isValidCategory(r.defaultCategoryUUID) {
 		return fmt.Errorf("default category %s is not a valid category", r.defaultCategoryUUID)
