@@ -1,3 +1,7 @@
+v0.236.4 (2025-04-11)
+-------------------------
+ * For validation errors that relate to limits, include the count in the message
+
 v0.236.3 (2025-04-10)
 -------------------------
  * Amend 14.0 migration to also fix empty category names
