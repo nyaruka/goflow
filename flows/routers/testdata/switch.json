@@ -87,7 +87,7 @@
                 }
             ]
         },
-        "read_error": "case category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
+        "read_error": "invalid case[uuid=98503572-25bf-40ce-ad72-8836b6549a38]: category 33c829d5-9092-484e-9683-c03614b6a446 is not a valid category"
     },
     {
         "description": "Read fails for invalid case test",
@@ -132,7 +132,7 @@
                 }
             ]
         },
-        "read_error": "case test has_any_icecream is not a registered test function"
+        "read_error": "invalid case[uuid=98503572-25bf-40ce-ad72-8836b6549a38]: has_any_icecream is not a registered test function"
     },
     {
         "description": "Result created with matching test result",

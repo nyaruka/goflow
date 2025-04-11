@@ -72,16 +72,18 @@ func TestMigrateToLatest(t *testing.T) {
 	assert.Nil(t, migrated)
 
 	_, err = migrations.MigrateToLatest([]byte(`{}`), migrations.DefaultConfig)
-	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'spec_version' is required")
+	assert.EqualError(t, err, "unable to read flow header: field 'uuid' is required, field 'name' is required, field 'spec_version' is required")
 
 	migrated, err = migrations.MigrateToLatest([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
 		"spec_version": "13.0"
 	}`), migrations.DefaultConfig)
 	require.NoError(t, err)
 
 	expected := fmt.Sprintf(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Empty Flow",
 		"spec_version": "%s",
 		"language": "und"
 	}`, definition.CurrentSpecVersion)

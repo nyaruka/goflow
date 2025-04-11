@@ -1,0 +1,645 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "cases": [
+                            {
+                                "uuid": "32370b04-9835-4853-a5ad-aed46414ca6e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "7a24160f-9d45-44fb-9527-d014e42cbaf5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "94d174f9-1674-4db4-8bd2-638034871db1",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "29eefbfa-c170-4864-9eda-3e58bc1a71dd",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "74f1951f-ba39-48cc-b0ee-26b436781ef5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "2d764442-7400-44d0-a9e1-e5e5871b977a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "2edbd2c0-6dde-4331-96b6-ac87267db2ff",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "70af85b6-af51-4285-b25d-8c8484bdc143",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "35d0a7e0-2140-4b98-8ac3-a20fa285207e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "c673872e-a4fc-4e52-99b6-dbc1cb5b1fe1",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "76b3d5d9-b8fd-4252-bcfa-31164367323c",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "c938ffd3-8277-49f6-9aab-a55ed7014314",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "06960af6-febb-4720-b531-f56aaeb0068e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "bfeaa527-9c71-4efe-bf55-7473a7858789",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "da4a7577-e7f0-4e19-aabf-57ff73a73934",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "087d52d8-4474-49e4-bd5d-66cba863d32a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1fd68aca-4a20-457a-b021-3a764577615a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "efd0ad79-c446-4f67-913d-3482c25c8c2c",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e385b84a-c21a-470d-af28-001a03423009",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "98e861aa-7ccc-4703-a4c7-cfc6e982c7b6",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4aa1f8c3-854e-48f3-a592-cdb9a9730289",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "0adc0640-f36b-4d41-9bc3-beec1f3279ad",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1fa6ba1b-502b-47d2-b867-858fa07014e1",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "d1ef422f-eb4a-448d-8bd3-93e0fbc552d1",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e4ee9a07-aee8-4eec-ac24-139367cd7c5c",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1e505c05-1e31-4ddd-bb5e-ec2d7c3de3d8",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "921f68b6-53fa-480d-a9a4-afed8f313282",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "b54cbe2b-f17c-4ec4-9626-2b208747cc08",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "cbe04cc0-8240-4142-9b52-c9a54c33a935",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "3f0cf153-e208-4b1b-b650-44bc5ea3e4b2",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "2df8bd26-915d-48d5-9c29-4257d81ee4de",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "2909994b-f49c-4625-9c03-fdba7365f539",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "490275cd-a16a-4b12-a60c-c89076e045be",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "316682c9-e0c7-4686-b14a-953c875dac8a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e7dc1a27-89d7-4c74-870f-b8a04f510dcc",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "782867ac-9585-4223-bfcc-ed070916ccb5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "ffefa012-a77a-4e68-b84f-63c82df92f1f",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "72b9e191-ea2e-4d76-a9b0-c4d4715be03b",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "8ca6ea12-4c05-430b-ba4f-ec8f6219f86c",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "436185e7-9c03-4977-b186-eebaaa689d03",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "7469f630-b2b8-4e86-aabd-1bb8f0c72c0d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "db99b132-0228-4fb2-8082-2c08def14ad5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "ab42875d-8c0f-488e-81da-439adde052c3",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "bcc69026-88ed-4186-826e-8a9137884438",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e0bf20b2-6dee-4225-a5da-42888afe06b5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "5d936735-1c7d-4f14-812f-8540ef7a4f70",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "3fe469cc-2674-492c-bb57-5c98075032ce",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1bc30056-8646-40fb-900b-17abfb01868d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "20c4c65f-10b6-43ff-9527-addedc696fba",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "dde84b92-e1fa-402f-af67-2f440dbeefba",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "0a6c7689-1fdd-421a-822d-99d742ee2825",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "7bbbc07e-f856-4606-b060-7c5cbde273d4",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "5188d281-7549-4cc2-abc5-48cc916a39c4",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "53b747a5-4382-4ecf-b573-1164b6ec4d08",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "61aa4098-c116-4c87-9271-73f1034817da",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e7f33f54-4531-4253-9f31-c8bc6a8c5cd7",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "35a42d62-8be3-4aad-ab4c-c12bebf20dc5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "ee3e4da4-772c-4f77-8608-52a7e1edffb9",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "0921e6b4-23ab-48d5-b2fd-7f44ea3a6b40",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1931df92-0bd9-4e62-a5de-69b44dcb46fe",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "71737044-c990-44d7-94a1-50d46caa200e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e664a5df-fe00-47fe-8828-acbf4fb2bf5e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "13d78a5c-cc52-4781-9e4f-194d5b1b421a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "9cb07b0d-e656-43e7-bffe-ff7426c80ce5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "07385b0c-e424-4615-9eb8-d2e66b572323",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "ef396c81-4d97-4fdb-bfdc-28c1d05255d9",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4743b0e7-f8c3-40ba-b4cf-ab2886141dbe",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4cb8ce5b-f398-41e7-ac77-32ac440312aa",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "47091d45-61ab-4562-9af0-7439b739bb04",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "c0c84376-ae5d-4591-96ec-7ab116ad912e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "466ed6f7-f195-4cc1-8de5-706bbda223a0",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "911d439e-a6dd-4f77-a348-9df7184e3e12",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "d3316b9a-9249-4772-8c18-33116a1488de",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4c072ffc-d594-452f-a907-84d0c7861ba9",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "543a9a5d-d5fd-4e30-b088-80aa5171a48d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "8ad09ad3-3f9f-4dc0-bfeb-ffb903aad97a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "bfdffdae-fc69-4b52-9503-5dd17ad1d477",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "c618a30b-b4c7-419d-9b45-cf369d2b019f",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "7fb27edc-7bfe-40db-81d1-b438fb7206aa",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "26daf450-ee6b-470c-be1f-bd761de508b4",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "137cdeb1-1e36-431d-afdd-913f3453b5c4",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "47d0a52c-0d1c-4e0c-a9d8-918b59481cfe",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "93b6a6c0-2bdb-4029-9c4f-cec6176165b6",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "3e4fe7cd-6cab-431f-8571-18215c2c9ab4",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e6ec5c2b-c6a7-4e22-8d44-ade0e3caef1d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "99099589-a08e-4099-8c9e-1d104ceb1b8c",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "7a673b50-8697-4b0a-ab22-bdb8a400557a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4e1c139c-10fa-4594-83f8-96bdba1659ea",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "9fd98b89-c74d-4896-993e-4f6657ef9c51",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "e362323a-286b-4a2d-8906-a14325c737b7",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4ec937b4-ae67-4bb8-9672-97abdf0666f0",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "320a4136-8f6d-48c8-9ba3-ec95761f9d18",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "9536c40f-93a3-48f8-8443-a92774793ab1",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "ce7664fb-e2db-419a-9836-6f67cc28675b",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "d5195545-d75c-4080-bdfd-57c11ec3632a",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "41f12c39-7490-4fa6-8eb4-6aa2da52ea70",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "d47b8795-90b0-468b-acdc-086b044e5e04",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "3c03d17d-c7ab-473a-a7ad-3aa6c8269bcd",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "85716561-b3fb-4e28-a41f-cadb0da2085e",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "4eaa8993-a406-4a80-9496-fc8e03ccc8b7",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            },
+                            {
+                                "uuid": "1c25210c-9023-47d4-b22c-554586f67122",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca",
+                                "name": "Other",
+                                "exit_uuid": "e7edb8a8-9c41-4d03-888c-dee0e04b1532"
+                            }
+                        ],
+                        "default_category_uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca",
+                        "result_name": "Response 1",
+                        "operand": "@input.text"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "e7edb8a8-9c41-4d03-888c-dee0e04b1532"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

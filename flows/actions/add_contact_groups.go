@@ -32,7 +32,7 @@ type AddContactGroupsAction struct {
 	baseAction
 	universalAction
 
-	Groups []*assets.GroupReference `json:"groups" validate:"required,dive"`
+	Groups []*assets.GroupReference `json:"groups" validate:"required,max=100,dive"`
 }
 
 // NewAddContactGroups creates a new add to groups action

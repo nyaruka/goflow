@@ -1,5 +1,19 @@
 [
     {
+        "description": "Read fails when invalid group reference",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "x",
+                    "name": "1"
+                }
+            ]
+        },
+        "read_error": "field 'groups[0].uuid' must be a valid UUID4"
+    },
+    {
         "description": "Error event and NOOP for missing group",
         "action": {
             "type": "add_contact_groups",

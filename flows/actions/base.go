@@ -258,9 +258,9 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text"                    validate:"required"        engine:"localized,evaluated"`
-	Attachments  []string `json:"attachments,omitempty"   validate:"dive,attachment" engine:"localized,evaluated"`
-	QuickReplies []string `json:"quick_replies,omitempty"                            engine:"localized,evaluated"`
+	Text         string   `json:"text"                    validate:"required"               engine:"localized,evaluated"`
+	Attachments  []string `json:"attachments,omitempty"   validate:"max=10,dive,attachment" engine:"localized,evaluated"`
+	QuickReplies []string `json:"quick_replies,omitempty" validate:"max=10,dive,max=64"     engine:"localized,evaluated"`
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
