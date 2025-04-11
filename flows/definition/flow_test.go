@@ -104,19 +104,19 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"too_many_nodes.json",
-			"flow can't have more than 1000 nodes",
+			"flow can't have more than 1000 nodes (has 1001)",
 		},
 		{
 			"too_many_actions.json",
-			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 actions",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 actions (has 101)",
 		},
 		{
 			"too_many_exits.json",
-			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 exits",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: node can't have more than 100 exits (has 101)",
 		},
 		{
 			"too_many_categories.json",
-			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: router can't have more than 100 categories",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: router can't have more than 100 categories (has 101)",
 		},
 	}
 
