@@ -16,6 +16,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const (
+	MaxNodesPerFlow        = 1000 // max number of nodes in a flow
+	MaxActionsPerNode      = 100  // max number of actions in a node
+	MaxExitsPerNode        = 100  // max number of exits in a node
+	MaxCategoriesPerRouter = 100  // max number of categories a router can have
+)
+
 // NodeUUID is a UUID of a flow node
 type NodeUUID uuids.UUID
 
