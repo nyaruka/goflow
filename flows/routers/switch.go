@@ -41,6 +41,22 @@ func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flo
 	}
 }
 
+func (c *Case) validate(r *SwitchRouter) error {
+	if !r.isValidCategory(c.CategoryUUID) {
+		return fmt.Errorf("category %s is not a valid category", c.CategoryUUID)
+	}
+
+	if _, exists := cases.XTESTS[c.Type]; !exists {
+		return fmt.Errorf("%s is not a registered test function", c.Type)
+	}
+
+	if len(c.Arguments) > flows.MaxArgumentsPerCase {
+		return fmt.Errorf("can't have more than %d arguments (has %d)", flows.MaxArgumentsPerCase, len(c.Arguments))
+	}
+
+	return nil
+}
+
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
@@ -94,8 +110,8 @@ func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
-	if len(r.cases) > flows.MaxCategoriesPerRouter {
-		return fmt.Errorf("switch router can't have more than %d cases (has %d)", flows.MaxCategoriesPerRouter, len(r.cases))
+	if len(r.cases) > flows.MaxCasesPerRouter {
+		return fmt.Errorf("can't have more than %d cases (has %d)", flows.MaxCasesPerRouter, len(r.cases))
 	}
 
 	// check the default category is valid
@@ -104,14 +120,8 @@ func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	}
 
 	for _, c := range r.cases {
-		// check each case points to a valid category
-		if !r.isValidCategory(c.CategoryUUID) {
-			return fmt.Errorf("case category %s is not a valid category", c.CategoryUUID)
-		}
-
-		// and each case test is valid
-		if _, exists := cases.XTESTS[c.Type]; !exists {
-			return fmt.Errorf("case test %s is not a registered test function", c.Type)
+		if err := c.validate(r); err != nil {
+			return fmt.Errorf("invalid case[uuid=%s]: %s", c.UUID, err)
 		}
 	}
 

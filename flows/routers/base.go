@@ -92,7 +92,7 @@ func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []st
 
 func (r *baseRouter) validate(flow flows.Flow, exits []flows.Exit) error {
 	if len(r.categories) > flows.MaxCategoriesPerRouter {
-		return fmt.Errorf("router can't have more than %d categories (has %d)", flows.MaxCategoriesPerRouter, len(r.categories))
+		return fmt.Errorf("can't have more than %d categories (has %d)", flows.MaxCategoriesPerRouter, len(r.categories))
 	}
 
 	// check wait timeout category is valid
