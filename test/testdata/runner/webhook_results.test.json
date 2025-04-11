@@ -60,7 +60,7 @@
                     "exit_uuid": "b0c4e70e-ecee-4103-a755-3877f11e5801",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f",
-                    "operand": "Success",
+                    "operand": "200",
                     "time": "2018-07-06T12:30:10.123456789Z"
                 },
                 {
@@ -301,7 +301,7 @@
                     "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b",
                     "flow_uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
                     "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
-                    "operand": "Success",
+                    "operand": "200",
                     "time": "2018-07-06T12:30:43.123456789Z"
                 },
                 {

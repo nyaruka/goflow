@@ -3,7 +3,7 @@
     {
       "name": "Webhook Results",
       "uuid": "68dae09d-db22-4879-90a7-a89395e3167b",
-      "spec_version": "14.0.0",
+      "spec_version": "14.1.0",
       "language": "eng",
       "type": "messaging",
       "nodes": [
