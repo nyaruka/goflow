@@ -1,3 +1,7 @@
+v0.238.0 (2025-04-14)
+-------------------------
+ * Add 14.1 migration to make webhook nodes split on @webhook and fix quick replies that are too long
+
 v0.237.0 (2025-04-14)
 -------------------------
  * Limit groups and label actions to 100 items
