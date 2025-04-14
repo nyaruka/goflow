@@ -1,3 +1,7 @@
+v0.238.1 (2025-04-14)
+-------------------------
+ * Relax length limit on quick replies since they can be expressions but add limits elsewhere
+
 v0.238.0 (2025-04-14)
 -------------------------
  * Add 14.1 migration to make webhook nodes split on @webhook and fix quick replies that are too long
