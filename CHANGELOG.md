@@ -1,3 +1,9 @@
+v0.237.0 (2025-04-14)
+-------------------------
+ * Limit groups and label actions to 100 items
+ * Limit argument count on router cases
+ * Add validation for flow names and number of router cases
+
 v0.236.4 (2025-04-11)
 -------------------------
  * For validation errors that relate to limits, include the count in the message
