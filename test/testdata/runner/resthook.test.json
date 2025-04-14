@@ -111,7 +111,7 @@
                     "exit_uuid": "cffd72b4-0b30-41a8-ae2b-b8e5019a164d",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-                    "operand": "Failure",
+                    "operand": "400",
                     "time": "2018-07-06T12:30:16.123456789Z"
                 }
             ],
