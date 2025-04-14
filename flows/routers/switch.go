@@ -41,7 +41,7 @@ func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flo
 	}
 }
 
-func (c *Case) validate(r *SwitchRouter) error {
+func (c *Case) validate(r *SwitchRouter, strict bool) error {
 	if !r.isValidCategory(c.CategoryUUID) {
 		return fmt.Errorf("category %s is not a valid category", c.CategoryUUID)
 	}
@@ -50,7 +50,7 @@ func (c *Case) validate(r *SwitchRouter) error {
 		return fmt.Errorf("%s is not a registered test function", c.Type)
 	}
 
-	if len(c.Arguments) > flows.MaxArgumentsPerCase {
+	if strict && len(c.Arguments) > flows.MaxArgumentsPerCase {
 		return fmt.Errorf("can't have more than %d arguments (has %d)", flows.MaxArgumentsPerCase, len(c.Arguments))
 	}
 
@@ -109,8 +109,8 @@ func NewSwitch(wait flows.Wait, resultName string, categories []flows.Category, 
 func (r *SwitchRouter) Cases() []*Case { return r.cases }
 
 // Validate validates the arguments for this router
-func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
-	if len(r.cases) > flows.MaxCasesPerRouter {
+func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit, strict bool) error {
+	if strict && len(r.cases) > flows.MaxCasesPerRouter {
 		return fmt.Errorf("can't have more than %d cases (has %d)", flows.MaxCasesPerRouter, len(r.cases))
 	}
 
@@ -120,12 +120,12 @@ func (r *SwitchRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
 	}
 
 	for _, c := range r.cases {
-		if err := c.validate(r); err != nil {
+		if err := c.validate(r, strict); err != nil {
 			return fmt.Errorf("invalid case[uuid=%s]: %s", c.UUID, err)
 		}
 	}
 
-	return r.validate(flow, exits)
+	return r.validate(flow, exits, strict)
 }
 
 // Route determines which exit to take from a node

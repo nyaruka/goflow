@@ -48,7 +48,7 @@ func NewRemoveContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReferen
 }
 
 // Validate validates our action is valid
-func (a *RemoveContactGroupsAction) Validate() error {
+func (a *RemoveContactGroupsAction) Validate(strict bool) error {
 	if a.AllGroups && len(a.Groups) > 0 {
 		return fmt.Errorf("can't specify specific groups when all_groups=true")
 	}

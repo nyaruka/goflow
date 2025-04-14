@@ -310,8 +310,9 @@ func TestNewFlow(t *testing.T) {
 				},
 			),
 		},
-		nil, // no UI
-		nil, // no asset
+		nil,  // no UI
+		nil,  // no asset
+		true, // strict validation
 	)
 	require.NoError(t, err)
 

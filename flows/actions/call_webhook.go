@@ -74,7 +74,7 @@ func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers ma
 }
 
 // Validate validates our action is valid
-func (a *CallWebhookAction) Validate() error {
+func (a *CallWebhookAction) Validate(strict bool) error {
 	for key := range a.Headers {
 		if !httpguts.ValidHeaderFieldName(key) {
 			return fmt.Errorf("header '%s' is not a valid HTTP header", key)
