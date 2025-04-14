@@ -246,5 +246,68 @@
                 }
             ]
         }
+    },
+    {
+        "description": "flow send msg action with quick reply that's too long",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "send_msg",
+                            "text": "Hi",
+                            "quick_replies": [
+                                "Yes",
+                                "No",
+                                "DarnHowShouldIKnowWhyAreYouAskingMeThisImJustHereToTestThisFlowOk"
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "send_msg",
+                            "text": "Hi",
+                            "quick_replies": [
+                                "Yes",
+                                "No",
+                                "DarnHowShouldIKnowWhyAreYouAskingMeThisImJustHereToTestThisFlowO"
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        }
+                    ]
+                }
+            ]
+        }
     }
 ]
