@@ -29,8 +29,8 @@ func NewRandom(wait flows.Wait, resultName string, categories []flows.Category) 
 }
 
 // Validate validates that the fields on this router are valid
-func (r *RandomRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
-	return r.validate(flow, exits)
+func (r *RandomRouter) Validate(flow flows.Flow, exits []flows.Exit, strict bool) error {
+	return r.validate(flow, exits, strict)
 }
 
 // Route determines which exit to take from a node

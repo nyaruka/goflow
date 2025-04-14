@@ -54,7 +54,7 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType flows.FlowType, revision int, expireAfter time.Duration, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType flows.FlowType, revision int, expireAfter time.Duration, localization flows.Localization, nodes []flows.Node, ui json.RawMessage, a assets.Flow, strict bool) (flows.Flow, error) {
 	f := &flow{
 		uuid:         uuid,
 		name:         name,
@@ -74,7 +74,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType
 		f.nodeMap[node.UUID()] = node
 	}
 
-	if err := f.validate(); err != nil {
+	if err := f.validate(strict); err != nil {
 		return nil, err
 	}
 
@@ -103,7 +103,7 @@ func (f *flow) ExpireAfter() time.Duration {
 	return f.expireAfter
 }
 
-func (f *flow) validate() error {
+func (f *flow) validate(strict bool) error {
 	if len(f.nodes) > flows.MaxNodesPerFlow {
 		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, len(f.nodes))
 	}
@@ -118,7 +118,7 @@ func (f *flow) validate() error {
 		}
 		seenUUIDs[uuids.UUID(node.UUID())] = true
 
-		if err := node.Validate(f, seenUUIDs); err != nil {
+		if err := node.Validate(f, seenUUIDs, strict); err != nil {
 			return fmt.Errorf("invalid node[uuid=%s]: %w", node.UUID(), err)
 		}
 	}
@@ -323,7 +323,7 @@ type flowEnvelope struct {
 }
 
 // ReadFlow reads a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
-func ReadFlow(data json.RawMessage, mc *migrations.Config) (flows.Flow, error) {
+func ReadFlow(data []byte, mc *migrations.Config) (flows.Flow, error) {
 	return readFlow(data, mc, nil)
 }
 
@@ -364,7 +364,7 @@ func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows
 		e.Localization = make(localization)
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a, true)
 }
 
 // MarshalJSON marshals this flow into JSON

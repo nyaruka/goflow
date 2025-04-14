@@ -37,12 +37,14 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 
-func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
-	if len(n.actions) > flows.MaxActionsPerNode {
-		return fmt.Errorf("node can't have more than %d actions (has %d)", flows.MaxActionsPerNode, len(n.actions))
-	}
-	if len(n.exits) > flows.MaxExitsPerNode {
-		return fmt.Errorf("node can't have more than %d exits (has %d)", flows.MaxExitsPerNode, len(n.exits))
+func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool, strict bool) error {
+	if strict {
+		if len(n.actions) > flows.MaxActionsPerNode {
+			return fmt.Errorf("node can't have more than %d actions (has %d)", flows.MaxActionsPerNode, len(n.actions))
+		}
+		if len(n.exits) > flows.MaxExitsPerNode {
+			return fmt.Errorf("node can't have more than %d exits (has %d)", flows.MaxExitsPerNode, len(n.exits))
+		}
 	}
 
 	// validate all the node's actions
@@ -59,14 +61,14 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 		}
 		seenUUIDs[uuids.UUID(action.UUID())] = true
 
-		if err := action.Validate(); err != nil {
+		if err := action.Validate(strict); err != nil {
 			return fmt.Errorf("invalid action[uuid=%s, type=%s]: %w", action.UUID(), action.Type(), err)
 		}
 	}
 
 	// check the router if there is one
 	if n.Router() != nil {
-		if err := n.Router().Validate(flow, n.Exits()); err != nil {
+		if err := n.Router().Validate(flow, n.Exits(), strict); err != nil {
 			return fmt.Errorf("invalid router: %w", err)
 		}
 	}

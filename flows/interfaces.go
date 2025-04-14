@@ -173,7 +173,7 @@ type Node interface {
 	Router() Router
 	Exits() []Exit
 
-	Validate(Flow, map[uuids.UUID]bool) error
+	Validate(Flow, map[uuids.UUID]bool, bool) error
 
 	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
 	EnumerateDependencies(Localization, func(Action, Router, i18n.Language, assets.Reference))
@@ -189,7 +189,7 @@ type Action interface {
 
 	UUID() ActionUUID
 	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
-	Validate() error
+	Validate(bool) error
 }
 
 // Category is how routers map results to exits
@@ -209,7 +209,7 @@ type Router interface {
 	Categories() []Category
 	ResultName() string
 
-	Validate(Flow, []Exit) error
+	Validate(Flow, []Exit, bool) error
 	AllowTimeout() bool
 	Route(Run, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
