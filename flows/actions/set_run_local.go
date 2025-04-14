@@ -40,7 +40,7 @@ type SetRunLocalAction struct {
 	baseAction
 	universalAction
 
-	Local     string         `json:"local"                               validate:"required,local_ref"`
+	Local     string         `json:"local"                              validate:"required,local_ref"`
 	Value     string         `json:"value,omitempty" engine:"evaluated" validate:"max=1000"`
 	Operation LocalOperation `json:"operation"                          validate:"required,eq=set|eq=increment|eq=clear"`
 }

@@ -33,7 +33,7 @@ type AddInputLabelsAction struct {
 	baseAction
 	interactiveAction
 
-	Labels []*assets.LabelReference `json:"labels" validate:"required,dive"`
+	Labels []*assets.LabelReference `json:"labels" validate:"required,max=100,dive"`
 }
 
 // NewAddInputLabels creates a new add labels action

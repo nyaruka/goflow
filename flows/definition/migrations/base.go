@@ -30,8 +30,8 @@ func Registered() map[*semver.Version]MigrationFunc {
 
 // Header13 is the set of fields common to all 13+ flow spec versions
 type Header13 struct {
-	UUID        assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name        string          `json:"name"`
+	UUID        assets.FlowUUID `json:"uuid"         validate:"required,uuid4"`
+	Name        string          `json:"name"         validate:"required,max=64"`
 	SpecVersion *semver.Version `json:"spec_version" validate:"required"`
 }
 
