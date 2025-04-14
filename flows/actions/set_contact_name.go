@@ -30,7 +30,7 @@ type SetContactNameAction struct {
 	baseAction
 	universalAction
 
-	Name string `json:"name" engine:"evaluated"`
+	Name string `json:"name" validate:"max=1000" engine:"evaluated"`
 }
 
 // NewSetContactName creates a new set name action
