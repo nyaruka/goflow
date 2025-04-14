@@ -3,7 +3,7 @@
         {
             "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
             "name": "Action Tester",
-            "spec_version": "13.5.0",
+            "spec_version": "14.1.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -23,7 +23,7 @@
         {
             "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
             "name": "Voice Action Tester",
-            "spec_version": "13.5.0",
+            "spec_version": "14.1.0",
             "language": "eng",
             "type": "voice",
             "revision": 123,
@@ -43,7 +43,7 @@
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
-            "spec_version": "13.5.0",
+            "spec_version": "14.1.0",
             "revision": 123,
             "language": "eng",
             "type": "messaging",

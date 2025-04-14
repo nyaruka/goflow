@@ -26,11 +26,12 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate14.1 changes webhook nodes to split on @webhook instead of the action's result.
+// Migrate14.1 changes webhook nodes to split on @webhook instead of the action's result and trims quick replies that are too long.
 //
 // @version 14_1 "14.1"
 func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 	webhookActions := []string{"call_webhook", "call_resthook"}
+	maxQuickReplyLength := 64
 
 	for _, node := range f.Nodes() {
 		actions := node.Actions()
@@ -55,6 +56,22 @@ func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 
 		router["operand"] = "@webhook.status"
 		router["cases"] = []any{case0}
+	}
+
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "send_msg" || action.Type() == "send_broadcast" {
+				quickReplies, ok := action["quick_replies"].([]any)
+				if ok {
+					for i := range quickReplies {
+						qr := quickReplies[i].(string)
+						if len(qr) > maxQuickReplyLength {
+							quickReplies[i] = stringsx.Truncate(qr, maxQuickReplyLength)
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return f, nil
