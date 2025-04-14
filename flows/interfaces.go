@@ -21,6 +21,8 @@ const (
 	MaxActionsPerNode      = 100  // max number of actions in a node
 	MaxExitsPerNode        = 100  // max number of exits in a node
 	MaxCategoriesPerRouter = 100  // max number of categories a router can have
+	MaxCasesPerRouter      = 100  // max number of categories a switch router can have
+	MaxArgumentsPerCase    = 100  // max number of test arguments a switch router case can have
 )
 
 // NodeUUID is a UUID of a flow node
