@@ -1,0 +1,203 @@
+[
+    {
+        "description": "Error event and NOOP if flow missing",
+        "action": {
+            "type": "trigger_session",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "dede1e50-db55-4b50-8929-2116bfc56148",
+                "name": "Missing"
+            },
+            "contact": {
+                "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                "name": "Stavros"
+            },
+            "interrupt": true
+        },
+        "events": [
+            {
+                "type": "error",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "text": "missing dependency: flow[uuid=dede1e50-db55-4b50-8929-2116bfc56148,name=Missing]"
+            }
+        ],
+        "inspection": {
+            "dependencies": [
+                {
+                    "uuid": "dede1e50-db55-4b50-8929-2116bfc56148",
+                    "name": "Missing",
+                    "type": "flow",
+                    "missing": true
+                },
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact"
+                }
+            ],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing flow dependency 'dede1e50-db55-4b50-8929-2116bfc56148'",
+                    "dependency": {
+                        "uuid": "dede1e50-db55-4b50-8929-2116bfc56148",
+                        "name": "Missing",
+                        "type": "flow"
+                    }
+                }
+            ],
+            "results": [],
+            "waiting_exits": [],
+            "parent_refs": []
+        }
+    },
+    {
+        "description": "Session triggered event with concrete contact reference",
+        "action": {
+            "type": "trigger_session",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            },
+            "contact": {
+                "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                "name": "Stavros"
+            },
+            "interrupt": true
+        },
+        "events": [
+            {
+                "type": "session_triggered",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "flow": {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age"
+                },
+                "contact": {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros"
+                },
+                "interrupt": true,
+                "exclusions": {},
+                "run_summary": {
+                    "uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                    "flow": {
+                        "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                        "name": "Action Tester",
+                        "revision": 123
+                    },
+                    "contact": {
+                        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+                        "name": "Ryan Lewis",
+                        "language": "eng",
+                        "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "created_on": "2018-06-20T11:40:30.123456789Z",
+                        "urns": [
+                            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                            "twitterid:54784326227#nyaruka"
+                        ],
+                        "groups": [
+                            {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Testers"
+                            },
+                            {
+                                "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                                "name": "Males"
+                            }
+                        ],
+                        "fields": {
+                            "gender": {
+                                "text": "Male"
+                            }
+                        }
+                    },
+                    "status": "active",
+                    "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 0
+                }
+            }
+        ]
+    },
+    {
+        "description": "Session triggered event with URN",
+        "action": {
+            "type": "trigger_session",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            },
+            "urn": "@(\"tel:+593979123456\")",
+            "interrupt": true
+        },
+        "events": [
+            {
+                "type": "session_triggered",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c",
+                "flow": {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age"
+                },
+                "urn": "tel:+593979123456",
+                "interrupt": true,
+                "exclusions": {},
+                "run_summary": {
+                    "uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                    "flow": {
+                        "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                        "name": "Action Tester",
+                        "revision": 123
+                    },
+                    "contact": {
+                        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+                        "name": "Ryan Lewis",
+                        "language": "eng",
+                        "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+                        "status": "active",
+                        "timezone": "America/Guayaquil",
+                        "created_on": "2018-06-20T11:40:30.123456789Z",
+                        "urns": [
+                            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                            "twitterid:54784326227#nyaruka"
+                        ],
+                        "groups": [
+                            {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Testers"
+                            },
+                            {
+                                "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                                "name": "Males"
+                            }
+                        ],
+                        "fields": {
+                            "gender": {
+                                "text": "Male"
+                            }
+                        }
+                    },
+                    "status": "active",
+                    "results": {}
+                },
+                "history": {
+                    "parent_uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+                    "ancestors": 1,
+                    "ancestors_since_input": 0
+                }
+            }
+        ]
+    }
+]
