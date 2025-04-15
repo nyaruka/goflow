@@ -31,7 +31,9 @@ func init() {
 // @version 14_1 "14.1"
 func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 	webhookActions := []string{"call_webhook", "call_resthook"}
+	maxQuickReplies := 10
 
+	// replace any @results.* operands in webhook nodes with @webhook.status
 	for _, node := range f.Nodes() {
 		actions := node.Actions()
 		router := node.Router()
@@ -55,6 +57,18 @@ func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 
 		router["operand"] = "@webhook.status"
 		router["cases"] = []any{case0}
+	}
+
+	// trim any quick replies to a max of 10
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "send_msg" || action.Type() == "send_broadcast" {
+				quickReplies, ok := action["quick_replies"].([]any)
+				if ok && len(quickReplies) > maxQuickReplies {
+					action["quick_replies"] = quickReplies[:maxQuickReplies]
+				}
+			}
+		}
 	}
 
 	return f, nil
