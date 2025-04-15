@@ -1,3 +1,7 @@
+v0.238.2 (2025-04-15)
+-------------------------
+ * Amend 14.1 migration to trim quick replies to 10
+
 v0.238.1 (2025-04-14)
 -------------------------
  * Relax length limit on quick replies since they can be expressions but add limits elsewhere
