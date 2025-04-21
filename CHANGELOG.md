@@ -1,3 +1,7 @@
+v0.239.0 (2025-04-21)
+-------------------------
+ * Make result optional on open ticket actions but always write a local that can be used for splitting
+
 v0.238.2 (2025-04-15)
 -------------------------
  * Amend 14.1 migration to trim quick replies to 10
