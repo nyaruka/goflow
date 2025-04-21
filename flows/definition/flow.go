@@ -293,7 +293,7 @@ func (f *flow) extractResults() []flows.ExtractedResult {
 	results := make([]flows.ExtractedResult, 0)
 
 	for _, n := range f.nodes {
-		n.EnumerateResults(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
+		n.Inspect(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
 			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
 		})
 	}
