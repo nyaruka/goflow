@@ -98,26 +98,15 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 	}
 }
 
-// DependencyContainer allows flow objects to declare other dependencies
-type DependencyContainer interface {
-	Dependencies(flows.Localization, func(i18n.Language, assets.Reference))
-}
-
 // Dependencies extracts dependencies
-func Dependencies(s any, localization flows.Localization, include func(i18n.Language, assets.Reference)) {
-	dependencies(reflect.ValueOf(s), localization, include)
+func Dependencies(s any, include func(i18n.Language, assets.Reference)) {
+	dependencies(reflect.ValueOf(s), include)
 }
 
-func dependencies(v reflect.Value, localization flows.Localization, include func(i18n.Language, assets.Reference)) {
+func dependencies(v reflect.Value, include func(i18n.Language, assets.Reference)) {
 	walk(
 		v,
-		func(sv reflect.Value) {
-			// anything which is a DependencyContainer can explicitly provide dependencies
-			asDepCon, isDepCon := sv.Interface().(DependencyContainer)
-			if isDepCon {
-				asDepCon.Dependencies(localization, include)
-			}
-		},
+		func(sv reflect.Value) {},
 		func(sv reflect.Value, fv reflect.Value, ef *EngineField) {
 			// extract any asset.Reference fields automatically as dependencies
 			extractAssetReferences(fv, include)

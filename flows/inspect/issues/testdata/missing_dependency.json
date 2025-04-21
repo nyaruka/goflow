@@ -89,16 +89,7 @@
             "spec_version": "13.0",
             "language": "eng",
             "type": "messaging",
-            "localization": {
-                "spa": {
-                    "8720f157-ca1c-432f-9c0b-2014ddc77094": {
-                        "arguments": [
-                            "db6d7535-069f-43fc-a2e0-8d53386072bf",
-                            "Ensayadores"
-                        ]
-                    }
-                }
-            },
+            "localization": {},
             "nodes": [
                 {
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -150,17 +141,6 @@
                 "dependency": {
                     "uuid": "ade39253-0371-4dde-9df4-95245fe6a3a8",
                     "name": "Testers",
-                    "type": "group"
-                }
-            },
-            {
-                "type": "missing_dependency",
-                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "language": "spa",
-                "description": "missing group dependency 'db6d7535-069f-43fc-a2e0-8d53386072bf'",
-                "dependency": {
-                    "uuid": "db6d7535-069f-43fc-a2e0-8d53386072bf",
-                    "name": "Ensayadores",
                     "type": "group"
                 }
             }

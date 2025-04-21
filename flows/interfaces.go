@@ -177,7 +177,7 @@ type Node interface {
 
 	Inspect(func(Action, Router, *ResultInfo))
 	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
-	EnumerateDependencies(Localization, func(Action, Router, i18n.Language, assets.Reference))
+	EnumerateDependencies(func(Action, Router, i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
@@ -217,7 +217,7 @@ type Router interface {
 
 	Inspect(func(*ResultInfo))
 	EnumerateTemplates(Localization, func(i18n.Language, string))
-	EnumerateDependencies(Localization, func(i18n.Language, assets.Reference))
+	EnumerateDependencies(func(i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 

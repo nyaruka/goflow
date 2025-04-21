@@ -280,7 +280,7 @@ func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference,
 				parentRefs[r] = true
 			}
 		})
-		n.EnumerateDependencies(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
+		n.EnumerateDependencies(func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
 			recordAssetRef(n, a, r, l, ref)
 		})
 	}

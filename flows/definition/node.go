@@ -113,15 +113,15 @@ func (n *node) EnumerateTemplates(localization flows.Localization, include func(
 }
 
 // EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(localization flows.Localization, include func(flows.Action, flows.Router, i18n.Language, assets.Reference)) {
+func (n *node) EnumerateDependencies(include func(flows.Action, flows.Router, i18n.Language, assets.Reference)) {
 	for _, action := range n.actions {
-		inspect.Dependencies(action, localization, func(l i18n.Language, r assets.Reference) {
+		inspect.Dependencies(action, func(l i18n.Language, r assets.Reference) {
 			include(action, nil, l, r)
 		})
 	}
 
 	if n.router != nil {
-		n.router.EnumerateDependencies(localization, func(l i18n.Language, r assets.Reference) {
+		n.router.EnumerateDependencies(func(l i18n.Language, r assets.Reference) {
 			include(nil, n.router, l, r)
 		})
 	}
