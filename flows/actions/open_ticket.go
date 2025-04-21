@@ -27,8 +27,7 @@ const TypeOpenTicket string = "open_ticket"
 //	    "name": "Weather"
 //	  },
 //	  "body": "@input",
-//	  "assignee": {"email": "bob@nyaruka.com", "name": "Bob McTickets"},
-//	  "result_name": "Help Ticket"
+//	  "assignee": {"email": "bob@nyaruka.com", "name": "Bob McTickets"}
 //	}
 //
 // @action open_ticket
@@ -39,7 +38,7 @@ type OpenTicketAction struct {
 	Topic      *assets.TopicReference `json:"topic"                   validate:"omitempty"`
 	Body       string                 `json:"body" engine:"evaluated"` // TODO will become "note" in future migration
 	Assignee   *assets.UserReference  `json:"assignee"                validate:"omitempty"`
-	ResultName string                 `json:"result_name"             validate:"required,result_name"`
+	ResultName string                 `json:"result_name"             validate:"omitempty,result_name"`
 }
 
 // NewOpenTicket creates a new open ticket action
@@ -75,9 +74,17 @@ func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flow
 
 	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
 	if ticket != nil {
-		a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
+		run.Locals().Set("_new_ticket", string(ticket.UUID()))
 	} else {
-		a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
+		run.Locals().Set("_new_ticket", "")
+	}
+
+	if a.ResultName != "" {
+		if ticket != nil {
+			a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
+		} else {
+			a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
+		}
 	}
 
 	return nil
