@@ -70,6 +70,8 @@ func (a *baseAction) UUID() flows.ActionUUID { return a.UUID_ }
 // Validate validates our action is valid
 func (a *baseAction) Validate() error { return nil }
 
+func (a *baseAction) Inspect(result func(*flows.ResultInfo)) {}
+
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 

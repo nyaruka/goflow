@@ -60,24 +60,23 @@ func (r *baseRouter) AllowTimeout() bool {
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *baseRouter) ResultName() string { return r.resultName }
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
-}
-
-// EnumerateDependencies enumerates all dependencies on this object
-func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
-}
-
-// EnumerateResults enumerates all potential results on this object
-func (r *baseRouter) EnumerateResults(include func(*flows.ResultInfo)) {
+func (r *baseRouter) Inspect(result func(*flows.ResultInfo)) {
 	if r.resultName != "" {
 		categoryNames := make([]string, len(r.categories))
 		for i := range r.categories {
 			categoryNames[i] = r.categories[i].Name()
 		}
 
-		include(flows.NewResultInfo(r.resultName, categoryNames))
+		result(flows.NewResultInfo(r.resultName, categoryNames))
 	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
+}
+
+// EnumerateDependencies enumerates all dependencies on this object
+func (r *baseRouter) EnumerateDependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object
