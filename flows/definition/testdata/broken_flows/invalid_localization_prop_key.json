@@ -1,0 +1,24 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "7e994e0d-9c51-4050-bc66-d698b8391684": {
+                        "text": [
+                            "Good"
+                        ],
+                        "1234567890123456789012345678901234567890123456789012345678901234567890": [
+                            "Bad key"
+                        ]
+                    }
+                }
+            },
+            "nodes": []
+        }
+    ]
+}

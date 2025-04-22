@@ -107,6 +107,18 @@ func TestBrokenFlows(t *testing.T) {
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
 		},
 		{
+			"invalid_localization_language.json",
+			"invalid localization: invalid language code 'spanglish'",
+		},
+		{
+			"invalid_localization_item_uuid.json",
+			"invalid localization: invalid translation for 'spa': invalid item uuid 'heh?'",
+		},
+		{
+			"invalid_localization_prop_key.json",
+			"invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': invalid property name '12345678901234567890123456789...'",
+		},
+		{
 			"too_many_nodes.json",
 			"flow can't have more than 1000 nodes (has 1001)",
 		},

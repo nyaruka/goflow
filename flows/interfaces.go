@@ -248,6 +248,7 @@ type Hint interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
+	Validate() error
 	GetItemTranslation(i18n.Language, uuids.UUID, string) []string
 	SetItemTranslation(i18n.Language, uuids.UUID, string, []string)
 	Languages() []i18n.Language

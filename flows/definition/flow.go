@@ -123,6 +123,10 @@ func (f *flow) validate() error {
 		}
 	}
 
+	if err := f.localization.Validate(); err != nil {
+		return fmt.Errorf("invalid localization: %w", err)
+	}
+
 	return nil
 }
 
