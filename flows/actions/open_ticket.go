@@ -109,3 +109,12 @@ func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flo
 	}
 	return nil
 }
+
+func (a *OpenTicketAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	if a.Topic != nil {
+		dependency(a.Topic)
+	}
+	if a.Assignee != nil {
+		dependency(a.Assignee)
+	}
+}

@@ -50,3 +50,9 @@ func (a *AddContactGroupsAction) Execute(ctx context.Context, run flows.Run, ste
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }
+
+func (a *AddContactGroupsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	for _, group := range a.Groups {
+		dependency(group)
+	}
+}

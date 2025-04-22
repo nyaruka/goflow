@@ -99,3 +99,7 @@ func (a *CallLLMAction) call(ctx context.Context, run flows.Run, logEvent flows.
 
 	return resp
 }
+
+func (a *CallLLMAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	dependency(a.LLM)
+}

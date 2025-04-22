@@ -174,10 +174,8 @@ type Node interface {
 	Exits() []Exit
 
 	Validate(Flow, map[uuids.UUID]bool) error
-
-	Inspect(func(Action, Router, *ResultInfo))
+	Inspect(func(Action, Router, *ResultInfo), func(Action, Router, assets.Reference))
 	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
-	EnumerateDependencies(Localization, func(Action, Router, i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
@@ -190,7 +188,7 @@ type Action interface {
 	UUID() ActionUUID
 	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
 	Validate() error
-	Inspect(func(*ResultInfo))
+	Inspect(func(*ResultInfo), func(assets.Reference))
 }
 
 // Category is how routers map results to exits
@@ -210,14 +208,13 @@ type Router interface {
 	Categories() []Category
 	ResultName() string
 
-	Validate(Flow, []Exit) error
 	AllowTimeout() bool
 	Route(Run, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
 
-	Inspect(func(*ResultInfo))
+	Validate(Flow, []Exit) error
+	Inspect(func(*ResultInfo), func(assets.Reference))
 	EnumerateTemplates(Localization, func(i18n.Language, string))
-	EnumerateDependencies(Localization, func(i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 

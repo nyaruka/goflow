@@ -218,11 +218,6 @@
         "inspection": {
             "dependencies": [
                 {
-                    "key": "gender",
-                    "name": "",
-                    "type": "field"
-                },
-                {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
                     "type": "group"
@@ -231,6 +226,11 @@
                     "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
                     "name": "Stavros",
                     "type": "contact"
+                },
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
                 }
             ],
             "issues": [],

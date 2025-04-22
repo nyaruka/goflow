@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/shopspring/decimal"
@@ -104,7 +105,7 @@ func (a *TransferAirtimeAction) saveFailure(run flows.Run, step flows.Step, logE
 	a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
 }
 
-func (a *TransferAirtimeAction) Inspect(result func(*flows.ResultInfo)) {
+func (a *TransferAirtimeAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, transferCategories))
 	}

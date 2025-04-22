@@ -72,3 +72,9 @@ func (a *RemoveContactGroupsAction) Execute(ctx context.Context, run flows.Run, 
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), logModifier, logEvent)
 	return nil
 }
+
+func (a *RemoveContactGroupsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	for _, group := range a.Groups {
+		dependency(group)
+	}
+}

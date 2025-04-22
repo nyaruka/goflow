@@ -5,10 +5,6 @@
             "type": "group"
         },
         {
-            "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
-            "type": "group"
-        },
-        {
             "key": "raw_district",
             "name": "",
             "type": "field"

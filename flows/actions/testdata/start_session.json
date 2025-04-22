@@ -376,11 +376,6 @@
         "inspection": {
             "dependencies": [
                 {
-                    "key": "gender",
-                    "name": "",
-                    "type": "field"
-                },
-                {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers",
                     "type": "group"
@@ -394,6 +389,11 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age",
                     "type": "flow"
+                },
+                {
+                    "key": "gender",
+                    "name": "",
+                    "type": "field"
                 }
             ],
             "issues": [
