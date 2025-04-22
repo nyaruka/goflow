@@ -60,31 +60,6 @@ func (c *Case) validate(r *SwitchRouter) error {
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Case) LocalizationUUID() uuids.UUID { return uuids.UUID(c.UUID) }
 
-// Dependencies enumerates the dependencies on this case
-func (c *Case) Dependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
-	groupRef := func(args []string) assets.Reference {
-		// if we have two args, the second is name
-		name := ""
-		if len(args) == 2 {
-			name = args[1]
-		}
-		return assets.NewGroupReference(assets.GroupUUID(args[0]), name)
-	}
-
-	// currently only the HAS_GROUP router test can produce a dependency
-	if c.Type == "has_group" && len(c.Arguments) > 0 {
-		include(i18n.NilLanguage, groupRef(c.Arguments))
-
-		// the group UUID might be different in different translations
-		for _, lang := range localization.Languages() {
-			arguments := localization.GetItemTranslation(lang, c.UUID, "arguments")
-			if len(arguments) > 0 {
-				include(lang, groupRef(arguments))
-			}
-		}
-	}
-}
-
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default category
 type SwitchRouter struct {
@@ -224,16 +199,27 @@ func (r *SwitchRouter) matchCase(run flows.Run, operand types.XValue, log flows.
 	return "", "", nil, nil
 }
 
+func (r *SwitchRouter) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	r.baseRouter.Inspect(result, dependency)
+
+	for _, c := range r.cases {
+		// currently only the HAS_GROUP router test can produce a dependency
+		if c.Type == "has_group" && len(c.Arguments) > 0 {
+			// if we have two args, the second is name
+			name := ""
+			if len(c.Arguments) == 2 {
+				name = c.Arguments[1]
+			}
+			dependency(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), name))
+		}
+	}
+}
+
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
 	include(i18n.NilLanguage, r.operand)
 
 	inspect.Templates(r.cases, localization, include)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(localization flows.Localization, include func(i18n.Language, assets.Reference)) {
-	inspect.Dependencies(r.cases, localization, include)
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object

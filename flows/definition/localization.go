@@ -1,8 +1,11 @@
 package definition
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -15,6 +18,15 @@ import (
 //	  "_ui": {...}
 //	}
 type itemTranslation map[string]any
+
+func (l itemTranslation) validate() error {
+	for property := range l {
+		if len(property) == 0 || len(property) > 64 {
+			return fmt.Errorf("invalid property name '%s'", stringsx.TruncateEllipsis(property, 32))
+		}
+	}
+	return nil
+}
 
 func (t itemTranslation) get(property string) []string {
 	value, found := t[property]
@@ -57,6 +69,19 @@ func (t itemTranslation) get(property string) []string {
 //	}
 type languageTranslation map[uuids.UUID]itemTranslation
 
+func (l languageTranslation) validate() error {
+	for uuid, item := range l {
+		if !uuids.Is(string(uuid)) {
+			return fmt.Errorf("invalid item uuid '%s'", uuid)
+		}
+
+		if err := item.validate(); err != nil {
+			return fmt.Errorf("invalid item translation for '%s': %w", uuid, err)
+		}
+	}
+	return nil
+}
+
 // returns the requested item translation
 func (t languageTranslation) getTextArray(uuid uuids.UUID, property string) []string {
 	item, found := t[uuid]
@@ -87,6 +112,18 @@ type localization map[i18n.Language]languageTranslation
 // NewLocalization creates a new empty localization
 func NewLocalization() flows.Localization {
 	return make(localization)
+}
+
+func (l localization) Validate() error {
+	for lang, translation := range l {
+		if len(lang) != 3 {
+			return fmt.Errorf("invalid language code '%s'", lang)
+		}
+		if err := translation.validate(); err != nil {
+			return fmt.Errorf("invalid translation for '%s': %w", lang, err)
+		}
+	}
+	return nil
 }
 
 // Languages gets the list of languages included in this localization

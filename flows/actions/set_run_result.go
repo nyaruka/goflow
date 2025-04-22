@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -65,7 +66,7 @@ func (a *SetRunResultAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *SetRunResultAction) Inspect(result func(*flows.ResultInfo)) {
+func (a *SetRunResultAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
 	if a.Category != "" {
 		result(flows.NewResultInfo(a.Name, []string{a.Category}))
 	} else {

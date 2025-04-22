@@ -57,3 +57,9 @@ func (a *SetContactChannelAction) Execute(ctx context.Context, run flows.Run, st
 	a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)
 	return nil
 }
+
+func (a *SetContactChannelAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	if a.Channel != nil {
+		dependency(a.Channel)
+	}
+}

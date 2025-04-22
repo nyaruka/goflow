@@ -65,3 +65,7 @@ func (a *SetContactFieldAction) Execute(ctx context.Context, run flows.Run, step
 	}
 	return nil
 }
+
+func (a *SetContactFieldAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	dependency(a.Field)
+}

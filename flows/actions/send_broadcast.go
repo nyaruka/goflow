@@ -89,3 +89,7 @@ func (a *SendBroadcastAction) Execute(ctx context.Context, run flows.Run, step f
 	logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList))
 	return nil
 }
+
+func (a *SendBroadcastAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	a.otherContactsAction.Inspect(result, dependency)
+}

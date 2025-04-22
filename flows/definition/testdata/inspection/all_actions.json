@@ -1,26 +1,6 @@
 {
     "dependencies": [
         {
-            "key": "state",
-            "name": "",
-            "type": "field"
-        },
-        {
-            "key": "first_name",
-            "name": "",
-            "type": "field"
-        },
-        {
-            "key": "activation_token",
-            "name": "",
-            "type": "field"
-        },
-        {
-            "key": "raw_district",
-            "name": "",
-            "type": "field"
-        },
-        {
             "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
             "name": "Spam",
             "type": "label"
@@ -29,6 +9,11 @@
             "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
             "name": "Survey Audience",
             "type": "group"
+        },
+        {
+            "key": "activation_token",
+            "name": "Activation Token",
+            "type": "field"
         },
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -54,6 +39,21 @@
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Android Channel",
             "type": "channel"
+        },
+        {
+            "key": "state",
+            "name": "",
+            "type": "field"
+        },
+        {
+            "key": "first_name",
+            "name": "",
+            "type": "field"
+        },
+        {
+            "key": "raw_district",
+            "name": "",
+            "type": "field"
         }
     ],
     "issues": [],
