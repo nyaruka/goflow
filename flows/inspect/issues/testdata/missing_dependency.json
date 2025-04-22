@@ -48,6 +48,17 @@
             {
                 "type": "missing_dependency",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                "description": "missing label dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
+                "dependency": {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Spam",
+                    "type": "label"
+                }
+            },
+            {
+                "type": "missing_dependency",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                 "description": "missing field dependency 'county'",
                 "dependency": {
@@ -66,17 +77,6 @@
                     "key": "county",
                     "name": "",
                     "type": "field"
-                }
-            },
-            {
-                "type": "missing_dependency",
-                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                "description": "missing label dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
-                "dependency": {
-                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-                    "name": "Spam",
-                    "type": "label"
                 }
             }
         ]

@@ -335,14 +335,14 @@ func TestNewFlow(t *testing.T) {
 	test.AssertEqualJSON(t, []byte(`{
 		"dependencies": [
 			{
-				"key": "gender",
-				"name": "",
-				"type": "field"
-			},
-			{
 				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
 				"name": "Spam",
 				"type": "label"
+			},
+			{
+				"key": "gender",
+				"name": "",
+				"type": "field"
 			}
 		],
 		"issues": [],

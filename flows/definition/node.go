@@ -87,13 +87,21 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 	return nil
 }
 
-func (n *node) Inspect(result func(flows.Action, flows.Router, *flows.ResultInfo)) {
+func (n *node) Inspect(result func(flows.Action, flows.Router, *flows.ResultInfo), dependency func(flows.Action, flows.Router, i18n.Language, assets.Reference)) {
 	for _, action := range n.actions {
 		action.Inspect(func(r *flows.ResultInfo) { result(action, nil, r) })
+
+		inspect.Dependencies(action, func(l i18n.Language, r assets.Reference) {
+			dependency(action, nil, l, r)
+		})
 	}
 
 	if n.router != nil {
 		n.router.Inspect(func(r *flows.ResultInfo) { result(nil, n.router, r) })
+
+		n.router.EnumerateDependencies(func(l i18n.Language, r assets.Reference) {
+			dependency(nil, n.router, l, r)
+		})
 	}
 }
 
@@ -108,21 +116,6 @@ func (n *node) EnumerateTemplates(localization flows.Localization, include func(
 	if n.router != nil {
 		n.router.EnumerateTemplates(localization, func(l i18n.Language, t string) {
 			include(nil, n.router, l, t)
-		})
-	}
-}
-
-// EnumerateDependencies enumerates all dependencies on this object
-func (n *node) EnumerateDependencies(include func(flows.Action, flows.Router, i18n.Language, assets.Reference)) {
-	for _, action := range n.actions {
-		inspect.Dependencies(action, func(l i18n.Language, r assets.Reference) {
-			include(action, nil, l, r)
-		})
-	}
-
-	if n.router != nil {
-		n.router.EnumerateDependencies(func(l i18n.Language, r assets.Reference) {
-			include(nil, n.router, l, r)
 		})
 	}
 }

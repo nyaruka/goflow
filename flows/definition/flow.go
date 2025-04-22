@@ -126,18 +126,6 @@ func (f *flow) validate() error {
 	return nil
 }
 
-// Inspect enumerates dependencies, results etc
-func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
-	templates, assetRefs, parentRefs := f.extract()
-
-	return &flows.Inspection{
-		Dependencies: inspect.NewDependencies(assetRefs, sa),
-		Results:      flows.NewResultSpecs(f.extractResults()),
-		ParentRefs:   parentRefs,
-		Issues:       issues.Check(sa, f, templates, assetRefs),
-	}
-}
-
 // Context returns the properties available in expressions
 //
 //	__default__:text -> the name
@@ -164,6 +152,47 @@ func (f *flow) Reference(withRevision bool) *assets.FlowReference {
 		return assets.NewFlowReferenceWithRevision(f.uuid, f.name, f.revision)
 	}
 	return assets.NewFlowReference(f.uuid, f.name)
+}
+
+// Inspect enumerates dependencies, results etc
+func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
+	results := make([]flows.ExtractedResult, 0)
+	templates := make([]flows.ExtractedTemplate, 0)
+	assetRefs := make([]flows.ExtractedReference, 0)
+	parentRefs := make(map[string]bool)
+
+	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
+		if ref != nil && !ref.Variable() {
+			er := flows.NewExtractedReference(n, a, r, l, ref)
+			assetRefs = append(assetRefs, er)
+		}
+	}
+
+	for _, n := range f.nodes {
+		n.Inspect(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
+			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
+		}, func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
+			recordAssetRef(n, a, r, l, ref)
+		})
+
+		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, t string) {
+			templates = append(templates, flows.NewExtractedTemplate(n, a, r, l, t))
+			ars, prs := inspect.ExtractFromTemplate(t)
+			for _, ref := range ars {
+				recordAssetRef(n, a, r, l, ref)
+			}
+			for _, r := range prs {
+				parentRefs[r] = true
+			}
+		})
+	}
+
+	return &flows.Inspection{
+		Dependencies: inspect.NewDependencies(assetRefs, sa),
+		Results:      flows.NewResultSpecs(results),
+		ParentRefs:   utils.EnsureNonNil(slices.Sorted(maps.Keys(parentRefs))),
+		Issues:       issues.Check(sa, f, templates, assetRefs),
+	}
 }
 
 // ExtractTemplates extracts all non-empty templates
@@ -254,51 +283,6 @@ func (f *flow) copy() (*flow, error) {
 		return nil, err
 	}
 	return cp.(*flow), nil
-}
-
-// extracts all templates, asset dependencies and parent result references
-func (f *flow) extract() ([]flows.ExtractedTemplate, []flows.ExtractedReference, []string) {
-	templates := make([]flows.ExtractedTemplate, 0)
-	assetRefs := make([]flows.ExtractedReference, 0)
-	parentRefs := make(map[string]bool)
-
-	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
-		if ref != nil && !ref.Variable() {
-			er := flows.NewExtractedReference(n, a, r, l, ref)
-			assetRefs = append(assetRefs, er)
-		}
-	}
-
-	for _, n := range f.nodes {
-		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, t string) {
-			templates = append(templates, flows.NewExtractedTemplate(n, a, r, l, t))
-			ars, prs := inspect.ExtractFromTemplate(t)
-			for _, ref := range ars {
-				recordAssetRef(n, a, r, l, ref)
-			}
-			for _, r := range prs {
-				parentRefs[r] = true
-			}
-		})
-		n.EnumerateDependencies(func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
-			recordAssetRef(n, a, r, l, ref)
-		})
-	}
-
-	return templates, assetRefs, utils.EnsureNonNil(slices.Sorted(maps.Keys(parentRefs)))
-}
-
-// extracts all result specs
-func (f *flow) extractResults() []flows.ExtractedResult {
-	results := make([]flows.ExtractedResult, 0)
-
-	for _, n := range f.nodes {
-		n.Inspect(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
-			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
-		})
-	}
-
-	return results
 }
 
 // Asset returns the asset from which this flow was created if there was one

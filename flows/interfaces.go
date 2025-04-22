@@ -174,10 +174,8 @@ type Node interface {
 	Exits() []Exit
 
 	Validate(Flow, map[uuids.UUID]bool) error
-
-	Inspect(func(Action, Router, *ResultInfo))
+	Inspect(func(Action, Router, *ResultInfo), func(Action, Router, i18n.Language, assets.Reference))
 	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
-	EnumerateDependencies(func(Action, Router, i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 
