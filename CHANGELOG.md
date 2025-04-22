@@ -1,3 +1,9 @@
+v0.240.0 (2025-04-22)
+-------------------------
+ * Add basic validation of flow localization
+ * Add 14.2 flow migration to rename open_ticket.body to open_ticket.note
+ * Simplify extracting results and dependencies during inspection
+
 v0.239.0 (2025-04-21)
 -------------------------
  * Make result optional on open ticket actions but always write a local that can be used for splitting
