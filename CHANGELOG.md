@@ -1,3 +1,7 @@
+v0.240.2 (2025-04-22)
+-------------------------
+ * Rename flows.Inspection to flows.Info
+
 v0.240.1 (2025-04-22)
 -------------------------
  * Add node and language counts to inspection results
