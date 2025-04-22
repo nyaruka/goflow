@@ -1,3 +1,7 @@
+v0.240.1 (2025-04-22)
+-------------------------
+ * Add node and language counts to inspection results
+
 v0.240.0 (2025-04-22)
 -------------------------
  * Add basic validation of flow localization
