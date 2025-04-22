@@ -188,7 +188,7 @@ type Action interface {
 	UUID() ActionUUID
 	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
 	Validate() error
-	Inspect(func(*ResultInfo))
+	Inspect(func(*ResultInfo), func(assets.Reference))
 }
 
 // Category is how routers map results to exits

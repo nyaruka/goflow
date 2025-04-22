@@ -124,7 +124,9 @@ func (a *CallClassifierAction) saveFailure(run flows.Run, step flows.Step, input
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, logEvent)
 }
 
-func (a *CallClassifierAction) Inspect(result func(*flows.ResultInfo)) {
+func (a *CallClassifierAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	dependency(a.Classifier)
+
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, classificationCategories))
 	}

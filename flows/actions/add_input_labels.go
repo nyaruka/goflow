@@ -61,3 +61,9 @@ func (a *AddInputLabelsAction) Execute(ctx context.Context, run flows.Run, step 
 
 	return nil
 }
+
+func (a *AddInputLabelsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	for _, label := range a.Labels {
+		dependency(label)
+	}
+}

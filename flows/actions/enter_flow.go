@@ -64,3 +64,7 @@ func (a *EnterFlowAction) Execute(ctx context.Context, run flows.Run, step flows
 	logEvent(events.NewFlowEntered(flow.Reference(false), run.UUID(), a.Terminal))
 	return nil
 }
+
+func (a *EnterFlowAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	dependency(a.Flow)
+}

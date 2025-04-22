@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -175,7 +176,7 @@ func (a *CallResthookAction) pickResultCall(calls []*httpx.Trace) *httpx.Trace {
 	return last410
 }
 
-func (a *CallResthookAction) Inspect(result func(*flows.ResultInfo)) {
+func (a *CallResthookAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}

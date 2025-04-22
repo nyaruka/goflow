@@ -70,7 +70,9 @@ func (a *baseAction) UUID() flows.ActionUUID { return a.UUID_ }
 // Validate validates our action is valid
 func (a *baseAction) Validate() error { return nil }
 
-func (a *baseAction) Inspect(result func(*flows.ResultInfo)) {}
+func (a *baseAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	// nothing to declare
+}
 
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
@@ -200,6 +202,15 @@ type otherContactsAction struct {
 	ContactQuery string                    `json:"contact_query,omitempty" engine:"evaluated"`
 	URNs         []urns.URN                `json:"urns,omitempty"`
 	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
+}
+
+func (a *otherContactsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	for _, group := range a.Groups {
+		dependency(group)
+	}
+	for _, contact := range a.Contacts {
+		dependency(contact)
+	}
 }
 
 func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {

@@ -102,3 +102,9 @@ func (a *StartSessionAction) Execute(ctx context.Context, run flows.Run, step fl
 	logEvent(events.NewSessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }
+
+func (a *StartSessionAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	a.otherContactsAction.Inspect(result, dependency)
+
+	dependency(a.Flow)
+}

@@ -60,3 +60,7 @@ func (a *RequestOptInAction) Execute(ctx context.Context, run flows.Run, step fl
 
 	return nil
 }
+
+func (a *RequestOptInAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	dependency(a.OptIn)
+}
