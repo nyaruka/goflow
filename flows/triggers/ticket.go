@@ -47,8 +47,7 @@ type TicketEvent struct {
 //	      "type": "closed",
 //	      "ticket": {
 //	          "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-//	          "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"},
-//	          "body": "Where are my shoes?"
+//	          "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
 //	      }
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"

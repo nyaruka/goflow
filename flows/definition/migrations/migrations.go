@@ -15,6 +15,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.2.0"), Migrate14_2)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0)
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
@@ -26,7 +27,26 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate14.1 changes webhook nodes to split on @webhook instead of the action's result.
+// Migrate14_2 changes body to note on open ticket actions.
+//
+// @version 14_2 "14.2"
+func Migrate14_2(f Flow, cfg *Config) (Flow, error) {
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "open_ticket" {
+				body, _ := action["body"].(string)
+				if body != "" {
+					action["note"] = body
+					delete(action, "body")
+				}
+			}
+		}
+	}
+
+	return f, nil
+}
+
+// Migrate14_1 changes webhook nodes to split on @webhook instead of the action's result.
 //
 // @version 14_1 "14.1"
 func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
@@ -74,7 +94,7 @@ func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate14.0 fixes invalid expires values and categories with missing names.
+// Migrate14_0 fixes invalid expires values and categories with missing names.
 // Note that this is a major version change because of other additions to the flow spec that don't require migration.
 //
 // @version 14_0 "14.0"
