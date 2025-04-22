@@ -174,7 +174,7 @@ type Node interface {
 	Exits() []Exit
 
 	Validate(Flow, map[uuids.UUID]bool) error
-	Inspect(func(Action, Router, *ResultInfo), func(Action, Router, i18n.Language, assets.Reference))
+	Inspect(func(Action, Router, *ResultInfo), func(Action, Router, assets.Reference))
 	EnumerateTemplates(Localization, func(Action, Router, i18n.Language, string))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
@@ -208,14 +208,13 @@ type Router interface {
 	Categories() []Category
 	ResultName() string
 
-	Validate(Flow, []Exit) error
 	AllowTimeout() bool
 	Route(Run, Step, EventCallback) (ExitUUID, string, error)
 	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
 
-	Inspect(func(*ResultInfo))
+	Validate(Flow, []Exit) error
+	Inspect(func(*ResultInfo), func(assets.Reference))
 	EnumerateTemplates(Localization, func(i18n.Language, string))
-	EnumerateDependencies(func(i18n.Language, assets.Reference))
 	EnumerateLocalizables(func(uuids.UUID, string, []string, func([]string)))
 }
 

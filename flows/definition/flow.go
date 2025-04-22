@@ -171,8 +171,8 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 	for _, n := range f.nodes {
 		n.Inspect(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
 			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
-		}, func(a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
-			recordAssetRef(n, a, r, l, ref)
+		}, func(a flows.Action, r flows.Router, ref assets.Reference) {
+			recordAssetRef(n, a, r, i18n.NilLanguage, ref)
 		})
 
 		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, t string) {

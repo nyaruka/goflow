@@ -199,15 +199,9 @@ func (r *SwitchRouter) matchCase(run flows.Run, operand types.XValue, log flows.
 	return "", "", nil, nil
 }
 
-// EnumerateTemplates enumerates all expressions on this object and its children
-func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
-	include(i18n.NilLanguage, r.operand)
+func (r *SwitchRouter) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+	r.baseRouter.Inspect(result, dependency)
 
-	inspect.Templates(r.cases, localization, include)
-}
-
-// EnumerateDependencies enumerates all dependencies on this object and its children
-func (r *SwitchRouter) EnumerateDependencies(include func(i18n.Language, assets.Reference)) {
 	for _, c := range r.cases {
 		// currently only the HAS_GROUP router test can produce a dependency
 		if c.Type == "has_group" && len(c.Arguments) > 0 {
@@ -216,9 +210,16 @@ func (r *SwitchRouter) EnumerateDependencies(include func(i18n.Language, assets.
 			if len(c.Arguments) == 2 {
 				name = c.Arguments[1]
 			}
-			include(i18n.NilLanguage, assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), name))
+			dependency(assets.NewGroupReference(assets.GroupUUID(c.Arguments[0]), name))
 		}
 	}
+}
+
+// EnumerateTemplates enumerates all expressions on this object and its children
+func (r *SwitchRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
+	include(i18n.NilLanguage, r.operand)
+
+	inspect.Templates(r.cases, localization, include)
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object

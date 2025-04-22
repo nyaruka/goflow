@@ -87,20 +87,21 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 	return nil
 }
 
-func (n *node) Inspect(result func(flows.Action, flows.Router, *flows.ResultInfo), dependency func(flows.Action, flows.Router, i18n.Language, assets.Reference)) {
+// Inspect reports on the results, dependencies etc used by this node
+func (n *node) Inspect(result func(flows.Action, flows.Router, *flows.ResultInfo), dependency func(flows.Action, flows.Router, assets.Reference)) {
 	for _, action := range n.actions {
 		action.Inspect(func(r *flows.ResultInfo) { result(action, nil, r) })
 
-		inspect.Dependencies(action, func(l i18n.Language, r assets.Reference) {
-			dependency(action, nil, l, r)
+		inspect.Dependencies(action, func(r assets.Reference) {
+			dependency(action, nil, r)
 		})
 	}
 
 	if n.router != nil {
-		n.router.Inspect(func(r *flows.ResultInfo) { result(nil, n.router, r) })
-
-		n.router.EnumerateDependencies(func(l i18n.Language, r assets.Reference) {
-			dependency(nil, n.router, l, r)
+		n.router.Inspect(func(r *flows.ResultInfo) {
+			result(nil, n.router, r)
+		}, func(r assets.Reference) {
+			dependency(nil, n.router, r)
 		})
 	}
 }

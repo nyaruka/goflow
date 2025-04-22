@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -99,11 +98,11 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 }
 
 // Dependencies extracts dependencies
-func Dependencies(s any, include func(i18n.Language, assets.Reference)) {
+func Dependencies(s any, include func(assets.Reference)) {
 	dependencies(reflect.ValueOf(s), include)
 }
 
-func dependencies(v reflect.Value, include func(i18n.Language, assets.Reference)) {
+func dependencies(v reflect.Value, include func(assets.Reference)) {
 	walk(
 		v,
 		func(sv reflect.Value) {},
@@ -114,7 +113,7 @@ func dependencies(v reflect.Value, include func(i18n.Language, assets.Reference)
 	)
 }
 
-func extractAssetReferences(v reflect.Value, include func(i18n.Language, assets.Reference)) {
+func extractAssetReferences(v reflect.Value, include func(assets.Reference)) {
 	if v.Kind() == reflect.Slice {
 		// field is a slice of asset references
 		for i := 0; i < v.Len(); i++ {
@@ -124,7 +123,7 @@ func extractAssetReferences(v reflect.Value, include func(i18n.Language, assets.
 		// field is a single asset reference
 		asRef, isRef := v.Interface().(assets.Reference)
 		if isRef && asRef != nil && !asRef.Variable() {
-			include(i18n.NilLanguage, asRef)
+			include(asRef)
 		}
 	}
 }
