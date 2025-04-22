@@ -31,6 +31,10 @@
             "@input.text"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
@@ -101,6 +105,10 @@
             "@(\"\")"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
@@ -198,6 +206,10 @@
             "@input.text"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
@@ -285,6 +297,10 @@
             "@input.text"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
@@ -370,6 +386,10 @@
             "@input.text"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",

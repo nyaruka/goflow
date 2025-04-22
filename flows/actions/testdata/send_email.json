@@ -50,6 +50,10 @@
             "So I was thinking...@(1 / 0)"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -211,6 +215,10 @@
             "So I was thinking..."
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],

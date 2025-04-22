@@ -62,6 +62,10 @@
             }
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -93,6 +97,10 @@
             }
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
