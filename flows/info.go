@@ -46,8 +46,8 @@ func NewExtractedReference(n Node, a Action, r Router, l i18n.Language, ref asse
 	}
 }
 
-// Inspection contains the results of flow inspection
-type Inspection struct {
+// Info contains the results of flow inspection
+type Info struct {
 	Counts       map[string]int `json:"counts"`
 	Dependencies []Dependency   `json:"dependencies"`
 	Issues       []Issue        `json:"issues"`

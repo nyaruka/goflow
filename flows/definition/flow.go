@@ -159,7 +159,7 @@ func (f *flow) Reference(withRevision bool) *assets.FlowReference {
 }
 
 // Inspect enumerates dependencies, results etc
-func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
+func (f *flow) Inspect(sa flows.SessionAssets) *flows.Info {
 	results := make([]flows.ExtractedResult, 0)
 	templates := make([]flows.ExtractedTemplate, 0)
 	assetRefs := make([]flows.ExtractedReference, 0)
@@ -191,7 +191,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 		})
 	}
 
-	return &flows.Inspection{
+	return &flows.Info{
 		Counts:       map[string]int{"nodes": len(f.nodes), "languages": len(f.localization.Languages())},
 		Dependencies: inspect.NewDependencies(assetRefs, sa),
 		Results:      flows.NewResultSpecs(results),

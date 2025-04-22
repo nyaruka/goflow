@@ -160,7 +160,7 @@ type Flow interface {
 	Asset() assets.Flow
 	Reference(bool) *assets.FlowReference
 
-	Inspect(sa SessionAssets) *Inspection
+	Inspect(sa SessionAssets) *Info
 	ExtractTemplates() []string
 	ExtractLocalizables() []string
 	ChangeLanguage(i18n.Language) (Flow, error)
