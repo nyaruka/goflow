@@ -1,4 +1,8 @@
 {
+    "counts": {
+        "languages": 1,
+        "nodes": 3
+    },
     "dependencies": [],
     "issues": [],
     "results": [

@@ -192,6 +192,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Inspection {
 	}
 
 	return &flows.Inspection{
+		Counts:       map[string]int{"nodes": len(f.nodes), "languages": len(f.localization.Languages())},
 		Dependencies: inspect.NewDependencies(assetRefs, sa),
 		Results:      flows.NewResultSpecs(results),
 		ParentRefs:   utils.EnsureNonNil(slices.Sorted(maps.Keys(parentRefs))),

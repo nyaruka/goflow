@@ -48,6 +48,10 @@
             "Other"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [

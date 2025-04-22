@@ -283,6 +283,10 @@
             "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "org_name",
@@ -415,6 +419,10 @@
             "boy"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
@@ -510,6 +518,10 @@
             "boy"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -563,6 +575,10 @@
             "Hi there, it's time to get up!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
@@ -626,6 +642,10 @@
             "Hi Ryan, wakeup!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "2edc8dfd-aef0-41cf-a900-8a71bdb00900",
@@ -713,6 +733,10 @@
             "No"
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -824,6 +848,10 @@
             "Nope"
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "ce00c80e-991a-4c03-b373-3273c23ee042",
@@ -919,6 +947,10 @@
             "The first true cats came into existence about 12 million years ago and were the Proailurus."
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",
@@ -1006,6 +1038,10 @@
             "The first true cats came into existence about 12 million years ago and were the Proailurus."
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "be68beff-1a5b-424b-815e-023cc53c1ddc",

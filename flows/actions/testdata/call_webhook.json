@@ -109,6 +109,10 @@
             "@(3 / 0)"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "age",
@@ -142,6 +146,10 @@
             "@(\"\")"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -169,6 +177,10 @@
             "@(\":xxxxx\")"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -196,6 +208,10 @@
             "http://example.com?@(url_encode(json(run)) & url_encode(json(run)))"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -267,6 +283,10 @@
             "Hi there!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "gender",
@@ -335,6 +355,10 @@
             "Hi there!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -395,6 +419,10 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -464,6 +492,10 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -542,6 +574,10 @@
             "Hi there!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -609,6 +645,10 @@
             "Hi there!"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -683,6 +723,10 @@
             "http://temba.io/"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [

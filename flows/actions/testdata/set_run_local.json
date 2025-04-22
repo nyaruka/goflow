@@ -31,6 +31,10 @@
             "@(1 / 0)"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -58,6 +62,10 @@
             "xxx"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -81,6 +89,10 @@
             "@fields.Gender"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "gender",
@@ -110,6 +122,10 @@
             "@(3 + 4)"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -127,6 +143,10 @@
         "events": [],
         "locals_after": {},
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],

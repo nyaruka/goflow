@@ -345,6 +345,10 @@ func TestNewFlow(t *testing.T) {
 	infoJSON := jsonx.MustMarshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
+		"counts": {
+			"languages": 0,
+			"nodes": 2
+		},
 		"dependencies": [
 			{
 				"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -400,6 +404,10 @@ func TestEmptyFlow(t *testing.T) {
 	infoJSON := jsonx.MustMarshal(info)
 
 	test.AssertEqualJSON(t, []byte(`{
+		"counts": {
+			"languages": 0,
+			"nodes": 0
+		},
 		"dependencies": [],
 		"issues": [],
 		"parent_refs": [],

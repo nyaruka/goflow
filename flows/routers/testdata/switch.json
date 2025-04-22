@@ -210,6 +210,10 @@
             "Other"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -298,6 +302,10 @@
             "Other"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -383,6 +391,10 @@
             "Other"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
@@ -493,6 +505,10 @@
             "Other"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [
@@ -571,6 +587,10 @@
             "No"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [

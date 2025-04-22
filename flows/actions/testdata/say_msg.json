@@ -54,6 +54,10 @@
             "Hi there @contact.name"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -137,6 +141,10 @@
             "Hi there @contact.name"
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],

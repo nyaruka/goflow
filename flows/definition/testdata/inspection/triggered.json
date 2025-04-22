@@ -1,4 +1,8 @@
 {
+    "counts": {
+        "languages": 0,
+        "nodes": 1
+    },
     "dependencies": [
         {
             "key": "state",

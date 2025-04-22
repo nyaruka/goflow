@@ -23,6 +23,10 @@
             "@(1 / 0).mp3"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -53,6 +57,10 @@
             "@(\"\")"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -92,6 +100,10 @@
             "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],
@@ -141,6 +153,10 @@
             "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
         ],
         "inspection": {
+            "counts": {
+                "languages": 1,
+                "nodes": 1
+            },
             "dependencies": [],
             "issues": [],
             "results": [],

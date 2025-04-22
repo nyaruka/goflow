@@ -48,10 +48,11 @@ func NewExtractedReference(n Node, a Action, r Router, l i18n.Language, ref asse
 
 // Inspection contains the results of flow inspection
 type Inspection struct {
-	Dependencies []Dependency  `json:"dependencies"`
-	Issues       []Issue       `json:"issues"`
-	Results      []*ResultSpec `json:"results"`
-	ParentRefs   []string      `json:"parent_refs"`
+	Counts       map[string]int `json:"counts"`
+	Dependencies []Dependency   `json:"dependencies"`
+	Issues       []Issue        `json:"issues"`
+	Results      []*ResultSpec  `json:"results"`
+	ParentRefs   []string       `json:"parent_refs"`
 }
 
 // ResultInfo is possible result that a flow might generate

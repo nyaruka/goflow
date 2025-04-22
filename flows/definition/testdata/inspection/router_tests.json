@@ -1,4 +1,8 @@
 {
+    "counts": {
+        "languages": 0,
+        "nodes": 4
+    },
     "dependencies": [
         {
             "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",

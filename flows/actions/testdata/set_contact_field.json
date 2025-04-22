@@ -22,6 +22,10 @@
             "@( 1/ 0)"
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "age",
@@ -253,6 +257,10 @@
             }
         ],
         "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
             "dependencies": [
                 {
                     "key": "score",
