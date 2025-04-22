@@ -1,7 +1,7 @@
 {
     "uuid": "19cad1f2-9110-4271-98d4-1b968bf19410",
     "name": "Change Language",
-    "spec_version": "14.1.0",
+    "spec_version": "14.2.0",
     "language": "kin",
     "type": "messaging",
     "revision": 16,
@@ -192,14 +192,14 @@
                 "type": "execute_actions"
             },
             "51ad5add-269f-439a-a251-a8e14c6099e2": {
-                "type": "wait_for_response",
+                "config": {
+                    "cases": {}
+                },
                 "position": {
                     "left": 160,
                     "top": 160
                 },
-                "config": {
-                    "cases": {}
-                }
+                "type": "wait_for_response"
             }
         }
     }

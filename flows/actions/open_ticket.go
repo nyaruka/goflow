@@ -26,7 +26,7 @@ const TypeOpenTicket string = "open_ticket"
 //	    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 //	    "name": "Weather"
 //	  },
-//	  "body": "@input",
+//	  "note": "@input",
 //	  "assignee": {"email": "bob@nyaruka.com", "name": "Bob McTickets"}
 //	}
 //
@@ -35,18 +35,18 @@ type OpenTicketAction struct {
 	baseAction
 	onlineAction
 
-	Topic      *assets.TopicReference `json:"topic"                   validate:"omitempty"`
-	Body       string                 `json:"body" engine:"evaluated"` // TODO will become "note" in future migration
-	Assignee   *assets.UserReference  `json:"assignee"                validate:"omitempty"`
-	ResultName string                 `json:"result_name"             validate:"omitempty,result_name"`
+	Topic      *assets.TopicReference `json:"topic"`
+	Note       string                 `json:"note"                  engine:"evaluated"`
+	Assignee   *assets.UserReference  `json:"assignee,omitempty"`
+	ResultName string                 `json:"result_name,omitempty"             validate:"omitempty,result_name"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, body string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Topic:      topic,
-		Body:       body,
+		Note:       note,
 		Assignee:   assignee,
 		ResultName: resultName,
 	}
@@ -69,7 +69,7 @@ func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flow
 		assignee = resolveUser(run, a.Assignee, logEvent)
 	}
 
-	evaluatedNote, _ := run.EvaluateTemplate(a.Body, logEvent)
+	evaluatedNote, _ := run.EvaluateTemplate(a.Note, logEvent)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
 	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
