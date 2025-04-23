@@ -108,7 +108,7 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"invalid_localization_language.json",
-			"invalid localization: invalid language code 'spanglish'",
+			"invalid localization: invalid language code 'vvv'",
 		},
 		{
 			"invalid_localization_item_uuid.json",
