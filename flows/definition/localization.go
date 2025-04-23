@@ -116,7 +116,7 @@ func NewLocalization() flows.Localization {
 
 func (l localization) Validate() error {
 	for lang, translation := range l {
-		if len(lang) != 3 {
+		if _, err := i18n.ParseLanguage(string(lang)); err != nil {
 			return fmt.Errorf("invalid language code '%s'", lang)
 		}
 		if err := translation.validate(); err != nil {

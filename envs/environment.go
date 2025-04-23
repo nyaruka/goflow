@@ -12,12 +12,17 @@ import (
 )
 
 func init() {
-	utils.RegisterValidatorAlias("language", "len=3", func(validator.FieldError) string {
+	utils.RegisterValidatorTag("language", validateLanguage, func(validator.FieldError) string {
 		return "is not a valid language code"
 	})
 	utils.RegisterValidatorAlias("country", "len=2", func(validator.FieldError) string {
 		return "is not a valid country code"
 	})
+}
+
+func validateLanguage(fl validator.FieldLevel) bool {
+	_, err := i18n.ParseLanguage(fl.Field().String())
+	return err == nil
 }
 
 type RedactionPolicy string
