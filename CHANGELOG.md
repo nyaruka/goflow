@@ -1,3 +1,8 @@
+v0.240.4 (2025-04-23)
+-------------------------
+ * Update dependencies
+ * Require languages to be valid ISO codes not just 3 letter strings
+
 v0.240.3 (2025-04-23)
 -------------------------
  * Augment 14.2 migration to cleanup invalid languages
