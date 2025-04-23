@@ -27,7 +27,7 @@ func init() {
 	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
 }
 
-// Migrate14_2 changes body to note on open ticket actions.
+// Migrate14_2 changes body to note on open ticket actions and cleans up invalid localization languages.
 //
 // @version 14_2 "14.2"
 func Migrate14_2(f Flow, cfg *Config) (Flow, error) {
@@ -39,6 +39,14 @@ func Migrate14_2(f Flow, cfg *Config) (Flow, error) {
 					action["note"] = body
 					delete(action, "body")
 				}
+			}
+		}
+	}
+
+	if localization := f.Localization(); localization != nil {
+		for _, lang := range localization.Languages() {
+			if len(lang) != 3 {
+				delete(localization, string(lang))
 			}
 		}
 	}

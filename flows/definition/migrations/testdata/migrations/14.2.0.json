@@ -118,5 +118,56 @@
                 }
             ]
         }
+    },
+    {
+        "description": "flow with invalid localization language",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "base": {
+                    "90a165f2-80eb-4b9a-b65f-16a668ec9637": {}
+                },
+                "fra": {
+                    "90a165f2-80eb-4b9a-b65f-16a668ec9637": {}
+                }
+            },
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "fra": {
+                    "90a165f2-80eb-4b9a-b65f-16a668ec9637": {}
+                }
+            },
+            "nodes": []
+        }
+    },
+    {
+        "description": "flow with no localization",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
+        }
     }
 ]
