@@ -1,3 +1,7 @@
+v0.240.3 (2025-04-23)
+-------------------------
+ * Augment 14.2 migration to cleanup invalid languages
+
 v0.240.2 (2025-04-22)
 -------------------------
  * Rename flows.Inspection to flows.Info
