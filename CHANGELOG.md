@@ -1,3 +1,7 @@
+v0.240.5 (2025-04-24)
+-------------------------
+ * Update airtime transfer action to not require a result
+
 v0.240.4 (2025-04-23)
 -------------------------
  * Update dependencies
