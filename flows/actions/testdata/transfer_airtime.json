@@ -35,6 +35,9 @@
                 "category": "Failure"
             }
         ],
+        "locals_after": {
+            "_new_transfer": ""
+        },
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -102,6 +105,9 @@
                 "category": "Success"
             }
         ],
+        "locals_after": {
+            "_new_transfer": "5OKA5LEG5N"
+        },
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -176,6 +182,9 @@
                 "category": "Failure"
             }
         ],
+        "locals_after": {
+            "_new_transfer": ""
+        },
         "inspection": {
             "counts": {
                 "languages": 0,

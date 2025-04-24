@@ -1,0 +1,60 @@
+{
+    "flows": [
+        {
+            "uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
+            "name": "Airtime Test",
+            "spec_version": "14.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+                    "actions": [
+                        {
+                            "type": "transfer_airtime",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                            "amounts": {
+                                "RWF": 5000,
+                                "USD": 3
+                            }
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Success",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Failure",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            }
+                        ],
+                        "default_category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                        "operand": "@locals._new_transfer",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

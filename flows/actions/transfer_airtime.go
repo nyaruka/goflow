@@ -37,7 +37,7 @@ type TransferAirtimeAction struct {
 	onlineAction
 
 	Amounts    map[string]decimal.Decimal `json:"amounts"     validate:"required"`
-	ResultName string                     `json:"result_name" validate:"required,result_name"`
+	ResultName string                     `json:"result_name" validate:"omitempty,result_name"`
 }
 
 // NewTransferAirtime creates a new airtime transfer action
@@ -55,9 +55,19 @@ func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
 
-		a.saveFailure(run, step, logEvent)
+		if a.ResultName != "" {
+			a.saveFailure(run, step, logEvent)
+		}
 	} else {
-		a.saveSuccess(run, step, transfer, logEvent)
+		if a.ResultName != "" {
+			a.saveSuccess(run, step, transfer, logEvent)
+		}
+	}
+
+	if transfer != nil {
+		run.Locals().Set("_new_transfer", transfer.ExternalID)
+	} else {
+		run.Locals().Set("_new_transfer", "")
 	}
 
 	return nil
@@ -90,11 +100,14 @@ func (a *TransferAirtimeAction) transfer(ctx context.Context, run flows.Run, log
 	httpLogger := &flows.HTTPLogger{}
 
 	transfer, err := svc.Transfer(ctx, sender, recipient, a.Amounts, httpLogger.Log)
-	if transfer != nil {
+	if transfer != nil { // can be non-nil for failed transfer
 		logEvent(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}
+	if err != nil {
+		return nil, err
+	}
 
-	return transfer, err
+	return transfer, nil
 }
 
 func (a *TransferAirtimeAction) saveSuccess(run flows.Run, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {

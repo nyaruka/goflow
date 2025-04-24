@@ -100,6 +100,9 @@
                 "category": "Failure"
             }
         ],
+        "locals_after": {
+            "_new_ticket": ""
+        },
         "templates": [
             "Where are my cookies?"
         ]
@@ -200,6 +203,9 @@
                     "name": "Bob"
                 }
             }
+        },
+        "locals_after": {
+            "_new_ticket": "297611a6-b583-45c3-8587-d4e530c948f0"
         },
         "templates": [
             "Last message: @input.text"
@@ -307,6 +313,9 @@
                     "name": "General"
                 }
             }
+        },
+        "locals_after": {
+            "_new_ticket": "297611a6-b583-45c3-8587-d4e530c948f0"
         },
         "templates": [
             "Last message: @input.text"
@@ -417,6 +426,9 @@
                     "name": "Jim"
                 }
             }
+        },
+        "locals_after": {
+            "_new_ticket": "297611a6-b583-45c3-8587-d4e530c948f0"
         },
         "templates": [
             "Last message: @input.text",
@@ -533,6 +545,9 @@
                 }
             }
         },
+        "locals_after": {
+            "_new_ticket": "297611a6-b583-45c3-8587-d4e530c948f0"
+        },
         "templates": [
             "Last message: @input.text",
             "@(\"EVE@NYARUKA.COM\")"
@@ -602,6 +617,9 @@
                 "category": "Success"
             }
         ],
+        "locals_after": {
+            "_new_ticket": "297611a6-b583-45c3-8587-d4e530c948f0"
+        },
         "templates": [
             "@(1/ 0)"
         ],
@@ -636,6 +654,9 @@
                 "category": "Failure"
             }
         ],
+        "locals_after": {
+            "_new_ticket": ""
+        },
         "templates": [
             "Last message: @input.text"
         ],
