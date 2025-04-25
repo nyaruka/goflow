@@ -39,20 +39,18 @@ type OpenTicketAction struct {
 	baseAction
 	onlineAction
 
-	Topic      *assets.TopicReference `json:"topic"`
-	Note       string                 `json:"note"                  engine:"evaluated"`
-	Assignee   *assets.UserReference  `json:"assignee,omitempty"`
-	ResultName string                 `json:"result_name,omitempty"             validate:"omitempty,result_name"`
+	Topic    *assets.TopicReference `json:"topic"`
+	Note     string                 `json:"note"                engine:"evaluated"`
+	Assignee *assets.UserReference  `json:"assignee,omitempty"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference, resultName string) *OpenTicketAction {
+func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference) *OpenTicketAction {
 	return &OpenTicketAction{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Topic:      topic,
 		Note:       note,
 		Assignee:   assignee,
-		ResultName: resultName,
 	}
 }
 
@@ -81,14 +79,6 @@ func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flow
 		run.Locals().Set(OpenTicketOutputLocal, string(ticket.UUID()))
 	} else {
 		run.Locals().Set(OpenTicketOutputLocal, "")
-	}
-
-	if a.ResultName != "" {
-		if ticket != nil {
-			a.saveResult(run, step, a.ResultName, string(ticket.UUID()), CategorySuccess, "", "", nil, logEvent)
-		} else {
-			a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
-		}
 	}
 
 	return nil

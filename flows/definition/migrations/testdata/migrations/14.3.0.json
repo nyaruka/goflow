@@ -1,0 +1,236 @@
+[
+    {
+        "description": "flow with open ticket split on result",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "type": "open_ticket",
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "topic": null,
+                            "note": "Where are my cookies?",
+                            "result_name": "Ticket"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@results.ticket",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_category",
+                                "arguments": [
+                                    "Success"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "type": "open_ticket",
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "topic": null,
+                            "note": "Where are my cookies?"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@locals._new_ticket",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                        "result_name": "Ticket"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with transfer airtime split on result",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.2.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "type": "transfer_airtime",
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "amounts": {
+                                "RWF": 500,
+                                "USD": 0.5
+                            },
+                            "result_name": "Transfer"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@results.transfer",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_category",
+                                "arguments": [
+                                    "Success"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "type": "transfer_airtime",
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "amounts": {
+                                "RWF": 500,
+                                "USD": 0.5
+                            }
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@locals._new_transfer",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_text",
+                                "arguments": [],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                        "result_name": "Transfer"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

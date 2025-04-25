@@ -16,8 +16,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "amounts": {
                 "USD": 0.5
-            },
-            "result_name": "Reward Transfer"
+            }
         },
         "events": [
             {
@@ -25,14 +24,6 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "can't transfer airtime to contact without a phone number"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Reward Transfer",
-                "value": "",
-                "category": "Failure"
             }
         ],
         "locals_after": {
@@ -47,33 +38,20 @@
             "locals": [
                 "_new_transfer"
             ],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
+            "results": [],
             "parent_refs": [],
             "issues": []
         }
     },
     {
-        "description": "Transfer and set result events if transfer made",
+        "description": "Local set if transfer made",
         "action": {
             "type": "transfer_airtime",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "amounts": {
                 "RWF": 500,
                 "USD": 3
-            },
-            "result_name": "Reward Transfer"
+            }
         },
         "events": [
             {
@@ -98,14 +76,6 @@
                         "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Reward Transfer",
-                "value": "5OKA5LEG5N",
-                "category": "Success"
             }
         ],
         "locals_after": {
@@ -120,19 +90,7 @@
             "locals": [
                 "_new_transfer"
             ],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
+            "results": [],
             "parent_refs": [],
             "issues": []
         }
@@ -157,8 +115,7 @@
             "amounts": {
                 "RWF": 500,
                 "USD": 0.5
-            },
-            "result_name": "Reward Transfer"
+            }
         },
         "events": [
             {
@@ -178,14 +135,6 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "invalid recipient number"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Reward Transfer",
-                "value": "",
-                "category": "Failure"
             }
         ],
         "locals_after": {
@@ -200,19 +149,7 @@
             "locals": [
                 "_new_transfer"
             ],
-            "results": [
-                {
-                    "key": "reward_transfer",
-                    "name": "Reward Transfer",
-                    "categories": [
-                        "Success",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
-                }
-            ],
+            "results": [],
             "parent_refs": [],
             "issues": []
         }

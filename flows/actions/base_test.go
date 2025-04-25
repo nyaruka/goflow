@@ -480,7 +480,6 @@ func TestConstructors(t *testing.T) {
 				assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"),
 				"Where are my cookies?",
 				assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"),
-				"Ticket",
 			),
 			`{
 				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -493,8 +492,7 @@ func TestConstructors(t *testing.T) {
 				"assignee": {
 					"email": "bob@nyaruka.com",
 					"name": "Bob McTickets"
-				},
-				"result_name": "Ticket"
+				}
 			}`,
 		},
 		{
