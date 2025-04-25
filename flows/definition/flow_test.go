@@ -461,7 +461,7 @@ func TestReadFlow(t *testing.T) {
 	_, err = definition.ReadFlow([]byte(`{
     "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
     "name": "Test Flow",
-    "spec_version": "13.0",
+    "spec_version": "13.0.0",
     "language": "eng",
     "revision": 123,
     "expire_after_minutes": 30,
@@ -473,7 +473,7 @@ func TestReadFlow(t *testing.T) {
 	flow, err := definition.ReadFlow([]byte(`{
 		"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
 		"name": "Test Flow",
-		"spec_version": "13.0",
+		"spec_version": "13.0.0",
 		"language": "eng",
 		"type": "messaging",
 		"revision": 123,

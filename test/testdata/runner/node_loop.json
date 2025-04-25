@@ -3,7 +3,7 @@
         {
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
             "name": "Node Loop",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [

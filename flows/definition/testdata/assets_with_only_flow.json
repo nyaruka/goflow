@@ -3,7 +3,7 @@
         {
             "uuid": "70def698-3ecb-41e1-a9b8-28a104828a13",
             "name": "Flow With Missing Assets",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [

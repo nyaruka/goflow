@@ -3,7 +3,7 @@
         {
             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
             "name": "Support",
-            "spec_version": "13.1",
+            "spec_version": "13.1.0",
             "language": "eng",
             "type": "messaging",
             "localization": {},

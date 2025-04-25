@@ -13,12 +13,12 @@ import (
 
 func init() {
 	registerMigration(semver.MustParse("13.6.1"), Migrate13_6_1)
-	registerMigration(semver.MustParse("13.6.0"), Migrate13_6)
-	registerMigration(semver.MustParse("13.5.0"), Migrate13_5)
-	registerMigration(semver.MustParse("13.4.0"), Migrate13_4)
-	registerMigration(semver.MustParse("13.3.0"), Migrate13_3)
-	registerMigration(semver.MustParse("13.2.0"), Migrate13_2)
-	registerMigration(semver.MustParse("13.1.0"), Migrate13_1)
+	registerMigration(semver.MustParse("13.6.0"), Migrate13_6_0)
+	registerMigration(semver.MustParse("13.5.0"), Migrate13_5_0)
+	registerMigration(semver.MustParse("13.4.0"), Migrate13_4_0)
+	registerMigration(semver.MustParse("13.3.0"), Migrate13_3_0)
+	registerMigration(semver.MustParse("13.2.0"), Migrate13_2_0)
+	registerMigration(semver.MustParse("13.1.0"), Migrate13_1_0)
 }
 
 // Migrate13_6_1 fixes result lookups that need to be truncated.
@@ -55,10 +55,10 @@ func Migrate13_6_1(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_6 ensures that names of results and categories respect definition limits.
+// Migrate13_6_0 ensures that names of results and categories respect definition limits.
 //
-// @version 13_6 "13.6"
-func Migrate13_6(f Flow, cfg *Config) (Flow, error) {
+// @version 13_6_0 "13.6.0"
+func Migrate13_6_0(f Flow, cfg *Config) (Flow, error) {
 	const maxResultName = 64
 	const maxCategoryName = 36
 
@@ -105,10 +105,10 @@ func Migrate13_6(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_5 converts the `templating` object in [action:send_msg] actions to use a merged list of variables.
+// Migrate13_5_0 converts the `templating` object in [action:send_msg] actions to use a merged list of variables.
 //
-// @version 13_5 "13.5"
-func Migrate13_5(f Flow, cfg *Config) (Flow, error) {
+// @version 13_5_0 "13.5.0"
+func Migrate13_5_0(f Flow, cfg *Config) (Flow, error) {
 	localization := f.Localization()
 
 	for _, node := range f.Nodes() {
@@ -172,10 +172,10 @@ func Migrate13_5(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_4 converts the `templating` object in [action:send_msg] actions to use a list of components.
+// Migrate13_4_0 converts the `templating` object in [action:send_msg] actions to use a list of components.
 //
-// @version 13_4 "13.4"
-func Migrate13_4(f Flow, cfg *Config) (Flow, error) {
+// @version 13_4_0 "13.4.0"
+func Migrate13_4_0(f Flow, cfg *Config) (Flow, error) {
 	localization := f.Localization()
 
 	for _, node := range f.Nodes() {
@@ -215,10 +215,10 @@ func Migrate13_4(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_3 refactors template expressions that reference @webhook to use @webhook.json
+// Migrate13_3_0 refactors template expressions that reference @webhook to use @webhook.json
 //
-// @version 13_3 "13.3"
-func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
+// @version 13_3_0 "13.3.0"
+func Migrate13_3_0(f Flow, cfg *Config) (Flow, error) {
 	RewriteTemplates(f, GetTemplateCatalog(semver.MustParse("13.2.0")), func(s string) string {
 		// some optimizations here...
 		//   1. we can parse templates as if @(...) and @webhook are only valid top-levels
@@ -229,11 +229,11 @@ func Migrate13_3(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_2 replaces `base` as a flow language with `und` which indicates text with undetermined language
+// Migrate13_2_0 replaces `base` as a flow language with `und` which indicates text with undetermined language
 // in the ISO-639-3 standard.
 //
-// @version 13_2 "13.2"
-func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
+// @version 13_2_0 "13.2.0"
+func Migrate13_2_0(f Flow, cfg *Config) (Flow, error) {
 	language, _ := f["language"].(string)
 	localization := f.Localization()
 
@@ -248,10 +248,10 @@ func Migrate13_2(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate13_1 adds a `uuid` property to templating objects in [action:send_msg] actions.
+// Migrate13_1_0 adds a `uuid` property to templating objects in [action:send_msg] actions.
 //
-// @version 13_1 "13.1"
-func Migrate13_1(f Flow, cfg *Config) (Flow, error) {
+// @version 13_1_0 "13.1.0"
+func Migrate13_1_0(f Flow, cfg *Config) (Flow, error) {
 	for _, node := range f.Nodes() {
 		for _, action := range node.Actions() {
 			if action.Type() == "send_msg" {

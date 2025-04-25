@@ -42,7 +42,7 @@
         {
             "uuid": "3aa23697-009b-4231-8914-4011f9aa4c5b",
             "name": "Empty",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "localization": {},

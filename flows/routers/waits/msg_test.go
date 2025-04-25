@@ -19,7 +19,7 @@ var initialWaitJSON = `{
 		{
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
 			"name": "Initial Wait",
-			"spec_version": "13.0",
+			"spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [

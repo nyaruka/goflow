@@ -3,7 +3,7 @@
         {
             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9",
             "name": "IVR Redirect",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "voice",
             "localization": {},

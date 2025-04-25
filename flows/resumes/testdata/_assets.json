@@ -3,7 +3,7 @@
         {
             "uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
             "name": "Resume Tester",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -99,7 +99,7 @@
         {
             "uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
             "name": "Resume Tester Voice",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "voice",
             "revision": 123,

@@ -3,7 +3,7 @@
         {
             "uuid": "16f6eee7-9843-4333-bad2-1d7fd636452c",
             "name": "Router Tester",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,

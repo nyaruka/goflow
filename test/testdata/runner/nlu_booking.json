@@ -3,7 +3,7 @@
         {
             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
             "name": "NLU Test",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "localization": {},

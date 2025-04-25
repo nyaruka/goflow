@@ -347,7 +347,7 @@ func TestSessionHistory(t *testing.T) {
 			{
 				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
 				"name": "Empty",
-				"spec_version": "13.1",
+				"spec_version": "13.1.0",
 				"language": "eng",
 				"type": "messaging",
 				"nodes": []

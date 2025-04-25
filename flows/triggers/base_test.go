@@ -129,7 +129,7 @@ var assetsJSON = `{
 		{
 			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
 			"name": "Registration",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "nodes": []

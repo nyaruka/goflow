@@ -3,7 +3,7 @@
         {
             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516",
             "name": "Two Questions",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging_offline",
             "localization": {

@@ -76,7 +76,7 @@ func TestMigrateToLatest(t *testing.T) {
 	migrated, err = migrations.MigrateToLatest([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
-		"spec_version": "13.0"
+		"spec_version": "13.0.0"
 	}`), migrations.DefaultConfig)
 	require.NoError(t, err)
 
@@ -92,7 +92,7 @@ func TestMigrateToLatest(t *testing.T) {
 	migrated, err = migrations.MigrateToLatest([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Empty Flow",
-		"spec_version": "13.0",
+		"spec_version": "13.0.0",
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []

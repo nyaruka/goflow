@@ -3,7 +3,7 @@
         {
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "name": "Parent Flow",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "type": "messaging",
             "nodes": [
                 {
@@ -180,7 +180,7 @@
         {
             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "name": "Rules",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "type": "messaging",
             "nodes": [
                 {

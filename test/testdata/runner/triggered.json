@@ -3,7 +3,7 @@
         {
             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
             "name": "Triggered Flow",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "localization": {},
@@ -28,7 +28,7 @@
         {
             "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
             "name": "Parent Flow",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "localization": {},

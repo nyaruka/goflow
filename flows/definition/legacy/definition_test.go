@@ -268,7 +268,7 @@ func TestIsPossibleDefinition(t *testing.T) {
 	assert.False(t, legacy.IsPossibleDefinition([]byte(`{
 		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 		"name": "Simple",
-		"spec_version": "13.0",
+		"spec_version": "13.0.0",
 		"language": "eng",
 		"type": "messaging",
 		"nodes": []

@@ -3,7 +3,7 @@
         {
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c",
             "name": "Smart Groups",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [

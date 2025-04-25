@@ -17,7 +17,7 @@
         {
             "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
             "name": "Trigger Tester",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,

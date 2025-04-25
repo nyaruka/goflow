@@ -53,7 +53,7 @@ var sessionAssets = `{
         {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "No Related Runs",
-            "spec_version": "13.0",
+            "spec_version": "13.0.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,

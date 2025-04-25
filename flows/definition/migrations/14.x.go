@@ -10,15 +10,15 @@ import (
 )
 
 func init() {
-	registerMigration(semver.MustParse("14.2.0"), Migrate14_2)
-	registerMigration(semver.MustParse("14.1.0"), Migrate14_1)
-	registerMigration(semver.MustParse("14.0.0"), Migrate14_0)
+	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
+	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
+	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
 }
 
-// Migrate14_2 changes body to note on open ticket actions and cleans up invalid localization languages.
+// Migrate14_2_0 changes body to note on open ticket actions and cleans up invalid localization languages.
 //
-// @version 14_2 "14.2"
-func Migrate14_2(f Flow, cfg *Config) (Flow, error) {
+// @version 14_2_0 "14.2.0"
+func Migrate14_2_0(f Flow, cfg *Config) (Flow, error) {
 	for _, node := range f.Nodes() {
 		for _, action := range node.Actions() {
 			if action.Type() == "open_ticket" {
@@ -42,10 +42,10 @@ func Migrate14_2(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate14_1 changes webhook nodes to split on @webhook instead of the action's result.
+// Migrate14_1_0 changes webhook nodes to split on @webhook instead of the action's result.
 //
-// @version 14_1 "14.1"
-func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
+// @version 14_1_0 "14.1.0"
+func Migrate14_1_0(f Flow, cfg *Config) (Flow, error) {
 	webhookActions := []string{"call_webhook", "call_resthook"}
 	maxQuickReplies := 10
 
@@ -90,11 +90,11 @@ func Migrate14_1(f Flow, cfg *Config) (Flow, error) {
 	return f, nil
 }
 
-// Migrate14_0 fixes invalid expires values and categories with missing names.
+// Migrate14_0_0 fixes invalid expires values and categories with missing names.
 // Note that this is a major version change because of other additions to the flow spec that don't require migration.
 //
-// @version 14_0 "14.0"
-func Migrate14_0(f Flow, cfg *Config) (Flow, error) {
+// @version 14_0_0 "14.0.0"
+func Migrate14_0_0(f Flow, cfg *Config) (Flow, error) {
 	maxExpires := map[string]int{
 		"messaging": 20160, // two weeks
 		"voice":     15,
