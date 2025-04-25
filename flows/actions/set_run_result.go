@@ -66,7 +66,7 @@ func (a *SetRunResultAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *SetRunResultAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *SetRunResultAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Category != "" {
 		result(flows.NewResultInfo(a.Name, []string{a.Category}))
 	} else {

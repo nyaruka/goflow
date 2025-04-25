@@ -17,8 +17,12 @@ func init() {
 
 var transferCategories = []string{CategorySuccess, CategoryFailure}
 
-// TypeTransferAirtime is the type for the transfer airtime action
-const TypeTransferAirtime string = "transfer_airtime"
+const (
+	// TypeTransferAirtime is the type for the transfer airtime action
+	TypeTransferAirtime string = "transfer_airtime"
+
+	TransferAirtimeOutputLocal = "_new_transfer"
+)
 
 // TransferAirtimeAction attempts to make an airtime transfer to the contact.
 //
@@ -65,9 +69,9 @@ func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step
 	}
 
 	if transfer != nil {
-		run.Locals().Set("_new_transfer", transfer.ExternalID)
+		run.Locals().Set(TransferAirtimeOutputLocal, transfer.ExternalID)
 	} else {
-		run.Locals().Set("_new_transfer", "")
+		run.Locals().Set(TransferAirtimeOutputLocal, "")
 	}
 
 	return nil
@@ -118,8 +122,9 @@ func (a *TransferAirtimeAction) saveFailure(run flows.Run, step flows.Step, logE
 	a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
 }
 
-func (a *TransferAirtimeAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *TransferAirtimeAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, transferCategories))
 	}
+	local(TransferAirtimeOutputLocal)
 }

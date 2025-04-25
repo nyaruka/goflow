@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -76,4 +77,8 @@ func (a *SetRunLocalAction) Execute(ctx context.Context, run flows.Run, step flo
 	}
 
 	return nil
+}
+
+func (a *SetRunLocalAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+	local(a.Local)
 }

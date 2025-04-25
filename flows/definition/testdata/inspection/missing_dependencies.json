@@ -23,6 +23,9 @@
             "missing": true
         }
     ],
+    "locals": [],
+    "results": [],
+    "parent_refs": [],
     "issues": [
         {
             "type": "missing_dependency",
@@ -56,7 +59,5 @@
                 "type": "field"
             }
         }
-    ],
-    "results": [],
-    "parent_refs": []
+    ]
 }

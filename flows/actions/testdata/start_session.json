@@ -23,9 +23,10 @@
                     "type": "flow"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -71,6 +72,9 @@
                     "missing": true
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -83,9 +87,7 @@
                         "type": "flow"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -131,6 +133,9 @@
                     "type": "flow"
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -143,9 +148,7 @@
                         "type": "group"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -412,6 +415,9 @@
                     "type": "field"
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "legacy_vars",
@@ -422,9 +428,7 @@
                         "@(\"5129165834\")"
                     ]
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -464,6 +468,9 @@
                     "type": "flow"
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "legacy_vars",
@@ -474,9 +481,7 @@
                         "oui"
                     ]
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -559,9 +564,10 @@
                     "type": "flow"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

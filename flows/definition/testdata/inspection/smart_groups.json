@@ -15,7 +15,8 @@
             "type": "field"
         }
     ],
-    "issues": [],
+    "locals": [],
     "results": [],
-    "parent_refs": []
+    "parent_refs": [],
+    "issues": []
 }

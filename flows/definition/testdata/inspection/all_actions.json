@@ -60,7 +60,9 @@
             "type": "field"
         }
     ],
-    "issues": [],
+    "locals": [
+        "counter"
+    ],
     "results": [
         {
             "key": "gender",
@@ -73,5 +75,6 @@
             ]
         }
     ],
-    "parent_refs": []
+    "parent_refs": [],
+    "issues": []
 }

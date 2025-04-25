@@ -70,7 +70,7 @@ func (a *baseAction) UUID() flows.ActionUUID { return a.UUID_ }
 // Validate validates our action is valid
 func (a *baseAction) Validate() error { return nil }
 
-func (a *baseAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *baseAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	// nothing to declare
 }
 
@@ -204,7 +204,7 @@ type otherContactsAction struct {
 	LegacyVars   []string                  `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
-func (a *otherContactsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	for _, group := range a.Groups {
 		dependency(group)
 	}

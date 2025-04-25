@@ -23,9 +23,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -45,9 +46,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -160,9 +162,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -217,9 +220,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

@@ -126,7 +126,7 @@ func (a *SendMsgAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	return nil
 }
 
-func (a *SendMsgAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *SendMsgAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Template != nil {
 		dependency(a.Template)
 	}

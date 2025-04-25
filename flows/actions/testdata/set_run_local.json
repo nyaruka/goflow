@@ -36,9 +36,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "my_var"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -67,9 +70,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "counter"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -100,9 +106,12 @@
                     "type": "field"
                 }
             ],
-            "issues": [],
+            "locals": [
+                "my_var"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -127,9 +136,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "counter"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -148,9 +160,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "counter"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

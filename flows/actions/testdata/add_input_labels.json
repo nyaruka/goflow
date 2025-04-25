@@ -49,9 +49,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -134,6 +135,9 @@
                     "missing": true
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -146,9 +150,7 @@
                         "type": "label"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     }
 ]

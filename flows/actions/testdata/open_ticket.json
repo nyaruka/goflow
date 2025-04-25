@@ -57,6 +57,11 @@
                     "missing": true
                 }
             ],
+            "locals": [
+                "_new_ticket"
+            ],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -69,9 +74,7 @@
                         "type": "topic"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -227,9 +230,12 @@
                     "type": "user"
                 }
             ],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -326,9 +332,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -446,9 +455,12 @@
                     "type": "topic"
                 }
             ],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -564,9 +576,12 @@
                     "type": "topic"
                 }
             ],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -629,9 +644,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -666,9 +684,12 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_ticket"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

@@ -37,6 +37,11 @@
                     "missing": true
                 }
             ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -49,9 +54,7 @@
                         "type": "llm"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -99,9 +102,12 @@
                     "type": "llm"
                 }
             ],
-            "issues": [],
+            "locals": [
+                "_llm_output"
+            ],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

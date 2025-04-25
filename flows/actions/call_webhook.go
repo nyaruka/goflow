@@ -158,7 +158,7 @@ func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.
 	return nil
 }
 
-func (a *CallWebhookAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *CallWebhookAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}

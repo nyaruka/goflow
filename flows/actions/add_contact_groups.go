@@ -51,7 +51,7 @@ func (a *AddContactGroupsAction) Execute(ctx context.Context, run flows.Run, ste
 	return nil
 }
 
-func (a *AddContactGroupsAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *AddContactGroupsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	for _, group := range a.Groups {
 		dependency(group)
 	}

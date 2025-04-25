@@ -36,7 +36,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "response_1",
@@ -49,7 +49,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -86,7 +87,7 @@
                     "type": "field"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "response_1",
@@ -99,7 +100,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -130,7 +132,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "response_1",
@@ -143,7 +145,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -170,7 +173,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "response_1",
@@ -181,7 +184,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -221,7 +225,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "preference",
@@ -234,7 +238,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]
