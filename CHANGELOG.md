@@ -1,3 +1,7 @@
+v0.241.0 (2025-04-25)
+-------------------------
+ * Include locals in flow inspection
+
 v0.240.5 (2025-04-24)
 -------------------------
  * Update airtime transfer action to not require a result
