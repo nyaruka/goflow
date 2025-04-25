@@ -90,6 +90,6 @@ func (a *SendBroadcastAction) Execute(ctx context.Context, run flows.Run, step f
 	return nil
 }
 
-func (a *SendBroadcastAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
-	a.otherContactsAction.Inspect(result, dependency)
+func (a *SendBroadcastAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+	a.otherContactsAction.Inspect(dependency, local, result)
 }

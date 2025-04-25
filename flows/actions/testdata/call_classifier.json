@@ -43,19 +43,7 @@
                     "missing": true
                 }
             ],
-            "issues": [
-                {
-                    "type": "missing_dependency",
-                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                    "description": "missing classifier dependency '63998ee7-a7a5-4cc5-be67-c773e1b6b9b1'",
-                    "dependency": {
-                        "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
-                        "name": "Deleted",
-                        "type": "classifier"
-                    }
-                }
-            ],
+            "locals": [],
             "results": [
                 {
                     "key": "intent",
@@ -70,7 +58,20 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing classifier dependency '63998ee7-a7a5-4cc5-be67-c773e1b6b9b1'",
+                    "dependency": {
+                        "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                        "name": "Deleted",
+                        "type": "classifier"
+                    }
+                }
+            ]
         }
     },
     {
@@ -116,7 +117,7 @@
                     "type": "classifier"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "_intent_classification",
@@ -131,7 +132,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -217,7 +219,7 @@
                     "type": "classifier"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "intent",
@@ -232,7 +234,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -308,7 +311,7 @@
                     "type": "classifier"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "intent",
@@ -323,7 +326,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -397,7 +401,7 @@
                     "type": "classifier"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "intent",
@@ -412,7 +416,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

@@ -361,8 +361,7 @@ func TestNewFlow(t *testing.T) {
 				"type": "field"
 			}
 		],
-		"issues": [],
-		"parent_refs": [],
+		"locals": [],
 		"results": [
 			{
 				"categories": [
@@ -375,7 +374,9 @@ func TestNewFlow(t *testing.T) {
 					"a58be63b-907d-4a1a-856b-0bb5579d7507"
 				]
 			}
-		]
+		],
+		"parent_refs": [],
+		"issues": []
 	}`), infoJSON, "inspection mismatch")
 }
 
@@ -409,9 +410,10 @@ func TestEmptyFlow(t *testing.T) {
 			"nodes": 0
 		},
 		"dependencies": [],
-		"issues": [],
+		"locals": [],
+		"results": [],
 		"parent_refs": [],
-		"results": []
+		"issues": []
 	}`), infoJSON, "inspection mismatch")
 }
 

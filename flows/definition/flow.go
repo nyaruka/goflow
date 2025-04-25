@@ -160,9 +160,10 @@ func (f *flow) Reference(withRevision bool) *assets.FlowReference {
 
 // Inspect enumerates dependencies, results etc
 func (f *flow) Inspect(sa flows.SessionAssets) *flows.Info {
+	assetRefs := make([]flows.ExtractedReference, 0)
+	locals := make(map[string]bool)
 	results := make([]flows.ExtractedResult, 0)
 	templates := make([]flows.ExtractedTemplate, 0)
-	assetRefs := make([]flows.ExtractedReference, 0)
 	parentRefs := make(map[string]bool)
 
 	recordAssetRef := func(n flows.Node, a flows.Action, r flows.Router, l i18n.Language, ref assets.Reference) {
@@ -173,10 +174,14 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Info {
 	}
 
 	for _, n := range f.nodes {
-		n.Inspect(func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
-			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
-		}, func(a flows.Action, r flows.Router, ref assets.Reference) {
+		n.Inspect(func(a flows.Action, r flows.Router, ref assets.Reference) {
 			recordAssetRef(n, a, r, i18n.NilLanguage, ref)
+		}, func(a flows.Action, r flows.Router, l string) {
+			if l != "" {
+				locals[l] = true
+			}
+		}, func(a flows.Action, r flows.Router, i *flows.ResultInfo) {
+			results = append(results, flows.ExtractedResult{Node: n, Action: a, Router: r, Info: i})
 		})
 
 		n.EnumerateTemplates(f.Localization(), func(a flows.Action, r flows.Router, l i18n.Language, t string) {
@@ -194,6 +199,7 @@ func (f *flow) Inspect(sa flows.SessionAssets) *flows.Info {
 	return &flows.Info{
 		Counts:       map[string]int{"nodes": len(f.nodes), "languages": len(f.localization.Languages())},
 		Dependencies: inspect.NewDependencies(assetRefs, sa),
+		Locals:       utils.EnsureNonNil(slices.Sorted(maps.Keys(locals))),
 		Results:      flows.NewResultSpecs(results),
 		ParentRefs:   utils.EnsureNonNil(slices.Sorted(maps.Keys(parentRefs))),
 		Issues:       issues.Check(sa, f, templates, assetRefs),

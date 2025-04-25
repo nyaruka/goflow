@@ -215,7 +215,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -230,7 +230,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -313,7 +314,7 @@
                     "type": "group"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "is_member",
@@ -328,7 +329,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -402,17 +404,7 @@
                     "missing": true
                 }
             ],
-            "issues": [
-                {
-                    "type": "missing_dependency",
-                    "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
-                    "description": "missing group dependency 'aa33640b-43b0-4df2-992c-ba357981da71'",
-                    "dependency": {
-                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
-                        "type": "group"
-                    }
-                }
-            ],
+            "locals": [],
             "results": [
                 {
                     "key": "in_group",
@@ -426,7 +418,18 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
+                    "description": "missing group dependency 'aa33640b-43b0-4df2-992c-ba357981da71'",
+                    "dependency": {
+                        "uuid": "aa33640b-43b0-4df2-992c-ba357981da71",
+                        "type": "group"
+                    }
+                }
+            ]
         }
     },
     {
@@ -510,7 +513,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -525,7 +528,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -592,7 +596,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "favorite_color",
@@ -606,7 +610,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

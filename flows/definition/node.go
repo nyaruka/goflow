@@ -88,12 +88,14 @@ func (n *node) Validate(flow flows.Flow, seenUUIDs map[uuids.UUID]bool) error {
 }
 
 // Inspect reports on the results, dependencies etc used by this node
-func (n *node) Inspect(result func(flows.Action, flows.Router, *flows.ResultInfo), dependency func(flows.Action, flows.Router, assets.Reference)) {
+func (n *node) Inspect(dependency func(flows.Action, flows.Router, assets.Reference), local func(flows.Action, flows.Router, string), result func(flows.Action, flows.Router, *flows.ResultInfo)) {
 	for _, action := range n.actions {
-		action.Inspect(func(r *flows.ResultInfo) {
-			result(action, nil, r)
-		}, func(r assets.Reference) {
+		action.Inspect(func(r assets.Reference) {
 			dependency(action, nil, r)
+		}, func(l string) {
+			local(action, nil, l)
+		}, func(r *flows.ResultInfo) {
+			result(action, nil, r)
 		})
 	}
 

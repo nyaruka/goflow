@@ -44,7 +44,9 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_transfer"
+            ],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -58,7 +60,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -114,7 +117,9 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_transfer"
+            ],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -128,7 +133,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -191,7 +197,9 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [
+                "_new_transfer"
+            ],
             "results": [
                 {
                     "key": "reward_transfer",
@@ -205,7 +213,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

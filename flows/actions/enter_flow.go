@@ -65,6 +65,6 @@ func (a *EnterFlowAction) Execute(ctx context.Context, run flows.Run, step flows
 	return nil
 }
 
-func (a *EnterFlowAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *EnterFlowAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Flow)
 }

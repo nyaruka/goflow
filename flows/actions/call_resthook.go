@@ -176,7 +176,7 @@ func (a *CallResthookAction) pickResultCall(calls []*httpx.Trace) *httpx.Trace {
 	return last410
 }
 
-func (a *CallResthookAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *CallResthookAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}

@@ -14,8 +14,12 @@ func init() {
 	registerType(TypeOpenTicket, func() flows.Action { return &OpenTicketAction{} })
 }
 
-// TypeOpenTicket is the type for the open ticket action
-const TypeOpenTicket string = "open_ticket"
+const (
+	// TypeOpenTicket is the type for the open ticket action
+	TypeOpenTicket string = "open_ticket"
+
+	OpenTicketOutputLocal = "_new_ticket"
+)
 
 // OpenTicketAction is used to open a ticket for the contact if they don't already have an open ticket.
 //
@@ -74,9 +78,9 @@ func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flow
 
 	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
 	if ticket != nil {
-		run.Locals().Set("_new_ticket", string(ticket.UUID()))
+		run.Locals().Set(OpenTicketOutputLocal, string(ticket.UUID()))
 	} else {
-		run.Locals().Set("_new_ticket", "")
+		run.Locals().Set(OpenTicketOutputLocal, "")
 	}
 
 	if a.ResultName != "" {
@@ -110,11 +114,12 @@ func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flo
 	return nil
 }
 
-func (a *OpenTicketAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *OpenTicketAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Topic != nil {
 		dependency(a.Topic)
 	}
 	if a.Assignee != nil {
 		dependency(a.Assignee)
 	}
+	local(OpenTicketOutputLocal)
 }

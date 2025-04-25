@@ -58,7 +58,7 @@ func (a *SetContactChannelAction) Execute(ctx context.Context, run flows.Run, st
 	return nil
 }
 
-func (a *SetContactChannelAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *SetContactChannelAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Channel != nil {
 		dependency(a.Channel)
 	}

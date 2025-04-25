@@ -299,9 +299,10 @@
                     "type": "global"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -431,6 +432,9 @@
                     "missing": true
                 }
             ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
             "issues": [
                 {
                     "type": "missing_dependency",
@@ -443,9 +447,7 @@
                         "type": "template"
                     }
                 }
-            ],
-            "results": [],
-            "parent_refs": []
+            ]
         }
     },
     {
@@ -529,9 +531,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -586,9 +589,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -653,9 +657,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -738,9 +743,10 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -859,9 +865,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -958,9 +965,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -1049,9 +1057,10 @@
                     "type": "template"
                 }
             ],
-            "issues": [],
+            "locals": [],
             "results": [],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

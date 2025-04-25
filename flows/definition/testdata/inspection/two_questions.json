@@ -4,7 +4,7 @@
         "nodes": 3
     },
     "dependencies": [],
-    "issues": [],
+    "locals": [],
     "results": [
         {
             "key": "favorite_color",
@@ -32,5 +32,6 @@
             ]
         }
     ],
-    "parent_refs": []
+    "parent_refs": [],
+    "issues": []
 }

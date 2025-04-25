@@ -50,9 +50,10 @@ func NewExtractedReference(n Node, a Action, r Router, l i18n.Language, ref asse
 type Info struct {
 	Counts       map[string]int `json:"counts"`
 	Dependencies []Dependency   `json:"dependencies"`
-	Issues       []Issue        `json:"issues"`
+	Locals       []string       `json:"locals"`
 	Results      []*ResultSpec  `json:"results"`
 	ParentRefs   []string       `json:"parent_refs"`
+	Issues       []Issue        `json:"issues"`
 }
 
 // ResultInfo is possible result that a flow might generate

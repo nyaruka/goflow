@@ -66,6 +66,6 @@ func (a *SetContactFieldAction) Execute(ctx context.Context, run flows.Run, step
 	return nil
 }
 
-func (a *SetContactFieldAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
+func (a *SetContactFieldAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Field)
 }

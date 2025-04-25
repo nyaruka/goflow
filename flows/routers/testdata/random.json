@@ -53,7 +53,7 @@
                 "nodes": 1
             },
             "dependencies": [],
-            "issues": [],
+            "locals": [],
             "results": [
                 {
                     "key": "random_result",
@@ -68,7 +68,8 @@
                     ]
                 }
             ],
-            "parent_refs": []
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

@@ -103,8 +103,8 @@ func (a *StartSessionAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *StartSessionAction) Inspect(result func(*flows.ResultInfo), dependency func(assets.Reference)) {
-	a.otherContactsAction.Inspect(result, dependency)
+func (a *StartSessionAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+	a.otherContactsAction.Inspect(dependency, local, result)
 
 	dependency(a.Flow)
 }
