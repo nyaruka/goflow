@@ -1,3 +1,7 @@
+v0.242.0 (2025-04-29)
+-------------------------
+ * Migrate open ticket and transfer airtime actions to move result generation to the router
+
 v0.241.0 (2025-04-25)
 -------------------------
  * Include locals in flow inspection
