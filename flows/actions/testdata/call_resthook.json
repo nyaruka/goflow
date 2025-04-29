@@ -518,14 +518,6 @@
                         "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
                     }
                 }
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "My Result",
-                "value": "no subscribers",
-                "category": "Failure"
             }
         ],
         "inspection": {
@@ -758,14 +750,6 @@
                         "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
                     }
                 }
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "My Result",
-                "value": "no subscribers",
-                "category": "Failure"
             }
         ],
         "inspection": {
