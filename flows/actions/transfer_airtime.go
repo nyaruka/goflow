@@ -15,8 +15,6 @@ func init() {
 	registerType(TypeTransferAirtime, func() flows.Action { return &TransferAirtimeAction{} })
 }
 
-var transferCategories = []string{CategorySuccess, CategoryFailure}
-
 const (
 	// TypeTransferAirtime is the type for the transfer airtime action
 	TypeTransferAirtime string = "transfer_airtime"
@@ -31,8 +29,7 @@ const (
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "transfer_airtime",
-//	  "amounts": {"RWF": 500, "USD": 0.5},
-//	  "result_name": "Reward Transfer"
+//	  "amounts": {"RWF": 500, "USD": 0.5}
 //	}
 //
 // @action transfer_airtime
@@ -40,16 +37,14 @@ type TransferAirtimeAction struct {
 	baseAction
 	onlineAction
 
-	Amounts    map[string]decimal.Decimal `json:"amounts"     validate:"required"`
-	ResultName string                     `json:"result_name" validate:"omitempty,result_name"`
+	Amounts map[string]decimal.Decimal `json:"amounts" validate:"required"`
 }
 
 // NewTransferAirtime creates a new airtime transfer action
-func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decimal, resultName string) *TransferAirtimeAction {
+func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decimal) *TransferAirtimeAction {
 	return &TransferAirtimeAction{
 		baseAction: newBaseAction(TypeTransferAirtime, uuid),
 		Amounts:    amounts,
-		ResultName: resultName,
 	}
 }
 
@@ -58,14 +53,6 @@ func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step
 	transfer, err := a.transfer(ctx, run, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
-
-		if a.ResultName != "" {
-			a.saveFailure(run, step, logEvent)
-		}
-	} else {
-		if a.ResultName != "" {
-			a.saveSuccess(run, step, transfer, logEvent)
-		}
 	}
 
 	if transfer != nil {
@@ -114,17 +101,6 @@ func (a *TransferAirtimeAction) transfer(ctx context.Context, run flows.Run, log
 	return transfer, nil
 }
 
-func (a *TransferAirtimeAction) saveSuccess(run flows.Run, step flows.Step, transfer *flows.AirtimeTransfer, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, transfer.ExternalID, CategorySuccess, "", "", nil, logEvent)
-}
-
-func (a *TransferAirtimeAction) saveFailure(run flows.Run, step flows.Step, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, "", CategoryFailure, "", "", nil, logEvent)
-}
-
 func (a *TransferAirtimeAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
-	if a.ResultName != "" {
-		result(flows.NewResultInfo(a.ResultName, transferCategories))
-	}
 	local(TransferAirtimeOutputLocal)
 }

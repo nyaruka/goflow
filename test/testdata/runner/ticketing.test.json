@@ -370,6 +370,7 @@
                             "ticket": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "input": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "name": "Ticket",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "value": "a4d15ed4-5b24-407f-b86e-4b881f09a186"

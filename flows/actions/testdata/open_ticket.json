@@ -1,19 +1,5 @@
 [
     {
-        "description": "Read fails when result name is too long",
-        "action": {
-            "type": "open_ticket",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "topic": {
-                "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
-                "name": "Deleted"
-            },
-            "note": "Where are my cookies?",
-            "result_name": "12345678901234567890123456789012345678901234567890123456789012345"
-        },
-        "read_error": "field 'result_name' is not a valid result name"
-    },
-    {
         "description": "Error event for invalid topic reference",
         "action": {
             "type": "open_ticket",
@@ -22,8 +8,7 @@
                 "uuid": "dc61e948-26a1-407e-9739-b73b46400b51",
                 "name": "Deleted"
             },
-            "note": "Where are my cookies?",
-            "result_name": "Ticket"
+            "note": "Where are my cookies?"
         },
         "events": [
             {
@@ -31,14 +16,6 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "",
-                "category": "Failure"
             }
         ],
         "templates": [
@@ -84,8 +61,7 @@
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "topic": null,
-            "note": "Where are my cookies?",
-            "result_name": "Ticket"
+            "note": "Where are my cookies?"
         },
         "events": [
             {
@@ -93,14 +69,6 @@
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "can't open tickets during batch starts"
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "",
-                "category": "Failure"
             }
         ],
         "locals_after": {
@@ -111,7 +79,7 @@
         ]
     },
     {
-        "description": "Result with category success created and contact tickets appended to if ticket opened (has assignee)",
+        "description": "Local set and contact tickets appended to if ticket opened (has assignee)",
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -123,8 +91,7 @@
             "assignee": {
                 "email": "bob@nyaruka.com",
                 "name": "Bob"
-            },
-            "result_name": "Ticket"
+            }
         },
         "events": [
             {
@@ -154,14 +121,6 @@
                         "name": "With Tickets"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "category": "Success"
             }
         ],
         "contact_after": {
@@ -239,13 +198,12 @@
         }
     },
     {
-        "description": "Result with category success created and contact tickets appended to if ticket opened (topic missing, omitting assignee)",
+        "description": "Local set and contact tickets appended to if ticket opened (topic missing, omitting assignee)",
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "topic": null,
-            "note": "Last message: @input.text",
-            "result_name": "Ticket"
+            "note": "Last message: @input.text"
         },
         "events": [
             {
@@ -271,14 +229,6 @@
                         "name": "With Tickets"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "category": "Success"
             }
         ],
         "contact_after": {
@@ -341,7 +291,7 @@
         }
     },
     {
-        "description": "Result with category success created and contact tickets appended to if ticket opened (using variable assignee)",
+        "description": "Local set and contact tickets appended to if ticket opened (using variable assignee)",
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -352,8 +302,7 @@
             "note": "Last message: @input.text",
             "assignee": {
                 "email_match": "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
-            },
-            "result_name": "Ticket"
+            }
         },
         "events": [
             {
@@ -383,14 +332,6 @@
                         "name": "With Tickets"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "category": "Success"
             }
         ],
         "contact_after": {
@@ -475,8 +416,7 @@
             "note": "Last message: @input.text",
             "assignee": {
                 "email_match": "@(\"EVE@NYARUKA.COM\")"
-            },
-            "result_name": "Ticket"
+            }
         },
         "events": [
             {
@@ -508,14 +448,6 @@
                         "name": "With Tickets"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "category": "Success"
             }
         ],
         "contact_after": {
@@ -590,8 +522,7 @@
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "topic": null,
-            "note": "@(1/ 0)",
-            "result_name": "Ticket"
+            "note": "@(1/ 0)"
         },
         "events": [
             {
@@ -622,14 +553,6 @@
                         "name": "With Tickets"
                     }
                 ]
-            },
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "category": "Success"
             }
         ],
         "locals_after": {
@@ -653,25 +576,15 @@
         }
     },
     {
-        "description": "Result with category failure created if a ticket already open",
+        "description": "Local not set if a ticket already open",
         "has_ticket": true,
         "action": {
             "type": "open_ticket",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "topic": null,
-            "note": "Last message: @input.text",
-            "result_name": "Ticket"
+            "note": "Last message: @input.text"
         },
-        "events": [
-            {
-                "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "name": "Ticket",
-                "value": "",
-                "category": "Failure"
-            }
-        ],
+        "events": [],
         "locals_after": {
             "_new_ticket": ""
         },

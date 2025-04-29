@@ -120,6 +120,7 @@
                             "transfer": {
                                 "category": "Success",
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "input": "5OKA5LEG5N",
                                 "name": "Transfer",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "value": "5OKA5LEG5N"

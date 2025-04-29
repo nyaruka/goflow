@@ -10,9 +10,50 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_3_0 changes airtime and ticket nodes to split on their output local instead of the action's result.
+//
+// @version 14_3_0 "14.3.0"
+func Migrate14_3_0(f Flow, cfg *Config) (Flow, error) {
+	actionTypes := map[string]string{"open_ticket": "_new_ticket", "transfer_airtime": "_new_transfer"}
+
+	// replace any @results.* operands
+	for _, node := range f.Nodes() {
+		actions := node.Actions()
+		router := node.Router()
+
+		// ignore if this isn't a airtime or ticket split
+		if len(actions) != 1 || actionTypes[actions[0].Type()] == "" || router == nil || router.Type() != "switch" {
+			continue
+		}
+
+		action := actions[0]
+		operand, _ := router["operand"].(string)
+		cases, _ := router["cases"].([]any)
+
+		// ignore if it already isn't splitting on a result
+		if !strings.HasPrefix(operand, "@results.") || len(cases) == 0 {
+			continue
+		}
+
+		case0, _ := cases[0].(map[string]any)
+		case0["type"] = "has_text"
+		case0["arguments"] = []any{}
+
+		router["operand"] = "@locals." + actionTypes[action.Type()]
+		router["cases"] = []any{case0}
+
+		// move result to router
+		router["result_name"] = action["result_name"]
+		delete(action, "result_name")
+	}
+
+	return f, nil
 }
 
 // Migrate14_2_0 changes body to note on open ticket actions and cleans up invalid localization languages.

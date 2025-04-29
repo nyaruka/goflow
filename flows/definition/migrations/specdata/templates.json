@@ -1,4 +1,100 @@
 {
+    "14.3.0": {
+        "actions": {
+            "add_contact_groups": [
+                ".groups[*].name_match"
+            ],
+            "add_contact_urn": [
+                ".path"
+            ],
+            "add_input_labels": [
+                ".labels[*].name_match"
+            ],
+            "call_classifier": [
+                ".input"
+            ],
+            "call_llm": [
+                ".input",
+                ".instructions"
+            ],
+            "call_resthook": [],
+            "call_webhook": [
+                ".body",
+                ".headers.*",
+                ".url"
+            ],
+            "enter_flow": [],
+            "open_ticket": [
+                ".assignee.email_match",
+                ".note"
+            ],
+            "play_audio": [
+                ".audio_url"
+            ],
+            "remove_contact_groups": [
+                ".groups[*].name_match"
+            ],
+            "request_optin": [],
+            "say_msg": [
+                ".text"
+            ],
+            "send_broadcast": [
+                ".attachments[*]",
+                ".contact_query",
+                ".groups[*].name_match",
+                ".legacy_vars[*]",
+                ".quick_replies[*]",
+                ".text"
+            ],
+            "send_email": [
+                ".addresses[*]",
+                ".body",
+                ".subject"
+            ],
+            "send_msg": [
+                ".attachments[*]",
+                ".quick_replies[*]",
+                ".template_variables[*]",
+                ".text"
+            ],
+            "set_contact_channel": [],
+            "set_contact_field": [
+                ".value"
+            ],
+            "set_contact_language": [
+                ".language"
+            ],
+            "set_contact_name": [
+                ".name"
+            ],
+            "set_contact_status": [],
+            "set_contact_timezone": [
+                ".timezone"
+            ],
+            "set_run_local": [
+                ".value"
+            ],
+            "set_run_result": [
+                ".value"
+            ],
+            "start_session": [
+                ".contact_query",
+                ".groups[*].name_match",
+                ".legacy_vars[*]"
+            ],
+            "transfer_airtime": []
+        },
+        "routers": {
+            "random": [
+                ".operand",
+                ".cases[*].arguments[*]"
+            ],
+            "switch": [
+                ".operand",
+                ".cases[*].arguments[*]"
+            ]
+        }
+    },
     "14.2.0": {
         "actions": {
             "add_contact_groups": [
