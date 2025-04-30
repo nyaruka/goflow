@@ -41,7 +41,7 @@ type Result struct {
 }
 
 // NewResult creates a new result
-func NewResult(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input string, extra json.RawMessage, createdOn time.Time) *Result {
+func NewResult(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input string, extra []byte, createdOn time.Time) *Result {
 	return &Result{
 		Name:              name,
 		Value:             value,
@@ -62,7 +62,6 @@ func NewResult(name string, value string, category string, categoryLocalized str
 //	category:text -> the category of the result
 //	category_localized:text -> the localized category of the result
 //	input:text -> the input of the result
-//	extra:any -> the optional extra data of the result
 //	node_uuid:text -> the UUID of the node in the flow that generated the result
 //	created_on:datetime -> the creation date of the result
 //

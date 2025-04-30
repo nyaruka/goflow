@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-04 15:29-0500\n"
+"POT-Creation-Date: 2025-04-30 20:54+0000\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -738,6 +738,11 @@ msgstr "adresa kanálu"
 msgid "the assignee of the ticket"
 msgstr "předmět tiketu"
 
+#, fuzzy
+#| msgid "the category of the result"
+msgid "the category names of the node"
+msgstr "kategorie výsledku"
+
 msgid "the category of the result"
 msgstr "kategorie výsledku"
 
@@ -908,11 +913,6 @@ msgstr "číselné ID kontaktu"
 msgid "the open ticket for the contact"
 msgstr "otevřené tikety kontaktu"
 
-#, fuzzy
-#| msgid "the creation date of the result"
-msgid "the optional extra data of the result"
-msgstr "datum vytvoření výsledku"
-
 msgid "the origin of this session if this is a manual trigger"
 msgstr "původ této relace, pokud se jedná o ruční spouštění."
 
@@ -1016,6 +1016,11 @@ msgstr "{type} URN pro kontakt"
 
 #~ msgid "the last opened ticket for the contact"
 #~ msgstr "poslední otevřený tiket pro kontakt"
+
+#, fuzzy
+#~| msgid "the creation date of the result"
+#~ msgid "the optional extra data of the result"
+#~ msgstr "datum vytvoření výsledku"
 
 #~ msgid "the parsed JSON response of the last webhook call"
 #~ msgstr "zpracovaná odpověď JSON posledního volání webhooku."
