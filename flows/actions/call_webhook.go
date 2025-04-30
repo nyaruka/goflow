@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-
 	"golang.org/x/net/http/httpguts"
 )
 
@@ -149,7 +148,7 @@ func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.
 		logEvent(events.NewWebhookCalled(trace, status, ""))
 
 		if a.ResultName != "" {
-			a.saveWebhookResult(run, step, a.ResultName, call, status, logEvent)
+			a.saveLegacyWebhookResult(run, step, a.ResultName, call, status, logEvent)
 		}
 
 		return call

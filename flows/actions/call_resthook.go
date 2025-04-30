@@ -138,12 +138,8 @@ func (a *CallResthookAction) Execute(ctx context.Context, run flows.Run, step fl
 
 	run.SetWebhook(call)
 
-	if a.ResultName != "" {
-		if call != nil {
-			a.saveWebhookResult(run, step, a.ResultName, call, callStatus(asResult, nil, true), logEvent)
-		} else {
-			a.saveResult(run, step, a.ResultName, "no subscribers", "Failure", "", "", nil, logEvent)
-		}
+	if a.ResultName != "" && call != nil {
+		a.saveLegacyWebhookResult(run, step, a.ResultName, call, callStatus(asResult, nil, true), logEvent)
 	}
 
 	return nil

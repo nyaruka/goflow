@@ -135,8 +135,8 @@ func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, cat
 	}
 }
 
-// helper to save a run result based on a webhook call and log it as an event
-func (a *baseAction) saveWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
+// helper to save a run result based on a webhook call and log it as an event.. new webhook nodes don't use this
+func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
 	input := fmt.Sprintf("%s %s", call.Method, call.URL)
 	value := strconv.Itoa(call.ResponseStatus)
 	category := webhookStatusCategories[status]
