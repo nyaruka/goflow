@@ -15,6 +15,7 @@ const TypeServiceCalled string = "service_called"
 // ServiceCalledEvent events are created when an engine service is called.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "service_called",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "service": "classifier",

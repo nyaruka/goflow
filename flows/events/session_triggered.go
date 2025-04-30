@@ -22,6 +22,7 @@ type Exclusions struct {
 // SessionTriggeredEvent events are created when an action wants to start other people in a flow.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "session_triggered",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "flow": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Registration"},

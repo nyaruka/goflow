@@ -14,6 +14,7 @@ const TypeMsgCreated string = "msg_created"
 // MsgCreatedEvent events are created when an action wants to send a reply to the current contact.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "msg_created",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "msg": {

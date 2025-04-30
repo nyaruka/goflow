@@ -16,6 +16,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 // AirtimeTransferredEvent events are created when airtime has been transferred to the contact.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "airtime_transferred",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "transfer_uuid": "552cd7ee-ccba-404d-9692-c1fe3b8d57c5",

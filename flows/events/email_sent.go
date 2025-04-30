@@ -14,6 +14,7 @@ const TypeEmailSent string = "email_sent"
 // EmailSentEvent events are created when an action has sent an email.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "email_sent",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "to": ["foo@bar.com"],

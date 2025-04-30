@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -19,15 +20,19 @@ func registerType(name string, initFunc func() flows.Event) {
 
 // BaseEvent is the base of all event types
 type BaseEvent struct {
-	Type_      string         `json:"type" validate:"required"`
-	CreatedOn_ time.Time      `json:"created_on" validate:"required"`
-	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID_      flows.EventUUID `json:"uuid"                validate:"omitempty,uuid"`
+	Type_      string          `json:"type"                validate:"required"`
+	CreatedOn_ time.Time       `json:"created_on"          validate:"required"`
+	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // NewBaseEvent creates a new base event
 func NewBaseEvent(typeName string) BaseEvent {
-	return BaseEvent{Type_: typeName, CreatedOn_: dates.Now()}
+	return BaseEvent{UUID_: flows.EventUUID(uuids.NewV7()), Type_: typeName, CreatedOn_: dates.Now()}
 }
+
+// Type returns the type of this event
+func (e *BaseEvent) UUID() flows.EventUUID { return e.UUID_ }
 
 // Type returns the type of this event
 func (e *BaseEvent) Type() string { return e.Type_ }

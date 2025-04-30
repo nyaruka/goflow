@@ -15,6 +15,7 @@ const TypeContactGroupsChanged string = "contact_groups_changed"
 // ContactGroupsChangedEvent events are created when a contact is added or removed to/from one or more groups.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "contact_groups_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "groups_added": [{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Reporters"}],

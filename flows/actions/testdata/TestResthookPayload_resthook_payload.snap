@@ -52,19 +52,19 @@
             "arrived_on": "2018-07-06T12:30:15.123456Z",
             "exit_uuid": "100f2d68-2481-4137-a0a3-177620ba3c5f",
             "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+            "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
         },
         {
             "arrived_on": "2018-07-06T12:30:24.123456Z",
             "exit_uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
             "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-            "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+            "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
         },
         {
             "arrived_on": "2018-07-06T12:30:52.123456Z",
             "exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
             "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-            "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+            "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
         }
     ],
     "results": {

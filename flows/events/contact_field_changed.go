@@ -16,6 +16,7 @@ const TypeContactFieldChanged string = "contact_field_changed"
 // A null values indicates that the field value has been cleared.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "contact_field_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "field": {"key": "gender", "name": "Gender"},

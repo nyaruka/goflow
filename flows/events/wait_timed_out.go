@@ -15,6 +15,7 @@ const TypeWaitTimedOut string = "wait_timed_out"
 // the item that the wait was waiting for.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "wait_timed_out",
 //	  "created_on": "2006-01-02T15:04:05Z"
 //	}

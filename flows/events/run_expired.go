@@ -14,6 +14,7 @@ const TypeRunExpired string = "run_expired"
 // RunExpiredEvent events are sent by the caller to tell the engine that a run has expired.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "run_expired",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "run_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a"

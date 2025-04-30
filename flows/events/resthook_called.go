@@ -18,6 +18,7 @@ const TypeResthookCalled string = "resthook_called"
 // created regardless of whether there any subscriberes for that resthook.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "resthook_called",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "resthook": "success",

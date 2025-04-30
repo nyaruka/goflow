@@ -117,7 +117,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	for i, tc := range tests {
 		random.SetGenerator(random.NewSeededGenerator(123456))
 		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+		uuids.SetGenerator(uuids.NewSeededGenerator(12345, dates.NewSequentialNow(time.Date(2025, 4, 30, 14, 20, 30, 123456, time.UTC), time.Millisecond)))
 
 		var clonedMocks *httpx.MockRequestor
 		if tc.HTTPMocks != nil {

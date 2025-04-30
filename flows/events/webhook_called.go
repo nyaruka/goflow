@@ -17,6 +17,7 @@ const TypeWebhookCalled string = "webhook_called"
 // request and response.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "webhook_called",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "url": "http://localhost:49998/?cmd=success",

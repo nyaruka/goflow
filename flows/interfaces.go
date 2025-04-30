@@ -49,6 +49,9 @@ type RunUUID uuids.UUID
 // StepUUID is the UUID of a run step
 type StepUUID uuids.UUID
 
+// EventUUID is the UUID of an event
+type EventUUID uuids.UUID
+
 // InputUUID is the UUID of an input
 type InputUUID uuids.UUID
 
@@ -305,6 +308,7 @@ type ModifierCallback func(Modifier)
 type Event interface {
 	utils.Typed
 
+	UUID() EventUUID
 	CreatedOn() time.Time
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)

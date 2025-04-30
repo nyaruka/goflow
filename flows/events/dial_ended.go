@@ -14,6 +14,7 @@ const TypeDialEnded string = "dial_ended"
 // DialEndedEvent events are created when a session is resumed after waiting for a dial.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "dial_ended",
 //	  "created_on": "2019-01-02T15:04:05Z",
 //	  "dial": {

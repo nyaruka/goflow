@@ -21,6 +21,7 @@ type Ticket struct {
 // TicketOpenedEvent events are created when a new ticket is opened.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "ticket_opened",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "ticket": {

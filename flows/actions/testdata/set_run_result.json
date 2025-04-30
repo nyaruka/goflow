@@ -21,6 +21,7 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
@@ -64,6 +65,7 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
@@ -115,6 +117,7 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
@@ -159,6 +162,7 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
@@ -208,6 +212,7 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "run_result_changed",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",

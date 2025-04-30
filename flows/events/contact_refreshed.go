@@ -17,6 +17,7 @@ const TypeContactRefreshed string = "contact_refreshed"
 // ContactRefreshedEvent events are generated when the resume has a contact with differences to the current session contact.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "contact_refreshed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "contact": {

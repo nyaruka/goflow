@@ -65,53 +65,61 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "uuid": "01968712-0fb2-71e2-9b07-fce5df529848",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "uuid": "01968712-0fb3-71e2-97e4-99d56e963fc9",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'"
             },
             {
+                "uuid": "01968712-0fb4-71e2-9751-99419796decd",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "attachment evaluated to invalid value, skipping"
             },
             {
+                "uuid": "01968712-0fb5-71e2-958a-630e35c62431",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "uuid": "01968712-0fb6-71e2-866b-323926b4c6a0",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(xxxxx): context has no property 'xxxxx'"
             },
             {
+                "uuid": "01968712-0fb7-71e2-a489-7cc248dc15c5",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "quick reply evaluated to empty string, skipping"
             },
             {
+                "uuid": "01968712-0fb8-71e2-bd30-a536113d033e",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -149,23 +157,26 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "attachment evaluated to invalid value, skipping"
             },
             {
+                "uuid": "01968712-0fb2-71e2-9b07-fce5df529848",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "quick reply evaluated to empty string, skipping"
             },
             {
+                "uuid": "01968712-0fb3-71e2-9751-99419796decd",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -190,17 +201,19 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9189-9d6270c6f3c0",
                 "type": "error",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "evaluated attachment is longer than 2048 limit, skipping"
             },
             {
+                "uuid": "01968712-0fb2-71e2-97e4-99d56e963fc9",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "4fc5fda0-de88-4c64-9b07-fce5df529848",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -228,11 +241,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -261,11 +275,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -315,11 +330,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -330,11 +346,12 @@
                 }
             },
             {
+                "uuid": "01968712-0fb2-71e2-9751-99419796decd",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
+                    "uuid": "08d3c3e2-f1ea-4b52-97e4-99d56e963fc9",
                     "urn": "twitterid:54784326227#nyaruka",
                     "channel": {
                         "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
@@ -365,11 +382,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "text": "Hi there",
                     "locale": "eng-RW",
                     "unsendable_reason": "no_destination"
@@ -394,11 +412,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -468,11 +487,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -550,11 +570,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -617,11 +638,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -695,11 +717,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -775,11 +798,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -891,11 +915,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -988,11 +1013,12 @@
         },
         "events": [
             {
+                "uuid": "01968712-0fb1-71e2-9b07-fce5df529848",
                 "type": "msg_created",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "msg": {
-                    "uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                    "uuid": "13e96d5a-4e65-4f07-9189-9d6270c6f3c0",
                     "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",

@@ -17,6 +17,7 @@ const TypeLLMCalled string = "llm_called"
 // LLMCalledEvent events are created when an LLM is called.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "llm_called",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "llm": {

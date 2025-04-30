@@ -16,6 +16,7 @@ const TypeContactTimezoneChanged string = "contact_timezone_changed"
 // ContactTimezoneChangedEvent events are created when the timezone of the contact has been changed.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "contact_timezone_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "timezone": "Africa/Kigali"

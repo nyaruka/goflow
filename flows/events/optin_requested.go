@@ -16,6 +16,7 @@ const TypeOptInRequested string = "optin_requested"
 // OptInRequestedEvent events are created when an action has created an optin to be sent.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "optin_requested",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "optin": {

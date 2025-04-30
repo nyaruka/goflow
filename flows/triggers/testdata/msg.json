@@ -108,6 +108,7 @@
         },
         "events": [
             {
+                "uuid": "019688a6-06b4-7905-8587-d4e530c948f0",
                 "type": "msg_received",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
@@ -166,6 +167,7 @@
         },
         "events": [
             {
+                "uuid": "019688a6-06b4-7b11-8587-d4e530c948f0",
                 "type": "msg_received",
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",

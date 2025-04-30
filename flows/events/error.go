@@ -17,6 +17,7 @@ const TypeError string = "error"
 // ErrorEvent events are created when an error occurs during flow execution.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "error",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "text": "invalid date format: '12th of October'"

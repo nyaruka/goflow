@@ -14,6 +14,7 @@ const TypeWarning string = "warning"
 // WarningEvent events are created for things like accessing deprecated context values.
 //
 //	{
+//	  "uuid": "019688A6-41d2-7366-958a-630e35c62431",
 //	  "type": "warning",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "text": "deprecated context value accessed: legacy_extra"
