@@ -1,3 +1,7 @@
+v0.242.1 (2025-04-30)
+-------------------------
+ * Don't create result when call_resthook action has no subscribers
+
 v0.242.0 (2025-04-29)
 -------------------------
  * Migrate open ticket and transfer airtime actions to move result generation to the router
