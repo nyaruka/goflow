@@ -2,7 +2,6 @@ package engine
 
 import (
 	"context"
-	"encoding/json"
 	"text/template"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -38,7 +37,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger
 }
 
 // ReadSession reads an existing session
-func (e *engine) ReadSession(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Session, error) {
+func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Session, error) {
 	return readSession(e, sa, data, missing)
 }
 

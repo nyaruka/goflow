@@ -16,7 +16,7 @@ import (
 )
 
 // ReadFunc is a function that can read a resume from JSON
-type ReadFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Resume, error)
+type ReadFunc func(flows.SessionAssets, []byte, assets.MissingCallback) (flows.Resume, error)
 
 var registeredTypes = map[string]ReadFunc{}
 

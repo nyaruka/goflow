@@ -72,7 +72,7 @@ type fieldModifierEnvelope struct {
 	Value json.RawMessage        `json:"value"`
 }
 
-func readFieldModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readFieldModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &fieldModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

@@ -1,7 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -88,7 +87,7 @@ var _ flows.Modifier = (*URNsModifier)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readURNsModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readURNsModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &URNsModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

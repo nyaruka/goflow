@@ -106,7 +106,7 @@ type ticketTriggerEnvelope struct {
 	Event ticketEventEnvelope `json:"event" validate:"required"`
 }
 
-func readTicketTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &ticketTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

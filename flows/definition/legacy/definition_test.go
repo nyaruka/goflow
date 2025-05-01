@@ -163,7 +163,7 @@ func TestActionMigration(t *testing.T) {
 		}
 
 		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, tc.LegacyFlowType, string(tc.LegacyAction))
-		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition([]byte(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedActionJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]", "actions", "[0]")
@@ -192,7 +192,7 @@ func TestTestMigration(t *testing.T) {
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
-		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition([]byte(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedRouterJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]", "router")
@@ -236,7 +236,7 @@ func TestRuleSetMigration(t *testing.T) {
 		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
 
 		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
-		migratedFlowJSON, err := legacy.MigrateDefinition(json.RawMessage(legacyFlowJSON), "https://myfiles.com")
+		migratedFlowJSON, err := legacy.MigrateDefinition([]byte(legacyFlowJSON), "https://myfiles.com")
 		require.NoError(t, err)
 
 		migratedNodeJSON, _, _, err := jsonparser.Get(migratedFlowJSON, "nodes", "[0]")

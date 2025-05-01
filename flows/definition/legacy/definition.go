@@ -1118,7 +1118,7 @@ func (f *Flow) Migrate(baseMediaURL string) ([]byte, error) {
 }
 
 // IsPossibleDefinition peeks at the given flow definition to determine if it could be in legacy format
-func IsPossibleDefinition(data json.RawMessage) bool {
+func IsPossibleDefinition(data []byte) bool {
 	// any JSON blob with one of the following keys could be a legacy definition
 	frag1, _, _, _ := jsonparser.Get(data, "action_sets")
 	frag2, _, _, _ := jsonparser.Get(data, "rule_sets")
@@ -1127,7 +1127,7 @@ func IsPossibleDefinition(data json.RawMessage) bool {
 }
 
 // MigrateDefinition migrates a legacy definition to 13.0.0
-func MigrateDefinition(data json.RawMessage, baseMediaURL string) (json.RawMessage, error) {
+func MigrateDefinition(data []byte, baseMediaURL string) ([]byte, error) {
 	legacyFlow, err := readLegacyFlow(data)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read legacy flow: %w", err)

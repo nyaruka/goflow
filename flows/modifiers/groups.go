@@ -1,7 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -114,7 +113,7 @@ type groupsModifierEnvelope struct {
 	Modification GroupsModification       `json:"modification" validate:"eq=add|eq=remove"`
 }
 
-func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readGroupsModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &groupsModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

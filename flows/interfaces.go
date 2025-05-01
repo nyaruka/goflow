@@ -347,7 +347,7 @@ type EngineOptions struct {
 // Engine provides callers with session starting and resuming
 type Engine interface {
 	NewSession(context.Context, SessionAssets, Trigger) (Session, Sprint, error)
-	ReadSession(SessionAssets, json.RawMessage, assets.MissingCallback) (Session, error)
+	ReadSession(SessionAssets, []byte, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
 	Services() Services

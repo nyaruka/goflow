@@ -1,8 +1,6 @@
 package resumes
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -58,7 +56,7 @@ var _ flows.Resume = (*WaitTimeoutResume)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readWaitTimeoutResume(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Resume, error) {
+func readWaitTimeoutResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &baseResumeEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

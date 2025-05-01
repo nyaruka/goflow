@@ -1,7 +1,6 @@
 package inputs
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -10,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Input, error)
+type readFunc func(flows.SessionAssets, []byte, assets.MissingCallback) (flows.Input, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -56,7 +55,7 @@ type baseInputEnvelope struct {
 }
 
 // ReadInput reads an input from the given typed envelope
-func ReadInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
+func ReadInput(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

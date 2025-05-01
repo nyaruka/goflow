@@ -76,7 +76,7 @@ func TestActionTypes(t *testing.T) {
 	}
 }
 
-func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
@@ -144,7 +144,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		// inject the action into a suitable node's actions in that flow
 		actionsPath := []string{"flows", fmt.Sprintf("[%d]", flowIndex), "nodes", "[0]", "actions"}
-		actionsJson := []byte(fmt.Sprintf("[%s]", string(tc.Action)))
+		actionsJson := fmt.Appendf(nil, "[%s]", string(tc.Action))
 		testAssetsJSON := test.JSONReplace(assetsJSON, actionsPath, actionsJson)
 
 		// if we have a localization section, inject that too
@@ -779,7 +779,7 @@ func TestConstructors(t *testing.T) {
 		actualJSON, err := jsonx.Marshal(tc.action)
 		assert.NoError(t, err)
 
-		test.AssertEqualJSON(t, json.RawMessage(tc.json), actualJSON, "new action produced unexpected JSON")
+		test.AssertEqualJSON(t, []byte(tc.json), actualJSON, "new action produced unexpected JSON")
 	}
 }
 

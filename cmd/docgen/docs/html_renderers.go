@@ -319,7 +319,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 
 func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
-	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
+	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return fmt.Errorf("unable to read trigger: %w", err)
@@ -349,7 +349,7 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 
 func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
-	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
+	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return fmt.Errorf("unable to read resume: %w", err)
@@ -418,7 +418,7 @@ func checkExample(session flows.Session, line string) error {
 	return nil
 }
 
-func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession flows.Session) (json.RawMessage, error) {
+func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession flows.Session) ([]byte, error) {
 	voiceAction := len(action.AllowedFlowTypes()) == 1 && action.AllowedFlowTypes()[0] == flows.FlowTypeVoice
 	session := msgSession
 	if voiceAction {

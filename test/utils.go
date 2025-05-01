@@ -1,7 +1,6 @@
 package test
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"testing"
@@ -26,7 +25,7 @@ func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgA
 }
 
 // NormalizeJSON re-formats the given JSON
-func NormalizeJSON(data json.RawMessage) ([]byte, error) {
+func NormalizeJSON(data []byte) ([]byte, error) {
 	var asGeneric any
 	if err := jsonx.Unmarshal(data, &asGeneric); err != nil {
 		return nil, err
@@ -35,7 +34,7 @@ func NormalizeJSON(data json.RawMessage) ([]byte, error) {
 }
 
 // AssertEqualJSON checks two JSON strings for equality
-func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, msgAndArgs ...any) bool {
+func AssertEqualJSON(t *testing.T, expected []byte, actual []byte, msgAndArgs ...any) bool {
 	if expected == nil && actual == nil {
 		return true
 	}
@@ -59,7 +58,7 @@ func AssertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMess
 }
 
 // JSONReplace replaces a node in JSON
-func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) json.RawMessage {
+func JSONReplace(data []byte, path []string, value []byte) []byte {
 	newData, err := jsonparser.Set(data, value, path...)
 	if err != nil {
 		panic("unable to replace JSON")
@@ -68,7 +67,7 @@ func JSONReplace(data json.RawMessage, path []string, value json.RawMessage) jso
 }
 
 // JSONDelete deletes a node in JSON
-func JSONDelete(data json.RawMessage, path []string) json.RawMessage {
+func JSONDelete(data []byte, path []string) []byte {
 	return jsonparser.Delete(data, path...)
 }
 

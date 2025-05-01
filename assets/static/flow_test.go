@@ -1,7 +1,6 @@
 package static_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -15,9 +14,9 @@ func TestFlow(t *testing.T) {
 	flow := static.NewFlow("f5263dca-469b-47c2-be4f-845d3a14eedf", "Catch All", []byte(`{}`))
 	assert.Equal(t, assets.FlowUUID("f5263dca-469b-47c2-be4f-845d3a14eedf"), flow.UUID())
 	assert.Equal(t, "Catch All", flow.Name())
-	assert.Equal(t, json.RawMessage(`{}`), flow.Definition())
+	assert.Equal(t, []byte(`{}`), flow.Definition())
 
-	definition := json.RawMessage(`{"uuid": "f5263dca-469b-47c2-be4f-845d3a14eedf", "name": "Registration", "nodes": []}`)
+	definition := []byte(`{"uuid": "f5263dca-469b-47c2-be4f-845d3a14eedf", "name": "Registration", "nodes": []}`)
 	f := &static.Flow{}
 	err := jsonx.Unmarshal(definition, f)
 
@@ -27,7 +26,7 @@ func TestFlow(t *testing.T) {
 	assert.Equal(t, definition, f.Definition())
 
 	// can also read legacy definition with metadata section
-	definition = json.RawMessage(`{"metadata": {"uuid": "834ab66a-cc95-4a4f-8a45-2ff9cd2ec4ab", "name": "Legacy"}}`)
+	definition = []byte(`{"metadata": {"uuid": "834ab66a-cc95-4a4f-8a45-2ff9cd2ec4ab", "name": "Legacy"}}`)
 	f = &static.Flow{}
 	err = jsonx.Unmarshal(definition, f)
 
@@ -37,7 +36,7 @@ func TestFlow(t *testing.T) {
 	assert.Equal(t, definition, f.Definition())
 
 	// sometimes new flows also have a metadata section
-	definition = json.RawMessage(`{"uuid": "f5263dca-469b-47c2-be4f-845d3a14eedf", "name": "Registration", "nodes": [], "metadata": {"revision": 1}}`)
+	definition = []byte(`{"uuid": "f5263dca-469b-47c2-be4f-845d3a14eedf", "name": "Registration", "nodes": [], "metadata": {"revision": 1}}`)
 	f = &static.Flow{}
 	err = jsonx.Unmarshal(definition, f)
 

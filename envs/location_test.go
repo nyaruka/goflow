@@ -1,7 +1,6 @@
 package envs_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -58,7 +57,7 @@ var locationHierarchyJSON = `
 func TestLocationHierarchy(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
-	hierarchy, err := envs.ReadLocationHierarchy(env, json.RawMessage(locationHierarchyJSON))
+	hierarchy, err := envs.ReadLocationHierarchy(env, []byte(locationHierarchyJSON))
 	assert.NoError(t, err)
 
 	rwanda := hierarchy.Root()

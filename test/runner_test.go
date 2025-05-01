@@ -103,7 +103,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawTrigger []byte, rawResumes []json.RawMessage) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -215,7 +215,7 @@ func TestFlows(t *testing.T) {
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)
 
 		flowTest := &FlowTest{}
-		err = jsonx.Unmarshal(json.RawMessage(testJSON), &flowTest)
+		err = jsonx.Unmarshal([]byte(testJSON), &flowTest)
 		require.NoError(t, err, "error unmarshalling output file %s", tc.outputFile)
 
 		if flowTest.HTTPMocks != nil {
@@ -297,7 +297,7 @@ func BenchmarkFlows(b *testing.B) {
 			require.NoError(b, err, "error reading output file %s", tc.outputFile)
 
 			flowTest := &FlowTest{}
-			err = jsonx.Unmarshal(json.RawMessage(testJSON), &flowTest)
+			err = jsonx.Unmarshal([]byte(testJSON), &flowTest)
 			require.NoError(b, err, "error unmarshalling output file %s", tc.outputFile)
 
 			_, err = runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Resumes)
