@@ -2,7 +2,6 @@
 package static
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -38,7 +37,7 @@ func NewEmptySource() *StaticSource {
 }
 
 // NewSource creates a new static source from the given JSON
-func NewSource(data json.RawMessage) (*StaticSource, error) {
+func NewSource(data []byte) (*StaticSource, error) {
 	s := &StaticSource{}
 	if err := utils.UnmarshalAndValidate(data, &s.s); err != nil {
 		return nil, fmt.Errorf("unable to read assets: %w", err)

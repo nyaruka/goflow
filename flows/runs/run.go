@@ -439,7 +439,7 @@ type runEnvelope struct {
 
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
-func ReadRun(session flows.Session, data json.RawMessage, missing assets.MissingCallback) (flows.Run, error) {
+func ReadRun(session flows.Session, data []byte, missing assets.MissingCallback) (flows.Run, error) {
 	e := &runEnvelope{}
 	var err error
 

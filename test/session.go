@@ -2,7 +2,6 @@ package test
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -501,7 +500,7 @@ var voiceSessionTrigger = `{
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
 	ctx := context.Background()
-	assetsJSON := json.RawMessage(sessionAssets)
+	assetsJSON := []byte(sessionAssets)
 
 	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
 	if err != nil {
@@ -509,8 +508,8 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read our trigger
-	triggerJSON := json.RawMessage(sessionTrigger)
-	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, []byte(fmt.Sprintf(`"%s"`, redact)))
+	triggerJSON := []byte(sessionTrigger)
+	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, fmt.Appendf(nil, `"%s"`, redact))
 
 	trigger, err := triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
 	if err != nil {
@@ -525,7 +524,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read our resume
-	resume, err := resumes.ReadResume(sa, json.RawMessage(sessionResume), assets.PanicOnMissing)
+	resume, err := resumes.ReadResume(sa, []byte(sessionResume), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading resume: %w", err)
 	}
@@ -536,15 +535,13 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
 func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event, error) {
-	assetsJSON := json.RawMessage(voiceSessionAssets)
-
-	sa, err := CreateSessionAssets(assetsJSON, testServerURL)
+	sa, err := CreateSessionAssets([]byte(voiceSessionAssets), testServerURL)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating test voice session assets: %w", err)
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(sa, json.RawMessage(voiceSessionTrigger), assets.PanicOnMissing)
+	trigger, err := triggers.ReadTrigger(sa, []byte(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
@@ -559,7 +556,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 }
 
 // CreateSessionAssets creates assets from given JSON
-func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flows.SessionAssets, error) {
+func CreateSessionAssets(assetsJSON []byte, testServerURL string) (flows.SessionAssets, error) {
 	env := envs.NewBuilder().Build()
 
 	// different tests different ports for the test HTTP server, or just let them fail to connect to port 65535
@@ -567,7 +564,7 @@ func CreateSessionAssets(assetsJSON json.RawMessage, testServerURL string) (flow
 		testServerURL = "http://localhost:65535"
 	}
 
-	assetsJSON = json.RawMessage(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
+	assetsJSON = []byte(strings.Replace(string(assetsJSON), "http://localhost", testServerURL, -1))
 
 	// read our assets into a source
 	source, err := static.NewSource(assetsJSON)

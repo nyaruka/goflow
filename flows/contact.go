@@ -602,7 +602,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(sa SessionAssets, data json.RawMessage, missing assets.MissingCallback) (*Contact, error) {
+func ReadContact(sa SessionAssets, data []byte, missing assets.MissingCallback) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 

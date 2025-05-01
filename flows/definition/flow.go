@@ -318,7 +318,7 @@ type flowEnvelope struct {
 }
 
 // ReadFlow reads a flow definition from the passed in byte array, migrating it to the spec version of the engine if necessary
-func ReadFlow(data json.RawMessage, mc *migrations.Config) (flows.Flow, error) {
+func ReadFlow(data []byte, mc *migrations.Config) (flows.Flow, error) {
 	return readFlow(data, mc, nil)
 }
 
@@ -327,7 +327,7 @@ func ReadAsset(a assets.Flow, mc *migrations.Config) (flows.Flow, error) {
 	return readFlow(a.Definition(), mc, a)
 }
 
-func readFlow(data json.RawMessage, mc *migrations.Config, a assets.Flow) (flows.Flow, error) {
+func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, error) {
 	if mc == nil {
 		mc = migrations.DefaultConfig
 	}

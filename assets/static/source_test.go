@@ -1,7 +1,6 @@
 package static_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets/static"
@@ -81,7 +80,7 @@ func TestSource(t *testing.T) {
 	_, err = static.NewSource([]byte(`{`))
 	assert.EqualError(t, err, "unable to read assets: unexpected end of JSON input")
 
-	src, err = static.NewSource(json.RawMessage(assetsJSON))
+	src, err = static.NewSource([]byte(assetsJSON))
 	assert.NoError(t, err)
 
 	channels, err = src.Channels()

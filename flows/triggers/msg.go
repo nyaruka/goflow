@@ -1,8 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -140,7 +138,7 @@ type msgTriggerEnvelope struct {
 	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
-func readMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &msgTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

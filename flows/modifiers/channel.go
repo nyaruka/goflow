@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -57,7 +55,7 @@ type channelModifierEnvelope struct {
 	Channel *assets.ChannelReference `json:"channel" validate:"omitempty"`
 }
 
-func readChannelModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readChannelModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &channelModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

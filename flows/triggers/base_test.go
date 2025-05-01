@@ -42,7 +42,7 @@ func TestTriggerTypes(t *testing.T) {
 	}
 }
 
-func testTriggerType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)

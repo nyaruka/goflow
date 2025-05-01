@@ -1,8 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -114,7 +112,7 @@ type campaignTriggerEnvelope struct {
 	Event *CampaignEvent `json:"event" validate:"required"`
 }
 
-func readCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readCampaignTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

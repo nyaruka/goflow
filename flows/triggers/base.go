@@ -16,7 +16,7 @@ import (
 )
 
 // ReadFunc is a function that can read a trigger from JSON
-type ReadFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Trigger, error)
+type ReadFunc func(flows.SessionAssets, []byte, assets.MissingCallback) (flows.Trigger, error)
 
 var registeredTypes = map[string]ReadFunc{}
 

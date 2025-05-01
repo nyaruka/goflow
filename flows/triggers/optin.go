@@ -1,8 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -106,7 +104,7 @@ type optInTriggerEnvelope struct {
 	Event *optInEventEnvelope `json:"event" validate:"required"`
 }
 
-func readOptInTrigger(sa flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &optInTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

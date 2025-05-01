@@ -1,7 +1,6 @@
 package inputs
 
 import (
-	"encoding/json"
 	"strings"
 	"time"
 
@@ -110,7 +109,7 @@ type msgInputEnvelope struct {
 	ExternalID  string             `json:"external_id,omitempty"`
 }
 
-func readMsgInput(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Input, error) {
+func readMsgInput(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
 	e := &msgInputEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {

@@ -99,7 +99,7 @@ func (a *CallResthookAction) Execute(ctx context.Context, run flows.Run, step fl
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
-	logEvent(events.NewResthookCalled(a.Resthook, json.RawMessage(payload)))
+	logEvent(events.NewResthookCalled(a.Resthook, []byte(payload)))
 
 	// make a call to each subscriber URL
 	calls := make([]*httpx.Trace, 0, len(resthook.Subscribers()))

@@ -1,7 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -15,7 +14,7 @@ import (
 // ErrNoModifier is the error instance returned when a modifier is read but due to missing assets can't be returned
 var ErrNoModifier = errors.New("no modifier to return because of missing assets")
 
-type readFunc func(flows.SessionAssets, json.RawMessage, assets.MissingCallback) (flows.Modifier, error)
+type readFunc func(flows.SessionAssets, []byte, assets.MissingCallback) (flows.Modifier, error)
 
 // RegisteredTypes is the registered modifier types
 var RegisteredTypes = map[string]readFunc{}
@@ -72,7 +71,7 @@ func ReevaluateGroups(env envs.Environment, contact *flows.Contact, log flows.Ev
 //------------------------------------------------------------------------------------------
 
 // ReadModifier reads a modifier from the given JSON
-func ReadModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func ReadModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

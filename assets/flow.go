@@ -1,7 +1,6 @@
 package assets
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -24,7 +23,7 @@ type FlowUUID uuids.UUID
 type Flow interface {
 	UUID() FlowUUID
 	Name() string
-	Definition() json.RawMessage
+	Definition() []byte
 }
 
 // FlowReference is used to reference a flow from another flow

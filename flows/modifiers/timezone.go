@@ -1,7 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -59,7 +58,7 @@ type timezoneModifierEnvelope struct {
 	Timezone string `json:"timezone"`
 }
 
-func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readTimezoneModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &timezoneModifierEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

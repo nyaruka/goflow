@@ -121,7 +121,7 @@ type runSummaryEnvelope struct {
 }
 
 // ReadRunSummary reads a run summary from the given JSON
-func ReadRunSummary(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.RunSummary, error) {
+func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.RunSummary, error) {
 	var err error
 	e := runSummaryEnvelope{}
 	if err = utils.UnmarshalAndValidate(data, &e); err != nil {

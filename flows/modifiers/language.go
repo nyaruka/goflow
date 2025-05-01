@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -49,7 +47,7 @@ var _ flows.Modifier = (*LanguageModifier)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readLanguageModifier(assets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Modifier, error) {
+func readLanguageModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &LanguageModifier{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

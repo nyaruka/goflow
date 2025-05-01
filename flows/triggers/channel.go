@@ -1,8 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -105,7 +103,7 @@ type channelTriggerEnvelope struct {
 	Event *ChannelEvent `json:"event" validate:"required"`
 }
 
-func readChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage, missing assets.MissingCallback) (flows.Trigger, error) {
+func readChannelTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &channelTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

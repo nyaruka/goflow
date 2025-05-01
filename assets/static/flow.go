@@ -1,7 +1,6 @@
 package static
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/buger/jsonparser"
@@ -13,11 +12,11 @@ import (
 type Flow struct {
 	UUID_       assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name_       string          `json:"name"`
-	Definition_ json.RawMessage
+	Definition_ []byte
 }
 
 // NewFlow creates a new flow from the passed in UUID, name and definition
-func NewFlow(uuid assets.FlowUUID, name string, definition json.RawMessage) assets.Flow {
+func NewFlow(uuid assets.FlowUUID, name string, definition []byte) assets.Flow {
 	return &Flow{UUID_: uuid, Name_: name, Definition_: definition}
 }
 
@@ -27,7 +26,7 @@ func (f *Flow) UUID() assets.FlowUUID { return f.UUID_ }
 // Name returns the name of the flow
 func (f *Flow) Name() string { return f.Name_ }
 
-func (f *Flow) Definition() json.RawMessage { return f.Definition_ }
+func (f *Flow) Definition() []byte { return f.Definition_ }
 
 func (f *Flow) UnmarshalJSON(data []byte) error {
 	f.Definition_ = data

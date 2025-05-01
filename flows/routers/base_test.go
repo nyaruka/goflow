@@ -45,7 +45,7 @@ func TestRouterTypes(t *testing.T) {
 	}
 }
 
-func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 	testPath := fmt.Sprintf("testdata/%s.json", typeName)
 	testFile, err := os.ReadFile(testPath)
 	require.NoError(t, err)
@@ -95,7 +95,7 @@ func testRouterType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		}
 
 		// load our contact
-		contact, err := flows.ReadContact(sa, json.RawMessage(contactJSON), assets.PanicOnMissing)
+		contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
 		trigger := triggers.NewBuilder(envs.NewBuilder().Build(), flow.Reference(false), contact).Manual().Build()
