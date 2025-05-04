@@ -56,19 +56,37 @@ type Exclusions struct {
 type SessionTriggeredEvent struct {
 	BaseEvent
 
-	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
+	Flow       *assets.FlowReference   `json:"flow" validate:"required"`
+	Contact    *flows.ContactReference `json:"contact,omitempty"`
+	URN        urns.URN                `json:"urn,omitempty" validate:"omitempty,urn"`
+	Interrupt  bool                    `json:"interrupt,omitempty"`
+	RunSummary json.RawMessage         `json:"run_summary"`
+	History    *flows.SessionHistory   `json:"history"`
+
+	// deprecated (used by StartSessionAction)
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	ContactQuery  string                    `json:"contact_query,omitempty"`
 	Exclusions    Exclusions                `json:"exclusions"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
-	RunSummary    json.RawMessage           `json:"run_summary"`
-	History       *flows.SessionHistory     `json:"history"`
 }
 
 // NewSessionTriggered returns a new session triggered event
-func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, exclusions Exclusions, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
+func NewSessionTriggered(flow *assets.FlowReference, contact *flows.ContactReference, urn urns.URN, interrupt bool, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
+	return &SessionTriggeredEvent{
+		BaseEvent:  NewBaseEvent(TypeSessionTriggered),
+		Flow:       flow,
+		Contact:    contact,
+		URN:        urn,
+		Interrupt:  interrupt,
+		RunSummary: runSummary,
+		History:    history,
+	}
+}
+
+// NewLegacySessionTriggered returns a new session triggered event
+func NewLegacySessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, exclusions Exclusions, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *flows.SessionHistory) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,

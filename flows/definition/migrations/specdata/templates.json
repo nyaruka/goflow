@@ -637,7 +637,10 @@
                 ".groups[*].name_match",
                 ".legacy_vars[*]"
             ],
-            "transfer_airtime": []
+            "transfer_airtime": [],
+            "trigger_session": [
+                ".urn"
+            ]
         },
         "routers": {
             "random": [

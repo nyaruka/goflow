@@ -735,7 +735,6 @@ func TestConstructors(t *testing.T) {
 			actions.NewStartSession(
 				actionUUID,
 				assets.NewFlowReference(assets.FlowUUID("fece6eac-9127-4343-9269-56e88f391562"), "Parent"),
-
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
 				},
@@ -770,6 +769,28 @@ func TestConstructors(t *testing.T) {
 			"urns": ["twitter:nyaruka"],
 			"exclusions": {},
 			"create_contact": true
+		}`,
+		},
+		{
+			actions.NewTriggerSession(
+				actionUUID,
+				assets.NewFlowReference(assets.FlowUUID("fece6eac-9127-4343-9269-56e88f391562"), "Parent"),
+				flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
+				"",
+				true,
+			),
+			`{
+			"type": "trigger_session",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"flow": {
+				"uuid": "fece6eac-9127-4343-9269-56e88f391562",
+				"name": "Parent"
+			},
+            "contact": {
+				"uuid": "cbe87f5c-cda2-4f90-b5dd-0ac93a884950",
+				"name": "Bob Smith"
+			},
+			"interrupt": true
 		}`,
 		},
 	}

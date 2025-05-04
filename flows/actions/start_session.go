@@ -10,9 +10,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// max number of times a session can trigger another session without there being input from the contact
-const maxAncestorsSinceInput = 5
-
 func init() {
 	registerType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
 }
@@ -99,7 +96,7 @@ func (a *StartSessionAction) Execute(ctx context.Context, run flows.Run, step fl
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
+	logEvent(events.NewLegacySessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }
 
