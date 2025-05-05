@@ -1,0 +1,22 @@
+{
+    "type": "airtime_transferred",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "transfer_uuid": "4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d",
+    "external_id": "98765432",
+    "sender": "tel:+593979099111",
+    "recipient": "tel:+593979099222",
+    "currency": "USD",
+    "amount": 1,
+    "http_logs": [
+        {
+            "url": "https://send.money.com/topup",
+            "status_code": 200,
+            "request": "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+            "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+            "elapsed_ms": 12,
+            "retries": 0,
+            "status": "success",
+            "created_on": "2018-10-18T14:20:30.000123456Z"
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "type": "session_triggered",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "flow": {
+        "uuid": "e4d441f0-24e3-4627-85fb-1e99e733baf0",
+        "name": "Collect Age"
+    },
+    "groups": [
+        {
+            "uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412",
+            "name": "Supervisors"
+        }
+    ],
+    "contacts": [
+        {
+            "uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f",
+            "name": "Jim"
+        }
+    ],
+    "contact_query": "age > 20",
+    "exclusions": {
+        "in_a_flow": true
+    },
+    "urns": [
+        "tel:+12345678900"
+    ],
+    "run_summary": {
+        "uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"
+    },
+    "history": {
+        "parent_uuid": "418a704c-f33e-4924-a00e-1763d1498a13",
+        "ancestors": 2,
+        "ancestors_since_input": 0
+    }
+}

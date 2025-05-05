@@ -1,0 +1,13 @@
+{
+    "type": "msg_created",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "msg": {
+        "uuid": "5b835baa-3607-48cb-a489-7cc248dc15c5",
+        "urn": "tel:+12345678900",
+        "channel": {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone"
+        },
+        "text": "Hi there"
+    }
+}

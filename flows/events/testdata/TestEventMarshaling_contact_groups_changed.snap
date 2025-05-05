@@ -1,0 +1,10 @@
+{
+    "type": "contact_groups_changed",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "groups_added": [
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        }
+    ]
+}
