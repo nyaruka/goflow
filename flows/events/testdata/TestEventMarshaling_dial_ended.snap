@@ -1,0 +1,8 @@
+{
+    "type": "dial_ended",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "dial": {
+        "status": "busy",
+        "duration": 0
+    }
+}

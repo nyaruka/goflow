@@ -1,0 +1,27 @@
+{
+    "type": "msg_created",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "msg": {
+        "uuid": "5078c828-5e46-4bac-8c96-e8696b9ca2d2",
+        "urn": "tel:+12345678900",
+        "channel": {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone"
+        },
+        "text": "Hi there",
+        "attachments": [
+            "image/jpeg:http://s3.amazon.com/bucket/test.jpg"
+        ],
+        "quick_replies": [
+            {
+                "text": "yes"
+            },
+            {
+                "text": "no"
+            }
+        ],
+        "topic": "agent",
+        "locale": "eng-US",
+        "unsendable_reason": "contact_status"
+    }
+}

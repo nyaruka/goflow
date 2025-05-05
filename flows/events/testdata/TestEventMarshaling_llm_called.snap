@@ -1,0 +1,13 @@
+{
+    "type": "llm_called",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "llm": {
+        "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
+        "name": "GPT-4"
+    },
+    "instructions": "Categorize the following text as Positive or Negative",
+    "input": "Please stop messaging me",
+    "output": "Positive",
+    "tokens_used": 567,
+    "elapsed_ms": 123
+}

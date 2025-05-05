@@ -1,0 +1,29 @@
+{
+    "type": "broadcast_created",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "translations": {
+        "eng": {
+            "text": "Hello"
+        },
+        "spa": {
+            "text": "Hola"
+        }
+    },
+    "base_language": "eng",
+    "groups": [
+        {
+            "uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412",
+            "name": "Supervisors"
+        }
+    ],
+    "contacts": [
+        {
+            "uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f",
+            "name": "Jim"
+        }
+    ],
+    "contact_query": "name = \"Bob\"",
+    "urns": [
+        "tel:+12345678900"
+    ]
+}

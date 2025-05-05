@@ -1,0 +1,56 @@
+{
+    "type": "contact_refreshed",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "contact": {
+        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+        "id": 1234567,
+        "name": "Ryan Lewis",
+        "language": "eng",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "created_on": "2018-06-20T11:40:30.123456789Z",
+        "last_seen_on": "2017-12-31T11:35:10.035757258-02:00",
+        "urns": [
+            "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "twitterid:54784326227#nyaruka",
+            "mailto:foo@bar.com"
+        ],
+        "groups": [
+            {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Testers"
+            },
+            {
+                "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
+                "name": "Males"
+            }
+        ],
+        "fields": {
+            "activation_token": {
+                "text": "AACC55"
+            },
+            "age": {
+                "text": "23",
+                "number": 23
+            },
+            "gender": {
+                "text": "Male"
+            },
+            "join_date": {
+                "text": "2017-12-02",
+                "datetime": "2017-12-02T00:00:00.000000-02:00"
+            }
+        },
+        "ticket": {
+            "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+            "topic": {
+                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                "name": "Weather"
+            },
+            "assignee": {
+                "email": "bob@nyaruka.com",
+                "name": "Bob"
+            }
+        }
+    }
+}

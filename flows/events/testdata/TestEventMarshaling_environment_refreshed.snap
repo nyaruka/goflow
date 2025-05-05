@@ -1,0 +1,20 @@
+{
+    "type": "environment_refreshed",
+    "created_on": "2018-10-18T14:20:30.000123456Z",
+    "environment": {
+        "date_format": "DD-MM-YYYY",
+        "time_format": "tt:mm",
+        "timezone": "America/Guayaquil",
+        "allowed_languages": [
+            "eng",
+            "spa"
+        ],
+        "number_format": {
+            "decimal_symbol": ".",
+            "digit_grouping_symbol": ","
+        },
+        "default_country": "US",
+        "input_collation": "default",
+        "redaction_policy": "none"
+    }
+}
