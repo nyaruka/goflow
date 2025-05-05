@@ -34,8 +34,9 @@ func TestEventMarshaling(t *testing.T) {
 	defer dates.SetNowFunc(time.Now)
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+	dates.SetNowFunc(now)
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, now))
 
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)

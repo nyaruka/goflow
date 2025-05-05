@@ -36,7 +36,7 @@
         "events": [
             {
                 "type": "optin_requested",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "optin": {
                     "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",

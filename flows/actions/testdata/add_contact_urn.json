@@ -10,7 +10,7 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "can't add URN with empty path"
             }
@@ -27,13 +27,13 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "type": "contact_urns_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:08.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -54,7 +54,7 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "'telegram:qwerty' is not valid URN"
             }
@@ -81,7 +81,7 @@
         "events": [
             {
                 "type": "contact_urns_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -97,7 +97,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+            "last_seen_on": "2025-05-04T12:30:00.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka",
@@ -131,7 +131,7 @@
         "events": [
             {
                 "type": "contact_urns_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:06.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -147,7 +147,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2018-10-18T14:20:30.000123456Z",
+            "last_seen_on": "2025-05-04T12:30:00.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka",

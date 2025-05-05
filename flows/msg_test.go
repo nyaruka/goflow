@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -64,7 +65,7 @@ func TestMsgIn(t *testing.T) {
 }
 
 func TestMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, dates.NewFixedNow(time.Date(2025, 5, 4, 14, 45, 0, 0, time.UTC))))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	msg := flows.NewMsgOut(
@@ -85,7 +86,7 @@ func TestMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		"uuid": "01969bc1-ede0-7000-8d1a-f05fe6923d6d",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
@@ -96,7 +97,7 @@ func TestMsgOut(t *testing.T) {
 }
 
 func TestIVRMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+	uuids.SetGenerator(uuids.NewSeededGenerator(12345, dates.NewFixedNow(time.Date(2025, 5, 4, 14, 45, 0, 0, time.UTC))))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	msg := flows.NewIVRMsgOut(
@@ -112,7 +113,7 @@ func TestIVRMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		"uuid": "01969bc1-ede0-7000-8d1a-f05fe6923d6d",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",

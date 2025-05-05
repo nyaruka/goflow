@@ -34,7 +34,7 @@
         "events": [
             {
                 "type": "msg_received",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:13.123456789Z",
                 "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "msg": {
                     "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
@@ -48,7 +48,7 @@
             },
             {
                 "type": "run_result_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:17.123456789Z",
                 "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
                 "name": "Favorite Color",
                 "value": "red",
