@@ -25,7 +25,7 @@ type CampaignEventUUID uuids.UUID
 
 // CampaignReference is a reference to the campaign that triggered the session
 type CampaignReference struct {
-	UUID CampaignUUID `json:"uuid" validate:"required,uuid4"`
+	UUID CampaignUUID `json:"uuid" validate:"required,uuid"`
 	Name string       `json:"name" validate:"required"`
 }
 
@@ -43,7 +43,7 @@ func (c *CampaignReference) Context(env envs.Environment) map[string]types.XValu
 
 // CampaignEvent describes the specific event in the campaign that triggered the session
 type CampaignEvent struct {
-	UUID     CampaignEventUUID  `json:"uuid" validate:"required,uuid4"`
+	UUID     CampaignEventUUID  `json:"uuid" validate:"required,uuid"`
 	Campaign *CampaignReference `json:"campaign" validate:"required"`
 }
 

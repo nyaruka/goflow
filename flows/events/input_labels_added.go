@@ -25,7 +25,7 @@ const TypeInputLabelsAdded string = "input_labels_added"
 type InputLabelsAddedEvent struct {
 	BaseEvent
 
-	InputUUID flows.InputUUID          `json:"input_uuid" validate:"required,uuid4"`
+	InputUUID flows.InputUUID          `json:"input_uuid" validate:"required,uuid"`
 	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 

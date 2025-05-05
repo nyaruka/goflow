@@ -6,7 +6,7 @@ import (
 
 // Label is a JSON serializable implementation of a label asset
 type Label struct {
-	UUID_ assets.LabelUUID `json:"uuid" validate:"required,uuid4"`
+	UUID_ assets.LabelUUID `json:"uuid" validate:"required,uuid"`
 	Name_ string           `json:"name"`
 }
 

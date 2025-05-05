@@ -21,7 +21,7 @@ func registerType(name string, initFunc func() flows.Event) {
 type BaseEvent struct {
 	Type_      string         `json:"type" validate:"required"`
 	CreatedOn_ time.Time      `json:"created_on" validate:"required"`
-	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
+	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
 }
 
 // NewBaseEvent creates a new base event

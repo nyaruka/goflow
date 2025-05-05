@@ -34,9 +34,9 @@ var _ flows.Category = (*Category)(nil)
 //------------------------------------------------------------------------------------------
 
 type categoryEnvelope struct {
-	UUID     flows.CategoryUUID `json:"uuid"                validate:"required,uuid4"`
+	UUID     flows.CategoryUUID `json:"uuid"                validate:"required,uuid"`
 	Name     string             `json:"name,omitempty"      validate:"required,result_category"`
-	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"required,uuid4"`
+	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"required,uuid"`
 }
 
 // ReadCategory unmarshals a router category from the given JSON

@@ -53,7 +53,7 @@ var uuidRegex = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4
 // the base of all action types
 type baseAction struct {
 	Type_ string           `json:"type" validate:"required"`
-	UUID_ flows.ActionUUID `json:"uuid" validate:"required,uuid4"`
+	UUID_ flows.ActionUUID `json:"uuid" validate:"required,uuid"`
 }
 
 // creates a new base action

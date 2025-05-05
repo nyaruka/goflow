@@ -423,14 +423,14 @@ var _ flows.RunSummary = (*run)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
+	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid"`
 	Flow       *assets.FlowReference `json:"flow" validate:"required"`
 	Path       []*step               `json:"path" validate:"dive"`
 	Events     []json.RawMessage     `json:"events,omitempty"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`
 	Status     flows.RunStatus       `json:"status" validate:"required"`
-	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
+	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 
 	CreatedOn  time.Time  `json:"created_on" validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
