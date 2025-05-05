@@ -30,8 +30,8 @@ func (e *exit) LocalizationUUID() uuids.UUID { return uuids.UUID(e.uuid) }
 //------------------------------------------------------------------------------------------
 
 type exitEnvelope struct {
-	UUID            flows.ExitUUID `json:"uuid"                       validate:"required,uuid4"`
-	DestinationUUID flows.NodeUUID `json:"destination_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID            flows.ExitUUID `json:"uuid"                       validate:"required,uuid"`
+	DestinationUUID flows.NodeUUID `json:"destination_uuid,omitempty" validate:"omitempty,uuid"`
 }
 
 // UnmarshalJSON unmarshals a node exit from the given JSON

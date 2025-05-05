@@ -30,7 +30,7 @@ type Label interface {
 
 // LabelReference is used to reference a label
 type LabelReference struct {
-	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid"`
 	Name      string    `json:"name,omitempty"`
 	NameMatch string    `json:"name_match,omitempty" engine:"evaluated"`
 }

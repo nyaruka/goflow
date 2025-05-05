@@ -28,7 +28,7 @@ type Flow interface {
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {
-	UUID     FlowUUID `json:"uuid" validate:"required,uuid4"`
+	UUID     FlowUUID `json:"uuid" validate:"required,uuid"`
 	Name     string   `json:"name"`
 	Revision int      `json:"revision,omitempty"`
 }

@@ -10,7 +10,7 @@ import (
 
 // Flow is a JSON serializable implementation of a flow asset
 type Flow struct {
-	UUID_       assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	UUID_       assets.FlowUUID `json:"uuid" validate:"required,uuid"`
 	Name_       string          `json:"name"`
 	Definition_ []byte
 }

@@ -21,7 +21,7 @@ func registerType(name string, f readFunc) {
 
 type Timeout struct {
 	Seconds_      int                `json:"seconds"       validate:"required"`
-	CategoryUUID_ flows.CategoryUUID `json:"category_uuid" validate:"required,uuid4"`
+	CategoryUUID_ flows.CategoryUUID `json:"category_uuid" validate:"required,uuid"`
 }
 
 func NewTimeout(seconds int, categoryUUID flows.CategoryUUID) *Timeout {

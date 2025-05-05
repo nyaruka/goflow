@@ -550,7 +550,7 @@ var _ contactql.Queryable = (*Contact)(nil)
 
 // ContactReference is used to reference a contact
 type ContactReference struct {
-	UUID ContactUUID `json:"uuid" validate:"required,uuid4"`
+	UUID ContactUUID `json:"uuid" validate:"required,uuid"`
 	Name string      `json:"name"`
 }
 
@@ -585,7 +585,7 @@ var _ assets.Reference = (*ContactReference)(nil)
 //------------------------------------------------------------------------------------------
 
 type contactEnvelope struct {
-	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid4"`
+	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid"`
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
 	Language   i18n.Language            `json:"language,omitempty"`

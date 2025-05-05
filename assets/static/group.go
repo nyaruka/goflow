@@ -6,7 +6,7 @@ import (
 
 // Group is a JSON serializable implementation of a group asset
 type Group struct {
-	UUID_  assets.GroupUUID `json:"uuid" validate:"required,uuid4"`
+	UUID_  assets.GroupUUID `json:"uuid" validate:"required,uuid"`
 	Name_  string           `json:"name"`
 	Query_ string           `json:"query,omitempty"`
 }

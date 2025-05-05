@@ -64,9 +64,9 @@ func (p Path) ToXValue(env envs.Environment) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
-	UUID      flows.StepUUID `json:"uuid" validate:"required,uuid4"`
-	NodeUUID  flows.NodeUUID `json:"node_uuid" validate:"required,uuid4"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID      flows.StepUUID `json:"uuid" validate:"required,uuid"`
+	NodeUUID  flows.NodeUUID `json:"node_uuid" validate:"required,uuid"`
+	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
 	ArrivedOn time.Time      `json:"arrived_on"`
 }
 
