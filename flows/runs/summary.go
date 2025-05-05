@@ -113,7 +113,7 @@ func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID    flows.RunUUID         `json:"uuid" validate:"uuid4"`
+	UUID    flows.RunUUID         `json:"uuid" validate:"uuid"`
 	Flow    *assets.FlowReference `json:"flow" validate:"required"`
 	Contact json.RawMessage       `json:"contact"`
 	Status  flows.RunStatus       `json:"status" validate:"required"`

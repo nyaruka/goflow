@@ -238,7 +238,7 @@ type switchRouterEnvelope struct {
 
 	Operand             string             `json:"operand"               validate:"required"`
 	Cases               []*Case            `json:"cases"`
-	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid4"`
+	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid"`
 }
 
 func (r *SwitchRouter) UnmarshalJSON(data []byte) error {

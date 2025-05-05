@@ -32,7 +32,7 @@ type Group interface {
 
 // GroupReference is used to reference a group
 type GroupReference struct {
-	UUID      GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID      GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid"`
 	Name      string    `json:"name,omitempty"`
 	NameMatch string    `json:"name_match,omitempty" engine:"evaluated"`
 }

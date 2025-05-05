@@ -57,7 +57,7 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 //------------------------------------------------------------------------------------------
 
 type ticketEnvelope struct {
-	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid4"`
+	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }

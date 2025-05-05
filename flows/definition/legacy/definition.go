@@ -30,7 +30,7 @@ type Flow struct {
 	FlowType     string        `json:"flow_type"`
 	RuleSets     []RuleSet     `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet   `json:"action_sets" validate:"dive"`
-	Entry        uuids.UUID    `json:"entry" validate:"omitempty,uuid4"`
+	Entry        uuids.UUID    `json:"entry" validate:"omitempty,uuid"`
 	Metadata     *Metadata     `json:"metadata"`
 
 	// some flows have these set here instead of in metadata
@@ -48,8 +48,8 @@ type Metadata struct {
 }
 
 type Rule struct {
-	UUID            uuids.UUID    `json:"uuid" validate:"required,uuid4"`
-	Destination     uuids.UUID    `json:"destination" validate:"omitempty,uuid4"`
+	UUID            uuids.UUID    `json:"uuid" validate:"required,uuid"`
+	Destination     uuids.UUID    `json:"destination" validate:"omitempty,uuid"`
 	DestinationType string        `json:"destination_type" validate:"eq=A|eq=R"`
 	Test            TypedEnvelope `json:"test"`
 	Category        Translations  `json:"category"`
@@ -58,7 +58,7 @@ type Rule struct {
 type RuleSet struct {
 	Y           int             `json:"y"`
 	X           int             `json:"x"`
-	UUID        uuids.UUID      `json:"uuid" validate:"required,uuid4"`
+	UUID        uuids.UUID      `json:"uuid" validate:"required,uuid"`
 	Type        string          `json:"ruleset_type"`
 	Label       string          `json:"label"`
 	Operand     string          `json:"operand"`
@@ -70,9 +70,9 @@ type RuleSet struct {
 type ActionSet struct {
 	Y           int        `json:"y"`
 	X           int        `json:"x"`
-	Destination uuids.UUID `json:"destination" validate:"omitempty,uuid4"`
-	ExitUUID    uuids.UUID `json:"exit_uuid" validate:"required,uuid4"`
-	UUID        uuids.UUID `json:"uuid" validate:"required,uuid4"`
+	Destination uuids.UUID `json:"destination" validate:"omitempty,uuid"`
+	ExitUUID    uuids.UUID `json:"exit_uuid" validate:"required,uuid"`
+	UUID        uuids.UUID `json:"uuid" validate:"required,uuid"`
 	Actions     []Action   `json:"actions"`
 }
 

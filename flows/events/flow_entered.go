@@ -27,7 +27,7 @@ type FlowEnteredEvent struct {
 	BaseEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
-	ParentRunUUID flows.RunUUID         `json:"parent_run_uuid" validate:"omitempty,uuid4"`
+	ParentRunUUID flows.RunUUID         `json:"parent_run_uuid" validate:"omitempty,uuid"`
 	Terminal      bool                  `json:"terminal"`
 }
 

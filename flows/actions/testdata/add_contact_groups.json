@@ -11,7 +11,7 @@
                 }
             ]
         },
-        "read_error": "field 'groups[0].uuid' must be a valid UUID4"
+        "read_error": "field 'groups[0].uuid' must be a valid UUID"
     },
     {
         "description": "Error event and NOOP for missing group",
