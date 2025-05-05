@@ -1,3 +1,7 @@
+v0.243.1 (2025-05-05)
+-------------------------
+ * Use v7 UUIDs for messages and runs
+
 v0.243.0 (2025-05-05)
 -------------------------
  * Relax UUID validation to allow for v4 and v7 UUIDs
