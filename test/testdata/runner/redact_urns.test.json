@@ -11,7 +11,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:02.123456789Z",
+                    "created_on": "2025-05-04T12:30:04.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -20,13 +20,13 @@
                         "locale": "eng-US",
                         "text": "Hi 1234567! Your number is ********",
                         "urn": "tel:+12065551212",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "01969b46-6173-76f8-8228-9728778b6c98"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2025-05-04T12:30:08.123456789Z",
                     "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -79,10 +79,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "created_on": "2025-05-04T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:02.123456789Z",
+                                "created_on": "2025-05-04T12:30:04.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -91,13 +91,13 @@
                                     "locale": "eng-US",
                                     "text": "Hi 1234567! Your number is ********",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                    "uuid": "01969b46-6173-76f8-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2025-05-04T12:30:08.123456789Z",
                                 "elapsed_ms": 1000,
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -109,22 +109,22 @@
                                 "url": "http://localhost/?cmd=success"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:08.123456789Z",
+                        "exited_on": "2025-05-04T12:30:10.123456789Z",
                         "flow": {
                             "name": "Redacted URNs",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2018-07-06T12:30:08.123456789Z",
+                        "modified_on": "2025-05-04T12:30:10.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:01.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:02.123456789Z",
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "01969b46-59a3-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",
