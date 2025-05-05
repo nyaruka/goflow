@@ -92,7 +92,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, topic MsgTopic, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(uuids.NewV4()),
+			UUID_:        MsgUUID(uuids.NewV7()),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        content.Text,
@@ -115,7 +115,7 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(uuids.NewV4()),
+			UUID_:        MsgUUID(uuids.NewV7()),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,

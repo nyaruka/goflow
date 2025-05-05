@@ -16,9 +16,9 @@
         "events": [
             {
                 "type": "run_expired",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:13.123456789Z",
                 "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
-                "run_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
+                "run_uuid": "01969b46-6173-76f8-afc7-f31b35731a3d"
             }
         ],
         "run_status": "expired",

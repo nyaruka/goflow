@@ -204,11 +204,11 @@ func TestFlows(t *testing.T) {
 
 	for _, tc := range testCases {
 		var httpMocksCopy *httpx.MockRequestor
-		fmt.Printf("running %s\n", tc)
 
 		random.SetGenerator(random.NewSeededGenerator(123456))
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
-		dates.SetNowFunc(dates.NewSequentialNow(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC), time.Second))
+		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+		dates.SetNowFunc(now)
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
 		testJSON, err := os.ReadFile(tc.outputFile)

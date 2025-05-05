@@ -36,8 +36,9 @@ func TestEvaluateTemplate(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
-	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+	dates.SetNowFunc(now)
 
 	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)
