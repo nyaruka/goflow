@@ -1,3 +1,10 @@
+v0.243.0 (2025-05-05)
+-------------------------
+ * Relax UUID validation to allow for v4 and v7 UUIDs
+ * Convert event marshalling tests to use snapshots
+ * Fix all the places we unnecessarily use json.RawMessage
+ * Hide .extra on results from auto-complete
+
 v0.242.1 (2025-04-30)
 -------------------------
  * Don't create result when call_resthook action has no subscribers
