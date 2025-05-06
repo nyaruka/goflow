@@ -1,3 +1,10 @@
+v0.243.3 (2025-05-06)
+-------------------------
+ * Tweak spec docs to include limits
+ * Rework all tests using mocked time or rng to call new test.MockUniverse function
+ * Use v7 UUIDs for airtime transfers and tickets as well
+ * Update dependencies
+
 v0.243.2 (2025-05-06)
 -------------------------
  * Use v7 UUIDs for session UUIDs
