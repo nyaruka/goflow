@@ -1,3 +1,8 @@
+v0.243.2 (2025-05-06)
+-------------------------
+ * Use v7 UUIDs for session UUIDs
+ * Add functions to generate UUIDs for msgs, sessions, runs and contacts to ensure consistency
+
 v0.243.1 (2025-05-05)
 -------------------------
  * Use v7 UUIDs for messages and runs
