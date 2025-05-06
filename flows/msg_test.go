@@ -3,13 +3,10 @@ package flows_test
 import (
 	"encoding/json"
 	"testing"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -65,8 +62,7 @@ func TestMsgIn(t *testing.T) {
 }
 
 func TestMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, dates.NewFixedNow(time.Date(2025, 5, 4, 14, 45, 0, 0, time.UTC))))
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	test.MockUniverse()
 
 	msg := flows.NewMsgOut(
 		urns.URN("tel:+1234567890"),
@@ -86,7 +82,7 @@ func TestMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "01969bc1-ede0-7000-8d1a-f05fe6923d6d",
+		"uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
@@ -97,8 +93,7 @@ func TestMsgOut(t *testing.T) {
 }
 
 func TestIVRMsgOut(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, dates.NewFixedNow(time.Date(2025, 5, 4, 14, 45, 0, 0, time.UTC))))
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	test.MockUniverse()
 
 	msg := flows.NewIVRMsgOut(
 		urns.URN("tel:+1234567890"),
@@ -113,7 +108,7 @@ func TestIVRMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "01969bc1-ede0-7000-8d1a-f05fe6923d6d",
+		"uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
@@ -226,9 +221,6 @@ func TestBroadcastTranslations(t *testing.T) {
 }
 
 func TestMsgTemplating(t *testing.T) {
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
 	msgTemplating := flows.NewMsgTemplating(

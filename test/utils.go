@@ -4,15 +4,33 @@ import (
 	"errors"
 	"fmt"
 	"testing"
-
-	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/excellent/types"
+	"time"
 
 	"github.com/buger/jsonparser"
+	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/random"
+	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/excellent/types"
 	diff "github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+// MockUniverse mocks time and random generators for testing
+func MockUniverse() func() {
+	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 45, 123456789, time.UTC), time.Second)
+
+	dates.SetNowFunc(now)
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+	random.SetGenerator(random.NewSeededGenerator(123456))
+
+	return func() {
+		dates.SetNowFunc(time.Now)
+		uuids.SetGenerator(uuids.DefaultGenerator)
+		random.SetGenerator(random.DefaultGenerator)
+	}
+}
 
 // AssertXEqual is equivalent to assert.Equal for two XValue instances
 func AssertXEqual(t *testing.T, expected types.XValue, actual types.XValue, msgAndArgs ...any) bool {

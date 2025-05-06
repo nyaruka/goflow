@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -22,7 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -31,14 +29,10 @@ func TestEvaluateTemplate(t *testing.T) {
 	testFile, err := os.ReadFile("testdata/templates.json")
 	require.NoError(t, err)
 
+	test.MockUniverse()
+
 	server := test.NewTestHTTPServer(49992)
 	defer server.Close()
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowFunc(time.Now)
-
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-	dates.SetNowFunc(now)
 
 	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
 	require.NoError(t, err)

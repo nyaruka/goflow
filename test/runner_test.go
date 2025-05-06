@@ -11,13 +11,9 @@ import (
 	"strings"
 	"testing"
 	"text/template"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/random"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -196,19 +192,14 @@ func TestFlows(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, len(testCases) > 0)
 
-	defer random.SetGenerator(random.DefaultGenerator)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowFunc(time.Now)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for _, tc := range testCases {
+		MockUniverse()
+
 		var httpMocksCopy *httpx.MockRequestor
 
-		random.SetGenerator(random.NewSeededGenerator(123456))
-		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-		dates.SetNowFunc(now)
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
 		testJSON, err := os.ReadFile(tc.outputFile)

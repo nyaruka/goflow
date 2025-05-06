@@ -15,7 +15,6 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -31,12 +30,7 @@ import (
 )
 
 func TestEventMarshaling(t *testing.T) {
-	defer dates.SetNowFunc(time.Now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	dates.SetNowFunc(now)
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, now))
+	test.MockUniverse()
 
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
 	require.NoError(t, err)

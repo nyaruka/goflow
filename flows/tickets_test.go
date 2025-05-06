@@ -2,23 +2,19 @@ package flows_test
 
 import (
 	"testing"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestTickets(t *testing.T) {
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-	dates.SetNowFunc(now)
+	test.MockUniverse()
 
 	env := envs.NewBuilder().Build()
 
@@ -97,7 +93,7 @@ func TestTickets(t *testing.T) {
 
 	ticket3 := flows.OpenTicket(weather, bob)
 
-	assert.Equal(t, flows.TicketUUID("01969b46-55bb-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
+	assert.Equal(t, flows.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 }

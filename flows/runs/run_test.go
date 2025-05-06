@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -113,9 +112,7 @@ var sessionTrigger = `{
 }`
 
 func TestRun(t *testing.T) {
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-	dates.SetNowFunc(now)
+	test.MockUniverse()
 
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()
@@ -129,7 +126,7 @@ func TestRun(t *testing.T) {
 	run := session.Runs()[0]
 
 	checkRun := func(r flows.Run) {
-		assert.Equal(t, flows.RunUUID("01969b46-5d8b-76f8-9c0b-2014ddc77094"), r.UUID())
+		assert.Equal(t, flows.RunUUID("01969b47-0d53-76f8-9c0b-2014ddc77094"), r.UUID())
 		assert.Equal(t, flows.RunStatusCompleted, r.Status())
 		assert.Equal(t, flow, r.Flow())
 		assert.Equal(t, flow.Reference(true), r.FlowReference())
@@ -152,9 +149,7 @@ func TestRun(t *testing.T) {
 }
 
 func TestRunContext(t *testing.T) {
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-	dates.SetNowFunc(now)
+	test.MockUniverse()
 
 	// create a run with no parent or child
 	session, _, err := test.CreateTestSession("", envs.RedactionPolicyNone)
@@ -168,7 +163,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `01969b46-7113-76f8-8228-9728778b6c98`},
+		{`@child.uuid`, `01969b47-20db-76f8-8228-9728778b6c98`},
 		{`@child.run`, `{status: completed}`}, // to be removed in 13.2
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.flow.name`, "Collect Age"},
@@ -203,11 +198,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:30:32.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(run.results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:30:32.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(parent.contact.urns))`,

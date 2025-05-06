@@ -10,15 +10,11 @@ import (
 	"sort"
 	"testing"
 	"text/template"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -108,17 +104,11 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer random.SetGenerator(random.DefaultGenerator)
-	defer dates.SetNowFunc(time.Now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for i, tc := range tests {
-		random.SetGenerator(random.NewSeededGenerator(123456))
-		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-		dates.SetNowFunc(now)
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345, now))
+		test.MockUniverse()
 
 		var clonedMocks *httpx.MockRequestor
 		if tc.HTTPMocks != nil {
@@ -795,9 +785,7 @@ func TestReadAction(t *testing.T) {
 }
 
 func TestResthookPayload(t *testing.T) {
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-	dates.SetNowFunc(now)
+	test.MockUniverse()
 
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()

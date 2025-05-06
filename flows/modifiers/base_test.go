@@ -7,11 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -53,9 +51,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 	jsonx.MustUnmarshal(testFile, &tests)
 
 	for i, tc := range tests {
-		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-		uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
-		dates.SetNowFunc(now)
+		test.MockUniverse()
 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 
