@@ -1,11 +1,14 @@
-# Container
+# Definitions
 
-Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:
+Flow definitions are defined as a list of nodes, the first node being the entry into the flow. A flow can have zero 
+nodes and therefore be a no-op up to a maximum of 1,000 nodes.
+
+The simplest possible flow containing no nodes whatsoever contains the following fields:
 
  * `uuid` the UUID
  * `name` the name
- * `language` the base authoring language used for localization
- * `type` the type, one of `messaging`, `messaging_offline`, `voice` whcih determines which actions are allowed in the flow
+ * `language` the base authoring language used for localization as a ISO 639-3 code
+ * `type` the type, one of `messaging`, `messaging_background` or `voice` which determines which actions are allowed in the flow
  * `nodes` the nodes (may be empty)
 
 For example:
@@ -22,14 +25,12 @@ For example:
 
 # Nodes
 
-Flow definitions are composed of zero or more nodes, the first node is always the entry node.
-
-A Node consists of:
+A node consists of:
 
  * `uuid` the UUID
- * `actions` a list of 0-n actions which will be executed upon first entering a node
+ * `actions` a list of 0-100 actions which will be executed upon first entering a node
  * `router` an optional router which determines which exit to take
- * `exit` a list of 0-n exits which can be used to link to other nodes
+ * `exit` a list of 0-100 exits which can be used to link to other nodes
 
 At its simplest, a node can be just a single action with no exits, wait or router, such as:
 
@@ -44,7 +45,8 @@ At its simplest, a node can be just a single action with no exits, wait or route
 }
 ```
 
-If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the node that is next. Without a router defined, the first exit will always be taken. 
+If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the node 
+that is next. Without a router defined, the first exit will always be taken. 
 
 An exit consists of:
 
