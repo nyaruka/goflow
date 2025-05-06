@@ -7,13 +7,10 @@ import (
 	"os"
 	"sort"
 	"testing"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -62,13 +59,8 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer dates.SetNowFunc(time.Now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-
 	for i, tc := range tests {
-		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
-		dates.SetNowFunc(now)
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345, now))
+		test.MockUniverse()
 
 		testName := fmt.Sprintf("test '%s' for resume type '%s'", tc.Description, typeName)
 

@@ -34,8 +34,8 @@
         "events": [
             {
                 "type": "msg_received",
-                "created_on": "2025-05-04T12:30:14.123456789Z",
-                "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "msg": {
                     "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
                     "urn": "tel:+12065551212",
@@ -48,8 +48,8 @@
             },
             {
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:18.123456789Z",
-                "step_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                "created_on": "2025-05-04T12:31:03.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "red",
                 "category": "Red"

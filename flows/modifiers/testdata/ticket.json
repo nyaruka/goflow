@@ -26,7 +26,7 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "ticket": {
-                "uuid": "01969b46-55bb-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "topic": {
                     "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                     "name": "Computers"
@@ -40,9 +40,9 @@
         "events": [
             {
                 "type": "ticket_opened",
-                "created_on": "2025-05-04T12:30:01.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "ticket": {
-                    "uuid": "01969b46-55bb-76f8-ae7f-f8b243c49ff5",
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                     "topic": {
                         "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                         "name": "Computers"
