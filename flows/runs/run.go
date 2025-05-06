@@ -45,7 +45,7 @@ type run struct {
 func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run {
 	now := dates.Now()
 	r := &run{
-		uuid:       flows.RunUUID(uuids.NewV7()),
+		uuid:       flows.NewRunUUID(),
 		session:    session,
 		flow:       flow,
 		flowRef:    flow.Reference(true),

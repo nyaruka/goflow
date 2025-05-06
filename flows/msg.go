@@ -21,6 +21,20 @@ func init() {
 	})
 }
 
+// MsgID is the ID of a message
+type MsgID int64
+
+// NilMsgID is our constant for nil message ids
+const NilMsgID = MsgID(0)
+
+// MsgUUID is the UUID of a message
+type MsgUUID uuids.UUID
+
+// NewMsgUUID generates a new UUID for a message
+func NewMsgUUID() MsgUUID {
+	return MsgUUID(uuids.NewV7())
+}
+
 type UnsendableReason string
 
 const (
@@ -92,7 +106,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, topic MsgTopic, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(uuids.NewV7()),
+			UUID_:        NewMsgUUID(),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        content.Text,
@@ -115,7 +129,7 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(uuids.NewV7()),
+			UUID_:        NewMsgUUID(),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,

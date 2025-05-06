@@ -37,72 +37,11 @@ type ExitUUID uuids.UUID
 // ActionUUID is the UUID of an action
 type ActionUUID uuids.UUID
 
-// ContactID is the ID of a contact
-type ContactID int64
-
-// ContactUUID is the UUID of a contact
-type ContactUUID uuids.UUID
-
-// RunUUID is the UUID of a flow run
-type RunUUID uuids.UUID
-
 // StepUUID is the UUID of a run step
 type StepUUID uuids.UUID
 
 // InputUUID is the UUID of an input
 type InputUUID uuids.UUID
-
-// SessionUUID is the UUID of a session
-type SessionUUID uuids.UUID
-
-// SprintUUID is the UUID of a sprint
-type SprintUUID uuids.UUID
-
-// MsgID is the ID of a message
-type MsgID int64
-
-// NilMsgID is our constant for nil message ids
-const NilMsgID = MsgID(0)
-
-// MsgUUID is the UUID of a message
-type MsgUUID uuids.UUID
-
-// SessionStatus represents the current status of the engine session
-type SessionStatus string
-
-const (
-	// SessionStatusActive represents a session that is still active
-	SessionStatusActive SessionStatus = "active"
-
-	// SessionStatusCompleted represents a session that has run to completion
-	SessionStatusCompleted SessionStatus = "completed"
-
-	// SessionStatusWaiting represents a session which is waiting for something from the caller
-	SessionStatusWaiting SessionStatus = "waiting"
-
-	// SessionStatusFailed represents a session that encountered an unrecoverable error
-	SessionStatusFailed SessionStatus = "failed"
-)
-
-// RunStatus represents the current status of the flow run
-type RunStatus string
-
-const (
-	// RunStatusActive represents a run that is still active
-	RunStatusActive RunStatus = "active"
-
-	// RunStatusCompleted represents a run that has run to completion
-	RunStatusCompleted RunStatus = "completed"
-
-	// RunStatusWaiting represents a run which is waiting for something from the caller
-	RunStatusWaiting RunStatus = "waiting"
-
-	// RunStatusFailed represents a run that encountered an unrecoverable error
-	RunStatusFailed RunStatus = "failed"
-
-	// RunStatusExpired represents a run that expired due to inactivity
-	RunStatusExpired RunStatus = "expired"
-)
 
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
@@ -352,111 +291,6 @@ type Engine interface {
 	Evaluator() *excellent.Evaluator
 	Services() Services
 	Options() *EngineOptions
-}
-
-// Segment is a movement on the flow graph from an exit to another node
-type Segment interface {
-	Flow() Flow
-	Node() Node
-	Exit() Exit
-	Operand() string
-	Destination() Node
-	Time() time.Time
-}
-
-// Sprint is an interaction with the engine - i.e. a start or resume of a session
-type Sprint interface {
-	UUID() SprintUUID
-	Modifiers() []Modifier
-	Events() []Event
-	Segments() []Segment
-}
-
-// Session represents the session of a flow run which may contain many runs
-type Session interface {
-	Assets() SessionAssets
-
-	UUID() SessionUUID
-	Type() FlowType
-	SetType(FlowType)
-
-	Environment() envs.Environment
-	SetEnvironment(envs.Environment)
-	MergedEnvironment() envs.Environment
-
-	Contact() *Contact
-	SetContact(*Contact)
-
-	Input() Input
-	SetInput(Input)
-
-	Status() SessionStatus
-	Trigger() Trigger
-	CurrentResume() Resume
-	BatchStart() bool
-	PushFlow(Flow, Run, bool)
-
-	Resume(context.Context, Resume) (Sprint, error)
-	Runs() []Run
-	GetRun(RunUUID) (Run, error)
-	FindStep(uuid StepUUID) (Run, Step)
-	GetCurrentChild(Run) Run
-	ParentRun() RunSummary
-	CurrentContext() *types.XObject
-	History() *SessionHistory
-
-	Engine() Engine
-}
-
-// RunSummary represents the minimum information available about all runs (current or related) and is the
-// representation of runs made accessible to router tests.
-type RunSummary interface {
-	UUID() RunUUID
-	Contact() *Contact
-	Flow() Flow
-	Status() RunStatus
-	Results() Results
-}
-
-// Run is a single contact's journey through a flow. It records the path they have taken,
-// and the results that have been collected.
-type Run interface {
-	Contextable
-	RunSummary
-	FlowReference() *assets.FlowReference
-
-	Session() Session
-	Locals() *Locals
-	SetResult(*Result) (*Result, bool)
-	SetStatus(RunStatus)
-	Webhook() *WebhookCall
-	SetWebhook(*WebhookCall)
-
-	CreateStep(Node) Step
-	Path() []Step
-	PathLocation() (Step, Node, error)
-
-	LogEvent(Step, Event)
-	Events() []Event
-	ReceivedInput() bool
-
-	EvaluateTemplateValue(string, EventCallback) (types.XValue, bool)
-	EvaluateTemplateText(string, excellent.Escaping, bool, EventCallback) (string, bool)
-	EvaluateTemplate(string, EventCallback) (string, bool)
-	RootContext(envs.Environment) map[string]types.XValue
-
-	GetText(uuids.UUID, string, string) (string, i18n.Language)
-	GetTextArray(uuids.UUID, string, []string, []i18n.Language) ([]string, i18n.Language)
-
-	Snapshot() RunSummary
-	Parent() RunSummary
-	ParentInSession() Run
-	Ancestors() []Run
-
-	CreatedOn() time.Time
-	ModifiedOn() time.Time
-	ExitedOn() *time.Time
-	Exit(RunStatus)
 }
 
 // LegacyExtraContributor is something which contributes results for constructing @legacy_extra

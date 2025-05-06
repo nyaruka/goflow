@@ -4,7 +4,6 @@ import (
 	"context"
 	"text/template"
 
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
@@ -21,7 +20,7 @@ type engine struct {
 // NewSession creates a new session
 func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
 	s := &session{
-		uuid:       flows.SessionUUID(uuids.NewV4()),
+		uuid:       flows.NewSessionUUID(),
 		env:        envs.NewBuilder().Build(),
 		engine:     e,
 		assets:     sa,

@@ -26,6 +26,17 @@ func init() {
 	})
 }
 
+// ContactID is the ID of a contact
+type ContactID int64
+
+// ContactUUID is the UUID of a contact
+type ContactUUID uuids.UUID
+
+// NewContactUUID generates a new UUID for a contact
+func NewContactUUID() ContactUUID {
+	return ContactUUID(uuids.NewV4())
+}
+
 // ContactStatus is status in which a contact is in
 type ContactStatus string
 
@@ -113,7 +124,7 @@ func NewContact(
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:       ContactUUID(uuids.NewV4()),
+		uuid:       NewContactUUID(),
 		name:       name,
 		language:   language,
 		status:     ContactStatusActive,
