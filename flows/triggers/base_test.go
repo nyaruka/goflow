@@ -166,11 +166,9 @@ var assetsJSON = `{
 }`
 
 func TestTriggerMarshaling(t *testing.T) {
-	defer dates.SetNowFunc(time.Now)
-	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 20, 9, 49, 30, 1234567890, time.UTC)))
-
-	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+	dates.SetNowFunc(now)
 
 	env := envs.NewBuilder().Build()
 

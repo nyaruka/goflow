@@ -1,6 +1,6 @@
 {
     "type": "msg_wait",
-    "created_on": "2025-05-04T12:31:24.123456789Z",
+    "created_on": "2025-05-04T12:31:25.123456789Z",
     "timeout_seconds": 500,
     "expires_on": "2022-02-03T13:45:30Z",
     "hint": {
