@@ -56,9 +56,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "created_on": "2025-05-04T12:30:07.123456789Z",
+                "created_on": "2025-05-04T12:30:08.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                "transfer_uuid": "01969b46-7113-76f8-8587-d4e530c948f0",
                 "external_id": "5OKA5LEG5N",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -120,9 +120,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "created_on": "2025-05-04T12:30:07.123456789Z",
+                "created_on": "2025-05-04T12:30:08.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "transfer_uuid": "297611a6-b583-45c3-8587-d4e530c948f0",
+                "transfer_uuid": "01969b46-7113-76f8-8587-d4e530c948f0",
                 "external_id": "",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+17036000666",
@@ -132,7 +132,7 @@
             },
             {
                 "type": "error",
-                "created_on": "2025-05-04T12:30:09.123456789Z",
+                "created_on": "2025-05-04T12:30:10.123456789Z",
                 "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
                 "text": "invalid recipient number"
             }

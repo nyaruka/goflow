@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
@@ -207,7 +206,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 }
 
 func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(flows.MsgUUID(uuids.NewV4()), contact.URNs()[0].URN(), nil, text, []utils.Attachment{})
+	return flows.NewMsgIn(flows.NewMsgUUID(), contact.URNs()[0].URN(), nil, text, []utils.Attachment{})
 }
 
 func printEvents(log []flows.Event, out io.Writer) {

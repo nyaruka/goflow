@@ -12,6 +12,9 @@ import (
 // TicketUUID is the UUID of a ticket
 type TicketUUID uuids.UUID
 
+// NewTicketUUID generates a new UUID for a ticket
+func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
+
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
 	uuid     TicketUUID
@@ -30,7 +33,7 @@ func NewTicket(uuid TicketUUID, topic *Topic, assignee *User) *Ticket {
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(TicketUUID(uuids.NewV4()), topic, assignee)
+	return NewTicket(NewTicketUUID(), topic, assignee)
 }
 
 func (t *Ticket) UUID() TicketUUID { return t.uuid }

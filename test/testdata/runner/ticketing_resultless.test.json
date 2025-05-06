@@ -161,7 +161,7 @@
                     "value": "Rats"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:22.123456789Z",
+                    "created_on": "2025-05-04T12:30:23.123456789Z",
                     "note": "Last message: Rats",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "ticket": {
@@ -169,15 +169,15 @@
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                         },
-                        "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                        "uuid": "01969b46-abab-76f8-b86e-4b881f09a186"
                     },
                     "type": "ticket_opened"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}]",
-                    "created_on": "2025-05-04T12:30:26.123456789Z",
+                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b46-abab-76f8-b86e-4b881f09a186\"}]",
+                    "created_on": "2025-05-04T12:30:27.123456789Z",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                    "subject": "New ticket: a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "subject": "New ticket: 01969b46-abab-76f8-b86e-4b881f09a186",
                     "to": [
                         "bob@nyaruka.com"
                     ],
@@ -198,8 +198,8 @@
                     "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
-                    "operand": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                    "time": "2025-05-04T12:30:24.123456789Z"
+                    "operand": "01969b46-abab-76f8-b86e-4b881f09a186",
+                    "time": "2025-05-04T12:30:25.123456789Z"
                 }
             ],
             "session": {
@@ -215,7 +215,7 @@
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                         },
-                        "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                        "uuid": "01969b46-abab-76f8-b86e-4b881f09a186"
                     },
                     "timezone": "America/Guayaquil",
                     "urns": [
@@ -284,7 +284,7 @@
                                 "value": "Rats"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:22.123456789Z",
+                                "created_on": "2025-05-04T12:30:23.123456789Z",
                                 "note": "Last message: Rats",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "ticket": {
@@ -292,30 +292,30 @@
                                         "name": "Weather",
                                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                                     },
-                                    "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                                    "uuid": "01969b46-abab-76f8-b86e-4b881f09a186"
                                 },
                                 "type": "ticket_opened"
                             },
                             {
-                                "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}]",
-                                "created_on": "2025-05-04T12:30:26.123456789Z",
+                                "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b46-abab-76f8-b86e-4b881f09a186\"}]",
+                                "created_on": "2025-05-04T12:30:27.123456789Z",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "subject": "New ticket: a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                                "subject": "New ticket: 01969b46-abab-76f8-b86e-4b881f09a186",
                                 "to": [
                                     "bob@nyaruka.com"
                                 ],
                                 "type": "email_sent"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:30:28.123456789Z",
+                        "exited_on": "2025-05-04T12:30:29.123456789Z",
                         "flow": {
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
                         "locals": {
-                            "_new_ticket": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                            "_new_ticket": "01969b46-abab-76f8-b86e-4b881f09a186"
                         },
-                        "modified_on": "2025-05-04T12:30:28.123456789Z",
+                        "modified_on": "2025-05-04T12:30:29.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:03.123456789Z",
@@ -336,7 +336,7 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:25.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:26.123456789Z",
                                 "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
                                 "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"

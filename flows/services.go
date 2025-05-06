@@ -83,21 +83,24 @@ type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
-// AirtimeTransferUUID is the UUID of a airtime transfer
-type AirtimeTransferUUID uuids.UUID
+// TransferUUID is the UUID of an airtime transfer
+type TransferUUID uuids.UUID
 
-// AirtimeTransferStatus is a status of a airtime transfer
-type AirtimeTransferStatus string
+// NewTransferUUID generates a new UUID for an airtime transfer
+func NewTransferUUID() TransferUUID { return TransferUUID(uuids.NewV7()) }
+
+// TransferStatus is a status of a airtime transfer
+type TransferStatus string
 
 // possible values for airtime transfer statuses
 const (
-	AirtimeTransferStatusSuccess AirtimeTransferStatus = "success"
-	AirtimeTransferStatusFailed  AirtimeTransferStatus = "failed"
+	TransferStatusSuccess TransferStatus = "success"
+	TransferStatusFailed  TransferStatus = "failed"
 )
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	UUID       AirtimeTransferUUID
+	UUID       TransferUUID
 	ExternalID string
 	Sender     urns.URN
 	Recipient  urns.URN

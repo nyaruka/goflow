@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -15,8 +16,9 @@ import (
 )
 
 func TestTickets(t *testing.T) {
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+	dates.SetNowFunc(now)
 
 	env := envs.NewBuilder().Build()
 
@@ -66,13 +68,13 @@ func TestTickets(t *testing.T) {
 	assert.EqualError(t, err, "field 'uuid' is required")
 
 	ticket1, err := flows.ReadTicket(sa, []byte(`{
-		"uuid": "349c851f-3f8e-4353-8bf2-8e90b6d73530", 
+		"uuid": "0196a645-3f8d-7452-8d1a-f05fe6923d6d", 
 		"topic": {"uuid": "fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "name": "Deleted"},
 		"assignee": {"email": "dave@nyaruka.com", "name": "Dave"}
 	}`), missing)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.TicketUUID("349c851f-3f8e-4353-8bf2-8e90b6d73530"), ticket1.UUID())
+	assert.Equal(t, flows.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
 	assert.Nil(t, ticket1.Assignee())
 
@@ -95,7 +97,7 @@ func TestTickets(t *testing.T) {
 
 	ticket3 := flows.OpenTicket(weather, bob)
 
-	assert.Equal(t, flows.TicketUUID("1ae96956-4b34-433e-8d1a-f05fe6923d6d"), ticket3.UUID())
+	assert.Equal(t, flows.TicketUUID("01969b46-55bb-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 }

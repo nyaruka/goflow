@@ -798,8 +798,6 @@ func TestResthookPayload(t *testing.T) {
 	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
 	dates.SetNowFunc(now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer dates.SetNowFunc(time.Now)
 
 	server := test.NewTestHTTPServer(49999)
 	defer server.Close()

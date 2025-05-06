@@ -60,7 +60,7 @@ func TestContact(t *testing.T) {
 
 	contact, err := flows.NewContact(
 		sa,
-		flows.ContactUUID(uuids.NewV4()),
+		flows.NewContactUUID(),
 		flows.ContactID(12345),
 		"Joe Bloggs",
 		i18n.Language("eng"),
@@ -226,7 +226,7 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
 		sa,
-		flows.ContactUUID(uuids.NewV4()),
+		flows.NewContactUUID(),
 		flows.ContactID(1234),
 		"",
 		i18n.NilLanguage,

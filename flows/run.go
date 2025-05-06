@@ -15,9 +15,7 @@ import (
 type RunUUID uuids.UUID
 
 // NewRunUUID generates a new UUID for a run
-func NewRunUUID() RunUUID {
-	return RunUUID(uuids.NewV7())
-}
+func NewRunUUID() RunUUID { return RunUUID(uuids.NewV7()) }
 
 // RunStatus represents the current status of the flow run
 type RunStatus string

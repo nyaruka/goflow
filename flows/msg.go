@@ -31,9 +31,7 @@ const NilMsgID = MsgID(0)
 type MsgUUID uuids.UUID
 
 // NewMsgUUID generates a new UUID for a message
-func NewMsgUUID() MsgUUID {
-	return MsgUUID(uuids.NewV7())
-}
+func NewMsgUUID() MsgUUID { return MsgUUID(uuids.NewV7()) }
 
 type UnsendableReason string
 

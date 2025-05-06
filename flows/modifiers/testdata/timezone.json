@@ -22,7 +22,7 @@
         "events": [
             {
                 "type": "contact_timezone_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "timezone": "Africa/Kigali"
             }
         ]
@@ -71,7 +71,7 @@
         "events": [
             {
                 "type": "contact_timezone_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "timezone": ""
             }
         ]
