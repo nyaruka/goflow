@@ -40,13 +40,13 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	BaseEvent
 
-	TransferUUID flows.AirtimeTransferUUID `json:"transfer_uuid"`
-	ExternalID   string                    `json:"external_id"`
-	Sender       urns.URN                  `json:"sender"`
-	Recipient    urns.URN                  `json:"recipient"`
-	Currency     string                    `json:"currency"`
-	Amount       decimal.Decimal           `json:"amount"`
-	HTTPLogs     []*flows.HTTPLog          `json:"http_logs"`
+	TransferUUID flows.TransferUUID `json:"transfer_uuid"`
+	ExternalID   string             `json:"external_id"`
+	Sender       urns.URN           `json:"sender"`
+	Recipient    urns.URN           `json:"recipient"`
+	Currency     string             `json:"currency"`
+	Amount       decimal.Decimal    `json:"amount"`
+	HTTPLogs     []*flows.HTTPLog   `json:"http_logs"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event

@@ -28,12 +28,12 @@
         "events": [
             {
                 "type": "contact_language_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "language": "fra"
             },
             {
                 "type": "contact_groups_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:01.123456789Z",
                 "groups_added": [
                     {
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
@@ -85,7 +85,7 @@
         "events": [
             {
                 "type": "contact_language_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "language": ""
             }
         ]

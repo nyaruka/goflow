@@ -52,12 +52,10 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer dates.SetNowFunc(time.Now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-
 	for i, tc := range tests {
-		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
+		now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 0, 123456789, time.UTC), time.Second)
+		uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
+		dates.SetNowFunc(now)
 
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 

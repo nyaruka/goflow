@@ -80,7 +80,7 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "active"
             }
         ]
@@ -106,7 +106,7 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "active"
             }
         ]
@@ -132,7 +132,7 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "blocked"
             }
         ]
@@ -158,7 +158,7 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "stopped"
             }
         ]
@@ -192,12 +192,12 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "active"
             },
             {
                 "type": "contact_groups_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:01.123456789Z",
                 "groups_added": [
                     {
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
@@ -248,12 +248,12 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "blocked"
             },
             {
                 "type": "contact_groups_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:01.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
@@ -308,12 +308,12 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:00.123456789Z",
                 "status": "archived"
             },
             {
                 "type": "contact_groups_changed",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "created_on": "2025-05-04T12:30:01.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",

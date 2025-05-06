@@ -16,9 +16,7 @@ type SprintUUID uuids.UUID
 type SessionUUID uuids.UUID
 
 // NewSessionUUID generates a new UUID for a session
-func NewSessionUUID() SessionUUID {
-	return SessionUUID(uuids.NewV7())
-}
+func NewSessionUUID() SessionUUID { return SessionUUID(uuids.NewV7()) }
 
 // SessionStatus represents the current status of the engine session
 type SessionStatus string

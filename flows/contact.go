@@ -33,9 +33,7 @@ type ContactID int64
 type ContactUUID uuids.UUID
 
 // NewContactUUID generates a new UUID for a contact
-func NewContactUUID() ContactUUID {
-	return ContactUUID(uuids.NewV4())
-}
+func NewContactUUID() ContactUUID { return ContactUUID(uuids.NewV4()) }
 
 // ContactStatus is status in which a contact is in
 type ContactStatus string
