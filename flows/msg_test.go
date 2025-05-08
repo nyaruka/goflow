@@ -28,9 +28,8 @@ func TestMsgIn(t *testing.T) {
 			utils.Attachment("image/jpeg:https://example.com/test.jpg"),
 			utils.Attachment("audio/mp3:https://example.com/test.mp3"),
 		},
+		"EX346436734",
 	)
-	msg.SetID(123)
-	msg.SetExternalID("EX346436734")
 
 	// test marshaling our msg
 	marshaled, err := jsonx.Marshal(msg)
@@ -38,7 +37,6 @@ func TestMsgIn(t *testing.T) {
 
 	test.AssertEqualJSON(t, []byte(`{
 		"uuid":"48c32bd4-ed68-4a21-b540-9da96217b022",
-		"id":123,
 		"urn":"tel:+1234567890",
 		"channel":{"uuid":"61f38f46-a856-4f90-899e-905691784159",
 		"name":"My Android"},
@@ -53,7 +51,6 @@ func TestMsgIn(t *testing.T) {
 	err = utils.UnmarshalAndValidate(marshaled, msg)
 	require.NoError(t, err)
 	assert.Equal(t, flows.MsgUUID("48c32bd4-ed68-4a21-b540-9da96217b022"), msg.UUID())
-	assert.Equal(t, flows.MsgID(123), msg.ID())
 	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)

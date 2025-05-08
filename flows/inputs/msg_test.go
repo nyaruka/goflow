@@ -31,8 +31,8 @@ func TestMsgInput(t *testing.T) {
 			"image/jpg:http://example.com/test.jpg",
 			"video/mp4:http://example.com/test.mp4",
 		},
+		"ext12345",
 	)
-	msg.SetExternalID("ext12345")
 
 	input := inputs.NewMsg(session, msg, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC))
 	assert.Equal(t, "msg", input.Type())

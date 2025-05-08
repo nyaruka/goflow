@@ -21,12 +21,6 @@ func init() {
 	})
 }
 
-// MsgID is the ID of a message
-type MsgID int64
-
-// NilMsgID is our constant for nil message ids
-const NilMsgID = MsgID(0)
-
 // MsgUUID is the UUID of a message
 type MsgUUID uuids.UUID
 
@@ -62,7 +56,6 @@ const (
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
 	UUID_        MsgUUID                  `json:"uuid"`
-	ID_          MsgID                    `json:"id,omitempty"`
 	URN_         urns.URN                 `json:"urn,omitempty" validate:"omitempty,urn"`
 	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
 	Text_        string                   `json:"text"`
@@ -88,7 +81,7 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment) *MsgIn {
+func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, externalID string) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			UUID_:        uuid,
@@ -97,6 +90,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 			Text_:        text,
 			Attachments_: attachments,
 		},
+		ExternalID_: externalID,
 	}
 }
 
@@ -143,12 +137,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 // UUID returns the UUID of this message
 func (m *BaseMsg) UUID() MsgUUID { return m.UUID_ }
 
-// ID returns the internal ID of this message
-func (m *BaseMsg) ID() MsgID { return m.ID_ }
-
-// SetID sets the internal ID of this message
-func (m *BaseMsg) SetID(id MsgID) { m.ID_ = id }
-
 // URN returns the URN of this message
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }
 
@@ -166,9 +154,6 @@ func (m *BaseMsg) Attachments() []utils.Attachment { return m.Attachments_ }
 
 // ExternalID returns the optional external ID of this incoming message
 func (m *MsgIn) ExternalID() string { return m.ExternalID_ }
-
-// SetExternalID sets the external ID of this message
-func (m *MsgIn) SetExternalID(id string) { m.ExternalID_ = id }
 
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []QuickReply { return m.QuickReplies_ }
