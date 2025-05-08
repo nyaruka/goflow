@@ -1,3 +1,7 @@
+v0.244.0 (2025-05-08)
+-------------------------
+ * Remove ID from MsgIn and add externalID as param to NewMsgIn
+
 v0.243.3 (2025-05-06)
 -------------------------
  * Tweak spec docs to include limits
