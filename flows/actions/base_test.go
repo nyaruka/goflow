@@ -208,6 +208,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 					"image/jpeg:http://http://s3.amazon.com/bucket/test.jpg",
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
+				"",
 			)
 			trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(msg).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
@@ -992,7 +993,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			sprint, err = session.Resume(ctx, resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil)))
+			sprint, err = session.Resume(ctx, resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil, "SMS1234")))
 			require.NoError(t, err)
 		}
 
