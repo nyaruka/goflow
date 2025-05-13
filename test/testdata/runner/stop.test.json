@@ -207,7 +207,7 @@
                     "triggered_on": "2022-02-04T19:43:50.217940873Z",
                     "type": "manual",
                     "user": {
-                        "email": "bob@nyaruka.com",
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                         "name": "Bob"
                     }
                 },
@@ -286,7 +286,7 @@
         "triggered_on": "2022-02-04T19:43:50.217940873Z",
         "type": "manual",
         "user": {
-            "email": "bob@nyaruka.com",
+            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
             "name": "Bob"
         }
     }

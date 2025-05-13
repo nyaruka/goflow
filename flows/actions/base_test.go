@@ -471,7 +471,7 @@ func TestConstructors(t *testing.T) {
 				actionUUID,
 				assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"),
 				"Where are my cookies?",
-				assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"),
+				assets.NewUserReference("0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "Bob McTickets"),
 			),
 			`{
 				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -482,7 +482,7 @@ func TestConstructors(t *testing.T) {
 				},
 				"note": "Where are my cookies?",
 				"assignee": {
-					"email": "bob@nyaruka.com",
+					"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
 					"name": "Bob McTickets"
 				}
 			}`,

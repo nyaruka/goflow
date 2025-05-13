@@ -25,7 +25,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".note"
             ],
             "play_audio": [
@@ -121,7 +121,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".note"
             ],
             "play_audio": [
@@ -217,7 +217,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -313,7 +313,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -405,7 +405,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -494,7 +494,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -583,7 +583,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -672,7 +672,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -761,7 +761,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [
@@ -850,7 +850,7 @@
             ],
             "enter_flow": [],
             "open_ticket": [
-                ".assignee.email_match",
+                ".assignee.email",
                 ".body"
             ],
             "play_audio": [

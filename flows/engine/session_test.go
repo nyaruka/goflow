@@ -167,8 +167,8 @@ func TestReadWithMissingAssets(t *testing.T) {
 		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
 		"topic[uuid=472a7a73-96cb-4736-b567-056d987cc5b4,name=Weather]",
 		"topic[uuid=472a7a73-96cb-4736-b567-056d987cc5b4,name=Weather]",
-		"user[email=bob@nyaruka.com,name=Bob]",
-		"user[email=bob@nyaruka.com,name=Bob]",
+		"user[uuid=0c78ef47-7d56-44d8-8f57-96e0f30e8f44,name=Bob]",
+		"user[uuid=0c78ef47-7d56-44d8-8f57-96e0f30e8f44,name=Bob]",
 	}, refs)
 }
 

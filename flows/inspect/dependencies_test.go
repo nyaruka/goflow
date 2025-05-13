@@ -48,7 +48,7 @@ func TestDependencies(t *testing.T) {
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewOptInReference("c14b2e3f-997a-4547-a04e-6e9d5065c677", "Jokes")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTemplateReference("ff958d30-f50e-48ab-a524-37ed1e9620d9", "Welcome")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewTopicReference("531d3fc7-64f4-4170-927d-b477e8145dd3", "Weather")),
-		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewUserReference("jim@nyaruka.com", "Jim")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewUserReference("a35e5851-eac0-44ff-b9b2-96f6830b9e6d", "Jim")),
 		flows.NewExtractedReference(node2, nil, router2, i18n.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),
 	}
 
@@ -141,9 +141,9 @@ func TestDependencies(t *testing.T) {
 		},
 		{
 			"missing": true,
+			"name": "Jim",
 			"type": "user",
-			"email": "jim@nyaruka.com",
-			"name": "Jim"
+			"uuid": "a35e5851-eac0-44ff-b9b2-96f6830b9e6d"
 		}
 	]`), depsJSON, "deps JSON mismatch")
 

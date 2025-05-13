@@ -32,7 +32,7 @@
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
             "topic": null,
             "assignee": {
-                "email": "bob@nyaruka.com",
+                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob McTickets"
             }
         }

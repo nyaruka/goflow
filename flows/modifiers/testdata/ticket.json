@@ -15,7 +15,7 @@
                 "name": "Computers"
             },
             "assignee": {
-                "email": "bob@nyaruka.com",
+                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob"
             },
             "note": "this is a note"
@@ -32,7 +32,7 @@
                     "name": "Computers"
                 },
                 "assignee": {
-                    "email": "bob@nyaruka.com",
+                    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
                 }
             }
@@ -48,7 +48,7 @@
                         "name": "Computers"
                     },
                     "assignee": {
-                        "email": "bob@nyaruka.com",
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                         "name": "Bob"
                     }
                 },
@@ -72,7 +72,7 @@
                 },
                 "body": "this is a note",
                 "assignee": {
-                    "email": "bob@nyaruka.com",
+                    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
                 }
             }
@@ -98,7 +98,7 @@
                     "name": "Computers"
                 },
                 "assignee": {
-                    "email": "bob@nyaruka.com",
+                    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
                 }
             }

@@ -144,10 +144,11 @@ func TestReferences(t *testing.T) {
 	// topic references must always be concrete
 	assert.EqualError(t, utils.Validate(assets.NewTopicReference("", "Weather")), "field 'uuid' is required")
 
-	userRef := assets.NewUserReference("bob@nyaruka.com", "Bob")
+	userRef := assets.NewUserReference("aefbc3b2-2f36-4a26-aa54-5fa20f761f99", "Bob")
 	assert.Equal(t, "user", userRef.Type())
-	assert.Equal(t, "bob@nyaruka.com", userRef.Identity())
-	assert.Equal(t, "user[email=bob@nyaruka.com,name=Bob]", userRef.String())
+	assert.Equal(t, "aefbc3b2-2f36-4a26-aa54-5fa20f761f99", userRef.Identity())
+	assert.Equal(t, uuids.UUID("aefbc3b2-2f36-4a26-aa54-5fa20f761f99"), userRef.GenericUUID())
+	assert.Equal(t, "user[uuid=aefbc3b2-2f36-4a26-aa54-5fa20f761f99,name=Bob]", userRef.String())
 	assert.False(t, userRef.Variable())
 	assert.NoError(t, utils.Validate(userRef))
 
@@ -157,13 +158,11 @@ func TestReferences(t *testing.T) {
 	// but they can't be neither or both of those things
 	assert.EqualError(t,
 		utils.Validate(&assets.UserReference{}),
-		"field 'email' is mutually exclusive with 'email_match', field 'email_match' is mutually exclusive with 'email'",
+		"field 'uuid' is mutually exclusive with 'email', field 'email' is mutually exclusive with 'uuid'",
 	)
 	assert.EqualError(t,
-		utils.Validate(&assets.UserReference{
-			Email: "bob@nyaruka.com",
-			Name:  "Bob", EmailMatch: "@contact.fields.supervisor"}),
-		"field 'email' is mutually exclusive with 'email_match', field 'email_match' is mutually exclusive with 'email'",
+		utils.Validate(&assets.UserReference{UUID: "aefbc3b2-2f36-4a26-aa54-5fa20f761f99", Name: "Bob", EmailMatch: "@contact.fields.supervisor"}),
+		"field 'uuid' is mutually exclusive with 'email', field 'email' is mutually exclusive with 'uuid'",
 	)
 }
 
@@ -174,33 +173,6 @@ func TestChannelReferenceUnmarsal(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
 	assert.Equal(t, "Old Channel", channel.Name)
-}
-
-func TestUserReferenceUnmarsal(t *testing.T) {
-	// check that we can unmarshal from just a string (the email address)
-	user := &assets.UserReference{}
-	err := utils.UnmarshalAndValidate([]byte(`"bob@nyaruka.com"`), user)
-	assert.NoError(t, err)
-	assert.Equal(t, "bob@nyaruka.com", user.Email)
-	assert.Equal(t, "", user.Name)
-
-	// or an object
-	err = utils.UnmarshalAndValidate([]byte(`{"email": "jim@nyaruka.com", "name": "Jim"}`), user)
-	assert.NoError(t, err)
-	assert.Equal(t, "jim@nyaruka.com", user.Email)
-	assert.Equal(t, "Jim", user.Name)
-
-	// but not a malformed string
-	err = utils.UnmarshalAndValidate([]byte(`"xxx`), user)
-	assert.EqualError(t, err, "unexpected end of JSON input")
-
-	// or malformed object
-	err = utils.UnmarshalAndValidate([]byte(`{"email": "bob@nyaruka.com", `), user)
-	assert.EqualError(t, err, "unexpected end of JSON input")
-
-	// or invalid object
-	err = utils.UnmarshalAndValidate([]byte(`{"email": "!!!!"}`), user)
-	assert.EqualError(t, err, "field 'email' is not a valid email address")
 }
 
 func TestTypedReference(t *testing.T) {
