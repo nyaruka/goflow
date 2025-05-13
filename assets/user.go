@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -12,17 +13,22 @@ func init() {
 	utils.RegisterStructValidator(UserReferenceValidation, UserReference{})
 }
 
+// UserUUID is the UUID of a user
+type UserUUID uuids.UUID
+
 // User is an person who can trigger flows or be assigned tickets etc.
 //
 //	{
-//	  "email": "bob@nyaruka.com",
-//	  "name": "Bob"
+//	  "uuid": "aefbc3b2-2f36-4a26-aa54-5fa20f761f99",
+//	  "name": "Bob",
+//	  "email": "bob@nyaruka.com"
 //	}
 //
 // @asset user
 type User interface {
-	Email() string
+	UUID() UserUUID
 	Name() string
+	Email() string
 }
 
 // UserReference is used to reference a user

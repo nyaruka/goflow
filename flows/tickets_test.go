@@ -31,8 +31,9 @@ func TestTickets(t *testing.T) {
 		],
 		"users": [
 			{
-				"email": "bob@nyaruka.com",
-				"name": "Bob"
+				"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+				"name": "Bob", 
+				"email": "bob@nyaruka.com"
 			}
 		]
 	}`))

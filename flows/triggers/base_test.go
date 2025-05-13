@@ -159,8 +159,9 @@ var assetsJSON = `{
     ],
     "users": [
         {
-            "email": "bob@nyaruka.com",
-            "name": "Bob McTickets"
+            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+            "name": "Bob McTickets",
+            "email": "bob@nyaruka.com"
         }
     ]
 }`

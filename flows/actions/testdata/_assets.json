@@ -493,12 +493,14 @@
     ],
     "users": [
         {
-            "email": "bob@nyaruka.com",
-            "name": "Bob"
+            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+            "name": "Bob",
+            "email": "bob@nyaruka.com"
         },
         {
-            "email": "jim@nyaruka.com",
-            "name": "Jim"
+            "uuid": "a35e5851-eac0-44ff-b9b2-96f6830b9e6d",
+            "name": "Jim",
+            "email": "jim@nyaruka.com"
         }
     ]
 }

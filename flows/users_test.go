@@ -14,8 +14,8 @@ import (
 )
 
 func TestUsers(t *testing.T) {
-	ua1 := static.NewUser("bob@nyaruka.com", "Bob McTickets")
-	ua2 := static.NewUser("jim@nyaruka.com", "")
+	ua1 := static.NewUser("0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "Bob McTickets", "bob@nyaruka.com")
+	ua2 := static.NewUser("c8945bcc-5d4b-495f-b3ea-2662c6070fe3", "", "jim@nyaruka.com")
 
 	ua := flows.NewUserAssets([]assets.User{ua1, ua2})
 
