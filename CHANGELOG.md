@@ -1,3 +1,7 @@
+v0.245.1 (2025-05-14)
+-------------------------
+ * Change user references to be by UUID with email being the variable form
+
 v0.245.0 (2025-05-13)
 -------------------------
  * Add UUID to user assets
