@@ -335,7 +335,7 @@ var sessionTrigger = `{
                 "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                 "name": "Weather"
             },
-            "assignee": {"email": "bob@nyaruka.com", "name": "Bob"}
+            "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
         }
     },
     "run_summary": {

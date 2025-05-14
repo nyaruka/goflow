@@ -27,7 +27,7 @@ const TypeManual string = "manual"
 //	    "name": "Bob",
 //	    "created_on": "2018-01-01T12:00:00.000000Z"
 //	  },
-//	  "user": {"email": "bob@nyaruka.com", "name": "Bob"},
+//	  "user": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"},
 //	  "origin": "ui",
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}
@@ -119,7 +119,7 @@ func readManualTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 
 	var user *flows.User
 	if e.User != nil {
-		user = sa.Users().Get(e.User.Email)
+		user = sa.Users().Get(e.User.UUID)
 		if user == nil {
 			missing(e.User, nil)
 		}

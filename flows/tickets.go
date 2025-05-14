@@ -84,7 +84,7 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 
 	var assignee *User
 	if e.Assignee != nil {
-		assignee = sa.Users().Get(e.Assignee.Email)
+		assignee = sa.Users().Get(e.Assignee.UUID)
 		if assignee == nil {
 			missing(e.Assignee, nil)
 		}

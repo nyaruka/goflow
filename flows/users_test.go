@@ -19,12 +19,15 @@ func TestUsers(t *testing.T) {
 
 	ua := flows.NewUserAssets([]assets.User{ua1, ua2})
 
-	u1 := ua.Get("bob@nyaruka.com")
+	u1 := ua.Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 
 	assert.Equal(t, "Bob McTickets", u1.Format())
 	assert.Equal(t, "Bob McTickets", u1.Name())
 	assert.Equal(t, ua1, u1.Asset())
-	assert.Equal(t, assets.NewUserReference("bob@nyaruka.com", "Bob McTickets"), u1.Reference())
+	assert.Equal(t, assets.NewUserReference("0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "Bob McTickets"), u1.Reference())
+
+	u1 = ua.FindByEmail("BOB@nyaruka.com")
+	assert.Equal(t, "Bob McTickets", u1.Format())
 
 	// nil object returns nil reference
 	assert.Nil(t, (*flows.User)(nil).Reference())
@@ -39,7 +42,7 @@ func TestUsers(t *testing.T) {
 		"first_name":  types.NewXText("Bob"),
 	}), flows.Context(env, u1))
 
-	u2 := ua.Get("jim@nyaruka.com")
+	u2 := ua.Get("c8945bcc-5d4b-495f-b3ea-2662c6070fe3")
 
 	assert.Equal(t, "jim@nyaruka.com", u2.Format()) // fallsback on email
 

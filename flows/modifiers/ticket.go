@@ -77,7 +77,7 @@ func readTicketModifier(assets flows.SessionAssets, data []byte, missing assets.
 
 	var assignee *flows.User
 	if e.Assignee != nil {
-		assignee = assets.Users().Get(e.Assignee.Email)
+		assignee = assets.Users().Get(e.Assignee.UUID)
 		if assignee == nil {
 			missing(e.Assignee, nil)
 		}

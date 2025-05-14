@@ -355,14 +355,14 @@ func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventC
 		evaluatedEmail, ok := run.EvaluateTemplate(ref.EmailMatch, logEvent)
 		if ok {
 			// look up to see if such a user exists
-			user = userAssets.Get(evaluatedEmail)
+			user = userAssets.FindByEmail(evaluatedEmail)
 			if user == nil {
 				logEvent(events.NewError(fmt.Sprintf("no such user with email '%s'", evaluatedEmail)))
 			}
 		}
 	} else {
-		// user is a fixed user with this email address
-		user = userAssets.Get(ref.Email)
+		// user is a fixed user with this UUID
+		user = userAssets.Get(ref.UUID)
 		if user == nil {
 			logEvent(events.NewDependencyError(ref))
 		}

@@ -90,7 +90,7 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 	case *assets.TopicReference:
 		return sa.Topics().Get(typed.UUID) != nil
 	case *assets.UserReference:
-		return sa.Users().Get(typed.Email) != nil
+		return sa.Users().Get(typed.UUID) != nil
 	default:
 		panic(fmt.Sprintf("unknown dependency type reference: %T", ref))
 	}

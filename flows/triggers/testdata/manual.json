@@ -26,7 +26,7 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z",
             "user": {
-                "email": "bob@nyaruka.com",
+                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob"
             },
             "origin": "api"

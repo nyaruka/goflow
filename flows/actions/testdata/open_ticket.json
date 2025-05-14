@@ -89,7 +89,7 @@
             },
             "note": "Last message: @input.text",
             "assignee": {
-                "email": "bob@nyaruka.com",
+                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob"
             }
         },
@@ -105,7 +105,7 @@
                         "name": "Weather"
                     },
                     "assignee": {
-                        "email": "bob@nyaruka.com",
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                         "name": "Bob"
                     }
                 },
@@ -161,7 +161,7 @@
                     "name": "Weather"
                 },
                 "assignee": {
-                    "email": "bob@nyaruka.com",
+                    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
                 }
             }
@@ -184,7 +184,7 @@
                     "type": "topic"
                 },
                 {
-                    "email": "bob@nyaruka.com",
+                    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob",
                     "type": "user"
                 }
@@ -301,7 +301,7 @@
             },
             "note": "Last message: @input.text",
             "assignee": {
-                "email_match": "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
+                "email": "@(lower(\"JIM\" & \"@NYARUKA.COM\"))"
             }
         },
         "events": [
@@ -316,7 +316,7 @@
                         "name": "Weather"
                     },
                     "assignee": {
-                        "email": "jim@nyaruka.com",
+                        "uuid": "a35e5851-eac0-44ff-b9b2-96f6830b9e6d",
                         "name": "Jim"
                     }
                 },
@@ -372,7 +372,7 @@
                     "name": "Weather"
                 },
                 "assignee": {
-                    "email": "jim@nyaruka.com",
+                    "uuid": "a35e5851-eac0-44ff-b9b2-96f6830b9e6d",
                     "name": "Jim"
                 }
             }
@@ -415,7 +415,7 @@
             },
             "note": "Last message: @input.text",
             "assignee": {
-                "email_match": "@(\"EVE@NYARUKA.COM\")"
+                "email": "@(\"EVE@NYARUKA.COM\")"
             }
         },
         "events": [
