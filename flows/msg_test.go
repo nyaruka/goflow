@@ -69,7 +69,6 @@ func TestMsgOut(t *testing.T) {
 			Attachments: []utils.Attachment{"image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"},
 		},
 		nil,
-		flows.MsgTopicAgent,
 		"eng-US",
 		flows.NilUnsendableReason,
 	)
@@ -84,7 +83,6 @@ func TestMsgOut(t *testing.T) {
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
 		"attachments": ["image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"],
-		"topic": "agent",
 		"locale": "eng-US"
 	}`), marshaled, "JSON mismatch")
 }
