@@ -5,7 +5,6 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -14,12 +13,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
-
-func init() {
-	utils.RegisterValidatorAlias("msg_topic", "eq=event|eq=account|eq=purchase|eq=agent", func(validator.FieldError) string {
-		return "is not a valid message topic"
-	})
-}
 
 // MsgUUID is the UUID of a message
 type MsgUUID uuids.UUID
@@ -39,18 +32,6 @@ const (
 	NilUnsendableReason           UnsendableReason = ""
 	UnsendableReasonNoDestination UnsendableReason = "no_destination" // no sendable channel+URN pair
 	UnsendableReasonContactStatus UnsendableReason = "contact_status" // contact is blocked or stopped or archived
-)
-
-// MsgTopic is the topic, as required by some channel types
-type MsgTopic string
-
-// possible msg topic values
-const (
-	NilMsgTopic      MsgTopic = ""
-	MsgTopicEvent    MsgTopic = "event"
-	MsgTopicAccount  MsgTopic = "account"
-	MsgTopicPurchase MsgTopic = "purchase"
-	MsgTopicAgent    MsgTopic = "agent"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
@@ -75,7 +56,6 @@ type MsgOut struct {
 
 	QuickReplies_     []QuickReply     `json:"quick_replies,omitempty"`
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
-	Topic_            MsgTopic         `json:"topic,omitempty"`
 	Locale_           i18n.Locale      `json:"locale,omitempty"`
 	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
 }
@@ -95,7 +75,7 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, topic MsgTopic, locale i18n.Locale, reason UnsendableReason) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        NewMsgUUID(),
@@ -106,7 +86,6 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgConte
 		},
 		QuickReplies_:     content.QuickReplies,
 		Templating_:       templating,
-		Topic_:            topic,
 		Locale_:           locale,
 		UnsendableReason_: reason,
 	}
@@ -129,7 +108,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 		},
 		QuickReplies_: nil,
 		Templating_:   nil,
-		Topic_:        NilMsgTopic,
 		Locale_:       locale,
 	}
 }
@@ -160,9 +138,6 @@ func (m *MsgOut) QuickReplies() []QuickReply { return m.QuickReplies_ }
 
 // Templating returns the templating to use to send this message (if any)
 func (m *MsgOut) Templating() *MsgTemplating { return m.Templating_ }
-
-// Topic returns the topic to use to send this message (if any)
-func (m *MsgOut) Topic() MsgTopic { return m.Topic_ }
 
 // Locale returns the locale of this message (if any)
 func (m *MsgOut) Locale() i18n.Locale { return m.Locale_ }
