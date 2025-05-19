@@ -1,3 +1,7 @@
+v0.246.4 (2025-05-19)
+-------------------------
+ * Add Trigger.SetCall
+
 v0.246.3 (2025-05-19)
 -------------------------
  * Fix reading of trigger without contact
