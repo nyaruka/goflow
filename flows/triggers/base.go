@@ -69,6 +69,9 @@ func (t *baseTrigger) Params() *types.XObject         { return t.params }
 func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
+// SetContact can be used by callers to update the contact on a persisted trigger
+func (t *baseTrigger) SetContact(c *flows.Contact) { t.contact = c }
+
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
 	// try to load the flow
@@ -82,13 +85,11 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 	}
 
 	session.SetType(flow.Type())
+	session.SetContact(t.contact.Clone())
 	session.PushFlow(flow, nil, false)
 
 	if t.environment != nil {
 		session.SetEnvironment(t.environment)
-	}
-	if t.contact != nil {
-		session.SetContact(t.contact.Clone())
 	}
 
 	return nil
@@ -179,7 +180,7 @@ type baseTriggerEnvelope struct {
 	Type        string                `json:"type"                  validate:"required"`
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
-	Contact     json.RawMessage       `json:"contact"               validate:"required"`
+	Contact     json.RawMessage       `json:"contact"`
 	Call        *flows.Call           `json:"call,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`

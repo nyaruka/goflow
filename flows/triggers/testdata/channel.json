@@ -1,36 +1,11 @@
 [
     {
-        "description": "flow and contact are required",
+        "description": "flow and event are required",
         "trigger": {
             "type": "channel",
-            "event": {
-                "type": "new_conversation",
-                "channel": {
-                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-                    "name": "Facebook"
-                }
-            },
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'flow' is required, field 'contact' is required"
-    },
-    {
-        "description": "event is required",
-        "trigger": {
-            "type": "channel",
-            "flow": {
-                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                "name": "Trigger Tester"
-            },
-            "contact": {
-                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-                "name": "Bob",
-                "status": "active",
-                "created_on": "2018-01-01T12:00:00Z"
-            },
-            "triggered_on": "2000-01-01T00:00:00Z"
-        },
-        "read_error": "field 'event' is required"
+        "read_error": "field 'flow' is required, field 'event' is required"
     },
     {
         "description": "with all required fields",
