@@ -1,3 +1,7 @@
+v0.246.1 (2025-05-19)
+-------------------------
+ * Allow triggers to be persisted without the contact
+
 v0.246.0 (2025-05-19)
 -------------------------
  * Remove support for Facebook topics
