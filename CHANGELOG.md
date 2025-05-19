@@ -1,3 +1,7 @@
+v0.246.0 (2025-05-19)
+-------------------------
+ * Remove support for Facebook topics
+
 v0.245.1 (2025-05-14)
 -------------------------
  * Change user references to be by UUID with email being the variable form
