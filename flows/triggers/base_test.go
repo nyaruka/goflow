@@ -473,7 +473,7 @@ func TestTriggerPersistenceWithoutContact(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 
-	trigger := triggers.NewBuilder(env, flow, nil).Manual().WithParams(params).Build()
+	var trigger flows.Trigger = triggers.NewBuilder(env, flow, nil).Manual().WithParams(params).Build()
 
 	marshaled := jsonx.MustMarshal(trigger)
 	jsonx.MustUnmarshal(marshaled, &trigger)

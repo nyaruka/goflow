@@ -204,6 +204,7 @@ type Trigger interface {
 	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
+	SetContact(*Contact)
 	Call() *Call
 	Batch() bool
 	Params() *types.XObject
