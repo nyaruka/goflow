@@ -57,20 +57,20 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 	}
 }
 
-// Type returns the type of this trigger
-func (t *baseTrigger) Type() string { return t.type_ }
-
+func (t *baseTrigger) Type() string                   { return t.type_ }
 func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
-func (t *baseTrigger) Call() *flows.Call              { return t.call }
 func (t *baseTrigger) Batch() bool                    { return t.batch }
 func (t *baseTrigger) Params() *types.XObject         { return t.params }
 func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // SetContact can be used by callers to update the contact on a persisted trigger
+func (t *baseTrigger) Contact() *flows.Contact     { return t.contact }
 func (t *baseTrigger) SetContact(c *flows.Contact) { t.contact = c }
+
+func (t *baseTrigger) Call() *flows.Call     { return t.call }
+func (t *baseTrigger) SetCall(c *flows.Call) { t.call = c }
 
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {

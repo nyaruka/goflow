@@ -206,6 +206,7 @@ type Trigger interface {
 	Contact() *Contact
 	SetContact(*Contact)
 	Call() *Call
+	SetCall(*Call)
 	Batch() bool
 	Params() *types.XObject
 	History() *SessionHistory
