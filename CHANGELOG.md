@@ -1,3 +1,7 @@
+v0.246.2 (2025-05-19)
+-------------------------
+ * Add SetContact to Trigger interface
+
 v0.246.1 (2025-05-19)
 -------------------------
  * Allow triggers to be persisted without the contact
