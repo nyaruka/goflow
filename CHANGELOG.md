@@ -1,3 +1,7 @@
+v0.246.3 (2025-05-19)
+-------------------------
+ * Fix reading of trigger without contact
+
 v0.246.2 (2025-05-19)
 -------------------------
  * Add SetContact to Trigger interface
