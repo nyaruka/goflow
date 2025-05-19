@@ -476,7 +476,9 @@ func TestTriggerPersistenceWithoutContact(t *testing.T) {
 	var trigger flows.Trigger = triggers.NewBuilder(env, flow, nil).Manual().WithParams(params).Build()
 
 	marshaled := jsonx.MustMarshal(trigger)
-	jsonx.MustUnmarshal(marshaled, &trigger)
+
+	trigger, err = triggers.ReadTrigger(sa, marshaled, assets.PanicOnMissing)
+	assert.NoError(t, err)
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 

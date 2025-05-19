@@ -180,7 +180,7 @@ type baseTriggerEnvelope struct {
 	Type        string                `json:"type"                  validate:"required"`
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
-	Contact     json.RawMessage       `json:"contact"`
+	Contact     json.RawMessage       `json:"contact,omitempty"`
 	Call        *flows.Call           `json:"call,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
@@ -212,8 +212,10 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
-	if t.contact, err = flows.ReadContact(sa, e.Contact, missing); err != nil {
-		return fmt.Errorf("unable to read contact: %w", err)
+	if e.Contact != nil {
+		if t.contact, err = flows.ReadContact(sa, e.Contact, missing); err != nil {
+			return fmt.Errorf("unable to read contact: %w", err)
+		}
 	}
 
 	if e.Environment != nil {
@@ -240,11 +242,12 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
-	e.Contact, err = jsonx.Marshal(t.contact)
-	if err != nil {
-		return err
+	if t.contact != nil {
+		e.Contact, err = jsonx.Marshal(t.contact)
+		if err != nil {
+			return err
+		}
 	}
-
 	if t.environment != nil {
 		e.Environment, err = jsonx.Marshal(t.environment)
 		if err != nil {
