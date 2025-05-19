@@ -460,3 +460,26 @@ func TestTriggerContext(t *testing.T) {
 		"ticket":   nil,
 	}), flows.Context(env, trigger))
 }
+
+func TestTriggerPersistenceWithoutContact(t *testing.T) {
+	env := envs.NewBuilder().WithDateFormat(envs.DateFormatMonthDayYear).Build()
+
+	source, err := static.NewSource([]byte(assetsJSON))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
+	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
+
+	trigger := triggers.NewBuilder(env, flow, nil).Manual().WithParams(params).Build()
+
+	marshaled := jsonx.MustMarshal(trigger)
+	jsonx.MustUnmarshal(marshaled, &trigger)
+
+	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+
+	trigger.SetContact(contact)
+	assert.Equal(t, contact, trigger.Contact())
+}
