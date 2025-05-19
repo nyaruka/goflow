@@ -33,8 +33,7 @@ const TypeSendMsg string = "send_msg"
 //	    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //	    "name": "revive_issue"
 //	  },
-//	  "template_variables": ["@contact.name"],
-//	  "topic": "event"
+//	  "template_variables": ["@contact.name"]
 //	}
 //
 // @action send_msg
@@ -46,7 +45,6 @@ type SendMsgAction struct {
 	AllURNs           bool                      `json:"all_urns,omitempty"`
 	Template          *assets.TemplateReference `json:"template,omitempty"`
 	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"localized,evaluated"`
-	Topic             flows.MsgTopic            `json:"topic,omitempty" validate:"omitempty,msg_topic"`
 }
 
 // NewSendMsg creates a new send msg action
@@ -105,12 +103,12 @@ func (a *SendMsgAction) Execute(ctx context.Context, run flows.Run, step flows.S
 				preview := translation.Preview(templating.Variables)
 				locale := translation.Locale()
 
-				msg = flows.NewMsgOut(urn, channelRef, preview, templating, flows.NilMsgTopic, locale, unsendableReason)
+				msg = flows.NewMsgOut(urn, channelRef, preview, templating, locale, unsendableReason)
 			}
 		}
 
 		if msg == nil {
-			msg = flows.NewMsgOut(urn, channelRef, content, nil, a.Topic, locale, unsendableReason)
+			msg = flows.NewMsgOut(urn, channelRef, content, nil, locale, unsendableReason)
 		}
 
 		logEvent(events.NewMsgCreated(msg))
@@ -119,7 +117,7 @@ func (a *SendMsgAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, a.Topic, locale, flows.UnsendableReasonNoDestination)
+		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, locale, flows.UnsendableReasonNoDestination)
 		logEvent(events.NewMsgCreated(msg))
 	}
 

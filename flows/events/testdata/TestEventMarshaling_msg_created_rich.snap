@@ -20,7 +20,6 @@
                 "text": "no"
             }
         ],
-        "topic": "agent",
         "locale": "eng-US",
         "unsendable_reason": "contact_status"
     }
