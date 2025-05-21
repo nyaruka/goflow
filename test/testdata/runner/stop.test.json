@@ -3,13 +3,13 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:49.123456789Z",
+                    "created_on": "2025-05-04T12:30:50.123456789Z",
                     "status": "stopped",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_status_changed"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:51.123456789Z",
+                    "created_on": "2025-05-04T12:30:52.123456789Z",
                     "groups_removed": [
                         {
                             "name": "Query Group 1",
@@ -60,6 +60,7 @@
                     ],
                     "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -77,16 +78,16 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:49.123456789Z",
+                                "created_on": "2025-05-04T12:30:50.123456789Z",
                                 "status": "stopped",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_status_changed"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
+                                "created_on": "2025-05-04T12:30:52.123456789Z",
                                 "groups_removed": [
                                     {
                                         "name": "Query Group 1",
@@ -117,23 +118,23 @@
                                 "type": "contact_groups_changed"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:30:53.123456789Z",
+                        "exited_on": "2025-05-04T12:30:54.123456789Z",
                         "flow": {
                             "name": "Stopper",
                             "revision": 2,
                             "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
                         },
-                        "modified_on": "2025-05-04T12:30:53.123456789Z",
+                        "modified_on": "2025-05-04T12:30:54.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "5ce22d8b-c7ce-49b4-85d6-c780fd79cecc",
                                 "node_uuid": "eeed313c-614c-4e26-8471-f3f02d09b6ca",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",
@@ -207,8 +208,8 @@
                     "triggered_on": "2022-02-04T19:43:50.217940873Z",
                     "type": "manual",
                     "user": {
-                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
-                        "name": "Bob"
+                        "name": "Bob",
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44"
                     }
                 },
                 "type": "messaging",
@@ -286,8 +287,8 @@
         "triggered_on": "2022-02-04T19:43:50.217940873Z",
         "type": "manual",
         "user": {
-            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
-            "name": "Bob"
+            "name": "Bob",
+            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44"
         }
     }
 }

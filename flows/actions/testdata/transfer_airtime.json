@@ -21,7 +21,7 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "text": "can't transfer airtime to contact without a phone number"
             }
@@ -56,9 +56,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
+                "created_on": "2025-05-04T12:30:54.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                "transfer_uuid": "01969b47-20db-76f8-8228-9728778b6c98",
+                "transfer_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                 "external_id": "5OKA5LEG5N",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
@@ -120,9 +120,9 @@
         "events": [
             {
                 "type": "airtime_transferred",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
+                "created_on": "2025-05-04T12:30:54.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                "transfer_uuid": "01969b47-20db-76f8-8228-9728778b6c98",
+                "transfer_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                 "external_id": "",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+17036000666",
@@ -132,7 +132,7 @@
             },
             {
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "text": "invalid recipient number"
             }

@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "created_on": "2025-05-04T12:30:51.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -12,24 +12,24 @@
                         "locale": "eng-US",
                         "text": "This is the parent flow",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                        "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:52.123456789Z",
+                    "created_on": "2025-05-04T12:30:53.123456789Z",
                     "flow": {
                         "name": "Child flow",
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
-                    "parent_run_uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094",
+                    "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "terminal": false,
                     "type": "flow_entered"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:58.123456789Z",
+                    "created_on": "2025-05-04T12:30:59.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -38,14 +38,14 @@
                         "locale": "eng-US",
                         "text": "What is your name?",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
+                        "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671"
                     },
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:01.123456789Z",
-                    "expires_on": "2025-05-07T12:31:00.123456789Z",
+                    "created_on": "2025-05-04T12:31:02.123456789Z",
+                    "expires_on": "2025-05-07T12:31:01.123456789Z",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait"
                 }
@@ -75,6 +75,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -91,10 +92,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -103,18 +104,18 @@
                                     "locale": "eng-US",
                                     "text": "This is the parent flow",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
+                                "created_on": "2025-05-04T12:30:53.123456789Z",
                                 "flow": {
                                     "name": "Child flow",
                                     "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                                 },
-                                "parent_run_uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094",
+                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "terminal": false,
                                 "type": "flow_entered"
@@ -125,22 +126,22 @@
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:30:53.123456789Z",
+                        "modified_on": "2025-05-04T12:30:54.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "active",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     },
                     {
-                        "created_on": "2025-05-04T12:30:54.123456789Z",
+                        "created_on": "2025-05-04T12:30:55.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:58.123456789Z",
+                                "created_on": "2025-05-04T12:30:59.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -149,14 +150,14 @@
                                     "locale": "eng-US",
                                     "text": "What is your name?",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
+                                    "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:01.123456789Z",
-                                "expires_on": "2025-05-07T12:31:00.123456789Z",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "expires_on": "2025-05-07T12:31:01.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             }
@@ -166,17 +167,17 @@
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2025-05-04T12:31:03.123456789Z",
-                        "parent_uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094",
+                        "modified_on": "2025-05-04T12:31:04.123456789Z",
+                        "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:57.123456789Z",
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623"
+                        "uuid": "01969b47-307b-76f8-8f41-6b2d9f33d623"
                     }
                 ],
                 "status": "waiting",
@@ -232,7 +233,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:05.123456789Z",
+                    "created_on": "2025-05-04T12:31:06.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -247,14 +248,14 @@
                 },
                 {
                     "category": "Name",
-                    "created_on": "2025-05-04T12:31:09.123456789Z",
+                    "created_on": "2025-05-04T12:31:10.123456789Z",
                     "name": "Name",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "created_on": "2025-05-04T12:31:15.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -263,13 +264,13 @@
                         "locale": "eng-US",
                         "text": "Got it!",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-72e3-76f8-bebe-b4a1f677cf4c"
+                        "uuid": "01969b47-76cb-76f8-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:20.123456789Z",
+                    "created_on": "2025-05-04T12:31:21.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -278,7 +279,7 @@
                         "locale": "eng-US",
                         "text": "Flow succeeded, they said Ryan Lewis",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-8a53-76f8-acca-bbca70987315"
+                        "uuid": "01969b47-8e3b-76f8-acca-bbca70987315"
                     },
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_created"
@@ -291,7 +292,7 @@
                     "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
                     "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                     "operand": "Ryan Lewis",
-                    "time": "2025-05-04T12:31:11.123456789Z"
+                    "time": "2025-05-04T12:31:12.123456789Z"
                 },
                 {
                     "destination_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
@@ -299,7 +300,7 @@
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
                     "operand": "completed",
-                    "time": "2025-05-04T12:31:17.123456789Z"
+                    "time": "2025-05-04T12:31:18.123456789Z"
                 }
             ],
             "session": {
@@ -327,6 +328,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -354,10 +356,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -366,24 +368,24 @@
                                     "locale": "eng-US",
                                     "text": "This is the parent flow",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
+                                "created_on": "2025-05-04T12:30:53.123456789Z",
                                 "flow": {
                                     "name": "Child flow",
                                     "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                                 },
-                                "parent_run_uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094",
+                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "terminal": false,
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
+                                "created_on": "2025-05-04T12:31:21.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -392,40 +394,40 @@
                                     "locale": "eng-US",
                                     "text": "Flow succeeded, they said Ryan Lewis",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-8a53-76f8-acca-bbca70987315"
+                                    "uuid": "01969b47-8e3b-76f8-acca-bbca70987315"
                                 },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:22.123456789Z",
+                        "exited_on": "2025-05-04T12:31:23.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:31:22.123456789Z",
+                        "modified_on": "2025-05-04T12:31:23.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2",
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:18.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     },
                     {
-                        "created_on": "2025-05-04T12:30:54.123456789Z",
+                        "created_on": "2025-05-04T12:30:55.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:58.123456789Z",
+                                "created_on": "2025-05-04T12:30:59.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -434,19 +436,19 @@
                                     "locale": "eng-US",
                                     "text": "What is your name?",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
+                                    "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:01.123456789Z",
-                                "expires_on": "2025-05-07T12:31:00.123456789Z",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "expires_on": "2025-05-07T12:31:01.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
+                                "created_on": "2025-05-04T12:31:06.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -461,14 +463,14 @@
                             },
                             {
                                 "category": "Name",
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
+                                "created_on": "2025-05-04T12:31:10.123456789Z",
                                 "name": "Name",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:14.123456789Z",
+                                "created_on": "2025-05-04T12:31:15.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -477,28 +479,28 @@
                                     "locale": "eng-US",
                                     "text": "Got it!",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-72e3-76f8-bebe-b4a1f677cf4c"
+                                    "uuid": "01969b47-76cb-76f8-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:16.123456789Z",
+                        "exited_on": "2025-05-04T12:31:17.123456789Z",
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2025-05-04T12:31:16.123456789Z",
-                        "parent_uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094",
+                        "modified_on": "2025-05-04T12:31:17.123456789Z",
+                        "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:57.123456789Z",
                                 "exit_uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d",
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:12.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
                                 "exit_uuid": "80aa94f5-1c2f-4286-b2ec-5a3bdaf9c7d0",
                                 "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -507,7 +509,7 @@
                         "results": {
                             "name": {
                                 "category": "Name",
-                                "created_on": "2025-05-04T12:31:07.123456789Z",
+                                "created_on": "2025-05-04T12:31:08.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Name",
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
@@ -515,7 +517,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623"
+                        "uuid": "01969b47-307b-76f8-8f41-6b2d9f33d623"
                     }
                 ],
                 "status": "completed",

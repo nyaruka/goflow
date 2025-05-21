@@ -4,7 +4,7 @@
             "events": [
                 {
                     "amount": 5000,
-                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "created_on": "2025-05-04T12:30:51.123456789Z",
                     "currency": "RWF",
                     "external_id": "5OKA5LEG5N",
                     "http_logs": [
@@ -22,12 +22,12 @@
                     "recipient": "tel:+12065551212",
                     "sender": "",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "transfer_uuid": "01969b47-1523-76f8-8228-9728778b6c98",
+                    "transfer_uuid": "01969b47-190b-76f8-8228-9728778b6c98",
                     "type": "airtime_transferred"
                 },
                 {
                     "category": "Success",
-                    "created_on": "2025-05-04T12:30:54.123456789Z",
+                    "created_on": "2025-05-04T12:30:55.123456789Z",
                     "name": "Transfer",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
@@ -49,6 +49,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -65,11 +66,11 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
                                 "amount": 5000,
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "currency": "RWF",
                                 "external_id": "5OKA5LEG5N",
                                 "http_logs": [
@@ -87,19 +88,19 @@
                                 "recipient": "tel:+12065551212",
                                 "sender": "",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "transfer_uuid": "01969b47-1523-76f8-8228-9728778b6c98",
+                                "transfer_uuid": "01969b47-190b-76f8-8228-9728778b6c98",
                                 "type": "airtime_transferred"
                             },
                             {
                                 "category": "Success",
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:55.123456789Z",
                                 "name": "Transfer",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "5OKA5LEG5N"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:30:56.123456789Z",
+                        "exited_on": "2025-05-04T12:30:57.123456789Z",
                         "flow": {
                             "name": "Airtime Test",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
@@ -107,10 +108,10 @@
                         "locals": {
                             "_new_transfer": "5OKA5LEG5N"
                         },
-                        "modified_on": "2025-05-04T12:30:56.123456789Z",
+                        "modified_on": "2025-05-04T12:30:57.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -119,7 +120,7 @@
                         "results": {
                             "transfer": {
                                 "category": "Success",
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
+                                "created_on": "2025-05-04T12:30:53.123456789Z",
                                 "input": "5OKA5LEG5N",
                                 "name": "Transfer",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
@@ -127,7 +128,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",

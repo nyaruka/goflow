@@ -3,19 +3,19 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "created_on": "2025-05-04T12:30:51.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Hi! What can I help you with?",
                         "unsendable_reason": "no_destination",
-                        "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                        "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:55.123456789Z",
-                    "expires_on": "2025-05-07T12:30:54.123456789Z",
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
+                    "expires_on": "2025-05-07T12:30:55.123456789Z",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_wait"
                 }
@@ -26,7 +26,7 @@
                     "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
                     "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                    "time": "2025-05-04T12:30:52.123456789Z"
+                    "time": "2025-05-04T12:30:53.123456789Z"
                 }
             ],
             "session": {
@@ -42,6 +42,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -58,22 +59,22 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:55.123456789Z",
-                                "expires_on": "2025-05-07T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:56.123456789Z",
+                                "expires_on": "2025-05-07T12:30:55.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_wait"
                             }
@@ -83,22 +84,22 @@
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
-                        "modified_on": "2025-05-04T12:30:57.123456789Z",
+                        "modified_on": "2025-05-04T12:30:58.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:54.123456789Z",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "waiting",
@@ -143,7 +144,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:59.123456789Z",
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
                     "msg": {
                         "text": "Rats",
                         "urn": "tel:+12065551212",
@@ -154,14 +155,14 @@
                 },
                 {
                     "category": "All Responses",
-                    "created_on": "2025-05-04T12:31:03.123456789Z",
+                    "created_on": "2025-05-04T12:31:04.123456789Z",
                     "name": "Response 1",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "Rats"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:08.123456789Z",
+                    "created_on": "2025-05-04T12:31:09.123456789Z",
                     "note": "Last message: Rats",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "ticket": {
@@ -169,15 +170,15 @@
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                         },
-                        "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
+                        "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
                     },
                     "type": "ticket_opened"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5b73-76f8-b86e-4b881f09a186\"}]",
-                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-b86e-4b881f09a186\"}]",
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                    "subject": "New ticket: 01969b47-5b73-76f8-b86e-4b881f09a186",
+                    "subject": "New ticket: 01969b47-5f5b-76f8-b86e-4b881f09a186",
                     "to": [
                         "bob@nyaruka.com"
                     ],
@@ -191,15 +192,15 @@
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                     "operand": "Rats",
-                    "time": "2025-05-04T12:31:05.123456789Z"
+                    "time": "2025-05-04T12:31:06.123456789Z"
                 },
                 {
                     "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                     "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                     "flow_uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
-                    "operand": "01969b47-5b73-76f8-b86e-4b881f09a186",
-                    "time": "2025-05-04T12:31:10.123456789Z"
+                    "operand": "01969b47-5f5b-76f8-b86e-4b881f09a186",
+                    "time": "2025-05-04T12:31:11.123456789Z"
                 }
             ],
             "session": {
@@ -215,7 +216,7 @@
                             "name": "Weather",
                             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                         },
-                        "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
+                        "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
                     },
                     "timezone": "America/Guayaquil",
                     "urns": [
@@ -223,6 +224,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -246,27 +248,27 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Hi! What can I help you with?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-1523-76f8-8228-9728778b6c98"
+                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:55.123456789Z",
-                                "expires_on": "2025-05-07T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:56.123456789Z",
+                                "expires_on": "2025-05-07T12:30:55.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:59.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "msg": {
                                     "text": "Rats",
                                     "urn": "tel:+12065551212",
@@ -277,14 +279,14 @@
                             },
                             {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
+                                "created_on": "2025-05-04T12:31:04.123456789Z",
                                 "name": "Response 1",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "Rats"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:08.123456789Z",
+                                "created_on": "2025-05-04T12:31:09.123456789Z",
                                 "note": "Last message: Rats",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "ticket": {
@@ -292,51 +294,51 @@
                                         "name": "Weather",
                                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
                                     },
-                                    "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
+                                    "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
                                 },
                                 "type": "ticket_opened"
                             },
                             {
-                                "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5b73-76f8-b86e-4b881f09a186\"}]",
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-b86e-4b881f09a186\"}]",
+                                "created_on": "2025-05-04T12:31:13.123456789Z",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "subject": "New ticket: 01969b47-5b73-76f8-b86e-4b881f09a186",
+                                "subject": "New ticket: 01969b47-5f5b-76f8-b86e-4b881f09a186",
                                 "to": [
                                     "bob@nyaruka.com"
                                 ],
                                 "type": "email_sent"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:14.123456789Z",
+                        "exited_on": "2025-05-04T12:31:15.123456789Z",
                         "flow": {
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
                         "locals": {
-                            "_new_ticket": "01969b47-5b73-76f8-b86e-4b881f09a186"
+                            "_new_ticket": "01969b47-5f5b-76f8-b86e-4b881f09a186"
                         },
-                        "modified_on": "2025-05-04T12:31:14.123456789Z",
+                        "modified_on": "2025-05-04T12:31:15.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:54.123456789Z",
                                 "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
                                 "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:12.123456789Z",
                                 "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
                                 "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -345,7 +347,7 @@
                         "results": {
                             "response_1": {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:01.123456789Z",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
                                 "input": "Rats",
                                 "name": "Response 1",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
@@ -353,7 +355,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",
