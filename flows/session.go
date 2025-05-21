@@ -48,6 +48,7 @@ type Segment interface {
 // Sprint is an interaction with the engine - i.e. a start or resume of a session
 type Sprint interface {
 	UUID() SprintUUID
+	IsInitial() bool
 	Modifiers() []Modifier
 	Events() []Event
 	Segments() []Segment

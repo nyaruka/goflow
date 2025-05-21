@@ -50,15 +50,17 @@ var _ flows.Segment = (*segment)(nil)
 
 type sprint struct {
 	uuid      flows.SprintUUID
+	isInitial bool
 	modifiers []flows.Modifier
 	events    []flows.Event
 	segments  []flows.Segment
 }
 
 // creates a new empty sprint
-func newEmptySprint() *sprint {
+func newEmptySprint(isInitial bool) *sprint {
 	return &sprint{
 		uuid:      flows.SprintUUID(uuids.NewV4()),
+		isInitial: isInitial,
 		modifiers: make([]flows.Modifier, 0, 10),
 		events:    make([]flows.Event, 0, 10),
 		segments:  make([]flows.Segment, 0, 10),
@@ -66,6 +68,7 @@ func newEmptySprint() *sprint {
 }
 
 func (s *sprint) UUID() flows.SprintUUID      { return s.uuid }
+func (s *sprint) IsInitial() bool             { return s.isInitial }
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
 func (s *sprint) Segments() []flows.Segment   { return s.segments }

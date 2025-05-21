@@ -172,7 +172,7 @@ func (s *session) Engine() flows.Engine { return s.engine }
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
 func (s *session) start(ctx context.Context, trigger flows.Trigger) (flows.Sprint, error) {
-	sprint := newEmptySprint()
+	sprint := newEmptySprint(true)
 
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
@@ -195,7 +195,7 @@ func (s *session) start(ctx context.Context, trigger flows.Trigger) (flows.Sprin
 
 // Resume tries to resume a waiting session
 func (s *session) Resume(ctx context.Context, resume flows.Resume) (flows.Sprint, error) {
-	sprint := newEmptySprint()
+	sprint := newEmptySprint(false)
 
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
