@@ -11,9 +11,9 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:51.123456789Z",
+                    "created_on": "2025-05-04T12:30:52.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:48.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:46.123456Z\",\"uuid\":\"01969b47-0d53-76f8-ba00-bd7f0d08e671\"}}",
+                    "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:49.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-ba00-bd7f0d08e671\"}}",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                     "retries": 0,
                     "status": "success",
@@ -24,7 +24,7 @@
                 },
                 {
                     "category": "Success",
-                    "created_on": "2025-05-04T12:30:55.123456789Z",
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
                     "extra": {
                         "foo": "bar"
                     },
@@ -34,18 +34,18 @@
                     "value": "200"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:59.123456789Z",
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "text": "deprecated context value accessed: legacy_extra",
                     "type": "warning"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:02.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
                         "unsendable_reason": "no_destination",
-                        "uuid": "01969b47-4403-76f8-bebe-b4a1f677cf4c"
+                        "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
@@ -58,7 +58,7 @@
                     "flow_uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791",
                     "node_uuid": "30c97f0e-e537-4940-ad1f-85599d3634b3",
                     "operand": "200",
-                    "time": "2025-05-04T12:30:57.123456789Z"
+                    "time": "2025-05-04T12:30:58.123456789Z"
                 }
             ],
             "session": {
@@ -74,6 +74,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng",
@@ -91,12 +92,12 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
+                                "created_on": "2025-05-04T12:30:52.123456789Z",
                                 "elapsed_ms": 1000,
-                                "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:48.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:46.123456Z\",\"uuid\":\"01969b47-0d53-76f8-ba00-bd7f0d08e671\"}}",
+                                "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:49.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"a4d15ed4-5b24-407f-b86e-4b881f09a186\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-ba00-bd7f0d08e671\"}}",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                                 "retries": 0,
                                 "status": "success",
@@ -107,7 +108,7 @@
                             },
                             {
                                 "category": "Success",
-                                "created_on": "2025-05-04T12:30:55.123456789Z",
+                                "created_on": "2025-05-04T12:30:56.123456789Z",
                                 "extra": {
                                     "foo": "bar"
                                 },
@@ -117,39 +118,39 @@
                                 "value": "200"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:59.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "text": "deprecated context value accessed: legacy_extra",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-4403-76f8-bebe-b4a1f677cf4c"
+                                    "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:04.123456789Z",
+                        "exited_on": "2025-05-04T12:31:05.123456789Z",
                         "flow": {
                             "name": "Webhook",
                             "revision": 11,
                             "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791"
                         },
-                        "modified_on": "2025-05-04T12:31:04.123456789Z",
+                        "modified_on": "2025-05-04T12:31:05.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "dd9f9855-46fd-42e9-9dc0-6694439594b3",
                                 "node_uuid": "30c97f0e-e537-4940-ad1f-85599d3634b3",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:58.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:59.123456789Z",
                                 "exit_uuid": "5f2be383-2d09-46e7-9397-ac52ab8faf6e",
                                 "node_uuid": "0b45a338-d7a6-4c19-b0b2-03b2d35141ed",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -158,7 +159,7 @@
                         "results": {
                             "webhook_result": {
                                 "category": "Success",
-                                "created_on": "2025-05-04T12:30:53.123456789Z",
+                                "created_on": "2025-05-04T12:30:54.123456789Z",
                                 "extra": {
                                     "foo": "bar"
                                 },
@@ -169,7 +170,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-ba00-bd7f0d08e671"
+                        "uuid": "01969b47-113b-76f8-ba00-bd7f0d08e671"
                     }
                 ],
                 "status": "completed",

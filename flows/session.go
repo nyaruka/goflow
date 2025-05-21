@@ -60,6 +60,7 @@ type Session interface {
 	UUID() SessionUUID
 	Type() FlowType
 	SetType(FlowType)
+	CreatedOn() time.Time
 
 	Environment() envs.Environment
 	SetEnvironment(envs.Environment)

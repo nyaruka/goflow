@@ -32,7 +32,7 @@
         },
         "urn": "tel:+12065551212"
     },
-    "triggered_on": "2025-05-04T12:30:52.123456789Z",
+    "triggered_on": "2025-05-04T12:30:53.123456789Z",
     "event": {
         "type": "incoming_call",
         "channel": {

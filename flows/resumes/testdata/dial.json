@@ -26,7 +26,7 @@
         "events": [
             {
                 "type": "dial_ended",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "dial": {
                     "status": "answered",
@@ -35,7 +35,7 @@
             },
             {
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:00.123456789Z",
+                "created_on": "2025-05-04T12:31:01.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Redirect",
                 "value": "answered",

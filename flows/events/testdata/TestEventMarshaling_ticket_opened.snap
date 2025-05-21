@@ -1,6 +1,6 @@
 {
     "type": "ticket_opened",
-    "created_on": "2025-05-04T12:32:16.123456789Z",
+    "created_on": "2025-05-04T12:32:17.123456789Z",
     "ticket": {
         "uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
         "topic": {

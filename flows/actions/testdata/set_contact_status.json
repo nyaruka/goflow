@@ -38,13 +38,13 @@
         "events": [
             {
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "status": "blocked"
             },
             {
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "groups_removed": [
                     {

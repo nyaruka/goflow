@@ -4,9 +4,9 @@
             "events": [
                 {
                     "call_limit_seconds": 7200,
-                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "created_on": "2025-05-04T12:30:51.123456789Z",
                     "dial_limit_seconds": 60,
-                    "expires_on": "2025-05-04T14:32:19.123456789Z",
+                    "expires_on": "2025-05-04T14:32:20.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "dial_wait",
                     "urn": "tel:+12065551212"
@@ -33,6 +33,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -50,13 +51,13 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
                                 "call_limit_seconds": 7200,
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "dial_limit_seconds": 60,
-                                "expires_on": "2025-05-04T14:32:19.123456789Z",
+                                "expires_on": "2025-05-04T14:32:20.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "dial_wait",
                                 "urn": "tel:+12065551212"
@@ -67,16 +68,16 @@
                             "name": "IVR Redirect",
                             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
                         },
-                        "modified_on": "2025-05-04T12:30:52.123456789Z",
+                        "modified_on": "2025-05-04T12:30:53.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "waiting",
@@ -136,7 +137,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:53.123456789Z",
+                    "created_on": "2025-05-04T12:30:54.123456789Z",
                     "dial": {
                         "duration": 10,
                         "status": "busy"
@@ -146,7 +147,7 @@
                 },
                 {
                     "category": "Busy",
-                    "created_on": "2025-05-04T12:30:58.123456789Z",
+                    "created_on": "2025-05-04T12:30:59.123456789Z",
                     "name": "Redirect",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
@@ -174,6 +175,7 @@
                     ],
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
+                "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
                         "eng"
@@ -191,19 +193,19 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2025-05-04T12:30:46.123456789Z",
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
                                 "call_limit_seconds": 7200,
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "dial_limit_seconds": 60,
-                                "expires_on": "2025-05-04T14:32:19.123456789Z",
+                                "expires_on": "2025-05-04T14:32:20.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "dial_wait",
                                 "urn": "tel:+12065551212"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:53.123456789Z",
+                                "created_on": "2025-05-04T12:30:54.123456789Z",
                                 "dial": {
                                     "duration": 10,
                                     "status": "busy"
@@ -213,22 +215,22 @@
                             },
                             {
                                 "category": "Busy",
-                                "created_on": "2025-05-04T12:30:58.123456789Z",
+                                "created_on": "2025-05-04T12:30:59.123456789Z",
                                 "name": "Redirect",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "busy"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:00.123456789Z",
+                        "exited_on": "2025-05-04T12:31:01.123456789Z",
                         "flow": {
                             "name": "IVR Redirect",
                             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
                         },
-                        "modified_on": "2025-05-04T12:31:00.123456789Z",
+                        "modified_on": "2025-05-04T12:31:01.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:48.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
                                 "exit_uuid": "52597931-6f0c-4fa3-9bdc-3c619664cb61",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
@@ -237,7 +239,7 @@
                         "results": {
                             "redirect": {
                                 "category": "Busy",
-                                "created_on": "2025-05-04T12:30:56.123456789Z",
+                                "created_on": "2025-05-04T12:30:57.123456789Z",
                                 "input": "busy",
                                 "name": "Redirect",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
@@ -245,7 +247,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     }
                 ],
                 "status": "completed",

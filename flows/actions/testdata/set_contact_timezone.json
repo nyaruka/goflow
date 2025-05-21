@@ -9,7 +9,7 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "text": "error evaluating @(1 / 0): division by zero"
             }
@@ -39,7 +39,7 @@
         "events": [
             {
                 "type": "error",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "text": "unrecognized timezone: 'xxxxxxxxxx'"
             }
@@ -78,7 +78,7 @@
         "events": [
             {
                 "type": "contact_timezone_changed",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "timezone": ""
             }
@@ -121,7 +121,7 @@
         "events": [
             {
                 "type": "contact_timezone_changed",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
+                "created_on": "2025-05-04T12:30:53.123456789Z",
                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                 "timezone": "Africa/Kigali"
             }

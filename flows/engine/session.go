@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -33,6 +34,7 @@ type session struct {
 	// state which is maintained between engine calls
 	uuid          flows.SessionUUID
 	type_         flows.FlowType
+	createdOn     time.Time
 	env           envs.Environment
 	trigger       flows.Trigger
 	currentResume flows.Resume
@@ -59,6 +61,7 @@ func (s *session) UUID() flows.SessionUUID { return s.uuid }
 func (s *session) Type() flows.FlowType         { return s.type_ }
 func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
 
+func (s *session) CreatedOn() time.Time                { return s.createdOn }
 func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) SetEnvironment(env envs.Environment) { s.env = env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
@@ -575,15 +578,16 @@ func failRun(sp *sprint, run flows.Run, step flows.Step, err error) {
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	UUID        flows.SessionUUID   `json:"uuid"` // TODO validate:"required"`
-	Type        flows.FlowType      `json:"type"` // TODO validate:"required"`
+	UUID        flows.SessionUUID   `json:"uuid"            validate:"required"`
+	Type        flows.FlowType      `json:"type"            validate:"required"`
+	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
 	Environment json.RawMessage     `json:"environment"`
-	Trigger     json.RawMessage     `json:"trigger" validate:"required"`
-	Contact     *json.RawMessage    `json:"contact,omitempty"`
+	Trigger     json.RawMessage     `json:"trigger"         validate:"required"`
+	Contact     *json.RawMessage    `json:"contact"         validate:"required"`
 	Runs        []json.RawMessage   `json:"runs"`
-	Status      flows.SessionStatus `json:"status" validate:"required"`
+	Status      flows.SessionStatus `json:"status"          validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
-	Input       json.RawMessage     `json:"input,omitempty" validate:"omitempty"`
+	Input       json.RawMessage     `json:"input,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
