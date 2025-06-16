@@ -180,7 +180,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:57.123456789Z",
+                    "created_on": "2025-05-04T12:30:58.123456789Z",
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -223,40 +223,26 @@
                         ],
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
-                    "created_on": "2025-05-04T12:30:59.123456789Z",
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_refreshed"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:02.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Nexmo",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "I like blue!",
-                        "urn": "tel:+12065551212",
-                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                    },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "msg_received"
-                },
-                {
                     "category": "Blue",
-                    "created_on": "2025-05-04T12:31:06.123456789Z",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Favorite Color",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
                     "value": "blue"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:10.123456789Z",
+                    "created_on": "2025-05-04T12:31:09.123456789Z",
                     "language": "fra",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "contact_language_changed"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:13.123456789Z",
+                    "created_on": "2025-05-04T12:31:12.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -265,14 +251,14 @@
                         "locale": "fra-US",
                         "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-6efb-76f8-ba00-bd7f0d08e671"
+                        "uuid": "01969b47-6b13-76f8-ba00-bd7f0d08e671"
                     },
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:16.123456789Z",
-                    "expires_on": "2025-05-07T12:31:15.123456789Z",
+                    "created_on": "2025-05-04T12:31:15.123456789Z",
+                    "expires_on": "2025-05-07T12:31:14.123456789Z",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait"
                 }
@@ -284,7 +270,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "operand": "I like blue!",
-                    "time": "2025-05-04T12:31:08.123456789Z"
+                    "time": "2025-05-04T12:31:07.123456789Z"
                 }
             ],
             "session": {
@@ -374,7 +360,20 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
+                                "created_on": "2000-01-01T00:00:00Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "type": "msg_received"
+                            },
+                            {
+                                "created_on": "2025-05-04T12:30:58.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -417,40 +416,26 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2025-05-04T12:30:59.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_refreshed"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212",
-                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_received"
-                            },
-                            {
                                 "category": "Blue",
-                                "created_on": "2025-05-04T12:31:06.123456789Z",
+                                "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Favorite Color",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
+                                "created_on": "2025-05-04T12:31:09.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
+                                "created_on": "2025-05-04T12:31:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -459,14 +444,14 @@
                                     "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-6efb-76f8-ba00-bd7f0d08e671"
+                                    "uuid": "01969b47-6b13-76f8-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-07T12:31:15.123456789Z",
+                                "created_on": "2025-05-04T12:31:15.123456789Z",
+                                "expires_on": "2025-05-07T12:31:14.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             }
@@ -476,7 +461,7 @@
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:31:18.123456789Z",
+                        "modified_on": "2025-05-04T12:31:17.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -485,7 +470,7 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:09.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:08.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
@@ -493,7 +478,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -554,29 +539,15 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:20.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Nexmo",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "Coke",
-                        "urn": "tel:+12065551212",
-                        "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
-                    },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                    "type": "msg_received"
-                },
-                {
                     "category": "Coke",
-                    "created_on": "2025-05-04T12:31:24.123456789Z",
+                    "created_on": "2025-05-04T12:31:22.123456789Z",
                     "name": "Soda",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "value": "Coke"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:30.123456789Z",
+                    "created_on": "2025-05-04T12:31:28.123456789Z",
                     "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -588,7 +559,7 @@
                     "url": "http://localhost/?cmd=success"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:33.123456789Z",
+                    "created_on": "2025-05-04T12:31:31.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -597,7 +568,7 @@
                         "locale": "fra-US",
                         "text": "Parfait, vous avez finis et tu aimes Coke",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-bd1b-76f8-bebe-b4a1f677cf4c"
+                        "uuid": "01969b47-b54b-76f8-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
@@ -610,7 +581,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "Coke",
-                    "time": "2025-05-04T12:31:26.123456789Z"
+                    "time": "2025-05-04T12:31:24.123456789Z"
                 }
             ],
             "session": {
@@ -700,7 +671,20 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
+                                "created_on": "2000-01-01T00:00:00Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "type": "msg_received"
+                            },
+                            {
+                                "created_on": "2025-05-04T12:30:58.123456789Z",
                                 "environment": {
                                     "allowed_languages": [
                                         "eng",
@@ -743,40 +727,26 @@
                                     ],
                                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                                 },
-                                "created_on": "2025-05-04T12:30:59.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_refreshed"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212",
-                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_received"
-                            },
-                            {
                                 "category": "Blue",
-                                "created_on": "2025-05-04T12:31:06.123456789Z",
+                                "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Favorite Color",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
+                                "created_on": "2025-05-04T12:31:09.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
+                                "created_on": "2025-05-04T12:31:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -785,19 +755,19 @@
                                     "locale": "fra-US",
                                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-6efb-76f8-ba00-bd7f0d08e671"
+                                    "uuid": "01969b47-6b13-76f8-ba00-bd7f0d08e671"
                                 },
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-07T12:31:15.123456789Z",
+                                "created_on": "2025-05-04T12:31:15.123456789Z",
+                                "expires_on": "2025-05-07T12:31:14.123456789Z",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
+                                "created_on": "2000-01-01T00:00:00Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -807,19 +777,18 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                                 },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Coke",
-                                "created_on": "2025-05-04T12:31:24.123456789Z",
+                                "created_on": "2025-05-04T12:31:22.123456789Z",
                                 "name": "Soda",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "run_result_changed",
                                 "value": "Coke"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:30.123456789Z",
+                                "created_on": "2025-05-04T12:31:28.123456789Z",
                                 "elapsed_ms": 1000,
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -831,7 +800,7 @@
                                 "url": "http://localhost/?cmd=success"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:33.123456789Z",
+                                "created_on": "2025-05-04T12:31:31.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -840,18 +809,18 @@
                                     "locale": "fra-US",
                                     "text": "Parfait, vous avez finis et tu aimes Coke",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-bd1b-76f8-bebe-b4a1f677cf4c"
+                                    "uuid": "01969b47-b54b-76f8-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:35.123456789Z",
+                        "exited_on": "2025-05-04T12:31:33.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:31:35.123456789Z",
+                        "modified_on": "2025-05-04T12:31:33.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -860,13 +829,13 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:09.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:08.123456789Z",
                                 "exit_uuid": "9ad71fc4-c2f8-4aab-a193-7bafad172ca0",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:27.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:25.123456789Z",
                                 "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -875,7 +844,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -884,7 +853,7 @@
                             "soda": {
                                 "category": "Coke",
                                 "category_localized": "Coke",
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
+                                "created_on": "2025-05-04T12:31:20.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

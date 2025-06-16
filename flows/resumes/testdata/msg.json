@@ -1,15 +1,6 @@
 [
     {
-        "description": "msg required",
-        "flow_uuid": "",
-        "resume": {
-            "type": "msg",
-            "resumed_on": "2000-01-01T00:00:00Z"
-        },
-        "read_error": "field 'msg' is required"
-    },
-    {
-        "description": "msg received event created",
+        "description": "msg wait resumed",
         "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
         "wait": {
             "type": "msg",
@@ -21,6 +12,19 @@
         "resume": {
             "type": "msg",
             "resumed_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "type": "msg_received",
+                "created_on": "2000-01-01T00:00:00Z",
+                "msg": {
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
+                    },
+                    "text": "red"
+                }
+            },
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
                 "urn": "tel:+12065551212",
@@ -33,22 +37,8 @@
         },
         "events": [
             {
-                "type": "msg_received",
-                "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                "msg": {
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-                    "urn": "tel:+12065551212",
-                    "channel": {
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-                        "name": "Twilio"
-                    },
-                    "text": "red"
-                }
-            },
-            {
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:04.123456789Z",
+                "created_on": "2025-05-04T12:31:03.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "red",

@@ -285,6 +285,12 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 		sprint.logEvent(e)
 	}
 
+	// TODO once all resumes are event based this can be generalized but for now for debugging purposes we need to
+	// record msg_received events on the run
+	if t, ok := resume.(*resumes.MsgResume); ok {
+		waitingRun.LogEvent(nil, t.Event())
+	}
+
 	// resumes are allowed to make state changes
 	resume.Apply(waitingRun, logEvent)
 

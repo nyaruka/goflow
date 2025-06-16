@@ -147,25 +147,15 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:00.123456789Z",
-                    "msg": {
-                        "text": "I'd like to book a flight to Quito",
-                        "urn": "tel:+12065551212",
-                        "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
-                    },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "msg_received"
-                },
-                {
                     "category": "All Responses",
-                    "created_on": "2025-05-04T12:31:04.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "name": "Response 1",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "I'd like to book a flight to Quito"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:10.123456789Z",
+                    "created_on": "2025-05-04T12:31:09.123456789Z",
                     "elapsed_ms": 1000,
                     "input": "I'd like to book a flight to Quito",
                     "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: [Flights, Hotels]",
@@ -180,19 +170,19 @@
                 },
                 {
                     "category": "Hotels",
-                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
                     "name": "Intent",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
                     "value": "Hotels"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:19.123456789Z",
+                    "created_on": "2025-05-04T12:31:18.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "So you'd like to book a hotel?",
                         "unsendable_reason": "no_destination",
-                        "uuid": "01969b47-866b-76f8-a691-235cbe720980"
+                        "uuid": "01969b47-8283-76f8-a691-235cbe720980"
                     },
                     "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "msg_created"
@@ -205,7 +195,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                     "operand": "I'd like to book a flight to Quito",
-                    "time": "2025-05-04T12:31:06.123456789Z"
+                    "time": "2025-05-04T12:31:05.123456789Z"
                 },
                 {
                     "destination_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
@@ -213,7 +203,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "operand": "Hotels",
-                    "time": "2025-05-04T12:31:16.123456789Z"
+                    "time": "2025-05-04T12:31:15.123456789Z"
                 }
             ],
             "session": {
@@ -275,25 +265,24 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:00.123456789Z",
+                                "created_on": "2019-10-04T12:20:49.046879-05:00",
                                 "msg": {
                                     "text": "I'd like to book a flight to Quito",
                                     "urn": "tel:+12065551212",
                                     "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "name": "Response 1",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "I'd like to book a flight to Quito"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
+                                "created_on": "2025-05-04T12:31:09.123456789Z",
                                 "elapsed_ms": 1000,
                                 "input": "I'd like to book a flight to Quito",
                                 "instructions": "Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: [Flights, Hotels]",
@@ -308,25 +297,25 @@
                             },
                             {
                                 "category": "Hotels",
-                                "created_on": "2025-05-04T12:31:14.123456789Z",
+                                "created_on": "2025-05-04T12:31:13.123456789Z",
                                 "name": "Intent",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "Hotels"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:19.123456789Z",
+                                "created_on": "2025-05-04T12:31:18.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "So you'd like to book a hotel?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-866b-76f8-a691-235cbe720980"
+                                    "uuid": "01969b47-8283-76f8-a691-235cbe720980"
                                 },
                                 "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:21.123456789Z",
+                        "exited_on": "2025-05-04T12:31:20.123456789Z",
                         "flow": {
                             "name": "LLM Categorize",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
@@ -334,7 +323,7 @@
                         "locals": {
                             "_llm_output": "Hotels"
                         },
-                        "modified_on": "2025-05-04T12:31:21.123456789Z",
+                        "modified_on": "2025-05-04T12:31:20.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -349,13 +338,13 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
                                 "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:17.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
                                 "exit_uuid": "9b907a0d-8aee-4ade-a9a8-fd5df3aaf386",
                                 "node_uuid": "ac3fcd8e-e7bb-4545-865d-39424a8f1d7b",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
@@ -364,7 +353,7 @@
                         "results": {
                             "intent": {
                                 "category": "Hotels",
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "created_on": "2025-05-04T12:31:11.123456789Z",
                                 "input": "Hotels",
                                 "name": "Intent",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
@@ -372,7 +361,7 @@
                             },
                             "response_1": {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "created_on": "2025-05-04T12:31:01.123456789Z",
                                 "input": "I'd like to book a flight to Quito",
                                 "name": "Response 1",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",

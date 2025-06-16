@@ -993,7 +993,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			sprint, err = session.Resume(ctx, resumes.NewMsg(nil, nil, flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil, "SMS1234")))
+			sprint, err = session.Resume(ctx, resumes.NewMsg(nil, nil, events.NewMsgReceived(flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil, "SMS1234"))))
 			require.NoError(t, err)
 		}
 

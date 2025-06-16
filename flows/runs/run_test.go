@@ -198,11 +198,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:18.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(run.results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:18.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(parent.contact.urns))`,
