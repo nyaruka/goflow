@@ -31,7 +31,6 @@
             },
             "origin": "api"
         },
-        "events": [],
         "context": {
             "campaign": null,
             "keyword": "",
@@ -65,7 +64,6 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "events": [],
         "context": {
             "campaign": null,
             "keyword": "",

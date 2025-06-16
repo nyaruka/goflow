@@ -198,8 +198,8 @@ type Trigger interface {
 	utils.Typed
 	Contextable
 
-	Initialize(Session, EventCallback) error
-	InitializeRun(Run, EventCallback) error
+	Initialize(Session) error
+	InitializeRun(Run) error
 
 	Environment() envs.Environment
 	Flow() *assets.FlowReference

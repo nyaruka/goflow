@@ -73,7 +73,7 @@ func (t *baseTrigger) Call() *flows.Call     { return t.call }
 func (t *baseTrigger) SetCall(c *flows.Call) { t.call = c }
 
 // Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
+func (t *baseTrigger) Initialize(session flows.Session) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
@@ -96,7 +96,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 }
 
 // InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.Run, logEvent flows.EventCallback) error {
+func (t *baseTrigger) InitializeRun(run flows.Run) error {
 	return nil
 }
 

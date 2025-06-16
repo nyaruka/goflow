@@ -107,6 +107,5 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 		MustBuild()
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
-	assert.Equal(t, 1, len(sprint.Events()))
-	assert.Equal(t, "msg_received", sprint.Events()[0].Type())
+	assert.Equal(t, 0, len(sprint.Events()))
 }

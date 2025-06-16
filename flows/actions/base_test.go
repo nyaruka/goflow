@@ -210,7 +210,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				},
 				"",
 			)
-			trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(msg).Build()
+			trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(events.NewMsgReceived(msg)).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
