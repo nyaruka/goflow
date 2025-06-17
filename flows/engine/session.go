@@ -279,6 +279,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 
 	s.status = flows.SessionStatusActive
 	s.currentResume = resume
+	sprint.logFlow(waitingRun.Flow())
 
 	logEvent := func(e flows.Event) {
 		waitingRun.LogEvent(step, e)
@@ -350,6 +351,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			flow := s.pushedFlow.flow
 			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
+			sprint.logFlow(flow)
 
 			// our destination is the first node in that flow... if such a node exists
 			if len(flow.Nodes()) > 0 {

@@ -84,6 +84,7 @@ func TestSprint(t *testing.T) {
 	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), time.Second))
 
 	sprint := newEmptySprint(true)
+	sprint.logFlow(flow)
 	sprint.logSegment(flow, node1, node1Exit1, "yes", node2)
 	sprint.logModifier(mod1)
 	sprint.logEvent(event1)
@@ -98,6 +99,7 @@ func TestSprint(t *testing.T) {
 	assert.Equal(t, []flows.Modifier{mod1, mod2}, sprint.Modifiers())
 	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
 	assert.Equal(t, []flows.Segment{seg1, seg2}, sprint.Segments())
+	assert.Equal(t, []flows.Flow{flow}, sprint.Flows())
 
 	seg := sprint.Segments()[0]
 	assert.Equal(t, flow, seg.Flow())

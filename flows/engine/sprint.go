@@ -54,6 +54,7 @@ type sprint struct {
 	modifiers []flows.Modifier
 	events    []flows.Event
 	segments  []flows.Segment
+	flows     []flows.Flow
 }
 
 // creates a new empty sprint
@@ -64,6 +65,7 @@ func newEmptySprint(isInitial bool) *sprint {
 		modifiers: make([]flows.Modifier, 0, 10),
 		events:    make([]flows.Event, 0, 10),
 		segments:  make([]flows.Segment, 0, 10),
+		flows:     make([]flows.Flow, 0, 1),
 	}
 }
 
@@ -72,6 +74,7 @@ func (s *sprint) IsInitial() bool             { return s.isInitial }
 func (s *sprint) Modifiers() []flows.Modifier { return s.modifiers }
 func (s *sprint) Events() []flows.Event       { return s.events }
 func (s *sprint) Segments() []flows.Segment   { return s.segments }
+func (s *sprint) Flows() []flows.Flow         { return s.flows }
 
 func (s *sprint) logModifier(m flows.Modifier) {
 	s.modifiers = append(s.modifiers, m)
@@ -90,6 +93,12 @@ func (s *sprint) logSegment(flow flows.Flow, node flows.Node, exit flows.Exit, o
 		destination: dest,
 		time:        dates.Now(),
 	})
+}
+
+func (s *sprint) logFlow(flow flows.Flow) {
+	if len(s.flows) == 0 || s.flows[len(s.flows)-1].UUID() != flow.UUID() {
+		s.flows = append(s.flows, flow)
+	}
 }
 
 var _ flows.Sprint = (*sprint)(nil)
