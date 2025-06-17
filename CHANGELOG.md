@@ -1,3 +1,7 @@
+v0.247.0 (2025-06-17)
+-------------------------
+ * Rework msg triggers and resumes to take a msg_received event instead of a msg
+
 v0.246.6 (2025-05-21)
 -------------------------
  * Add Sprint.IsInitial
