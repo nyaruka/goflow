@@ -58,6 +58,7 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 }
 
 func (t *baseTrigger) Type() string                   { return t.type_ }
+func (t *baseTrigger) Event() flows.Event             { return nil }
 func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Batch() bool                    { return t.batch }

@@ -58,7 +58,7 @@ func NewMsg(env envs.Environment, contact *flows.Contact, event *events.MsgRecei
 }
 
 // Event returns the event this resume is based on
-func (r *MsgResume) Event() *events.MsgReceivedEvent { return r.event }
+func (r *MsgResume) Event() flows.Event { return r.event }
 
 // Apply applies our state changes and saves any events to the run
 func (r *MsgResume) Apply(run flows.Run, logEvent flows.EventCallback) {

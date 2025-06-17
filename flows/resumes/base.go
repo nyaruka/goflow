@@ -44,8 +44,8 @@ func newBaseResume(typeName string, env envs.Environment, contact *flows.Contact
 }
 
 // Type returns the type of this resume
-func (r *baseResume) Type() string { return r.type_ }
-
+func (r *baseResume) Type() string                  { return r.type_ }
+func (r *baseResume) Event() flows.Event            { return nil }
 func (r *baseResume) Environment() envs.Environment { return r.environment }
 func (r *baseResume) Contact() *flows.Contact       { return r.contact }
 func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }

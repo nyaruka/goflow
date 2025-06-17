@@ -285,10 +285,10 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 		sprint.logEvent(e)
 	}
 
-	// TODO once all resumes are event based this can be generalized but for now for debugging purposes we need to
-	// record msg_received events on the run
-	if t, ok := resume.(*resumes.MsgResume); ok {
-		waitingRun.LogEvent(nil, t.Event())
+	// if resume was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
+	// events because we didn't generate it
+	if resume.Event() != nil {
+		waitingRun.LogEvent(nil, resume.Event())
 	}
 
 	// resumes are allowed to make state changes
@@ -460,10 +460,10 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 
 	// this might be the first run of the session in which case a trigger might need to initialize the run
 	if trigger != nil {
-		// TODO once all triggers are event based this can be generalized but for now for debugging purposes we need to
-		// record msg_received events on the run
-		if t, ok := trigger.(*triggers.MsgTrigger); ok {
-			run.LogEvent(nil, t.Event())
+		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
+		// events because we didn't generate it
+		if trigger.Event() != nil {
+			run.LogEvent(nil, trigger.Event())
 		}
 
 		if err := trigger.InitializeRun(run); err != nil {
