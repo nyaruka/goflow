@@ -58,6 +58,7 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 }
 
 func (t *baseTrigger) Type() string                   { return t.type_ }
+func (t *baseTrigger) Event() flows.Event             { return nil }
 func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Batch() bool                    { return t.batch }
@@ -73,7 +74,7 @@ func (t *baseTrigger) Call() *flows.Call     { return t.call }
 func (t *baseTrigger) SetCall(c *flows.Call) { t.call = c }
 
 // Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCallback) error {
+func (t *baseTrigger) Initialize(session flows.Session) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
@@ -96,7 +97,7 @@ func (t *baseTrigger) Initialize(session flows.Session, logEvent flows.EventCall
 }
 
 // InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.Run, logEvent flows.EventCallback) error {
+func (t *baseTrigger) InitializeRun(run flows.Run) error {
 	return nil
 }
 

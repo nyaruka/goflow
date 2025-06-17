@@ -198,9 +198,10 @@ type Trigger interface {
 	utils.Typed
 	Contextable
 
-	Initialize(Session, EventCallback) error
-	InitializeRun(Run, EventCallback) error
+	Initialize(Session) error
+	InitializeRun(Run) error
 
+	Event() Event
 	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
@@ -227,6 +228,7 @@ type Resume interface {
 
 	Apply(Run, EventCallback)
 
+	Event() Event
 	Environment() envs.Environment
 	Contact() *Contact
 	ResumedOn() time.Time

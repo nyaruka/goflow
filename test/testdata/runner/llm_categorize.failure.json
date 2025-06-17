@@ -147,32 +147,22 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:00.123456789Z",
-                    "msg": {
-                        "text": "\\error this is an error",
-                        "urn": "tel:+12065551212",
-                        "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
-                    },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "msg_received"
-                },
-                {
                     "category": "All Responses",
-                    "created_on": "2025-05-04T12:31:04.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "name": "Response 1",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "\\error this is an error"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:09.123456789Z",
+                    "created_on": "2025-05-04T12:31:08.123456789Z",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "text": "this is an error",
                     "type": "error"
                 },
                 {
                     "category": "Failure",
-                    "created_on": "2025-05-04T12:31:13.123456789Z",
+                    "created_on": "2025-05-04T12:31:12.123456789Z",
                     "name": "Intent",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
@@ -186,7 +176,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                     "operand": "\\error this is an error",
-                    "time": "2025-05-04T12:31:06.123456789Z"
+                    "time": "2025-05-04T12:31:05.123456789Z"
                 }
             ],
             "session": {
@@ -248,39 +238,38 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:00.123456789Z",
+                                "created_on": "2019-10-04T12:20:49.046879-05:00",
                                 "msg": {
                                     "text": "\\error this is an error",
                                     "urn": "tel:+12065551212",
                                     "uuid": "9fbbb719-381a-487b-b707-a7317cc48e1f"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "name": "Response 1",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "\\error this is an error"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
+                                "created_on": "2025-05-04T12:31:08.123456789Z",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "text": "this is an error",
                                 "type": "error"
                             },
                             {
                                 "category": "Failure",
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
+                                "created_on": "2025-05-04T12:31:12.123456789Z",
                                 "name": "Intent",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "<ERROR>"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:15.123456789Z",
+                        "exited_on": "2025-05-04T12:31:14.123456789Z",
                         "flow": {
                             "name": "LLM Categorize",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
@@ -288,7 +277,7 @@
                         "locals": {
                             "_llm_output": "<ERROR>"
                         },
-                        "modified_on": "2025-05-04T12:31:15.123456789Z",
+                        "modified_on": "2025-05-04T12:31:14.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -303,7 +292,7 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
                                 "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -312,7 +301,7 @@
                         "results": {
                             "intent": {
                                 "category": "Failure",
-                                "created_on": "2025-05-04T12:31:11.123456789Z",
+                                "created_on": "2025-05-04T12:31:10.123456789Z",
                                 "input": "<ERROR>",
                                 "name": "Intent",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
@@ -320,7 +309,7 @@
                             },
                             "response_1": {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "created_on": "2025-05-04T12:31:01.123456789Z",
                                 "input": "\\error this is an error",
                                 "name": "Response 1",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",

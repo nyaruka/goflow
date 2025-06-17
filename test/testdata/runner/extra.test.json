@@ -357,35 +357,21 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:26.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Nexmo",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "Ryan Lewis",
-                        "urn": "tel:+12065551212",
-                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                    },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                    "type": "msg_received"
-                },
-                {
                     "category": "Has Text",
-                    "created_on": "2025-05-04T12:31:30.123456789Z",
+                    "created_on": "2025-05-04T12:31:29.123456789Z",
                     "name": "Continue",
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:34.123456789Z",
+                    "created_on": "2025-05-04T12:31:33.123456789Z",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "text": "deprecated context value accessed: legacy_extra",
                     "type": "warning"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:37.123456789Z",
+                    "created_on": "2025-05-04T12:31:36.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -394,7 +380,7 @@
                         "locale": "eng-US",
                         "text": "Extra: {0: Ben Haggerty, 1: Ben, 2: Haggerty, address: {city: Seattle, state: WA}, name_check: {\n                        \"0\": \"Ben Haggerty\",\n                        \"1\": \"Ben\",\n                        \"2\": \"Haggerty\"\n                    }, ok: true, webhook: {\n                        \"ok\": \"true\"\n                    }}",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-ccbb-76f8-8dbf-00ecf5d03034"
+                        "uuid": "01969b47-c8d3-76f8-8dbf-00ecf5d03034"
                     },
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created"
@@ -407,7 +393,7 @@
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "operand": "Ryan Lewis",
-                    "time": "2025-05-04T12:31:32.123456789Z"
+                    "time": "2025-05-04T12:31:31.123456789Z"
                 }
             ],
             "session": {
@@ -557,7 +543,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
+                                "created_on": "2000-01-01T00:00:00Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -567,25 +553,24 @@
                                     "urn": "tel:+12065551212",
                                     "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                 },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Has Text",
-                                "created_on": "2025-05-04T12:31:30.123456789Z",
+                                "created_on": "2025-05-04T12:31:29.123456789Z",
                                 "name": "Continue",
                                 "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:34.123456789Z",
+                                "created_on": "2025-05-04T12:31:33.123456789Z",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "text": "deprecated context value accessed: legacy_extra",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:37.123456789Z",
+                                "created_on": "2025-05-04T12:31:36.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -594,18 +579,18 @@
                                     "locale": "eng-US",
                                     "text": "Extra: {0: Ben Haggerty, 1: Ben, 2: Haggerty, address: {city: Seattle, state: WA}, name_check: {\n                        \"0\": \"Ben Haggerty\",\n                        \"1\": \"Ben\",\n                        \"2\": \"Haggerty\"\n                    }, ok: true, webhook: {\n                        \"ok\": \"true\"\n                    }}",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-ccbb-76f8-8dbf-00ecf5d03034"
+                                    "uuid": "01969b47-c8d3-76f8-8dbf-00ecf5d03034"
                                 },
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:39.123456789Z",
+                        "exited_on": "2025-05-04T12:31:38.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:31:39.123456789Z",
+                        "modified_on": "2025-05-04T12:31:38.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -626,7 +611,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:33.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:32.123456789Z",
                                 "exit_uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
                                 "node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                                 "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
@@ -635,7 +620,7 @@
                         "results": {
                             "continue": {
                                 "category": "Has Text",
-                                "created_on": "2025-05-04T12:31:28.123456789Z",
+                                "created_on": "2025-05-04T12:31:27.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",

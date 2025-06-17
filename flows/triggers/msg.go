@@ -29,12 +29,16 @@ const TypeMsg string = "msg"
 //	    "name": "Bob",
 //	    "created_on": "2018-01-01T12:00:00.000000Z"
 //	  },
-//	  "msg": {
-//	    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-//	    "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//	    "urn": "tel:+12065551212",
-//	    "text": "hi there",
-//	    "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
+//	  "event": {
+//	    "type": "msg_received",
+//	    "created_on": "2006-01-02T15:04:05Z",
+//	    "msg": {
+//	      "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+//	      "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
+//	      "urn": "tel:+12065551212",
+//	      "text": "hi there",
+//	      "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
+//	    }
 //	  },
 //	  "keyword_match": {
 //	    "type": "first_word",
@@ -46,8 +50,12 @@ const TypeMsg string = "msg"
 // @trigger msg
 type MsgTrigger struct {
 	baseTrigger
-	msg   *flows.MsgIn
+	event *events.MsgReceivedEvent
 	match *KeywordMatch
+}
+
+func (t *MsgTrigger) Event() flows.Event {
+	return t.event
 }
 
 // KeywordMatchType describes how the message matched a keyword
@@ -71,14 +79,13 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 }
 
 // InitializeRun performs additional initialization when we visit our first node
-func (t *MsgTrigger) InitializeRun(run flows.Run, logEvent flows.EventCallback) error {
+func (t *MsgTrigger) InitializeRun(run flows.Run) error {
 	// update our input
-	input := inputs.NewMsg(run.Session(), t.msg, t.triggeredOn)
+	input := inputs.NewMsg(run.Session(), t.event.Msg, t.triggeredOn)
 
 	run.Session().SetInput(input)
-	logEvent(events.NewMsgReceived(t.msg))
 
-	return t.baseTrigger.InitializeRun(run, logEvent)
+	return t.baseTrigger.InitializeRun(run)
 }
 
 // Context for msg triggers additionally exposes the keyword match
@@ -102,11 +109,11 @@ type MsgBuilder struct {
 }
 
 // Msg returns a msg trigger builder
-func (b *Builder) Msg(msg *flows.MsgIn) *MsgBuilder {
+func (b *Builder) Msg(e *events.MsgReceivedEvent) *MsgBuilder {
 	return &MsgBuilder{
 		t: &MsgTrigger{
 			baseTrigger: newBaseTrigger(TypeMsg, b.environment, b.flow, b.contact, nil, false, nil),
-			msg:         msg,
+			event:       e,
 		},
 	}
 }
@@ -134,8 +141,9 @@ func (b *MsgBuilder) Build() *MsgTrigger {
 
 type msgTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Msg   *flows.MsgIn  `json:"msg" validate:"required"`
-	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty"`
+	Event *events.MsgReceivedEvent `json:"event"` // TODO make required
+	Msg   *flows.MsgIn             `json:"msg"`   // deprecated, use event instead
+	Match *KeywordMatch            `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
 func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -145,8 +153,16 @@ func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing asse
 	}
 
 	t := &MsgTrigger{
-		msg:   e.Msg,
+		event: e.Event,
 		match: e.Match,
+	}
+
+	// older triggers will have msg instead of event so convert that into an event
+	if e.Msg != nil {
+		t.event = &events.MsgReceivedEvent{
+			BaseEvent: events.BaseEvent{Type_: events.TypeMsgReceived, CreatedOn_: e.baseTriggerEnvelope.TriggeredOn},
+			Msg:       e.Msg,
+		}
 	}
 
 	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
@@ -159,7 +175,8 @@ func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing asse
 // MarshalJSON marshals this trigger into JSON
 func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
 	e := &msgTriggerEnvelope{
-		Msg:   t.msg,
+		Event: t.event,
+		Msg:   t.event.Msg,
 		Match: t.match,
 	}
 

@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -166,7 +167,7 @@ func TestResumeContext(t *testing.T) {
 	var resume flows.Resume = resumes.NewMsg(
 		env,
 		nil,
-		flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234"),
+		events.NewMsgReceived(flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234")),
 	)
 
 	assert.Equal(t, map[string]types.XValue{

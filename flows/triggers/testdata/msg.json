@@ -5,7 +5,7 @@
             "type": "msg",
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'flow' is required, field 'msg' is required"
+        "read_error": "field 'flow' is required"
     },
     {
         "description": "with missing type in keyword match",
@@ -21,17 +21,21 @@
                 "status": "active",
                 "created_on": "2018-01-01T12:00:00Z"
             },
-            "msg": {
-                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-                "channel": {
-                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-                    "name": "Twilio"
-                },
-                "urn": "tel:+12065551212",
-                "text": "hi there",
-                "attachments": [
-                    "https://s3.amazon.com/mybucket/attachment.jpg"
-                ]
+            "event": {
+                "type": "msg_received",
+                "created_on": "2006-01-02T15:04:05Z",
+                "msg": {
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "channel": {
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
+                    },
+                    "urn": "tel:+12065551212",
+                    "text": "hi there",
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ]
+                }
             },
             "keyword_match": {
                 "keyword": "start"
@@ -41,7 +45,7 @@
         "read_error": "field 'keyword_match.type' is required"
     },
     {
-        "description": "msg received event logged",
+        "description": "keyword exposed in context",
         "trigger": {
             "type": "msg",
             "flow": {
@@ -55,6 +59,22 @@
                 "created_on": "2018-01-01T12:00:00Z"
             },
             "triggered_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "type": "msg_received",
+                "created_on": "2000-01-01T00:00:00Z",
+                "msg": {
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
+                    },
+                    "text": "hi there",
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ]
+                }
+            },
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
                 "urn": "tel:+12065551212",
@@ -72,25 +92,6 @@
                 "keyword": "start"
             }
         },
-        "events": [
-            {
-                "type": "msg_received",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "msg": {
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-                    "urn": "tel:+12065551212",
-                    "channel": {
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-                        "name": "Twilio"
-                    },
-                    "text": "hi there",
-                    "attachments": [
-                        "https://s3.amazon.com/mybucket/attachment.jpg"
-                    ]
-                }
-            }
-        ],
         "context": {
             "campaign": null,
             "keyword": "start",
@@ -117,6 +118,22 @@
                 "created_on": "2018-01-01T12:00:00Z"
             },
             "triggered_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "type": "msg_received",
+                "created_on": "2000-01-01T00:00:00Z",
+                "msg": {
+                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+                        "name": "Twilio"
+                    },
+                    "text": "hi there",
+                    "attachments": [
+                        "https://s3.amazon.com/mybucket/attachment.jpg"
+                    ]
+                }
+            },
             "msg": {
                 "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
                 "urn": "tel:+12065551212",
@@ -130,25 +147,6 @@
                 ]
             }
         },
-        "events": [
-            {
-                "type": "msg_received",
-                "created_on": "2018-10-18T14:20:30.000123456Z",
-                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
-                "msg": {
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-                    "urn": "tel:+12065551212",
-                    "channel": {
-                        "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-                        "name": "Twilio"
-                    },
-                    "text": "hi there",
-                    "attachments": [
-                        "https://s3.amazon.com/mybucket/attachment.jpg"
-                    ]
-                }
-            }
-        ],
         "context": {
             "campaign": null,
             "keyword": "",

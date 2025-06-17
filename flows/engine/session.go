@@ -178,7 +178,7 @@ func (s *session) start(ctx context.Context, trigger flows.Trigger) (flows.Sprin
 		return sprint, err
 	}
 
-	if err := s.trigger.Initialize(s, sprint.logEvent); err != nil {
+	if err := s.trigger.Initialize(s); err != nil {
 		return sprint, err
 	}
 
@@ -283,6 +283,12 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 	logEvent := func(e flows.Event) {
 		waitingRun.LogEvent(step, e)
 		sprint.logEvent(e)
+	}
+
+	// if resume was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
+	// events because we didn't generate it
+	if resume.Event() != nil {
+		waitingRun.LogEvent(nil, resume.Event())
 	}
 
 	// resumes are allowed to make state changes
@@ -454,7 +460,13 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 
 	// this might be the first run of the session in which case a trigger might need to initialize the run
 	if trigger != nil {
-		if err := trigger.InitializeRun(run, logEvent); err != nil {
+		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
+		// events because we didn't generate it
+		if trigger.Event() != nil {
+			run.LogEvent(nil, trigger.Event())
+		}
+
+		if err := trigger.InitializeRun(run); err != nil {
 			return step, nil, "", nil
 		}
 	}

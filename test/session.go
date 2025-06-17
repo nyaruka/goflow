@@ -709,7 +709,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
 		msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
-		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Msg(msg).Build()
+		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Msg(events.NewMsgReceived(msg)).Build()
 	} else {
 		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
 	}
@@ -746,7 +746,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 
 	msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.NilURN, nil, msgText, nil, "")
 
-	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), session.Contact(), msg))
+	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), session.Contact(), events.NewMsgReceived(msg)))
 
 	return session, sprint, err
 }

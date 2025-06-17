@@ -159,25 +159,15 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:00.123456789Z",
-                    "msg": {
-                        "text": "135532",
-                        "urn": "tel:+12065551212",
-                        "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
-                    },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "type": "msg_received"
-                },
-                {
                     "category": "Other",
-                    "created_on": "2025-05-04T12:31:04.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "name": "Backup Phone",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
                     "value": "135532"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:09.123456789Z",
+                    "created_on": "2025-05-04T12:31:08.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -186,14 +176,14 @@
                         "locale": "eng-US",
                         "text": "Sorry that doesn't look like a phone number. Try again.",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
+                        "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
                     },
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:14.123456789Z",
-                    "expires_on": "2025-05-11T12:31:13.123456789Z",
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
+                    "expires_on": "2025-05-11T12:31:12.123456789Z",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_wait"
                 }
@@ -205,14 +195,14 @@
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "135532",
-                    "time": "2025-05-04T12:31:06.123456789Z"
+                    "time": "2025-05-04T12:31:05.123456789Z"
                 },
                 {
                     "destination_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
-                    "time": "2025-05-04T12:31:11.123456789Z"
+                    "time": "2025-05-04T12:31:10.123456789Z"
                 }
             ],
             "session": {
@@ -280,25 +270,24 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:00.123456789Z",
+                                "created_on": "2020-03-19T16:37:31.207472-05:00",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
                                     "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "name": "Backup Phone",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "135532"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
+                                "created_on": "2025-05-04T12:31:08.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -307,14 +296,14 @@
                                     "locale": "eng-US",
                                     "text": "Sorry that doesn't look like a phone number. Try again.",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
+                                    "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
                                 },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:14.123456789Z",
-                                "expires_on": "2025-05-11T12:31:13.123456789Z",
+                                "created_on": "2025-05-04T12:31:13.123456789Z",
+                                "expires_on": "2025-05-11T12:31:12.123456789Z",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_wait"
                             }
@@ -325,7 +314,7 @@
                             "revision": 18,
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2025-05-04T12:31:16.123456789Z",
+                        "modified_on": "2025-05-04T12:31:15.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -340,13 +329,13 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
                                 "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                                 "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:12.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             }
@@ -354,7 +343,7 @@
                         "results": {
                             "backup_phone": {
                                 "category": "Other",
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "created_on": "2025-05-04T12:31:01.123456789Z",
                                 "input": "135532",
                                 "name": "Backup Phone",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
@@ -410,18 +399,8 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:18.123456789Z",
-                    "msg": {
-                        "text": "718-456-7890",
-                        "urn": "tel:+12065551212",
-                        "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
-                    },
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                    "type": "msg_received"
-                },
-                {
                     "category": "Has Phone",
-                    "created_on": "2025-05-04T12:31:22.123456789Z",
+                    "created_on": "2025-05-04T12:31:20.123456789Z",
                     "name": "Backup Phone",
                     "previous": {
                         "category": "Other",
@@ -432,7 +411,7 @@
                     "value": "+17184567890"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:26.123456789Z",
+                    "created_on": "2025-05-04T12:31:24.123456789Z",
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "contact_urns_changed",
                     "urns": [
@@ -443,7 +422,7 @@
                     ]
                 },
                 {
-                    "created_on": "2025-05-04T12:31:28.123456789Z",
+                    "created_on": "2025-05-04T12:31:26.123456789Z",
                     "groups_added": [
                         {
                             "name": "NYC Area",
@@ -454,7 +433,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:31.123456789Z",
+                    "created_on": "2025-05-04T12:31:29.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -463,7 +442,7 @@
                         "locale": "eng-US",
                         "text": "Ok you've added (718) 456-7890",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-b54b-76f8-acca-bbca70987315"
+                        "uuid": "01969b47-ad7b-76f8-acca-bbca70987315"
                     },
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_created"
@@ -476,7 +455,7 @@
                     "flow_uuid": "825f87d3-b160-4a03-877f-ae1a200794d4",
                     "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                     "operand": "718-456-7890",
-                    "time": "2025-05-04T12:31:24.123456789Z"
+                    "time": "2025-05-04T12:31:22.123456789Z"
                 }
             ],
             "session": {
@@ -551,25 +530,24 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:00.123456789Z",
+                                "created_on": "2020-03-19T16:37:31.207472-05:00",
                                 "msg": {
                                     "text": "135532",
                                     "urn": "tel:+12065551212",
                                     "uuid": "ba05c12e-16b2-4e13-8d89-e0cc9530a8fb"
                                 },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:03.123456789Z",
                                 "name": "Backup Phone",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
                                 "value": "135532"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
+                                "created_on": "2025-05-04T12:31:08.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -578,30 +556,29 @@
                                     "locale": "eng-US",
                                     "text": "Sorry that doesn't look like a phone number. Try again.",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-5f5b-76f8-b86e-4b881f09a186"
+                                    "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
                                 },
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:14.123456789Z",
-                                "expires_on": "2025-05-11T12:31:13.123456789Z",
+                                "created_on": "2025-05-04T12:31:13.123456789Z",
+                                "expires_on": "2025-05-11T12:31:12.123456789Z",
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:18.123456789Z",
+                                "created_on": "2020-03-19T16:37:38.453883-05:00",
                                 "msg": {
                                     "text": "718-456-7890",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5c94ee12-4c29-4f77-b3f2-c81ee6f5f445"
                                 },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_received"
                             },
                             {
                                 "category": "Has Phone",
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
+                                "created_on": "2025-05-04T12:31:20.123456789Z",
                                 "name": "Backup Phone",
                                 "previous": {
                                     "category": "Other",
@@ -612,7 +589,7 @@
                                 "value": "+17184567890"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
+                                "created_on": "2025-05-04T12:31:24.123456789Z",
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "contact_urns_changed",
                                 "urns": [
@@ -623,7 +600,7 @@
                                 ]
                             },
                             {
-                                "created_on": "2025-05-04T12:31:28.123456789Z",
+                                "created_on": "2025-05-04T12:31:26.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "NYC Area",
@@ -634,7 +611,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:31.123456789Z",
+                                "created_on": "2025-05-04T12:31:29.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -643,19 +620,19 @@
                                     "locale": "eng-US",
                                     "text": "Ok you've added (718) 456-7890",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-b54b-76f8-acca-bbca70987315"
+                                    "uuid": "01969b47-ad7b-76f8-acca-bbca70987315"
                                 },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:33.123456789Z",
+                        "exited_on": "2025-05-04T12:31:31.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",
                             "revision": 18,
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
-                        "modified_on": "2025-05-04T12:31:33.123456789Z",
+                        "modified_on": "2025-05-04T12:31:31.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -670,19 +647,19 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
                                 "exit_uuid": "573e9804-2429-47bd-86a7-b673574f5e2c",
                                 "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:12.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
                                 "exit_uuid": "2b9ce880-3556-410a-af5a-edd366a1d628",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:25.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
                                 "exit_uuid": "91023689-f038-405e-a3c0-c4e8e8580bd9",
                                 "node_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
@@ -691,7 +668,7 @@
                         "results": {
                             "backup_phone": {
                                 "category": "Has Phone",
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
+                                "created_on": "2025-05-04T12:31:18.123456789Z",
                                 "input": "718-456-7890",
                                 "name": "Backup Phone",
                                 "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139",

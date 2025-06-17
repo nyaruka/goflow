@@ -30,7 +30,6 @@
                 }
             }
         },
-        "events": [],
         "context": {
             "campaign": null,
             "keyword": "",
