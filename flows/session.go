@@ -52,6 +52,7 @@ type Sprint interface {
 	Modifiers() []Modifier
 	Events() []Event
 	Segments() []Segment
+	Flows() []Flow
 }
 
 // Session represents the session of a flow run which may contain many runs
