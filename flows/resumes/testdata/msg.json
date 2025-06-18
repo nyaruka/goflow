@@ -24,15 +24,6 @@
                     },
                     "text": "red"
                 }
-            },
-            "msg": {
-                "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
-                "urn": "tel:+12065551212",
-                "channel": {
-                    "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-                    "name": "Twilio"
-                },
-                "text": "red"
             }
         },
         "events": [

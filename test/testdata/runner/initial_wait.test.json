@@ -192,11 +192,6 @@
                         "name": "Initial Wait",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                     },
-                    "msg": {
-                        "text": "PING",
-                        "urn": "tel:+12065551212",
-                        "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
-                    },
                     "triggered_on": "2018-10-11T14:27:09.05642-05:00",
                     "type": "msg"
                 },
