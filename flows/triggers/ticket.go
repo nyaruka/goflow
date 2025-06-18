@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -16,21 +17,7 @@ func init() {
 // TypeTicket is the type for sessions triggered by ticket events
 const TypeTicket string = "ticket"
 
-// TicketEventType is the type of event that occurred on the ticket
-type TicketEventType string
-
-// different ticket event types
-const (
-	TicketEventTypeClosed TicketEventType = "closed"
-)
-
-// TicketEvent describes the specific event on the ticket that triggered the session
-type TicketEvent struct {
-	type_  TicketEventType
-	ticket *flows.Ticket
-}
-
-// TicketTrigger is used when a session was triggered by a ticket event
+// TicketTrigger is used when a session was triggered by a ticket event (for now only closed events).
 //
 //	{
 //	  "type": "ticket",
@@ -41,7 +28,8 @@ type TicketEvent struct {
 //	    "created_on": "2018-01-01T12:00:00.000000Z"
 //	  },
 //	  "event": {
-//	      "type": "closed",
+//	      "type": "ticket_closed",
+//	      "created_on": "2006-01-02T15:04:05Z",
 //	      "ticket": {
 //	          "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
 //	          "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
@@ -53,13 +41,14 @@ type TicketEvent struct {
 // @trigger ticket
 type TicketTrigger struct {
 	baseTrigger
-	event *TicketEvent
+	event  *events.TicketClosedEvent
+	ticket *flows.Ticket
 }
 
 // Context for ticket triggers includes the ticket
 func (t *TicketTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.ticket = flows.Context(env, t.event.ticket)
+	c.ticket = flows.Context(env, t.ticket)
 	return c.asMap()
 }
 
@@ -75,11 +64,12 @@ type TicketBuilder struct {
 }
 
 // Ticket returns a ticket trigger builder
-func (b *Builder) Ticket(ticket *flows.Ticket, eventType TicketEventType) *TicketBuilder {
+func (b *Builder) Ticket(event *events.TicketClosedEvent, ticket *flows.Ticket) *TicketBuilder {
 	return &TicketBuilder{
 		t: &TicketTrigger{
 			baseTrigger: newBaseTrigger(TypeTicket, b.environment, b.flow, b.contact, nil, false, nil),
-			event:       &TicketEvent{type_: eventType, ticket: ticket},
+			event:       event,
+			ticket:      ticket,
 		},
 	}
 }
@@ -93,14 +83,9 @@ func (b *TicketBuilder) Build() *TicketTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketEventEnvelope struct {
-	Type   TicketEventType       `json:"type"   validate:"required"`
-	Ticket *flows.TicketEnvelope `json:"ticket" validate:"required"`
-}
-
 type ticketTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event ticketEventEnvelope `json:"event" validate:"required"`
+	Event *events.TicketClosedEvent `json:"event" validate:"required"`
 }
 
 func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -109,11 +94,15 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 		return nil, err
 	}
 
+	// older sessions will have events that aren't really events so fix 'em
+	if e.Event.Type() == "closed" {
+		e.Event.Type_ = events.TypeTicketClosed
+		e.Event.CreatedOn_ = e.TriggeredOn // ensure we have a created on time
+	}
+
 	t := &TicketTrigger{
-		event: &TicketEvent{
-			type_:  e.Event.Type,
-			ticket: e.Event.Ticket.Unmarshal(sa, missing),
-		},
+		event:  e.Event,
+		ticket: e.Event.Ticket.Unmarshal(sa, missing),
 	}
 
 	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
@@ -126,10 +115,7 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 // MarshalJSON marshals this trigger into JSON
 func (t *TicketTrigger) MarshalJSON() ([]byte, error) {
 	e := &ticketTriggerEnvelope{
-		Event: ticketEventEnvelope{
-			Type:   t.event.type_,
-			Ticket: t.event.ticket.Marshal(),
-		},
+		Event: t.event,
 	}
 
 	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {

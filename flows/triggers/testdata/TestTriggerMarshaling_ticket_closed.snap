@@ -25,9 +25,10 @@
             "tel:+12065551212"
         ]
     },
-    "triggered_on": "2025-05-04T12:31:04.123456789Z",
+    "triggered_on": "2025-05-04T12:31:05.123456789Z",
     "event": {
-        "type": "closed",
+        "type": "ticket_closed",
+        "created_on": "2025-05-04T12:31:04.123456789Z",
         "ticket": {
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
             "topic": null,
