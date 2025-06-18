@@ -2,6 +2,7 @@ package assets
 
 // Source is a source of assets
 type Source interface {
+	Campaigns() ([]Campaign, error)
 	Channels() ([]Channel, error)
 	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)

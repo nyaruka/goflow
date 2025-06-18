@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -17,34 +16,10 @@ func init() {
 // TypeCampaign is the type for sessions triggered by campaign events
 const TypeCampaign string = "campaign"
 
-// CampaignUUID is the type for campaign UUIDs
-type CampaignUUID uuids.UUID
-
-// CampaignEventUUID is the type for campaign event UUIDs
-type CampaignEventUUID uuids.UUID
-
-// CampaignReference is a reference to the campaign that triggered the session
-type CampaignReference struct {
-	UUID CampaignUUID `json:"uuid" validate:"required,uuid"`
-	Name string       `json:"name" validate:"required"`
-}
-
-// NewCampaignReference creates a new campaign reference
-func NewCampaignReference(uuid CampaignUUID, name string) *CampaignReference {
-	return &CampaignReference{UUID: uuid, Name: name}
-}
-
-func (c *CampaignReference) Context(env envs.Environment) map[string]types.XValue {
-	return map[string]types.XValue{
-		"uuid": types.NewXText(string(c.UUID)),
-		"name": types.NewXText(c.Name),
-	}
-}
-
 // CampaignEvent describes the specific event in the campaign that triggered the session
 type CampaignEvent struct {
-	UUID     CampaignEventUUID  `json:"uuid" validate:"required,uuid"`
-	Campaign *CampaignReference `json:"campaign" validate:"required"`
+	UUID     assets.CampaignEventUUID  `json:"uuid" validate:"required,uuid"`
+	Campaign *assets.CampaignReference `json:"campaign" validate:"required"`
 }
 
 // CampaignTrigger is used when a session was triggered by a campaign event
@@ -59,7 +34,7 @@ type CampaignEvent struct {
 //	  },
 //	  "event": {
 //	      "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
-//	      "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "New Mothers"}
+//	      "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "Reminders"}
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}
@@ -67,13 +42,14 @@ type CampaignEvent struct {
 // @trigger campaign
 type CampaignTrigger struct {
 	baseTrigger
-	event *CampaignEvent
+	event    *CampaignEvent
+	campaign *flows.Campaign
 }
 
 // Context for manual triggers always has non-nil params
 func (t *CampaignTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.campaign = flows.Context(env, t.event.Campaign)
+	c.campaign = flows.Context(env, t.campaign)
 	return c.asMap()
 }
 
@@ -89,11 +65,12 @@ type CampaignBuilder struct {
 }
 
 // Campaign returns a campaign trigger builder
-func (b *Builder) Campaign(campaign *CampaignReference, eventUUID CampaignEventUUID) *CampaignBuilder {
+func (b *Builder) Campaign(campaign *flows.Campaign, eventUUID assets.CampaignEventUUID) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &CampaignTrigger{
 			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, b.contact, nil, false, nil),
-			event:       &CampaignEvent{UUID: eventUUID, Campaign: campaign},
+			event:       &CampaignEvent{UUID: eventUUID, Campaign: campaign.Reference()},
+			campaign:    campaign,
 		},
 	}
 }
@@ -112,16 +89,22 @@ type campaignTriggerEnvelope struct {
 	Event *CampaignEvent `json:"event" validate:"required"`
 }
 
-func readCampaignTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+func readCampaignTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &CampaignTrigger{
-		event: e.Event,
+	campaign := sa.Campaigns().Get(e.Event.Campaign.UUID)
+	if campaign == nil {
+		missing(e.Event.Campaign, nil)
 	}
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+
+	t := &CampaignTrigger{
+		event:    e.Event,
+		campaign: campaign,
+	}
+	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
 		return nil, err
 	}
 

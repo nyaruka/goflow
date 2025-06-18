@@ -12,6 +12,7 @@ import (
 type sessionAssets struct {
 	source assets.Source
 
+	campaigns   *flows.CampaignAssets
 	channels    *flows.ChannelAssets
 	classifiers *flows.ClassifierAssets
 	fields      *flows.FieldAssets
@@ -32,6 +33,10 @@ var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
 func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
+	campaigns, err := source.Campaigns()
+	if err != nil {
+		return nil, err
+	}
 	channels, err := source.Channels()
 	if err != nil {
 		return nil, err
@@ -90,6 +95,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 
 	return &sessionAssets{
 		source:      source,
+		campaigns:   flows.NewCampaignAssets(campaigns),
 		channels:    flows.NewChannelAssets(channels),
 		classifiers: flows.NewClassifierAssets(classifiers),
 		fields:      fieldAssets,
@@ -108,6 +114,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 }
 
 func (s *sessionAssets) Source() assets.Source                { return s.source }
+func (s *sessionAssets) Campaigns() *flows.CampaignAssets     { return s.campaigns }
 func (s *sessionAssets) Channels() *flows.ChannelAssets       { return s.channels }
 func (s *sessionAssets) Classifiers() *flows.ClassifierAssets { return s.classifiers }
 func (s *sessionAssets) Fields() *flows.FieldAssets           { return s.fields }
