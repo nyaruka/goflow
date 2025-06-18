@@ -1,6 +1,6 @@
 {
-    "type": "ticket_opened",
-    "created_on": "2025-05-04T12:32:19.123456789Z",
+    "type": "ticket_closed",
+    "created_on": "2025-05-04T12:32:18.123456789Z",
     "ticket": {
         "uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
         "topic": {
@@ -11,6 +11,5 @@
             "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
             "name": "Bob"
         }
-    },
-    "note": "this is weird"
+    }
 }

@@ -23,7 +23,8 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
-                "type": "started",
+                "type": "optin_started",
+                "created_on": "2000-01-01T00:00:00Z",
                 "optin": {
                     "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
                     "name": "Joke Of The Day"

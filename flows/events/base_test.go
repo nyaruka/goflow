@@ -264,8 +264,16 @@ func TestEventMarshaling(t *testing.T) {
 			`dial_wait`,
 		},
 		{
-			events.NewOptInRequested(jotd, facebook, urns.URN("facebook:1234567890")),
+			events.NewOptInRequested(jotd, facebook.Reference(), urns.URN("facebook:1234567890")),
 			`optin_requested`,
+		},
+		{
+			events.NewOptInStarted(jotd, facebook.Reference()),
+			`optin_started`,
+		},
+		{
+			events.NewOptInStopped(jotd, facebook.Reference()),
+			`optin_stopped`,
 		},
 		{
 			events.NewSessionTriggered(
@@ -284,6 +292,10 @@ func TestEventMarshaling(t *testing.T) {
 				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 			),
 			`session_triggered`,
+		},
+		{
+			events.NewTicketClosed(ticket),
+			`ticket_closed`,
 		},
 		{
 			events.NewTicketOpened(ticket, "this is weird"),

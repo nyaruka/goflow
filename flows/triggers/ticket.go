@@ -66,7 +66,7 @@ type TicketBuilder struct {
 }
 
 // Ticket returns a ticket trigger builder
-func (b *Builder) Ticket(event *events.TicketClosedEvent, ticket *flows.Ticket) *TicketBuilder {
+func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosedEvent) *TicketBuilder {
 	return &TicketBuilder{
 		t: &TicketTrigger{
 			baseTrigger: newBaseTrigger(TypeTicket, b.environment, b.flow, b.contact, nil, false, nil),
