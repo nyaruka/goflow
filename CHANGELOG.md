@@ -1,3 +1,7 @@
+v0.247.4 (2025-06-18)
+-------------------------
+ * Convert optin triggers to use real events
+
 v0.247.3 (2025-06-18)
 -------------------------
  * Rework ticket triggers to use real events
