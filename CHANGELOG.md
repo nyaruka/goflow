@@ -1,3 +1,7 @@
+v0.247.2 (2025-06-18)
+-------------------------
+ * Stop writing trigger.msg and resume.msg
+
 v0.247.1 (2025-06-17)
 -------------------------
  * Record flows entered on sprints
