@@ -1,12 +1,10 @@
 package flows
 
 import (
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TicketUUID is the UUID of a ticket
@@ -59,21 +57,15 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketEnvelope struct {
+type TicketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }
 
-// ReadTicket decodes a contact from the passed in JSON. If the topic or assigned user can't
+// Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
 // be found in the assets, we report the missing asset and return ticket without those.
-func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (*Ticket, error) {
-	e := &ticketEnvelope{}
-
-	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, err
-	}
-
+func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) *Ticket {
 	var topic *Topic
 	if e.Topic != nil {
 		topic = sa.Topics().Get(e.Topic.UUID)
@@ -90,11 +82,11 @@ func ReadTicket(sa SessionAssets, data []byte, missing assets.MissingCallback) (
 		}
 	}
 
-	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee}, nil
+	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee}
 }
 
-// MarshalJSON marshals this ticket into JSON
-func (t *Ticket) MarshalJSON() ([]byte, error) {
+// Marshal marshals a ticket into an envelope.
+func (t *Ticket) Marshal() *TicketEnvelope {
 	var topicRef *assets.TopicReference
 	if t.topic != nil {
 		topicRef = t.topic.Reference()
@@ -105,9 +97,9 @@ func (t *Ticket) MarshalJSON() ([]byte, error) {
 		assigneeRef = t.assignee.Reference()
 	}
 
-	return jsonx.Marshal(&ticketEnvelope{
+	return &TicketEnvelope{
 		UUID:     t.uuid,
 		Topic:    topicRef,
 		Assignee: assigneeRef,
-	})
+	}
 }

@@ -1,7 +1,6 @@
 package envs
 
 import (
-	"encoding/json"
 	"regexp"
 	"strings"
 
@@ -258,7 +257,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 }
 
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
-func ReadLocationHierarchy(env Environment, data json.RawMessage) (*LocationHierarchy, error) {
+func ReadLocationHierarchy(env Environment, data []byte) (*LocationHierarchy, error) {
 	var le locationEnvelope
 	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
 		return nil, err

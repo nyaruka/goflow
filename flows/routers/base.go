@@ -198,7 +198,7 @@ type baseRouterEnvelope struct {
 }
 
 // ReadRouter reads a router from the given JSON
-func ReadRouter(data json.RawMessage) (flows.Router, error) {
+func ReadRouter(data []byte) (flows.Router, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

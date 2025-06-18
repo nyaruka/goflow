@@ -1,9 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -97,8 +94,8 @@ func (b *TicketBuilder) Build() *TicketTrigger {
 //------------------------------------------------------------------------------------------
 
 type ticketEventEnvelope struct {
-	Type   TicketEventType `json:"type"   validate:"required"`
-	Ticket json.RawMessage `json:"ticket" validate:"required"`
+	Type   TicketEventType       `json:"type"   validate:"required"`
+	Ticket *flows.TicketEnvelope `json:"ticket" validate:"required"`
 }
 
 type ticketTriggerEnvelope struct {
@@ -114,14 +111,9 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 
 	t := &TicketTrigger{
 		event: &TicketEvent{
-			type_: e.Event.Type,
+			type_:  e.Event.Type,
+			ticket: e.Event.Ticket.Unmarshal(sa, missing),
 		},
-	}
-
-	var err error
-	t.event.ticket, err = flows.ReadTicket(sa, e.Event.Ticket, missing)
-	if err != nil {
-		return nil, fmt.Errorf("unable to read ticket: %w", err)
 	}
 
 	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
@@ -133,15 +125,10 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 
 // MarshalJSON marshals this trigger into JSON
 func (t *TicketTrigger) MarshalJSON() ([]byte, error) {
-	ticket, err := jsonx.Marshal(t.event.ticket)
-	if err != nil {
-		return nil, err
-	}
-
 	e := &ticketTriggerEnvelope{
 		Event: ticketEventEnvelope{
 			Type:   t.event.type_,
-			Ticket: ticket,
+			Ticket: t.event.ticket.Marshal(),
 		},
 	}
 

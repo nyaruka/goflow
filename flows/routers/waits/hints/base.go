@@ -1,7 +1,6 @@
 package hints
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -32,7 +31,7 @@ func (h *baseHint) Type() string { return h.Type_ }
 //------------------------------------------------------------------------------------------
 
 // ReadHint reads a hint from the given JSON
-func ReadHint(data json.RawMessage) (flows.Hint, error) {
+func ReadHint(data []byte) (flows.Hint, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

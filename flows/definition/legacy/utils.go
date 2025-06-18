@@ -1,7 +1,6 @@
 package legacy
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -14,7 +13,7 @@ import (
 type Translations map[i18n.Language]string
 
 // ReadTranslations reads a translations map
-func ReadTranslations(data json.RawMessage) (Translations, error) {
+func ReadTranslations(data []byte) (Translations, error) {
 	if data == nil {
 		return nil, nil
 	}
