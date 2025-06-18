@@ -268,6 +268,14 @@ func TestEventMarshaling(t *testing.T) {
 			`optin_requested`,
 		},
 		{
+			events.NewOptInStarted(jotd, facebook.Reference()),
+			`optin_started`,
+		},
+		{
+			events.NewOptInStopped(jotd, facebook.Reference()),
+			`optin_stopped`,
+		},
+		{
 			events.NewSessionTriggered(
 				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 				[]*assets.GroupReference{
@@ -284,6 +292,10 @@ func TestEventMarshaling(t *testing.T) {
 				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 			),
 			`session_triggered`,
+		},
+		{
+			events.NewTicketClosed(ticket),
+			`ticket_closed`,
 		},
 		{
 			events.NewTicketOpened(ticket, "this is weird"),
