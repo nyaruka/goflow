@@ -1,11 +1,16 @@
 package triggers
 
 import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -15,21 +20,6 @@ func init() {
 
 // TypeOptIn is the type for sessions triggered by optin/optout events
 const TypeOptIn string = "optin"
-
-// OptInEventType is the type of event that occurred on the optin
-type OptInEventType string
-
-// different optin event types
-const (
-	OptInEventTypeStarted OptInEventType = "started"
-	OptInEventTypeStopped OptInEventType = "stopped"
-)
-
-// OptInEvent describes the specific event on the ticket that triggered the session
-type OptInEvent struct {
-	type_ OptInEventType
-	optIn *flows.OptIn
-}
 
 // OptInTrigger is used when a session was triggered by an optin or optout.
 //
@@ -54,13 +44,14 @@ type OptInEvent struct {
 // @trigger optin
 type OptInTrigger struct {
 	baseTrigger
-	event *OptInEvent
+	event flows.Event // optin_started or optin_stopped
+	optIn *flows.OptIn
 }
 
 // Context for optin triggers includes the optin
 func (t *OptInTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.optIn = flows.Context(env, t.event.optIn)
+	c.optIn = flows.Context(env, t.optIn)
 	return c.asMap()
 }
 
@@ -76,11 +67,16 @@ type OptInBuilder struct {
 }
 
 // OptIn returns a optin trigger builder
-func (b *Builder) OptIn(optIn *flows.OptIn, eventType OptInEventType) *OptInBuilder {
+func (b *Builder) OptIn(optIn *flows.OptIn, event flows.Event) *OptInBuilder {
+	if event.Type() != events.TypeOptInStarted && event.Type() != events.TypeOptInStopped {
+		panic("optin trigger event must be of type optin_started or optin_stopped")
+	}
+
 	return &OptInBuilder{
 		t: &OptInTrigger{
 			baseTrigger: newBaseTrigger(TypeOptIn, b.environment, b.flow, b.contact, nil, false, nil),
-			event:       &OptInEvent{type_: eventType, optIn: optIn},
+			event:       event,
+			optIn:       optIn,
 		},
 	}
 }
@@ -94,14 +90,9 @@ func (b *OptInBuilder) Build() *OptInTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type optInEventEnvelope struct {
-	Type  OptInEventType         `json:"type"  validate:"required"`
-	OptIn *assets.OptInReference `json:"optin" validate:"required"`
-}
-
 type optInTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *optInEventEnvelope `json:"event" validate:"required"`
+	Event json.RawMessage `json:"event" validate:"required"`
 }
 
 func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -110,15 +101,43 @@ func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.Missin
 		return nil, err
 	}
 
-	t := &OptInTrigger{
-		event: &OptInEvent{
-			type_: e.Event.Type,
-		},
+	// TODO remove this once all triggers are using real events
+	evtType, err := jsonparser.GetString(e.Event, "type")
+	if err != nil {
+		return nil, fmt.Errorf("error reading type from optin trigger event: %w", err)
+	}
+	if evtType == "started" {
+		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_started"`), "type")
+		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
+	} else if evtType == "stopped" {
+		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_stopped"`), "type")
+		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 	}
 
-	t.event.optIn = sa.OptIns().Get(e.Event.OptIn.UUID)
-	if t.event.optIn == nil {
-		missing(e.Event.OptIn, nil)
+	event, err := events.ReadEvent(e.Event)
+	if err != nil {
+		return nil, fmt.Errorf("error reading optin trigger event: %w", err)
+	}
+
+	var optInRef *assets.OptInReference
+
+	switch typed := event.(type) {
+	case *events.OptInStartedEvent:
+		optInRef = typed.OptIn
+	case *events.OptInStoppedEvent:
+		optInRef = typed.OptIn
+	default:
+		panic("optin trigger event must be of type optin_started or optin_stopped")
+	}
+
+	optIn := sa.OptIns().Get(optInRef.UUID)
+	if optIn == nil {
+		missing(optInRef, nil)
+	}
+
+	t := &OptInTrigger{
+		event: event,
+		optIn: optIn,
 	}
 
 	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
@@ -130,11 +149,13 @@ func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.Missin
 
 // MarshalJSON marshals this trigger into JSON
 func (t *OptInTrigger) MarshalJSON() ([]byte, error) {
+	me, err := json.Marshal(t.event)
+	if err != nil {
+		return nil, fmt.Errorf("error marshaling optin trigger event: %w", err)
+	}
+
 	e := &optInTriggerEnvelope{
-		Event: &optInEventEnvelope{
-			Type:  t.event.type_,
-			OptIn: t.event.optIn.Reference(),
-		},
+		Event: me,
 	}
 
 	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {

@@ -264,7 +264,7 @@ func TestEventMarshaling(t *testing.T) {
 			`dial_wait`,
 		},
 		{
-			events.NewOptInRequested(jotd, facebook, urns.URN("facebook:1234567890")),
+			events.NewOptInRequested(jotd, facebook.Reference(), urns.URN("facebook:1234567890")),
 			`optin_requested`,
 		},
 		{

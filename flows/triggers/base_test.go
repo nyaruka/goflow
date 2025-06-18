@@ -270,13 +270,13 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				OptIn(jotd, triggers.OptInEventTypeStarted).
+				OptIn(jotd, events.NewOptInStarted(jotd, channel)).
 				Build(),
 			"optin_started",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				OptIn(jotd, triggers.OptInEventTypeStopped).
+				OptIn(jotd, events.NewOptInStopped(jotd, channel)).
 				Build(),
 			"optin_stopped",
 		},
