@@ -13,16 +13,16 @@ func init() {
 	registerType(TypeCampaign, readCampaignTrigger)
 }
 
-// TypeCampaign is the type for sessions triggered by campaign events
+// TypeCampaign is the type for sessions triggered by campaigns.
 const TypeCampaign string = "campaign"
 
-// CampaignEvent describes the specific event in the campaign that triggered the session
+// CampaignEvent describes the specific point in the campaign that triggered the session.
 type CampaignEvent struct {
-	UUID     assets.CampaignEventUUID  `json:"uuid" validate:"required,uuid"`
+	UUID     assets.CampaignPointUUID  `json:"uuid" validate:"required,uuid"`
 	Campaign *assets.CampaignReference `json:"campaign" validate:"required"`
 }
 
-// CampaignTrigger is used when a session was triggered by a campaign event
+// CampaignTrigger is used when a session was triggered by a campaign.
 //
 //	{
 //	  "type": "campaign",
@@ -65,11 +65,11 @@ type CampaignBuilder struct {
 }
 
 // Campaign returns a campaign trigger builder
-func (b *Builder) Campaign(campaign *flows.Campaign, eventUUID assets.CampaignEventUUID) *CampaignBuilder {
+func (b *Builder) Campaign(campaign *flows.Campaign, pointUUID assets.CampaignPointUUID) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &CampaignTrigger{
 			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, b.contact, nil, false, nil),
-			event:       &CampaignEvent{UUID: eventUUID, Campaign: campaign.Reference()},
+			event:       &CampaignEvent{UUID: pointUUID, Campaign: campaign.Reference()},
 			campaign:    campaign,
 		},
 	}

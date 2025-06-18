@@ -9,8 +9,8 @@ import (
 // CampaignUUID is the UUID of a campaign
 type CampaignUUID uuids.UUID
 
-// CampaignEventUUID is the type for campaign event UUIDs
-type CampaignEventUUID uuids.UUID
+// CampaignPointUUID is the type for campaign point UUIDs
+type CampaignPointUUID uuids.UUID
 
 // Campaign is a campaign of events.
 //
