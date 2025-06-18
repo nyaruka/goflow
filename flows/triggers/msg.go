@@ -54,9 +54,7 @@ type MsgTrigger struct {
 	match *KeywordMatch
 }
 
-func (t *MsgTrigger) Event() flows.Event {
-	return t.event
-}
+func (t *MsgTrigger) Event() flows.Event { return t.event }
 
 // KeywordMatchType describes how the message matched a keyword
 type KeywordMatchType string

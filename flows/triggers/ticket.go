@@ -45,6 +45,8 @@ type TicketTrigger struct {
 	ticket *flows.Ticket
 }
 
+func (t *TicketTrigger) Event() flows.Event { return t.event }
+
 // Context for ticket triggers includes the ticket
 func (t *TicketTrigger) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
