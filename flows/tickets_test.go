@@ -51,7 +51,7 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, weather, sa.Topics().FindByName("WEATHER"))
 	assert.Nil(t, sa.Topics().FindByName("Not Real"))
 
-	bob := sa.Users().Get("bob@nyaruka.com")
+	bob := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 
 	// nil object returns nil reference
 	assert.Nil(t, (*flows.Topic)(nil).Reference())
@@ -61,15 +61,11 @@ func TestTickets(t *testing.T) {
 		missingRefs = append(missingRefs, ref)
 	}
 
-	_, err = flows.ReadTicket(sa, []byte(`{}`), missing)
-	assert.EqualError(t, err, "field 'uuid' is required")
-
-	ticket1, err := flows.ReadTicket(sa, []byte(`{
-		"uuid": "0196a645-3f8d-7452-8d1a-f05fe6923d6d", 
-		"topic": {"uuid": "fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "name": "Deleted"},
-		"assignee": {"uuid": "b8cfc330-4634-45d1-90bc-7b4658221834", "name": "Dave"}
-	}`), missing)
-	require.NoError(t, err)
+	ticket1 := (&flows.TicketEnvelope{
+		UUID:     flows.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"),
+		Topic:    assets.NewTopicReference("fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "Missing Topic"),
+		Assignee: assets.NewUserReference("b8cfc330-4634-45d1-90bc-7b4658221834", "Dave"),
+	}).Unmarshal(sa, missing)
 
 	assert.Equal(t, flows.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
@@ -82,12 +78,11 @@ func TestTickets(t *testing.T) {
 
 	missingRefs = make([]assets.Reference, 0)
 
-	ticket2, err := flows.ReadTicket(sa, []byte(`{
-		"uuid": "5a4af021-d2c2-47fc-9abc-abbb8635d8c0", 
-		"topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"},
-		"assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
-	}`), missing)
-	require.NoError(t, err)
+	ticket2 := (&flows.TicketEnvelope{
+		UUID:     flows.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"),
+		Topic:    weather.Reference(),
+		Assignee: bob.Reference(),
+	}).Unmarshal(sa, missing)
 
 	assert.Equal(t, 0, len(missingRefs))
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())

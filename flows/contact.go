@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -607,7 +606,7 @@ type contactEnvelope struct {
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Ticket     json.RawMessage          `json:"ticket,omitempty"`
+	Ticket     *TicketEnvelope          `json:"ticket,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -653,10 +652,7 @@ func ReadContact(sa SessionAssets, data []byte, missing assets.MissingCallback) 
 	c.fields = NewFieldValues(sa, envelope.Fields, missing)
 
 	if envelope.Ticket != nil {
-		c.ticket, err = ReadTicket(sa, envelope.Ticket, missing)
-		if err != nil {
-			return nil, fmt.Errorf("unable to read ticket: %w", err)
-		}
+		c.ticket = envelope.Ticket.Unmarshal(sa, missing)
 	}
 
 	return c, nil
@@ -677,13 +673,8 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	}
 
 	if c.ticket != nil {
-		var err error
-		ce.Ticket, err = jsonx.Marshal(c.ticket)
-		if err != nil {
-			return nil, err
-		}
+		ce.Ticket = c.ticket.Marshal()
 	}
-
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}
