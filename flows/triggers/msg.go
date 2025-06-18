@@ -141,8 +141,8 @@ func (b *MsgBuilder) Build() *MsgTrigger {
 
 type msgTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Event *events.MsgReceivedEvent `json:"event"` // TODO make required
-	Msg   *flows.MsgIn             `json:"msg"`   // deprecated, use event instead
+	Event *events.MsgReceivedEvent `json:"event"`         // TODO make required
+	Msg   *flows.MsgIn             `json:"msg,omitempty"` // used by older sessions
 	Match *KeywordMatch            `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
@@ -176,7 +176,6 @@ func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing asse
 func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
 	e := &msgTriggerEnvelope{
 		Event: t.event,
-		Msg:   t.event.Msg,
 		Match: t.match,
 	}
 

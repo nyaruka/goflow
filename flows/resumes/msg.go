@@ -79,8 +79,8 @@ var _ flows.Resume = (*MsgResume)(nil)
 
 type msgResumeEnvelope struct {
 	baseResumeEnvelope
-	Event *events.MsgReceivedEvent `json:"event"` // TODO make required
-	Msg   *flows.MsgIn             `json:"msg"`   // deprecated, use event instead
+	Event *events.MsgReceivedEvent `json:"event"`         // TODO make required
+	Msg   *flows.MsgIn             `json:"msg,omitempty"` // used by older sessions
 }
 
 func readMsgResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
@@ -112,7 +112,6 @@ func readMsgResume(sessionAssets flows.SessionAssets, data []byte, missing asset
 func (r *MsgResume) MarshalJSON() ([]byte, error) {
 	e := &msgResumeEnvelope{
 		Event: r.event,
-		Msg:   r.event.Msg,
 	}
 
 	if err := r.marshal(&e.baseResumeEnvelope); err != nil {
