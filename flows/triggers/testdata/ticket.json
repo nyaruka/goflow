@@ -15,7 +15,7 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'event.type' is required, field 'event.ticket' is required"
+        "read_error": "field 'event' is required"
     },
     {
         "description": "with all required fields",
@@ -33,7 +33,8 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
-                "type": "closed",
+                "type": "ticket_closed",
+                "created_on": "2000-01-01T00:00:00Z",
                 "ticket": {
                     "uuid": "0d43506d-b92f-4468-8bee-0f31dd438abf",
                     "topic": {

@@ -282,7 +282,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
-				Ticket(ticket, triggers.TicketEventTypeClosed).
+				Ticket(events.NewTicketClosed(ticket), ticket).
 				Build(),
 			"ticket_closed",
 		},
