@@ -8,7 +8,17 @@ import (
 )
 
 var assetsJSON = `{
-	"channels": [
+    "campaigns": [
+        {
+            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+            "name": "Reminders",
+            "group": {
+                "uuid": "b9c1eaa5-4258-4f14-8aa4-ec0f5550100d",
+                "name": "Registered Mothers"
+            }
+        }
+    ],
+    "channels": [
         {
             "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
             "name": "Facebook",
@@ -22,8 +32,8 @@ var assetsJSON = `{
             ]
         }
     ],
-	"flows": [
-		{
+    "flows": [
+        {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Empty",
             "spec_version": "13.0.0",
@@ -31,8 +41,8 @@ var assetsJSON = `{
             "type": "messaging",
             "nodes": []
         }
-	],
-	"fields": [
+    ],
+    "fields": [
         {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"},
         {"uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565", "key": "age", "name": "Age", "type": "number"}
     ],
@@ -82,6 +92,10 @@ func TestSource(t *testing.T) {
 
 	src, err = static.NewSource([]byte(assetsJSON))
 	assert.NoError(t, err)
+
+	campaigns, err := src.Campaigns()
+	assert.NoError(t, err)
+	assert.Len(t, campaigns, 1)
 
 	channels, err = src.Channels()
 	assert.NoError(t, err)

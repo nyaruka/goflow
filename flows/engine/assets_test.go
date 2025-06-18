@@ -8,13 +8,22 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/engine"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 var assetsJSON = `{
-	"channels": [
+    "campaigns": [
+        {
+            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+            "name": "Reminders",
+            "group": {
+                "uuid": "b9c1eaa5-4258-4f14-8aa4-ec0f5550100d",
+                "name": "Registered Mothers"
+            }
+        }
+    ],
+    "channels": [
         {
             "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
             "name": "Facebook",
@@ -168,6 +177,10 @@ func (s *testSource) err(t string) error {
 		return fmt.Errorf("unable to load %s assets", t)
 	}
 	return nil
+}
+
+func (s *testSource) Campaigns() ([]assets.Campaign, error) {
+	return nil, s.err("campaigns")
 }
 
 func (s *testSource) Channels() ([]assets.Channel, error) {

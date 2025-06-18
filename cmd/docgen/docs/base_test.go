@@ -46,7 +46,7 @@ func TestGenerateDocs(t *testing.T) {
 	assert.Equal(t, 90, len(functions))
 
 	types := context["types"].([]any)
-	assert.Equal(t, 21, len(types))
+	assert.Equal(t, 22, len(types))
 
 	root := context["root"].([]any)
 	assert.Equal(t, 15, len(root))

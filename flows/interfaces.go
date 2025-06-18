@@ -55,6 +55,7 @@ type SessionAssets interface {
 
 	Source() assets.Source
 
+	Campaigns() *CampaignAssets
 	Channels() *ChannelAssets
 	Classifiers() *ClassifierAssets
 	Fields() *FieldAssets

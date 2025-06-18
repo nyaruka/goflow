@@ -121,30 +121,40 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 }
 
 var assetsJSON = `{
-	"flows": [
-		{
-			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-			"name": "Registration",
-            "spec_version": "13.0.0",
-            "language": "eng",
-            "type": "messaging",
-            "nodes": []
+    "campaigns": [
+        {
+            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+            "name": "Reminders",
+            "group": {
+                "uuid": "b9c1eaa5-4258-4f14-8aa4-ec0f5550100d",
+                "name": "Registered Mothers"
+            }
         }
-	],
-	"channels": [
-		{
-			"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
-			"name": "Facebook",
-			"address": "23532562626",
-			"schemes": ["facebook"],
-			"roles": ["send", "receive"]
-		},
-		{
+    ],
+    "channels": [
+        {
+            "uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
+            "name": "Facebook",
+            "address": "23532562626",
+            "schemes": ["facebook"],
+            "roles": ["send", "receive"]
+        },
+        {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
             "name": "Nexmo",
             "address": "+16055742523",
             "schemes": ["tel"],
             "roles": ["send", "receive"]
+        }
+    ],
+    "flows": [
+        {
+            "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+            "name": "Registration",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": []
         }
     ],
     "optins": [
@@ -175,6 +185,7 @@ func TestTriggerMarshaling(t *testing.T) {
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
+	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
@@ -203,7 +214,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	}{
 		{
 			triggers.NewBuilder(env, flow, contact).
-				Campaign(triggers.NewCampaignReference("8cd472c4-bb85-459a-8c9a-c04708af799e", "Reminders"), "8d339613-f0be-48b7-92ee-155f4c7576f8").
+				Campaign(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8").
 				Build(),
 			"campaign",
 		},

@@ -14,6 +14,7 @@ import (
 // StaticSource is an asset source which loads assets from a static JSON file
 type StaticSource struct {
 	s struct {
+		Campaigns   []*Campaign               `json:"campaigns" validate:"omitempty,dive"`
 		Channels    []*Channel                `json:"channels" validate:"omitempty,dive"`
 		Classifiers []*Classifier             `json:"classifiers" validate:"omitempty,dive"`
 		Fields      []*Field                  `json:"fields" validate:"omitempty,dive"`
@@ -52,6 +53,15 @@ func LoadSource(path string) (*StaticSource, error) {
 		return nil, fmt.Errorf("error reading file '%s': %w", path, err)
 	}
 	return NewSource(data)
+}
+
+// Campaigns returns all campaign assets
+func (s *StaticSource) Campaigns() ([]assets.Campaign, error) {
+	set := make([]assets.Campaign, len(s.s.Campaigns))
+	for i := range s.s.Campaigns {
+		set[i] = s.s.Campaigns[i]
+	}
+	return set, nil
 }
 
 // Channels returns all channel assets
