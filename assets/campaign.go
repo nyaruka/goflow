@@ -16,15 +16,13 @@ type CampaignPointUUID uuids.UUID
 //
 //	{
 //	  "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-//	  "name": "Reminders",
-//	  "group": {"uuid": "b9c1eaa5-4258-4f14-8aa4-ec0f5550100d", "name": "Registered Mothers"}
+//	  "name": "Reminders"
 //	}
 //
 // @asset campaign
 type Campaign interface {
 	UUID() CampaignUUID
 	Name() string
-	Group() *GroupReference
 }
 
 // CampaignReference is used to reference a campaign
