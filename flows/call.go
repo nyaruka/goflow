@@ -1,53 +1,57 @@
 package flows
 
 import (
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 )
 
+type CallUUID uuids.UUID
+
 // Call represents a call over a specific channel and URN
 type Call struct {
-	channel *assets.ChannelReference
+	uuid    CallUUID
+	channel *Channel
 	urn     urns.URN
 }
 
 // NewCall creates a new call
-func NewCall(channel *assets.ChannelReference, urn urns.URN) *Call {
-	return &Call{channel: channel, urn: urn}
+func NewCall(uuid CallUUID, channel *Channel, urn urns.URN) *Call {
+	return &Call{uuid: uuid, channel: channel, urn: urn}
 }
 
-// Channel returns a reference to the channel
-func (c *Call) Channel() *assets.ChannelReference { return c.channel }
-
-// URN returns the URN
-func (c *Call) URN() urns.URN { return c.urn }
+func (c *Call) UUID() CallUUID    { return c.uuid }
+func (c *Call) Channel() *Channel { return c.channel }
+func (c *Call) URN() urns.URN     { return c.urn }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type callEnvelope struct {
+type CallEnvelope struct {
+	UUID    CallUUID                 `json:"uuid"    validate:"omitempty,uuid"` // TODO make required
 	Channel *assets.ChannelReference `json:"channel" validate:"required"`
-	URN     urns.URN                 `json:"urn" validate:"required,urn"`
+	URN     urns.URN                 `json:"urn"     validate:"required,urn"`
 }
 
-// UnmarshalJSON unmarshals a call from JSON
-func (c *Call) UnmarshalJSON(data []byte) error {
-	e := &callEnvelope{}
-	if err := jsonx.Unmarshal(data, e); err != nil {
-		return err
+// Unmarshal unmarshals a call from the passed in envelope.
+func (e *CallEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) *Call {
+	var channel *Channel
+	if e.Channel != nil {
+		channel = sa.Channels().Get(e.Channel.UUID)
+		if channel == nil {
+			missing(e.Channel, nil)
+		}
 	}
 
-	c.channel = e.Channel
-	c.urn = e.URN
-	return nil
+	return &Call{uuid: e.UUID, channel: channel, urn: e.URN}
 }
 
-// MarshalJSON marshals this call into JSON
-func (c *Call) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&callEnvelope{
-		Channel: c.channel,
+// Marshal marshals a call into an envelope.
+func (c *Call) Marshal() *CallEnvelope {
+	return &CallEnvelope{
+		UUID:    c.uuid,
+		Channel: c.channel.Reference(),
 		URN:     c.urn,
-	})
+	}
 }

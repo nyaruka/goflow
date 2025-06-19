@@ -94,7 +94,7 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual()
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().Get("a78930fe-6a40-4aa8-99c3-e61b02f45ca1")
-			tb = tb.WithCall(channel.Reference(), urns.URN("tel:+12065551212"))
+			tb = tb.WithCall(flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212")))
 		}
 		trigger := tb.Build()
 		session, _, err := eng.NewSession(context.Background(), sa, trigger)

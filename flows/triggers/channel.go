@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -78,8 +77,8 @@ func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEve
 }
 
 // WithCall sets the call for the trigger
-func (b *ChannelBuilder) WithCall(urn urns.URN) *ChannelBuilder {
-	b.t.call = flows.NewCall(b.t.event.Channel, urn)
+func (b *ChannelBuilder) WithCall(call *flows.Call) *ChannelBuilder {
+	b.t.call = call
 	return b
 }
 

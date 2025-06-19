@@ -194,7 +194,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				tb = tb.WithCall(channel.Reference(), urns.URN("tel:+12065551212"))
+				tb = tb.WithCall(flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212")))
 			}
 
 			trigger = tb.Build()

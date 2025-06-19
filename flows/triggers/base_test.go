@@ -180,6 +180,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
+	nexmo := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
@@ -195,6 +196,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	history := flows.NewChildHistory(session)
+	call := flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", nexmo, urns.URN("tel:+12065551212"))
 
 	// can't create a trigger with invalid JSON
 	assert.Panics(t, func() {
@@ -217,7 +219,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Channel(channel, triggers.ChannelEventTypeIncomingCall).
-				WithCall(urns.URN("tel:+12065551212")).
+				WithCall(call).
 				Build(),
 			"channel_incoming_call",
 		},
@@ -237,7 +239,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
-				WithCall(channel, "tel:+12065551212").
+				WithCall(call).
 				AsBatch().
 				Build(),
 			"flow_action_ivr",
@@ -255,7 +257,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Manual().
-				WithCall(channel, "tel:+12065551212").
+				WithCall(call).
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				AsBatch().
 				Build(),
@@ -271,7 +273,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			triggers.NewBuilder(env, flow, contact).
 				Msg(events.NewMsgReceived(flows.NewMsgIn(flows.MsgUUID("c8005ee3-4628-4d76-be66-906352cb1935"), urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"))).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
-				WithConnection(channel, "tel:+12065551212").
+				WithConnection(call).
 				Build(),
 			"msg",
 		},
@@ -324,7 +326,6 @@ func TestReadTrigger(t *testing.T) {
 	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
-	// can load call from connection for backwards compatibility
 	trigger, err := triggers.ReadTrigger(sessionAssets, []byte(`{
 		"type": "channel",
 		"environment": {
@@ -369,7 +370,8 @@ func TestReadTrigger(t *testing.T) {
 	}`), missing)
 	assert.NoError(t, err)
 	assert.NotNil(t, trigger.Call())
-	assert.Equal(t, "Nexmo", trigger.Call().Channel().Name)
+	assert.Nil(t, trigger.Call().Channel())
+	assert.Equal(t, []assets.Reference{assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")}, missingAssets)
 }
 
 func TestTriggerSessionInitialization(t *testing.T) {

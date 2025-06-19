@@ -3,36 +3,58 @@ package flows_test
 import (
 	"testing"
 
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
-
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCall(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	source, err := static.NewSource([]byte(`{
+		"channels": [
+			{
+				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+				"name": "Nexmo",
+				"address": "+16055742523",
+				"schemes": [
+					"tel"
+				],
+				"roles": [
+					"call",
+					"answer"
+				]
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	vonage := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
+
 	call := flows.NewCall(
-		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
+		"01978a2f-ad9a-7f2e-ad44-6e7547078cec",
+		vonage,
 		urns.URN("tel:+1234567890"),
 	)
 
 	// test marshaling our call
-	marshaled, err := jsonx.Marshal(call)
-	require.NoError(t, err)
-
-	test.AssertEqualJSON(t, []byte(`{
-		"channel":{"uuid":"61f38f46-a856-4f90-899e-905691784159","name":"My Android"},
-		"urn":"tel:+1234567890"
-	}`), marshaled, "JSON mismatch")
+	ce := &flows.CallEnvelope{
+		UUID:    "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
+		Channel: assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo"),
+		URN:     urns.URN("tel:+1234567890"),
+	}
+	assert.Equal(t, ce, call.Marshal())
 
 	// test unmarshaling
-	call = &flows.Call{}
-	err = utils.UnmarshalAndValidate(marshaled, call)
-	require.NoError(t, err)
-	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), call.Channel().UUID)
+	call = ce.Unmarshal(sa, assets.PanicOnMissing)
+	assert.Equal(t, assets.ChannelUUID("3a05eaf5-cb1b-4246-bef1-f277419c83a7"), call.Channel().UUID())
 	assert.Equal(t, urns.URN("tel:+1234567890"), call.URN())
 }

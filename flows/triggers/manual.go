@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -73,8 +72,8 @@ func (b *ManualBuilder) WithParams(params *types.XObject) *ManualBuilder {
 }
 
 // WithCall sets the call for the trigger
-func (b *ManualBuilder) WithCall(channel *assets.ChannelReference, urn urns.URN) *ManualBuilder {
-	b.t.call = flows.NewCall(channel, urn)
+func (b *ManualBuilder) WithCall(call *flows.Call) *ManualBuilder {
+	b.t.call = call
 	return b
 }
 
