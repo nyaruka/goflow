@@ -1,3 +1,7 @@
+v0.247.6 (2025-06-19)
+-------------------------
+ * Remove group field on campaign assets
+
 v0.247.5 (2025-06-19)
 -------------------------
  * Rename campaign event to campaign point
