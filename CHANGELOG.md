@@ -1,3 +1,8 @@
+v0.247.5 (2025-06-19)
+-------------------------
+ * Rename campaign event to campaign point
+ * Model campaigns as actual assets
+
 v0.247.4 (2025-06-18)
 -------------------------
  * Convert optin triggers to use real events
