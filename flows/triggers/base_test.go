@@ -210,7 +210,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	}{
 		{
 			triggers.NewBuilder(env, flow, contact).
-				Campaign(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8").
+				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
 				Build(),
 			"campaign",
 		},
