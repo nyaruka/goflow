@@ -61,7 +61,7 @@ func (a *PlayAudioAction) Execute(ctx context.Context, run flows.Run, step flows
 	call := run.Session().Trigger().Call()
 
 	// if we have an audio URL, turn it into a message
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel(), "", evaluatedAudioURL, currentLocale(run, urlLang))
+	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
 	logEvent(events.NewIVRCreated(msg))
 
 	return nil

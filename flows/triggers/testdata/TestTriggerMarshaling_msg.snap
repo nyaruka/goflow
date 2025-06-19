@@ -26,6 +26,7 @@
         ]
     },
     "call": {
+        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
         "channel": {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
             "name": "Nexmo"

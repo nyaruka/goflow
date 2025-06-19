@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -91,8 +90,8 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 }
 
 // WithCall sets the call for the trigger
-func (b *FlowActionBuilder) WithCall(channel *assets.ChannelReference, urn urns.URN) *FlowActionBuilder {
-	b.t.call = flows.NewCall(channel, urn)
+func (b *FlowActionBuilder) WithCall(call *flows.Call) *FlowActionBuilder {
+	b.t.call = call
 	return b
 }
 

@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -123,8 +122,8 @@ func (b *MsgBuilder) WithMatch(match *KeywordMatch) *MsgBuilder {
 }
 
 // WithConnection sets the channel connection for the trigger
-func (b *MsgBuilder) WithConnection(channel *assets.ChannelReference, urn urns.URN) *MsgBuilder {
-	b.t.call = flows.NewCall(channel, urn)
+func (b *MsgBuilder) WithConnection(call *flows.Call) *MsgBuilder {
+	b.t.call = call
 	return b
 }
 

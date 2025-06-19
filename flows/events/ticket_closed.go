@@ -37,10 +37,6 @@ type TicketClosedEvent struct {
 func NewTicketClosed(ticket *flows.Ticket) *TicketClosedEvent {
 	return &TicketClosedEvent{
 		BaseEvent: NewBaseEvent(TypeTicketClosed),
-		Ticket: &flows.TicketEnvelope{
-			UUID:     ticket.UUID(),
-			Topic:    ticket.Topic().Reference(),
-			Assignee: ticket.Assignee().Reference(),
-		},
+		Ticket:    ticket.Marshal(),
 	}
 }

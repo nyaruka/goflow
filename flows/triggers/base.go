@@ -182,7 +182,7 @@ type baseTriggerEnvelope struct {
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
-	Call        *flows.Call           `json:"call,omitempty"`
+	Call        *flows.CallEnvelope   `json:"call,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
@@ -208,7 +208,6 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 
 	t.type_ = e.Type
 	t.flow = e.Flow
-	t.call = e.Call
 	t.batch = e.Batch
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
@@ -218,13 +217,14 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 			return fmt.Errorf("unable to read contact: %w", err)
 		}
 	}
-
 	if e.Environment != nil {
 		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
 			return fmt.Errorf("unable to read environment: %w", err)
 		}
 	}
-
+	if e.Call != nil {
+		t.call = e.Call.Unmarshal(sa, missing)
+	}
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
 			return fmt.Errorf("unable to read params: %w", err)
@@ -238,7 +238,6 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	var err error
 	e.Type = t.type_
 	e.Flow = t.flow
-	e.Call = t.call
 	e.Batch = t.batch
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
@@ -254,6 +253,9 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 		if err != nil {
 			return err
 		}
+	}
+	if t.call != nil {
+		e.Call = t.call.Marshal()
 	}
 	if t.params != nil {
 		e.Params, err = jsonx.Marshal(t.params)
