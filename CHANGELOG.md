@@ -1,3 +1,7 @@
+v0.247.7 (2025-06-19)
+-------------------------
+ * Rework campaign event triggers to use events
+
 v0.247.6 (2025-06-19)
 -------------------------
  * Remove group field on campaign assets
