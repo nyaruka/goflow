@@ -25,12 +25,14 @@
             "tel:+12065551212"
         ]
     },
-    "triggered_on": "2025-05-04T12:30:52.123456789Z",
+    "triggered_on": "2025-05-04T12:30:53.123456789Z",
     "event": {
-        "uuid": "8d339613-f0be-48b7-92ee-155f4c7576f8",
+        "type": "campaign_fired",
+        "created_on": "2025-05-04T12:30:52.123456789Z",
         "campaign": {
             "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
             "name": "Reminders"
-        }
+        },
+        "point_uuid": "8d339613-f0be-48b7-92ee-155f4c7576f8"
     }
 }

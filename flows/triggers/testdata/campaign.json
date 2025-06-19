@@ -23,11 +23,13 @@
             },
             "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
-                "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
+                "type": "campaign_fired",
+                "created_on": "2000-01-01T00:00:00Z",
                 "campaign": {
                     "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
                     "name": "Reminders"
-                }
+                },
+                "point_uuid": ""
             }
         },
         "context": {
