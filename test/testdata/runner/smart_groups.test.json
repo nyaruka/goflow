@@ -1,4 +1,29 @@
 {
+    "contact": {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "fields": {
+            "first_name": {
+                "text": "Ben"
+            }
+        },
+        "groups": [
+            {
+                "name": "Stateless",
+                "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9"
+            }
+        ],
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212",
+            "facebook:1122334455667788",
+            "mailto:ben@macklemore"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "outputs": [
         {
             "events": [
@@ -177,63 +202,7 @@
             ],
             "segments": [],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "age": {
-                            "number": 17,
-                            "text": "17"
-                        },
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "gender": {
-                            "text": "MALE"
-                        }
-                    },
-                    "groups": [
-                        {
-                            "name": "Stateless",
-                            "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9"
-                        },
-                        {
-                            "name": "Males",
-                            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6"
-                        },
-                        {
-                            "name": "Has Gender",
-                            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
-                        },
-                        {
-                            "name": "Has Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
-                        },
-                        {
-                            "name": "Complicated",
-                            "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff"
-                        },
-                        {
-                            "name": "MTN Callers",
-                            "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
-                        },
-                        {
-                            "name": "Youth",
-                            "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
-                        }
-                    ],
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore",
-                        "tel:+250781234567"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "date_format": "YYYY-MM-DD",
@@ -433,31 +402,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            }
-                        },
-                        "groups": [
-                            {
-                                "name": "Stateless",
-                                "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9"
-                            }
-                        ],
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
@@ -472,31 +416,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "contact": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "fields": {
-                "first_name": {
-                    "text": "Ben"
-                }
-            },
-            "groups": [
-                {
-                    "name": "Stateless",
-                    "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9"
-                }
-            ],
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212",
-                "facebook:1122334455667788",
-                "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "flow": {
             "name": "Registration",
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"

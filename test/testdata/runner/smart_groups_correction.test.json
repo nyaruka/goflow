@@ -1,4 +1,35 @@
 {
+    "contact": {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "fields": {
+            "age": {
+                "number": 50,
+                "text": "50 years"
+            },
+            "gender": {
+                "text": "Male"
+            }
+        },
+        "groups": [
+            {
+                "name": "Females",
+                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
+            },
+            {
+                "name": "Youth",
+                "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
+            }
+        ],
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "outputs": [
         {
             "events": [
@@ -25,33 +56,7 @@
             ],
             "segments": [],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "age": {
-                            "number": 50,
-                            "text": "50 years"
-                        },
-                        "gender": {
-                            "text": "Male"
-                        }
-                    },
-                    "groups": [
-                        {
-                            "name": "Males",
-                            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6"
-                        }
-                    ],
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "date_format": "YYYY-MM-DD",
@@ -80,37 +85,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "age": {
-                                "number": 50,
-                                "text": "50 years"
-                            },
-                            "gender": {
-                                "text": "Male"
-                            }
-                        },
-                        "groups": [
-                            {
-                                "name": "Females",
-                                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
-                            },
-                            {
-                                "name": "Youth",
-                                "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
-                            }
-                        ],
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
@@ -125,37 +99,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "contact": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "fields": {
-                "age": {
-                    "number": 50,
-                    "text": "50 years"
-                },
-                "gender": {
-                    "text": "Male"
-                }
-            },
-            "groups": [
-                {
-                    "name": "Females",
-                    "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
-                },
-                {
-                    "name": "Youth",
-                    "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
-                }
-            ],
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "flow": {
             "name": "Registration",
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"

@@ -1,4 +1,16 @@
 {
+    "contact": {
+        "created_on": "2018-01-01T12:00:00Z",
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "outputs": [
         {
             "events": [
@@ -30,18 +42,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2018-01-01T12:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -104,18 +105,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2018-01-01T12:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -202,26 +191,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2018-01-01T12:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2020-03-19T16:37:38.453883-05:00",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "ticket": {
-                        "topic": {
-                            "name": "Weather",
-                            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4"
-                        },
-                        "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186"
-                    },
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -373,18 +343,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2018-01-01T12:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -423,18 +381,6 @@
         }
     ],
     "trigger": {
-        "contact": {
-            "created_on": "2018-01-01T12:00:00Z",
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "environment": {
             "allowed_languages": [
                 "eng"

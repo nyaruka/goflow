@@ -23,11 +23,6 @@ const TypeMsg string = "msg"
 //	{
 //	  "type": "msg",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "event": {
 //	    "type": "msg_received",
 //	    "created_on": "2006-01-02T15:04:05Z",
@@ -109,7 +104,7 @@ type MsgBuilder struct {
 func (b *Builder) Msg(e *events.MsgReceivedEvent) *MsgBuilder {
 	return &MsgBuilder{
 		t: &MsgTrigger{
-			baseTrigger: newBaseTrigger(TypeMsg, b.environment, b.flow, b.contact, false, nil),
+			baseTrigger: newBaseTrigger(TypeMsg, b.environment, b.flow, false, nil),
 			event:       e,
 		},
 	}

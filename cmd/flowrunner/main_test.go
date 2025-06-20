@@ -74,7 +74,6 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewContactGroupsChanged(nil, []*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), `👪 removed from 'Testers'`},
 		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
-		{events.NewContactRefreshed(session.Contact()), `👤 contact refreshed on resume`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
 		{events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
 		{events.NewDialWait(urns.URN(`tel:+1234567890`), 20, 120, expiresOn), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},

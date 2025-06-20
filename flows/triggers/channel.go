@@ -37,11 +37,6 @@ type ChannelEvent struct {
 //	{
 //	  "type": "channel",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "event": {
 //	      "type": "new_conversation",
 //	      "channel": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "Facebook"}
@@ -70,7 +65,7 @@ type ChannelBuilder struct {
 func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEventType) *ChannelBuilder {
 	return &ChannelBuilder{
 		t: &ChannelTrigger{
-			baseTrigger: newBaseTrigger(TypeChannel, b.environment, b.flow, b.contact, false, nil),
+			baseTrigger: newBaseTrigger(TypeChannel, b.environment, b.flow, false, nil),
 			event:       &ChannelEvent{Type: eventType, Channel: channel},
 		},
 	}

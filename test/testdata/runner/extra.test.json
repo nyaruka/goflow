@@ -1,4 +1,17 @@
 {
+    "contact": {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "fields": {},
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "http_mocks": {
         "http://localhost/?cmd=extra": [
             {
@@ -134,18 +147,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "date_format": "YYYY-MM-DD",
@@ -325,18 +327,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "flow": {
                         "name": "Legacy Extra",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -397,19 +387,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "date_format": "YYYY-MM-DD",
@@ -657,18 +635,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "flow": {
                         "name": "Legacy Extra",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -703,19 +669,6 @@
         }
     ],
     "trigger": {
-        "contact": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "fields": {},
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "flow": {
             "name": "Legacy Extra",
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"

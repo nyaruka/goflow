@@ -91,14 +91,14 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		env := envs.NewBuilder().Build()
 		eng := engine.NewBuilder().Build()
 		contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-		tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual()
+		tb := triggers.NewBuilder(env, flow.Reference(false)).Manual()
 		var call *flows.Call
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().Get("a78930fe-6a40-4aa8-99c3-e61b02f45ca1")
 			call = flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
 		}
 		trigger := tb.Build()
-		session, _, err := eng.NewSession(context.Background(), sa, trigger, call)
+		session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, call)
 		require.NoError(t, err)
 		require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
@@ -167,7 +167,6 @@ func TestResumeContext(t *testing.T) {
 
 	var resume flows.Resume = resumes.NewMsg(
 		env,
-		nil,
 		events.NewMsgReceived(flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234")),
 	)
 
@@ -176,7 +175,7 @@ func TestResumeContext(t *testing.T) {
 		"dial": nil,
 	}, resume.Context(env))
 
-	resume = resumes.NewDial(env, nil, flows.NewDial(flows.DialStatusNoAnswer, 5))
+	resume = resumes.NewDial(env, flows.NewDial(flows.DialStatusNoAnswer, 5))
 	context := resume.Context(env)
 
 	assert.Equal(t, types.NewXText("dial"), context["type"])

@@ -82,22 +82,23 @@ var sessionAssets = `{
 	]
 }`
 
+var sessionContact = `{
+	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+	"id": 1234567,
+	"name": "Ryan Lewis",
+	"language": "eng",
+	"timezone": "America/Guayaquil",
+	"created_on": "2018-06-20T11:40:30.123456789-00:00",
+	"urns": [ "tel:+12065551212"],
+	"fields": {
+		"gender": {"text": "M"}
+	}
+}`
+
 var sessionTrigger = `{
     "type": "manual",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "No Related Runs"},
-    "contact": {
-        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-        "id": 1234567,
-        "name": "Ryan Lewis",
-        "language": "eng",
-        "timezone": "America/Guayaquil",
-        "created_on": "2018-06-20T11:40:30.123456789-00:00",
-        "urns": [ "tel:+12065551212"],
-        "fields": {
-            "gender": {"text": "M"}
-        }
-    },
     "environment": {
         "date_format": "YYYY-MM-DD",
         "allowed_languages": [
@@ -236,11 +237,14 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	sa, err := test.CreateSessionAssets([]byte(sessionAssets), "")
 	require.NoError(t, err)
 
+	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
+	require.NoError(t, err)
+
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -271,11 +275,14 @@ func TestSetResult(t *testing.T) {
 	sa, err := test.CreateSessionAssets([]byte(sessionAssets), "")
 	require.NoError(t, err)
 
+	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
+	require.NoError(t, err)
+
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

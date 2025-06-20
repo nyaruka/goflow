@@ -62,7 +62,7 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
 	// try to end with timeout resume type
-	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(nil, nil)))
+	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(nil)))
 
 	// timeout and image hint
 	wait = waits.NewMsgWait(
@@ -84,10 +84,10 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	assert.False(t, wait.Accepts(resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusBusy, 0))))
+	assert.False(t, wait.Accepts(resumes.NewDial(nil, flows.NewDial(flows.DialStatusBusy, 0))))
 
 	// can end with timeout resume type
-	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(nil, nil)))
+	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(nil)))
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {

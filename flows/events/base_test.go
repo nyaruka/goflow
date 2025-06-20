@@ -154,10 +154,6 @@ func TestEventMarshaling(t *testing.T) {
 			`contact_language_changed`,
 		},
 		{
-			events.NewContactRefreshed(session.Contact()),
-			`contact_refreshed`,
-		},
-		{
 			events.NewContactNameChanged("Bryan"),
 			`contact_name_changed`,
 		},

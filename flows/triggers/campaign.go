@@ -26,11 +26,6 @@ const TypeCampaign string = "campaign"
 //	{
 //	  "type": "campaign",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "event": {
 //	      "type": "campaign_fired",
 //	      "created_on": "2006-01-02T15:04:05Z",
@@ -69,7 +64,7 @@ type CampaignBuilder struct {
 func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFiredEvent) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &CampaignTrigger{
-			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, b.contact, false, nil),
+			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, false, nil),
 			event:       event,
 			campaign:    campaign,
 		},

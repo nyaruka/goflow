@@ -601,8 +601,8 @@ type sessionEnvelope struct {
 	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
 	Environment json.RawMessage     `json:"environment"`
 	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
-	Contact     *json.RawMessage    `json:"contact"             validate:"required"`
-	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
+	ContactUUID flows.ContactUUID   `json:"contact_uuid"        validate:"omitempty,uuid"` // TODO validate:"required"`
+	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"` // TODO validate:"required"`
 	Runs        []json.RawMessage   `json:"runs"`
 	Status      flows.SessionStatus `json:"status"              validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
@@ -610,7 +610,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, contact *flows.Contact, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -624,6 +624,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, call *fl
 		uuid:       e.UUID,
 		type_:      e.Type,
 		status:     e.Status,
+		contact:    contact,
 		call:       call,
 		runsByUUID: make(map[flows.RunUUID]flows.Run),
 	}
@@ -639,10 +640,8 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, call *fl
 			return nil, fmt.Errorf("unable to read trigger: %w", err)
 		}
 	}
-	if e.Contact != nil {
-		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, missing); err != nil {
-			return nil, fmt.Errorf("unable to read contact: %w", err)
-		}
+	if e.ContactUUID != "" && contact.UUID() != e.ContactUUID {
+		return nil, fmt.Errorf("session contact doesn't match provided")
 	}
 	if e.CallUUID != "" {
 		if call == nil || call.UUID() != e.CallUUID {
@@ -682,12 +681,7 @@ func (s *session) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 	if s.contact != nil {
-		var contactJSON json.RawMessage
-		contactJSON, err = jsonx.Marshal(s.contact)
-		if err != nil {
-			return nil, err
-		}
-		e.Contact = &contactJSON
+		e.ContactUUID = s.contact.UUID()
 	}
 	if s.trigger != nil {
 		if e.Trigger, err = jsonx.Marshal(s.trigger); err != nil {

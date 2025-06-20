@@ -21,14 +21,6 @@ const TypeMsg string = "msg"
 //
 //	{
 //	  "type": "msg",
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z",
-//	    "language": "fra",
-//	    "fields": {"gender": {"text": "Male"}},
-//	    "groups": []
-//	  },
 //	  "event": {
 //	    "type": "msg_received",
 //	    "created_on": "2006-01-02T15:04:05Z",
@@ -50,9 +42,9 @@ type MsgResume struct {
 }
 
 // NewMsg creates a new message resume with the passed in values
-func NewMsg(env envs.Environment, contact *flows.Contact, event *events.MsgReceivedEvent) *MsgResume {
+func NewMsg(env envs.Environment, event *events.MsgReceivedEvent) *MsgResume {
 	return &MsgResume{
-		baseResume: newBaseResume(TypeMsg, env, contact),
+		baseResume: newBaseResume(TypeMsg, env),
 		event:      event,
 	}
 }

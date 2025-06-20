@@ -304,46 +304,47 @@ var sessionAssets = `{
     ]
 }`
 
+var sessionContact = `{
+    "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+    "id": 1234567,
+    "name": "Ryan Lewis",
+    "language": "eng",
+    "timezone": "America/Guayaquil",
+    "created_on": "2018-06-20T11:40:30.123456789-00:00",
+    "urns": [
+        "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+        "twitterid:54784326227#nyaruka",
+        "mailto:foo@bar.com"
+    ],
+    "groups": [
+        {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+        {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+    ],
+    "fields": {
+        "gender": {
+            "text": "Male"
+        },
+        "join_date": {
+            "text": "2017-12-02", "datetime": "2017-12-02T00:00:00-02:00"
+        },
+        "activation_token": {
+            "text": "AACC55"
+        }
+    },
+    "ticket": {
+        "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+        "topic": {
+            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+            "name": "Weather"
+        },
+        "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
+    }
+}`
+
 var sessionTrigger = `{
     "type": "flow_action",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-    "contact": {
-        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-        "id": 1234567,
-        "name": "Ryan Lewis",
-        "language": "eng",
-        "timezone": "America/Guayaquil",
-        "created_on": "2018-06-20T11:40:30.123456789-00:00",
-        "urns": [
-            "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
-            "twitterid:54784326227#nyaruka",
-            "mailto:foo@bar.com"
-        ],
-        "groups": [
-            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
-            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
-        ],
-        "fields": {
-            "gender": {
-                "text": "Male"
-            },
-            "join_date": {
-                "text": "2017-12-02", "datetime": "2017-12-02T00:00:00-02:00"
-            },
-            "activation_token": {
-                "text": "AACC55"
-            }
-        },
-        "ticket": {
-            "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
-            "topic": {
-                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-                "name": "Weather"
-            },
-            "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
-        }
-    },
     "run_summary": {
         "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",
         "contact": {
@@ -450,12 +451,35 @@ var voiceSessionAssets = `{
         }
     ],
     "fields": [
-        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"}
+        {"uuid": "d66a7823-eada-40e5-9a3a-57239d4690bf", "key": "gender", "name": "Gender", "type": "text"},
+        {"uuid": "f1b5aea6-6586-41c7-9020-1a6326cc6565", "key": "age", "name": "Age", "type": "number"},
+        {"uuid": "6c86d5ab-3fd9-4a5c-a5b6-48168b016747", "key": "join_date", "name": "Join Date", "type": "datetime"},
+        {"uuid": "c88d2640-d124-438a-b666-5ec53a353dcd", "key": "activation_token", "name": "Activation Token", "type": "text"},
+        {"uuid": "ab9c0631-d8cd-4e77-a5a2-66a8b077e385", "key": "state", "name": "State", "type": "state"},
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "not_set", "name": "Not set", "type": "text"},
+        {"uuid": "3bfc3908-a402-48ea-841c-b73b5ef3a254", "key": "language", "name": "Language (Conflicts)", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
         {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
         {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+    ],
+    "topics": [
+        {
+            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+            "name": "Weather"
+        },
+        {
+            "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+            "name": "Computers"
+        }
+    ],
+    "users": [
+        {
+            "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+            "name": "Bob",
+            "email": "bob@nyaruka.com"
+        }
     ]
 }`
 
@@ -467,26 +491,6 @@ var voiceSessionTrigger = `{
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
     },
     "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
-    "contact": {
-        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-        "id": 1234567,
-        "name": "Ryan Lewis",
-        "language": "eng",
-        "timezone": "America/Guayaquil",
-        "created_on": "2018-06-20T11:40:30.123456789-00:00",
-        "urns": [
-            "tel:+12024561111"
-        ],
-        "groups": [
-            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
-            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
-        ],
-        "fields": {
-            "gender": {
-                "text": "Male"
-            }
-        }
-    },
     "environment": {
         "date_format": "DD-MM-YYYY",
         "allowed_languages": [
@@ -509,6 +513,12 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 		return nil, nil, fmt.Errorf("error creating test session: %w", err)
 	}
 
+	// read out contact
+	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error reading contact: %w", err)
+	}
+
 	// read our trigger
 	triggerJSON := []byte(sessionTrigger)
 	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, fmt.Appendf(nil, `"%s"`, redact))
@@ -520,7 +530,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	eng := NewEngine()
 
-	session, _, err := eng.NewSession(ctx, sa, trigger, nil)
+	session, _, err := eng.NewSession(ctx, sa, contact, trigger, nil)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test session: %w", err)
 	}
@@ -542,6 +552,11 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 		return nil, nil, fmt.Errorf("error creating test voice session assets: %w", err)
 	}
 
+	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error reading contact: %w", err)
+	}
+
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(sa, []byte(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
@@ -552,7 +567,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 	call := flows.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
 
 	eng := NewEngine()
-	session, sprint, err := eng.NewSession(context.Background(), sa, trigger, call)
+	session, sprint, err := eng.NewSession(context.Background(), sa, contact, trigger, call)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test voice session: %w", err)
 	}
@@ -714,12 +729,12 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
 		msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
-		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Msg(events.NewMsgReceived(msg)).Build()
+		trigger = triggers.NewBuilder(b.env, flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
 	} else {
-		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
+		trigger = triggers.NewBuilder(b.env, flow.Reference(false)).Manual().Build()
 	}
 
-	s, sp, err := b.engine.NewSession(context.Background(), sa, trigger, nil)
+	s, sp, err := b.engine.NewSession(context.Background(), sa, contact, trigger, nil)
 	return sa, s, sp, err
 }
 
@@ -744,14 +759,14 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 	// re-use same engine instance
 	eng := session.Engine()
 
-	session, err = eng.ReadSession(sa, sessionJSON, nil, assets.IgnoreMissing)
+	session, err = eng.ReadSession(sa, sessionJSON, session.Contact(), nil, assets.IgnoreMissing)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.NilURN, nil, msgText, nil, "")
 
-	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), session.Contact(), events.NewMsgReceived(msg)))
+	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), events.NewMsgReceived(msg)))
 
 	return session, sprint, err
 }

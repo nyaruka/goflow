@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"sort"
 	"testing"
 	"time"
 
@@ -191,7 +192,7 @@ func TestContact(t *testing.T) {
 	unmarshaled, err := flows.ReadContact(sa, marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
 
-	assert.True(t, contact.Equal(unmarshaled))
+	assert.Equal(t, contact.UUID(), unmarshaled.UUID())
 }
 
 func TestReadContact(t *testing.T) {
@@ -212,6 +213,70 @@ func TestReadContact(t *testing.T) {
 	// read invalid contact
 	_, err = flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.EqualError(t, err, "unable to read contact: field 'status' is not a valid contact status")
+}
+
+func TestReadContactWithMissingAssets(t *testing.T) {
+	sessionAssets, err := engine.NewSessionAssets(envs.NewBuilder().Build(), static.NewEmptySource(), nil)
+	require.NoError(t, err)
+
+	missingAssets := make([]assets.Reference, 0)
+	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
+
+	flows.ReadContact(sessionAssets, []byte(`{
+		"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+		"id": 1234567,
+		"name": "Ryan Lewis",
+		"language": "eng",
+		"timezone": "America/Guayaquil",
+		"created_on": "2018-06-20T11:40:30.123456789-00:00",
+		"urns": [
+			"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+			"twitterid:54784326227#nyaruka",
+			"mailto:foo@bar.com"
+		],
+		"groups": [
+			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+			{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+		],
+		"fields": {
+			"gender": {
+				"text": "Male"
+			},
+			"join_date": {
+				"text": "2017-12-02", "datetime": "2017-12-02T00:00:00-02:00"
+			},
+			"activation_token": {
+				"text": "AACC55"
+			}
+		},
+		"ticket": {
+			"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+			"topic": {
+				"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+				"name": "Weather"
+			},
+			"assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
+		}
+	}`), missing)
+
+	refs := make([]string, len(missingAssets))
+	for i := range missingAssets {
+		refs[i] = missingAssets[i].String()
+	}
+
+	// ordering isn't deterministic so sort A-Z
+	sort.Strings(refs)
+
+	assert.Equal(t, []string{
+		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
+		"field[key=activation_token,name=]",
+		"field[key=gender,name=]",
+		"field[key=join_date,name=]",
+		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
+		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
+		"topic[uuid=472a7a73-96cb-4736-b567-056d987cc5b4,name=Weather]",
+		"user[uuid=0c78ef47-7d56-44d8-8f57-96e0f30e8f44,name=Bob]",
+	}, refs)
 }
 
 func TestContactFormat(t *testing.T) {
@@ -344,54 +409,14 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		trigger := triggers.NewBuilder(
 			env,
 			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),
-			contact,
 		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
-		session, _, _ := eng.NewSession(context.Background(), sa, trigger, nil)
+		session, _, _ := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 		afterJSON := jsonx.MustMarshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
 	}
-}
-
-func TestContactEqual(t *testing.T) {
-	_, session, _ := test.NewSessionBuilder().MustBuild()
-
-	contact1JSON := []byte(`{
-		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-		"id": 1234567,
-		"created_on": "2000-01-01T00:00:00.000000000-00:00",
-		"fields": {
-			"gender": {"text": "Male"}
-		},
-		"language": "eng",
-		"name": "Ben Haggerty",
-		"timezone": "America/Guayaquil",
-		"urns": ["tel:+12065551212"]
-	}`)
-
-	contact1, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	contact2, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	assert.True(t, contact1.Equal(contact2))
-	assert.True(t, contact2.Equal(contact1))
-	assert.True(t, contact1.Equal(contact1.Clone()))
-	assert.Equal(t, flows.ContactStatusActive, contact1.Status())
-
-	// marshal and unmarshal contact 1 again
-	contact1JSON, err = jsonx.Marshal(contact1)
-	require.NoError(t, err)
-	contact1, err = flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	assert.True(t, contact1.Equal(contact2))
-
-	contact2.SetLanguage(i18n.NilLanguage)
-	assert.False(t, contact1.Equal(contact2))
 }
 
 func TestContactQuery(t *testing.T) {

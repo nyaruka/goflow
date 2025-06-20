@@ -21,11 +21,6 @@ const TypeManual string = "manual"
 //	{
 //	  "type": "manual",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "user": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"},
 //	  "origin": "ui",
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
@@ -61,7 +56,7 @@ type ManualBuilder struct {
 // Manual returns a manual trigger builder
 func (b *Builder) Manual() *ManualBuilder {
 	return &ManualBuilder{
-		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.environment, b.flow, b.contact, false, nil)},
+		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.environment, b.flow, false, nil)},
 	}
 }
 

@@ -22,11 +22,6 @@ const TypeFlowAction string = "flow_action"
 //	{
 //	  "type": "flow_action",
 //	  "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "history": {
 //	    "parent_uuid": "a5b25fb0-75fd-4898-a34f-5ff14fc19078",
 //	    "ancestors": 3,
@@ -83,7 +78,7 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 
 	return &FlowActionBuilder{
 		t: &FlowActionTrigger{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, false, history),
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, false, history),
 			runSummary:  runSummary,
 		},
 	}
