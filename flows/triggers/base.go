@@ -35,7 +35,6 @@ type baseTrigger struct {
 	type_       string
 	environment envs.Environment
 	flow        *assets.FlowReference
-	contact     *flows.Contact
 	batch       bool
 	params      *types.XObject
 	history     *flows.SessionHistory
@@ -43,12 +42,11 @@ type baseTrigger struct {
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		environment: env,
 		flow:        flow,
-		contact:     contact,
 		batch:       batch,
 		history:     history,
 		triggeredOn: dates.Now(),
@@ -64,10 +62,6 @@ func (t *baseTrigger) Params() *types.XObject         { return t.params }
 func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
-// SetContact can be used by callers to update the contact on a persisted trigger
-func (t *baseTrigger) Contact() *flows.Contact     { return t.contact }
-func (t *baseTrigger) SetContact(c *flows.Contact) { t.contact = c }
-
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session) error {
 	// try to load the flow
@@ -81,7 +75,6 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 	}
 
 	session.SetType(flow.Type())
-	session.SetContact(t.contact.Clone())
 	session.PushFlow(flow, nil, false)
 
 	if t.environment != nil {
@@ -156,15 +149,13 @@ func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 type Builder struct {
 	environment envs.Environment
 	flow        *assets.FlowReference
-	contact     *flows.Contact
 }
 
 // NewBuilder creates a new trigger builder
-func NewBuilder(env envs.Environment, flow *assets.FlowReference, contact *flows.Contact) *Builder {
+func NewBuilder(env envs.Environment, flow *assets.FlowReference) *Builder {
 	return &Builder{
 		environment: env,
 		flow:        flow,
-		contact:     contact,
 	}
 }
 
@@ -176,7 +167,6 @@ type baseTriggerEnvelope struct {
 	Type        string                `json:"type"                  validate:"required"`
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
-	Contact     json.RawMessage       `json:"contact,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
@@ -206,11 +196,6 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
-	if e.Contact != nil {
-		if t.contact, err = flows.ReadContact(sa, e.Contact, missing); err != nil {
-			return fmt.Errorf("unable to read contact: %w", err)
-		}
-	}
 	if e.Environment != nil {
 		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
 			return fmt.Errorf("unable to read environment: %w", err)
@@ -233,12 +218,6 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
-	if t.contact != nil {
-		e.Contact, err = jsonx.Marshal(t.contact)
-		if err != nil {
-			return err
-		}
-	}
 	if t.environment != nil {
 		e.Environment, err = jsonx.Marshal(t.environment)
 		if err != nil {

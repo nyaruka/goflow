@@ -70,6 +70,13 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
+		contact, err := flows.ReadContact(sa, []byte(`{
+                "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+                "name": "Bob",
+                "status": "active",
+                "created_on": "2018-01-01T12:00:00Z"
+        }`), assets.PanicOnMissing)
+
 		trigger, err := triggers.ReadTrigger(sa, tc.Trigger, assets.PanicOnMissing)
 
 		if tc.ReadError != "" {
@@ -82,7 +89,7 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// start a session with this trigger
 		eng := engine.NewBuilder().Build()
-		session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+		session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 		assert.NoError(t, err)
 
 		assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -191,17 +198,17 @@ func TestTriggerMarshaling(t *testing.T) {
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	history := flows.NewChildHistory(session)
 
 	// can't create a trigger with invalid JSON
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(history, json.RawMessage(`{"uuid"}`)).Build()
+		triggers.NewBuilder(env, flow).FlowAction(history, json.RawMessage(`{"uuid"}`)).Build()
 	})
 	assert.Panics(t, func() {
-		triggers.NewBuilder(env, flow, contact).FlowAction(history, nil).Build()
+		triggers.NewBuilder(env, flow).FlowAction(history, nil).Build()
 	})
 
 	triggerTests := []struct {
@@ -209,39 +216,39 @@ func TestTriggerMarshaling(t *testing.T) {
 		snapshot string
 	}{
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
 				Build(),
 			"campaign",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Channel(channel, triggers.ChannelEventTypeIncomingCall).
 				Build(),
 			"channel_incoming_call",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Channel(channel, triggers.ChannelEventTypeNewConversation).
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				Build(),
 			"channel_new_conversation",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				Build(),
 			"flow_action",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
 				AsBatch().
 				Build(),
 			"flow_action_batch",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Manual().
 				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
 				WithUser(user).
@@ -251,32 +258,32 @@ func TestTriggerMarshaling(t *testing.T) {
 			"manual",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Manual().
 				Build(),
 			"manual_minimal",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Msg(events.NewMsgReceived(flows.NewMsgIn(flows.MsgUUID("c8005ee3-4628-4d76-be66-906352cb1935"), urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"))).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				OptIn(jotd, events.NewOptInStarted(jotd, channel)).
 				Build(),
 			"optin_started",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				OptIn(jotd, events.NewOptInStopped(jotd, channel)).
 				Build(),
 			"optin_stopped",
 		},
 		{
-			triggers.NewBuilder(env, flow, contact).
+			triggers.NewBuilder(env, flow).
 				Ticket(ticket, events.NewTicketClosed(ticket)).
 				Build(),
 			"ticket_closed",
@@ -370,15 +377,14 @@ func TestTriggerSessionInitialization(t *testing.T) {
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 
-	trigger := triggers.NewBuilder(env, flow, contact).Manual().WithParams(params).Build()
+	trigger := triggers.NewBuilder(env, flow).Manual().WithParams(params).Build()
 
 	assert.Equal(t, triggers.TypeManual, trigger.Type())
 	assert.Equal(t, env, trigger.Environment())
-	assert.Equal(t, contact, trigger.Contact())
 	assert.Equal(t, params, trigger.Params())
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -386,19 +392,17 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Equal(t, env, session.Environment())
 	assert.Equal(t, flow, session.Runs()[0].FlowReference())
 
-	// contact, environment and params are optional
-	trigger = triggers.NewBuilder(nil, flow, nil).Manual().Build()
+	// environment and params are optional
+	trigger = triggers.NewBuilder(nil, flow).Manual().Build()
 
 	assert.Equal(t, triggers.TypeManual, trigger.Type())
 	assert.Nil(t, trigger.Environment())
-	assert.Nil(t, trigger.Contact())
 	assert.Nil(t, trigger.Params())
 
-	session, _, err = eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err = eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
-	assert.Nil(t, session.Contact())
 	assert.True(t, session.Environment().Equal(defaultEnv)) // uses defaults
 }
 
@@ -414,11 +418,8 @@ func TestTriggerContext(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 
-	contact := flows.NewEmptyContact(sa, "Jim", i18n.Language("eng"), nil)
-	contact.AddURN(urns.URN("tel:+12065551212"), nil)
-
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
-	trigger := triggers.NewBuilder(env, flow, contact).
+	trigger := triggers.NewBuilder(env, flow).
 		Manual().
 		WithParams(params).
 		WithUser(user).
@@ -441,29 +442,4 @@ func TestTriggerContext(t *testing.T) {
 		"campaign": nil,
 		"ticket":   nil,
 	}), flows.Context(env, trigger))
-}
-
-func TestTriggerPersistenceWithoutContact(t *testing.T) {
-	env := envs.NewBuilder().WithDateFormat(envs.DateFormatMonthDayYear).Build()
-
-	source, err := static.NewSource([]byte(assetsJSON))
-	require.NoError(t, err)
-
-	sa, err := engine.NewSessionAssets(env, source, nil)
-	require.NoError(t, err)
-
-	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
-	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
-
-	var trigger flows.Trigger = triggers.NewBuilder(env, flow, nil).Manual().WithParams(params).Build()
-
-	marshaled := jsonx.MustMarshal(trigger)
-
-	trigger, err = triggers.ReadTrigger(sa, marshaled, assets.PanicOnMissing)
-	assert.NoError(t, err)
-
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-
-	trigger.SetContact(contact)
-	assert.Equal(t, contact, trigger.Contact())
 }

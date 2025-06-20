@@ -15,16 +15,6 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "contact": {
-        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-        "name": "Bob",
-        "language": "eng",
-        "status": "active",
-        "created_on": "2025-05-04T12:30:45.123456789Z",
-        "urns": [
-            "tel:+12065551212"
-        ]
-    },
     "batch": true,
     "params": {
         "foo": "bar"

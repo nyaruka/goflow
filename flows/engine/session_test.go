@@ -137,7 +137,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
 	eng := engine.NewBuilder().Build()
-	_, err = eng.ReadSession(sessionAssets, sessionJSON, nil, missing)
+	_, err = eng.ReadSession(sessionAssets, sessionJSON, session.Contact(), nil, missing)
 	require.NoError(t, err)
 
 	refs := make([]string, len(missingAssets))
@@ -150,25 +150,8 @@ func TestReadWithMissingAssets(t *testing.T) {
 
 	assert.Equal(t, []string{
 		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=My Android Phone]",
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
-		"field[key=activation_token,name=]",
-		"field[key=activation_token,name=]",
-		"field[key=age,name=]",
-		"field[key=gender,name=]",
-		"field[key=gender,name=]",
-		"field[key=join_date,name=]",
-		"field[key=join_date,name=]",
 		"flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]",
 		"flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",
-		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
-		"group[uuid=4f1f98fc-27a7-4a69-bbdb-24744ba739a9,name=Males]",
-		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-		"group[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Testers]",
-		"topic[uuid=472a7a73-96cb-4736-b567-056d987cc5b4,name=Weather]",
-		"topic[uuid=472a7a73-96cb-4736-b567-056d987cc5b4,name=Weather]",
-		"user[uuid=0c78ef47-7d56-44d8-8f57-96e0f30e8f44,name=Bob]",
-		"user[uuid=0c78ef47-7d56-44d8-8f57-96e0f30e8f44,name=Bob]",
 	}, refs)
 }
 
@@ -195,10 +178,10 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	require.NoError(t, err)
 
 	env := envs.NewBuilder().Build()
-	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", ""), contact).Manual().Build()
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", "")).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, sprint, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, sprint, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, len(sprint.Events()))
@@ -360,7 +343,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()
-	session1, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
+	session1, _, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.EmptyHistory, session1.History())
@@ -370,7 +353,7 @@ func TestSessionHistory(t *testing.T) {
 	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build(), nil)
+	session2, _, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).FlowAction(history, runSummaryJSON).Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, &flows.SessionHistory{

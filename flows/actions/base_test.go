@@ -192,7 +192,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		ignoreEventCount := 0
 		if tc.NoInput || tc.AsBatch {
-			tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual().AsBatch()
+			tb := triggers.NewBuilder(env, flow.Reference(false)).Manual().AsBatch()
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
@@ -212,7 +212,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				},
 				"",
 			)
-			trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(events.NewMsgReceived(msg)).Build()
+			trigger = triggers.NewBuilder(env, flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
@@ -240,7 +240,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			Build()
 
 		// create session
-		session, _, err := eng.NewSession(context.Background(), sa, trigger, call)
+		session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, call)
 		require.NoError(t, err)
 
 		// check all http mocks were used
@@ -856,7 +856,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	_, sprint, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
+	_, sprint, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
@@ -873,9 +873,9 @@ func TestStartSessionLoopProtection(t *testing.T) {
 
 		// if it exists, trigger a new session
 		if event != nil {
-			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
+			trigger := triggers.NewBuilder(env, flow).FlowAction(event.History, event.RunSummary).Build()
 
-			session, sprint, err = eng.NewSession(context.Background(), sa, trigger, nil)
+			session, sprint, err = eng.NewSession(context.Background(), sa, contact, trigger, nil)
 			require.NoError(t, err)
 
 			sessions = append(sessions, session)
@@ -984,7 +984,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, sprint, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
+	session, sprint, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
@@ -1010,9 +1010,9 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 
 		// if it exists, trigger a new session
 		if event != nil {
-			trigger := triggers.NewBuilder(env, flow, contact).FlowAction(event.History, event.RunSummary).Build()
+			trigger := triggers.NewBuilder(env, flow).FlowAction(event.History, event.RunSummary).Build()
 
-			session, sprint, err = eng.NewSession(ctx, sa, trigger, nil)
+			session, sprint, err = eng.NewSession(ctx, sa, contact, trigger, nil)
 			require.NoError(t, err)
 
 			sessions = append(sessions, session)

@@ -78,10 +78,10 @@ func TestLocationResolver(t *testing.T) {
 
 	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
-	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	resolver := session.Assets().Locations()
@@ -126,10 +126,10 @@ func TestSessionEnvironment(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test"), contact).Manual().Build()
+	trigger := triggers.NewBuilder(env, assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
 	require.NoError(t, err)
 
 	// main environment on the session has the values we started with

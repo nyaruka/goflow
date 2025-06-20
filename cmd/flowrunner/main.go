@@ -150,11 +150,11 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	if initialMsg != "" {
 		msg := events.NewMsgReceived(createMessage(contact, initialMsg))
-		repro.Trigger = triggers.NewBuilder(env, flow.Reference(false), contact).Msg(msg).Build()
+		repro.Trigger = triggers.NewBuilder(env, flow.Reference(false)).Msg(msg).Build()
 
 		printEvents([]flows.Event{msg}, out)
 	} else {
-		tb := triggers.NewBuilder(env, flow.Reference(false), contact).Manual()
+		tb := triggers.NewBuilder(env, flow.Reference(false)).Manual()
 
 		// if we're starting a voice flow we need a call
 		if flow.Type() == flows.FlowTypeVoice {
@@ -167,7 +167,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
-	session, sprint, err := eng.NewSession(ctx, sa, repro.Trigger, call)
+	session, sprint, err := eng.NewSession(ctx, sa, contact, repro.Trigger, call)
 	if err != nil {
 		return nil, err
 	}
