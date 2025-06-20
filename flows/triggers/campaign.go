@@ -69,7 +69,7 @@ type CampaignBuilder struct {
 func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFiredEvent) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &CampaignTrigger{
-			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, b.contact, nil, false, nil),
+			baseTrigger: newBaseTrigger(TypeCampaign, b.environment, b.flow, b.contact, false, nil),
 			event:       event,
 			campaign:    campaign,
 		},

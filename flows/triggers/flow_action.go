@@ -83,7 +83,7 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 
 	return &FlowActionBuilder{
 		t: &FlowActionTrigger{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, nil, false, history),
+			baseTrigger: newBaseTrigger(TypeFlowAction, b.environment, b.flow, b.contact, false, history),
 			runSummary:  runSummary,
 		},
 	}

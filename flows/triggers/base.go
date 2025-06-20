@@ -43,7 +43,7 @@ type baseTrigger struct {
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, call *flows.Call, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, contact *flows.Contact, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		environment: env,

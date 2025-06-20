@@ -74,7 +74,7 @@ func (b *Builder) OptIn(optIn *flows.OptIn, event flows.Event) *OptInBuilder {
 
 	return &OptInBuilder{
 		t: &OptInTrigger{
-			baseTrigger: newBaseTrigger(TypeOptIn, b.environment, b.flow, b.contact, nil, false, nil),
+			baseTrigger: newBaseTrigger(TypeOptIn, b.environment, b.flow, b.contact, false, nil),
 			event:       event,
 			optIn:       optIn,
 		},
