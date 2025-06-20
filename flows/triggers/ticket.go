@@ -22,11 +22,6 @@ const TypeTicket string = "ticket"
 //	{
 //	  "type": "ticket",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
-//	  "contact": {
-//	    "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//	    "name": "Bob",
-//	    "created_on": "2018-01-01T12:00:00.000000Z"
-//	  },
 //	  "event": {
 //	      "type": "ticket_closed",
 //	      "created_on": "2006-01-02T15:04:05Z",

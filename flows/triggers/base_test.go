@@ -335,16 +335,6 @@ func TestReadTrigger(t *testing.T) {
 			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
 			"name": "Registration"
 		},
-		"contact": {
-			"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b",
-			"name": "Bob",
-			"language": "eng",
-			"status": "active",
-			"created_on": "2018-10-20T09:49:31.23456789Z",
-			"urns": [
-				"tel:+12065551212"
-			]
-		},
 		"triggered_on": "2018-10-20T09:49:31.23456789Z",
 		"event": {
 			"type": "incoming_call",

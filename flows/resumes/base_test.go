@@ -167,7 +167,6 @@ func TestResumeContext(t *testing.T) {
 
 	var resume flows.Resume = resumes.NewMsg(
 		env,
-		nil,
 		events.NewMsgReceived(flows.NewMsgIn("605e6309-343b-4cac-8309-e1de4cadd7b5", urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234")),
 	)
 
@@ -176,7 +175,7 @@ func TestResumeContext(t *testing.T) {
 		"dial": nil,
 	}, resume.Context(env))
 
-	resume = resumes.NewDial(env, nil, flows.NewDial(flows.DialStatusNoAnswer, 5))
+	resume = resumes.NewDial(env, flows.NewDial(flows.DialStatusNoAnswer, 5))
 	context := resume.Context(env)
 
 	assert.Equal(t, types.NewXText("dial"), context["type"])

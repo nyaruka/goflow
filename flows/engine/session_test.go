@@ -272,7 +272,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(nil, nil))
+	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(nil))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -305,7 +305,7 @@ func TestCurrentContext(t *testing.T) {
 	assert.NoError(t, err)
 
 	// end it
-	session.Resume(ctx, resumes.NewRunExpiration(nil, nil))
+	session.Resume(ctx, resumes.NewRunExpiration(nil))
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
 
 	// can still get context of completed session
@@ -371,7 +371,7 @@ func TestMaxResumesPerSession(t *testing.T) {
 	numResumes := 0
 	for {
 		msg := flows.NewMsgIn(flows.NewMsgUUID(), "tel:+593979123456", nil, "Teal", nil, "SMS1234")
-		resume := resumes.NewMsg(nil, nil, events.NewMsgReceived(msg))
+		resume := resumes.NewMsg(nil, events.NewMsgReceived(msg))
 		numResumes++
 
 		_, err := session.Resume(ctx, resume)
@@ -413,7 +413,7 @@ func TestEngineErrors(t *testing.T) {
 	_, session, _ = test.NewSessionBuilder().MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
-	_, err = session.Resume(ctx, resumes.NewDial(nil, nil, flows.NewDial(flows.DialStatusAnswered, 10)))
+	_, err = session.Resume(ctx, resumes.NewDial(nil, flows.NewDial(flows.DialStatusAnswered, 10)))
 	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
 	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
 }

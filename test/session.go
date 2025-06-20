@@ -766,7 +766,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 
 	msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.NilURN, nil, msgText, nil, "")
 
-	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), session.Contact(), events.NewMsgReceived(msg)))
+	sprint, err := session.Resume(ctx, resumes.NewMsg(session.Environment(), events.NewMsgReceived(msg)))
 
 	return session, sprint, err
 }

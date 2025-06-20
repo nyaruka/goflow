@@ -227,7 +227,6 @@ type Resume interface {
 
 	Event() Event
 	Environment() envs.Environment
-	Contact() *Contact
 	ResumedOn() time.Time
 }
 
