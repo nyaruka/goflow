@@ -177,7 +177,6 @@ type baseTriggerEnvelope struct {
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
-	Call        *flows.CallEnvelope   `json:"call,omitempty"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
