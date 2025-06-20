@@ -1,3 +1,7 @@
+v0.247.8 (2025-06-20)
+-------------------------
+ * Make calls objects with real channels and add UUID
+
 v0.247.7 (2025-06-19)
 -------------------------
  * Rework campaign event triggers to use events
