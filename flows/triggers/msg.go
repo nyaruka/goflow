@@ -121,12 +121,6 @@ func (b *MsgBuilder) WithMatch(match *KeywordMatch) *MsgBuilder {
 	return b
 }
 
-// WithConnection sets the channel connection for the trigger
-func (b *MsgBuilder) WithConnection(call *flows.Call) *MsgBuilder {
-	b.t.call = call
-	return b
-}
-
 // Build builds the trigger
 func (b *MsgBuilder) Build() *MsgTrigger {
 	return b.t

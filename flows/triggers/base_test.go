@@ -82,7 +82,7 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// start a session with this trigger
 		eng := engine.NewBuilder().Build()
-		session, _, err := eng.NewSession(context.Background(), sa, trigger)
+		session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
 		assert.NoError(t, err)
 
 		assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -180,7 +180,6 @@ func TestTriggerMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
-	nexmo := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
@@ -192,11 +191,10 @@ func TestTriggerMarshaling(t *testing.T) {
 	contact.AddURN(urns.URN("tel:+12065551212"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	history := flows.NewChildHistory(session)
-	call := flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", nexmo, urns.URN("tel:+12065551212"))
 
 	// can't create a trigger with invalid JSON
 	assert.Panics(t, func() {
@@ -219,7 +217,6 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Channel(channel, triggers.ChannelEventTypeIncomingCall).
-				WithCall(call).
 				Build(),
 			"channel_incoming_call",
 		},
@@ -239,10 +236,9 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				FlowAction(history, json.RawMessage(`{"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"}`)).
-				WithCall(call).
 				AsBatch().
 				Build(),
-			"flow_action_ivr",
+			"flow_action_batch",
 		},
 		{
 			triggers.NewBuilder(env, flow, contact).
@@ -257,15 +253,6 @@ func TestTriggerMarshaling(t *testing.T) {
 		{
 			triggers.NewBuilder(env, flow, contact).
 				Manual().
-				WithCall(call).
-				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
-				AsBatch().
-				Build(),
-			"manual_ivr",
-		},
-		{
-			triggers.NewBuilder(env, flow, contact).
-				Manual().
 				Build(),
 			"manual_minimal",
 		},
@@ -273,7 +260,6 @@ func TestTriggerMarshaling(t *testing.T) {
 			triggers.NewBuilder(env, flow, contact).
 				Msg(events.NewMsgReceived(flows.NewMsgIn(flows.MsgUUID("c8005ee3-4628-4d76-be66-906352cb1935"), urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"))).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
-				WithConnection(call).
 				Build(),
 			"msg",
 		},
@@ -352,13 +338,6 @@ func TestReadTrigger(t *testing.T) {
 				"tel:+12065551212"
 			]
 		},
-		"call": {
-			"channel": {
-				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-				"name": "Nexmo"
-			},
-			"urn": "tel:+12065551212"
-		},
 		"triggered_on": "2018-10-20T09:49:31.23456789Z",
 		"event": {
 			"type": "incoming_call",
@@ -369,9 +348,8 @@ func TestReadTrigger(t *testing.T) {
 		}
 	}`), missing)
 	assert.NoError(t, err)
-	assert.NotNil(t, trigger.Call())
-	assert.Nil(t, trigger.Call().Channel())
-	assert.Equal(t, []assets.Reference{assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")}, missingAssets)
+	assert.NotNil(t, trigger)
+	assert.Len(t, missingAssets, 0)
 }
 
 func TestTriggerSessionInitialization(t *testing.T) {
@@ -397,11 +375,10 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Equal(t, triggers.TypeManual, trigger.Type())
 	assert.Equal(t, env, trigger.Environment())
 	assert.Equal(t, contact, trigger.Contact())
-	assert.Nil(t, trigger.Call())
 	assert.Equal(t, params, trigger.Params())
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())
@@ -417,7 +394,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	assert.Nil(t, trigger.Contact())
 	assert.Nil(t, trigger.Params())
 
-	session, _, err = eng.NewSession(context.Background(), sa, trigger)
+	session, _, err = eng.NewSession(context.Background(), sa, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.FlowTypeMessaging, session.Type())

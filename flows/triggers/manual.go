@@ -71,12 +71,6 @@ func (b *ManualBuilder) WithParams(params *types.XObject) *ManualBuilder {
 	return b
 }
 
-// WithCall sets the call for the trigger
-func (b *ManualBuilder) WithCall(call *flows.Call) *ManualBuilder {
-	b.t.call = call
-	return b
-}
-
 // WithUser sets the user (e.g. an email address, login) for the trigger
 func (b *ManualBuilder) WithUser(user *flows.User) *ManualBuilder {
 	b.t.user = user

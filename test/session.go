@@ -466,10 +466,6 @@ var voiceSessionTrigger = `{
         "type": "incoming_call",
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
     },
-    "call": {
-        "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"},
-        "urn": "tel:+12065551212"
-    },
     "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -524,7 +520,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 
 	eng := NewEngine()
 
-	session, _, err := eng.NewSession(ctx, sa, trigger)
+	session, _, err := eng.NewSession(ctx, sa, trigger, nil)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test session: %w", err)
 	}
@@ -552,8 +548,11 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
 
+	channel := sa.Channels().Get("fd47a886-451b-46fb-bcb6-242a4046c0c0")
+	call := flows.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
+
 	eng := NewEngine()
-	session, sprint, err := eng.NewSession(context.Background(), sa, trigger)
+	session, sprint, err := eng.NewSession(context.Background(), sa, trigger, call)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test voice session: %w", err)
 	}
@@ -720,7 +719,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		trigger = triggers.NewBuilder(b.env, flow.Reference(false), contact).Manual().Build()
 	}
 
-	s, sp, err := b.engine.NewSession(context.Background(), sa, trigger)
+	s, sp, err := b.engine.NewSession(context.Background(), sa, trigger, nil)
 	return sa, s, sp, err
 }
 
@@ -745,7 +744,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 	// re-use same engine instance
 	eng := session.Engine()
 
-	session, err = eng.ReadSession(sa, sessionJSON, assets.IgnoreMissing)
+	session, err = eng.ReadSession(sa, sessionJSON, nil, assets.IgnoreMissing)
 	if err != nil {
 		return nil, nil, err
 	}

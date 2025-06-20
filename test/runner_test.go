@@ -89,6 +89,7 @@ type Output struct {
 
 type FlowTest struct {
 	Trigger   json.RawMessage      `json:"trigger"`
+	Call      *flows.CallEnvelope  `json:"call,omitempty"`
 	Resumes   []json.RawMessage    `json:"resumes"`
 	Outputs   []json.RawMessage    `json:"outputs"`
 	HTTPMocks *httpx.MockRequestor `json:"http_mocks,omitempty"`
@@ -99,7 +100,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawTrigger []byte, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -132,7 +133,12 @@ func runFlow(assetsPath string, rawTrigger []byte, rawResumes []json.RawMessage)
 		}).
 		Build()
 
-	session, sprint, err := eng.NewSession(ctx, sa, trigger)
+	var call *flows.Call
+	if rawCall != nil {
+		call = rawCall.Unmarshal(sa, assets.PanicOnMissing)
+	}
+
+	session, sprint, err := eng.NewSession(ctx, sa, trigger, call)
 	if err != nil {
 		return runResult{}, err
 	}
@@ -152,7 +158,7 @@ func runFlow(assetsPath string, rawTrigger []byte, rawResumes []json.RawMessage)
 			Segments: jsonx.MustMarshal(sprint.Segments()),
 		})
 
-		session, err = eng.ReadSession(sa, sessionJSON, assets.PanicOnMissing)
+		session, err = eng.ReadSession(sa, sessionJSON, call, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, fmt.Errorf("error marshalling output: %w", err)
 		}
@@ -218,7 +224,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Resumes)
+		runResult, err := runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Call, flowTest.Resumes)
 		if err != nil {
 			t.Errorf("error running flow for flow '%s' and output '%s': %s", tc.assetsFile, tc.outputFile, err)
 			continue
@@ -236,7 +242,7 @@ func TestFlows(t *testing.T) {
 				rawOutputs[i], err = jsonx.Marshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
-			flowTest := &FlowTest{Trigger: flowTest.Trigger, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: httpMocksCopy}
+			flowTest := &FlowTest{Trigger: flowTest.Trigger, Call: flowTest.Call, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: httpMocksCopy}
 			testJSON, err := jsonx.MarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
@@ -275,24 +281,6 @@ func TestFlows(t *testing.T) {
 					break
 				}
 			}
-		}
-	}
-}
-
-func BenchmarkFlows(b *testing.B) {
-	testCases, _ := loadTestCases()
-
-	for n := 0; n < b.N; n++ {
-		for _, tc := range testCases {
-			testJSON, err := os.ReadFile(tc.outputFile)
-			require.NoError(b, err, "error reading output file %s", tc.outputFile)
-
-			flowTest := &FlowTest{}
-			err = jsonx.Unmarshal([]byte(testJSON), &flowTest)
-			require.NoError(b, err, "error unmarshalling output file %s", tc.outputFile)
-
-			_, err = runFlow(tc.assetsFile, flowTest.Trigger, flowTest.Resumes)
-			require.NoError(b, err, "error running flow %s", tc.testName)
 		}
 	}
 }

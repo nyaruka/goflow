@@ -137,7 +137,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
 	eng := engine.NewBuilder().Build()
-	_, err = eng.ReadSession(sessionAssets, sessionJSON, missing)
+	_, err = eng.ReadSession(sessionAssets, sessionJSON, nil, missing)
 	require.NoError(t, err)
 
 	refs := make([]string, len(missingAssets))
@@ -198,7 +198,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", ""), contact).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, sprint, err := eng.NewSession(context.Background(), sa, trigger)
+	session, sprint, err := eng.NewSession(context.Background(), sa, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, len(sprint.Events()))
@@ -360,7 +360,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()
-	session1, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session1, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.EmptyHistory, session1.History())
@@ -370,7 +370,7 @@ func TestSessionHistory(t *testing.T) {
 	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build())
+	session2, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).FlowAction(history, runSummaryJSON).Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, &flows.SessionHistory{

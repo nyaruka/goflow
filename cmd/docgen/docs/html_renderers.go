@@ -430,7 +430,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	if err != nil {
 		return nil, err
 	}
-	session, err = session.Engine().ReadSession(session.Assets(), sessionJSON, assets.PanicOnMissing)
+	session, err = session.Engine().ReadSession(session.Assets(), sessionJSON, session.Call(), assets.PanicOnMissing)
 	if err != nil {
 		return nil, err
 	}

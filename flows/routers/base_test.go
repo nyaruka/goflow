@@ -101,7 +101,7 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 		trigger := triggers.NewBuilder(envs.NewBuilder().Build(), flow.Reference(false), contact).Manual().Build()
 
 		eng := test.NewEngine()
-		session, _, err := eng.NewSession(context.Background(), sa, trigger)
+		session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
 		require.NoError(t, err)
 
 		// clone test case and populate with actual values

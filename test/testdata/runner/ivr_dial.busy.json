@@ -1,4 +1,12 @@
 {
+    "call": {
+        "channel": {
+            "name": "Twilio",
+            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
+        },
+        "urn": "tel:+12065551212",
+        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec"
+    },
     "outputs": [
         {
             "events": [
@@ -14,6 +22,7 @@
             ],
             "segments": [],
             "session": {
+                "call_uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
                     "fields": {
@@ -82,14 +91,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "call": {
-                        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
-                        "channel": {
-                            "name": "Twilio",
-                            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
-                        },
-                        "urn": "tel:+12065551212"
-                    },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
                         "fields": {
@@ -157,6 +158,7 @@
             ],
             "segments": [],
             "session": {
+                "call_uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
                 "contact": {
                     "created_on": "2018-01-01T12:00:00Z",
                     "fields": {
@@ -253,14 +255,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "call": {
-                        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
-                        "channel": {
-                            "name": "Twilio",
-                            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
-                        },
-                        "urn": "tel:+12065551212"
-                    },
                     "contact": {
                         "created_on": "2018-01-01T12:00:00Z",
                         "fields": {
@@ -318,14 +312,6 @@
         }
     ],
     "trigger": {
-        "call": {
-            "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
-            "channel": {
-                "name": "Twilio",
-                "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
-            },
-            "urn": "tel:+12065551212"
-        },
         "contact": {
             "created_on": "2018-01-01T12:00:00Z",
             "fields": {

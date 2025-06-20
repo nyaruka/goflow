@@ -19,7 +19,7 @@ type engine struct {
 }
 
 // NewSession creates a new session
-func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger flows.Trigger) (flows.Session, flows.Sprint, error) {
+func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger flows.Trigger, call *flows.Call) (flows.Session, flows.Sprint, error) {
 	s := &session{
 		uuid:       flows.NewSessionUUID(),
 		createdOn:  dates.Now(),
@@ -30,6 +30,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger
 		status:     flows.SessionStatusActive,
 		batchStart: trigger.Batch(),
 		runsByUUID: make(map[flows.RunUUID]flows.Run),
+		call:       call,
 	}
 
 	sprint, err := s.start(ctx, trigger)
@@ -38,8 +39,8 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, trigger
 }
 
 // ReadSession reads an existing session
-func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Session, error) {
-	return readSession(e, sa, data, missing)
+func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
+	return readSession(e, sa, data, call, missing)
 }
 
 func (e *engine) Evaluator() *excellent.Evaluator { return e.evaluator }

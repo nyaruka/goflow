@@ -39,9 +39,11 @@ type session struct {
 	trigger       flows.Trigger
 	currentResume flows.Resume
 	contact       *flows.Contact
-	runs          []flows.Run
-	status        flows.SessionStatus
-	input         flows.Input
+	call          *flows.Call
+
+	runs   []flows.Run
+	status flows.SessionStatus
+	input  flows.Input
 
 	// state which is temporary to each call
 	batchStart bool
@@ -68,6 +70,8 @@ func (s *session) MergedEnvironment() envs.Environment { return flows.NewSession
 
 func (s *session) Contact() *flows.Contact           { return s.contact }
 func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
+
+func (s *session) Call() *flows.Call { return s.call }
 
 func (s *session) Input() flows.Input { return s.input }
 func (s *session) SetInput(input flows.Input) {
@@ -592,20 +596,21 @@ func failRun(sp *sprint, run flows.Run, step flows.Step, err error) {
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	UUID        flows.SessionUUID   `json:"uuid"            validate:"required"`
-	Type        flows.FlowType      `json:"type"            validate:"required"`
+	UUID        flows.SessionUUID   `json:"uuid"                validate:"required"`
+	Type        flows.FlowType      `json:"type"                validate:"required"`
 	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
 	Environment json.RawMessage     `json:"environment"`
-	Trigger     json.RawMessage     `json:"trigger"         validate:"required"`
-	Contact     *json.RawMessage    `json:"contact"         validate:"required"`
+	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
+	Contact     *json.RawMessage    `json:"contact"             validate:"required"`
+	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
 	Runs        []json.RawMessage   `json:"runs"`
-	Status      flows.SessionStatus `json:"status"          validate:"required"`
+	Status      flows.SessionStatus `json:"status"              validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
 	Input       json.RawMessage     `json:"input,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
-func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -619,6 +624,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, missing 
 		uuid:       e.UUID,
 		type_:      e.Type,
 		status:     e.Status,
+		call:       call,
 		runsByUUID: make(map[flows.RunUUID]flows.Run),
 	}
 
@@ -628,17 +634,19 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, missing 
 		return nil, fmt.Errorf("unable to read environment: %w", err)
 	}
 
-	// read our trigger
 	if e.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger, missing); err != nil {
 			return nil, fmt.Errorf("unable to read trigger: %w", err)
 		}
 	}
-
-	// read our contact
 	if e.Contact != nil {
 		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, missing); err != nil {
 			return nil, fmt.Errorf("unable to read contact: %w", err)
+		}
+	}
+	if e.CallUUID != "" {
+		if call == nil || call.UUID() != e.CallUUID {
+			return nil, fmt.Errorf("session call doesn't match provided")
 		}
 	}
 
@@ -685,6 +693,9 @@ func (s *session) MarshalJSON() ([]byte, error) {
 		if e.Trigger, err = jsonx.Marshal(s.trigger); err != nil {
 			return nil, err
 		}
+	}
+	if s.call != nil {
+		e.CallUUID = s.call.UUID()
 	}
 	if s.input != nil {
 		e.Input, err = jsonx.Marshal(s.input)
