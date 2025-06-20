@@ -159,13 +159,6 @@ func (c *Contact) Clone() *Contact {
 	}
 }
 
-// Equal returns true if this instance is equal to the given instance
-func (c *Contact) Equal(other *Contact) bool {
-	asJSON1, _ := jsonx.Marshal(c)
-	asJSON2, _ := jsonx.Marshal(other)
-	return string(asJSON1) == string(asJSON2)
-}
-
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 

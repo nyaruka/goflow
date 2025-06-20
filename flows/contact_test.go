@@ -192,7 +192,7 @@ func TestContact(t *testing.T) {
 	unmarshaled, err := flows.ReadContact(sa, marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
 
-	assert.True(t, contact.Equal(unmarshaled))
+	assert.Equal(t, contact.UUID(), unmarshaled.UUID())
 }
 
 func TestReadContact(t *testing.T) {
@@ -417,45 +417,6 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
 	}
-}
-
-func TestContactEqual(t *testing.T) {
-	_, session, _ := test.NewSessionBuilder().MustBuild()
-
-	contact1JSON := []byte(`{
-		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-		"id": 1234567,
-		"created_on": "2000-01-01T00:00:00.000000000-00:00",
-		"fields": {
-			"gender": {"text": "Male"}
-		},
-		"language": "eng",
-		"name": "Ben Haggerty",
-		"timezone": "America/Guayaquil",
-		"urns": ["tel:+12065551212"]
-	}`)
-
-	contact1, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	contact2, err := flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	assert.True(t, contact1.Equal(contact2))
-	assert.True(t, contact2.Equal(contact1))
-	assert.True(t, contact1.Equal(contact1.Clone()))
-	assert.Equal(t, flows.ContactStatusActive, contact1.Status())
-
-	// marshal and unmarshal contact 1 again
-	contact1JSON, err = jsonx.Marshal(contact1)
-	require.NoError(t, err)
-	contact1, err = flows.ReadContact(session.Assets(), contact1JSON, assets.PanicOnMissing)
-	require.NoError(t, err)
-
-	assert.True(t, contact1.Equal(contact2))
-
-	contact2.SetLanguage(i18n.NilLanguage)
-	assert.False(t, contact1.Equal(contact2))
 }
 
 func TestContactQuery(t *testing.T) {

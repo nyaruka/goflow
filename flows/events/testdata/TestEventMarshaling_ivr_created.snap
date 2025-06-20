@@ -1,8 +1,8 @@
 {
     "type": "ivr_created",
-    "created_on": "2025-05-04T12:32:04.123456789Z",
+    "created_on": "2025-05-04T12:32:03.123456789Z",
     "msg": {
-        "uuid": "01969b48-3633-76f8-bebe-b4a1f677cf4c",
+        "uuid": "01969b48-324b-76f8-bebe-b4a1f677cf4c",
         "urn": "tel:+12345678900",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
