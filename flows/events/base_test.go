@@ -173,10 +173,6 @@ func TestEventMarshaling(t *testing.T) {
 			`email_sent`,
 		},
 		{
-			events.NewEnvironmentRefreshed(session.Environment()),
-			`environment_refreshed`,
-		},
-		{
 			events.NewError("I'm an error"),
 			`error`,
 		},

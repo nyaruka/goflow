@@ -33,7 +33,6 @@ func RegisteredTypes() map[string]ReadFunc {
 // base of all trigger types
 type baseTrigger struct {
 	type_       string
-	environment envs.Environment
 	flow        *assets.FlowReference
 	batch       bool
 	params      *types.XObject
@@ -42,10 +41,9 @@ type baseTrigger struct {
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
-		environment: env,
 		flow:        flow,
 		batch:       batch,
 		history:     history,
@@ -55,7 +53,6 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 
 func (t *baseTrigger) Type() string                   { return t.type_ }
 func (t *baseTrigger) Event() flows.Event             { return nil }
-func (t *baseTrigger) Environment() envs.Environment  { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Batch() bool                    { return t.batch }
 func (t *baseTrigger) Params() *types.XObject         { return t.params }
@@ -76,10 +73,6 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 
 	session.SetType(flow.Type())
 	session.PushFlow(flow, nil, false)
-
-	if t.environment != nil {
-		session.SetEnvironment(t.environment)
-	}
 
 	return nil
 }
@@ -147,15 +140,13 @@ func (t *baseTrigger) Context(env envs.Environment) map[string]types.XValue {
 
 // Builder is a builder for triggers
 type Builder struct {
-	environment envs.Environment
-	flow        *assets.FlowReference
+	flow *assets.FlowReference
 }
 
 // NewBuilder creates a new trigger builder
-func NewBuilder(env envs.Environment, flow *assets.FlowReference) *Builder {
+func NewBuilder(flow *assets.FlowReference) *Builder {
 	return &Builder{
-		environment: env,
-		flow:        flow,
+		flow: flow,
 	}
 }
 
@@ -164,13 +155,12 @@ func NewBuilder(env envs.Environment, flow *assets.FlowReference) *Builder {
 //------------------------------------------------------------------------------------------
 
 type baseTriggerEnvelope struct {
-	Type        string                `json:"type"                  validate:"required"`
-	Environment json.RawMessage       `json:"environment,omitempty"`
-	Flow        *assets.FlowReference `json:"flow"                  validate:"required"`
+	Type        string                `json:"type"               validate:"required"`
+	Flow        *assets.FlowReference `json:"flow"               validate:"required"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
 	History     *flows.SessionHistory `json:"history,omitempty"`
-	TriggeredOn time.Time             `json:"triggered_on"          validate:"required"`
+	TriggeredOn time.Time             `json:"triggered_on"       validate:"required"`
 }
 
 // ReadTrigger reads a trigger from the given JSON
@@ -196,11 +186,6 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
-	if e.Environment != nil {
-		if t.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
-			return fmt.Errorf("unable to read environment: %w", err)
-		}
-	}
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
 			return fmt.Errorf("unable to read params: %w", err)
@@ -218,12 +203,6 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
 
-	if t.environment != nil {
-		e.Environment, err = jsonx.Marshal(t.environment)
-		if err != nil {
-			return err
-		}
-	}
 	if t.params != nil {
 		e.Params, err = jsonx.Marshal(t.params)
 		if err != nil {

@@ -72,29 +72,6 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","input_collation":"default","redaction_policy":"none"}`)
 }
 
-func TestEnvironmentEqual(t *testing.T) {
-	env1, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
-	require.NoError(t, err)
-
-	env2, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
-	require.NoError(t, err)
-
-	env3, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kampala"}`))
-	require.NoError(t, err)
-
-	assert.True(t, env1.Equal(env2))
-	assert.True(t, env2.Equal(env1))
-	assert.False(t, env1.Equal(env3))
-
-	// marshal and unmarshal env 1 again
-	env1JSON, err := jsonx.Marshal(env1)
-	require.NoError(t, err)
-	env1, err = envs.ReadEnvironment(env1JSON)
-	require.NoError(t, err)
-
-	assert.True(t, env1.Equal(env2))
-}
-
 func TestEnvironmentBuilder(t *testing.T) {
 	kgl, err := time.LoadLocation("Africa/Kigali")
 	require.NoError(t, err)

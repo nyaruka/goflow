@@ -12,6 +12,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "http_mocks": {
         "http://localhost/?cmd=country": [
             {
@@ -34,17 +35,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "UTC"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -155,17 +145,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "UTC"
-                },
                 "input": {
                     "created_on": "2000-01-01T00:00:00Z",
                     "text": "Ryan Lewis",

@@ -13,6 +13,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -46,21 +47,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -109,21 +95,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
@@ -189,21 +160,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-03-21T14:19:29.724264-05:00",
                     "text": "Bobby",
@@ -321,21 +277,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
@@ -395,21 +336,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-03-21T14:19:35.1582-05:00",
                     "text": "123",
@@ -581,21 +507,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
@@ -680,21 +591,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-03-21T14:19:41.862787-05:00",
                     "text": "18",
@@ -944,21 +840,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
@@ -1001,20 +882,6 @@
         }
     ],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng",
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "number_format": {
-                "decimal_symbol": ".",
-                "digit_grouping_symbol": ","
-            },
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Registration",
             "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"

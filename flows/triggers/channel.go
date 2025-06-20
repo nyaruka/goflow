@@ -65,7 +65,7 @@ type ChannelBuilder struct {
 func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEventType) *ChannelBuilder {
 	return &ChannelBuilder{
 		t: &ChannelTrigger{
-			baseTrigger: newBaseTrigger(TypeChannel, b.environment, b.flow, false, nil),
+			baseTrigger: newBaseTrigger(TypeChannel, b.flow, false, nil),
 			event:       &ChannelEvent{Type: eventType, Channel: channel},
 		},
 	}

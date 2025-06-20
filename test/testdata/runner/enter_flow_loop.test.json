@@ -13,6 +13,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -46,20 +47,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -108,20 +95,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -234,20 +207,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-02-19T15:32:28.130183-05:00",
                     "text": "name",
@@ -454,20 +413,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -574,20 +519,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-02-19T15:32:30.40403-05:00",
                     "text": "name",
@@ -939,20 +870,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -979,20 +896,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-02-19T15:32:32.080013-05:00",
                     "text": "exit",
@@ -1372,20 +1275,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
@@ -1428,19 +1317,6 @@
         }
     ],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "number_format": {
-                "decimal_symbol": ".",
-                "digit_grouping_symbol": ","
-            },
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Start Actions Parent",
             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"

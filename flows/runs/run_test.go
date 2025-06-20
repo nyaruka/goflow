@@ -98,17 +98,7 @@ var sessionContact = `{
 var sessionTrigger = `{
     "type": "manual",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
-    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "No Related Runs"},
-    "environment": {
-        "date_format": "YYYY-MM-DD",
-        "allowed_languages": [
-            "eng", 
-            "spa"
-        ],
-        "redaction_policy": "none",
-        "time_format": "hh:mm",
-        "timezone": "America/Guayaquil"
-    }
+    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "No Related Runs"}
 }`
 
 func TestRun(t *testing.T) {
@@ -243,8 +233,11 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	env := envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithTimezone(tz).Build()
+
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -281,8 +274,11 @@ func TestSetResult(t *testing.T) {
 	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	env := envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithTimezone(tz).Build()
+
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
+	session, _, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

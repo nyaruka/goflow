@@ -11,6 +11,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -44,21 +45,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -106,21 +92,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "LLM Categorize",
                         "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
@@ -198,21 +169,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2019-10-04T12:20:49.046879-05:00",
                     "text": "I'd like to book a flight to Quito",
@@ -351,21 +307,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "LLM Categorize",
                         "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
@@ -391,20 +332,6 @@
         }
     ],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng",
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "number_format": {
-                "decimal_symbol": ".",
-                "digit_grouping_symbol": ","
-            },
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "LLM Categorize",
             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"

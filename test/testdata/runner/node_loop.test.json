@@ -22,6 +22,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -2237,20 +2238,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -4376,20 +4363,6 @@
                 ],
                 "status": "failed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "hh:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
@@ -4404,14 +4377,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "time_format": "hh:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Registration",
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"

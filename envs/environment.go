@@ -61,8 +61,6 @@ type Environment interface {
 	DefaultLanguage() i18n.Language
 	DefaultLocale() i18n.Locale
 	Now() time.Time // current time in the env timezone
-
-	Equal(Environment) bool
 }
 
 type environment struct {
@@ -104,13 +102,6 @@ func (e *environment) DefaultLocale() i18n.Locale {
 
 // Now gets the current time in the eonvironment's timezone
 func (e *environment) Now() time.Time { return dates.Now().In(e.Timezone()) }
-
-// Equal returns true if this instance is equal to the given instance
-func (e *environment) Equal(other Environment) bool {
-	asJSON1, _ := jsonx.Marshal(e)
-	asJSON2, _ := jsonx.Marshal(other)
-	return string(asJSON1) == string(asJSON2)
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

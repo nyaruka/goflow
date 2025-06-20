@@ -56,7 +56,7 @@ type ManualBuilder struct {
 // Manual returns a manual trigger builder
 func (b *Builder) Manual() *ManualBuilder {
 	return &ManualBuilder{
-		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.environment, b.flow, false, nil)},
+		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.flow, false, nil)},
 	}
 }
 

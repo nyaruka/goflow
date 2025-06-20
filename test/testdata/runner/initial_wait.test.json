@@ -18,6 +18,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -58,17 +59,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2018-10-11T14:27:09.05642-05:00",
                     "text": "PING",
@@ -149,17 +139,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "event": {
                         "created_on": "2018-10-11T14:27:09.05642-05:00",
                         "msg": {
@@ -183,12 +162,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "environment": {
-            "date_format": "YYYY-MM-DD",
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Initial Wait",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"

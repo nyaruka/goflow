@@ -88,12 +88,13 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Contact   json.RawMessage      `json:"contact"`
-	Trigger   json.RawMessage      `json:"trigger"`
-	Call      *flows.CallEnvelope  `json:"call,omitempty"`
-	Resumes   []json.RawMessage    `json:"resumes"`
-	Outputs   []json.RawMessage    `json:"outputs"`
-	HTTPMocks *httpx.MockRequestor `json:"http_mocks,omitempty"`
+	Environment json.RawMessage      `json:"environment"`
+	Contact     json.RawMessage      `json:"contact"`
+	Trigger     json.RawMessage      `json:"trigger"`
+	Call        *flows.CallEnvelope  `json:"call,omitempty"`
+	Resumes     []json.RawMessage    `json:"resumes"`
+	Outputs     []json.RawMessage    `json:"outputs"`
+	HTTPMocks   *httpx.MockRequestor `json:"http_mocks,omitempty"`
 }
 
 type runResult struct {
@@ -101,13 +102,18 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawContact []byte, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact []byte, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
 	sa, err := LoadSessionAssets(envs.NewBuilder().Build(), assetsPath)
 	if err != nil {
 		return runResult{}, err
+	}
+
+	env, err := envs.ReadEnvironment(rawEnv)
+	if err != nil {
+		return runResult{}, fmt.Errorf("error unmarshalling environment: %w", err)
 	}
 
 	contact, err := flows.ReadContact(sa, rawContact, assets.PanicOnMissing)
@@ -144,7 +150,7 @@ func runFlow(assetsPath string, rawContact []byte, rawTrigger []byte, rawCall *f
 		call = rawCall.Unmarshal(sa, assets.PanicOnMissing)
 	}
 
-	session, sprint, err := eng.NewSession(ctx, sa, contact, trigger, call)
+	session, sprint, err := eng.NewSession(ctx, sa, env, contact, trigger, call)
 	if err != nil {
 		return runResult{}, err
 	}
@@ -164,7 +170,7 @@ func runFlow(assetsPath string, rawContact []byte, rawTrigger []byte, rawCall *f
 			Segments: jsonx.MustMarshal(sprint.Segments()),
 		})
 
-		session, err = eng.ReadSession(sa, sessionJSON, contact, call, assets.PanicOnMissing)
+		session, err = eng.ReadSession(sa, sessionJSON, env, contact, call, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, fmt.Errorf("error marshalling output: %w", err)
 		}
@@ -230,7 +236,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(tc.assetsFile, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes)
+		runResult, err := runFlow(tc.assetsFile, flowTest.Environment, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes)
 		if err != nil {
 			t.Errorf("error running flow for flow '%s' and output '%s': %s", tc.assetsFile, tc.outputFile, err)
 			continue

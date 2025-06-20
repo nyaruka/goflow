@@ -62,16 +62,12 @@ func (s *session) UUID() flows.SessionUUID { return s.uuid }
 
 func (s *session) Type() flows.FlowType         { return s.type_ }
 func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
+func (s *session) CreatedOn() time.Time         { return s.createdOn }
 
-func (s *session) CreatedOn() time.Time                { return s.createdOn }
 func (s *session) Environment() envs.Environment       { return s.env }
-func (s *session) SetEnvironment(env envs.Environment) { s.env = env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
-
-func (s *session) Contact() *flows.Contact           { return s.contact }
-func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
-
-func (s *session) Call() *flows.Call { return s.call }
+func (s *session) Contact() *flows.Contact             { return s.contact }
+func (s *session) Call() *flows.Call                   { return s.call }
 
 func (s *session) Input() flows.Input { return s.input }
 func (s *session) SetInput(input flows.Input) {
@@ -599,7 +595,6 @@ type sessionEnvelope struct {
 	UUID        flows.SessionUUID   `json:"uuid"                validate:"required"`
 	Type        flows.FlowType      `json:"type"                validate:"required"`
 	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
-	Environment json.RawMessage     `json:"environment"`
 	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
 	ContactUUID flows.ContactUUID   `json:"contact_uuid"        validate:"omitempty,uuid"` // TODO validate:"required"`
 	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"` // TODO validate:"required"`
@@ -610,7 +605,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, contact *flows.Contact, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 
@@ -624,15 +619,10 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, contact 
 		uuid:       e.UUID,
 		type_:      e.Type,
 		status:     e.Status,
+		env:        env,
 		contact:    contact,
 		call:       call,
 		runsByUUID: make(map[flows.RunUUID]flows.Run),
-	}
-
-	// read our environment
-	s.env, err = envs.ReadEnvironment(e.Environment)
-	if err != nil {
-		return nil, fmt.Errorf("unable to read environment: %w", err)
 	}
 
 	if e.Trigger != nil {
@@ -677,9 +667,6 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	}
 	var err error
 
-	if e.Environment, err = jsonx.Marshal(s.env); err != nil {
-		return nil, err
-	}
 	if s.contact != nil {
 		e.ContactUUID = s.contact.UUID()
 	}

@@ -407,12 +407,11 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		require.NoError(t, err)
 
 		trigger := triggers.NewBuilder(
-			env,
 			assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Empty Flow"),
 		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
-		session, _, _ := eng.NewSession(context.Background(), sa, contact, trigger, nil)
+		session, _, _ := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 		afterJSON := jsonx.MustMarshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)
