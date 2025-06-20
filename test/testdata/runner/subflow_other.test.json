@@ -1,4 +1,27 @@
 {
+    "contact": {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "fields": {
+            "first_name": {
+                "text": "Ben"
+            },
+            "state": {
+                "state": "Ecuador > Azuay",
+                "text": "Ecuador > Azuay"
+            }
+        },
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212",
+            "facebook:1122334455667788",
+            "mailto:ben@macklemore"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "outputs": [
         {
             "events": [
@@ -67,29 +90,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
-                        }
-                    },
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -209,29 +210,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
-                            }
-                        },
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -307,30 +285,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
-                        }
-                    },
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -525,29 +480,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
-                            }
-                        },
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -650,30 +582,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
-                        }
-                    },
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -948,29 +857,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
-                            }
-                        },
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -1046,30 +932,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
-                        }
-                    },
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -1408,29 +1271,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
-                            }
-                        },
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -1497,30 +1337,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2000-01-01T00:00:00Z",
-                    "fields": {
-                        "first_name": {
-                            "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
-                        }
-                    },
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2000-01-01T00:00:00Z",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -1906,29 +1723,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2000-01-01T00:00:00Z",
-                        "fields": {
-                            "first_name": {
-                                "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
-                            }
-                        },
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -2010,29 +1804,6 @@
         }
     ],
     "trigger": {
-        "contact": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "fields": {
-                "first_name": {
-                    "text": "Ben"
-                },
-                "state": {
-                    "state": "Ecuador > Azuay",
-                    "text": "Ecuador > Azuay"
-                }
-            },
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212",
-                "facebook:1122334455667788",
-                "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "environment": {
             "allowed_languages": [
                 "eng"

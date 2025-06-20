@@ -1,4 +1,48 @@
 {
+    "contact": {
+        "created_on": "2022-01-30T18:55:38.757647Z",
+        "fields": {
+            "foo_status": {
+                "text": "foo"
+            }
+        },
+        "groups": [
+            {
+                "name": "Query Group 1",
+                "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
+            },
+            {
+                "name": "Static Group 1",
+                "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
+            },
+            {
+                "name": "Static Group 2",
+                "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
+            },
+            {
+                "name": "Query Group 2",
+                "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
+            },
+            {
+                "name": "Query Group 3",
+                "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
+            },
+            {
+                "name": "Static Group 3",
+                "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
+            }
+        ],
+        "id": 1234,
+        "language": "eng",
+        "last_seen_on": "2022-02-03T15:10:16.232385Z",
+        "name": "Joe",
+        "status": "active",
+        "timezone": "America/Los_Angeles",
+        "urns": [
+            "tel:+12065551212"
+        ],
+        "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
+    },
     "outputs": [
         {
             "events": [
@@ -42,24 +86,7 @@
             ],
             "segments": [],
             "session": {
-                "contact": {
-                    "created_on": "2022-01-30T18:55:38.757647Z",
-                    "fields": {
-                        "foo_status": {
-                            "text": "foo"
-                        }
-                    },
-                    "id": 1234,
-                    "language": "eng",
-                    "last_seen_on": "2022-02-03T15:10:16.232385Z",
-                    "name": "Joe",
-                    "status": "stopped",
-                    "timezone": "America/Los_Angeles",
-                    "urns": [
-                        "tel:+12065551212"
-                    ],
-                    "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
-                },
+                "contact_uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -140,50 +167,6 @@
                 "status": "completed",
                 "trigger": {
                     "batch": true,
-                    "contact": {
-                        "created_on": "2022-01-30T18:55:38.757647Z",
-                        "fields": {
-                            "foo_status": {
-                                "text": "foo"
-                            }
-                        },
-                        "groups": [
-                            {
-                                "name": "Query Group 1",
-                                "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
-                            },
-                            {
-                                "name": "Static Group 1",
-                                "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
-                            },
-                            {
-                                "name": "Static Group 2",
-                                "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
-                            },
-                            {
-                                "name": "Query Group 2",
-                                "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
-                            },
-                            {
-                                "name": "Query Group 3",
-                                "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
-                            },
-                            {
-                                "name": "Static Group 3",
-                                "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
-                            }
-                        ],
-                        "id": 1234,
-                        "language": "eng",
-                        "last_seen_on": "2022-02-03T15:10:16.232385Z",
-                        "name": "Joe",
-                        "status": "active",
-                        "timezone": "America/Los_Angeles",
-                        "urns": [
-                            "tel:+12065551212"
-                        ],
-                        "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng"
@@ -220,50 +203,6 @@
     "resumes": null,
     "trigger": {
         "batch": true,
-        "contact": {
-            "created_on": "2022-01-30T18:55:38.757647Z",
-            "fields": {
-                "foo_status": {
-                    "text": "foo"
-                }
-            },
-            "groups": [
-                {
-                    "name": "Query Group 1",
-                    "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
-                },
-                {
-                    "name": "Static Group 1",
-                    "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
-                },
-                {
-                    "name": "Static Group 2",
-                    "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
-                },
-                {
-                    "name": "Query Group 2",
-                    "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
-                },
-                {
-                    "name": "Query Group 3",
-                    "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
-                },
-                {
-                    "name": "Static Group 3",
-                    "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
-                }
-            ],
-            "id": 1234,
-            "language": "eng",
-            "last_seen_on": "2022-02-03T15:10:16.232385Z",
-            "name": "Joe",
-            "status": "active",
-            "timezone": "America/Los_Angeles",
-            "urns": [
-                "tel:+12065551212"
-            ],
-            "uuid": "2f278d74-bb1f-492d-94ba-aca7720234c2"
-        },
         "environment": {
             "allowed_languages": [
                 "eng"

@@ -101,7 +101,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawTrigger []byte, rawContact []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawContact []byte, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets

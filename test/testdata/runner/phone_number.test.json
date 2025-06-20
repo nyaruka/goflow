@@ -1,4 +1,18 @@
 {
+    "contact": {
+        "created_on": "2018-01-01T12:00:00Z",
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065551212",
+            "facebook:1122334455667788",
+            "mailto:ben@macklemore"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "outputs": [
         {
             "events": [
@@ -34,20 +48,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2018-01-01T12:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -116,20 +117,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2018-01-01T12:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -206,21 +193,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2018-01-01T12:00:00Z",
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2020-03-19T16:37:31.207472-05:00",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -356,20 +329,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2018-01-01T12:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -459,28 +418,7 @@
                 }
             ],
             "session": {
-                "contact": {
-                    "created_on": "2018-01-01T12:00:00Z",
-                    "groups": [
-                        {
-                            "name": "NYC Area",
-                            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
-                        }
-                    ],
-                    "id": 1234567,
-                    "language": "eng",
-                    "last_seen_on": "2020-03-19T16:37:38.453883-05:00",
-                    "name": "Ben Haggerty",
-                    "status": "active",
-                    "timezone": "America/Guayaquil",
-                    "urns": [
-                        "tel:+12065551212",
-                        "facebook:1122334455667788",
-                        "mailto:ben@macklemore",
-                        "tel:+17184567890"
-                    ],
-                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                },
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
                 "environment": {
                     "allowed_languages": [
@@ -681,20 +619,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "contact": {
-                        "created_on": "2018-01-01T12:00:00Z",
-                        "id": 1234567,
-                        "language": "eng",
-                        "name": "Ben Haggerty",
-                        "status": "active",
-                        "timezone": "America/Guayaquil",
-                        "urns": [
-                            "tel:+12065551212",
-                            "facebook:1122334455667788",
-                            "mailto:ben@macklemore"
-                        ],
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "environment": {
                         "allowed_languages": [
                             "eng",
@@ -743,20 +667,6 @@
         }
     ],
     "trigger": {
-        "contact": {
-            "created_on": "2018-01-01T12:00:00Z",
-            "id": 1234567,
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "urns": [
-                "tel:+12065551212",
-                "facebook:1122334455667788",
-                "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "environment": {
             "allowed_languages": [
                 "eng",
