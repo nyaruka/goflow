@@ -1,3 +1,7 @@
+v0.247.9 (2025-06-20)
+-------------------------
+ * Add flows.NewCallUUID
+
 v0.247.8 (2025-06-20)
 -------------------------
  * Make calls objects with real channels and add UUID
