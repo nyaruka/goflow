@@ -8,6 +8,9 @@ import (
 
 type CallUUID uuids.UUID
 
+// NewCallUUID generates a new UUID for a call
+func NewCallUUID() CallUUID { return CallUUID(uuids.NewV7()) }
+
 // Call represents a call over a specific channel and URN
 type Call struct {
 	uuid    CallUUID
