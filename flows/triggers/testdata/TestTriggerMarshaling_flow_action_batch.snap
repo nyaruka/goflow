@@ -1,5 +1,5 @@
 {
-    "type": "manual",
+    "type": "flow_action",
     "environment": {
         "date_format": "YYYY-MM-DD",
         "time_format": "tt:mm",
@@ -25,17 +25,14 @@
             "tel:+12065551212"
         ]
     },
-    "call": {
-        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
-        "channel": {
-            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo"
-        },
-        "urn": "tel:+12065551212"
-    },
     "batch": true,
-    "params": {
-        "foo": "bar"
+    "history": {
+        "parent_uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
+        "ancestors": 1,
+        "ancestors_since_input": 1
     },
-    "triggered_on": "2025-05-04T12:30:59.123456789Z"
+    "triggered_on": "2025-05-04T12:30:57.123456789Z",
+    "run_summary": {
+        "uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"
+    }
 }

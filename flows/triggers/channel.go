@@ -76,12 +76,6 @@ func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEve
 	}
 }
 
-// WithCall sets the call for the trigger
-func (b *ChannelBuilder) WithCall(call *flows.Call) *ChannelBuilder {
-	b.t.call = call
-	return b
-}
-
 // WithParams sets the params for the trigger
 func (b *ChannelBuilder) WithParams(params *types.XObject) *ChannelBuilder {
 	b.t.params = params

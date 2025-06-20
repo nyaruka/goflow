@@ -23,7 +23,7 @@ assets, _ := engine.NewSessionAssets(env, source, nil)
 contact := flows.NewContact(assets, ...)
 trigger := triggers.NewBuilder(env, contact, flow.Reference()).Manual().Build()
 eng := engine.NewBuilder().Build()
-session, sprint, err := eng.NewSession(assets, trigger)
+session, sprint, err := eng.NewSession(ctx, assets, trigger, nil)
 ```
 
 ## Sessions

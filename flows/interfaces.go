@@ -207,8 +207,6 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Contact() *Contact
 	SetContact(*Contact)
-	Call() *Call
-	SetCall(*Call)
 	Batch() bool
 	Params() *types.XObject
 	History() *SessionHistory
@@ -290,8 +288,8 @@ type EngineOptions struct {
 
 // Engine provides callers with session starting and resuming
 type Engine interface {
-	NewSession(context.Context, SessionAssets, Trigger) (Session, Sprint, error)
-	ReadSession(SessionAssets, []byte, assets.MissingCallback) (Session, error)
+	NewSession(context.Context, SessionAssets, Trigger, *Call) (Session, Sprint, error)
+	ReadSession(SessionAssets, []byte, *Call, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
 	Services() Services

@@ -348,7 +348,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
-		session, _, _ := eng.NewSession(context.Background(), sa, trigger)
+		session, _, _ := eng.NewSession(context.Background(), sa, trigger, nil)
 		afterJSON := jsonx.MustMarshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)

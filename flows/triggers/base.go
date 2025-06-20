@@ -36,7 +36,6 @@ type baseTrigger struct {
 	environment envs.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
-	call        *flows.Call
 	batch       bool
 	params      *types.XObject
 	history     *flows.SessionHistory
@@ -50,7 +49,6 @@ func newBaseTrigger(typeName string, env envs.Environment, flow *assets.FlowRefe
 		environment: env,
 		flow:        flow,
 		contact:     contact,
-		call:        call,
 		batch:       batch,
 		history:     history,
 		triggeredOn: dates.Now(),
@@ -70,9 +68,6 @@ func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 func (t *baseTrigger) Contact() *flows.Contact     { return t.contact }
 func (t *baseTrigger) SetContact(c *flows.Contact) { t.contact = c }
 
-func (t *baseTrigger) Call() *flows.Call     { return t.call }
-func (t *baseTrigger) SetCall(c *flows.Call) { t.call = c }
-
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session) error {
 	// try to load the flow
@@ -81,7 +76,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 		return fmt.Errorf("unable to load %s: %w", t.Flow(), err)
 	}
 
-	if flow.Type() == flows.FlowTypeVoice && t.call == nil {
+	if flow.Type() == flows.FlowTypeVoice && session.Call() == nil {
 		return errors.New("unable to trigger voice flow without call")
 	}
 
@@ -222,9 +217,6 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 			return fmt.Errorf("unable to read environment: %w", err)
 		}
 	}
-	if e.Call != nil {
-		t.call = e.Call.Unmarshal(sa, missing)
-	}
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
 			return fmt.Errorf("unable to read params: %w", err)
@@ -253,9 +245,6 @@ func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 		if err != nil {
 			return err
 		}
-	}
-	if t.call != nil {
-		e.Call = t.call.Marshal()
 	}
 	if t.params != nil {
 		e.Params, err = jsonx.Marshal(t.params)

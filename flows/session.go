@@ -71,6 +71,8 @@ type Session interface {
 	Contact() *Contact
 	SetContact(*Contact)
 
+	Call() *Call
+
 	Input() Input
 	SetInput(Input)
 

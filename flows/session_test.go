@@ -39,7 +39,7 @@ func TestHistory(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build())
+	session, _, err := eng.NewSession(context.Background(), sa, triggers.NewBuilder(env, flow, contact).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.SessionUUID(""), session.History().ParentUUID)

@@ -19,7 +19,6 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -241,7 +240,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -276,7 +275,7 @@ func TestSetResult(t *testing.T) {
 	require.NoError(t, err)
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, trigger)
+	session, _, err := eng.NewSession(context.Background(), sa, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

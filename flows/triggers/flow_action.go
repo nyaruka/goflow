@@ -89,12 +89,6 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 	}
 }
 
-// WithCall sets the call for the trigger
-func (b *FlowActionBuilder) WithCall(call *flows.Call) *FlowActionBuilder {
-	b.t.call = call
-	return b
-}
-
 // AsBatch sets batch mode on for the trigger
 func (b *FlowActionBuilder) AsBatch() *FlowActionBuilder {
 	b.t.batch = true

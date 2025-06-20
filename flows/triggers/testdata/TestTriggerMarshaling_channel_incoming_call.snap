@@ -25,14 +25,6 @@
             "tel:+12065551212"
         ]
     },
-    "call": {
-        "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
-        "channel": {
-            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo"
-        },
-        "urn": "tel:+12065551212"
-    },
     "triggered_on": "2025-05-04T12:30:54.123456789Z",
     "event": {
         "type": "incoming_call",

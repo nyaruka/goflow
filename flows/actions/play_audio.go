@@ -58,7 +58,7 @@ func (a *PlayAudioAction) Execute(ctx context.Context, run flows.Run, step flows
 	}
 
 	// an IVR flow must have been started with a call
-	call := run.Session().Trigger().Call()
+	call := run.Session().Call()
 
 	// if we have an audio URL, turn it into a message
 	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
