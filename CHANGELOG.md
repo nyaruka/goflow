@@ -1,3 +1,7 @@
+v0.247.10 (2025-06-20)
+-------------------------
+ * Remove calls from triggers and instead require passing via engine methods
+
 v0.247.9 (2025-06-20)
 -------------------------
  * Add flows.NewCallUUID
