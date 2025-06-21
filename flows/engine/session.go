@@ -58,12 +58,9 @@ func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
 func (s *session) CurrentResume() flows.Resume { return s.currentResume }
 
-func (s *session) UUID() flows.SessionUUID { return s.uuid }
-
-func (s *session) Type() flows.FlowType         { return s.type_ }
-func (s *session) SetType(type_ flows.FlowType) { s.type_ = type_ }
-func (s *session) CreatedOn() time.Time         { return s.createdOn }
-
+func (s *session) UUID() flows.SessionUUID             { return s.uuid }
+func (s *session) Type() flows.FlowType                { return s.type_ }
+func (s *session) CreatedOn() time.Time                { return s.createdOn }
 func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
 func (s *session) Contact() *flows.Contact             { return s.contact }
@@ -171,12 +168,14 @@ func (s *session) Engine() flows.Engine { return s.engine }
 //------------------------------------------------------------------------------------------
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
-func (s *session) start(ctx context.Context, trigger flows.Trigger) (flows.Sprint, error) {
+func (s *session) start(ctx context.Context, trigger flows.Trigger, flow flows.Flow) (flows.Sprint, error) {
 	sprint := newEmptySprint(true)
 
 	if err := s.prepareForSprint(); err != nil {
 		return sprint, err
 	}
+
+	s.PushFlow(flow, nil, false)
 
 	if err := s.trigger.Initialize(s); err != nil {
 		return sprint, err
@@ -466,10 +465,6 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 		// events because we didn't generate it
 		if trigger.Event() != nil {
 			run.LogEvent(nil, trigger.Event())
-		}
-
-		if err := trigger.InitializeRun(run); err != nil {
-			return step, nil, "", nil
 		}
 	}
 

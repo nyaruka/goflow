@@ -70,14 +70,13 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 	return &KeywordMatch{Type: typeName, Keyword: keyword}
 }
 
-// InitializeRun performs additional initialization when we visit our first node
-func (t *MsgTrigger) InitializeRun(run flows.Run) error {
+// Initialize initializes the session
+func (t *MsgTrigger) Initialize(session flows.Session) error {
 	// update our input
-	input := inputs.NewMsg(run.Session(), t.event.Msg, t.triggeredOn)
+	input := inputs.NewMsg(session, t.event.Msg, t.triggeredOn)
+	session.SetInput(input)
 
-	run.Session().SetInput(input)
-
-	return t.baseTrigger.InitializeRun(run)
+	return t.baseTrigger.Initialize(session)
 }
 
 // Context for msg triggers additionally exposes the keyword match

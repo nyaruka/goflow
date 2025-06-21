@@ -2,6 +2,8 @@ package engine
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"text/template"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -20,8 +22,19 @@ type engine struct {
 
 // NewSession creates a new session
 func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env envs.Environment, contact *flows.Contact, trigger flows.Trigger, call *flows.Call) (flows.Session, flows.Sprint, error) {
+	// try to load the flow
+	flow, err := sa.Flows().Get(trigger.Flow().UUID)
+	if err != nil {
+		return nil, nil, fmt.Errorf("unable to load %s: %w", trigger.Flow(), err)
+	}
+
+	if flow.Type() == flows.FlowTypeVoice && call == nil {
+		return nil, nil, errors.New("unable to trigger voice flow without call")
+	}
+
 	s := &session{
 		uuid:       flows.NewSessionUUID(),
+		type_:      flow.Type(),
 		createdOn:  dates.Now(),
 		env:        env,
 		engine:     e,
@@ -34,7 +47,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 		call:       call,
 	}
 
-	sprint, err := s.start(ctx, trigger)
+	sprint, err := s.start(ctx, trigger, flow)
 
 	return s, sprint, err
 }

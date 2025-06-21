@@ -200,8 +200,6 @@ type Trigger interface {
 	Contextable
 
 	Initialize(Session) error
-	InitializeRun(Run) error
-
 	Event() Event
 	Flow() *assets.FlowReference
 	Batch() bool

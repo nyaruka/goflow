@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
@@ -61,24 +60,6 @@ func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Initialize initializes the session
 func (t *baseTrigger) Initialize(session flows.Session) error {
-	// try to load the flow
-	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
-	if err != nil {
-		return fmt.Errorf("unable to load %s: %w", t.Flow(), err)
-	}
-
-	if flow.Type() == flows.FlowTypeVoice && session.Call() == nil {
-		return errors.New("unable to trigger voice flow without call")
-	}
-
-	session.SetType(flow.Type())
-	session.PushFlow(flow, nil, false)
-
-	return nil
-}
-
-// InitializeRun performs additional initialization when we create our first run
-func (t *baseTrigger) InitializeRun(run flows.Run) error {
 	return nil
 }
 
