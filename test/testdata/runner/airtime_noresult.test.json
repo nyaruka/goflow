@@ -13,6 +13,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -44,20 +45,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -109,20 +96,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "hh:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Airtime Test",
                         "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
@@ -137,14 +110,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "time_format": "hh:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Airtime Test",
             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"

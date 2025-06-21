@@ -26,6 +26,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -44,21 +45,6 @@
                 "call_uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "default_country": "US",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -92,21 +78,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "default_country": "US",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "IVR Redirect",
                         "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
@@ -143,21 +114,6 @@
                 "call_uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "default_country": "US",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -219,21 +175,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "default_country": "US",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "IVR Redirect",
                         "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
@@ -257,20 +198,6 @@
         }
     ],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "default_country": "US",
-            "number_format": {
-                "decimal_symbol": ".",
-                "digit_grouping_symbol": ","
-            },
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "IVR Redirect",
             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"

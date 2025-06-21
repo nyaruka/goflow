@@ -64,7 +64,7 @@ type TicketBuilder struct {
 func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosedEvent) *TicketBuilder {
 	return &TicketBuilder{
 		t: &TicketTrigger{
-			baseTrigger: newBaseTrigger(TypeTicket, b.environment, b.flow, false, nil),
+			baseTrigger: newBaseTrigger(TypeTicket, b.flow, false, nil),
 			event:       event,
 			ticket:      ticket,
 		},

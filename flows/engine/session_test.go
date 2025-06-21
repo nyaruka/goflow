@@ -137,7 +137,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
 	eng := engine.NewBuilder().Build()
-	_, err = eng.ReadSession(sessionAssets, sessionJSON, session.Contact(), nil, missing)
+	_, err = eng.ReadSession(sessionAssets, sessionJSON, session.Environment(), session.Contact(), nil, missing)
 	require.NoError(t, err)
 
 	refs := make([]string, len(missingAssets))
@@ -178,10 +178,10 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	require.NoError(t, err)
 
 	env := envs.NewBuilder().Build()
-	trigger := triggers.NewBuilder(env, assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", "")).Manual().Build()
+	trigger := triggers.NewBuilder(assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", "")).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, sprint, err := eng.NewSession(context.Background(), sa, contact, trigger, nil)
+	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, len(sprint.Events()))
@@ -343,7 +343,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()
-	session1, _, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).Manual().Build(), nil)
+	session1, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.EmptyHistory, session1.History())
@@ -353,7 +353,7 @@ func TestSessionHistory(t *testing.T) {
 	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(context.Background(), sa, contact, triggers.NewBuilder(env, flow).FlowAction(history, runSummaryJSON).Build(), nil)
+	session2, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).FlowAction(history, runSummaryJSON).Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, &flows.SessionHistory{

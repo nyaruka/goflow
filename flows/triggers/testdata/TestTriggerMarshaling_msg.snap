@@ -1,16 +1,5 @@
 {
     "type": "msg",
-    "environment": {
-        "date_format": "YYYY-MM-DD",
-        "time_format": "tt:mm",
-        "timezone": "UTC",
-        "number_format": {
-            "decimal_symbol": ".",
-            "digit_grouping_symbol": ","
-        },
-        "input_collation": "default",
-        "redaction_policy": "none"
-    },
     "flow": {
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"

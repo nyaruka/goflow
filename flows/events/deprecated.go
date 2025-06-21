@@ -10,6 +10,7 @@ import (
 func init() {
 	registerType(TypeClassifierCalled, func() flows.Event { return &ClassifierCalledEvent{} })
 	registerType(TypeContactRefreshed, func() flows.Event { return &ContactRefreshedEvent{} })
+	registerType(TypeEnvironmentRefreshed, func() flows.Event { return &EnvironmentRefreshedEvent{} })
 }
 
 // TypeClassifierCalled is our type for the classification event
@@ -43,4 +44,27 @@ type ContactRefreshedEvent struct {
 	BaseEvent
 
 	Contact json.RawMessage `json:"contact"`
+}
+
+// TypeEnvironmentRefreshed is the type of our environment changed event
+const TypeEnvironmentRefreshed string = "environment_refreshed"
+
+// EnvironmentRefreshedEvent events are sent by the caller to tell the engine to update the session environment.
+//
+//	{
+//	  "type": "environment_refreshed",
+//	  "created_on": "2006-01-02T15:04:05Z",
+//	  "environment": {
+//	    "date_format": "YYYY-MM-DD",
+//	    "time_format": "hh:mm",
+//	    "timezone": "Africa/Kigali",
+//	    "allowed_languages": ["eng", "fra"]
+//	  }
+//	}
+//
+// @event environment_refreshed
+type EnvironmentRefreshedEvent struct {
+	BaseEvent
+
+	Environment json.RawMessage `json:"environment"`
 }

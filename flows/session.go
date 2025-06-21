@@ -65,12 +65,8 @@ type Session interface {
 	CreatedOn() time.Time
 
 	Environment() envs.Environment
-	SetEnvironment(envs.Environment)
 	MergedEnvironment() envs.Environment
-
 	Contact() *Contact
-	SetContact(*Contact)
-
 	Call() *Call
 
 	Input() Input

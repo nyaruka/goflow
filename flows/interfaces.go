@@ -203,7 +203,6 @@ type Trigger interface {
 	InitializeRun(Run) error
 
 	Event() Event
-	Environment() envs.Environment
 	Flow() *assets.FlowReference
 	Batch() bool
 	Params() *types.XObject
@@ -226,7 +225,6 @@ type Resume interface {
 	Apply(Run, EventCallback)
 
 	Event() Event
-	Environment() envs.Environment
 	ResumedOn() time.Time
 }
 
@@ -285,8 +283,8 @@ type EngineOptions struct {
 
 // Engine provides callers with session starting and resuming
 type Engine interface {
-	NewSession(context.Context, SessionAssets, *Contact, Trigger, *Call) (Session, Sprint, error)
-	ReadSession(SessionAssets, []byte, *Contact, *Call, assets.MissingCallback) (Session, error)
+	NewSession(context.Context, SessionAssets, envs.Environment, *Contact, Trigger, *Call) (Session, Sprint, error)
+	ReadSession(SessionAssets, []byte, envs.Environment, *Contact, *Call, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
 	Services() Services

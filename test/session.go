@@ -380,17 +380,6 @@ var sessionTrigger = `{
         },
         "status": "active"
     },
-    "environment": {
-        "date_format": "DD-MM-YYYY",
-        "allowed_languages": [
-            "eng", 
-            "spa"
-        ],
-        "default_country": "US",
-        "redaction_policy": "none",
-        "time_format": "tt:mm",
-        "timezone": "America/Guayaquil"
-    },
     "params": {"source": "website","address": {"state": "WA"}}
 }`
 
@@ -490,17 +479,7 @@ var voiceSessionTrigger = `{
         "type": "incoming_call",
         "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
     },
-    "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
-    "environment": {
-        "date_format": "DD-MM-YYYY",
-        "allowed_languages": [
-            "eng", 
-            "spa"
-        ],
-        "redaction_policy": "none",
-        "time_format": "hh:mm",
-        "timezone": "America/Guayaquil"
-    }
+    "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"}
 }`
 
 // CreateTestSession creates a standard example session for testing
@@ -520,17 +499,21 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read our trigger
-	triggerJSON := []byte(sessionTrigger)
-	triggerJSON = JSONReplace(triggerJSON, []string{"environment", "redaction_policy"}, fmt.Appendf(nil, `"%s"`, redact))
-
-	trigger, err := triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
+	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
 
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	env := envs.NewBuilder().
+		WithAllowedLanguages("eng", "spa").
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithTimezone(tz).
+		WithRedactionPolicy(redact).
+		Build()
 	eng := NewEngine()
 
-	session, _, err := eng.NewSession(ctx, sa, contact, trigger, nil)
+	session, _, err := eng.NewSession(ctx, sa, env, contact, trigger, nil)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test session: %w", err)
 	}
@@ -566,8 +549,15 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 	channel := sa.Channels().Get("fd47a886-451b-46fb-bcb6-242a4046c0c0")
 	call := flows.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
 
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	env := envs.NewBuilder().
+		WithAllowedLanguages("eng", "spa").
+		WithDateFormat(envs.DateFormatDayMonthYear).
+		WithTimezone(tz).
+		Build()
 	eng := NewEngine()
-	session, sprint, err := eng.NewSession(context.Background(), sa, contact, trigger, call)
+
+	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, call)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error starting test voice session: %w", err)
 	}
@@ -729,12 +719,12 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
 		msg := flows.NewMsgIn(flows.NewMsgUUID(), urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
-		trigger = triggers.NewBuilder(b.env, flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
+		trigger = triggers.NewBuilder(flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
 	} else {
-		trigger = triggers.NewBuilder(b.env, flow.Reference(false)).Manual().Build()
+		trigger = triggers.NewBuilder(flow.Reference(false)).Manual().Build()
 	}
 
-	s, sp, err := b.engine.NewSession(context.Background(), sa, contact, trigger, nil)
+	s, sp, err := b.engine.NewSession(context.Background(), sa, b.env, contact, trigger, nil)
 	return sa, s, sp, err
 }
 
@@ -759,7 +749,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 	// re-use same engine instance
 	eng := session.Engine()
 
-	session, err = eng.ReadSession(sa, sessionJSON, session.Contact(), nil, assets.IgnoreMissing)
+	session, err = eng.ReadSession(sa, sessionJSON, session.Environment(), session.Contact(), nil, assets.IgnoreMissing)
 	if err != nil {
 		return nil, nil, err
 	}

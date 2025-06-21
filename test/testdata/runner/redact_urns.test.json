@@ -22,6 +22,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "http_mocks": {
         "http://localhost/?cmd=success": [
             {
@@ -41,7 +42,7 @@
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
                         "locale": "eng-US",
-                        "text": "Hi 1234567! Your number is ********",
+                        "text": "Hi 1234567! Your number is (206) 555-1212",
                         "urn": "tel:+12065551212",
                         "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                     },
@@ -51,7 +52,7 @@
                 {
                     "created_on": "2025-05-04T12:30:55.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
+                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 32\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:+12065551212\") }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "retries": 0,
                     "status": "success",
@@ -65,20 +66,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "urns",
-                    "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -91,7 +78,7 @@
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
                                     "locale": "eng-US",
-                                    "text": "Hi 1234567! Your number is ********",
+                                    "text": "Hi 1234567! Your number is (206) 555-1212",
                                     "urn": "tel:+12065551212",
                                     "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                                 },
@@ -101,7 +88,7 @@
                             {
                                 "created_on": "2025-05-04T12:30:55.123456789Z",
                                 "elapsed_ms": 1000,
-                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 28\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:********\") }",
+                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 32\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:+12065551212\") }",
                                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                                 "retries": 0,
                                 "status": "success",
@@ -131,20 +118,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "urns",
-                        "time_format": "hh:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Registration",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -159,15 +132,6 @@
     ],
     "resumes": [],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "redaction_policy": "urns",
-            "time_format": "hh:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Registration",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"

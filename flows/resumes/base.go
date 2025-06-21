@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -50,14 +49,6 @@ func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
 func (r *baseResume) Apply(run flows.Run, logEvent flows.EventCallback) {
-	if r.environment != nil {
-		if !run.Session().Environment().Equal(r.environment) {
-			logEvent(events.NewEnvironmentRefreshed(r.environment))
-		}
-
-		run.Session().SetEnvironment(r.environment)
-	}
-
 	if run.Status() == flows.RunStatusWaiting {
 		run.SetStatus(flows.RunStatusActive)
 	}

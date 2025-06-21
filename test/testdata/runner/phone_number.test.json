@@ -13,6 +13,7 @@
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
+    "environment": null,
     "outputs": [
         {
             "events": [
@@ -50,21 +51,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -117,21 +103,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Phone Numbers",
                         "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
@@ -195,21 +166,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2020-03-19T16:37:31.207472-05:00",
                     "text": "135532",
@@ -329,21 +285,6 @@
                 ],
                 "status": "waiting",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Phone Numbers",
                         "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
@@ -420,21 +361,6 @@
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                 "created_on": "0001-01-01T00:00:00Z",
-                "environment": {
-                    "allowed_languages": [
-                        "eng",
-                        "eng"
-                    ],
-                    "date_format": "YYYY-MM-DD",
-                    "input_collation": "default",
-                    "number_format": {
-                        "decimal_symbol": ".",
-                        "digit_grouping_symbol": ","
-                    },
-                    "redaction_policy": "none",
-                    "time_format": "tt:mm",
-                    "timezone": "America/Los_Angeles"
-                },
                 "input": {
                     "created_on": "2020-03-19T16:37:38.453883-05:00",
                     "text": "718-456-7890",
@@ -619,21 +545,6 @@
                 ],
                 "status": "completed",
                 "trigger": {
-                    "environment": {
-                        "allowed_languages": [
-                            "eng",
-                            "eng"
-                        ],
-                        "date_format": "YYYY-MM-DD",
-                        "input_collation": "default",
-                        "number_format": {
-                            "decimal_symbol": ".",
-                            "digit_grouping_symbol": ","
-                        },
-                        "redaction_policy": "none",
-                        "time_format": "tt:mm",
-                        "timezone": "America/Los_Angeles"
-                    },
                     "flow": {
                         "name": "Phone Numbers",
                         "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
@@ -667,20 +578,6 @@
         }
     ],
     "trigger": {
-        "environment": {
-            "allowed_languages": [
-                "eng",
-                "eng"
-            ],
-            "date_format": "YYYY-MM-DD",
-            "number_format": {
-                "decimal_symbol": ".",
-                "digit_grouping_symbol": ","
-            },
-            "redaction_policy": "none",
-            "time_format": "tt:mm",
-            "timezone": "America/Los_Angeles"
-        },
         "flow": {
             "name": "Phone Numbers",
             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
