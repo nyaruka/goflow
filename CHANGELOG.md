@@ -1,3 +1,7 @@
+v0.248.1 (2025-06-21)
+-------------------------
+ * Cleanup environment stuff in resumes
+
 v0.248.0 (2025-06-21)
 -------------------------
  * Simplify starting new sessions
