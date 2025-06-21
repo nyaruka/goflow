@@ -3,7 +3,6 @@ package resumes
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -42,9 +41,9 @@ type MsgResume struct {
 }
 
 // NewMsg creates a new message resume with the passed in values
-func NewMsg(env envs.Environment, event *events.MsgReceivedEvent) *MsgResume {
+func NewMsg(event *events.MsgReceivedEvent) *MsgResume {
 	return &MsgResume{
-		baseResume: newBaseResume(TypeMsg, env),
+		baseResume: newBaseResume(TypeMsg),
 		event:      event,
 	}
 }

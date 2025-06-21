@@ -221,7 +221,6 @@ type Resume interface {
 	Contextable
 
 	Apply(Run, EventCallback)
-
 	Event() Event
 	ResumedOn() time.Time
 }

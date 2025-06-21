@@ -186,13 +186,13 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 		// create our resume
 		if text == "/timeout" {
-			resume = resumes.NewWaitTimeout(nil)
+			resume = resumes.NewWaitTimeout()
 		} else if strings.HasPrefix(text, "/dial") {
 			status := flows.DialStatus(strings.TrimSpace(text[5:]))
-			resume = resumes.NewDial(nil, flows.NewDial(status, 10))
+			resume = resumes.NewDial(flows.NewDial(status, 10))
 		} else {
 			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()))
-			resume = resumes.NewMsg(nil, msg)
+			resume = resumes.NewMsg(msg)
 
 			printEvents([]flows.Event{msg}, out)
 		}

@@ -36,9 +36,9 @@ type DialResume struct {
 }
 
 // NewDial creates a new dial resume
-func NewDial(env envs.Environment, dial *flows.Dial) *DialResume {
+func NewDial(dial *flows.Dial) *DialResume {
 	return &DialResume{
-		baseResume: newBaseResume(TypeDial, env),
+		baseResume: newBaseResume(TypeDial),
 		dial:       dial,
 	}
 }

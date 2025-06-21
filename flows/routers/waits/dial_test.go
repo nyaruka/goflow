@@ -53,10 +53,10 @@ func TestDialWait(t *testing.T) {
 	assert.Equal(t, "dial_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(nil)))
+	assert.False(t, wait.Accepts(resumes.NewWaitTimeout()))
 
 	// try to end with dial resume type
-	assert.True(t, wait.Accepts(resumes.NewDial(nil, flows.NewDial(flows.DialStatusAnswered, 5))))
+	assert.True(t, wait.Accepts(resumes.NewDial(flows.NewDial(flows.DialStatusAnswered, 5))))
 
 	// try when wait has expression error but still generates valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "+593979123456@(1 / 0)", "dial_limit_seconds": 10, "call_limit_seconds": 120}`))
