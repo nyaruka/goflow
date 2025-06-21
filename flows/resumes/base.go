@@ -1,12 +1,10 @@
 package resumes
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -31,21 +29,19 @@ func RegisteredTypes() map[string]ReadFunc {
 
 // base of all resume types
 type baseResume struct {
-	type_       string
-	environment envs.Environment
-	resumedOn   time.Time
+	type_     string
+	resumedOn time.Time
 }
 
 // creates a new base resume
-func newBaseResume(typeName string, env envs.Environment) baseResume {
-	return baseResume{type_: typeName, environment: env, resumedOn: dates.Now()}
+func newBaseResume(typeName string) baseResume {
+	return baseResume{type_: typeName, resumedOn: dates.Now()}
 }
 
 // Type returns the type of this resume
-func (r *baseResume) Type() string                  { return r.type_ }
-func (r *baseResume) Event() flows.Event            { return nil }
-func (r *baseResume) Environment() envs.Environment { return r.environment }
-func (r *baseResume) ResumedOn() time.Time          { return r.resumedOn }
+func (r *baseResume) Type() string         { return r.type_ }
+func (r *baseResume) Event() flows.Event   { return nil }
+func (r *baseResume) ResumedOn() time.Time { return r.resumedOn }
 
 // Apply applies our state changes and saves any events to the run
 func (r *baseResume) Apply(run flows.Run, logEvent flows.EventCallback) {
@@ -92,9 +88,8 @@ func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {
 //------------------------------------------------------------------------------------------
 
 type baseResumeEnvelope struct {
-	Type        string          `json:"type" validate:"required"`
-	Environment json.RawMessage `json:"environment,omitempty"`
-	ResumedOn   time.Time       `json:"resumed_on" validate:"required"`
+	Type      string    `json:"type" validate:"required"`
+	ResumedOn time.Time `json:"resumed_on" validate:"required"`
 }
 
 // ReadResume reads a resume from the given JSON
@@ -112,29 +107,13 @@ func ReadResume(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 }
 
 func (r *baseResume) unmarshal(sa flows.SessionAssets, e *baseResumeEnvelope, missing assets.MissingCallback) error {
-	var err error
-
 	r.type_ = e.Type
 	r.resumedOn = e.ResumedOn
-
-	if e.Environment != nil {
-		if r.environment, err = envs.ReadEnvironment(e.Environment); err != nil {
-			return fmt.Errorf("unable to read environment: %w", err)
-		}
-	}
 	return nil
 }
 
 func (r *baseResume) marshal(e *baseResumeEnvelope) error {
-	var err error
 	e.Type = r.type_
 	e.ResumedOn = r.resumedOn
-
-	if r.environment != nil {
-		e.Environment, err = jsonx.Marshal(r.environment)
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }

@@ -3,7 +3,6 @@ package resumes
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -29,9 +28,9 @@ type WaitTimeoutResume struct {
 }
 
 // NewWaitTimeout creates a new timeout resume with the passed in values
-func NewWaitTimeout(env envs.Environment) *WaitTimeoutResume {
+func NewWaitTimeout() *WaitTimeoutResume {
 	return &WaitTimeoutResume{
-		baseResume: newBaseResume(TypeWaitTimeout, env),
+		baseResume: newBaseResume(TypeWaitTimeout),
 	}
 }
 
