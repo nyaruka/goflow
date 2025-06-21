@@ -1,3 +1,8 @@
+v0.248.0 (2025-06-21)
+-------------------------
+ * Simplify starting new sessions
+ * Remove environment and contact from triggers and resumes
+
 v0.247.10 (2025-06-20)
 -------------------------
  * Remove calls from triggers and instead require passing via engine methods
