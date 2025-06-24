@@ -60,7 +60,7 @@ var _ flows.Resume = (*WaitExpirationResume)(nil)
 type waitExpirationResumeEnvelope struct {
 	baseResumeEnvelope
 
-	Event *events.WaitExpiredEvent `json:"event"` // TODO make required
+	Event *events.WaitExpiredEvent `json:"event" validate:"required"`
 }
 
 func readWaitExpirationResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {

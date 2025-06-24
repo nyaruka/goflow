@@ -179,9 +179,13 @@
     ],
     "resumes": [
         {
-            "dial": {
-                "duration": 10,
-                "status": "busy"
+            "event": {
+                "type": "dial_ended",
+                "created_on": "2021-01-21T12:28:08.807787-05:00",
+                "dial": {
+                    "duration": 10,
+                    "status": "busy"
+                }
             },
             "resumed_on": "2021-01-21T12:28:08.807787-05:00",
             "type": "dial"
