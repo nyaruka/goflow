@@ -66,8 +66,7 @@ var _ flows.Resume = (*DialResume)(nil)
 type dialResumeEnvelope struct {
 	baseResumeEnvelope
 
-	Event *events.DialEndedEvent `json:"event"`          // TODO make required
-	Dial  *flows.Dial            `json:"dial,omitempty"` // used by older sessions
+	Event *events.DialEndedEvent `json:"event" validate:"required"`
 }
 
 func readDialResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
@@ -77,14 +76,6 @@ func readDialResume(sessionAssets flows.SessionAssets, data []byte, missing asse
 	}
 
 	r := &DialResume{event: e.Event}
-
-	// older resumes will have dial instead of event so convert that into an event
-	if e.Dial != nil {
-		r.event = &events.DialEndedEvent{
-			BaseEvent: events.BaseEvent{Type_: events.TypeDialEnded, CreatedOn_: e.baseResumeEnvelope.ResumedOn},
-			Dial:      e.Dial,
-		}
-	}
 
 	if err := r.unmarshal(sessionAssets, &e.baseResumeEnvelope, missing); err != nil {
 		return nil, err

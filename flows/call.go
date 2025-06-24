@@ -32,7 +32,7 @@ func (c *Call) URN() urns.URN     { return c.urn }
 //------------------------------------------------------------------------------------------
 
 type CallEnvelope struct {
-	UUID    CallUUID                 `json:"uuid"    validate:"omitempty,uuid"` // TODO make required
+	UUID    CallUUID                 `json:"uuid"    validate:"required,uuid"`
 	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 	URN     urns.URN                 `json:"urn"     validate:"required,urn"`
 }
