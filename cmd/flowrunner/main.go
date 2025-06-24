@@ -258,8 +258,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
 	case *events.ContactNameChangedEvent:
 		msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
-	case *events.ContactRefreshedEvent:
-		msg = "👤 contact refreshed on resume"
 	case *events.ContactTimezoneChangedEvent:
 		msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
 	case *events.DialEndedEvent:
@@ -268,8 +266,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = "⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)..."
 	case *events.EmailSentEvent:
 		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
-	case *events.EnvironmentRefreshedEvent:
-		msg = "⚙️ environment refreshed on resume"
 	case *events.ErrorEvent:
 		msg = fmt.Sprintf("⚠️ %s", typed.Text)
 	case *events.FailureEvent:
@@ -294,7 +290,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		} else {
 			msg = "⏳ waiting for message..."
 		}
-	case *events.RunExpiredEvent:
+	case *events.WaitExpiredEvent:
 		msg = "📆 exiting due to expiration"
 	case *events.RunResultChangedEvent:
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)

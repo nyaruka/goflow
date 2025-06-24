@@ -197,31 +197,25 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:10.123456789Z",
-                    "run_uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                    "type": "run_expired"
-                },
-                {
-                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "created_on": "2025-05-04T12:31:11.123456789Z",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "text": "deprecated context value accessed: child.run.status: use child.status instead",
                     "type": "warning"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "created_on": "2025-05-04T12:31:16.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your middle name?",
                         "unsendable_reason": "no_destination",
-                        "uuid": "01969b47-7e9b-76f8-acca-bbca70987315"
+                        "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                     },
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:22.123456789Z",
-                    "expires_on": "2025-05-04T14:31:21.123456789Z",
+                    "created_on": "2025-05-04T12:31:21.123456789Z",
+                    "expires_on": "2025-05-04T14:31:20.123456789Z",
                     "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_wait"
                 }
@@ -233,14 +227,14 @@
                     "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
                     "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                     "operand": "expired",
-                    "time": "2025-05-04T12:31:14.123456789Z"
+                    "time": "2025-05-04T12:31:13.123456789Z"
                 },
                 {
                     "destination_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                     "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                     "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
                     "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
-                    "time": "2025-05-04T12:31:19.123456789Z"
+                    "time": "2025-05-04T12:31:18.123456789Z"
                 }
             ],
             "session": {
@@ -294,25 +288,25 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "created_on": "2025-05-04T12:31:11.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "text": "deprecated context value accessed: child.run.status: use child.status instead",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
+                                "created_on": "2025-05-04T12:31:16.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "What's your middle name?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-7e9b-76f8-acca-bbca70987315"
+                                    "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                                 },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "expires_on": "2025-05-04T14:31:21.123456789Z",
+                                "created_on": "2025-05-04T12:31:21.123456789Z",
+                                "expires_on": "2025-05-04T14:31:20.123456789Z",
                                 "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                                 "type": "msg_wait"
                             }
@@ -323,7 +317,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:24.123456789Z",
+                        "modified_on": "2025-05-04T12:31:23.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -333,13 +327,13 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                             }
@@ -368,19 +362,17 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "run_uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                                "type": "wait_expired"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:09.123456789Z",
+                        "exited_on": "2025-05-04T12:31:10.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2025-05-04T12:31:11.123456789Z",
+                        "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                         "path": [
                             {
@@ -416,30 +408,24 @@
             "events": [
                 {
                     "created_on": "2025-05-04T12:31:26.123456789Z",
-                    "run_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                    "type": "run_expired"
-                },
-                {
-                    "created_on": "2025-05-04T12:31:28.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "text": "deprecated context value accessed: child.run.status: use child.status instead",
                     "type": "warning"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:33.123456789Z",
+                    "created_on": "2025-05-04T12:31:31.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your last name?",
                         "unsendable_reason": "no_destination",
-                        "uuid": "01969b47-bd1b-76f8-b62c-3c781ca3b5da"
+                        "uuid": "01969b47-b54b-76f8-b62c-3c781ca3b5da"
                     },
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:38.123456789Z",
-                    "expires_on": "2025-05-04T13:31:37.123456789Z",
+                    "created_on": "2025-05-04T12:31:36.123456789Z",
+                    "expires_on": "2025-05-04T13:31:35.123456789Z",
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_wait"
                 }
@@ -451,14 +437,14 @@
                     "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
                     "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                     "operand": "expired",
-                    "time": "2025-05-04T12:31:30.123456789Z"
+                    "time": "2025-05-04T12:31:28.123456789Z"
                 },
                 {
                     "destination_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                     "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                     "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
                     "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
-                    "time": "2025-05-04T12:31:35.123456789Z"
+                    "time": "2025-05-04T12:31:33.123456789Z"
                 }
             ],
             "session": {
@@ -480,25 +466,25 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:28.123456789Z",
+                                "created_on": "2025-05-04T12:31:26.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "text": "deprecated context value accessed: child.run.status: use child.status instead",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:33.123456789Z",
+                                "created_on": "2025-05-04T12:31:31.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "What's your last name?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-bd1b-76f8-b62c-3c781ca3b5da"
+                                    "uuid": "01969b47-b54b-76f8-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:38.123456789Z",
-                                "expires_on": "2025-05-04T13:31:37.123456789Z",
+                                "created_on": "2025-05-04T12:31:36.123456789Z",
+                                "expires_on": "2025-05-04T13:31:35.123456789Z",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             }
@@ -509,7 +495,7 @@
                             "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2025-05-04T12:31:40.123456789Z",
+                        "modified_on": "2025-05-04T12:31:38.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -518,13 +504,13 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:29.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:34.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             }
@@ -547,33 +533,31 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "created_on": "2025-05-04T12:31:11.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "text": "deprecated context value accessed: child.run.status: use child.status instead",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
+                                "created_on": "2025-05-04T12:31:16.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "What's your middle name?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-7e9b-76f8-acca-bbca70987315"
+                                    "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                                 },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "expires_on": "2025-05-04T14:31:21.123456789Z",
+                                "created_on": "2025-05-04T12:31:21.123456789Z",
+                                "expires_on": "2025-05-04T14:31:20.123456789Z",
                                 "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "run_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:23.165294-05:00",
+                                "type": "wait_expired"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:25.123456789Z",
@@ -582,7 +566,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:27.123456789Z",
+                        "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -592,13 +576,13 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                             }
@@ -627,19 +611,17 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "run_uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                                "type": "wait_expired"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:09.123456789Z",
+                        "exited_on": "2025-05-04T12:31:10.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2025-05-04T12:31:11.123456789Z",
+                        "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                         "path": [
                             {
@@ -672,14 +654,7 @@
             }
         },
         {
-            "events": [
-                {
-                    "created_on": "2025-05-04T12:31:42.123456789Z",
-                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-                    "type": "run_expired"
-                }
-            ],
+            "events": [],
             "segments": [],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -700,42 +675,40 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:28.123456789Z",
+                                "created_on": "2025-05-04T12:31:26.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "text": "deprecated context value accessed: child.run.status: use child.status instead",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:33.123456789Z",
+                                "created_on": "2025-05-04T12:31:31.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "What's your last name?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-bd1b-76f8-b62c-3c781ca3b5da"
+                                    "uuid": "01969b47-b54b-76f8-b62c-3c781ca3b5da"
                                 },
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:38.123456789Z",
-                                "expires_on": "2025-05-04T13:31:37.123456789Z",
+                                "created_on": "2025-05-04T12:31:36.123456789Z",
+                                "expires_on": "2025-05-04T13:31:35.123456789Z",
                                 "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:42.123456789Z",
-                                "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:29.501371-05:00",
+                                "type": "wait_expired"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:41.123456789Z",
+                        "exited_on": "2025-05-04T12:31:40.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
                             "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2025-05-04T12:31:43.123456789Z",
+                        "modified_on": "2025-05-04T12:31:40.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -744,13 +717,13 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:29.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
                                 "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:34.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                                 "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             }
@@ -773,33 +746,31 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "created_on": "2025-05-04T12:31:11.123456789Z",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "text": "deprecated context value accessed: child.run.status: use child.status instead",
                                 "type": "warning"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
+                                "created_on": "2025-05-04T12:31:16.123456789Z",
                                 "msg": {
                                     "locale": "eng-US",
                                     "text": "What's your middle name?",
                                     "unsendable_reason": "no_destination",
-                                    "uuid": "01969b47-7e9b-76f8-acca-bbca70987315"
+                                    "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                                 },
                                 "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "expires_on": "2025-05-04T14:31:21.123456789Z",
+                                "created_on": "2025-05-04T12:31:21.123456789Z",
+                                "expires_on": "2025-05-04T14:31:20.123456789Z",
                                 "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "run_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:23.165294-05:00",
+                                "type": "wait_expired"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:25.123456789Z",
@@ -808,7 +779,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:27.123456789Z",
+                        "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -818,13 +789,13 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
                                 "uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                                 "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
                             }
@@ -853,19 +824,17 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "run_uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                                "type": "wait_expired"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:09.123456789Z",
+                        "exited_on": "2025-05-04T12:31:10.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
-                        "modified_on": "2025-05-04T12:31:11.123456789Z",
+                        "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                         "path": [
                             {
@@ -900,16 +869,28 @@
     ],
     "resumes": [
         {
+            "event": {
+                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                "type": "wait_expired"
+            },
             "resumed_on": "2020-10-12T15:38:17.508225-05:00",
-            "type": "run_expiration"
+            "type": "wait_expiration"
         },
         {
+            "event": {
+                "created_on": "2020-10-12T15:38:23.165294-05:00",
+                "type": "wait_expired"
+            },
             "resumed_on": "2020-10-12T15:38:23.165294-05:00",
-            "type": "run_expiration"
+            "type": "wait_expiration"
         },
         {
+            "event": {
+                "created_on": "2020-10-12T15:38:29.501371-05:00",
+                "type": "wait_expired"
+            },
             "resumed_on": "2020-10-12T15:38:29.501371-05:00",
-            "type": "run_expiration"
+            "type": "wait_expiration"
         }
     ],
     "trigger": {
