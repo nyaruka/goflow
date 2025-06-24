@@ -34,6 +34,7 @@ const TypeFlowAction string = "flow_action"
 //	    "contact": {
 //	      "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
 //	      "name": "Bob",
+//	      "status": "active",
 //	      "fields": {"gender": {"text": "Male"}},
 //	      "created_on": "2018-01-01T12:00:00.000000000-00:00"
 //	    },

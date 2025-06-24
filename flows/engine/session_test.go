@@ -165,6 +165,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	// contact is in wrong groups
 	contact, err := flows.ReadContact(sa, []byte(`{
 		"uuid": "6d116680-eab9-460a-9c6e-1f05d3c5b5d6",
+		"status": "active",
 		"created_on": "2018-06-20T11:40:30.123456789-00:00",
         "groups": [
             {"uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6", "name": "Males"}
