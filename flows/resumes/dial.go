@@ -22,9 +22,13 @@ const TypeDial string = "dial"
 //	{
 //	  "type": "dial",
 //	  "resumed_on": "2021-01-20T12:18:30Z",
-//	  "dial": {
-//	    "status": "answered",
-//	    "duration": 15
+//	  "event": {
+//	    "type": "dial_ended",
+//	    "created_on": "2019-01-02T15:04:05Z",
+//	    "dial": {
+//	      "status": "answered",
+//	      "duration": 10
+//	    }
 //	  }
 //	}
 //
@@ -32,28 +36,24 @@ const TypeDial string = "dial"
 type DialResume struct {
 	baseResume
 
-	dial *flows.Dial
+	event *events.DialEndedEvent
 }
 
 // NewDial creates a new dial resume
-func NewDial(dial *flows.Dial) *DialResume {
+func NewDial(event *events.DialEndedEvent) *DialResume {
 	return &DialResume{
 		baseResume: newBaseResume(TypeDial),
-		dial:       dial,
+		event:      event,
 	}
 }
 
-// Apply applies our state changes and saves any events to the run
-func (r *DialResume) Apply(run flows.Run, logEvent flows.EventCallback) {
-	logEvent(events.NewDialEnded(r.dial))
-
-	r.baseResume.Apply(run, logEvent)
-}
+// Event returns the event this resume is based on
+func (r *DialResume) Event() flows.Event { return r.event }
 
 // Context for dial resumes additionally exposes the dial object
 func (r *DialResume) Context(env envs.Environment) map[string]types.XValue {
 	c := r.context()
-	c.dial = flows.Context(env, r.dial)
+	c.dial = flows.Context(env, r.event.Dial)
 	return c.asMap()
 }
 
@@ -66,7 +66,8 @@ var _ flows.Resume = (*DialResume)(nil)
 type dialResumeEnvelope struct {
 	baseResumeEnvelope
 
-	Dial *flows.Dial `json:"dial" validate:"required"`
+	Event *events.DialEndedEvent `json:"event"`          // TODO make required
+	Dial  *flows.Dial            `json:"dial,omitempty"` // used by older sessions
 }
 
 func readDialResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
@@ -75,7 +76,15 @@ func readDialResume(sessionAssets flows.SessionAssets, data []byte, missing asse
 		return nil, err
 	}
 
-	r := &DialResume{dial: e.Dial}
+	r := &DialResume{event: e.Event}
+
+	// older resumes will have dial instead of event so convert that into an event
+	if e.Dial != nil {
+		r.event = &events.DialEndedEvent{
+			BaseEvent: events.BaseEvent{Type_: events.TypeDialEnded, CreatedOn_: e.baseResumeEnvelope.ResumedOn},
+			Dial:      e.Dial,
+		}
+	}
 
 	if err := r.unmarshal(sessionAssets, &e.baseResumeEnvelope, missing); err != nil {
 		return nil, err
@@ -86,7 +95,7 @@ func readDialResume(sessionAssets flows.SessionAssets, data []byte, missing asse
 
 // MarshalJSON marshals this resume into JSON
 func (r *DialResume) MarshalJSON() ([]byte, error) {
-	e := &dialResumeEnvelope{Dial: r.dial}
+	e := &dialResumeEnvelope{Event: r.event}
 
 	if err := r.marshal(&e.baseResumeEnvelope); err != nil {
 		return nil, err

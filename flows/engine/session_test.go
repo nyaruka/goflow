@@ -272,7 +272,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout())
+	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -281,7 +281,7 @@ func TestWaitTimeout(t *testing.T) {
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
-	require.Equal(t, "2018-04-11T13:24:30.123456Z", result.Value)
+	require.Equal(t, "", result.Value)
 	require.Equal(t, "", result.Input)
 }
 
@@ -305,7 +305,7 @@ func TestCurrentContext(t *testing.T) {
 	assert.NoError(t, err)
 
 	// end it
-	session.Resume(ctx, resumes.NewRunExpiration())
+	session.Resume(ctx, resumes.NewWaitExpiration(events.NewWaitExpired()))
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
 
 	// can still get context of completed session
@@ -413,7 +413,7 @@ func TestEngineErrors(t *testing.T) {
 	_, session, _ = test.NewSessionBuilder().MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
-	_, err = session.Resume(ctx, resumes.NewDial(flows.NewDial(flows.DialStatusAnswered, 10)))
+	_, err = session.Resume(ctx, resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusAnswered, 10))))
 	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
 	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
 }

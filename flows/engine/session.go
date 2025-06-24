@@ -285,13 +285,15 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 		sprint.logEvent(e)
 	}
 
-	// if resume was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
+	// resumes are always based on an event (e.g. msg received) - log that on the run but don't repeat it in the sprint
 	// events because we didn't generate it
+
+	// TODO once run expiration resumes are replaced by wait expiration resumes.. this becomes true
 	if resume.Event() != nil {
 		waitingRun.LogEvent(nil, resume.Event())
 	}
 
-	// resumes are allowed to make state changes
+	// resumes are also allowed to make state changes
 	resume.Apply(waitingRun, logEvent)
 
 	// ensure groups are correct

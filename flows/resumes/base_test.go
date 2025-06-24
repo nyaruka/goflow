@@ -174,7 +174,7 @@ func TestResumeContext(t *testing.T) {
 		"dial": nil,
 	}, resume.Context(env))
 
-	resume = resumes.NewDial(flows.NewDial(flows.DialStatusNoAnswer, 5))
+	resume = resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusNoAnswer, 5)))
 	context := resume.Context(env)
 
 	assert.Equal(t, types.NewXText("dial"), context["type"])

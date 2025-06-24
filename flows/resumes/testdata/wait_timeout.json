@@ -1,6 +1,6 @@
 [
     {
-        "description": "wait timed out event created and timeout category used",
+        "description": "run resumed and timeout category used",
         "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
         "wait": {
             "type": "msg",
@@ -11,20 +11,20 @@
         },
         "resume": {
             "type": "wait_timeout",
-            "resumed_on": "2000-01-01T00:00:00Z"
-        },
-        "events": [
-            {
+            "resumed_on": "2000-01-01T00:00:00Z",
+            "event": {
                 "type": "wait_timed_out",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
-            },
+            }
+        },
+        "events": [
             {
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:04.123456789Z",
+                "created_on": "2025-05-04T12:31:03.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
-                "value": "2025-05-04T12:30:59.123456Z",
+                "value": "",
                 "category": "No Response"
             }
         ],
@@ -39,7 +39,12 @@
         },
         "resume": {
             "type": "wait_timeout",
-            "resumed_on": "2000-01-01T00:00:00Z"
+            "resumed_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "type": "wait_timed_out",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+            }
         },
         "resume_error": "resume of type wait_timeout not accepted by wait of type msg",
         "run_status": "waiting",

@@ -1,15 +1,6 @@
 [
     {
-        "description": "dial field required",
-        "flow_uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
-        "resume": {
-            "type": "dial",
-            "resumed_on": "2000-01-01T00:00:00Z"
-        },
-        "read_error": "field 'dial' is required"
-    },
-    {
-        "description": "dial ended event created",
+        "description": "dial wait resumed",
         "flow_uuid": "0af51032-1caa-40fe-9907-ab7c6af2bf01",
         "wait": {
             "type": "dial",
@@ -18,13 +9,7 @@
         "resume": {
             "type": "dial",
             "resumed_on": "2000-01-01T00:00:00Z",
-            "dial": {
-                "status": "answered",
-                "duration": 5
-            }
-        },
-        "events": [
-            {
+            "event": {
                 "type": "dial_ended",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -32,10 +17,12 @@
                     "status": "answered",
                     "duration": 5
                 }
-            },
+            }
+        },
+        "events": [
             {
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:01.123456789Z",
+                "created_on": "2025-05-04T12:31:00.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Redirect",
                 "value": "answered",

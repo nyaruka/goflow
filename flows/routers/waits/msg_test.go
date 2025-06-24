@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
@@ -62,7 +63,7 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
 	// try to end with timeout resume type
-	assert.False(t, wait.Accepts(resumes.NewWaitTimeout()))
+	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))
 
 	// timeout and image hint
 	wait = waits.NewMsgWait(
@@ -84,10 +85,10 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	assert.False(t, wait.Accepts(resumes.NewDial(flows.NewDial(flows.DialStatusBusy, 0))))
+	assert.False(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)))))
 
 	// can end with timeout resume type
-	assert.True(t, wait.Accepts(resumes.NewWaitTimeout()))
+	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {
