@@ -40,12 +40,12 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description   string          `json:"description"`
-		ContactBefore json.RawMessage `json:"contact_before"`
-		Modifier      json.RawMessage `json:"modifier"`
+		Description   string                 `json:"description"`
+		ContactBefore *flows.ContactEnvelope `json:"contact_before"`
+		Modifier      json.RawMessage        `json:"modifier"`
 
-		ContactAfter json.RawMessage `json:"contact_after"`
-		Events       json.RawMessage `json:"events"`
+		ContactAfter *flows.ContactEnvelope `json:"contact_after"`
+		Events       json.RawMessage        `json:"events"`
 	}{}
 
 	jsonx.MustUnmarshal(testFile, &tests)
@@ -61,7 +61,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		assert.Equal(t, typeName, modifier.Type())
 
 		// read the initial contact state
-		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.PanicOnMissing)
+		contact, err := tc.ContactBefore.Unmarshal(sa, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
 		// apply the modifier
@@ -76,7 +76,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		require.NoError(t, err)
 
 		// and the contact
-		actual.ContactAfter, _ = jsonx.Marshal(contact)
+		actual.ContactAfter = contact.Marshal()
 
 		// and the events
 		actual.Events, _ = jsonx.Marshal(eventLog.Events)
@@ -86,7 +86,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 			test.AssertEqualJSON(t, tc.Modifier, actual.Modifier, "marshal mismatch in %s", testName)
 
 			// check contact is in the expected state
-			test.AssertEqualJSON(t, tc.ContactAfter, actual.ContactAfter, "contact mismatch in %s", testName)
+			test.AssertEqualJSON(t, jsonx.MustMarshal(tc.ContactAfter), jsonx.MustMarshal(actual.ContactAfter), "contact mismatch in %s", testName)
 
 			// check events are what we expected
 			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch in %s", testName)

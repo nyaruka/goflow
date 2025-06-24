@@ -1,7 +1,6 @@
 package runs
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -113,18 +112,18 @@ func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID    flows.RunUUID         `json:"uuid" validate:"uuid"`
-	Flow    *assets.FlowReference `json:"flow" validate:"required"`
-	Contact json.RawMessage       `json:"contact"`
-	Status  flows.RunStatus       `json:"status" validate:"required"`
-	Results flows.Results         `json:"results"`
+	UUID    flows.RunUUID          `json:"uuid" validate:"uuid"`
+	Flow    *assets.FlowReference  `json:"flow" validate:"required"`
+	Contact *flows.ContactEnvelope `json:"contact"`
+	Status  flows.RunStatus        `json:"status" validate:"required"`
+	Results flows.Results          `json:"results"`
 }
 
 // ReadRunSummary reads a run summary from the given JSON
 func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.RunSummary, error) {
+	e := &runSummaryEnvelope{}
 	var err error
-	e := runSummaryEnvelope{}
-	if err = utils.UnmarshalAndValidate(data, &e); err != nil {
+	if err = utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
@@ -142,7 +141,7 @@ func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing asse
 
 	// read the contact
 	if e.Contact != nil {
-		if run.contact, err = flows.ReadContact(sessionAssets, e.Contact, missing); err != nil {
+		if run.contact, err = e.Contact.Unmarshal(sessionAssets, missing); err != nil {
 			return nil, err
 		}
 	}
@@ -152,19 +151,16 @@ func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing asse
 
 // MarshalJSON marshals this run summary into JSON
 func (r *runSummary) MarshalJSON() ([]byte, error) {
-	envelope := runSummaryEnvelope{}
-	var err error
-
-	envelope.UUID = r.uuid
-	envelope.Flow = r.flowRef
-	envelope.Status = r.status
-	envelope.Results = r.results
-
-	if r.contact != nil {
-		if envelope.Contact, err = r.contact.MarshalJSON(); err != nil {
-			return nil, err
-		}
+	e := &runSummaryEnvelope{
+		UUID:    r.uuid,
+		Flow:    r.flowRef,
+		Status:  r.status,
+		Results: r.results,
 	}
 
-	return jsonx.Marshal(envelope)
+	if r.contact != nil {
+		e.Contact = r.contact.Marshal()
+	}
+
+	return jsonx.Marshal(e)
 }
