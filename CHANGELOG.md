@@ -1,3 +1,7 @@
+v0.248.4 (2025-06-24)
+-------------------------
+ * Make Contact.status required
+
 v0.248.3 (2025-06-24)
 -------------------------
  * Make it easier to embed a contact in JSON
