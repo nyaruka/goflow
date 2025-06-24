@@ -1,3 +1,7 @@
+v0.248.2 (2025-06-24)
+-------------------------
+ * Convert remaining resume types to be event based
+
 v0.248.1 (2025-06-21)
 -------------------------
  * Cleanup environment stuff in resumes
