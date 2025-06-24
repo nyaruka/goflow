@@ -1,0 +1,25 @@
+[
+    {
+        "description": "run expired",
+        "flow_uuid": "ed352c17-191e-4e75-b366-1b2c54bb32d8",
+        "wait": {
+            "type": "msg",
+            "timeout": {
+                "seconds": 600,
+                "category_uuid": "1024833c-91aa-4873-a3b5-3bac1ef55812"
+            }
+        },
+        "resume": {
+            "type": "wait_expiration",
+            "resumed_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "type": "wait_expired",
+                "created_on": "2025-05-04T12:31:00.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+            }
+        },
+        "events": [],
+        "run_status": "expired",
+        "session_status": "completed"
+    }
+]

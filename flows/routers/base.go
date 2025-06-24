@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
@@ -133,19 +132,7 @@ func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}
 
-	// find last timeout event to use as time of timeout
-	var timedOutOn time.Time
-	runEvents := run.Events()
-	for i := len(runEvents) - 1; i >= 0; i-- {
-		event := runEvents[i]
-
-		_, isTimeout := event.(*events.WaitTimedOutEvent)
-		if isTimeout {
-			timedOutOn = event.CreatedOn()
-		}
-	}
-
-	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), dates.FormatISO(timedOutOn), "", nil, logEvent)
+	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), "", "", nil, logEvent)
 }
 
 func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {

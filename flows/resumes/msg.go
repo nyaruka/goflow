@@ -20,6 +20,7 @@ const TypeMsg string = "msg"
 //
 //	{
 //	  "type": "msg",
+//	  "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
 //	  "event": {
 //	    "type": "msg_received",
 //	    "created_on": "2006-01-02T15:04:05Z",
@@ -30,13 +31,13 @@ const TypeMsg string = "msg"
 //	      "text": "hi there",
 //	      "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //	    }
-//	  },
-//	  "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+//	  }
 //	}
 //
 // @resume msg
 type MsgResume struct {
 	baseResume
+
 	event *events.MsgReceivedEvent
 }
 
@@ -51,15 +52,12 @@ func NewMsg(event *events.MsgReceivedEvent) *MsgResume {
 // Event returns the event this resume is based on
 func (r *MsgResume) Event() flows.Event { return r.event }
 
-// Apply applies our state changes and saves any events to the run
+// Apply applies our state changes
 func (r *MsgResume) Apply(run flows.Run, logEvent flows.EventCallback) {
-	// do base changes (contact, environment)
 	r.baseResume.Apply(run, logEvent)
 
 	// update our input
-	input := inputs.NewMsg(run.Session(), r.event.Msg, r.ResumedOn())
-
-	run.Session().SetInput(input)
+	run.Session().SetInput(inputs.NewMsg(run.Session(), r.event.Msg, r.ResumedOn()))
 }
 
 var _ flows.Resume = (*MsgResume)(nil)
@@ -70,6 +68,7 @@ var _ flows.Resume = (*MsgResume)(nil)
 
 type msgResumeEnvelope struct {
 	baseResumeEnvelope
+
 	Event *events.MsgReceivedEvent `json:"event"`         // TODO make required
 	Msg   *flows.MsgIn             `json:"msg,omitempty"` // used by older sessions
 }
