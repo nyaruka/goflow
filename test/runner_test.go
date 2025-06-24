@@ -88,13 +88,13 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Environment json.RawMessage      `json:"environment"`
-	Contact     json.RawMessage      `json:"contact"`
-	Trigger     json.RawMessage      `json:"trigger"`
-	Call        *flows.CallEnvelope  `json:"call,omitempty"`
-	Resumes     []json.RawMessage    `json:"resumes"`
-	Outputs     []json.RawMessage    `json:"outputs"`
-	HTTPMocks   *httpx.MockRequestor `json:"http_mocks,omitempty"`
+	Environment json.RawMessage        `json:"environment"`
+	Contact     *flows.ContactEnvelope `json:"contact"`
+	Trigger     json.RawMessage        `json:"trigger"`
+	Call        *flows.CallEnvelope    `json:"call,omitempty"`
+	Resumes     []json.RawMessage      `json:"resumes"`
+	Outputs     []json.RawMessage      `json:"outputs"`
+	HTTPMocks   *httpx.MockRequestor   `json:"http_mocks,omitempty"`
 }
 
 type runResult struct {
@@ -102,7 +102,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact []byte, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -116,7 +116,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact []byte, rawTrigger []b
 		return runResult{}, fmt.Errorf("error unmarshalling environment: %w", err)
 	}
 
-	contact, err := flows.ReadContact(sa, rawContact, assets.PanicOnMissing)
+	contact, err := rawContact.Unmarshal(sa, assets.PanicOnMissing)
 	if err != nil {
 		return runResult{}, fmt.Errorf("error unmarshalling contact: %w", err)
 	}

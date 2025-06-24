@@ -585,7 +585,7 @@ var _ assets.Reference = (*ContactReference)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type contactEnvelope struct {
+type ContactEnvelope struct {
 	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid"`
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
@@ -602,23 +602,15 @@ type contactEnvelope struct {
 	Ticket     *TicketEnvelope          `json:"ticket,omitempty"`
 }
 
-// ReadContact decodes a contact from the passed in JSON
-func ReadContact(sa SessionAssets, data []byte, missing assets.MissingCallback) (*Contact, error) {
-	var envelope contactEnvelope
-	var err error
-
-	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
-		return nil, fmt.Errorf("unable to read contact: %w", err)
-	}
-
+func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) (*Contact, error) {
 	c := &Contact{
-		uuid:       envelope.UUID,
-		id:         envelope.ID,
-		name:       envelope.Name,
-		language:   envelope.Language,
-		status:     envelope.Status,
-		createdOn:  envelope.CreatedOn,
-		lastSeenOn: envelope.LastSeenOn,
+		uuid:       e.UUID,
+		id:         e.ID,
+		name:       e.Name,
+		language:   e.Language,
+		status:     e.Status,
+		createdOn:  e.CreatedOn,
+		lastSeenOn: e.LastSeenOn,
 		assets:     sa,
 	}
 
@@ -627,33 +619,34 @@ func ReadContact(sa SessionAssets, data []byte, missing assets.MissingCallback) 
 		c.status = ContactStatusActive
 	}
 
-	if envelope.Timezone != "" {
-		if c.timezone, err = time.LoadLocation(envelope.Timezone); err != nil {
+	if e.Timezone != "" {
+		var err error
+		if c.timezone, err = time.LoadLocation(e.Timezone); err != nil {
 			return nil, err
 		}
 	}
 
-	if envelope.URNs == nil {
+	if e.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(sa, envelope.URNs, missing); err != nil {
+		var err error
+		if c.urns, err = ReadURNList(sa, e.URNs, missing); err != nil {
 			return nil, fmt.Errorf("error reading urns: %w", err)
 		}
 	}
 
-	c.groups = NewGroupList(sa, envelope.Groups, missing)
-	c.fields = NewFieldValues(sa, envelope.Fields, missing)
+	c.groups = NewGroupList(sa, e.Groups, missing)
+	c.fields = NewFieldValues(sa, e.Fields, missing)
 
-	if envelope.Ticket != nil {
-		c.ticket = envelope.Ticket.Unmarshal(sa, missing)
+	if e.Ticket != nil {
+		c.ticket = e.Ticket.Unmarshal(sa, missing)
 	}
 
 	return c, nil
 }
 
-// MarshalJSON marshals this contact into JSON
-func (c *Contact) MarshalJSON() ([]byte, error) {
-	ce := &contactEnvelope{
+func (c *Contact) Marshal() *ContactEnvelope {
+	e := &ContactEnvelope{
 		Name:       c.name,
 		UUID:       c.uuid,
 		ID:         c.id,
@@ -666,18 +659,34 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	}
 
 	if c.ticket != nil {
-		ce.Ticket = c.ticket.Marshal()
+		e.Ticket = c.ticket.Marshal()
 	}
 	if c.timezone != nil {
-		ce.Timezone = c.timezone.String()
+		e.Timezone = c.timezone.String()
 	}
 
-	ce.Fields = make(map[string]*Value)
+	e.Fields = make(map[string]*Value)
 	for _, v := range c.fields {
 		if v != nil {
-			ce.Fields[v.field.Key()] = v.Value
+			e.Fields[v.field.Key()] = v.Value
 		}
 	}
 
-	return jsonx.Marshal(ce)
+	return e
+}
+
+// ReadContact decodes a contact from the passed in JSON
+func ReadContact(sa SessionAssets, data []byte, missing assets.MissingCallback) (*Contact, error) {
+	e := &ContactEnvelope{}
+
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, fmt.Errorf("unable to read contact: %w", err)
+	}
+
+	return e.Unmarshal(sa, missing)
+}
+
+// MarshalJSON marshals this contact into JSON
+func (c *Contact) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(c.Marshal())
 }
