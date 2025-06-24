@@ -1,3 +1,8 @@
+v0.248.3 (2025-06-24)
+-------------------------
+ * Make it easier to embed a contact in JSON
+ * Cleanup after recent IVR related changes
+
 v0.248.2 (2025-06-24)
 -------------------------
  * Convert remaining resume types to be event based
