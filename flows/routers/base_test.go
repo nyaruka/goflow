@@ -25,6 +25,7 @@ import (
 var contactJSON = `{
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 	"name": "Ryan Lewis",
+	"status": "active",
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"urns": [],

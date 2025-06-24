@@ -205,7 +205,7 @@ func TestReadContact(t *testing.T) {
 	require.NoError(t, err)
 
 	// read minimal contact
-	contact, err := flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
+	contact, err := flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
 	assert.Equal(t, flows.ContactUUID("a20f7948-e497-4a4a-be3c-b17f79f7ab7d"), contact.UUID())
 	assert.Equal(t, flows.ContactStatusActive, contact.Status())
@@ -226,6 +226,7 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 		"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 		"id": 1234567,
 		"name": "Ryan Lewis",
+		"status": "active",
 		"language": "eng",
 		"timezone": "America/Guayaquil",
 		"created_on": "2018-06-20T11:40:30.123456789-00:00",
@@ -425,6 +426,7 @@ func TestContactQuery(t *testing.T) {
 		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
 		"id": 1234567,
 		"name": "Ben Haggerty",
+		"status": "active",
 		"fields": {
 			"gender": {"text": "Male"},
 			"age": {"text": "39!", "number": 39},

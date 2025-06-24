@@ -100,6 +100,7 @@
                                 }
                             },
                             "name": "Bob",
+                            "status": "active",
                             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
                         },
                         "flow": {
@@ -141,6 +142,7 @@
                     }
                 },
                 "name": "Bob",
+                "status": "active",
                 "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
             },
             "flow": {

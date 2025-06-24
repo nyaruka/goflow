@@ -86,6 +86,7 @@ var sessionContact = `{
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 	"id": 1234567,
 	"name": "Ryan Lewis",
+	"status": "active",
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"created_on": "2018-06-20T11:40:30.123456789-00:00",

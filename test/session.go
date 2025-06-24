@@ -308,6 +308,7 @@ var sessionContact = `{
     "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
     "id": 1234567,
     "name": "Ryan Lewis",
+    "status": "active",
     "language": "eng",
     "timezone": "America/Guayaquil",
     "created_on": "2018-06-20T11:40:30.123456789-00:00",
@@ -350,6 +351,7 @@ var sessionTrigger = `{
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
             "name": "Jasmine",
+            "status": "active",
             "created_on": "2018-01-01T12:00:00.000000000-00:00",
             "language": "spa",
             "urns": [

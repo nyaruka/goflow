@@ -23,6 +23,7 @@ import (
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test/services"
+	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -224,7 +225,7 @@ func TestFlows(t *testing.T) {
 		require.NoError(t, err, "error reading output file %s", tc.outputFile)
 
 		flowTest := &FlowTest{}
-		err = jsonx.Unmarshal([]byte(testJSON), &flowTest)
+		err = utils.UnmarshalAndValidate([]byte(testJSON), flowTest)
 		require.NoError(t, err, "error unmarshalling output file %s", tc.outputFile)
 
 		if flowTest.HTTPMocks != nil {

@@ -590,9 +590,7 @@ type ContactEnvelope struct {
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
 	Language   i18n.Language            `json:"language,omitempty"`
-	Status     ContactStatus            `json:"status,omitempty"    validate:"omitempty,contact_status"`
-	Stopped    bool                     `json:"stopped,omitempty"`
-	Blocked    bool                     `json:"blocked,omitempty"`
+	Status     ContactStatus            `json:"status,omitempty"    validate:"required,contact_status"`
 	Timezone   string                   `json:"timezone,omitempty"`
 	CreatedOn  time.Time                `json:"created_on"          validate:"required"`
 	LastSeenOn *time.Time               `json:"last_seen_on,omitempty"`
@@ -612,11 +610,6 @@ func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCall
 		createdOn:  e.CreatedOn,
 		lastSeenOn: e.LastSeenOn,
 		assets:     sa,
-	}
-
-	// it's possible older sessions won't have contact status
-	if c.status == "" {
-		c.status = ContactStatusActive
 	}
 
 	if e.Timezone != "" {
