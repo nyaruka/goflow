@@ -1,3 +1,7 @@
+v0.249.0 (2025-06-25)
+-------------------------
+ * Remove stuttering
+
 v0.248.5 (2025-06-25)
 -------------------------
  * Remove has_intent, has_top_intent and has_category from documentation
