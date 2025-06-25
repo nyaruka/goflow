@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeManual, readManualTrigger)
+	registerType(TypeManual, readManual)
 }
 
 // TypeManual is the type for manually triggered sessions
 const TypeManual string = "manual"
 
-// ManualTrigger is used when a session was triggered manually by a user
+// Manual is used when a session was triggered manually by a user
 //
 //	{
 //	  "type": "manual",
@@ -27,7 +27,7 @@ const TypeManual string = "manual"
 //	}
 //
 // @trigger manual
-type ManualTrigger struct {
+type Manual struct {
 	baseTrigger
 
 	user   *flows.User
@@ -35,14 +35,14 @@ type ManualTrigger struct {
 }
 
 // Context for manual triggers always has non-nil params
-func (t *ManualTrigger) Context(env envs.Environment) map[string]types.XValue {
+func (t *Manual) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	c.user = flows.Context(env, t.user)
 	c.origin = t.origin
 	return c.asMap()
 }
 
-var _ flows.Trigger = (*ManualTrigger)(nil)
+var _ flows.Trigger = (*Manual)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -50,13 +50,13 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 
 // ManualBuilder is a builder for manual type triggers
 type ManualBuilder struct {
-	t *ManualTrigger
+	t *Manual
 }
 
 // Manual returns a manual trigger builder
 func (b *Builder) Manual() *ManualBuilder {
 	return &ManualBuilder{
-		t: &ManualTrigger{baseTrigger: newBaseTrigger(TypeManual, b.flow, false, nil)},
+		t: &Manual{baseTrigger: newBaseTrigger(TypeManual, b.flow, false, nil)},
 	}
 }
 
@@ -85,7 +85,7 @@ func (b *ManualBuilder) AsBatch() *ManualBuilder {
 }
 
 // Build builds the trigger
-func (b *ManualBuilder) Build() *ManualTrigger {
+func (b *ManualBuilder) Build() *Manual {
 	return b.t
 }
 
@@ -93,14 +93,15 @@ func (b *ManualBuilder) Build() *ManualTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type manualTriggerEnvelope struct {
-	baseTriggerEnvelope
+type manualEnvelope struct {
+	baseEnvelope
+
 	User   *assets.UserReference `json:"user,omitempty" validate:"omitempty"`
 	Origin string                `json:"origin,omitempty"`
 }
 
-func readManualTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &manualTriggerEnvelope{}
+func readManual(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &manualEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -113,12 +114,12 @@ func readManualTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 		}
 	}
 
-	t := &ManualTrigger{
+	t := &Manual{
 		user:   user,
 		origin: e.Origin,
 	}
 
-	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -126,18 +127,18 @@ func readManualTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
+func (t *Manual) MarshalJSON() ([]byte, error) {
 	var userRef *assets.UserReference
 	if t.user != nil {
 		userRef = t.user.Reference()
 	}
 
-	e := &manualTriggerEnvelope{
+	e := &manualEnvelope{
 		User:   userRef,
 		Origin: t.origin,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

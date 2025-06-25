@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSendBroadcast, func() flows.Action { return &SendBroadcastAction{} })
+	registerType(TypeSendBroadcast, func() flows.Action { return &SendBroadcast{} })
 }
 
 // TypeSendBroadcast is the type for the send broadcast action
 const TypeSendBroadcast string = "send_broadcast"
 
-// SendBroadcastAction can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
+// SendBroadcast can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 // and a list of contacts.
 //
 // The URNs and text fields may be templates. A [event:broadcast_created] event will be created for each unique urn, contact and group
@@ -31,7 +31,7 @@ const TypeSendBroadcast string = "send_broadcast"
 //	}
 //
 // @action send_broadcast
-type SendBroadcastAction struct {
+type SendBroadcast struct {
 	baseAction
 	onlineAction
 	otherContactsAction
@@ -39,8 +39,8 @@ type SendBroadcastAction struct {
 }
 
 // NewSendBroadcast creates a new send broadcast action
-func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string) *SendBroadcastAction {
-	return &SendBroadcastAction{
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string) *SendBroadcast {
+	return &SendBroadcast{
 		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
 			Groups:       groups,
@@ -58,7 +58,7 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 }
 
 // Execute runs this action
-func (a *SendBroadcastAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
@@ -90,6 +90,6 @@ func (a *SendBroadcastAction) Execute(ctx context.Context, run flows.Run, step f
 	return nil
 }
 
-func (a *SendBroadcastAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SendBroadcast) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	a.otherContactsAction.Inspect(dependency, local, result)
 }

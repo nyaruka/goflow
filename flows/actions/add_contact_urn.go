@@ -12,13 +12,13 @@ import (
 )
 
 func init() {
-	registerType(TypeAddContactURN, func() flows.Action { return &AddContactURNAction{} })
+	registerType(TypeAddContactURN, func() flows.Action { return &AddContactURN{} })
 }
 
 // TypeAddContactURN is our type for the add URN action
 const TypeAddContactURN string = "add_contact_urn"
 
-// AddContactURNAction can be used to add a URN to the current contact. A [event:contact_urns_changed] event
+// AddContactURN can be used to add a URN to the current contact. A [event:contact_urns_changed] event
 // will be created when this action is encountered.
 //
 //	{
@@ -29,7 +29,7 @@ const TypeAddContactURN string = "add_contact_urn"
 //	}
 //
 // @action add_contact_urn
-type AddContactURNAction struct {
+type AddContactURN struct {
 	baseAction
 	universalAction
 
@@ -38,8 +38,8 @@ type AddContactURNAction struct {
 }
 
 // NewAddContactURN creates a new add URN action
-func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddContactURNAction {
-	return &AddContactURNAction{
+func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddContactURN {
+	return &AddContactURN{
 		baseAction: newBaseAction(TypeAddContactURN, uuid),
 		Scheme:     scheme,
 		Path:       path,
@@ -47,7 +47,7 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 }
 
 // Execute runs the labeling action
-func (a *AddContactURNAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	evaluatedPath, _ := run.EvaluateTemplate(a.Path, logEvent)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {

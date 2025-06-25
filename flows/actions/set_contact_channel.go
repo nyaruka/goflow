@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSetContactChannel, func() flows.Action { return &SetContactChannelAction{} })
+	registerType(TypeSetContactChannel, func() flows.Action { return &SetContactChannel{} })
 }
 
 // TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
-// SetContactChannelAction can be used to change or clear the preferred channel of the current contact.
+// SetContactChannel can be used to change or clear the preferred channel of the current contact.
 //
 // Because channel affinity is a property of a contact's URNs, a [event:contact_urns_changed] event will be created if any
 // changes are made to the contact's URNs.
@@ -28,7 +28,7 @@ const TypeSetContactChannel string = "set_contact_channel"
 //	}
 //
 // @action set_contact_channel
-type SetContactChannelAction struct {
+type SetContactChannel struct {
 	baseAction
 	onlineAction
 
@@ -36,15 +36,15 @@ type SetContactChannelAction struct {
 }
 
 // NewSetContactChannel creates a new set channel action
-func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReference) *SetContactChannelAction {
-	return &SetContactChannelAction{
+func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReference) *SetContactChannel {
+	return &SetContactChannel{
 		baseAction: newBaseAction(TypeSetContactChannel, uuid),
 		Channel:    channel,
 	}
 }
 
 // Execute runs our action
-func (a *SetContactChannelAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	var channel *flows.Channel
 	if a.Channel != nil {
 		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)
@@ -58,7 +58,7 @@ func (a *SetContactChannelAction) Execute(ctx context.Context, run flows.Run, st
 	return nil
 }
 
-func (a *SetContactChannelAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SetContactChannel) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Channel != nil {
 		dependency(a.Channel)
 	}

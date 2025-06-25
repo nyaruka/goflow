@@ -24,13 +24,13 @@ func isValidURL(u string) bool {
 }
 
 func init() {
-	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
+	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhook{} })
 }
 
 // TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
 
-// CallWebhookAction can be used to call an external service. The body, header and url fields may be
+// CallWebhook can be used to call an external service. The body, header and url fields may be
 // templates and will be evaluated at runtime. A [event:webhook_called] event will be created based on
 // the results of the HTTP call. If this action has a `result_name`, then additionally it will create
 // a new result with that name. The value of the result will be the status code and the category will be
@@ -50,7 +50,7 @@ const TypeCallWebhook string = "call_webhook"
 //	}
 //
 // @action call_webhook
-type CallWebhookAction struct {
+type CallWebhook struct {
 	baseAction
 	onlineAction
 
@@ -62,8 +62,8 @@ type CallWebhookAction struct {
 }
 
 // NewCallWebhook creates a new call webhook action
-func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhookAction {
-	return &CallWebhookAction{
+func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhook {
+	return &CallWebhook{
 		baseAction: newBaseAction(TypeCallWebhook, uuid),
 		Method:     method,
 		URL:        url,
@@ -74,7 +74,7 @@ func NewCallWebhook(uuid flows.ActionUUID, method string, url string, headers ma
 }
 
 // Validate validates our action is valid
-func (a *CallWebhookAction) Validate() error {
+func (a *CallWebhook) Validate() error {
 	for key := range a.Headers {
 		if !httpguts.ValidHeaderFieldName(key) {
 			return fmt.Errorf("header '%s' is not a valid HTTP header", key)
@@ -85,7 +85,7 @@ func (a *CallWebhookAction) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	url, _ := run.EvaluateTemplate(a.URL, logEvent)
 	url = strings.TrimSpace(url)
 
@@ -114,7 +114,7 @@ func (a *CallWebhookAction) Execute(ctx context.Context, run flows.Run, step flo
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) *flows.WebhookCall {
+func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) *flows.WebhookCall {
 	// build our request
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func (a *CallWebhookAction) call(ctx context.Context, run flows.Run, step flows.
 	return nil
 }
 
-func (a *CallWebhookAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, webhookCategories))
 	}

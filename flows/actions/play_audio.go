@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypePlayAudio, func() flows.Action { return &PlayAudioAction{} })
+	registerType(TypePlayAudio, func() flows.Action { return &PlayAudio{} })
 }
 
 // TypePlayAudio is the type for the play audio action
 const TypePlayAudio string = "play_audio"
 
-// PlayAudioAction can be used to play an audio recording in a voice flow. It will generate an
+// PlayAudio can be used to play an audio recording in a voice flow. It will generate an
 // [event:ivr_created] event if there is a valid audio URL. This will contain a message which
 // the caller should handle as an IVR play command using the audio attachment.
 //
@@ -27,7 +27,7 @@ const TypePlayAudio string = "play_audio"
 //	}
 //
 // @action play_audio
-type PlayAudioAction struct {
+type PlayAudio struct {
 	baseAction
 	voiceAction
 
@@ -35,15 +35,15 @@ type PlayAudioAction struct {
 }
 
 // NewPlayAudio creates a new play message action
-func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudioAction {
-	return &PlayAudioAction{
+func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudio {
+	return &PlayAudio{
 		baseAction: newBaseAction(TypePlayAudio, uuid),
 		AudioURL:   audioURL,
 	}
 }
 
 // Execute runs this action
-func (a *PlayAudioAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, logEvent)

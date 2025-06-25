@@ -32,7 +32,7 @@ func TestReadWait(t *testing.T) {
 	wait, err = waits.ReadWait([]byte(`{"type": "msg", "hint": {"type": "image"}}`))
 	assert.NoError(t, err)
 	assert.Equal(t, "msg", wait.Type())
-	assert.Equal(t, "image", wait.(*waits.MsgWait).Hint().Type())
+	assert.Equal(t, "image", wait.(*waits.Msg).Hint().Type())
 
 	// marshal back to JSON
 	data, err = jsonx.Marshal(wait)

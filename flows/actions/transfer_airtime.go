@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeTransferAirtime, func() flows.Action { return &TransferAirtimeAction{} })
+	registerType(TypeTransferAirtime, func() flows.Action { return &TransferAirtime{} })
 }
 
 const (
@@ -22,7 +22,7 @@ const (
 	TransferAirtimeOutputLocal = "_new_transfer"
 )
 
-// TransferAirtimeAction attempts to make an airtime transfer to the contact.
+// TransferAirtime attempts to make an airtime transfer to the contact.
 //
 // An [event:airtime_transferred] event will be created if the airtime could be sent.
 //
@@ -33,7 +33,7 @@ const (
 //	}
 //
 // @action transfer_airtime
-type TransferAirtimeAction struct {
+type TransferAirtime struct {
 	baseAction
 	onlineAction
 
@@ -41,15 +41,15 @@ type TransferAirtimeAction struct {
 }
 
 // NewTransferAirtime creates a new airtime transfer action
-func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decimal) *TransferAirtimeAction {
-	return &TransferAirtimeAction{
+func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decimal) *TransferAirtime {
+	return &TransferAirtime{
 		baseAction: newBaseAction(TypeTransferAirtime, uuid),
 		Amounts:    amounts,
 	}
 }
 
 // Execute executes the transfer action
-func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	transfer, err := a.transfer(ctx, run, logEvent)
 	if err != nil {
 		logEvent(events.NewError(err.Error()))
@@ -64,7 +64,7 @@ func (a *TransferAirtimeAction) Execute(ctx context.Context, run flows.Run, step
 	return nil
 }
 
-func (a *TransferAirtimeAction) transfer(ctx context.Context, run flows.Run, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
+func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, logEvent flows.EventCallback) (*flows.AirtimeTransfer, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
 
@@ -101,6 +101,6 @@ func (a *TransferAirtimeAction) transfer(ctx context.Context, run flows.Run, log
 	return transfer, nil
 }
 
-func (a *TransferAirtimeAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *TransferAirtime) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	local(TransferAirtimeOutputLocal)
 }

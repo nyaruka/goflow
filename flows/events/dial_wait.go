@@ -8,13 +8,13 @@ import (
 )
 
 func init() {
-	registerType(TypeDialWait, func() flows.Event { return &DialWaitEvent{} })
+	registerType(TypeDialWait, func() flows.Event { return &DialWait{} })
 }
 
 // TypeDialWait is the type of our dial wait event
 const TypeDialWait string = "dial_wait"
 
-// DialWaitEvent events are created when a flow pauses waiting for an IVR dial to complete.
+// DialWait events are created when a flow pauses waiting for an IVR dial to complete.
 //
 //	{
 //	  "type": "dial_wait",
@@ -26,7 +26,7 @@ const TypeDialWait string = "dial_wait"
 //	}
 //
 // @event dial_wait
-type DialWaitEvent struct {
+type DialWait struct {
 	BaseEvent
 
 	URN              urns.URN `json:"urn" validate:"required,urn"`
@@ -38,8 +38,8 @@ type DialWaitEvent struct {
 }
 
 // NewDialWait returns a new dial wait with the passed in URN
-func NewDialWait(urn urns.URN, dialLimitSeconds, callLimitSeconds int, expiresOn time.Time) *DialWaitEvent {
-	return &DialWaitEvent{
+func NewDialWait(urn urns.URN, dialLimitSeconds, callLimitSeconds int, expiresOn time.Time) *DialWait {
+	return &DialWait{
 		BaseEvent:        NewBaseEvent(TypeDialWait),
 		URN:              urn,
 		DialLimitSeconds: dialLimitSeconds,
@@ -48,4 +48,4 @@ func NewDialWait(urn urns.URN, dialLimitSeconds, callLimitSeconds int, expiresOn
 	}
 }
 
-var _ flows.Event = (*DialWaitEvent)(nil)
+var _ flows.Event = (*DialWait)(nil)

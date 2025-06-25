@@ -62,7 +62,7 @@ func (w *baseWait) expiresOn(run flows.Run) time.Time {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type baseWaitEnvelope struct {
+type baseEnvelope struct {
 	Type    string   `json:"type"              validate:"required"`
 	Timeout *Timeout `json:"timeout,omitempty" validate:"omitempty"`
 }
@@ -81,13 +81,13 @@ func ReadWait(data []byte) (flows.Wait, error) {
 	return f(data)
 }
 
-func (w *baseWait) unmarshal(e *baseWaitEnvelope) error {
+func (w *baseWait) unmarshal(e *baseEnvelope) error {
 	w.type_ = e.Type
 	w.timeout = e.Timeout
 	return nil
 }
 
-func (w *baseWait) marshal(e *baseWaitEnvelope) error {
+func (w *baseWait) marshal(e *baseEnvelope) error {
 	e.Type = w.type_
 	e.Timeout = w.timeout
 	return nil

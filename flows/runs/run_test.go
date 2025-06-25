@@ -231,7 +231,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
+	trigger, err := triggers.Read(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("America/Guayaquil")
@@ -272,7 +272,7 @@ func TestSetResult(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
+	trigger, err := triggers.Read(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("America/Guayaquil")
@@ -446,7 +446,7 @@ func TestTranslation(t *testing.T) {
 
 		require.Len(t, sp.Events(), 1)
 		require.Equal(t, "msg_created", sp.Events()[0].Type())
-		evt := sp.Events()[0].(*events.MsgCreatedEvent)
+		evt := sp.Events()[0].(*events.MsgCreated)
 
 		assert.Equal(t, tc.expectedText, evt.Msg.Text(), "msg text mismatch in test '%s'", tc.description)
 		assert.Equal(t, tc.expectedAttachments, evt.Msg.Attachments(), "attachments mismatch in test case '%s'", tc.description)

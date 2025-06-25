@@ -15,13 +15,13 @@ import (
 )
 
 func init() {
-	registerType(TypeCampaign, readCampaignTrigger)
+	registerType(TypeCampaign, readCampaign)
 }
 
 // TypeCampaign is the type for sessions triggered by campaigns.
 const TypeCampaign string = "campaign"
 
-// CampaignTrigger is used when a session was triggered by a campaign.
+// Campaign is used when a session was triggered by a campaign.
 //
 //	{
 //	  "type": "campaign",
@@ -36,20 +36,20 @@ const TypeCampaign string = "campaign"
 //	}
 //
 // @trigger campaign
-type CampaignTrigger struct {
+type Campaign struct {
 	baseTrigger
-	event    *events.CampaignFiredEvent
+	event    *events.CampaignFired
 	campaign *flows.Campaign
 }
 
 // Context for manual triggers always has non-nil params
-func (t *CampaignTrigger) Context(env envs.Environment) map[string]types.XValue {
+func (t *Campaign) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	c.campaign = flows.Context(env, t.campaign)
 	return c.asMap()
 }
 
-var _ flows.Trigger = (*CampaignTrigger)(nil)
+var _ flows.Trigger = (*Campaign)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -57,13 +57,13 @@ var _ flows.Trigger = (*CampaignTrigger)(nil)
 
 // CampaignBuilder is a builder for campaign type triggers
 type CampaignBuilder struct {
-	t *CampaignTrigger
+	t *Campaign
 }
 
 // Campaign returns a campaign trigger builder
-func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFiredEvent) *CampaignBuilder {
+func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFired) *CampaignBuilder {
 	return &CampaignBuilder{
-		t: &CampaignTrigger{
+		t: &Campaign{
 			baseTrigger: newBaseTrigger(TypeCampaign, b.flow, false, nil),
 			event:       event,
 			campaign:    campaign,
@@ -72,7 +72,7 @@ func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFired
 }
 
 // Build builds the trigger
-func (b *CampaignBuilder) Build() *CampaignTrigger {
+func (b *CampaignBuilder) Build() *Campaign {
 	return b.t
 }
 
@@ -80,13 +80,14 @@ func (b *CampaignBuilder) Build() *CampaignTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type campaignTriggerEnvelope struct {
-	baseTriggerEnvelope
+type campaignEnvelope struct {
+	baseEnvelope
+
 	Event json.RawMessage `json:"event" validate:"required"`
 }
 
-func readCampaignTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &campaignTriggerEnvelope{}
+func readCampaign(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &campaignEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -95,22 +96,22 @@ func readCampaignTrigger(sa flows.SessionAssets, data []byte, missing assets.Mis
 	e.Event, _ = jsonparser.Set(e.Event, []byte(`"campaign_fired"`), "type")
 	e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 
-	event, err := events.ReadEvent(e.Event)
+	event, err := events.Read(e.Event)
 	if err != nil {
 		return nil, fmt.Errorf("error reading campaign trigger event: %w", err)
 	}
 
-	campEvt := event.(*events.CampaignFiredEvent)
+	campEvt := event.(*events.CampaignFired)
 	campaign := sa.Campaigns().Get(campEvt.Campaign.UUID)
 	if campaign == nil {
 		missing(campEvt.Campaign, nil)
 	}
 
-	t := &CampaignTrigger{
+	t := &Campaign{
 		event:    campEvt,
 		campaign: campaign,
 	}
-	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -118,17 +119,17 @@ func readCampaignTrigger(sa flows.SessionAssets, data []byte, missing assets.Mis
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *CampaignTrigger) MarshalJSON() ([]byte, error) {
+func (t *Campaign) MarshalJSON() ([]byte, error) {
 	me, err := json.Marshal(t.event)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling campaign trigger event: %w", err)
 	}
 
-	e := &campaignTriggerEnvelope{
+	e := &campaignEnvelope{
 		Event: me,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

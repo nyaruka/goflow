@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeMsgWait, func() flows.Event { return &MsgWaitEvent{} })
+	registerType(TypeMsgWait, func() flows.Event { return &MsgWait{} })
 }
 
 // TypeMsgWait is the type of our msg wait event
 const TypeMsgWait string = "msg_wait"
 
-// MsgWaitEvent events are created when a flow pauses waiting for a response from
+// MsgWait events are created when a flow pauses waiting for a response from
 // a contact. If a timeout is set, then the caller should resume the flow after
 // the number of seconds in the timeout to resume it.
 //
@@ -32,7 +32,7 @@ const TypeMsgWait string = "msg_wait"
 //	}
 //
 // @event msg_wait
-type MsgWaitEvent struct {
+type MsgWait struct {
 	BaseEvent
 
 	// when this wait times out and we can proceed assuming router has a timeout category. This value is relative
@@ -46,8 +46,8 @@ type MsgWaitEvent struct {
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutSeconds *int, expiresOn time.Time, hint flows.Hint) *MsgWaitEvent {
-	return &MsgWaitEvent{
+func NewMsgWait(timeoutSeconds *int, expiresOn time.Time, hint flows.Hint) *MsgWait {
+	return &MsgWait{
 		BaseEvent:      NewBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
 		ExpiresOn:      expiresOn,
@@ -68,7 +68,7 @@ type msgWaitEnvelope struct {
 }
 
 // UnmarshalJSON unmarshals this event from the given JSON
-func (e *MsgWaitEvent) UnmarshalJSON(data []byte) error {
+func (e *MsgWait) UnmarshalJSON(data []byte) error {
 	v := &msgWaitEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, v); err != nil {
 		return err

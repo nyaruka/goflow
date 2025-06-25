@@ -58,7 +58,7 @@ func TestMsgWait(t *testing.T) {
 	run := session.Runs()[0]
 
 	// no timeout or media
-	wait := waits.NewMsgWait(nil, nil)
+	wait := waits.NewMsg(nil, nil)
 	marshaled := jsonx.MustMarshal(wait)
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
@@ -66,7 +66,7 @@ func TestMsgWait(t *testing.T) {
 	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))
 
 	// timeout and image hint
-	wait = waits.NewMsgWait(
+	wait = waits.NewMsg(
 		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
 		hints.NewImageHint(),
 	)

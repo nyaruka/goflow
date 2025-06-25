@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeWaitExpired, func() flows.Event { return &WaitExpiredEvent{} })
+	registerType(TypeWaitExpired, func() flows.Event { return &WaitExpired{} })
 }
 
 // TypeWaitExpired is the type of our wait expired event
 const TypeWaitExpired string = "wait_expired"
 
-// WaitExpiredEvent events are sent by the caller to tell the engine that a wait has expired.
+// WaitExpired events are sent by the caller to tell the engine that a wait has expired.
 //
 //	{
 //	  "type": "wait_expired",
@@ -19,15 +19,15 @@ const TypeWaitExpired string = "wait_expired"
 //	}
 //
 // @event wait_expired
-type WaitExpiredEvent struct {
+type WaitExpired struct {
 	BaseEvent
 }
 
 // NewWaitExpired creates a new wait expired event
-func NewWaitExpired() *WaitExpiredEvent {
-	return &WaitExpiredEvent{
+func NewWaitExpired() *WaitExpired {
+	return &WaitExpired{
 		BaseEvent: NewBaseEvent(TypeWaitExpired),
 	}
 }
 
-var _ flows.Event = (*WaitExpiredEvent)(nil)
+var _ flows.Event = (*WaitExpired)(nil)

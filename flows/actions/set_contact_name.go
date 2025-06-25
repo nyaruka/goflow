@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSetContactName, func() flows.Action { return &SetContactNameAction{} })
+	registerType(TypeSetContactName, func() flows.Action { return &SetContactName{} })
 }
 
 // TypeSetContactName is the type for the set contact name action
 const TypeSetContactName string = "set_contact_name"
 
-// SetContactNameAction can be used to update the name of the contact. The name is a localizable
+// SetContactName can be used to update the name of the contact. The name is a localizable
 // template and white space is trimmed from the final value. An empty string clears the name.
 // A [event:contact_name_changed] event will be created with the corresponding value.
 //
@@ -26,7 +26,7 @@ const TypeSetContactName string = "set_contact_name"
 //	}
 //
 // @action set_contact_name
-type SetContactNameAction struct {
+type SetContactName struct {
 	baseAction
 	universalAction
 
@@ -34,15 +34,15 @@ type SetContactNameAction struct {
 }
 
 // NewSetContactName creates a new set name action
-func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactNameAction {
-	return &SetContactNameAction{
+func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactName {
+	return &SetContactName{
 		baseAction: newBaseAction(TypeSetContactName, uuid),
 		Name:       name,
 	}
 }
 
 // Execute runs this action
-func (a *SetContactNameAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactName) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	name, ok := run.EvaluateTemplate(a.Name, logEvent)
 	name = strings.TrimSpace(name)
 

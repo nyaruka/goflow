@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSetRunResult, func() flows.Action { return &SetRunResultAction{} })
+	registerType(TypeSetRunResult, func() flows.Action { return &SetRunResult{} })
 }
 
 // TypeSetRunResult is the type for the set run result action
 const TypeSetRunResult string = "set_run_result"
 
-// SetRunResultAction can be used to save a result for a flow. The result will be available in the context
+// SetRunResult can be used to save a result for a flow. The result will be available in the context
 // for the run as @results.[name]. The optional category can be used as a way of categorizing results,
 // this can be useful for reporting or analytics.
 //
@@ -31,7 +31,7 @@ const TypeSetRunResult string = "set_run_result"
 //	}
 //
 // @action set_run_result
-type SetRunResultAction struct {
+type SetRunResult struct {
 	baseAction
 	universalAction
 
@@ -41,8 +41,8 @@ type SetRunResultAction struct {
 }
 
 // NewSetRunResult creates a new set run result action
-func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category string) *SetRunResultAction {
-	return &SetRunResultAction{
+func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category string) *SetRunResult {
+	return &SetRunResult{
 		baseAction: newBaseAction(TypeSetRunResult, uuid),
 		Name:       name,
 		Value:      value,
@@ -51,7 +51,7 @@ func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category 
 }
 
 // Execute runs this action
-func (a *SetRunResultAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	value, ok := run.EvaluateTemplate(a.Value, logEvent)
 	if !ok {
 		return nil
@@ -66,7 +66,7 @@ func (a *SetRunResultAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *SetRunResultAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SetRunResult) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Category != "" {
 		result(flows.NewResultInfo(a.Name, []string{a.Category}))
 	} else {

@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	registerType(TypeCallLLM, func() flows.Action { return &CallLLMAction{} })
+	registerType(TypeCallLLM, func() flows.Action { return &CallLLM{} })
 }
 
 // TypeCallLLM is the type for the call LLM action
@@ -19,7 +19,7 @@ const TypeCallLLM string = "call_llm"
 // LLMErrorOutput is the output used when the LLM call fails
 const LLMErrorOutput = "<ERROR>"
 
-// CallLLMAction can be used to call an LLM.
+// CallLLM can be used to call an LLM.
 //
 // An [event:llm_called] event will be created if the LLM could be called.
 //
@@ -36,7 +36,7 @@ const LLMErrorOutput = "<ERROR>"
 //	}
 //
 // @action call_llm
-type CallLLMAction struct {
+type CallLLM struct {
 	baseAction
 	onlineAction
 
@@ -47,8 +47,8 @@ type CallLLMAction struct {
 }
 
 // NewCallLLM creates a new call LLM action
-func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, input, outputLocal string) *CallLLMAction {
-	return &CallLLMAction{
+func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, input, outputLocal string) *CallLLM {
+	return &CallLLM{
 		baseAction:   newBaseAction(TypeCallLLM, uuid),
 		LLM:          llm,
 		Instructions: instructions,
@@ -58,7 +58,7 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 }
 
 // Execute runs this action
-func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)
@@ -69,7 +69,7 @@ func (a *CallLLMAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	return nil
 }
 
-func (a *CallLLMAction) call(ctx context.Context, run flows.Run, logEvent flows.EventCallback) *flows.LLMResponse {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, logEvent flows.EventCallback) *flows.LLMResponse {
 	llms := run.Session().Assets().LLMs()
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {
@@ -100,7 +100,7 @@ func (a *CallLLMAction) call(ctx context.Context, run flows.Run, logEvent flows.
 	return resp
 }
 
-func (a *CallLLMAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *CallLLM) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.LLM)
 	local(a.OutputLocal)
 }

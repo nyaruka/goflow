@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	registerType(TypeChannel, readChannelTrigger)
+	registerType(TypeChannel, readChannel)
 }
 
 // TypeChannel is the type for sessions triggered by channel events
@@ -32,7 +32,7 @@ type ChannelEvent struct {
 	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
-// ChannelTrigger is used when a session was triggered by a channel event
+// Channel is used when a session was triggered by a channel event
 //
 //	{
 //	  "type": "channel",
@@ -45,12 +45,12 @@ type ChannelEvent struct {
 //	}
 //
 // @trigger channel
-type ChannelTrigger struct {
+type Channel struct {
 	baseTrigger
 	event *ChannelEvent
 }
 
-var _ flows.Trigger = (*ChannelTrigger)(nil)
+var _ flows.Trigger = (*Channel)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -58,13 +58,13 @@ var _ flows.Trigger = (*ChannelTrigger)(nil)
 
 // ChannelBuilder is a builder for channel type triggers
 type ChannelBuilder struct {
-	t *ChannelTrigger
+	t *Channel
 }
 
 // Channel returns a channel trigger builder
 func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEventType) *ChannelBuilder {
 	return &ChannelBuilder{
-		t: &ChannelTrigger{
+		t: &Channel{
 			baseTrigger: newBaseTrigger(TypeChannel, b.flow, false, nil),
 			event:       &ChannelEvent{Type: eventType, Channel: channel},
 		},
@@ -78,7 +78,7 @@ func (b *ChannelBuilder) WithParams(params *types.XObject) *ChannelBuilder {
 }
 
 // Build builds the trigger
-func (b *ChannelBuilder) Build() *ChannelTrigger {
+func (b *ChannelBuilder) Build() *Channel {
 	return b.t
 }
 
@@ -86,22 +86,23 @@ func (b *ChannelBuilder) Build() *ChannelTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type channelTriggerEnvelope struct {
-	baseTriggerEnvelope
+type channelEnvelope struct {
+	baseEnvelope
+
 	Event *ChannelEvent `json:"event" validate:"required"`
 }
 
-func readChannelTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &channelTriggerEnvelope{}
+func readChannel(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &channelEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &ChannelTrigger{
+	t := &Channel{
 		event: e.Event,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -109,12 +110,12 @@ func readChannelTrigger(sessionAssets flows.SessionAssets, data []byte, missing 
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *ChannelTrigger) MarshalJSON() ([]byte, error) {
-	e := &channelTriggerEnvelope{
+func (t *Channel) MarshalJSON() ([]byte, error) {
+	e := &channelEnvelope{
 		Event: t.event,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

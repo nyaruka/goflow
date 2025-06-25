@@ -240,7 +240,7 @@ func renderFunctionDoc(output *strings.Builder, item *TaggedItem, session flows.
 func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
-	event, err := events.ReadEvent(exampleJSON)
+	event, err := events.Read(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to read event: %w", err)
 	}
@@ -274,7 +274,7 @@ func renderEventDoc(output *strings.Builder, item *TaggedItem, session flows.Ses
 func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
-	action, err := actions.ReadAction(exampleJSON)
+	action, err := actions.Read(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to read action: %w", err)
 	}
@@ -320,7 +320,7 @@ func renderActionDoc(output *strings.Builder, item *TaggedItem, session flows.Se
 func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
-	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON, assets.PanicOnMissing)
+	trigger, err := triggers.Read(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return fmt.Errorf("unable to read trigger: %w", err)
 	}
@@ -350,7 +350,7 @@ func renderTriggerDoc(output *strings.Builder, item *TaggedItem, session flows.S
 func renderResumeDoc(output *strings.Builder, item *TaggedItem, session flows.Session, voiceSession flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
-	resume, err := resumes.ReadResume(session.Assets(), exampleJSON, assets.PanicOnMissing)
+	resume, err := resumes.Read(session.Assets(), exampleJSON, assets.PanicOnMissing)
 	if err != nil {
 		return fmt.Errorf("unable to read resume: %w", err)
 	}
@@ -454,7 +454,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	for i, event := range eventList {
 		// action examples aren't supposed to generate error events - if they have, something went wrong
 		if event.Type() == events.TypeError {
-			errEvent := event.(*events.ErrorEvent)
+			errEvent := event.(*events.Error)
 			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
 		}
 

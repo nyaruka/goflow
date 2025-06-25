@@ -379,8 +379,8 @@ func currentLocale(run flows.Run, lang i18n.Language) i18n.Locale {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadAction reads an action from the given JSON
-func ReadAction(data []byte) (flows.Action, error) {
+// Read reads an action from the given JSON
+func Read(data []byte) (flows.Action, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

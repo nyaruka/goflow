@@ -10,29 +10,29 @@ import (
 )
 
 func init() {
-	registerType(TypeName, readNameModifier)
+	registerType(TypeName, readName)
 }
 
 // TypeName is the type of our name modifier
 const TypeName string = "name"
 
-// NameModifier modifies the name of a contact
-type NameModifier struct {
+// Name modifies the name of a contact
+type Name struct {
 	baseModifier
 
 	Name string `json:"name"`
 }
 
 // NewName creates a new name modifier
-func NewName(name string) *NameModifier {
-	return &NameModifier{
+func NewName(name string) *Name {
+	return &Name{
 		baseModifier: newBaseModifier(TypeName),
 		Name:         name,
 	}
 }
 
 // Apply applies this modification to the given contact
-func (m *NameModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Name) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Name() != m.Name {
 		// truncate value if necessary
 		name := stringsx.Truncate(m.Name, eng.Options().MaxFieldChars)
@@ -44,13 +44,13 @@ func (m *NameModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 	return false
 }
 
-var _ flows.Modifier = (*NameModifier)(nil)
+var _ flows.Modifier = (*Name)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readNameModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &NameModifier{}
+func readName(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	m := &Name{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

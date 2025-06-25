@@ -87,13 +87,13 @@ func (r *baseResume) Context(env envs.Environment) map[string]types.XValue {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type baseResumeEnvelope struct {
+type baseEnvelope struct {
 	Type      string    `json:"type" validate:"required"`
 	ResumedOn time.Time `json:"resumed_on" validate:"required"`
 }
 
-// ReadResume reads a resume from the given JSON
-func ReadResume(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+// Read reads a resume from the given JSON
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -106,13 +106,13 @@ func ReadResume(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 	return f(sa, data, missing)
 }
 
-func (r *baseResume) unmarshal(sa flows.SessionAssets, e *baseResumeEnvelope, missing assets.MissingCallback) error {
+func (r *baseResume) unmarshal(sa flows.SessionAssets, e *baseEnvelope, missing assets.MissingCallback) error {
 	r.type_ = e.Type
 	r.resumedOn = e.ResumedOn
 	return nil
 }
 
-func (r *baseResume) marshal(e *baseResumeEnvelope) error {
+func (r *baseResume) marshal(e *baseEnvelope) error {
 	e.Type = r.type_
 	e.ResumedOn = r.resumedOn
 	return nil

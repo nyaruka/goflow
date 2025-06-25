@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeDialEnded, func() flows.Event { return &DialEndedEvent{} })
+	registerType(TypeDialEnded, func() flows.Event { return &DialEnded{} })
 }
 
 // TypeDialEnded is the type of our dial ended event
 const TypeDialEnded string = "dial_ended"
 
-// DialEndedEvent events are created when a session is resumed after waiting for a dial.
+// DialEnded events are created when a session is resumed after waiting for a dial.
 //
 //	{
 //	  "type": "dial_ended",
@@ -23,18 +23,18 @@ const TypeDialEnded string = "dial_ended"
 //	}
 //
 // @event dial_ended
-type DialEndedEvent struct {
+type DialEnded struct {
 	BaseEvent
 
 	Dial *flows.Dial `json:"dial" validate:"required"`
 }
 
 // NewDialEnded returns a new dial ended event
-func NewDialEnded(dial *flows.Dial) *DialEndedEvent {
-	return &DialEndedEvent{
+func NewDialEnded(dial *flows.Dial) *DialEnded {
+	return &DialEnded{
 		BaseEvent: NewBaseEvent(TypeDialEnded),
 		Dial:      dial,
 	}
 }
 
-var _ flows.Event = (*DialEndedEvent)(nil)
+var _ flows.Event = (*DialEnded)(nil)

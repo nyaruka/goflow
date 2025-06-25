@@ -122,7 +122,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 		return runResult{}, fmt.Errorf("error unmarshalling contact: %w", err)
 	}
 
-	trigger, err := triggers.ReadTrigger(sa, rawTrigger, assets.PanicOnMissing)
+	trigger, err := triggers.Read(sa, rawTrigger, assets.PanicOnMissing)
 	if err != nil {
 		return runResult{}, fmt.Errorf("error unmarshalling trigger: %w", err)
 	}
@@ -181,7 +181,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 			return runResult{}, fmt.Errorf("did not stop at expected wait, have unused resumes: %d", len(rawResumes[i:]))
 		}
 
-		resume, err := resumes.ReadResume(sa, rawResume, assets.PanicOnMissing)
+		resume, err := resumes.Read(sa, rawResume, assets.PanicOnMissing)
 		if err != nil {
 			return runResult{}, err
 		}

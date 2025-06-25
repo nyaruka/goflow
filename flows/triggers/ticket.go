@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeTicket, readTicketTrigger)
+	registerType(TypeTicket, readTicket)
 }
 
 // TypeTicket is the type for sessions triggered by ticket events
 const TypeTicket string = "ticket"
 
-// TicketTrigger is used when a session was triggered by a ticket event (for now only closed events).
+// Ticket is used when a session was triggered by a ticket event (for now only closed events).
 //
 //	{
 //	  "type": "ticket",
@@ -34,22 +34,23 @@ const TypeTicket string = "ticket"
 //	}
 //
 // @trigger ticket
-type TicketTrigger struct {
+type Ticket struct {
 	baseTrigger
-	event  *events.TicketClosedEvent
+
+	event  *events.TicketClosed
 	ticket *flows.Ticket
 }
 
-func (t *TicketTrigger) Event() flows.Event { return t.event }
+func (t *Ticket) Event() flows.Event { return t.event }
 
 // Context for ticket triggers includes the ticket
-func (t *TicketTrigger) Context(env envs.Environment) map[string]types.XValue {
+func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	c.ticket = flows.Context(env, t.ticket)
 	return c.asMap()
 }
 
-var _ flows.Trigger = (*TicketTrigger)(nil)
+var _ flows.Trigger = (*Ticket)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -57,13 +58,13 @@ var _ flows.Trigger = (*TicketTrigger)(nil)
 
 // TicketBuilder is a builder for ticket type triggers
 type TicketBuilder struct {
-	t *TicketTrigger
+	t *Ticket
 }
 
 // Ticket returns a ticket trigger builder
-func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosedEvent) *TicketBuilder {
+func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosed) *TicketBuilder {
 	return &TicketBuilder{
-		t: &TicketTrigger{
+		t: &Ticket{
 			baseTrigger: newBaseTrigger(TypeTicket, b.flow, false, nil),
 			event:       event,
 			ticket:      ticket,
@@ -72,7 +73,7 @@ func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosedEvent) 
 }
 
 // Build builds the trigger
-func (b *TicketBuilder) Build() *TicketTrigger {
+func (b *TicketBuilder) Build() *Ticket {
 	return b.t
 }
 
@@ -80,13 +81,14 @@ func (b *TicketBuilder) Build() *TicketTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketTriggerEnvelope struct {
-	baseTriggerEnvelope
-	Event *events.TicketClosedEvent `json:"event" validate:"required"`
+type ticketEnvelope struct {
+	baseEnvelope
+
+	Event *events.TicketClosed `json:"event" validate:"required"`
 }
 
-func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &ticketTriggerEnvelope{}
+func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &ticketEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -97,12 +99,12 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 		e.Event.CreatedOn_ = e.TriggeredOn // ensure we have a created on time
 	}
 
-	t := &TicketTrigger{
+	t := &Ticket{
 		event:  e.Event,
 		ticket: e.Event.Ticket.Unmarshal(sa, missing),
 	}
 
-	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -110,12 +112,12 @@ func readTicketTrigger(sa flows.SessionAssets, data []byte, missing assets.Missi
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *TicketTrigger) MarshalJSON() ([]byte, error) {
-	e := &ticketTriggerEnvelope{
+func (t *Ticket) MarshalJSON() ([]byte, error) {
+	e := &ticketEnvelope{
 		Event: t.event,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

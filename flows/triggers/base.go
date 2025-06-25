@@ -135,7 +135,7 @@ func NewBuilder(flow *assets.FlowReference) *Builder {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type baseTriggerEnvelope struct {
+type baseEnvelope struct {
 	Type        string                `json:"type"               validate:"required"`
 	Flow        *assets.FlowReference `json:"flow"               validate:"required"`
 	Batch       bool                  `json:"batch,omitempty"`
@@ -144,8 +144,8 @@ type baseTriggerEnvelope struct {
 	TriggeredOn time.Time             `json:"triggered_on"       validate:"required"`
 }
 
-// ReadTrigger reads a trigger from the given JSON
-func ReadTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+// Read reads a trigger from the given JSON
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -158,7 +158,7 @@ func ReadTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCall
 	return f(sa, data, missing)
 }
 
-func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, missing assets.MissingCallback) error {
+func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseEnvelope, missing assets.MissingCallback) error {
 	var err error
 
 	t.type_ = e.Type
@@ -176,7 +176,7 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseTriggerEnvelope, 
 	return nil
 }
 
-func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
+func (t *baseTrigger) marshal(e *baseEnvelope) error {
 	var err error
 	e.Type = t.type_
 	e.Flow = t.flow

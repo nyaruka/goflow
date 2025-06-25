@@ -14,13 +14,13 @@ import (
 const maxAncestorsSinceInput = 5
 
 func init() {
-	registerType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
+	registerType(TypeStartSession, func() flows.Action { return &StartSession{} })
 }
 
 // TypeStartSession is the type for the start session action
 const TypeStartSession string = "start_session"
 
-// StartSessionAction can be used to trigger sessions for other contacts and groups. A [event:session_triggered] event
+// StartSession can be used to trigger sessions for other contacts and groups. A [event:session_triggered] event
 // will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
 //
 //	{
@@ -34,7 +34,7 @@ const TypeStartSession string = "start_session"
 //	}
 //
 // @action start_session
-type StartSessionAction struct {
+type StartSession struct {
 	baseAction
 	onlineAction
 	otherContactsAction
@@ -45,8 +45,8 @@ type StartSessionAction struct {
 }
 
 // NewStartSession creates a new start session action
-func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSessionAction {
-	return &StartSessionAction{
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
+	return &StartSession{
 		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{
 			Groups:       groups,
@@ -61,7 +61,7 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups [
 }
 
 // Execute runs our action
-func (a *StartSessionAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err
@@ -103,7 +103,7 @@ func (a *StartSessionAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *StartSessionAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *StartSession) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	a.otherContactsAction.Inspect(dependency, local, result)
 
 	dependency(a.Flow)
