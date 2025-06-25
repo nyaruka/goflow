@@ -1,3 +1,7 @@
+v0.249.1 (2025-06-25)
+-------------------------
+ * Fix stuttering in waits/hints package too
+
 v0.249.0 (2025-06-25)
 -------------------------
  * Remove stuttering
