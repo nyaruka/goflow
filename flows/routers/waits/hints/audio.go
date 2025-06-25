@@ -5,20 +5,20 @@ import (
 )
 
 func init() {
-	registerType(TypeAudio, func() flows.Hint { return &AudioHint{} })
+	registerType(TypeAudio, func() flows.Hint { return &Audio{} })
 }
 
 // TypeAudio is the type of our audio hint
 const TypeAudio string = "audio"
 
-// AudioHint requests a message with an audio attachment
-type AudioHint struct {
+// Audio requests a message with an audio attachment
+type Audio struct {
 	baseHint
 }
 
-// NewAudioHint creates a new audio hint
-func NewAudioHint() *AudioHint {
-	return &AudioHint{
+// NewAudio creates a new audio hint
+func NewAudio() *Audio {
+	return &Audio{
 		baseHint: newBaseHint(TypeAudio),
 	}
 }
