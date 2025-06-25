@@ -70,7 +70,7 @@ func (w *Msg) Begin(run flows.Run, log flows.EventCallback) bool {
 // Accept returns whether this wait accepts the given resume
 func (w *Msg) Accepts(resume flows.Resume) bool {
 	switch resume.Type() {
-	case resumes.TypeMsg, resumes.TypeWaitExpiration, resumes.TypeRunExpiration:
+	case resumes.TypeMsg, resumes.TypeWaitExpiration:
 		return true
 	case resumes.TypeWaitTimeout:
 		return w.timeout != nil

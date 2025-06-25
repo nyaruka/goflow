@@ -258,8 +258,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
 	case *events.ContactNameChanged:
 		msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
-	case *events.ContactRefreshed:
-		msg = "👤 contact refreshed on resume"
 	case *events.ContactTimezoneChanged:
 		msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
 	case *events.DialEnded:
@@ -268,8 +266,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = "⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)..."
 	case *events.EmailSent:
 		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
-	case *events.EnvironmentRefreshed:
-		msg = "⚙️ environment refreshed on resume"
 	case *events.Error:
 		msg = fmt.Sprintf("⚠️ %s", typed.Text)
 	case *events.Failure:
@@ -294,8 +290,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		} else {
 			msg = "⏳ waiting for message..."
 		}
-	case *events.RunExpired:
-		msg = "📆 exiting due to expiration"
 	case *events.RunResultChanged:
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 	case *events.ServiceCalled:
@@ -307,6 +301,8 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
 	case *events.TicketOpened:
 		msg = fmt.Sprintf("🎟️ ticket opened with topic \"%s\"", typed.Ticket.Topic.Name)
+	case *events.WaitExpired:
+		msg = "📆 exiting due to expiration"
 	case *events.WaitTimedOut:
 		msg = "⏲️ resuming due to wait timeout"
 	case *events.WebhookCalled:

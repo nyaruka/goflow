@@ -1,6 +1,6 @@
 {
     "contact": {
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "created_on": "2000-01-01T00:00:00Z",
         "fields": {
             "first_name": {
                 "text": "Ben"
@@ -184,13 +184,7 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:06.123456789Z",
-                    "run_uuid": "01969b47-307b-76f8-8f41-6b2d9f33d623",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                    "type": "run_expired"
-                },
-                {
-                    "created_on": "2025-05-04T12:31:11.123456789Z",
+                    "created_on": "2025-05-04T12:31:10.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -199,7 +193,7 @@
                         "locale": "eng-US",
                         "text": "Flow expired",
                         "urn": "tel:+12065551212",
-                        "uuid": "01969b47-672b-76f8-bebe-b4a1f677cf4c"
+                        "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created"
@@ -212,7 +206,7 @@
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                     "operand": "expired",
-                    "time": "2025-05-04T12:31:08.123456789Z"
+                    "time": "2025-05-04T12:31:07.123456789Z"
                 }
             ],
             "session": {
@@ -249,7 +243,7 @@
                                 "type": "flow_entered"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:11.123456789Z",
+                                "created_on": "2025-05-04T12:31:10.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -258,18 +252,18 @@
                                     "locale": "eng-US",
                                     "text": "Flow expired",
                                     "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-672b-76f8-bebe-b4a1f677cf4c"
+                                    "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                                 },
                                 "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:13.123456789Z",
+                        "exited_on": "2025-05-04T12:31:12.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:31:13.123456789Z",
+                        "modified_on": "2025-05-04T12:31:12.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -278,7 +272,7 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:09.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:08.123456789Z",
                                 "exit_uuid": "3edede74-c67f-4151-921c-1635627aa256",
                                 "node_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -312,18 +306,16 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:06.123456789Z",
-                                "run_uuid": "01969b47-307b-76f8-8f41-6b2d9f33d623",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "type": "run_expired"
+                                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                                "type": "wait_expired"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:05.123456789Z",
+                        "exited_on": "2025-05-04T12:31:06.123456789Z",
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "modified_on": "2025-05-04T12:31:07.123456789Z",
+                        "modified_on": "2025-05-04T12:31:06.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -352,8 +344,12 @@
     ],
     "resumes": [
         {
-            "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "run_expiration"
+            "event": {
+                "created_on": "2020-10-12T15:38:17.508225-05:00",
+                "type": "wait_expired"
+            },
+            "resumed_on": "2020-10-12T15:38:17.508225-05:00",
+            "type": "wait_expiration"
         }
     ],
     "trigger": {
