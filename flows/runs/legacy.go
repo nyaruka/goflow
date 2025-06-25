@@ -103,12 +103,12 @@ func arrayToObject(array *types.XArray) *types.XObject {
 func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
 	for i := len(r.events) - 1; i >= 0; i-- {
 		switch typed := r.events[i].(type) {
-		case *events.WebhookCalledEvent:
+		case *events.WebhookCalled:
 			// look for a run result changed event on the same step
 			resultEvent := r.findEvent(typed.StepUUID(), events.TypeRunResultChanged)
 
 			if resultEvent != nil {
-				asResultEvent := resultEvent.(*events.RunResultChangedEvent)
+				asResultEvent := resultEvent.(*events.RunResultChanged)
 				if asResultEvent.Extra != nil {
 					return &flows.WebhookCall{ // they just get the fields to recreate @webhook.json
 						ResponseStatus: typed.StatusCode,

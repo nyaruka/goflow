@@ -446,7 +446,7 @@ func TestTranslation(t *testing.T) {
 
 		require.Len(t, sp.Events(), 1)
 		require.Equal(t, "msg_created", sp.Events()[0].Type())
-		evt := sp.Events()[0].(*events.MsgCreatedEvent)
+		evt := sp.Events()[0].(*events.MsgCreated)
 
 		assert.Equal(t, tc.expectedText, evt.Msg.Text(), "msg text mismatch in test '%s'", tc.description)
 		assert.Equal(t, tc.expectedAttachments, evt.Msg.Attachments(), "attachments mismatch in test case '%s'", tc.description)

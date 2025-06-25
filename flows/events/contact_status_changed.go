@@ -3,13 +3,13 @@ package events
 import "github.com/nyaruka/goflow/flows"
 
 func init() {
-	registerType(TypeContactStatusChanged, func() flows.Event { return &ContactStatusChangedEvent{} })
+	registerType(TypeContactStatusChanged, func() flows.Event { return &ContactStatusChanged{} })
 }
 
 // TypeContactStatusChanged is the type of our contact status changed event
 const TypeContactStatusChanged string = "contact_status_changed"
 
-// ContactStatusChangedEvent events are created when the status of the contact has been changed.
+// ContactStatusChanged events are created when the status of the contact has been changed.
 //
 //	{
 //	  "type": "contact_timezone_changed",
@@ -18,15 +18,15 @@ const TypeContactStatusChanged string = "contact_status_changed"
 //	}
 //
 // @event contact_status_changed
-type ContactStatusChangedEvent struct {
+type ContactStatusChanged struct {
 	BaseEvent
 
 	Status flows.ContactStatus `json:"status"`
 }
 
 // NewContactStatusChanged returns a new contact_status_changed event
-func NewContactStatusChanged(status flows.ContactStatus) *ContactStatusChangedEvent {
-	return &ContactStatusChangedEvent{
+func NewContactStatusChanged(status flows.ContactStatus) *ContactStatusChanged {
+	return &ContactStatusChanged{
 		BaseEvent: NewBaseEvent(TypeContactStatusChanged),
 		Status:    status,
 	}

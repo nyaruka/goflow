@@ -10,29 +10,29 @@ import (
 )
 
 func init() {
-	registerType(TypeChannel, readChannelModifier)
+	registerType(TypeChannel, readChannel)
 }
 
 // TypeChannel is the type of our channel modifier
 const TypeChannel string = "channel"
 
-// ChannelModifier modifies the preferred channel of a contact
-type ChannelModifier struct {
+// Channel modifies the preferred channel of a contact
+type Channel struct {
 	baseModifier
 
 	channel *flows.Channel
 }
 
 // NewChannel creates a new channel modifier
-func NewChannel(channel *flows.Channel) *ChannelModifier {
-	return &ChannelModifier{
+func NewChannel(channel *flows.Channel) *Channel {
+	return &Channel{
 		baseModifier: newBaseModifier(TypeChannel),
 		channel:      channel,
 	}
 }
 
 // Apply applies this modification to the given contact
-func (m *ChannelModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Channel) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if m.channel != nil && !m.channel.HasRole(assets.ChannelRoleSend) {
 		log(events.NewError("can't set channel that can't send as the preferred channel"))
 
@@ -44,19 +44,19 @@ func (m *ChannelModifier) Apply(eng flows.Engine, env envs.Environment, sa flows
 	return false
 }
 
-var _ flows.Modifier = (*ChannelModifier)(nil)
+var _ flows.Modifier = (*Channel)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type channelModifierEnvelope struct {
+type channelEnvelope struct {
 	utils.TypedEnvelope
 	Channel *assets.ChannelReference `json:"channel" validate:"omitempty"`
 }
 
-func readChannelModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &channelModifierEnvelope{}
+func readChannel(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &channelEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -72,8 +72,8 @@ func readChannelModifier(assets flows.SessionAssets, data []byte, missing assets
 	return NewChannel(channel), nil
 }
 
-func (m *ChannelModifier) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&channelModifierEnvelope{
+func (m *Channel) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&channelEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Channel:       m.channel.Reference(),
 	})

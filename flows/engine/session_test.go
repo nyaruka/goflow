@@ -270,7 +270,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "msg_wait", sprint.Events()[1].Type())
 
 	// check our wait has a timeout
-	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
+	waitEvent := run.Events()[1].(*events.MsgWait)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
 	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))

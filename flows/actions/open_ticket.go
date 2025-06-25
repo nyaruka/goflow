@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	registerType(TypeOpenTicket, func() flows.Action { return &OpenTicketAction{} })
+	registerType(TypeOpenTicket, func() flows.Action { return &OpenTicket{} })
 }
 
 const (
@@ -21,7 +21,7 @@ const (
 	OpenTicketOutputLocal = "_new_ticket"
 )
 
-// OpenTicketAction is used to open a ticket for the contact if they don't already have an open ticket.
+// OpenTicket is used to open a ticket for the contact if they don't already have an open ticket.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -35,7 +35,7 @@ const (
 //	}
 //
 // @action open_ticket
-type OpenTicketAction struct {
+type OpenTicket struct {
 	baseAction
 	onlineAction
 
@@ -45,8 +45,8 @@ type OpenTicketAction struct {
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference) *OpenTicketAction {
-	return &OpenTicketAction{
+func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference) *OpenTicket {
+	return &OpenTicket{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Topic:      topic,
 		Note:       note,
@@ -55,7 +55,7 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note str
 }
 
 // Execute runs this action
-func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default
@@ -84,7 +84,7 @@ func (a *OpenTicketAction) Execute(ctx context.Context, run flows.Run, step flow
 	return nil
 }
 
-func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
 	if run.Session().BatchStart() {
 		logEvent(events.NewError("can't open tickets during batch starts"))
 		return nil
@@ -104,7 +104,7 @@ func (a *OpenTicketAction) open(run flows.Run, topic *flows.Topic, assignee *flo
 	return nil
 }
 
-func (a *OpenTicketAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *OpenTicket) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Topic != nil {
 		dependency(a.Topic)
 	}

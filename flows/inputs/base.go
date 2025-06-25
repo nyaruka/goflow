@@ -47,7 +47,7 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type baseInputEnvelope struct {
+type baseEnvelope struct {
 	Type      string                   `json:"type" validate:"required"`
 	UUID      flows.InputUUID          `json:"uuid"`
 	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty"`
@@ -69,7 +69,7 @@ func ReadInput(sessionAssets flows.SessionAssets, data []byte, missing assets.Mi
 	return f(sessionAssets, data, missing)
 }
 
-func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnvelope, missing assets.MissingCallback) error {
+func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseEnvelope, missing assets.MissingCallback) error {
 	i.type_ = e.Type
 	i.uuid = e.UUID
 	i.createdOn = e.CreatedOn
@@ -84,7 +84,7 @@ func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseInputEnv
 	return nil
 }
 
-func (i *baseInput) marshal(e *baseInputEnvelope) {
+func (i *baseInput) marshal(e *baseEnvelope) {
 	e.Type = i.type_
 	e.UUID = i.uuid
 	e.CreatedOn = i.createdOn

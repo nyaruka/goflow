@@ -15,13 +15,13 @@ import (
 )
 
 func init() {
-	registerType(TypeOptIn, readOptInTrigger)
+	registerType(TypeOptIn, readOptIn)
 }
 
 // TypeOptIn is the type for sessions triggered by optin/optout events
 const TypeOptIn string = "optin"
 
-// OptInTrigger is used when a session was triggered by an optin or optout.
+// OptIn is used when a session was triggered by an optin or optout.
 //
 //	{
 //	  "type": "optin",
@@ -37,20 +37,20 @@ const TypeOptIn string = "optin"
 //	}
 //
 // @trigger optin
-type OptInTrigger struct {
+type OptIn struct {
 	baseTrigger
 	event flows.Event // optin_started or optin_stopped
 	optIn *flows.OptIn
 }
 
 // Context for optin triggers includes the optin
-func (t *OptInTrigger) Context(env envs.Environment) map[string]types.XValue {
+func (t *OptIn) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	c.optIn = flows.Context(env, t.optIn)
 	return c.asMap()
 }
 
-var _ flows.Trigger = (*OptInTrigger)(nil)
+var _ flows.Trigger = (*OptIn)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -58,7 +58,7 @@ var _ flows.Trigger = (*OptInTrigger)(nil)
 
 // OptInBuilder is a builder for optin type triggers
 type OptInBuilder struct {
-	t *OptInTrigger
+	t *OptIn
 }
 
 // OptIn returns a optin trigger builder
@@ -68,7 +68,7 @@ func (b *Builder) OptIn(optIn *flows.OptIn, event flows.Event) *OptInBuilder {
 	}
 
 	return &OptInBuilder{
-		t: &OptInTrigger{
+		t: &OptIn{
 			baseTrigger: newBaseTrigger(TypeOptIn, b.flow, false, nil),
 			event:       event,
 			optIn:       optIn,
@@ -77,7 +77,7 @@ func (b *Builder) OptIn(optIn *flows.OptIn, event flows.Event) *OptInBuilder {
 }
 
 // Build builds the trigger
-func (b *OptInBuilder) Build() *OptInTrigger {
+func (b *OptInBuilder) Build() *OptIn {
 	return b.t
 }
 
@@ -85,13 +85,14 @@ func (b *OptInBuilder) Build() *OptInTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type optInTriggerEnvelope struct {
-	baseTriggerEnvelope
+type optInEnvelope struct {
+	baseEnvelope
+
 	Event json.RawMessage `json:"event" validate:"required"`
 }
 
-func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &optInTriggerEnvelope{}
+func readOptIn(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &optInEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -117,9 +118,9 @@ func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.Missin
 	var optInRef *assets.OptInReference
 
 	switch typed := event.(type) {
-	case *events.OptInStartedEvent:
+	case *events.OptInStarted:
 		optInRef = typed.OptIn
-	case *events.OptInStoppedEvent:
+	case *events.OptInStopped:
 		optInRef = typed.OptIn
 	default:
 		panic("optin trigger event must be of type optin_started or optin_stopped")
@@ -130,12 +131,12 @@ func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.Missin
 		missing(optInRef, nil)
 	}
 
-	t := &OptInTrigger{
+	t := &OptIn{
 		event: event,
 		optIn: optIn,
 	}
 
-	if err := t.unmarshal(sa, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -143,17 +144,17 @@ func readOptInTrigger(sa flows.SessionAssets, data []byte, missing assets.Missin
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *OptInTrigger) MarshalJSON() ([]byte, error) {
+func (t *OptIn) MarshalJSON() ([]byte, error) {
 	me, err := json.Marshal(t.event)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling optin trigger event: %w", err)
 	}
 
-	e := &optInTriggerEnvelope{
+	e := &optInEnvelope{
 		Event: me,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

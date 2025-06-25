@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeRemoveContactGroups, func() flows.Action { return &RemoveContactGroupsAction{} })
+	registerType(TypeRemoveContactGroups, func() flows.Action { return &RemoveContactGroups{} })
 }
 
 // TypeRemoveContactGroups is the type for the remove from groups action
 const TypeRemoveContactGroups string = "remove_contact_groups"
 
-// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A [event:contact_groups_changed] event will be created
+// RemoveContactGroups can be used to remove a contact from one or more groups. A [event:contact_groups_changed] event will be created
 // for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 // the contact from all non-query based groups.
 //
@@ -30,7 +30,7 @@ const TypeRemoveContactGroups string = "remove_contact_groups"
 //	}
 //
 // @action remove_contact_groups
-type RemoveContactGroupsAction struct {
+type RemoveContactGroups struct {
 	baseAction
 	universalAction
 
@@ -39,8 +39,8 @@ type RemoveContactGroupsAction struct {
 }
 
 // NewRemoveContactGroups creates a new remove from groups action
-func NewRemoveContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference, allGroups bool) *RemoveContactGroupsAction {
-	return &RemoveContactGroupsAction{
+func NewRemoveContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference, allGroups bool) *RemoveContactGroups {
+	return &RemoveContactGroups{
 		baseAction: newBaseAction(TypeRemoveContactGroups, uuid),
 		Groups:     groups,
 		AllGroups:  allGroups,
@@ -48,7 +48,7 @@ func NewRemoveContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReferen
 }
 
 // Validate validates our action is valid
-func (a *RemoveContactGroupsAction) Validate() error {
+func (a *RemoveContactGroups) Validate() error {
 	if a.AllGroups && len(a.Groups) > 0 {
 		return fmt.Errorf("can't specify specific groups when all_groups=true")
 	}
@@ -56,7 +56,7 @@ func (a *RemoveContactGroupsAction) Validate() error {
 }
 
 // Execute runs the action
-func (a *RemoveContactGroupsAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	var groups []*flows.Group
 
 	if a.AllGroups {
@@ -73,7 +73,7 @@ func (a *RemoveContactGroupsAction) Execute(ctx context.Context, run flows.Run, 
 	return nil
 }
 
-func (a *RemoveContactGroupsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *RemoveContactGroups) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	for _, group := range a.Groups {
 		dependency(group)
 	}

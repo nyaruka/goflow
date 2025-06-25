@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeContactGroupsChanged, func() flows.Event { return &ContactGroupsChangedEvent{} })
+	registerType(TypeContactGroupsChanged, func() flows.Event { return &ContactGroupsChanged{} })
 }
 
 // TypeContactGroupsChanged is the type of our groups changed event
 const TypeContactGroupsChanged string = "contact_groups_changed"
 
-// ContactGroupsChangedEvent events are created when a contact is added or removed to/from one or more groups.
+// ContactGroupsChanged events are created when a contact is added or removed to/from one or more groups.
 //
 //	{
 //	  "type": "contact_groups_changed",
@@ -22,7 +22,7 @@ const TypeContactGroupsChanged string = "contact_groups_changed"
 //	}
 //
 // @event contact_groups_changed
-type ContactGroupsChangedEvent struct {
+type ContactGroupsChanged struct {
 	BaseEvent
 
 	GroupsAdded   []*assets.GroupReference `json:"groups_added,omitempty" validate:"omitempty,dive"`
@@ -30,8 +30,8 @@ type ContactGroupsChangedEvent struct {
 }
 
 // NewContactGroupsChanged returns a new contact_groups_changed event
-func NewContactGroupsChanged(added []*flows.Group, removed []*flows.Group) *ContactGroupsChangedEvent {
-	return &ContactGroupsChangedEvent{
+func NewContactGroupsChanged(added []*flows.Group, removed []*flows.Group) *ContactGroupsChanged {
+	return &ContactGroupsChanged{
 		BaseEvent:     NewBaseEvent(TypeContactGroupsChanged),
 		GroupsAdded:   groupsToReferences(added),
 		GroupsRemoved: groupsToReferences(removed),

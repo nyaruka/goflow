@@ -14,14 +14,14 @@ import (
 )
 
 func init() {
-	registerType(TypeMsg, readMsgInput)
+	registerType(TypeMsg, readMsg)
 }
 
 // TypeMsg is a constant for incoming messages
 const TypeMsg string = "msg"
 
-// MsgInput is a message which can be used as input
-type MsgInput struct {
+// Msg is a message which can be used as input
+type Msg struct {
 	baseInput
 
 	urn         *flows.ContactURN
@@ -31,14 +31,14 @@ type MsgInput struct {
 }
 
 // NewMsg creates a new user input based on a message
-func NewMsg(s flows.Session, msg *flows.MsgIn, createdOn time.Time) *MsgInput {
+func NewMsg(s flows.Session, msg *flows.MsgIn, createdOn time.Time) *Msg {
 	// load the channel
 	var channel *flows.Channel
 	if msg.Channel() != nil {
 		channel = s.Assets().Channels().Get(msg.Channel().UUID)
 	}
 
-	return &MsgInput{
+	return &Msg{
 		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(msg.UUID()), channel, createdOn),
 		urn:         flows.NewContactURN(msg.URN(), nil),
 		text:        msg.Text(),
@@ -59,7 +59,7 @@ func NewMsg(s flows.Session, msg *flows.MsgIn, createdOn time.Time) *MsgInput {
 //	external_id:text -> the external ID of the input
 //
 // @context input
-func (i *MsgInput) Context(env envs.Environment) map[string]types.XValue {
+func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 	attachments := make([]types.XValue, len(i.attachments))
 
 	for i, attachment := range i.attachments {
@@ -84,7 +84,7 @@ func (i *MsgInput) Context(env envs.Environment) map[string]types.XValue {
 	}
 }
 
-func (i *MsgInput) format() string {
+func (i *Msg) format() string {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)
@@ -95,35 +95,35 @@ func (i *MsgInput) format() string {
 	return strings.Join(parts, "\n")
 }
 
-var _ flows.Input = (*MsgInput)(nil)
+var _ flows.Input = (*Msg)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type msgInputEnvelope struct {
-	baseInputEnvelope
+type msgEnvelope struct {
+	baseEnvelope
 	URN         urns.URN           `json:"urn" validate:"omitempty,urn"`
 	Text        string             `json:"text"`
 	Attachments []utils.Attachment `json:"attachments,omitempty"`
 	ExternalID  string             `json:"external_id,omitempty"`
 }
 
-func readMsgInput(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
-	e := &msgInputEnvelope{}
+func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
+	e := &msgEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
 		return nil, err
 	}
 
-	i := &MsgInput{
+	i := &Msg{
 		urn:         flows.NewContactURN(e.URN, nil),
 		text:        e.Text,
 		attachments: e.Attachments,
 		externalID:  e.ExternalID,
 	}
 
-	if err := i.unmarshal(sessionAssets, &e.baseInputEnvelope, missing); err != nil {
+	if err := i.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -131,15 +131,15 @@ func readMsgInput(sessionAssets flows.SessionAssets, data []byte, missing assets
 }
 
 // MarshalJSON marshals this msg input into JSON
-func (i *MsgInput) MarshalJSON() ([]byte, error) {
-	e := &msgInputEnvelope{
+func (i *Msg) MarshalJSON() ([]byte, error) {
+	e := &msgEnvelope{
 		URN:         i.urn.URN(),
 		Text:        i.text,
 		Attachments: i.attachments,
 		ExternalID:  i.externalID,
 	}
 
-	i.marshal(&e.baseInputEnvelope)
+	i.marshal(&e.baseEnvelope)
 
 	return jsonx.Marshal(e)
 }

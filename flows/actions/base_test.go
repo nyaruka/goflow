@@ -865,10 +865,10 @@ func TestStartSessionLoopProtection(t *testing.T) {
 
 	for {
 		// look for a session triggered event
-		var event *events.SessionTriggeredEvent
+		var event *events.SessionTriggered
 		for _, e := range sprint.Events() {
 			if e.Type() == events.TypeSessionTriggered {
-				event = e.(*events.SessionTriggeredEvent)
+				event = e.(*events.SessionTriggered)
 			}
 		}
 
@@ -890,7 +890,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	// final session should have an error event
 	finalEvent := sprint.Events()[len(sprint.Events())-1]
 	assert.Equal(t, events.TypeError, finalEvent.Type())
-	assert.Equal(t, "too many sessions have been spawned since the last time input was received", finalEvent.(*events.ErrorEvent).Text)
+	assert.Equal(t, "too many sessions have been spawned since the last time input was received", finalEvent.(*events.Error).Text)
 }
 
 func TestStartSessionLoopProtectionWithInput(t *testing.T) {
@@ -1002,10 +1002,10 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		// look for a session triggered event
-		var event *events.SessionTriggeredEvent
+		var event *events.SessionTriggered
 		for _, e := range sprint.Events() {
 			if e.Type() == events.TypeSessionTriggered {
-				event = e.(*events.SessionTriggeredEvent)
+				event = e.(*events.SessionTriggered)
 			}
 		}
 

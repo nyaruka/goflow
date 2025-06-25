@@ -10,29 +10,29 @@ import (
 )
 
 func init() {
-	registerType(TypeLanguage, readLanguageModifier)
+	registerType(TypeLanguage, readLanguage)
 }
 
 // TypeLanguage is the type of our language modifier
 const TypeLanguage string = "language"
 
-// LanguageModifier modifies the language of a contact
-type LanguageModifier struct {
+// Language modifies the language of a contact
+type Language struct {
 	baseModifier
 
 	Language i18n.Language `json:"language"`
 }
 
 // NewLanguage creates a new language modifier
-func NewLanguage(language i18n.Language) *LanguageModifier {
-	return &LanguageModifier{
+func NewLanguage(language i18n.Language) *Language {
+	return &Language{
 		baseModifier: newBaseModifier(TypeLanguage),
 		Language:     language,
 	}
 }
 
 // Apply applies this modification to the given contact
-func (m *LanguageModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Language) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)
 		log(events.NewContactLanguageChanged(m.Language))
@@ -41,13 +41,13 @@ func (m *LanguageModifier) Apply(eng flows.Engine, env envs.Environment, sa flow
 	return false
 }
 
-var _ flows.Modifier = (*LanguageModifier)(nil)
+var _ flows.Modifier = (*Language)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readLanguageModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &LanguageModifier{}
+func readLanguage(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	m := &Language{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

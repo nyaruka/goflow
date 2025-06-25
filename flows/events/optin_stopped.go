@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeOptInStopped, func() flows.Event { return &OptInStoppedEvent{} })
+	registerType(TypeOptInStopped, func() flows.Event { return &OptInStopped{} })
 }
 
 // TypeOptInStopped is our type for the optin stopped event
 const TypeOptInStopped string = "optin_stopped"
 
-// OptInStoppedEvent events are created when a contact has opted-out.
+// OptInStopped events are created when a contact has opted-out.
 //
 //	{
 //	  "type": "optin_stopped",
@@ -28,7 +28,7 @@ const TypeOptInStopped string = "optin_stopped"
 //	}
 //
 // @event optin_stopped
-type OptInStoppedEvent struct {
+type OptInStopped struct {
 	BaseEvent
 
 	OptIn   *assets.OptInReference   `json:"optin" validate:"required"`
@@ -36,8 +36,8 @@ type OptInStoppedEvent struct {
 }
 
 // NewOptInStopped returns a new optin stopped event
-func NewOptInStopped(optIn *flows.OptIn, ch *assets.ChannelReference) *OptInStoppedEvent {
-	return &OptInStoppedEvent{
+func NewOptInStopped(optIn *flows.OptIn, ch *assets.ChannelReference) *OptInStopped {
+	return &OptInStopped{
 		BaseEvent: NewBaseEvent(TypeOptInStopped),
 		OptIn:     optIn.Reference(),
 		Channel:   ch,

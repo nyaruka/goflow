@@ -454,7 +454,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	for i, event := range eventList {
 		// action examples aren't supposed to generate error events - if they have, something went wrong
 		if event.Type() == events.TypeError {
-			errEvent := event.(*events.ErrorEvent)
+			errEvent := event.(*events.Error)
 			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
 		}
 

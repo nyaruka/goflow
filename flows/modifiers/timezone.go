@@ -12,29 +12,29 @@ import (
 )
 
 func init() {
-	registerType(TypeTimezone, readTimezoneModifier)
+	registerType(TypeTimezone, readTimezone)
 }
 
 // TypeTimezone is the type of our timezone modifier
 const TypeTimezone string = "timezone"
 
-// TimezoneModifier modifies the timezone of a contact
-type TimezoneModifier struct {
+// Timezone modifies the timezone of a contact
+type Timezone struct {
 	baseModifier
 
 	timezone *time.Location
 }
 
 // NewTimezone creates a new timezone modifier
-func NewTimezone(timezone *time.Location) *TimezoneModifier {
-	return &TimezoneModifier{
+func NewTimezone(timezone *time.Location) *Timezone {
+	return &Timezone{
 		baseModifier: newBaseModifier(TypeTimezone),
 		timezone:     timezone,
 	}
 }
 
 // Apply applies this modification to the given contact
-func (m *TimezoneModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Timezone) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChanged(m.timezone))
@@ -47,19 +47,19 @@ func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
 	return (tz1 == nil && tz2 == nil) || (tz1 != nil && tz2 != nil && tz1.String() == tz2.String())
 }
 
-var _ flows.Modifier = (*TimezoneModifier)(nil)
+var _ flows.Modifier = (*Timezone)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type timezoneModifierEnvelope struct {
+type timezoneEnvelope struct {
 	utils.TypedEnvelope
 	Timezone string `json:"timezone"`
 }
 
-func readTimezoneModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &timezoneModifierEnvelope{}
+func readTimezone(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &timezoneEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -76,10 +76,10 @@ func readTimezoneModifier(assets flows.SessionAssets, data []byte, missing asset
 	return NewTimezone(tz), nil
 }
 
-func (m *TimezoneModifier) MarshalJSON() ([]byte, error) {
+func (m *Timezone) MarshalJSON() ([]byte, error) {
 	tzName := ""
 	if m.timezone != nil {
 		tzName = m.timezone.String()
 	}
-	return jsonx.Marshal(&timezoneModifierEnvelope{TypedEnvelope: utils.TypedEnvelope{Type: m.Type()}, Timezone: tzName})
+	return jsonx.Marshal(&timezoneEnvelope{TypedEnvelope: utils.TypedEnvelope{Type: m.Type()}, Timezone: tzName})
 }

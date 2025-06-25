@@ -9,29 +9,29 @@ import (
 )
 
 func init() {
-	registerType(TypeStatus, readStatusModifier)
+	registerType(TypeStatus, readStatus)
 }
 
 // TypeStatus is the type of our status modifier
 const TypeStatus string = "status"
 
-// StatusModifier modifies the status of a contact
-type StatusModifier struct {
+// Status modifies the status of a contact
+type Status struct {
 	baseModifier
 
 	Status flows.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 // NewStatus creates a new status modifier
-func NewStatus(status flows.ContactStatus) *StatusModifier {
-	return &StatusModifier{
+func NewStatus(status flows.ContactStatus) *Status {
+	return &Status{
 		baseModifier: newBaseModifier(TypeStatus),
 		Status:       status,
 	}
 }
 
 // Apply applies this modification to the given contact
-func (m *StatusModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Status) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Status() != m.Status {
 		contact.SetStatus(m.Status)
 		log(events.NewContactStatusChanged(m.Status))
@@ -40,13 +40,13 @@ func (m *StatusModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 	return false
 }
 
-var _ flows.Modifier = (*StatusModifier)(nil)
+var _ flows.Modifier = (*Status)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readStatusModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &StatusModifier{}
+func readStatus(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	m := &Status{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

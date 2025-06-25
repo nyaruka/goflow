@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSetContactField, func() flows.Action { return &SetContactFieldAction{} })
+	registerType(TypeSetContactField, func() flows.Action { return &SetContactField{} })
 }
 
 // TypeSetContactField is the type for the set contact field action
 const TypeSetContactField string = "set_contact_field"
 
-// SetContactFieldAction can be used to update a field value on the contact. The value is a localizable
+// SetContactField can be used to update a field value on the contact. The value is a localizable
 // template and white space is trimmed from the final value. An empty string clears the value.
 // A [event:contact_field_changed] event will be created with the corresponding value.
 //
@@ -29,7 +29,7 @@ const TypeSetContactField string = "set_contact_field"
 //	}
 //
 // @action set_contact_field
-type SetContactFieldAction struct {
+type SetContactField struct {
 	baseAction
 	universalAction
 
@@ -38,8 +38,8 @@ type SetContactFieldAction struct {
 }
 
 // NewSetContactField creates a new set channel action
-func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, value string) *SetContactFieldAction {
-	return &SetContactFieldAction{
+func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, value string) *SetContactField {
+	return &SetContactField{
 		baseAction: newBaseAction(TypeSetContactField, uuid),
 		Field:      field,
 		Value:      value,
@@ -47,7 +47,7 @@ func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, val
 }
 
 // Execute runs this action
-func (a *SetContactFieldAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	value, ok := run.EvaluateTemplate(a.Value, logEvent)
 	value = strings.TrimSpace(value)
 
@@ -66,6 +66,6 @@ func (a *SetContactFieldAction) Execute(ctx context.Context, run flows.Run, step
 	return nil
 }
 
-func (a *SetContactFieldAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SetContactField) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Field)
 }

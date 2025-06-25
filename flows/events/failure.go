@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeFailure, func() flows.Event { return &ErrorEvent{} })
+	registerType(TypeFailure, func() flows.Event { return &Error{} })
 }
 
 // TypeFailure is the type of our error events
 const TypeFailure string = "failure"
 
-// FailureEvent events are created when an error occurs during flow execution which prevents continuation of the session.
+// Failure events are created when an error occurs during flow execution which prevents continuation of the session.
 //
 //	{
 //	  "type": "failure",
@@ -20,15 +20,15 @@ const TypeFailure string = "failure"
 //	}
 //
 // @event failure
-type FailureEvent struct {
+type Failure struct {
 	BaseEvent
 
 	Text string `json:"text" validate:"required"`
 }
 
 // NewFailure returns a new failure event for the passed in error
-func NewFailure(err error) *FailureEvent {
-	return &FailureEvent{
+func NewFailure(err error) *Failure {
+	return &Failure{
 		BaseEvent: NewBaseEvent(TypeFailure),
 		Text:      err.Error(),
 	}

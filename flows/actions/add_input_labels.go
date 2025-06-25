@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeAddInputLabels, func() flows.Action { return &AddInputLabelsAction{} })
+	registerType(TypeAddInputLabels, func() flows.Action { return &AddInputLabels{} })
 }
 
 // TypeAddInputLabels is the type for the add label action
 const TypeAddInputLabels string = "add_input_labels"
 
-// AddInputLabelsAction can be used to add labels to the last user input on a flow. An [event:input_labels_added] event
+// AddInputLabels can be used to add labels to the last user input on a flow. An [event:input_labels_added] event
 // will be created with the labels added when this action is encountered. If there is
 // no user input at that point then this action will be ignored.
 //
@@ -29,7 +29,7 @@ const TypeAddInputLabels string = "add_input_labels"
 //	}
 //
 // @action add_input_labels
-type AddInputLabelsAction struct {
+type AddInputLabels struct {
 	baseAction
 	interactiveAction
 
@@ -37,15 +37,15 @@ type AddInputLabelsAction struct {
 }
 
 // NewAddInputLabels creates a new add labels action
-func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *AddInputLabelsAction {
-	return &AddInputLabelsAction{
+func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *AddInputLabels {
+	return &AddInputLabels{
 		baseAction: newBaseAction(TypeAddInputLabels, uuid),
 		Labels:     labels,
 	}
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabelsAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
@@ -62,7 +62,7 @@ func (a *AddInputLabelsAction) Execute(ctx context.Context, run flows.Run, step 
 	return nil
 }
 
-func (a *AddInputLabelsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *AddInputLabels) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	for _, label := range a.Labels {
 		dependency(label)
 	}

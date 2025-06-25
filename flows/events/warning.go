@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeWarning, func() flows.Event { return &WarningEvent{} })
+	registerType(TypeWarning, func() flows.Event { return &Warning{} })
 }
 
 // TypeWarning is the type of our warning events
 const TypeWarning string = "warning"
 
-// WarningEvent events are created for things like accessing deprecated context values.
+// Warning events are created for things like accessing deprecated context values.
 //
 //	{
 //	  "type": "warning",
@@ -20,15 +20,15 @@ const TypeWarning string = "warning"
 //	}
 //
 // @event warning
-type WarningEvent struct {
+type Warning struct {
 	BaseEvent
 
 	Text string `json:"text" validate:"required"`
 }
 
 // NewWarning returns a new warning event
-func NewWarning(text string) *WarningEvent {
-	return &WarningEvent{
+func NewWarning(text string) *Warning {
+	return &Warning{
 		BaseEvent: NewBaseEvent(TypeWarning),
 		Text:      text,
 	}

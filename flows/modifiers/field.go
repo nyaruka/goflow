@@ -14,14 +14,14 @@ import (
 )
 
 func init() {
-	registerType(TypeField, readFieldModifier)
+	registerType(TypeField, readField)
 }
 
 // TypeField is the type of our field modifier
 const TypeField string = "field"
 
-// FieldModifier modifies a field value on the contact
-type FieldModifier struct {
+// Field modifies a field value on the contact
+type Field struct {
 	baseModifier
 
 	field *flows.Field
@@ -29,8 +29,8 @@ type FieldModifier struct {
 }
 
 // NewField creates a new field modifier
-func NewField(field *flows.Field, value string) *FieldModifier {
-	return &FieldModifier{
+func NewField(field *flows.Field, value string) *Field {
+	return &Field{
 		baseModifier: newBaseModifier(TypeField),
 		field:        field,
 		value:        value,
@@ -38,7 +38,7 @@ func NewField(field *flows.Field, value string) *FieldModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *FieldModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Field) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	oldValue := contact.Fields().Get(m.field)
 
 	newValue := contact.Fields().Parse(env, sa.Fields(), m.field, m.value)
@@ -56,24 +56,24 @@ func (m *FieldModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.S
 	return false
 }
 
-func (m *FieldModifier) Value() string {
+func (m *Field) Value() string {
 	return m.value
 }
 
-var _ flows.Modifier = (*FieldModifier)(nil)
+var _ flows.Modifier = (*Field)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type fieldModifierEnvelope struct {
+type fieldEnvelope struct {
 	utils.TypedEnvelope
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value json.RawMessage        `json:"value"`
 }
 
-func readFieldModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &fieldModifierEnvelope{}
+func readField(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &fieldEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -95,13 +95,13 @@ func readFieldModifier(assets flows.SessionAssets, data []byte, missing assets.M
 	return NewField(field, value), nil
 }
 
-func (m *FieldModifier) MarshalJSON() ([]byte, error) {
+func (m *Field) MarshalJSON() ([]byte, error) {
 	value, err := jsonx.Marshal(m.value)
 	if err != nil {
 		return nil, err
 	}
 
-	return jsonx.Marshal(&fieldModifierEnvelope{
+	return jsonx.Marshal(&fieldEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Field:         m.field.Reference(),
 		Value:         value,

@@ -177,7 +177,7 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type baseRouterEnvelope struct {
+type baseEnvelope struct {
 	Type       string            `json:"type"                  validate:"required"`
 	Wait       json.RawMessage   `json:"wait,omitempty"`
 	ResultName string            `json:"result_name,omitempty" validate:"omitempty,result_name"`
@@ -200,7 +200,7 @@ func ReadRouter(data []byte) (flows.Router, error) {
 	return router, utils.UnmarshalAndValidate(data, router)
 }
 
-func (r *baseRouter) unmarshal(e *baseRouterEnvelope) error {
+func (r *baseRouter) unmarshal(e *baseEnvelope) error {
 	var err error
 
 	r.type_ = e.Type
@@ -224,7 +224,7 @@ func (r *baseRouter) unmarshal(e *baseRouterEnvelope) error {
 	return nil
 }
 
-func (r *baseRouter) marshal(e *baseRouterEnvelope) error {
+func (r *baseRouter) marshal(e *baseEnvelope) error {
 	var err error
 
 	e.Type = r.type_

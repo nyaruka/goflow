@@ -226,10 +226,10 @@ func printEvents(log []flows.Event, out io.Writer) {
 func PrintEvent(event flows.Event, out io.Writer) {
 	var msg string
 	switch typed := event.(type) {
-	case *events.BroadcastCreatedEvent:
+	case *events.BroadcastCreated:
 		text := typed.Translations[typed.BaseLanguage].Text
 		msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
-	case *events.ContactFieldChangedEvent:
+	case *events.ContactFieldChanged:
 		var action string
 		if typed.Value != nil {
 			action = fmt.Sprintf("changed to '%s'", typed.Value.Text.Native())
@@ -237,7 +237,7 @@ func PrintEvent(event flows.Event, out io.Writer) {
 			action = "cleared"
 		}
 		msg = fmt.Sprintf("✏️ field '%s' %s", typed.Field.Key, action)
-	case *events.ContactGroupsChangedEvent:
+	case *events.ContactGroupsChanged:
 		msgs := make([]string, 0)
 		if len(typed.GroupsAdded) > 0 {
 			groups := make([]string, len(typed.GroupsAdded))
@@ -254,62 +254,62 @@ func PrintEvent(event flows.Event, out io.Writer) {
 			msgs = append(msgs, "removed from "+strings.Join(groups, ", "))
 		}
 		msg = fmt.Sprintf("👪 %s", strings.Join(msgs, ", "))
-	case *events.ContactLanguageChangedEvent:
+	case *events.ContactLanguageChanged:
 		msg = fmt.Sprintf("🌐 language changed to '%s'", typed.Language)
-	case *events.ContactNameChangedEvent:
+	case *events.ContactNameChanged:
 		msg = fmt.Sprintf("📛 name changed to '%s'", typed.Name)
-	case *events.ContactRefreshedEvent:
+	case *events.ContactRefreshed:
 		msg = "👤 contact refreshed on resume"
-	case *events.ContactTimezoneChangedEvent:
+	case *events.ContactTimezoneChanged:
 		msg = fmt.Sprintf("🕑 timezone changed to '%s'", typed.Timezone)
-	case *events.DialEndedEvent:
+	case *events.DialEnded:
 		msg = fmt.Sprintf("☎️ dial ended with '%s'", typed.Dial.Status)
-	case *events.DialWaitEvent:
+	case *events.DialWait:
 		msg = "⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)..."
-	case *events.EmailSentEvent:
+	case *events.EmailSent:
 		msg = fmt.Sprintf("✉️ email sent with subject '%s'", typed.Subject)
-	case *events.EnvironmentRefreshedEvent:
+	case *events.EnvironmentRefreshed:
 		msg = "⚙️ environment refreshed on resume"
-	case *events.ErrorEvent:
+	case *events.Error:
 		msg = fmt.Sprintf("⚠️ %s", typed.Text)
-	case *events.FailureEvent:
+	case *events.Failure:
 		msg = fmt.Sprintf("🛑 %s", typed.Text)
-	case *events.FlowEnteredEvent:
+	case *events.FlowEntered:
 		msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
-	case *events.InputLabelsAddedEvent:
+	case *events.InputLabelsAdded:
 		labels := make([]string, len(typed.Labels))
 		for i, label := range typed.Labels {
 			labels[i] = fmt.Sprintf("'%s'", label.Name)
 		}
 		msg = fmt.Sprintf("🏷️ labeled with %s", strings.Join(labels, ", "))
-	case *events.IVRCreatedEvent:
+	case *events.IVRCreated:
 		msg = fmt.Sprintf("📞 IVR created \"%s\"", typed.Msg.Text())
-	case *events.MsgCreatedEvent:
+	case *events.MsgCreated:
 		msg = fmt.Sprintf("💬 message created \"%s\"", typed.Msg.Text())
-	case *events.MsgReceivedEvent:
+	case *events.MsgReceived:
 		msg = fmt.Sprintf("📥 message received \"%s\"", typed.Msg.Text())
-	case *events.MsgWaitEvent:
+	case *events.MsgWait:
 		if typed.TimeoutSeconds != nil {
 			msg = fmt.Sprintf("⏳ waiting for message (%d sec timeout, type /timeout to simulate)...", *typed.TimeoutSeconds)
 		} else {
 			msg = "⏳ waiting for message..."
 		}
-	case *events.RunExpiredEvent:
+	case *events.RunExpired:
 		msg = "📆 exiting due to expiration"
-	case *events.RunResultChangedEvent:
+	case *events.RunResultChanged:
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
-	case *events.ServiceCalledEvent:
+	case *events.ServiceCalled:
 		switch typed.Service {
 		case "classifier":
 			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
 		}
-	case *events.SessionTriggeredEvent:
+	case *events.SessionTriggered:
 		msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
-	case *events.TicketOpenedEvent:
+	case *events.TicketOpened:
 		msg = fmt.Sprintf("🎟️ ticket opened with topic \"%s\"", typed.Ticket.Topic.Name)
-	case *events.WaitTimedOutEvent:
+	case *events.WaitTimedOut:
 		msg = "⏲️ resuming due to wait timeout"
-	case *events.WebhookCalledEvent:
+	case *events.WebhookCalled:
 		url := stringsx.TruncateEllipsis(typed.URL, 50)
 		msg = fmt.Sprintf("☁️ called %s", url)
 	default:

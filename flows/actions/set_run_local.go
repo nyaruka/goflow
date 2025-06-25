@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	registerType(TypeSetRunLocal, func() flows.Action { return &SetRunLocalAction{} })
+	registerType(TypeSetRunLocal, func() flows.Action { return &SetRunLocal{} })
 }
 
 // TypeSetRunLocal is the type for the set run result action
@@ -25,7 +25,7 @@ const (
 	LocalOperationClear     LocalOperation = "clear"
 )
 
-// SetRunLocalAction can be used to save a local variable. The local will be available in the context
+// SetRunLocal can be used to save a local variable. The local will be available in the context
 // for the run as @locals.[local]. The value field can be a template and will be evaluated.
 //
 //	{
@@ -37,7 +37,7 @@ const (
 //	}
 //
 // @action set_run_local
-type SetRunLocalAction struct {
+type SetRunLocal struct {
 	baseAction
 	universalAction
 
@@ -47,8 +47,8 @@ type SetRunLocalAction struct {
 }
 
 // NewSetRunLocal creates a new set run local action
-func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocalAction {
-	return &SetRunLocalAction{
+func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocal {
+	return &SetRunLocal{
 		baseAction: newBaseAction(TypeSetRunLocal, uuid),
 		Local:      local,
 		Value:      value,
@@ -56,7 +56,7 @@ func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocalActi
 }
 
 // Execute runs this action
-func (a *SetRunLocalAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	value, ok := run.EvaluateTemplate(a.Value, logEvent)
 	if !ok {
 		return nil
@@ -79,6 +79,6 @@ func (a *SetRunLocalAction) Execute(ctx context.Context, run flows.Run, step flo
 	return nil
 }
 
-func (a *SetRunLocalAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SetRunLocal) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	local(a.Local)
 }

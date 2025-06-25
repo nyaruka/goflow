@@ -780,7 +780,7 @@ func (l *EventLog) Log(e flows.Event) {
 func (l *EventLog) Error() error {
 	for _, e := range l.Events {
 		if e.Type() == events.TypeError {
-			return errors.New(e.(*events.ErrorEvent).Text)
+			return errors.New(e.(*events.Error).Text)
 		}
 	}
 	return nil

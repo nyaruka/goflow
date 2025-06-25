@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	registerType(TypeCallClassifier, func() flows.Action { return &CallClassifierAction{} })
+	registerType(TypeCallClassifier, func() flows.Action { return &CallClassifier{} })
 }
 
 var classificationCategories = []string{CategorySuccess, CategorySkipped, CategoryFailure}
@@ -18,7 +18,7 @@ var classificationCategories = []string{CategorySuccess, CategorySkipped, Catego
 // TypeCallClassifier is the type for the call classifier action
 const TypeCallClassifier string = "call_classifier"
 
-// CallClassifierAction can be used to classify the intent and entities from a given input using an NLU classifier. It always
+// CallClassifier can be used to classify the intent and entities from a given input using an NLU classifier. It always
 // saves a result indicating whether the classification was successful, skipped or failed, and what the extracted intents
 // and entities were.
 //
@@ -34,7 +34,7 @@ const TypeCallClassifier string = "call_classifier"
 //	}
 //
 // @action call_classifier
-type CallClassifierAction struct {
+type CallClassifier struct {
 	baseAction
 	onlineAction
 
@@ -44,8 +44,8 @@ type CallClassifierAction struct {
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierReference, input string, resultName string) *CallClassifierAction {
-	return &CallClassifierAction{
+func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierReference, input string, resultName string) *CallClassifier {
+	return &CallClassifier{
 		baseAction: newBaseAction(TypeCallClassifier, uuid),
 		Classifier: classifier,
 		Input:      input,
@@ -54,7 +54,7 @@ func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierRefer
 }
 
 // Execute runs this action
-func (a *CallClassifierAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 
@@ -73,7 +73,7 @@ func (a *CallClassifierAction) Execute(ctx context.Context, run flows.Run, step 
 	return nil
 }
 
-func (a *CallClassifierAction) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
+func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
 	if input == "" {
 		logEvent(events.NewError("can't classify empty input, skipping classification"))
 		return nil, true
@@ -105,7 +105,7 @@ func (a *CallClassifierAction) classify(ctx context.Context, run flows.Run, inpu
 	return classification, false
 }
 
-func (a *CallClassifierAction) saveSuccess(run flows.Run, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
+func (a *CallClassifier) saveSuccess(run flows.Run, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
 	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
@@ -116,15 +116,15 @@ func (a *CallClassifierAction) saveSuccess(run flows.Run, step flows.Step, input
 	a.saveResult(run, step, a.ResultName, value, CategorySuccess, "", input, extra, logEvent)
 }
 
-func (a *CallClassifierAction) saveSkipped(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifier) saveSkipped(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategorySkipped, "", input, nil, logEvent)
 }
 
-func (a *CallClassifierAction) saveFailure(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
+func (a *CallClassifier) saveFailure(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, logEvent)
 }
 
-func (a *CallClassifierAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Classifier)
 
 	if a.ResultName != "" {

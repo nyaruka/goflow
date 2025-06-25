@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeRunExpiration, readRunExpirationResume)
+	registerType(TypeRunExpiration, readRunExpiration)
 }
 
 // TypeRunExpiration is the type for resuming a session when a run has expired
 const TypeRunExpiration string = "run_expiration"
 
-// RunExpirationResume is used when a session is resumed because the waiting run has expired
+// RunExpiration is used when a session is resumed because the waiting run has expired
 //
 //	{
 //	  "type": "run_expiration",
@@ -23,19 +23,19 @@ const TypeRunExpiration string = "run_expiration"
 //	}
 //
 // @resume run_expiration
-type RunExpirationResume struct {
+type RunExpiration struct {
 	baseResume
 }
 
 // NewRunExpiration creates a new run expired resume with the passed in values
-func NewRunExpiration() *RunExpirationResume {
-	return &RunExpirationResume{
+func NewRunExpiration() *RunExpiration {
+	return &RunExpiration{
 		baseResume: newBaseResume(TypeRunExpiration),
 	}
 }
 
 // Apply applies our state changes and saves any events to the run
-func (r *RunExpirationResume) Apply(run flows.Run, logEvent flows.EventCallback) {
+func (r *RunExpiration) Apply(run flows.Run, logEvent flows.EventCallback) {
 	run.Exit(flows.RunStatusExpired)
 
 	logEvent(events.NewRunExpired(run))
@@ -43,19 +43,19 @@ func (r *RunExpirationResume) Apply(run flows.Run, logEvent flows.EventCallback)
 	r.baseResume.Apply(run, logEvent)
 }
 
-var _ flows.Resume = (*RunExpirationResume)(nil)
+var _ flows.Resume = (*RunExpiration)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readRunExpirationResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
-	e := &baseResumeEnvelope{}
+func readRunExpiration(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+	e := &baseEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	r := &RunExpirationResume{}
+	r := &RunExpiration{}
 
 	if err := r.unmarshal(sessionAssets, e, missing); err != nil {
 		return nil, err
@@ -65,8 +65,8 @@ func readRunExpirationResume(sessionAssets flows.SessionAssets, data []byte, mis
 }
 
 // MarshalJSON marshals this resume into JSON
-func (r *RunExpirationResume) MarshalJSON() ([]byte, error) {
-	e := &baseResumeEnvelope{}
+func (r *RunExpiration) MarshalJSON() ([]byte, error) {
+	e := &baseEnvelope{}
 
 	if err := r.marshal(e); err != nil {
 		return nil, err

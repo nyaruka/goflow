@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeTicketOpened, func() flows.Event { return &TicketOpenedEvent{} })
+	registerType(TypeTicketOpened, func() flows.Event { return &TicketOpened{} })
 }
 
 // TypeTicketOpened is the type for our ticket opened events
 const TypeTicketOpened string = "ticket_opened"
 
-// TicketOpenedEvent events are created when a new ticket is opened.
+// TicketOpened events are created when a new ticket is opened.
 //
 //	{
 //	  "type": "ticket_opened",
@@ -28,7 +28,7 @@ const TypeTicketOpened string = "ticket_opened"
 //	}
 //
 // @event ticket_opened
-type TicketOpenedEvent struct {
+type TicketOpened struct {
 	BaseEvent
 
 	Ticket *flows.TicketEnvelope `json:"ticket"`
@@ -36,8 +36,8 @@ type TicketOpenedEvent struct {
 }
 
 // NewTicketOpened returns a new ticket opened event
-func NewTicketOpened(ticket *flows.Ticket, note string) *TicketOpenedEvent {
-	return &TicketOpenedEvent{
+func NewTicketOpened(ticket *flows.Ticket, note string) *TicketOpened {
+	return &TicketOpened{
 		BaseEvent: NewBaseEvent(TypeTicketOpened),
 		Ticket:    ticket.Marshal(),
 		Note:      note,

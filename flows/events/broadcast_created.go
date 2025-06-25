@@ -8,13 +8,13 @@ import (
 )
 
 func init() {
-	registerType(TypeBroadcastCreated, func() flows.Event { return &BroadcastCreatedEvent{} })
+	registerType(TypeBroadcastCreated, func() flows.Event { return &BroadcastCreated{} })
 }
 
 // TypeBroadcastCreated is a constant for outgoing message events
 const TypeBroadcastCreated string = "broadcast_created"
 
-// BroadcastCreatedEvent events are created when an action wants to send a message to other contacts.
+// BroadcastCreated events are created when an action wants to send a message to other contacts.
 //
 //	{
 //	  "type": "broadcast_created",
@@ -37,7 +37,7 @@ const TypeBroadcastCreated string = "broadcast_created"
 //	}
 //
 // @event broadcast_created
-type BroadcastCreatedEvent struct {
+type BroadcastCreated struct {
 	BaseEvent
 
 	Translations flows.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
@@ -49,8 +49,8 @@ type BroadcastCreatedEvent struct {
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreatedEvent {
-	return &BroadcastCreatedEvent{
+func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreated {
+	return &BroadcastCreated{
 		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
 		Translations: translations,
 		BaseLanguage: baseLanguage,
@@ -61,4 +61,4 @@ func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage 
 	}
 }
 
-var _ flows.Event = (*BroadcastCreatedEvent)(nil)
+var _ flows.Event = (*BroadcastCreated)(nil)

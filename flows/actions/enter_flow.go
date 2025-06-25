@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeEnterFlow, func() flows.Action { return &EnterFlowAction{} })
+	registerType(TypeEnterFlow, func() flows.Action { return &EnterFlow{} })
 }
 
 // TypeEnterFlow is the type for the enter flow action
 const TypeEnterFlow string = "enter_flow"
 
-// EnterFlowAction can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
+// EnterFlow can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 //
 // A [event:flow_entered] event will be created to record that the flow was started.
 //
@@ -28,7 +28,7 @@ const TypeEnterFlow string = "enter_flow"
 //	}
 //
 // @action enter_flow
-type EnterFlowAction struct {
+type EnterFlow struct {
 	baseAction
 	universalAction
 
@@ -37,8 +37,8 @@ type EnterFlowAction struct {
 }
 
 // NewEnterFlow creates a new start flow action
-func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *EnterFlowAction {
-	return &EnterFlowAction{
+func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *EnterFlow {
+	return &EnterFlow{
 		baseAction: newBaseAction(TypeEnterFlow, uuid),
 		Flow:       flow,
 		Terminal:   terminal,
@@ -46,7 +46,7 @@ func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bo
 }
 
 // Execute runs our action
-func (a *EnterFlowAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
@@ -65,6 +65,6 @@ func (a *EnterFlowAction) Execute(ctx context.Context, run flows.Run, step flows
 	return nil
 }
 
-func (a *EnterFlowAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *EnterFlow) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Flow)
 }

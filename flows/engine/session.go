@@ -299,7 +299,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 	// ensure groups are correct
 	s.ensureQueryBasedGroups(logEvent)
 
-	_, isTimeout := resume.(*resumes.WaitTimeoutResume)
+	_, isTimeout := resume.(*resumes.WaitTimeout)
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {

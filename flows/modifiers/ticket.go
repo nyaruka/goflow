@@ -10,14 +10,14 @@ import (
 )
 
 func init() {
-	registerType(TypeTicket, readTicketModifier)
+	registerType(TypeTicket, readTicket)
 }
 
 // TypeTicket is the type of our ticket modifier
 const TypeTicket string = "ticket"
 
-// TicketModifier opens a ticket for the contact
-type TicketModifier struct {
+// Ticket opens a ticket for the contact
+type Ticket struct {
 	baseModifier
 
 	topic    *flows.Topic
@@ -26,8 +26,8 @@ type TicketModifier struct {
 }
 
 // NewTicket creates a new ticket modifier
-func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *TicketModifier {
-	return &TicketModifier{
+func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *Ticket {
+	return &Ticket{
 		baseModifier: newBaseModifier(TypeTicket),
 		topic:        topic,
 		assignee:     assignee,
@@ -36,7 +36,7 @@ func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *TicketMod
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Ticket) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	// if there's already an open ticket, nothing to do
 	if contact.Ticket() != nil {
 		return false
@@ -49,13 +49,13 @@ func (m *TicketModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 	return true
 }
 
-var _ flows.Modifier = (*TicketModifier)(nil)
+var _ flows.Modifier = (*Ticket)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketModifierEnvelope struct {
+type ticketEnvelope struct {
 	utils.TypedEnvelope
 
 	Topic    *assets.TopicReference `json:"topic" validate:"required"`
@@ -63,8 +63,8 @@ type ticketModifierEnvelope struct {
 	Note     string                 `json:"note"`
 }
 
-func readTicketModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &ticketModifierEnvelope{}
+func readTicket(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &ticketEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -86,8 +86,8 @@ func readTicketModifier(assets flows.SessionAssets, data []byte, missing assets.
 	return NewTicket(topic, assignee, e.Note), nil
 }
 
-func (m *TicketModifier) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&ticketModifierEnvelope{
+func (m *Ticket) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&ticketEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Topic:         m.topic.Reference(),
 		Assignee:      m.assignee.Reference(),

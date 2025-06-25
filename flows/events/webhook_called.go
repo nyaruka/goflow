@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeWebhookCalled, func() flows.Event { return &WebhookCalledEvent{} })
+	registerType(TypeWebhookCalled, func() flows.Event { return &WebhookCalled{} })
 }
 
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
 
-// WebhookCalledEvent events are created when a webhook is called. The event contains
+// WebhookCalled events are created when a webhook is called. The event contains
 // the URL and the status of the response, as well as a full dump of the
 // request and response.
 //
@@ -29,7 +29,7 @@ const TypeWebhookCalled string = "webhook_called"
 //	}
 //
 // @event webhook_called
-type WebhookCalledEvent struct {
+type WebhookCalled struct {
 	BaseEvent
 
 	*flows.HTTPLogWithoutTime
@@ -38,8 +38,8 @@ type WebhookCalledEvent struct {
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(trace *httpx.Trace, status flows.CallStatus, resthook string) *WebhookCalledEvent {
-	return &WebhookCalledEvent{
+func NewWebhookCalled(trace *httpx.Trace, status flows.CallStatus, resthook string) *WebhookCalled {
+	return &WebhookCalled{
 		BaseEvent:          NewBaseEvent(TypeWebhookCalled),
 		HTTPLogWithoutTime: flows.NewHTTPLogWithoutTime(trace, status, nil),
 		Resthook:           resthook,

@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
+	registerType(TypeSendMsg, func() flows.Action { return &SendMsg{} })
 }
 
 // TypeSendMsg is the type for the send message action
 const TypeSendMsg string = "send_msg"
 
-// SendMsgAction can be used to reply to the current contact in a flow. The text field may contain templates. The action
+// SendMsg can be used to reply to the current contact in a flow. The text field may contain templates. The action
 // will attempt to find pairs of URNs and channels which can be used for sending. If it can't find such a pair, it will
 // create a message without a channel or URN.
 //
@@ -37,7 +37,7 @@ const TypeSendMsg string = "send_msg"
 //	}
 //
 // @action send_msg
-type SendMsgAction struct {
+type SendMsg struct {
 	baseAction
 	universalAction
 	createMsgAction
@@ -48,8 +48,8 @@ type SendMsgAction struct {
 }
 
 // NewSendMsg creates a new send msg action
-func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
-	return &SendMsgAction{
+func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsg {
+	return &SendMsg{
 		baseAction: newBaseAction(TypeSendMsg, uuid),
 		createMsgAction: createMsgAction{
 			Text:         text,
@@ -61,7 +61,7 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// a message to a non-active contact is unsendable but can still be created
 	unsendableReason := flows.NilUnsendableReason
 	if run.Contact().Status() != flows.ContactStatusActive {
@@ -124,7 +124,7 @@ func (a *SendMsgAction) Execute(ctx context.Context, run flows.Run, step flows.S
 	return nil
 }
 
-func (a *SendMsgAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *SendMsg) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.Template != nil {
 		dependency(a.Template)
 	}
