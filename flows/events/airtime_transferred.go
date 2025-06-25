@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	registerType(TypeAirtimeTransferred, func() flows.Event { return &AirtimeTransferredEvent{} })
+	registerType(TypeAirtimeTransferred, func() flows.Event { return &AirtimeTransferred{} })
 }
 
 // TypeAirtimeTransferred is the type of our airtime transferred event
 const TypeAirtimeTransferred string = "airtime_transferred"
 
-// AirtimeTransferredEvent events are created when airtime has been transferred to the contact.
+// AirtimeTransferred events are created when airtime has been transferred to the contact.
 //
 //	{
 //	  "type": "airtime_transferred",
@@ -37,7 +37,7 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 //	}
 //
 // @event airtime_transferred
-type AirtimeTransferredEvent struct {
+type AirtimeTransferred struct {
 	BaseEvent
 
 	TransferUUID flows.TransferUUID `json:"transfer_uuid"`
@@ -50,8 +50,8 @@ type AirtimeTransferredEvent struct {
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
-func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferredEvent {
-	return &AirtimeTransferredEvent{
+func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferred {
+	return &AirtimeTransferred{
 		BaseEvent:    NewBaseEvent(TypeAirtimeTransferred),
 		TransferUUID: t.UUID,
 		ExternalID:   t.ExternalID,

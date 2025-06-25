@@ -12,13 +12,13 @@ import (
 )
 
 func init() {
-	registerType(TypeMsg, readMsgTrigger)
+	registerType(TypeMsg, readMsg)
 }
 
 // TypeMsg is the type for message triggered sessions
 const TypeMsg string = "msg"
 
-// MsgTrigger is used when a session was triggered by a message being received by the caller
+// Msg is used when a session was triggered by a message being received by the caller
 //
 //	{
 //	  "type": "msg",
@@ -42,13 +42,14 @@ const TypeMsg string = "msg"
 //	}
 //
 // @trigger msg
-type MsgTrigger struct {
+type Msg struct {
 	baseTrigger
-	event *events.MsgReceivedEvent
+
+	event *events.MsgReceived
 	match *KeywordMatch
 }
 
-func (t *MsgTrigger) Event() flows.Event { return t.event }
+func (t *Msg) Event() flows.Event { return t.event }
 
 // KeywordMatchType describes how the message matched a keyword
 type KeywordMatchType string
@@ -71,7 +72,7 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 }
 
 // Initialize initializes the session
-func (t *MsgTrigger) Initialize(session flows.Session) error {
+func (t *Msg) Initialize(session flows.Session) error {
 	// update our input
 	input := inputs.NewMsg(session, t.event.Msg, t.triggeredOn)
 	session.SetInput(input)
@@ -80,7 +81,7 @@ func (t *MsgTrigger) Initialize(session flows.Session) error {
 }
 
 // Context for msg triggers additionally exposes the keyword match
-func (t *MsgTrigger) Context(env envs.Environment) map[string]types.XValue {
+func (t *Msg) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 	if t.match != nil {
 		c.keyword = t.match.Keyword
@@ -88,7 +89,7 @@ func (t *MsgTrigger) Context(env envs.Environment) map[string]types.XValue {
 	return c.asMap()
 }
 
-var _ flows.Trigger = (*MsgTrigger)(nil)
+var _ flows.Trigger = (*Msg)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -96,13 +97,13 @@ var _ flows.Trigger = (*MsgTrigger)(nil)
 
 // MsgBuilder is a builder for msg type triggers
 type MsgBuilder struct {
-	t *MsgTrigger
+	t *Msg
 }
 
 // Msg returns a msg trigger builder
-func (b *Builder) Msg(e *events.MsgReceivedEvent) *MsgBuilder {
+func (b *Builder) Msg(e *events.MsgReceived) *MsgBuilder {
 	return &MsgBuilder{
-		t: &MsgTrigger{
+		t: &Msg{
 			baseTrigger: newBaseTrigger(TypeMsg, b.flow, false, nil),
 			event:       e,
 		},
@@ -116,7 +117,7 @@ func (b *MsgBuilder) WithMatch(match *KeywordMatch) *MsgBuilder {
 }
 
 // Build builds the trigger
-func (b *MsgBuilder) Build() *MsgTrigger {
+func (b *MsgBuilder) Build() *Msg {
 	return b.t
 }
 
@@ -124,33 +125,34 @@ func (b *MsgBuilder) Build() *MsgTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type msgTriggerEnvelope struct {
-	baseTriggerEnvelope
-	Event *events.MsgReceivedEvent `json:"event"`         // TODO make required
-	Msg   *flows.MsgIn             `json:"msg,omitempty"` // used by older sessions
-	Match *KeywordMatch            `json:"keyword_match,omitempty" validate:"omitempty"`
+type msgEnvelope struct {
+	baseEnvelope
+
+	Event *events.MsgReceived `json:"event"`         // TODO make required
+	Msg   *flows.MsgIn        `json:"msg,omitempty"` // used by older sessions
+	Match *KeywordMatch       `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
-func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &msgTriggerEnvelope{}
+func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &msgEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &MsgTrigger{
+	t := &Msg{
 		event: e.Event,
 		match: e.Match,
 	}
 
 	// older triggers will have msg instead of event so convert that into an event
 	if e.Msg != nil {
-		t.event = &events.MsgReceivedEvent{
-			BaseEvent: events.BaseEvent{Type_: events.TypeMsgReceived, CreatedOn_: e.baseTriggerEnvelope.TriggeredOn},
+		t.event = &events.MsgReceived{
+			BaseEvent: events.BaseEvent{Type_: events.TypeMsgReceived, CreatedOn_: e.baseEnvelope.TriggeredOn},
 			Msg:       e.Msg,
 		}
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -158,13 +160,13 @@ func readMsgTrigger(sessionAssets flows.SessionAssets, data []byte, missing asse
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
-	e := &msgTriggerEnvelope{
+func (t *Msg) MarshalJSON() ([]byte, error) {
+	e := &msgEnvelope{
 		Event: t.event,
 		Match: t.match,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

@@ -12,13 +12,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSendEmail, func() flows.Action { return &SendEmailAction{} })
+	registerType(TypeSendEmail, func() flows.Action { return &SendEmail{} })
 }
 
 // TypeSendEmail is the type for the send email action
 const TypeSendEmail string = "send_email"
 
-// SendEmailAction can be used to send an email to one or more recipients. The subject, body and addresses
+// SendEmail can be used to send an email to one or more recipients. The subject, body and addresses
 // can all contain expressions.
 //
 // An [event:email_sent] event will be created if the email could be sent.
@@ -32,7 +32,7 @@ const TypeSendEmail string = "send_email"
 //	}
 //
 // @action send_email
-type SendEmailAction struct {
+type SendEmail struct {
 	baseAction
 	onlineAction
 
@@ -42,8 +42,8 @@ type SendEmailAction struct {
 }
 
 // NewSendEmail creates a new send email action
-func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, body string) *SendEmailAction {
-	return &SendEmailAction{
+func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, body string) *SendEmail {
+	return &SendEmail{
 		baseAction: newBaseAction(TypeSendEmail, uuid),
 		Addresses:  addresses,
 		Subject:    subject,
@@ -52,7 +52,7 @@ func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, bod
 }
 
 // Execute creates the email events
-func (a *SendEmailAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	localizedSubject, _ := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, _ := run.EvaluateTemplate(localizedSubject, logEvent)
 

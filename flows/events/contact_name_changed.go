@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeContactNameChanged, func() flows.Event { return &ContactNameChangedEvent{} })
+	registerType(TypeContactNameChanged, func() flows.Event { return &ContactNameChanged{} })
 }
 
 // TypeContactNameChanged is the type of our contact name changed event
 const TypeContactNameChanged string = "contact_name_changed"
 
-// ContactNameChangedEvent events are created when the name of the contact has been changed.
+// ContactNameChanged events are created when the name of the contact has been changed.
 //
 //	{
 //	  "type": "contact_name_changed",
@@ -20,15 +20,15 @@ const TypeContactNameChanged string = "contact_name_changed"
 //	}
 //
 // @event contact_name_changed
-type ContactNameChangedEvent struct {
+type ContactNameChanged struct {
 	BaseEvent
 
 	Name string `json:"name"`
 }
 
 // NewContactNameChanged returns a new contact name changed event
-func NewContactNameChanged(name string) *ContactNameChangedEvent {
-	return &ContactNameChangedEvent{
+func NewContactNameChanged(name string) *ContactNameChanged {
+	return &ContactNameChanged{
 		BaseEvent: NewBaseEvent(TypeContactNameChanged),
 		Name:      name,
 	}

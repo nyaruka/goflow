@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeURNs, readURNsModifier)
+	registerType(TypeURNs, readURNs)
 }
 
 // TypeURNs is the type of our URNs modifier
@@ -28,8 +28,8 @@ const (
 	URNsSet    URNsModification = "set"
 )
 
-// URNsModifier modifies the URNs on a contact
-type URNsModifier struct {
+// URNs modifies the URNs on a contact
+type URNs struct {
 	baseModifier
 
 	URNs         []urns.URN       `json:"urns" validate:"required"`
@@ -37,8 +37,8 @@ type URNsModifier struct {
 }
 
 // NewURNs creates a new URNs modifier
-func NewURNs(urnz []urns.URN, modification URNsModification) *URNsModifier {
-	return &URNsModifier{
+func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
+	return &URNs{
 		baseModifier: newBaseModifier(TypeURNs),
 		URNs:         urnz,
 		Modification: modification,
@@ -46,7 +46,7 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNsModifier {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
 	if m.Modification == URNsSet {
@@ -81,13 +81,13 @@ func (m *URNsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 	return false
 }
 
-var _ flows.Modifier = (*URNsModifier)(nil)
+var _ flows.Modifier = (*URNs)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readURNsModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &URNsModifier{}
+func readURNs(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	m := &URNs{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

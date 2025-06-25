@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeCampaignFired, func() flows.Event { return &CampaignFiredEvent{} })
+	registerType(TypeCampaignFired, func() flows.Event { return &CampaignFired{} })
 }
 
 // TypeCampaignFired is our type for the campaign fired event
 const TypeCampaignFired string = "campaign_fired"
 
-// CampaignFiredEvent events are created when a campaign has been fired.
+// CampaignFired events are created when a campaign has been fired.
 //
 //	{
 //	  "type": "campaign_fired",
@@ -25,7 +25,7 @@ const TypeCampaignFired string = "campaign_fired"
 //	}
 //
 // @event campaign_fired
-type CampaignFiredEvent struct {
+type CampaignFired struct {
 	BaseEvent
 
 	Campaign  *assets.CampaignReference `json:"campaign" validate:"required"`
@@ -33,8 +33,8 @@ type CampaignFiredEvent struct {
 }
 
 // NewCampaignFired returns a new campaign fired event
-func NewCampaignFired(campaign *flows.Campaign, pointUUID assets.CampaignPointUUID) *CampaignFiredEvent {
-	return &CampaignFiredEvent{
+func NewCampaignFired(campaign *flows.Campaign, pointUUID assets.CampaignPointUUID) *CampaignFired {
+	return &CampaignFired{
 		BaseEvent: NewBaseEvent(TypeCampaignFired),
 		Campaign:  campaign.Reference(),
 		PointUUID: pointUUID,

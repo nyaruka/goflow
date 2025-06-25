@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeGroups, readGroupsModifier)
+	registerType(TypeGroups, readGroups)
 }
 
 // TypeGroups is the type of our groups modifier
@@ -27,8 +27,8 @@ const (
 	GroupsRemove GroupsModification = "remove"
 )
 
-// GroupsModifier modifies the group membership of the contact
-type GroupsModifier struct {
+// Groups modifies the group membership of the contact
+type Groups struct {
 	baseModifier
 
 	groups       []*flows.Group
@@ -36,8 +36,8 @@ type GroupsModifier struct {
 }
 
 // NewGroups creates a new groups modifier
-func NewGroups(groups []*flows.Group, modification GroupsModification) *GroupsModifier {
-	return &GroupsModifier{
+func NewGroups(groups []*flows.Group, modification GroupsModification) *Groups {
+	return &Groups{
 		baseModifier: newBaseModifier(TypeGroups),
 		groups:       groups,
 		modification: modification,
@@ -45,7 +45,7 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *GroupsMo
 }
 
 // Apply applies this modification to the given contact
-func (m *GroupsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Groups) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
 		log(events.NewError("can't add blocked or stopped contacts to groups"))
 		return false
@@ -101,27 +101,28 @@ func (m *GroupsModifier) Apply(eng flows.Engine, env envs.Environment, sa flows.
 	return false
 }
 
-var _ flows.Modifier = (*GroupsModifier)(nil)
+var _ flows.Modifier = (*Groups)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type groupsModifierEnvelope struct {
+type groupsEnvelope struct {
 	utils.TypedEnvelope
+
 	Groups       []*assets.GroupReference `json:"groups" validate:"required,dive"`
 	Modification GroupsModification       `json:"modification" validate:"eq=add|eq=remove"`
 }
 
-func readGroupsModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &groupsModifierEnvelope{}
+func readGroups(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &groupsEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
 	groups := make([]*flows.Group, 0, len(e.Groups))
 	for _, groupRef := range e.Groups {
-		group := assets.Groups().Get(groupRef.UUID)
+		group := sa.Groups().Get(groupRef.UUID)
 		if group == nil {
 			missing(groupRef, nil)
 		} else {
@@ -136,13 +137,13 @@ func readGroupsModifier(assets flows.SessionAssets, data []byte, missing assets.
 	return nil, ErrNoModifier // nothing left to modify if there are no groups
 }
 
-func (m *GroupsModifier) MarshalJSON() ([]byte, error) {
+func (m *Groups) MarshalJSON() ([]byte, error) {
 	groupRefs := make([]*assets.GroupReference, len(m.groups))
 	for i := range m.groups {
 		groupRefs[i] = m.groups[i].Reference()
 	}
 
-	return jsonx.Marshal(&groupsModifierEnvelope{
+	return jsonx.Marshal(&groupsEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Groups:        groupRefs,
 		Modification:  m.modification,

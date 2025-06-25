@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeAddContactGroups, func() flows.Action { return &AddContactGroupsAction{} })
+	registerType(TypeAddContactGroups, func() flows.Action { return &AddContactGroups{} })
 }
 
 // TypeAddContactGroups is our type for the add to groups action
 const TypeAddContactGroups string = "add_contact_groups"
 
-// AddContactGroupsAction can be used to add a contact to one or more groups. A [event:contact_groups_changed] event will be created
+// AddContactGroups can be used to add a contact to one or more groups. A [event:contact_groups_changed] event will be created
 // for the groups which the contact has been added to.
 //
 //	{
@@ -28,7 +28,7 @@ const TypeAddContactGroups string = "add_contact_groups"
 //	}
 //
 // @action add_contact_groups
-type AddContactGroupsAction struct {
+type AddContactGroups struct {
 	baseAction
 	universalAction
 
@@ -36,22 +36,22 @@ type AddContactGroupsAction struct {
 }
 
 // NewAddContactGroups creates a new add to groups action
-func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference) *AddContactGroupsAction {
-	return &AddContactGroupsAction{
+func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference) *AddContactGroups {
+	return &AddContactGroups{
 		baseAction: newBaseAction(TypeAddContactGroups, uuid),
 		Groups:     groups,
 	}
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroupsAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	groups := resolveGroups(run, a.Groups, logEvent)
 
 	a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logModifier, logEvent)
 	return nil
 }
 
-func (a *AddContactGroupsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *AddContactGroups) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	for _, group := range a.Groups {
 		dependency(group)
 	}

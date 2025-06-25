@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSetContactLanguage, func() flows.Action { return &SetContactLanguageAction{} })
+	registerType(TypeSetContactLanguage, func() flows.Action { return &SetContactLanguage{} })
 }
 
 // TypeSetContactLanguage is the type for the set contact Language action
 const TypeSetContactLanguage string = "set_contact_language"
 
-// SetContactLanguageAction can be used to update the name of the contact. The language is a localizable
+// SetContactLanguage can be used to update the name of the contact. The language is a localizable
 // template and white space is trimmed from the final value. An empty string clears the language.
 // A [event:contact_language_changed] event will be created with the corresponding value.
 //
@@ -28,7 +28,7 @@ const TypeSetContactLanguage string = "set_contact_language"
 //	}
 //
 // @action set_contact_language
-type SetContactLanguageAction struct {
+type SetContactLanguage struct {
 	baseAction
 	universalAction
 
@@ -36,15 +36,15 @@ type SetContactLanguageAction struct {
 }
 
 // NewSetContactLanguage creates a new set language action
-func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLanguageAction {
-	return &SetContactLanguageAction{
+func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLanguage {
+	return &SetContactLanguage{
 		baseAction: newBaseAction(TypeSetContactLanguage, uuid),
 		Language:   language,
 	}
 }
 
 // Execute runs this action
-func (a *SetContactLanguageAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	language, ok := run.EvaluateTemplate(a.Language, logEvent)
 	language = strings.TrimSpace(language)
 

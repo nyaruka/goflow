@@ -23,19 +23,19 @@ func TestReadInput(t *testing.T) {
 	require.NoError(t, err)
 
 	// error if no type field
-	_, err = inputs.ReadInput(sessionAssets, []byte(`{"foo": "bar"}`), missing)
+	_, err = inputs.Read(sessionAssets, []byte(`{"foo": "bar"}`), missing)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = inputs.ReadInput(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
+	_, err = inputs.Read(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
 	// channel is optional
-	_, err = inputs.ReadInput(sessionAssets, []byte(`{"type": "msg", "text": "Hello", "created_on": "2019-01-30T11:49:30Z"}`), missing)
+	_, err = inputs.Read(sessionAssets, []byte(`{"type": "msg", "text": "Hello", "created_on": "2019-01-30T11:49:30Z"}`), missing)
 	assert.NoError(t, err)
 
 	// record of missing asset if channel doesn't exist
-	_, err = inputs.ReadInput(sessionAssets, []byte(`{
+	_, err = inputs.Read(sessionAssets, []byte(`{
 		"type": "msg", 
 		"text": "Hello", 
 		"created_on": "2019-01-30T11:49:30Z",

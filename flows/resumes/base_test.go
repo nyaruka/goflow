@@ -74,7 +74,7 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		sa, err := test.CreateSessionAssets(testAssetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
-		resume, err := resumes.ReadResume(sa, tc.Resume, assets.PanicOnMissing)
+		resume, err := resumes.Read(sa, tc.Resume, assets.PanicOnMissing)
 
 		if tc.ReadError != "" {
 			rootErr := test.RootError(err)
@@ -154,11 +154,11 @@ func TestReadResume(t *testing.T) {
 	require.NoError(t, err)
 
 	// error if no type field
-	_, err = resumes.ReadResume(sessionAssets, []byte(`{"foo": "bar"}`), missing)
+	_, err = resumes.Read(sessionAssets, []byte(`{"foo": "bar"}`), missing)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = resumes.ReadResume(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
+	_, err = resumes.Read(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }
 

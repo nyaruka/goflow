@@ -39,7 +39,7 @@ func LegacyVarsCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.Extra
 	for _, node := range flow.Nodes() {
 		for _, a := range node.Actions() {
 			if a.Type() == actions.TypeStartSession {
-				action := a.(*actions.StartSessionAction)
+				action := a.(*actions.StartSession)
 				if len(action.LegacyVars) > 0 {
 					report(newLegacyVars(node.UUID(), a.UUID(), i18n.NilLanguage, action.LegacyVars))
 				}

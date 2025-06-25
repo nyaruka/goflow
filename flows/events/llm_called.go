@@ -8,13 +8,13 @@ import (
 )
 
 func init() {
-	registerType(TypeLLMCalled, func() flows.Event { return &LLMCalledEvent{} })
+	registerType(TypeLLMCalled, func() flows.Event { return &LLMCalled{} })
 }
 
 // TypeLLMCalled is the type for our LLM calls events
 const TypeLLMCalled string = "llm_called"
 
-// LLMCalledEvent events are created when an LLM is called.
+// LLMCalled events are created when an LLM is called.
 //
 //	{
 //	  "type": "llm_called",
@@ -31,7 +31,7 @@ const TypeLLMCalled string = "llm_called"
 //	}
 //
 // @event llm_called
-type LLMCalledEvent struct {
+type LLMCalled struct {
 	BaseEvent
 
 	LLM          *assets.LLMReference `json:"llm" validate:"required"`
@@ -43,8 +43,8 @@ type LLMCalledEvent struct {
 }
 
 // NewLLMCalled returns a new LLM called event
-func NewLLMCalled(llm *flows.LLM, instructions, input string, resp *flows.LLMResponse, elapsed time.Duration) *LLMCalledEvent {
-	return &LLMCalledEvent{
+func NewLLMCalled(llm *flows.LLM, instructions, input string, resp *flows.LLMResponse, elapsed time.Duration) *LLMCalled {
+	return &LLMCalled{
 		BaseEvent:    NewBaseEvent(TypeLLMCalled),
 		LLM:          llm.Reference(),
 		Instructions: instructions,

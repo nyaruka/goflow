@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeFlowEntered, func() flows.Event { return &FlowEnteredEvent{} })
+	registerType(TypeFlowEntered, func() flows.Event { return &FlowEntered{} })
 }
 
 // TypeFlowEntered is the type of our flow entered event
 const TypeFlowEntered string = "flow_entered"
 
-// FlowEnteredEvent events are created when an action has entered a sub-flow.
+// FlowEntered events are created when an action has entered a sub-flow.
 //
 //	{
 //	  "type": "flow_entered",
@@ -23,7 +23,7 @@ const TypeFlowEntered string = "flow_entered"
 //	}
 //
 // @event flow_entered
-type FlowEnteredEvent struct {
+type FlowEntered struct {
 	BaseEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
@@ -32,8 +32,8 @@ type FlowEnteredEvent struct {
 }
 
 // NewFlowEntered returns a new flow entered event for the passed in flow and parent run
-func NewFlowEntered(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowEnteredEvent {
-	return &FlowEnteredEvent{
+func NewFlowEntered(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowEntered {
+	return &FlowEntered{
 		BaseEvent:     NewBaseEvent(TypeFlowEntered),
 		Flow:          flow,
 		ParentRunUUID: parentRunUUID,

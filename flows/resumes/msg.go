@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeMsg, readMsgResume)
+	registerType(TypeMsg, readMsg)
 }
 
 // TypeMsg is the type for resuming a session with a message
 const TypeMsg string = "msg"
 
-// MsgResume is used when a session is resumed with a new message from the contact
+// Msg is used when a session is resumed with a new message from the contact
 //
 //	{
 //	  "type": "msg",
@@ -35,63 +35,63 @@ const TypeMsg string = "msg"
 //	}
 //
 // @resume msg
-type MsgResume struct {
+type Msg struct {
 	baseResume
 
-	event *events.MsgReceivedEvent
+	event *events.MsgReceived
 }
 
 // NewMsg creates a new message resume with the passed in values
-func NewMsg(event *events.MsgReceivedEvent) *MsgResume {
-	return &MsgResume{
+func NewMsg(event *events.MsgReceived) *Msg {
+	return &Msg{
 		baseResume: newBaseResume(TypeMsg),
 		event:      event,
 	}
 }
 
 // Event returns the event this resume is based on
-func (r *MsgResume) Event() flows.Event { return r.event }
+func (r *Msg) Event() flows.Event { return r.event }
 
 // Apply applies our state changes
-func (r *MsgResume) Apply(run flows.Run, logEvent flows.EventCallback) {
+func (r *Msg) Apply(run flows.Run, logEvent flows.EventCallback) {
 	r.baseResume.Apply(run, logEvent)
 
 	// update our input
 	run.Session().SetInput(inputs.NewMsg(run.Session(), r.event.Msg, r.ResumedOn()))
 }
 
-var _ flows.Resume = (*MsgResume)(nil)
+var _ flows.Resume = (*Msg)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type msgResumeEnvelope struct {
-	baseResumeEnvelope
+type msgEnvelope struct {
+	baseEnvelope
 
-	Event *events.MsgReceivedEvent `json:"event"`         // TODO make required
-	Msg   *flows.MsgIn             `json:"msg,omitempty"` // used by older sessions
+	Event *events.MsgReceived `json:"event"`         // TODO make required
+	Msg   *flows.MsgIn        `json:"msg,omitempty"` // used by older sessions
 }
 
-func readMsgResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
-	e := &msgResumeEnvelope{}
+func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+	e := &msgEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	r := &MsgResume{
+	r := &Msg{
 		event: e.Event,
 	}
 
 	// older resumes will have msg instead of event so convert that into an event
 	if e.Msg != nil {
-		r.event = &events.MsgReceivedEvent{
-			BaseEvent: events.BaseEvent{Type_: events.TypeMsgReceived, CreatedOn_: e.baseResumeEnvelope.ResumedOn},
+		r.event = &events.MsgReceived{
+			BaseEvent: events.BaseEvent{Type_: events.TypeMsgReceived, CreatedOn_: e.baseEnvelope.ResumedOn},
 			Msg:       e.Msg,
 		}
 	}
 
-	if err := r.unmarshal(sessionAssets, &e.baseResumeEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -99,12 +99,12 @@ func readMsgResume(sessionAssets flows.SessionAssets, data []byte, missing asset
 }
 
 // MarshalJSON marshals this resume into JSON
-func (r *MsgResume) MarshalJSON() ([]byte, error) {
-	e := &msgResumeEnvelope{
+func (r *Msg) MarshalJSON() ([]byte, error) {
+	e := &msgEnvelope{
 		Event: r.event,
 	}
 
-	if err := r.marshal(&e.baseResumeEnvelope); err != nil {
+	if err := r.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

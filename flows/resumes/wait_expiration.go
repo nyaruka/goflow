@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeWaitExpiration, readWaitExpirationResume)
+	registerType(TypeWaitExpiration, readWaitExpiration)
 }
 
 // TypeWaitExpiration is the type for resuming a session when a wait has expired
 const TypeWaitExpiration string = "wait_expiration"
 
-// WaitExpirationResume is used when a session is resumed because the waiting run has expired
+// WaitExpiration is used when a session is resumed because the waiting run has expired
 //
 //	{
 //	  "type": "wait_expiration",
@@ -27,51 +27,51 @@ const TypeWaitExpiration string = "wait_expiration"
 //	}
 //
 // @resume wait_expiration
-type WaitExpirationResume struct {
+type WaitExpiration struct {
 	baseResume
 
-	event *events.WaitExpiredEvent
+	event *events.WaitExpired
 }
 
 // NewWaitExpiration creates a new run expired resume with the passed in values
-func NewWaitExpiration(event *events.WaitExpiredEvent) *WaitExpirationResume {
-	return &WaitExpirationResume{
+func NewWaitExpiration(event *events.WaitExpired) *WaitExpiration {
+	return &WaitExpiration{
 		baseResume: newBaseResume(TypeWaitExpiration),
 		event:      event,
 	}
 }
 
 // Event returns the event this resume is based on
-func (r *WaitExpirationResume) Event() flows.Event { return r.event }
+func (r *WaitExpiration) Event() flows.Event { return r.event }
 
 // Apply applies our state changes
-func (r *WaitExpirationResume) Apply(run flows.Run, logEvent flows.EventCallback) {
+func (r *WaitExpiration) Apply(run flows.Run, logEvent flows.EventCallback) {
 	run.Exit(flows.RunStatusExpired)
 
 	r.baseResume.Apply(run, logEvent)
 }
 
-var _ flows.Resume = (*WaitExpirationResume)(nil)
+var _ flows.Resume = (*WaitExpiration)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type waitExpirationResumeEnvelope struct {
-	baseResumeEnvelope
+type waitExpirationEnvelope struct {
+	baseEnvelope
 
-	Event *events.WaitExpiredEvent `json:"event" validate:"required"`
+	Event *events.WaitExpired `json:"event" validate:"required"`
 }
 
-func readWaitExpirationResume(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
-	e := &waitExpirationResumeEnvelope{}
+func readWaitExpiration(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+	e := &waitExpirationEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	r := &WaitExpirationResume{event: e.Event}
+	r := &WaitExpiration{event: e.Event}
 
-	if err := r.unmarshal(sessionAssets, &e.baseResumeEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -79,10 +79,10 @@ func readWaitExpirationResume(sessionAssets flows.SessionAssets, data []byte, mi
 }
 
 // MarshalJSON marshals this resume into JSON
-func (r *WaitExpirationResume) MarshalJSON() ([]byte, error) {
-	e := &waitExpirationResumeEnvelope{Event: r.event}
+func (r *WaitExpiration) MarshalJSON() ([]byte, error) {
+	e := &waitExpirationEnvelope{Event: r.event}
 
-	if err := r.marshal(&e.baseResumeEnvelope); err != nil {
+	if err := r.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

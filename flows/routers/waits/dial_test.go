@@ -29,15 +29,15 @@ func TestDialWait(t *testing.T) {
 	wait, err := waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"+\" & \"593979123456\")"}`))
 	assert.NoError(t, err)
 	assert.Equal(t, waits.TypeDial, wait.Type())
-	assert.Equal(t, 60*time.Second, wait.(*waits.DialWait).DialLimit())
-	assert.Equal(t, 2*time.Hour, wait.(*waits.DialWait).CallLimit())
+	assert.Equal(t, 60*time.Second, wait.(*waits.Dial).DialLimit())
+	assert.Equal(t, 2*time.Hour, wait.(*waits.Dial).CallLimit())
 
 	// or can be provided explicitly
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"+\" & \"593979123456\")", "dial_limit_seconds": 10, "call_limit_seconds": 120}`))
 	assert.NoError(t, err)
 	assert.Equal(t, waits.TypeDial, wait.Type())
-	assert.Equal(t, 10*time.Second, wait.(*waits.DialWait).DialLimit())
-	assert.Equal(t, 120*time.Second, wait.(*waits.DialWait).CallLimit())
+	assert.Equal(t, 10*time.Second, wait.(*waits.Dial).DialLimit())
+	assert.Equal(t, 120*time.Second, wait.(*waits.Dial).CallLimit())
 
 	// test marsalling definition wait
 	marshaled, err := jsonx.Marshal(wait)
@@ -69,9 +69,9 @@ func TestDialWait(t *testing.T) {
 	assert.Equal(t, 2, len(log.Events))
 	assert.Equal(t, "error", log.Events[0].Type())
 	assert.Equal(t, "dial_wait", log.Events[1].Type())
-	assert.Equal(t, urns.URN("tel:+593979123456"), log.Events[1].(*events.DialWaitEvent).URN)
-	assert.Equal(t, 10, log.Events[1].(*events.DialWaitEvent).DialLimitSeconds)
-	assert.Equal(t, 120, log.Events[1].(*events.DialWaitEvent).CallLimitSeconds)
+	assert.Equal(t, urns.URN("tel:+593979123456"), log.Events[1].(*events.DialWait).URN)
+	assert.Equal(t, 10, log.Events[1].(*events.DialWait).DialLimitSeconds)
+	assert.Equal(t, 120, log.Events[1].(*events.DialWait).CallLimitSeconds)
 
 	// try when wait doesn't generate a valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "@(\"\")"}`))

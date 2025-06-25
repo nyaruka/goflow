@@ -159,10 +159,10 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 
 func TestReadRouter(t *testing.T) {
 	// error if no type field
-	_, err := routers.ReadRouter([]byte(`{"foo": "bar"}`))
+	_, err := routers.Read([]byte(`{"foo": "bar"}`))
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = routers.ReadRouter([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
+	_, err = routers.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }

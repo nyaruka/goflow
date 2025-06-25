@@ -302,22 +302,22 @@ func TestEventMarshaling(t *testing.T) {
 		test.AssertSnapshot(t, tc.snapshot, string(eventJSON))
 
 		// try to read event back
-		_, err = events.ReadEvent(eventJSON)
+		_, err = events.Read(eventJSON)
 		assert.NoError(t, err)
 	}
 }
 
 func TestReadEvent(t *testing.T) {
 	// error if no type field
-	_, err := events.ReadEvent([]byte(`{"foo": "bar"}`))
+	_, err := events.Read([]byte(`{"foo": "bar"}`))
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = events.ReadEvent([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
+	_, err = events.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
 	// valid existing type
-	event, err := events.ReadEvent([]byte(`{"type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
+	event, err := events.Read([]byte(`{"type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
 	require.NoError(t, err)
 
 	assert.Equal(t, events.TypeContactNameChanged, event.Type())

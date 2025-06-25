@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	registerType(TypeOptInRequested, func() flows.Event { return &OptInRequestedEvent{} })
+	registerType(TypeOptInRequested, func() flows.Event { return &OptInRequested{} })
 }
 
 // TypeOptInRequested is our type for the optin event
 const TypeOptInRequested string = "optin_requested"
 
-// OptInRequestedEvent events are created when an action has created an optin to be sent.
+// OptInRequested events are created when an action has created an optin to be sent.
 //
 //	{
 //	  "type": "optin_requested",
@@ -30,7 +30,7 @@ const TypeOptInRequested string = "optin_requested"
 //	}
 //
 // @event optin_requested
-type OptInRequestedEvent struct {
+type OptInRequested struct {
 	BaseEvent
 
 	OptIn   *assets.OptInReference   `json:"optin" validate:"required"`
@@ -39,8 +39,8 @@ type OptInRequestedEvent struct {
 }
 
 // NewOptInRequested returns a new optin requested event
-func NewOptInRequested(optIn *flows.OptIn, ch *assets.ChannelReference, urn urns.URN) *OptInRequestedEvent {
-	return &OptInRequestedEvent{
+func NewOptInRequested(optIn *flows.OptIn, ch *assets.ChannelReference, urn urns.URN) *OptInRequested {
+	return &OptInRequested{
 		BaseEvent: NewBaseEvent(TypeOptInRequested),
 		OptIn:     optIn.Reference(),
 		Channel:   ch,

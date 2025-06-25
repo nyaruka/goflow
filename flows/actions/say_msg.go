@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	registerType(TypeSayMsg, func() flows.Action { return &SayMsgAction{} })
+	registerType(TypeSayMsg, func() flows.Action { return &SayMsg{} })
 }
 
 // TypeSayMsg is the type for the say message action
 const TypeSayMsg string = "say_msg"
 
-// SayMsgAction can be used to communicate with the contact in a voice flow by either reading
+// SayMsg can be used to communicate with the contact in a voice flow by either reading
 // a message with TTS or playing a pre-recorded audio file. It will generate an [event:ivr_created]
 // event if there is a valid audio URL or backdown text. This will contain a message which
 // the caller should handle as an IVR play command if it has an audio attachment, or otherwise
@@ -30,7 +30,7 @@ const TypeSayMsg string = "say_msg"
 //	}
 //
 // @action say_msg
-type SayMsgAction struct {
+type SayMsg struct {
 	baseAction
 	voiceAction
 
@@ -39,8 +39,8 @@ type SayMsgAction struct {
 }
 
 // NewSayMsg creates a new say message action
-func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgAction {
-	return &SayMsgAction{
+func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsg {
+	return &SayMsg{
 		baseAction: newBaseAction(TypeSayMsg, uuid),
 		Text:       text,
 		AudioURL:   audioURL,
@@ -48,7 +48,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsgActio
 }
 
 // Execute runs this action
-func (a *SayMsgAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText, logEvent)

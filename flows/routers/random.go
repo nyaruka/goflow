@@ -12,29 +12,29 @@ import (
 )
 
 func init() {
-	registerType(TypeRandom, func() flows.Router { return &RandomRouter{} })
+	registerType(TypeRandom, func() flows.Router { return &Random{} })
 }
 
 // TypeRandom is the type for a random router
 const TypeRandom string = "random"
 
-// RandomRouter is a router which will exit out a random exit
-type RandomRouter struct {
+// Random is a router which will exit out a random exit
+type Random struct {
 	baseRouter
 }
 
 // NewRandom creates a new random router
-func NewRandom(wait flows.Wait, resultName string, categories []flows.Category) *RandomRouter {
-	return &RandomRouter{newBaseRouter(TypeRandom, wait, resultName, categories)}
+func NewRandom(wait flows.Wait, resultName string, categories []flows.Category) *Random {
+	return &Random{newBaseRouter(TypeRandom, wait, resultName, categories)}
 }
 
 // Validate validates that the fields on this router are valid
-func (r *RandomRouter) Validate(flow flows.Flow, exits []flows.Exit) error {
+func (r *Random) Validate(flow flows.Flow, exits []flows.Exit) error {
 	return r.validate(flow, exits)
 }
 
 // Route determines which exit to take from a node
-func (r *RandomRouter) Route(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, string, error) {
+func (r *Random) Route(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, string, error) {
 	// pick a random category
 	rand := random.Decimal()
 	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()
@@ -48,8 +48,8 @@ func (r *RandomRouter) Route(run flows.Run, step flows.Step, logEvent flows.Even
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func (r *RandomRouter) UnmarshalJSON(data []byte) error {
-	e := &baseRouterEnvelope{}
+func (r *Random) UnmarshalJSON(data []byte) error {
+	e := &baseEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return err
 	}
@@ -62,8 +62,8 @@ func (r *RandomRouter) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON marshals this resume into JSON
-func (r *RandomRouter) MarshalJSON() ([]byte, error) {
-	e := &baseRouterEnvelope{}
+func (r *Random) MarshalJSON() ([]byte, error) {
+	e := &baseEnvelope{}
 
 	if err := r.marshal(e); err != nil {
 		return nil, err

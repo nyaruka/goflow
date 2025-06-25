@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	registerType(TypeFlowAction, readFlowActionTrigger)
+	registerType(TypeFlowAction, readFlowAction)
 }
 
 // TypeFlowAction is a constant for sessions triggered by flow actions in other sessions
 const TypeFlowAction string = "flow_action"
 
-// FlowActionTrigger is used when another session triggered this run using a trigger_flow action.
+// FlowAction is used when another session triggered this run using a trigger_flow action.
 //
 //	{
 //	  "type": "flow_action",
@@ -51,16 +51,16 @@ const TypeFlowAction string = "flow_action"
 //	}
 //
 // @trigger flow_action
-type FlowActionTrigger struct {
+type FlowAction struct {
 	baseTrigger
 
 	runSummary json.RawMessage
 }
 
 // RunSummary returns the summary of the run that triggered this session
-func (t *FlowActionTrigger) RunSummary() json.RawMessage { return t.runSummary }
+func (t *FlowAction) RunSummary() json.RawMessage { return t.runSummary }
 
-var _ flows.TriggerWithRun = (*FlowActionTrigger)(nil)
+var _ flows.TriggerWithRun = (*FlowAction)(nil)
 
 //------------------------------------------------------------------------------------------
 // Builder
@@ -68,7 +68,7 @@ var _ flows.TriggerWithRun = (*FlowActionTrigger)(nil)
 
 // FlowActionBuilder is a builder for flow action type triggers
 type FlowActionBuilder struct {
-	t *FlowActionTrigger
+	t *FlowAction
 }
 
 // FlowAction returns a flow action trigger builder
@@ -78,7 +78,7 @@ func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawM
 	}
 
 	return &FlowActionBuilder{
-		t: &FlowActionTrigger{
+		t: &FlowAction{
 			baseTrigger: newBaseTrigger(TypeFlowAction, b.flow, false, history),
 			runSummary:  runSummary,
 		},
@@ -92,7 +92,7 @@ func (b *FlowActionBuilder) AsBatch() *FlowActionBuilder {
 }
 
 // Build builds the trigger
-func (b *FlowActionBuilder) Build() *FlowActionTrigger {
+func (b *FlowActionBuilder) Build() *FlowAction {
 	return b.t
 }
 
@@ -100,22 +100,23 @@ func (b *FlowActionBuilder) Build() *FlowActionTrigger {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type flowActionTriggerEnvelope struct {
-	baseTriggerEnvelope
+type flowActionEnvelope struct {
+	baseEnvelope
+
 	RunSummary json.RawMessage `json:"run_summary" validate:"required"`
 }
 
-func readFlowActionTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &flowActionTriggerEnvelope{}
+func readFlowAction(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+	e := &flowActionEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &FlowActionTrigger{
+	t := &FlowAction{
 		runSummary: e.RunSummary,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
@@ -123,12 +124,12 @@ func readFlowActionTrigger(sessionAssets flows.SessionAssets, data []byte, missi
 }
 
 // MarshalJSON marshals this trigger into JSON
-func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
-	e := &flowActionTriggerEnvelope{
+func (t *FlowAction) MarshalJSON() ([]byte, error) {
+	e := &flowActionEnvelope{
 		RunSummary: t.runSummary,
 	}
 
-	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

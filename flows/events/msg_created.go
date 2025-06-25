@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeMsgCreated, func() flows.Event { return &MsgCreatedEvent{} })
+	registerType(TypeMsgCreated, func() flows.Event { return &MsgCreated{} })
 }
 
 // TypeMsgCreated is a constant for incoming messages
 const TypeMsgCreated string = "msg_created"
 
-// MsgCreatedEvent events are created when an action wants to send a reply to the current contact.
+// MsgCreated events are created when an action wants to send a reply to the current contact.
 //
 //	{
 //	  "type": "msg_created",
@@ -26,15 +26,15 @@ const TypeMsgCreated string = "msg_created"
 //	}
 //
 // @event msg_created
-type MsgCreatedEvent struct {
+type MsgCreated struct {
 	BaseEvent
 
 	Msg *flows.MsgOut `json:"msg" validate:"required"`
 }
 
 // NewMsgCreated creates a new outgoing msg event to a single contact
-func NewMsgCreated(msg *flows.MsgOut) *MsgCreatedEvent {
-	return &MsgCreatedEvent{
+func NewMsgCreated(msg *flows.MsgOut) *MsgCreated {
+	return &MsgCreated{
 		BaseEvent: NewBaseEvent(TypeMsgCreated),
 		Msg:       msg,
 	}

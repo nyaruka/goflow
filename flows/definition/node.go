@@ -157,7 +157,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 
 	// instantiate the right kind of router
 	if e.Router != nil {
-		n.router, err = routers.ReadRouter(e.Router)
+		n.router, err = routers.Read(e.Router)
 		if err != nil {
 			return fmt.Errorf("unable to read router: %w", err)
 		}
@@ -166,7 +166,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	// and the right kind of actions
 	n.actions = make([]flows.Action, len(e.Actions))
 	for i := range e.Actions {
-		n.actions[i], err = actions.ReadAction(e.Actions[i])
+		n.actions[i], err = actions.Read(e.Actions[i])
 		if err != nil {
 			return fmt.Errorf("unable to read action: %w", err)
 		}

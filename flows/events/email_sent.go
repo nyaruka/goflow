@@ -5,13 +5,13 @@ import (
 )
 
 func init() {
-	registerType(TypeEmailSent, func() flows.Event { return &EmailSentEvent{} })
+	registerType(TypeEmailSent, func() flows.Event { return &EmailSent{} })
 }
 
 // TypeEmailSent is our type for the email event
 const TypeEmailSent string = "email_sent"
 
-// EmailSentEvent events are created when an action has sent an email.
+// EmailSent events are created when an action has sent an email.
 //
 //	{
 //	  "type": "email_sent",
@@ -22,7 +22,7 @@ const TypeEmailSent string = "email_sent"
 //	}
 //
 // @event email_sent
-type EmailSentEvent struct {
+type EmailSent struct {
 	BaseEvent
 
 	To      []string `json:"to" validate:"required,min=1"`
@@ -31,8 +31,8 @@ type EmailSentEvent struct {
 }
 
 // NewEmailSent returns a new email event with the passed in subject, body and emails
-func NewEmailSent(to []string, subject string, body string) *EmailSentEvent {
-	return &EmailSentEvent{
+func NewEmailSent(to []string, subject string, body string) *EmailSent {
+	return &EmailSent{
 		BaseEvent: NewBaseEvent(TypeEmailSent),
 		To:        to,
 		Subject:   subject,

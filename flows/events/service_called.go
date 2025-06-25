@@ -6,13 +6,13 @@ import (
 )
 
 func init() {
-	registerType(TypeServiceCalled, func() flows.Event { return &ServiceCalledEvent{} })
+	registerType(TypeServiceCalled, func() flows.Event { return &ServiceCalled{} })
 }
 
 // TypeServiceCalled is our type for calling an external service
 const TypeServiceCalled string = "service_called"
 
-// ServiceCalledEvent events are created when an engine service is called.
+// ServiceCalled events are created when an engine service is called.
 //
 //	{
 //	  "type": "service_called",
@@ -32,7 +32,7 @@ const TypeServiceCalled string = "service_called"
 //	}
 //
 // @event service_called
-type ServiceCalledEvent struct {
+type ServiceCalled struct {
 	BaseEvent
 
 	Service    string                      `json:"service"`
@@ -41,8 +41,8 @@ type ServiceCalledEvent struct {
 }
 
 // NewClassifierCalled returns a service called event for a classifier
-func NewClassifierCalled(classifier *assets.ClassifierReference, httpLogs []*flows.HTTPLog) *ServiceCalledEvent {
-	return &ServiceCalledEvent{
+func NewClassifierCalled(classifier *assets.ClassifierReference, httpLogs []*flows.HTTPLog) *ServiceCalled {
+	return &ServiceCalled{
 		BaseEvent:  NewBaseEvent(TypeServiceCalled),
 		Service:    "classifier",
 		Classifier: classifier,

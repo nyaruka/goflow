@@ -9,13 +9,13 @@ import (
 )
 
 func init() {
-	registerType(TypeRequestOptIn, func() flows.Action { return &RequestOptInAction{} })
+	registerType(TypeRequestOptIn, func() flows.Action { return &RequestOptIn{} })
 }
 
 // TypeRequestOptIn is the type for the send optin action
 const TypeRequestOptIn string = "request_optin"
 
-// RequestOptInAction can be used to send an optin to the contact if the channel supports that.
+// RequestOptIn can be used to send an optin to the contact if the channel supports that.
 //
 // An [event:optin_requested] event will be created if the optin was requested.
 //
@@ -29,7 +29,7 @@ const TypeRequestOptIn string = "request_optin"
 //	}
 //
 // @action request_optin
-type RequestOptInAction struct {
+type RequestOptIn struct {
 	baseAction
 	onlineAction
 
@@ -37,15 +37,15 @@ type RequestOptInAction struct {
 }
 
 // NewRequestOptIn creates a new request optin action
-func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *RequestOptInAction {
-	return &RequestOptInAction{
+func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *RequestOptIn {
+	return &RequestOptIn{
 		baseAction: newBaseAction(TypeRequestOptIn, uuid),
 		OptIn:      optIn,
 	}
 }
 
 // Execute creates the optin events
-func (a *RequestOptInAction) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
 	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
 	destinations := run.Contact().ResolveDestinations(false)
 
@@ -61,6 +61,6 @@ func (a *RequestOptInAction) Execute(ctx context.Context, run flows.Run, step fl
 	return nil
 }
 
-func (a *RequestOptInAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+func (a *RequestOptIn) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.OptIn)
 }

@@ -14,14 +14,14 @@ import (
 )
 
 func init() {
-	registerType(TypeMsg, readMsgWait)
+	registerType(TypeMsg, readMsg)
 }
 
 // TypeMsg is the type of our message wait
 const TypeMsg string = "msg"
 
-// MsgWait is a wait which waits for an incoming message (i.e. a msg_received event)
-type MsgWait struct {
+// Msg is a wait which waits for an incoming message (i.e. a msg_received event)
+type Msg struct {
 	baseWait
 
 	// Message waits can indicate to the caller what kind of message the flow is expecting. In the case of flows of type
@@ -31,24 +31,24 @@ type MsgWait struct {
 	hint flows.Hint
 }
 
-// NewMsgWait creates a new message wait
-func NewMsgWait(timeout *Timeout, hint flows.Hint) *MsgWait {
-	return &MsgWait{
+// NewMsg creates a new message wait
+func NewMsg(timeout *Timeout, hint flows.Hint) *Msg {
+	return &Msg{
 		baseWait: newBaseWait(TypeMsg, timeout),
 		hint:     hint,
 	}
 }
 
 // Hint returns the hint (optional)
-func (w *MsgWait) Hint() flows.Hint { return w.hint }
+func (w *Msg) Hint() flows.Hint { return w.hint }
 
 // AllowedFlowTypes returns the flow types which this wait is allowed to occur in
-func (w *MsgWait) AllowedFlowTypes() []flows.FlowType {
+func (w *Msg) AllowedFlowTypes() []flows.FlowType {
 	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
 }
 
 // Begin beings waiting at this wait
-func (w *MsgWait) Begin(run flows.Run, log flows.EventCallback) bool {
+func (w *Msg) Begin(run flows.Run, log flows.EventCallback) bool {
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 
@@ -68,7 +68,7 @@ func (w *MsgWait) Begin(run flows.Run, log flows.EventCallback) bool {
 }
 
 // Accept returns whether this wait accepts the given resume
-func (w *MsgWait) Accepts(resume flows.Resume) bool {
+func (w *Msg) Accepts(resume flows.Resume) bool {
 	switch resume.Type() {
 	case resumes.TypeMsg, resumes.TypeWaitExpiration:
 		return true
@@ -78,25 +78,25 @@ func (w *MsgWait) Accepts(resume flows.Resume) bool {
 	return false
 }
 
-var _ flows.Wait = (*MsgWait)(nil)
+var _ flows.Wait = (*Msg)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type msgWaitEnvelope struct {
-	baseWaitEnvelope
+type msgEnvelope struct {
+	baseEnvelope
 
 	Hint json.RawMessage `json:"hint,omitempty"`
 }
 
-func readMsgWait(data json.RawMessage) (flows.Wait, error) {
-	e := &msgWaitEnvelope{}
+func readMsg(data json.RawMessage) (flows.Wait, error) {
+	e := &msgEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	w := &MsgWait{}
+	w := &Msg{}
 
 	var err error
 	if e.Hint != nil {
@@ -105,14 +105,14 @@ func readMsgWait(data json.RawMessage) (flows.Wait, error) {
 		}
 	}
 
-	return w, w.unmarshal(&e.baseWaitEnvelope)
+	return w, w.unmarshal(&e.baseEnvelope)
 }
 
 // MarshalJSON marshals this wait into JSON
-func (w *MsgWait) MarshalJSON() ([]byte, error) {
-	e := &msgWaitEnvelope{}
+func (w *Msg) MarshalJSON() ([]byte, error) {
+	e := &msgEnvelope{}
 
-	if err := w.marshal(&e.baseWaitEnvelope); err != nil {
+	if err := w.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

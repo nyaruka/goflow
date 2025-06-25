@@ -56,7 +56,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		testName := fmt.Sprintf("test '%s' for modifier type '%s'", tc.Description, typeName)
 
 		// read the modifier to be tested
-		modifier, err := modifiers.ReadModifier(sa, tc.Modifier, assets.PanicOnMissing)
+		modifier, err := modifiers.Read(sa, tc.Modifier, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading modifier in %s", testName)
 		assert.Equal(t, typeName, modifier.Type())
 
@@ -220,27 +220,27 @@ func TestReadModifier(t *testing.T) {
 	require.NoError(t, err)
 
 	// error if no type field
-	_, err = modifiers.ReadModifier(sessionAssets, []byte(`{"foo": "bar"}`), missing)
+	_, err = modifiers.Read(sessionAssets, []byte(`{"foo": "bar"}`), missing)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize the type
-	_, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
+	_, err = modifiers.Read(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
 	// no-modifier error and a missing asset record if we load a channel modifier for a channel that no longer exists
-	mod, err := modifiers.ReadModifier(sessionAssets, []byte(`{"type": "channel", "channel": {"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Nexmo"}}`), missing)
+	mod, err := modifiers.Read(sessionAssets, []byte(`{"type": "channel", "channel": {"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Nexmo"}}`), missing)
 	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("8632b9f0-ac2f-40ad-808f-77781a444dc9"), "Nexmo"), missingAssets[len(missingAssets)-1])
 
 	// no-modifier error and a missing asset record if we load a field modifier for a field that no longer exists
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "gender", "name": "Gender"}, "value": {"text": "M"}}`), missing)
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "field", "field": {"key": "gender", "name": "Gender"}, "value": {"text": "M"}}`), missing)
 	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewFieldReference("gender", "Gender"), missingAssets[len(missingAssets)-1])
 
 	// no-modifier error if we load a groups modifier and none of its groups exist
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Testers"}]}`), missing)
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Testers"}]}`), missing)
 	assert.Equal(t, modifiers.ErrNoModifier, err)
 	assert.Nil(t, mod)
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("8632b9f0-ac2f-40ad-808f-77781a444dc9"), "Testers"), missingAssets[len(missingAssets)-1])
@@ -254,7 +254,7 @@ func TestReadModifier(t *testing.T) {
 	sessionAssets, err = engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Losers"}, {"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}]}`), missing)
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Losers"}, {"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}]}`), missing)
 	assert.NoError(t, err)
 	assert.NotNil(t, mod)
 	assert.Equal(t, "groups", mod.Type())
@@ -274,17 +274,17 @@ func TestFieldValueTypes(t *testing.T) {
 	require.NoError(t, err)
 
 	// value can be omitted
-	mod, err := modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}}`), assets.PanicOnMissing)
+	mod, err := modifiers.Read(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, "", mod.(*modifiers.FieldModifier).Value())
+	assert.Equal(t, "", mod.(*modifiers.Field).Value())
 
 	// or be null
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": null}`), assets.PanicOnMissing)
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": null}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, "", mod.(*modifiers.FieldModifier).Value())
+	assert.Equal(t, "", mod.(*modifiers.Field).Value())
 
 	// or be a string
-	mod, err = modifiers.ReadModifier(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": "39 years"}`), assets.PanicOnMissing)
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "field", "field": {"key": "age", "name": "Age"}, "value": "39 years"}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, "39 years", mod.(*modifiers.FieldModifier).Value())
+	assert.Equal(t, "39 years", mod.(*modifiers.Field).Value())
 }

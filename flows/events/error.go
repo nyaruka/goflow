@@ -8,13 +8,13 @@ import (
 )
 
 func init() {
-	registerType(TypeError, func() flows.Event { return &ErrorEvent{} })
+	registerType(TypeError, func() flows.Event { return &Error{} })
 }
 
 // TypeError is the type of our error events
 const TypeError string = "error"
 
-// ErrorEvent events are created when an error occurs during flow execution.
+// Error events are created when an error occurs during flow execution.
 //
 //	{
 //	  "type": "error",
@@ -23,21 +23,21 @@ const TypeError string = "error"
 //	}
 //
 // @event error
-type ErrorEvent struct {
+type Error struct {
 	BaseEvent
 
 	Text string `json:"text" validate:"required"`
 }
 
 // NewError returns a new error event for the passed in text
-func NewError(text string) *ErrorEvent {
-	return &ErrorEvent{
+func NewError(text string) *Error {
+	return &Error{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      text,
 	}
 }
 
 // NewDependencyError returns an error event for a missing dependency
-func NewDependencyError(ref assets.Reference) *ErrorEvent {
+func NewDependencyError(ref assets.Reference) *Error {
 	return NewError(fmt.Sprintf("missing dependency: %s", ref.String()))
 }

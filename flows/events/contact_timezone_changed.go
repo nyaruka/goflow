@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	registerType(TypeContactTimezoneChanged, func() flows.Event { return &ContactTimezoneChangedEvent{} })
+	registerType(TypeContactTimezoneChanged, func() flows.Event { return &ContactTimezoneChanged{} })
 }
 
 // TypeContactTimezoneChanged is the type of our contact timezone changed event
 const TypeContactTimezoneChanged string = "contact_timezone_changed"
 
-// ContactTimezoneChangedEvent events are created when the timezone of the contact has been changed.
+// ContactTimezoneChanged events are created when the timezone of the contact has been changed.
 //
 //	{
 //	  "type": "contact_timezone_changed",
@@ -22,20 +22,20 @@ const TypeContactTimezoneChanged string = "contact_timezone_changed"
 //	}
 //
 // @event contact_timezone_changed
-type ContactTimezoneChangedEvent struct {
+type ContactTimezoneChanged struct {
 	BaseEvent
 
 	Timezone string `json:"timezone"`
 }
 
 // NewContactTimezoneChanged returns a new contact timezone changed event
-func NewContactTimezoneChanged(timezone *time.Location) *ContactTimezoneChangedEvent {
+func NewContactTimezoneChanged(timezone *time.Location) *ContactTimezoneChanged {
 	var tzname string
 	if timezone != nil {
 		tzname = timezone.String()
 	}
 
-	return &ContactTimezoneChangedEvent{
+	return &ContactTimezoneChanged{
 		BaseEvent: NewBaseEvent(TypeContactTimezoneChanged),
 		Timezone:  tzname,
 	}

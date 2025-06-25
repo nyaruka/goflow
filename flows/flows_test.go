@@ -12,7 +12,7 @@ import (
 )
 
 func TestFlowTypeAllows(t *testing.T) {
-	webhookAction, err := actions.ReadAction([]byte(`{
+	webhookAction, err := actions.Read([]byte(`{
 		"uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 		"type": "call_webhook",
 		"method": "GET",
