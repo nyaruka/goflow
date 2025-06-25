@@ -5,20 +5,20 @@ import (
 )
 
 func init() {
-	registerType(TypeVideo, func() flows.Hint { return &VideoHint{} })
+	registerType(TypeVideo, func() flows.Hint { return &Video{} })
 }
 
 // TypeVideo is the type of our video hint
 const TypeVideo string = "video"
 
-// VideoHint requests a message with an video attachment
-type VideoHint struct {
+// Video requests a message with an video attachment
+type Video struct {
 	baseHint
 }
 
-// NewVideoHint creates a new video hint
-func NewVideoHint() *VideoHint {
-	return &VideoHint{
+// NewVideo creates a new video hint
+func NewVideo() *Video {
+	return &Video{
 		baseHint: newBaseHint(TypeVideo),
 	}
 }

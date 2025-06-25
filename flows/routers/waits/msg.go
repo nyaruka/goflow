@@ -100,7 +100,7 @@ func readMsg(data json.RawMessage) (flows.Wait, error) {
 
 	var err error
 	if e.Hint != nil {
-		if w.hint, err = hints.ReadHint(e.Hint); err != nil {
+		if w.hint, err = hints.Read(e.Hint); err != nil {
 			return nil, fmt.Errorf("unable to read hint: %w", err)
 		}
 	}

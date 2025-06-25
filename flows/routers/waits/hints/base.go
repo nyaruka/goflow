@@ -30,8 +30,8 @@ func (h *baseHint) Type() string { return h.Type_ }
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadHint reads a hint from the given JSON
-func ReadHint(data []byte) (flows.Hint, error) {
+// Read reads a hint from the given JSON
+func Read(data []byte) (flows.Hint, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

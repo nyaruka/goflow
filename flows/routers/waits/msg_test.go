@@ -68,7 +68,7 @@ func TestMsgWait(t *testing.T) {
 	// timeout and image hint
 	wait = waits.NewMsg(
 		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
-		hints.NewImageHint(),
+		hints.NewImage(),
 	)
 
 	// test marsalling definition wait

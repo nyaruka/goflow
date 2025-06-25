@@ -240,7 +240,7 @@ func TestEventMarshaling(t *testing.T) {
 			`msg_created_rich`,
 		},
 		{
-			events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImageHint()),
+			events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImage()),
 			`msg_wait`,
 		},
 		{

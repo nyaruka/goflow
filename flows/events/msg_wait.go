@@ -80,7 +80,7 @@ func (e *MsgWait) UnmarshalJSON(data []byte) error {
 
 	var err error
 	if v.Hint != nil {
-		if e.Hint, err = hints.ReadHint(v.Hint); err != nil {
+		if e.Hint, err = hints.Read(v.Hint); err != nil {
 			return fmt.Errorf("unable to read hint: %w", err)
 		}
 	}

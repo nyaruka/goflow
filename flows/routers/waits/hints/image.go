@@ -5,20 +5,20 @@ import (
 )
 
 func init() {
-	registerType(TypeImage, func() flows.Hint { return &ImageHint{} })
+	registerType(TypeImage, func() flows.Hint { return &Image{} })
 }
 
 // TypeImage is the type of our image hint
 const TypeImage string = "image"
 
-// ImageHint requests a message with an image attachment
-type ImageHint struct {
+// Image requests a message with an image attachment
+type Image struct {
 	baseHint
 }
 
-// NewImageHint creates a new image hint
-func NewImageHint() *ImageHint {
-	return &ImageHint{
+// NewImage creates a new image hint
+func NewImage() *Image {
+	return &Image{
 		baseHint: newBaseHint(TypeImage),
 	}
 }

@@ -274,7 +274,7 @@ func TestNewFlow(t *testing.T) {
 					),
 				},
 				routers.NewSwitch(
-					waits.NewMsg(nil, hints.NewImageHint()),
+					waits.NewMsg(nil, hints.NewImage()),
 					"Response 1",
 					[]flows.Category{
 						routers.NewCategory(

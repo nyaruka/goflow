@@ -5,31 +5,31 @@ import (
 )
 
 func init() {
-	registerType(TypeDigits, func() flows.Hint { return &DigitsHint{} })
+	registerType(TypeDigits, func() flows.Hint { return &Digits{} })
 }
 
 // TypeDigits is the type of our digits hint
 const TypeDigits string = "digits"
 
-// DigitsHint requests a message containing one or more digits
-type DigitsHint struct {
+// Digits requests a message containing one or more digits
+type Digits struct {
 	baseHint
 
 	Count        *int   `json:"count,omitempty"`
 	TerminatedBy string `json:"terminated_by,omitempty"`
 }
 
-// NewFixedDigitsHint creates a new digits hint for a fixed count of digits
-func NewFixedDigitsHint(count int) *DigitsHint {
-	return &DigitsHint{
+// NewFixedDigits creates a new digits hint for a fixed count of digits
+func NewFixedDigits(count int) *Digits {
+	return &Digits{
 		baseHint: newBaseHint(TypeDigits),
 		Count:    &count,
 	}
 }
 
-// NewTerminatedDigitsHint creates a new digits hint for a sequence of digits terminated by the given key
-func NewTerminatedDigitsHint(terminatedBy string) *DigitsHint {
-	return &DigitsHint{
+// NewTerminatedDigits creates a new digits hint for a sequence of digits terminated by the given key
+func NewTerminatedDigits(terminatedBy string) *Digits {
+	return &Digits{
 		baseHint:     newBaseHint(TypeDigits),
 		TerminatedBy: terminatedBy,
 	}
