@@ -63,13 +63,13 @@ type ticketEnvelope struct {
 	Note     string                 `json:"note"`
 }
 
-func readTicket(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &ticketEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	topic := assets.Topics().Get(e.Topic.UUID)
+	topic := sa.Topics().Get(e.Topic.UUID)
 	if topic == nil {
 		missing(e.Topic, nil)
 		return nil, ErrNoModifier // can't proceed without a topic
@@ -77,7 +77,7 @@ func readTicket(assets flows.SessionAssets, data []byte, missing assets.MissingC
 
 	var assignee *flows.User
 	if e.Assignee != nil {
-		assignee = assets.Users().Get(e.Assignee.UUID)
+		assignee = sa.Users().Get(e.Assignee.UUID)
 		if assignee == nil {
 			missing(e.Assignee, nil)
 		}

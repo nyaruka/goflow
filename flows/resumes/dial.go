@@ -69,7 +69,7 @@ type dialEnvelope struct {
 	Event *events.DialEnded `json:"event" validate:"required"`
 }
 
-func readDial(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+func readDial(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &dialEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func readDial(sessionAssets flows.SessionAssets, data []byte, missing assets.Mis
 
 	r := &Dial{event: e.Event}
 
-	if err := r.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

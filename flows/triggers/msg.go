@@ -133,7 +133,7 @@ type msgEnvelope struct {
 	Match *KeywordMatch       `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
-func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &msgEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.Miss
 		}
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

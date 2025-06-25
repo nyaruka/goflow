@@ -87,7 +87,7 @@ var _ flows.Modifier = (*URNs)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readURNs(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readURNs(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &URNs{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

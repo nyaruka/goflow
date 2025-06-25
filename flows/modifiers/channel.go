@@ -52,10 +52,11 @@ var _ flows.Modifier = (*Channel)(nil)
 
 type channelEnvelope struct {
 	utils.TypedEnvelope
+
 	Channel *assets.ChannelReference `json:"channel" validate:"omitempty"`
 }
 
-func readChannel(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readChannel(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &channelEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -63,7 +64,7 @@ func readChannel(assets flows.SessionAssets, data []byte, missing assets.Missing
 
 	var channel *flows.Channel
 	if e.Channel != nil {
-		channel = assets.Channels().Get(e.Channel.UUID)
+		channel = sa.Channels().Get(e.Channel.UUID)
 		if channel == nil {
 			missing(e.Channel, nil)
 			return nil, ErrNoModifier // nothing left to modify without the channel

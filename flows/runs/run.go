@@ -489,7 +489,7 @@ func ReadRun(session flows.Session, data []byte, missing assets.MissingCallback)
 	// read in our events
 	r.events = make([]flows.Event, len(e.Events))
 	for i := range r.events {
-		if r.events[i], err = events.ReadEvent(e.Events[i]); err != nil {
+		if r.events[i], err = events.Read(e.Events[i]); err != nil {
 			return nil, fmt.Errorf("unable to read event: %w", err)
 		}
 	}

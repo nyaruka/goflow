@@ -50,7 +50,7 @@ var _ flows.Modifier = (*Name)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readName(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readName(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &Name{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

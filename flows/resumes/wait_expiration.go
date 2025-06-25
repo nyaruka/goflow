@@ -63,7 +63,7 @@ type waitExpirationEnvelope struct {
 	Event *events.WaitExpired `json:"event" validate:"required"`
 }
 
-func readWaitExpiration(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+func readWaitExpiration(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &waitExpirationEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func readWaitExpiration(sessionAssets flows.SessionAssets, data []byte, missing 
 
 	r := &WaitExpiration{event: e.Event}
 
-	if err := r.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

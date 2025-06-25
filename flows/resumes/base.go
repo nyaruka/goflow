@@ -92,8 +92,8 @@ type baseEnvelope struct {
 	ResumedOn time.Time `json:"resumed_on" validate:"required"`
 }
 
-// ReadResume reads a resume from the given JSON
-func ReadResume(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+// Read reads a resume from the given JSON
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

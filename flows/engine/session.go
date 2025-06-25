@@ -623,7 +623,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 	}
 
 	if e.Trigger != nil {
-		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger, missing); err != nil {
+		if s.trigger, err = triggers.Read(s.Assets(), e.Trigger, missing); err != nil {
 			return nil, fmt.Errorf("unable to read trigger: %w", err)
 		}
 	}
@@ -647,7 +647,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 
 	// and our input
 	if e.Input != nil {
-		if s.input, err = inputs.ReadInput(s.Assets(), e.Input, missing); err != nil {
+		if s.input, err = inputs.Read(s.Assets(), e.Input, missing); err != nil {
 			return nil, fmt.Errorf("unable to read input: %w", err)
 		}
 	}

@@ -144,8 +144,8 @@ type baseEnvelope struct {
 	TriggeredOn time.Time             `json:"triggered_on"       validate:"required"`
 }
 
-// ReadTrigger reads a trigger from the given JSON
-func ReadTrigger(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+// Read reads a trigger from the given JSON
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

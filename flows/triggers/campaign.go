@@ -82,6 +82,7 @@ func (b *CampaignBuilder) Build() *Campaign {
 
 type campaignEnvelope struct {
 	baseEnvelope
+
 	Event json.RawMessage `json:"event" validate:"required"`
 }
 
@@ -95,7 +96,7 @@ func readCampaign(sa flows.SessionAssets, data []byte, missing assets.MissingCal
 	e.Event, _ = jsonparser.Set(e.Event, []byte(`"campaign_fired"`), "type")
 	e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 
-	event, err := events.ReadEvent(e.Event)
+	event, err := events.Read(e.Event)
 	if err != nil {
 		return nil, fmt.Errorf("error reading campaign trigger event: %w", err)
 	}

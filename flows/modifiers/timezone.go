@@ -58,7 +58,7 @@ type timezoneEnvelope struct {
 	Timezone string `json:"timezone"`
 }
 
-func readTimezone(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readTimezone(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &timezoneEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err

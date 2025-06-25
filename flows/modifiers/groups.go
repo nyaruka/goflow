@@ -109,11 +109,12 @@ var _ flows.Modifier = (*Groups)(nil)
 
 type groupsEnvelope struct {
 	utils.TypedEnvelope
+
 	Groups       []*assets.GroupReference `json:"groups" validate:"required,dive"`
 	Modification GroupsModification       `json:"modification" validate:"eq=add|eq=remove"`
 }
 
-func readGroups(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readGroups(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &groupsEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -121,7 +122,7 @@ func readGroups(assets flows.SessionAssets, data []byte, missing assets.MissingC
 
 	groups := make([]*flows.Group, 0, len(e.Groups))
 	for _, groupRef := range e.Groups {
-		group := assets.Groups().Get(groupRef.UUID)
+		group := sa.Groups().Get(groupRef.UUID)
 		if group == nil {
 			missing(groupRef, nil)
 		} else {

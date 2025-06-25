@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	registerType(TypeFlowAction, readFlowActionTrigger)
+	registerType(TypeFlowAction, readFlowAction)
 }
 
 // TypeFlowAction is a constant for sessions triggered by flow actions in other sessions
@@ -106,7 +106,7 @@ type flowActionEnvelope struct {
 	RunSummary json.RawMessage `json:"run_summary" validate:"required"`
 }
 
-func readFlowActionTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+func readFlowAction(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &flowActionEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func readFlowActionTrigger(sessionAssets flows.SessionAssets, data []byte, missi
 		runSummary: e.RunSummary,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

@@ -780,11 +780,11 @@ func TestConstructors(t *testing.T) {
 
 func TestReadAction(t *testing.T) {
 	// error if no type field
-	_, err := actions.ReadAction([]byte(`{"foo": "bar"}`))
+	_, err := actions.Read([]byte(`{"foo": "bar"}`))
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = actions.ReadAction([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
+	_, err = actions.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }
 

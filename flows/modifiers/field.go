@@ -68,11 +68,12 @@ var _ flows.Modifier = (*Field)(nil)
 
 type fieldEnvelope struct {
 	utils.TypedEnvelope
+
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value json.RawMessage        `json:"value"`
 }
 
-func readField(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readField(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	e := &fieldEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -80,7 +81,7 @@ func readField(assets flows.SessionAssets, data []byte, missing assets.MissingCa
 
 	var field *flows.Field
 	if e.Field != nil {
-		field = assets.Fields().Get(e.Field.Key)
+		field = sa.Fields().Get(e.Field.Key)
 		if field == nil {
 			missing(e.Field, nil)
 			return nil, ErrNoModifier // nothing left to modify without the field

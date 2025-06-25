@@ -231,7 +231,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
+	trigger, err := triggers.Read(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("America/Guayaquil")
@@ -272,7 +272,7 @@ func TestSetResult(t *testing.T) {
 	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.IgnoreMissing)
+	trigger, err := triggers.Read(sa, []byte(sessionTrigger), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("America/Guayaquil")

@@ -54,8 +54,8 @@ type baseEnvelope struct {
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 }
 
-// ReadInput reads an input from the given typed envelope
-func ReadInput(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
+// Read reads an input from the given typed envelope
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func ReadInput(sessionAssets flows.SessionAssets, data []byte, missing assets.Mi
 		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
-	return f(sessionAssets, data, missing)
+	return f(sa, data, missing)
 }
 
 func (i *baseInput) unmarshal(sessionAssets flows.SessionAssets, e *baseEnvelope, missing assets.MissingCallback) error {

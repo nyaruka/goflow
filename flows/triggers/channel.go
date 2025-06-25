@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	registerType(TypeChannel, readChannelTrigger)
+	registerType(TypeChannel, readChannel)
 }
 
 // TypeChannel is the type for sessions triggered by channel events
@@ -92,7 +92,7 @@ type channelEnvelope struct {
 	Event *ChannelEvent `json:"event" validate:"required"`
 }
 
-func readChannelTrigger(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
+func readChannel(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
 	e := &channelEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func readChannelTrigger(sessionAssets flows.SessionAssets, data []byte, missing 
 		event: e.Event,
 	}
 
-	if err := t.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

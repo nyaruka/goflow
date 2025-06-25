@@ -62,7 +62,7 @@ type waitTimeoutEnvelope struct {
 	Event *events.WaitTimedOut `json:"event"` // TODO make required
 }
 
-func readWaitTimeout(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+func readWaitTimeout(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &waitTimeoutEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func readWaitTimeout(sessionAssets flows.SessionAssets, data []byte, missing ass
 
 	r := &WaitTimeout{event: e.Event}
 
-	if err := r.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

@@ -73,7 +73,7 @@ type msgEnvelope struct {
 	Msg   *flows.MsgIn        `json:"msg,omitempty"` // used by older sessions
 }
 
-func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
+func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
 	e := &msgEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.Miss
 		}
 	}
 
-	if err := r.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

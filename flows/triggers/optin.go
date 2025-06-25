@@ -110,7 +110,7 @@ func readOptIn(sa flows.SessionAssets, data []byte, missing assets.MissingCallba
 		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 	}
 
-	event, err := events.ReadEvent(e.Event)
+	event, err := events.Read(e.Event)
 	if err != nil {
 		return nil, fmt.Errorf("error reading optin trigger event: %w", err)
 	}

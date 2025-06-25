@@ -47,7 +47,7 @@ var _ flows.Modifier = (*Language)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readLanguage(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readLanguage(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &Language{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

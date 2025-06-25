@@ -109,7 +109,7 @@ type msgEnvelope struct {
 	ExternalID  string             `json:"external_id,omitempty"`
 }
 
-func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
+func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
 	e := &msgEnvelope{}
 	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
@@ -123,7 +123,7 @@ func readMsg(sessionAssets flows.SessionAssets, data []byte, missing assets.Miss
 		externalID:  e.ExternalID,
 	}
 
-	if err := i.unmarshal(sessionAssets, &e.baseEnvelope, missing); err != nil {
+	if err := i.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 

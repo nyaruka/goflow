@@ -70,8 +70,8 @@ func ReevaluateGroups(env envs.Environment, contact *flows.Contact, log flows.Ev
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadModifier reads a modifier from the given JSON
-func ReadModifier(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+// Read reads a modifier from the given JSON
+func Read(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -81,5 +81,5 @@ func ReadModifier(assets flows.SessionAssets, data []byte, missing assets.Missin
 	if f == nil {
 		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(assets, data, missing)
+	return f(sa, data, missing)
 }

@@ -46,7 +46,7 @@ var _ flows.Modifier = (*Status)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func readStatus(assets flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+func readStatus(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
 	m := &Status{}
 	return m, utils.UnmarshalAndValidate(data, m)
 }

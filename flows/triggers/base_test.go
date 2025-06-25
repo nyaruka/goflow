@@ -78,7 +78,7 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
         }`), assets.PanicOnMissing)
 		require.NoError(t, err)
 
-		trigger, err := triggers.ReadTrigger(sa, tc.Trigger, assets.PanicOnMissing)
+		trigger, err := triggers.Read(sa, tc.Trigger, assets.PanicOnMissing)
 
 		if tc.ReadError != "" {
 			rootErr := test.RootError(err)
@@ -299,7 +299,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		test.AssertSnapshot(t, tc.snapshot, string(triggerJSON))
 
 		// then try to read from the JSON
-		_, err = triggers.ReadTrigger(sa, triggerJSON, assets.PanicOnMissing)
+		_, err = triggers.Read(sa, triggerJSON, assets.PanicOnMissing)
 		assert.NoError(t, err, "error reading trigger: %s", string(triggerJSON))
 	}
 }
@@ -314,14 +314,14 @@ func TestReadTrigger(t *testing.T) {
 	require.NoError(t, err)
 
 	// error if no type field
-	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"foo": "bar"}`), missing)
+	_, err = triggers.Read(sessionAssets, []byte(`{"foo": "bar"}`), missing)
 	assert.EqualError(t, err, "field 'type' is required")
 
 	// error if we don't recognize action type
-	_, err = triggers.ReadTrigger(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
+	_, err = triggers.Read(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
-	trigger, err := triggers.ReadTrigger(sessionAssets, []byte(`{
+	trigger, err := triggers.Read(sessionAssets, []byte(`{
 		"type": "channel",
 		"flow": {
 			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",

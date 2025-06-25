@@ -184,8 +184,8 @@ type baseEnvelope struct {
 	Categories []json.RawMessage `json:"categories,omitempty"  validate:"required,min=1"`
 }
 
-// ReadRouter reads a router from the given JSON
-func ReadRouter(data []byte) (flows.Router, error) {
+// Read reads a router from the given JSON
+func Read(data []byte) (flows.Router, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err

@@ -501,7 +501,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(sa, []byte(sessionTrigger), assets.PanicOnMissing)
+	trigger, err := triggers.Read(sa, []byte(sessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
@@ -521,7 +521,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read our resume
-	resume, err := resumes.ReadResume(sa, []byte(sessionResume), assets.PanicOnMissing)
+	resume, err := resumes.Read(sa, []byte(sessionResume), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading resume: %w", err)
 	}
@@ -543,7 +543,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event,
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(sa, []byte(voiceSessionTrigger), assets.PanicOnMissing)
+	trigger, err := triggers.Read(sa, []byte(voiceSessionTrigger), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
