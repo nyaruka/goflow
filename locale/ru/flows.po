@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-06-25 15:03+0000\n"
 "Language-Team: Russian (https://www.transifex.com/rapidpro/teams/226/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -560,6 +560,9 @@ msgstr ""
 msgid "the URNs belonging to the contact"
 msgstr ""
 
+msgid "the UUID of the campaign"
+msgstr ""
+
 msgid "the UUID of the channel"
 msgstr ""
 
@@ -720,6 +723,9 @@ msgid "the method and URL"
 msgstr ""
 
 msgid "the name"
+msgstr ""
+
+msgid "the name of the campaign"
 msgstr ""
 
 msgid "the name of the channel"

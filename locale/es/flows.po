@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-06-25 15:03+0000\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -733,6 +733,11 @@ msgstr "los valores URN de la ejecución"
 msgid "the URNs belonging to the contact"
 msgstr "las URN pertenecientes al contacto"
 
+#, fuzzy
+#| msgid "the UUID of the topic"
+msgid "the UUID of the campaign"
+msgstr "el UUID del tema"
+
 msgid "the UUID of the channel"
 msgstr "el UUID del canal"
 
@@ -910,6 +915,11 @@ msgstr "el nombre o URN"
 
 msgid "the name"
 msgstr "el nombre"
+
+#, fuzzy
+#| msgid "the name of the topic"
+msgid "the name of the campaign"
+msgstr "el nombre del tema"
 
 msgid "the name of the channel"
 msgstr "el nombre del canal"
