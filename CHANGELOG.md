@@ -1,3 +1,7 @@
+v0.249.2 (2025-06-25)
+-------------------------
+ * For reals this time
+
 v0.249.1 (2025-06-25)
 -------------------------
  * Fix stuttering in waits/hints package too
