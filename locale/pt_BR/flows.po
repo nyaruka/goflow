@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-06-25 15:03+0000\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -610,6 +610,11 @@ msgstr "os valores de URN da execução"
 msgid "the URNs belonging to the contact"
 msgstr "as URNs pertencentes ao contato"
 
+#, fuzzy
+#| msgid "the UUID of the group"
+msgid "the UUID of the campaign"
+msgstr "o UUID do grupo"
+
 msgid "the UUID of the channel"
 msgstr "o UUID do canal"
 
@@ -787,6 +792,11 @@ msgstr "o nome da URN"
 
 msgid "the name"
 msgstr "o nome"
+
+#, fuzzy
+#| msgid "the name of the group"
+msgid "the name of the campaign"
+msgstr "o nome do grupo"
 
 msgid "the name of the channel"
 msgstr "o nome do canal"

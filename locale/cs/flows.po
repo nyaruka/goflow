@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-06-25 15:03+0000\n"
 "Last-Translator: trendspotter <jirka.p@volny.cz>, 2021\n"
 "Language-Team: Czech (https://www.transifex.com/rapidpro/teams/226/cs/)\n"
 "Language: cs\n"
@@ -695,6 +695,11 @@ msgstr "hodnoty URN běhu"
 msgid "the URNs belonging to the contact"
 msgstr "čísla URN náležející ke kontaktu"
 
+#, fuzzy
+#| msgid "the UUID of the topic"
+msgid "the UUID of the campaign"
+msgstr "UUID tématu"
+
 msgid "the UUID of the channel"
 msgstr "UUID kanálu"
 
@@ -872,6 +877,11 @@ msgstr "Název URN"
 
 msgid "the name"
 msgstr "název"
+
+#, fuzzy
+#| msgid "the name of the topic"
+msgid "the name of the campaign"
+msgstr "název tématu"
 
 msgid "the name of the channel"
 msgstr "název kanálu"
