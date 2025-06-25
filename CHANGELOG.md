@@ -1,3 +1,7 @@
+v0.248.5 (2025-06-25)
+-------------------------
+ * Remove has_intent, has_top_intent and has_category from documentation
+
 v0.248.4 (2025-06-24)
 -------------------------
  * Make Contact.status required
