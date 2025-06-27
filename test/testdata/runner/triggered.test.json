@@ -35,11 +35,11 @@
                         },
                         "locale": "eng-US",
                         "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                        "urn": "tel:+12065551212",
-                        "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                        "urn": "tel:+12065551212"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "msg_created"
+                    "type": "msg_created",
+                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                 }
             ],
             "segments": [],
@@ -59,11 +59,11 @@
                                     },
                                     "locale": "eng-US",
                                     "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                                    "urn": "tel:+12065551212",
-                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                                    "urn": "tel:+12065551212"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created"
+                                "type": "msg_created",
+                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                             }
                         ],
                         "exited_on": "2025-05-04T12:30:53.123456789Z",

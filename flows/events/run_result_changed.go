@@ -21,6 +21,7 @@ type PreviousResult struct {
 // RunResultChanged events are created when a run result is changed.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "run_result_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "name": "Gender",

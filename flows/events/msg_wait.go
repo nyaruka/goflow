@@ -22,6 +22,7 @@ const TypeMsgWait string = "msg_wait"
 // the number of seconds in the timeout to resume it.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "msg_wait",
 //	  "created_on": "2022-01-03T13:27:30Z",
 //	  "timeout_seconds": 300,

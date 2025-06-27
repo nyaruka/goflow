@@ -6,12 +6,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
-	"time"
 
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/random"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -66,14 +62,8 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer dates.SetNowFunc(time.Now)
-	defer uuids.SetGenerator(uuids.DefaultGenerator)
-	defer random.SetGenerator(random.DefaultGenerator)
-
 	for i, tc := range tests {
-		dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
-		uuids.SetGenerator(uuids.NewSeededGenerator(12345, time.Now))
-		random.SetGenerator(random.NewSeededGenerator(123456))
+		test.MockUniverse()
 
 		testName := fmt.Sprintf("test '%s' for router type '%s'", tc.Description, typeName)
 

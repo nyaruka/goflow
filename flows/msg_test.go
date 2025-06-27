@@ -20,7 +20,6 @@ import (
 
 func TestMsgIn(t *testing.T) {
 	msg := flows.NewMsgIn(
-		flows.MsgUUID("48c32bd4-ed68-4a21-b540-9da96217b022"),
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
@@ -36,7 +35,6 @@ func TestMsgIn(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid":"48c32bd4-ed68-4a21-b540-9da96217b022",
 		"urn":"tel:+1234567890",
 		"channel":{"uuid":"61f38f46-a856-4f90-899e-905691784159",
 		"name":"My Android"},
@@ -50,7 +48,6 @@ func TestMsgIn(t *testing.T) {
 	msg = &flows.MsgIn{}
 	err = utils.UnmarshalAndValidate(marshaled, msg)
 	require.NoError(t, err)
-	assert.Equal(t, flows.MsgUUID("48c32bd4-ed68-4a21-b540-9da96217b022"), msg.UUID())
 	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
@@ -78,7 +75,6 @@ func TestMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
@@ -103,7 +99,6 @@ func TestIVRMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
 		"urn": "tel:+1234567890",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",

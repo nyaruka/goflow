@@ -45,8 +45,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "groups_added": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -92,8 +93,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -189,13 +191,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "can't add contacts to the query based group 'Males'"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "groups_added": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -241,13 +245,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "can't remove contacts from the query based group 'Males'"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -283,8 +289,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "can't add blocked or stopped contacts to groups"
             }
         ]
@@ -315,8 +322,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "can't add blocked or stopped contacts to groups"
             }
         ]

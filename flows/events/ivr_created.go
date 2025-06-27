@@ -14,6 +14,7 @@ const TypeIVRCreated string = "ivr_created"
 // IVRCreated events are created when an action wants to send an IVR response to the current contact.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "ivr_created",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "msg": {

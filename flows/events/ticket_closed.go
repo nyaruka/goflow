@@ -14,6 +14,7 @@ const TypeTicketClosed string = "ticket_closed"
 // TicketClosed events are created when a ticket is closed.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "ticket_closed",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "ticket": {

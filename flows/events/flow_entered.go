@@ -15,6 +15,7 @@ const TypeFlowEntered string = "flow_entered"
 // FlowEntered events are created when an action has entered a sub-flow.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "flow_entered",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "flow": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Registration"},

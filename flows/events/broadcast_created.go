@@ -17,6 +17,7 @@ const TypeBroadcastCreated string = "broadcast_created"
 // BroadcastCreated events are created when an action wants to send a message to other contacts.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "broadcast_created",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "translations": {

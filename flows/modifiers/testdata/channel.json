@@ -30,8 +30,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
                     "twitterid:54784326227#nyaruka"
@@ -98,8 +99,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+12065551212?id=123",
                     "twitterid:54784326227#nyaruka"
@@ -138,8 +140,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "can't set channel that can't send as the preferred channel"
             }
         ]

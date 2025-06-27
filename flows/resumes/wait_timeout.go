@@ -21,9 +21,9 @@ const TypeWaitTimeout string = "wait_timeout"
 //	  "type": "wait_timeout",
 //	  "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
 //	  "event": {
+//	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "wait_timed_out",
-//	    "created_on": "2006-01-02T15:04:05Z",
-//	    "run_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a"
+//	    "created_on": "2006-01-02T15:04:05Z"
 //	  }
 //	}
 //

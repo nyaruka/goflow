@@ -371,7 +371,7 @@ func TestMaxResumesPerSession(t *testing.T) {
 
 	numResumes := 0
 	for {
-		msg := flows.NewMsgIn(flows.NewMsgUUID(), "tel:+593979123456", nil, "Teal", nil, "SMS1234")
+		msg := flows.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234")
 		resume := resumes.NewMsg(events.NewMsgReceived(msg))
 		numResumes++
 

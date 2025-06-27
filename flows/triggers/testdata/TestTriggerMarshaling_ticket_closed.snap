@@ -4,10 +4,11 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:31:07.123456789Z",
+    "triggered_on": "2025-05-04T12:31:12.123456789Z",
     "event": {
+        "uuid": "01969b47-672b-76f8-b86e-4b881f09a186",
         "type": "ticket_closed",
-        "created_on": "2025-05-04T12:31:06.123456789Z",
+        "created_on": "2025-05-04T12:31:11.123456789Z",
         "ticket": {
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
             "topic": null,

@@ -9,9 +9,10 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "can't add URN with empty path"
             }
         ]
@@ -26,15 +27,17 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
+                "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:58.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "twitterid:54784326227#nyaruka",
@@ -53,9 +56,10 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "'telegram:qwerty' is not valid URN"
             }
         ]
@@ -80,9 +84,10 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "twitterid:54784326227#nyaruka",
@@ -97,7 +102,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2025-05-04T12:30:45.123456789Z",
+            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka",
@@ -130,9 +135,10 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "urns": [
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                     "twitterid:54784326227#nyaruka",
@@ -147,7 +153,7 @@
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2025-05-04T12:30:45.123456789Z",
+            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
                 "twitterid:54784326227#nyaruka",
