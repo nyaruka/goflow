@@ -2,7 +2,6 @@ package inputs
 
 import (
 	"strings"
-	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -10,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -30,20 +30,20 @@ type Msg struct {
 	externalID  string
 }
 
-// NewMsg creates a new user input based on a message
-func NewMsg(s flows.Session, msg *flows.MsgIn, createdOn time.Time) *Msg {
+// NewMsg creates a new user input based on a message event
+func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 	// load the channel
 	var channel *flows.Channel
-	if msg.Channel() != nil {
-		channel = s.Assets().Channels().Get(msg.Channel().UUID)
+	if evt.Msg.Channel() != nil {
+		channel = sa.Channels().Get(evt.Msg.Channel().UUID)
 	}
 
 	return &Msg{
-		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(msg.UUID()), channel, createdOn),
-		urn:         flows.NewContactURN(msg.URN(), nil),
-		text:        msg.Text(),
-		attachments: msg.Attachments(),
-		externalID:  msg.ExternalID(),
+		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.Msg.UUID()), channel, evt.CreatedOn()),
+		urn:         flows.NewContactURN(evt.Msg.URN(), nil),
+		text:        evt.Msg.Text(),
+		attachments: evt.Msg.Attachments(),
+		externalID:  evt.Msg.ExternalID(),
 	}
 }
 
@@ -103,6 +103,7 @@ var _ flows.Input = (*Msg)(nil)
 
 type msgEnvelope struct {
 	baseEnvelope
+
 	URN         urns.URN           `json:"urn" validate:"omitempty,urn"`
 	Text        string             `json:"text"`
 	Attachments []utils.Attachment `json:"attachments,omitempty"`

@@ -5,10 +5,10 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17036971111"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -47,11 +47,11 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17036971111",
                 "tel:+17036972222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -85,11 +85,11 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17036971111",
                 "tel:+17036972222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -126,11 +126,11 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17036971111",
                 "tel:+17036972222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -157,10 +157,10 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -196,11 +196,11 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000",
                 "tel:+17012222222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -227,11 +227,11 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000",
                 "tel:+17012222222"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",
@@ -264,10 +264,10 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+17010000000"
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "urns",

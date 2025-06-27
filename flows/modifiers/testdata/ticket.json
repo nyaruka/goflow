@@ -5,7 +5,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "fields": {},
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
@@ -62,7 +61,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "fields": {},
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "ticket": {
                 "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
@@ -70,7 +68,6 @@
                     "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
                     "name": "Computers"
                 },
-                "body": "this is a note",
                 "assignee": {
                     "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"

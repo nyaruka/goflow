@@ -5,7 +5,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "fields": {},
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
@@ -49,13 +48,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "fields": {
                 "age": {
-                    "number": 37,
-                    "text": "37"
+                    "text": "37",
+                    "number": 37
                 }
-            },
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            }
         },
         "modifier": {
             "type": "field",
@@ -85,13 +84,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "fields": {
                 "age": {
-                    "number": 37,
-                    "text": "37 years"
+                    "text": "37 years",
+                    "number": 37
                 }
-            },
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            }
         },
         "modifier": {
             "type": "field",
@@ -125,12 +124,12 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "fields": {
                 "gender": {
                     "text": "M"
                 }
-            },
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            }
         },
         "modifier": {
             "type": "field",
