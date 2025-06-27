@@ -18,7 +18,7 @@ func registerType(name string, initFunc func() flows.Event) {
 
 // BaseEvent is the base of all event types
 type BaseEvent struct {
-	UUID_      flows.EventUUID `json:"uuid" validate:"required,uuid"`
+	UUID_      flows.EventUUID `json:"uuid" validate:"omitempty,uuid"` // TODO make required
 	Type_      string          `json:"type" validate:"required"`
 	CreatedOn_ time.Time       `json:"created_on"` // TODO re-add validate:"required" when ticket triggers all use real events
 	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
