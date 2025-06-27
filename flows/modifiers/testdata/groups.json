@@ -5,13 +5,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
                     "name": "Customers"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "groups",
@@ -62,13 +62,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
                     "name": "Customers"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "groups",
@@ -109,6 +109,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -118,8 +119,7 @@
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "groups",
@@ -159,7 +159,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "groups": [],
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
@@ -212,13 +211,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Testers"
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "groups",
@@ -264,7 +263,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "blocked",
-            "groups": [],
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
@@ -297,7 +295,6 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "stopped",
-            "groups": [],
             "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {

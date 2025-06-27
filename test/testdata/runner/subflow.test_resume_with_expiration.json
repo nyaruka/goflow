@@ -1,6 +1,6 @@
 {
     "contact": {
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "created_on": "2000-01-01T00:00:00Z",
         "fields": {
             "first_name": {
                 "text": "Ben"

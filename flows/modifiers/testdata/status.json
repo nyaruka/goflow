@@ -2,10 +2,10 @@
     {
         "description": "noop active status on non blocked and non stopped contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -22,10 +22,10 @@
     {
         "description": "noop blocking a blocked contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "blocked",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -42,10 +42,10 @@
     {
         "description": "noop stopping a stopped contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "stopped",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -62,10 +62,10 @@
     {
         "description": "contact_status_changed when activating a blocked contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "blocked",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -88,10 +88,10 @@
     {
         "description": "contact_status_changed when activating a blocked contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "stopped",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -114,10 +114,10 @@
     {
         "description": "contact_status_changed when blocking an active contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -140,10 +140,10 @@
     {
         "description": "contact_status_changed when stopping an active contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -166,11 +166,11 @@
     {
         "description": "contact_status_changed when activating a blocked contact",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "language": "fra",
             "status": "blocked",
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+            "created_on": "2018-06-20T11:40:30.123456789Z"
         },
         "modifier": {
             "type": "status",
@@ -210,9 +210,10 @@
     {
         "description": "contact_status_changed when contact is blocked and removes all groups",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -223,7 +224,6 @@
                     "name": "Males"
                 }
             ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "fields": {
                 "gender": {
                     "text": "male"
@@ -270,9 +270,10 @@
     {
         "description": "contact_status_changed when contact is archived and removes all groups",
         "contact_before": {
-            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "groups": [
                 {
                     "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -283,7 +284,6 @@
                     "name": "Males"
                 }
             ],
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "fields": {
                 "gender": {
                     "text": "male"

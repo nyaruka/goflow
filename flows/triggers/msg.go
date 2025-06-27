@@ -74,8 +74,7 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 // Initialize initializes the session
 func (t *Msg) Initialize(session flows.Session) error {
 	// update our input
-	input := inputs.NewMsg(session, t.event.Msg, t.triggeredOn)
-	session.SetInput(input)
+	session.SetInput(inputs.NewMsg(session.Assets(), t.event))
 
 	return t.baseTrigger.Initialize(session)
 }

@@ -57,7 +57,7 @@ func (r *Msg) Apply(run flows.Run, logEvent flows.EventCallback) {
 	r.baseResume.Apply(run, logEvent)
 
 	// update our input
-	run.Session().SetInput(inputs.NewMsg(run.Session(), r.event.Msg, r.ResumedOn()))
+	run.Session().SetInput(inputs.NewMsg(run.Session().Assets(), r.event))
 }
 
 var _ flows.Resume = (*Msg)(nil)
