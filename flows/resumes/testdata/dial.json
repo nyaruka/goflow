@@ -10,6 +10,7 @@
             "type": "dial",
             "resumed_on": "2000-01-01T00:00:00Z",
             "event": {
+                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
                 "type": "dial_ended",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -21,8 +22,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-4403-76f8-ba00-bd7f0d08e671",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:00.123456789Z",
+                "created_on": "2025-05-04T12:31:02.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Redirect",
                 "value": "answered",

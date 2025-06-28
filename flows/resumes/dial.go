@@ -23,6 +23,7 @@ const TypeDial string = "dial"
 //	  "type": "dial",
 //	  "resumed_on": "2021-01-20T12:18:30Z",
 //	  "event": {
+//	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "dial_ended",
 //	    "created_on": "2019-01-02T15:04:05Z",
 //	    "dial": {

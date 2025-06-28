@@ -23,12 +23,13 @@ const TypeTicket string = "ticket"
 //	  "type": "ticket",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //	  "event": {
-//	      "type": "ticket_closed",
-//	      "created_on": "2006-01-02T15:04:05Z",
-//	      "ticket": {
-//	          "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-//	          "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
-//	      }
+//	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
+//	    "type": "ticket_closed",
+//	    "created_on": "2006-01-02T15:04:05Z",
+//	    "ticket": {
+//	      "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+//	      "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
+//	    }
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}

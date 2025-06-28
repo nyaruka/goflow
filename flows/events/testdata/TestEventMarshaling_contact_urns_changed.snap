@@ -1,6 +1,7 @@
 {
+    "uuid": "01969b48-789b-76f8-9566-6fb2598c32d6",
     "type": "contact_urns_changed",
-    "created_on": "2025-05-04T12:31:56.123456789Z",
+    "created_on": "2025-05-04T12:32:21.123456789Z",
     "urns": [
         "tel:+12345678900",
         "twitterid:8764843252522#bob"

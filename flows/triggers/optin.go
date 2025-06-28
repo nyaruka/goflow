@@ -27,11 +27,12 @@ const TypeOptIn string = "optin"
 //	  "type": "optin",
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //	  "event": {
-//	      "type": "started",
-//	      "optin": {
-//	          "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-//	          "name": "Joke Of The Day"
-//	      }
+//	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
+//	    "type": "optin_started",
+//	    "optin": {
+//	      "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+//	      "name": "Joke Of The Day"
+//	    }
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}

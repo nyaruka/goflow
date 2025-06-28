@@ -16,9 +16,9 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 // AirtimeTransferred events are created when airtime has been transferred to the contact.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "airtime_transferred",
 //	  "created_on": "2006-01-02T15:04:05Z",
-//	  "transfer_uuid": "552cd7ee-ccba-404d-9692-c1fe3b8d57c5",
 //	  "external_id": "12345678",
 //	  "sender": "tel:4748",
 //	  "recipient": "tel:+1242563637",
@@ -40,25 +40,23 @@ const TypeAirtimeTransferred string = "airtime_transferred"
 type AirtimeTransferred struct {
 	BaseEvent
 
-	TransferUUID flows.TransferUUID `json:"transfer_uuid"`
-	ExternalID   string             `json:"external_id"`
-	Sender       urns.URN           `json:"sender"`
-	Recipient    urns.URN           `json:"recipient"`
-	Currency     string             `json:"currency"`
-	Amount       decimal.Decimal    `json:"amount"`
-	HTTPLogs     []*flows.HTTPLog   `json:"http_logs"`
+	ExternalID string           `json:"external_id"`
+	Sender     urns.URN         `json:"sender"`
+	Recipient  urns.URN         `json:"recipient"`
+	Currency   string           `json:"currency"`
+	Amount     decimal.Decimal  `json:"amount"`
+	HTTPLogs   []*flows.HTTPLog `json:"http_logs"`
 }
 
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferred {
 	return &AirtimeTransferred{
-		BaseEvent:    NewBaseEvent(TypeAirtimeTransferred),
-		TransferUUID: t.UUID,
-		ExternalID:   t.ExternalID,
-		Sender:       t.Sender,
-		Recipient:    t.Recipient,
-		Currency:     t.Currency,
-		Amount:       t.Amount,
-		HTTPLogs:     httpLogs,
+		BaseEvent:  NewBaseEvent(TypeAirtimeTransferred),
+		ExternalID: t.ExternalID,
+		Sender:     t.Sender,
+		Recipient:  t.Recipient,
+		Currency:   t.Currency,
+		Amount:     t.Amount,
+		HTTPLogs:   httpLogs,
 	}
 }

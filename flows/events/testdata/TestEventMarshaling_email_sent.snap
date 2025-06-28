@@ -1,6 +1,7 @@
 {
+    "uuid": "01969b48-806b-76f8-a8fd-1537ca860f97",
     "type": "email_sent",
-    "created_on": "2025-05-04T12:31:57.123456789Z",
+    "created_on": "2025-05-04T12:32:23.123456789Z",
     "to": [
         "bob@nyaruka.com",
         "jim@nyaruka.com"

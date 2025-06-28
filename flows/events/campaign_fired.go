@@ -15,6 +15,7 @@ const TypeCampaignFired string = "campaign_fired"
 // CampaignFired events are created when a campaign has been fired.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "campaign_fired",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "campaign": {

@@ -31,17 +31,19 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "created_on": "2025-05-04T12:30:51.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "text": "not a possible number",
-                    "type": "error"
+                    "type": "error",
+                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                 },
                 {
                     "category": "Failed",
-                    "created_on": "2025-05-04T12:30:54.123456789Z",
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
                     "name": "Redirect",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
+                    "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                     "value": ""
                 }
             ],
@@ -55,26 +57,28 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:50.123456789Z",
+                                "created_on": "2025-05-04T12:30:51.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "text": "not a possible number",
-                                "type": "error"
+                                "type": "error",
+                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                             },
                             {
                                 "category": "Failed",
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:56.123456789Z",
                                 "name": "Redirect",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
+                                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                                 "value": ""
                             }
                         ],
-                        "exited_on": "2025-05-04T12:30:56.123456789Z",
+                        "exited_on": "2025-05-04T12:30:58.123456789Z",
                         "flow": {
                             "name": "IVR Redirect",
                             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
                         },
-                        "modified_on": "2025-05-04T12:30:56.123456789Z",
+                        "modified_on": "2025-05-04T12:30:58.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -86,7 +90,7 @@
                         "results": {
                             "redirect": {
                                 "category": "Failed",
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
+                                "created_on": "2025-05-04T12:30:53.123456789Z",
                                 "name": "Redirect",
                                 "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "value": ""

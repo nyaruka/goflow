@@ -18,15 +18,19 @@ func registerType(name string, initFunc func() flows.Event) {
 
 // BaseEvent is the base of all event types
 type BaseEvent struct {
-	Type_      string         `json:"type" validate:"required"`
-	CreatedOn_ time.Time      `json:"created_on"` // TODO re-add validate:"required" when ticket triggers all use real events
-	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
+	UUID_      flows.EventUUID `json:"uuid" validate:"omitempty,uuid"` // TODO make required
+	Type_      string          `json:"type" validate:"required"`
+	CreatedOn_ time.Time       `json:"created_on"` // TODO re-add validate:"required" when ticket triggers all use real events
+	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
 }
 
 // NewBaseEvent creates a new base event
-func NewBaseEvent(typeName string) BaseEvent {
-	return BaseEvent{Type_: typeName, CreatedOn_: dates.Now()}
+func NewBaseEvent(typ string) BaseEvent {
+	return BaseEvent{UUID_: flows.NewEventUUID(), Type_: typ, CreatedOn_: dates.Now()}
 }
+
+// UUID returns the UUID of this event
+func (e *BaseEvent) UUID() flows.EventUUID { return e.UUID_ }
 
 // Type returns the type of this event
 func (e *BaseEvent) Type() string { return e.Type_ }

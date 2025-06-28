@@ -4,12 +4,12 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:31:01.123456789Z",
+    "triggered_on": "2025-05-04T12:31:03.123456789Z",
     "event": {
+        "uuid": "01969b47-4403-76f8-8f41-6b2d9f33d623",
         "type": "msg_received",
-        "created_on": "2025-05-04T12:31:00.123456789Z",
+        "created_on": "2025-05-04T12:31:02.123456789Z",
         "msg": {
-            "uuid": "c8005ee3-4628-4d76-be66-906352cb1935",
             "urn": "tel:+1234567890",
             "channel": {
                 "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",

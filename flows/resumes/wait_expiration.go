@@ -21,6 +21,7 @@ const TypeWaitExpiration string = "wait_expiration"
 //	  "type": "wait_expiration",
 //	  "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
 //	  "event": {
+//	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "wait_expired",
 //	    "created_on": "2006-01-02T15:04:05Z"
 //	  }

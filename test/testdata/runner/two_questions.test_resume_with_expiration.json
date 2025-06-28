@@ -39,18 +39,19 @@
                             }
                         ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                        "urn": "tel:+12024561111",
-                        "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                        "urn": "tel:+12024561111"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "msg_created"
+                    "type": "msg_created",
+                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:54.123456789Z",
+                    "created_on": "2025-05-04T12:30:55.123456789Z",
                     "expires_on": "2025-05-07T12:30:53.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "timeout_seconds": 600,
-                    "type": "msg_wait"
+                    "type": "msg_wait",
+                    "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
                 }
             ],
             "segments": [],
@@ -78,18 +79,19 @@
                                         }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                                    "urn": "tel:+12024561111",
-                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                                    "urn": "tel:+12024561111"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created"
+                                "type": "msg_created",
+                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:55.123456789Z",
                                 "expires_on": "2025-05-07T12:30:53.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "timeout_seconds": 600,
-                                "type": "msg_wait"
+                                "type": "msg_wait",
+                                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
                             }
                         ],
                         "exited_on": null,
@@ -97,7 +99,7 @@
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:30:56.123456789Z",
+                        "modified_on": "2025-05-04T12:30:57.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -125,10 +127,11 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:58.123456789Z",
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "run_expired"
+                    "type": "run_expired",
+                    "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                 }
             ],
             "segments": [],
@@ -156,32 +159,34 @@
                                         }
                                     ],
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                                    "urn": "tel:+12024561111",
-                                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                                    "urn": "tel:+12024561111"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created"
+                                "type": "msg_created",
+                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
+                                "created_on": "2025-05-04T12:30:55.123456789Z",
                                 "expires_on": "2025-05-07T12:30:53.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "timeout_seconds": 600,
-                                "type": "msg_wait"
+                                "type": "msg_wait",
+                                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:58.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_expired"
+                                "type": "run_expired",
+                                "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:30:57.123456789Z",
+                        "exited_on": "2025-05-04T12:30:58.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:30:59.123456789Z",
+                        "modified_on": "2025-05-04T12:31:01.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",

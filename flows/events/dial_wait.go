@@ -17,6 +17,7 @@ const TypeDialWait string = "dial_wait"
 // DialWait events are created when a flow pauses waiting for an IVR dial to complete.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "dial_wait",
 //	  "created_on": "2019-01-02T15:04:05Z",
 //	  "urn": "tel:+593979123456",

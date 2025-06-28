@@ -15,6 +15,7 @@ const TypeInputLabelsAdded string = "input_labels_added"
 // InputLabelsAdded events are created when an action wants to add labels to the current input.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "input_labels_added",
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "input_uuid": "4aef4050-1895-4c80-999a-70368317a4f5",

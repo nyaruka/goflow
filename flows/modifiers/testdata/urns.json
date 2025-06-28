@@ -31,8 +31,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+17036971111",
                     "tel:+17036972222",
@@ -71,8 +72,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+17036971111"
                 ]
@@ -111,8 +113,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+17036972222",
                     "tel:+17036973333"
@@ -145,8 +148,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": []
             }
         ]
@@ -181,8 +185,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
                     "tel:+17010000000",
                     "tel:+17012222222"
@@ -252,8 +257,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "'xyz:12345' is not valid URN"
             }
         ]
@@ -385,13 +391,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "contact has too many URNs, limit is 50"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "urns": [
                     "tel:+17010000000",
                     "tel:+17020000000",

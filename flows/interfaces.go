@@ -235,18 +235,6 @@ type Modifier interface {
 // ModifierCallback is a callback invoked when a modifier has been generated
 type ModifierCallback func(Modifier)
 
-// Event describes a state change
-type Event interface {
-	utils.Typed
-
-	CreatedOn() time.Time
-	StepUUID() StepUUID
-	SetStepUUID(StepUUID)
-}
-
-// EventCallback is a callback invoked when an event has been generated
-type EventCallback func(Event)
-
 // Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {
 	utils.Typed

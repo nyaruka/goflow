@@ -13,10 +13,10 @@
             "type": "msg",
             "resumed_on": "2000-01-01T00:00:00Z",
             "event": {
+                "uuid": "0197b32a-938f-736c-8786-fc48940f8ade",
                 "type": "msg_received",
                 "created_on": "2000-01-01T00:00:00Z",
                 "msg": {
-                    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
@@ -28,8 +28,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:03.123456789Z",
+                "created_on": "2025-05-04T12:31:05.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "red",
