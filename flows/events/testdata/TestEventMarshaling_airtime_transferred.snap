@@ -2,7 +2,6 @@
     "uuid": "01969b48-16f3-76f8-97a3-ae27459a6be4",
     "type": "airtime_transferred",
     "created_on": "2025-05-04T12:31:56.123456789Z",
-    "transfer_uuid": "4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d",
     "external_id": "98765432",
     "sender": "tel:+593979099111",
     "recipient": "tel:+593979099222",
