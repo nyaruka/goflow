@@ -1,3 +1,7 @@
+v0.250.0 (2025-06-30)
+-------------------------
+ * Add UUIDs to events and remove UUID from msg and airtime transfer
+
 v0.249.2 (2025-06-25)
 -------------------------
  * For reals this time
