@@ -52,7 +52,6 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			events.NewAirtimeTransferred(
 				&flows.AirtimeTransfer{
-					UUID:       "4c2d9b7a-e02c-4e6a-ab18-06df4cb5666d",
 					ExternalID: "98765432",
 					Sender:     urns.URN("tel:+593979099111"),
 					Recipient:  urns.URN("tel:+593979099222"),
@@ -317,7 +316,7 @@ func TestReadEvent(t *testing.T) {
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
 	// valid existing type
-	event, err := events.Read([]byte(`{"type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
+	event, err := events.Read([]byte(`{"uuid": "0197b335-6ded-79a4-95a6-3af85b57f108", "type": "contact_name_changed", "created_on": "2006-01-02T15:04:05Z", "name": "Bob Smith"}`))
 	require.NoError(t, err)
 
 	assert.Equal(t, events.TypeContactNameChanged, event.Type())
@@ -422,6 +421,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 func TestDeprecatedEvents(t *testing.T) {
 	eventJSON := []byte(`{
+		"uuid": "0197b32a-938f-736c-8786-fc48940f8ade",
 		"type": "classifier_called",
 		"created_on": "2006-01-02T15:04:05Z",
 		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},

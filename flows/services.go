@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
@@ -83,12 +82,6 @@ type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
-// TransferUUID is the UUID of an airtime transfer
-type TransferUUID uuids.UUID
-
-// NewTransferUUID generates a new UUID for an airtime transfer
-func NewTransferUUID() TransferUUID { return TransferUUID(uuids.NewV7()) }
-
 // TransferStatus is a status of a airtime transfer
 type TransferStatus string
 
@@ -100,7 +93,6 @@ const (
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	UUID       TransferUUID
 	ExternalID string
 	Sender     urns.URN
 	Recipient  urns.URN

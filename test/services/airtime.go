@@ -24,7 +24,6 @@ func NewAirtime(currency string) *Airtime {
 
 func (s *Airtime) Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	transfer := &flows.AirtimeTransfer{
-		UUID:      flows.NewTransferUUID(),
 		Sender:    sender,
 		Recipient: recipient,
 		Currency:  "",

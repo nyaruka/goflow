@@ -36,8 +36,8 @@
                     "recipient": "tel:+12065551212",
                     "sender": "",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "transfer_uuid": "01969b47-190b-76f8-8228-9728778b6c98",
-                    "type": "airtime_transferred"
+                    "type": "airtime_transferred",
+                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                 }
             ],
             "segments": [],
@@ -68,8 +68,8 @@
                                 "recipient": "tel:+12065551212",
                                 "sender": "",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "transfer_uuid": "01969b47-190b-76f8-8228-9728778b6c98",
-                                "type": "airtime_transferred"
+                                "type": "airtime_transferred",
+                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                             }
                         ],
                         "exited_on": "2025-05-04T12:30:53.123456789Z",

@@ -39,7 +39,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 	}
 
 	return &Msg{
-		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.Msg.UUID()), channel, evt.CreatedOn()),
+		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
 		urn:         flows.NewContactURN(evt.Msg.URN(), nil),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),

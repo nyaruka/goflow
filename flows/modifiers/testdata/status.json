@@ -79,8 +79,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "active"
             }
         ]
@@ -105,8 +106,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "active"
             }
         ]
@@ -131,8 +133,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "blocked"
             }
         ]
@@ -157,8 +160,9 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "stopped"
             }
         ]
@@ -191,13 +195,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "active"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "groups_added": [
                     {
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
@@ -247,13 +253,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "blocked"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
@@ -307,13 +315,15 @@
         },
         "events": [
             {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "contact_status_changed",
-                "created_on": "2025-05-04T12:30:45.123456789Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "status": "archived"
             },
             {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",

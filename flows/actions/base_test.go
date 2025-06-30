@@ -203,7 +203,6 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			trigger = tb.Build()
 		} else {
 			msg := flows.NewMsgIn(
-				flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"),
 				urns.URN("tel:+12065551212"),
 				nil,
 				"Hi everybody",
@@ -996,7 +995,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			resume := resumes.NewMsg(events.NewMsgReceived(flows.NewMsgIn("f8effb01-d467-4bd8-bd15-572f4c959419", urns.NilURN, nil, "Hi there", nil, "SMS1234")))
+			resume := resumes.NewMsg(events.NewMsgReceived(flows.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234")))
 			sprint, err = session.Resume(ctx, resume)
 			require.NoError(t, err)
 		}

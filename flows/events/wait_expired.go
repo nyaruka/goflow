@@ -14,6 +14,7 @@ const TypeWaitExpired string = "wait_expired"
 // WaitExpired events are sent by the caller to tell the engine that a wait has expired.
 //
 //	{
+//	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "wait_expired",
 //	  "created_on": "2006-01-02T15:04:05Z"
 //	}

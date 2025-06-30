@@ -8,17 +8,10 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
 )
-
-// MsgUUID is the UUID of a message
-type MsgUUID uuids.UUID
-
-// NewMsgUUID generates a new UUID for a message
-func NewMsgUUID() MsgUUID { return MsgUUID(uuids.NewV7()) }
 
 type UnsendableReason string
 
@@ -36,7 +29,6 @@ const (
 
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
-	UUID_        MsgUUID                  `json:"uuid"`
 	URN_         urns.URN                 `json:"urn,omitempty" validate:"omitempty,urn"`
 	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
 	Text_        string                   `json:"text"`
@@ -61,10 +53,9 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, externalID string) *MsgIn {
+func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, externalID string) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
-			UUID_:        uuid,
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,
@@ -78,7 +69,6 @@ func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        NewMsgUUID(),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        content.Text,
@@ -100,7 +90,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        NewMsgUUID(),
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,
@@ -111,9 +100,6 @@ func NewIVRMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, a
 		Locale_:       locale,
 	}
 }
-
-// UUID returns the UUID of this message
-func (m *BaseMsg) UUID() MsgUUID { return m.UUID_ }
 
 // URN returns the URN of this message
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }

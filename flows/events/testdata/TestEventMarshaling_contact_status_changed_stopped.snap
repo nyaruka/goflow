@@ -1,5 +1,6 @@
 {
+    "uuid": "01969b48-595b-76f8-be24-6164105d48f2",
     "type": "contact_status_changed",
-    "created_on": "2025-05-04T12:31:52.123456789Z",
+    "created_on": "2025-05-04T12:32:13.123456789Z",
     "status": "stopped"
 }

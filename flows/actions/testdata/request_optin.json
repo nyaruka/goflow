@@ -36,9 +36,10 @@
         },
         "events": [
             {
+                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                 "type": "optin_requested",
-                "created_on": "2025-05-04T12:30:53.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:55.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "optin": {
                     "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
                     "name": "Joke Of The Day"
