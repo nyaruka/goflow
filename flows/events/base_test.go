@@ -418,32 +418,3 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 13\r\nBad-Header: �\r\n\r\n...", event.Response)
 	assert.True(t, utf8.ValidString(event.Response))
 }
-
-func TestDeprecatedEvents(t *testing.T) {
-	eventJSON := []byte(`{
-		"uuid": "0197b32a-938f-736c-8786-fc48940f8ade",
-		"type": "classifier_called",
-		"created_on": "2006-01-02T15:04:05Z",
-		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
-		"http_logs": [
-			{
-				"url": "https://api.wit.ai/message?v=20170307&q=hello",
-				"status_code": 200,
-				"status": "success",
-				"request": "GET /message?v=20170307&q=hello HTTP/1.1",
-				"response": "HTTP/1.1 200 OK\r\n\r\n{\"intents\":[]}",
-				"elapsed_ms": 123,
-				"retries": 0,
-				"created_on": "2006-01-02T15:04:05Z"
-			}
-		]
-	}`)
-
-	e, err := events.Read(eventJSON)
-	assert.NoError(t, err)
-	assert.Equal(t, events.TypeClassifierCalled, e.Type())
-
-	marshaled, err := jsonx.Marshal(e)
-	assert.NoError(t, err)
-	test.AssertEqualJSON(t, eventJSON, marshaled)
-}
