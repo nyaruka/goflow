@@ -1,3 +1,7 @@
+v0.251.0 (2025-07-22)
+-------------------------
+ * Remove no longer used events and resume types
+
 v0.250.0 (2025-06-30)
 -------------------------
  * Add UUIDs to events and remove UUID from msg and airtime transfer
