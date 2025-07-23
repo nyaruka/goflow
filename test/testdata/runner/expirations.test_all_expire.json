@@ -377,7 +377,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:17.508225-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
@@ -580,7 +580,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:23.165294-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-3a35-7853-926b-d1e8579e2cae"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:30.123456789Z",
@@ -637,7 +637,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:17.508225-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
@@ -728,7 +728,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:29.501371-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-6c7f-778f-ad69-11798b50fe1f"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:47.123456789Z",
@@ -803,7 +803,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:23.165294-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-3a35-7853-926b-d1e8579e2cae"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:30.123456789Z",
@@ -860,7 +860,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:17.508225-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
@@ -906,7 +906,8 @@
         {
             "event": {
                 "created_on": "2020-10-12T15:38:17.508225-05:00",
-                "type": "wait_expired"
+                "type": "wait_expired",
+                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
             },
             "resumed_on": "2020-10-12T15:38:17.508225-05:00",
             "type": "wait_expiration"
@@ -914,7 +915,8 @@
         {
             "event": {
                 "created_on": "2020-10-12T15:38:23.165294-05:00",
-                "type": "wait_expired"
+                "type": "wait_expired",
+                "uuid": "0198380e-3a35-7853-926b-d1e8579e2cae"
             },
             "resumed_on": "2020-10-12T15:38:23.165294-05:00",
             "type": "wait_expiration"
@@ -922,7 +924,8 @@
         {
             "event": {
                 "created_on": "2020-10-12T15:38:29.501371-05:00",
-                "type": "wait_expired"
+                "type": "wait_expired",
+                "uuid": "0198380e-6c7f-778f-ad69-11798b50fe1f"
             },
             "resumed_on": "2020-10-12T15:38:29.501371-05:00",
             "type": "wait_expiration"

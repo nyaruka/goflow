@@ -314,7 +314,7 @@
                             {
                                 "created_on": "2020-10-12T15:38:17.508225-05:00",
                                 "type": "wait_expired",
-                                "uuid": ""
+                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:08.123456789Z",
@@ -353,7 +353,8 @@
         {
             "event": {
                 "created_on": "2020-10-12T15:38:17.508225-05:00",
-                "type": "wait_expired"
+                "type": "wait_expired",
+                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
             },
             "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "wait_expiration"
