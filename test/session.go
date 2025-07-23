@@ -387,20 +387,24 @@ var sessionTrigger = `{
 
 var sessionResume = `{
     "type": "msg",
-    "msg": {
-        "attachments": [
-            "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
-            "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
-        ],
-        "channel": {
-            "name": "Nexmo",
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "text": "Hi there",
-        "urn": "tel:+12065551212",
-        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+    "event": {
+        "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
+        "type": "msg_received",
+        "created_on": "2017-12-31T11:35:09.123456789-00:00",
+        "msg": {
+            "attachments": [
+                "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+                "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
+            ],
+            "channel": {
+                "name": "Nexmo",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "text": "Hi there",
+            "urn": "tel:+12065551212"
+        }
     },
-    "resumed_on": "2017-12-31T11:35:10.035757258-02:00"
+    "resumed_on": "2017-12-31T11:35:10.123456789-00:00"
 }`
 
 var voiceSessionAssets = `{
