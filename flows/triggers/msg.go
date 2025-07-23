@@ -28,7 +28,6 @@ const TypeMsg string = "msg"
 //	    "type": "msg_received",
 //	    "created_on": "2006-01-02T15:04:05Z",
 //	    "msg": {
-//	      "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
 //	      "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
 //	      "urn": "tel:+12065551212",
 //	      "text": "hi there",
@@ -128,8 +127,7 @@ func (b *MsgBuilder) Build() *Msg {
 type msgEnvelope struct {
 	baseEnvelope
 
-	Event *events.MsgReceived `json:"event"`         // TODO make required
-	Msg   *flows.MsgIn        `json:"msg,omitempty"` // used by older sessions
+	Event *events.MsgReceived `json:"event"                   validate:"required"`
 	Match *KeywordMatch       `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
@@ -139,18 +137,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 		return nil, err
 	}
 
-	t := &Msg{
-		event: e.Event,
-		match: e.Match,
-	}
-
-	// older triggers will have msg instead of event so convert that into an event
-	if e.Msg != nil {
-		t.event = &events.MsgReceived{
-			BaseEvent: events.BaseEvent{UUID_: flows.NewEventUUID(), Type_: events.TypeMsgReceived, CreatedOn_: e.baseEnvelope.TriggeredOn},
-			Msg:       e.Msg,
-		}
-	}
+	t := &Msg{event: e.Event, match: e.Match}
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err

@@ -32,8 +32,8 @@ const TypeOptInStarted string = "optin_started"
 type OptInStarted struct {
 	BaseEvent
 
-	OptIn   *assets.OptInReference   `json:"optin" validate:"required"`
-	Channel *assets.ChannelReference `json:"channel,omitempty"` // TODO make required
+	OptIn   *assets.OptInReference   `json:"optin"   validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
 // NewOptInStarted returns a new optin started event

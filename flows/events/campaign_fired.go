@@ -29,8 +29,8 @@ const TypeCampaignFired string = "campaign_fired"
 type CampaignFired struct {
 	BaseEvent
 
-	Campaign  *assets.CampaignReference `json:"campaign" validate:"required"`
-	PointUUID assets.CampaignPointUUID  `json:"point_uuid"` // TODO make required
+	Campaign  *assets.CampaignReference `json:"campaign"   validate:"required"`
+	PointUUID assets.CampaignPointUUID  `json:"point_uuid" validate:"required"`
 }
 
 // NewCampaignFired returns a new campaign fired event

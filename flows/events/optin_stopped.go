@@ -32,8 +32,8 @@ const TypeOptInStopped string = "optin_stopped"
 type OptInStopped struct {
 	BaseEvent
 
-	OptIn   *assets.OptInReference   `json:"optin" validate:"required"`
-	Channel *assets.ChannelReference `json:"channel,omitempty"` // TODO make required
+	OptIn   *assets.OptInReference   `json:"optin"   validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
 // NewOptInStopped returns a new optin stopped event

@@ -593,8 +593,8 @@ type sessionEnvelope struct {
 	Type        flows.FlowType      `json:"type"                validate:"required"`
 	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
 	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
-	ContactUUID flows.ContactUUID   `json:"contact_uuid"        validate:"omitempty,uuid"` // TODO validate:"required"`
-	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"` // TODO validate:"required"`
+	ContactUUID flows.ContactUUID   `json:"contact_uuid"        validate:"required,uuid"`
+	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
 	Runs        []json.RawMessage   `json:"runs"`
 	Status      flows.SessionStatus `json:"status"              validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
@@ -615,6 +615,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		assets:     sa,
 		uuid:       e.UUID,
 		type_:      e.Type,
+		createdOn:  e.CreatedOn,
 		status:     e.Status,
 		env:        env,
 		contact:    contact,

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -29,9 +28,14 @@ const TypeOptIn string = "optin"
 //	  "event": {
 //	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "optin_started",
+//	    "created_on": "2006-01-02T15:04:05Z",
 //	    "optin": {
 //	      "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
 //	      "name": "Joke Of The Day"
+//	    },
+//	    "channel": {
+//	      "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+//	      "name": "Facebook"
 //	    }
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
@@ -96,19 +100,6 @@ func readOptIn(sa flows.SessionAssets, data []byte, missing assets.MissingCallba
 	e := &optInEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
-	}
-
-	// TODO remove this once all triggers are using real events
-	evtType, err := jsonparser.GetString(e.Event, "type")
-	if err != nil {
-		return nil, fmt.Errorf("error reading type from optin trigger event: %w", err)
-	}
-	if evtType == "started" {
-		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_started"`), "type")
-		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
-	} else if evtType == "stopped" {
-		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_stopped"`), "type")
-		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 	}
 
 	event, err := events.Read(e.Event)
