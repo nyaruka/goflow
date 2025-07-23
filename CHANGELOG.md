@@ -1,3 +1,7 @@
+v0.251.1 (2025-07-23)
+-------------------------
+ * Make recent changes to resumes, triggers and events required
+
 v0.251.0 (2025-07-22)
 -------------------------
  * Remove no longer used events and resume types
