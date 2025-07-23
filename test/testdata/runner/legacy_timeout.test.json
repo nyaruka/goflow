@@ -170,7 +170,11 @@
                                 "type": "msg_wait",
                                 "uuid": "01969b47-307b-76f8-8e78-3bde7b3370ae"
                             },
-                            null,
+                            {
+                                "created_on": "2025-05-04T12:30:59.123456789Z",
+                                "type": "wait_timed_out",
+                                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
+                            },
                             {
                                 "category": "No Response",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
@@ -254,6 +258,11 @@
     ],
     "resumes": [
         {
+            "event": {
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "type": "wait_timed_out",
+                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
+            },
             "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "wait_timeout"
         }
