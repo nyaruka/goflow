@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-ce8b-76f8-acdc-e181352d44cc",
+    "uuid": "01969b48-caa3-76f8-9491-58ccdc93a8a8",
     "type": "dial_ended",
-    "created_on": "2025-05-04T12:32:43.123456789Z",
+    "created_on": "2025-05-04T12:32:42.123456789Z",
     "dial": {
         "status": "busy",
         "duration": 0

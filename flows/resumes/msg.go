@@ -69,8 +69,7 @@ var _ flows.Resume = (*Msg)(nil)
 type msgEnvelope struct {
 	baseEnvelope
 
-	Event *events.MsgReceived `json:"event"`         // TODO make required
-	Msg   *flows.MsgIn        `json:"msg,omitempty"` // used by older sessions
+	Event *events.MsgReceived `json:"event" validate:"required"`
 }
 
 func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
@@ -79,17 +78,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 		return nil, err
 	}
 
-	r := &Msg{
-		event: e.Event,
-	}
-
-	// older resumes will have msg instead of event so convert that into an event
-	if e.Msg != nil {
-		r.event = &events.MsgReceived{
-			BaseEvent: events.BaseEvent{UUID_: flows.NewEventUUID(), Type_: events.TypeMsgReceived, CreatedOn_: e.baseEnvelope.ResumedOn},
-			Msg:       e.Msg,
-		}
-	}
+	r := &Msg{event: e.Event}
 
 	if err := r.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err

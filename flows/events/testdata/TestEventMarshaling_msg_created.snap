@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-af4b-76f8-a71b-fe4af29b871a",
+    "uuid": "01969b48-ab63-76f8-8b56-5e92bbfe0e3f",
     "type": "msg_created",
-    "created_on": "2025-05-04T12:32:35.123456789Z",
+    "created_on": "2025-05-04T12:32:34.123456789Z",
     "msg": {
         "urn": "tel:+12345678900",
         "channel": {

@@ -128,34 +128,34 @@
             "events": [
                 {
                     "category": "Not Empty",
-                    "created_on": "2025-05-04T12:31:06.123456789Z",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Name",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-53a3-76f8-a691-235cbe720980",
+                    "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:11.123456789Z",
+                    "created_on": "2025-05-04T12:31:10.123456789Z",
                     "name": "Ryan Lewis",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "contact_name_changed",
-                    "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
+                    "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
                     "groups_added": [
                         {
                             "name": "Registered Users",
                             "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                         }
                     ],
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-72e3-76f8-acca-bbca70987315"
+                    "uuid": "01969b47-6efb-76f8-8dbf-00ecf5d03034"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "created_on": "2025-05-04T12:31:16.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -165,9 +165,9 @@
                         "text": "Great, you are Ryan Lewis, thanks for joining!",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
-                    "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
+                    "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                 }
             ],
             "segments": [
@@ -177,7 +177,7 @@
                     "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                     "operand": "Ryan Lewis",
-                    "time": "2025-05-04T12:31:08.123456789Z"
+                    "time": "2025-05-04T12:31:07.123456789Z"
                 }
             ],
             "session": {
@@ -188,11 +188,11 @@
                         "name": "Android Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00Z",
+                    "created_on": "2006-01-02T15:04:05Z",
                     "text": "Ryan Lewis",
                     "type": "msg",
                     "urn": "tel:+12065551212",
-                    "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671"
+                    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
                 },
                 "runs": [
                     {
@@ -221,7 +221,7 @@
                                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00Z",
+                                "created_on": "2006-01-02T15:04:05Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -231,38 +231,38 @@
                                     "urn": "tel:+12065551212"
                                 },
                                 "type": "msg_received",
-                                "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671"
+                                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
                             },
                             {
                                 "category": "Not Empty",
-                                "created_on": "2025-05-04T12:31:06.123456789Z",
+                                "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Name",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                                 "type": "run_result_changed",
-                                "uuid": "01969b47-53a3-76f8-a691-235cbe720980",
+                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:11.123456789Z",
+                                "created_on": "2025-05-04T12:31:10.123456789Z",
                                 "name": "Ryan Lewis",
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "contact_name_changed",
-                                "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
+                                "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:14.123456789Z",
+                                "created_on": "2025-05-04T12:31:13.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Registered Users",
                                         "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                                     }
                                 ],
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "contact_groups_changed",
-                                "uuid": "01969b47-72e3-76f8-acca-bbca70987315"
+                                "uuid": "01969b47-6efb-76f8-8dbf-00ecf5d03034"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
+                                "created_on": "2025-05-04T12:31:16.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -272,17 +272,17 @@
                                     "text": "Great, you are Ryan Lewis, thanks for joining!",
                                     "urn": "tel:+12065551212"
                                 },
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                                 "type": "msg_created",
-                                "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
+                                "uuid": "01969b47-7ab3-76f8-acca-bbca70987315"
                             }
                         ],
-                        "exited_on": "2025-05-04T12:31:19.123456789Z",
+                        "exited_on": "2025-05-04T12:31:18.123456789Z",
                         "flow": {
                             "name": "Brochure",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                         },
-                        "modified_on": "2025-05-04T12:31:19.123456789Z",
+                        "modified_on": "2025-05-04T12:31:18.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -297,16 +297,16 @@
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:09.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:08.123456789Z",
                                 "exit_uuid": "388bbce3-8079-4573-922f-8dea469d93f3",
                                 "node_uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b",
-                                "uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                                "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             }
                         ],
                         "results": {
                             "name": {
                                 "category": "Not Empty",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Name",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
@@ -333,14 +333,19 @@
     ],
     "resumes": [
         {
-            "msg": {
-                "channel": {
-                    "name": "Nexmo",
-                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            "event": {
+                "created_on": "2006-01-02T15:04:05Z",
+                "msg": {
+                    "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Ryan Lewis",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                 },
-                "text": "Ryan Lewis",
-                "urn": "tel:+12065551212",
-                "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                "type": "msg_received",
+                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
             },
             "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg"
