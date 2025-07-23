@@ -59,7 +59,7 @@ var _ flows.Resume = (*WaitTimeout)(nil)
 type waitTimeoutEnvelope struct {
 	baseEnvelope
 
-	Event *events.WaitTimedOut `json:"event"` // TODO make required
+	Event *events.WaitTimedOut `json:"event" validate:"required"`
 }
 
 func readWaitTimeout(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Resume, error) {
