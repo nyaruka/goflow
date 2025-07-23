@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -101,19 +100,6 @@ func readOptIn(sa flows.SessionAssets, data []byte, missing assets.MissingCallba
 	e := &optInEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
-	}
-
-	// TODO remove this once all triggers are using real events
-	evtType, err := jsonparser.GetString(e.Event, "type")
-	if err != nil {
-		return nil, fmt.Errorf("error reading type from optin trigger event: %w", err)
-	}
-	if evtType == "started" {
-		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_started"`), "type")
-		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
-	} else if evtType == "stopped" {
-		e.Event, _ = jsonparser.Set(e.Event, []byte(`"optin_stopped"`), "type")
-		e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
 	}
 
 	event, err := events.Read(e.Event)
