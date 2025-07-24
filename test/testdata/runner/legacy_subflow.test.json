@@ -47,7 +47,7 @@
             ],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                "created_on": "0001-01-01T00:00:00Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
@@ -157,7 +157,7 @@
             ],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                "created_on": "0001-01-01T00:00:00Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "input": {
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "xx",
@@ -302,7 +302,7 @@
             "segments": [],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                "created_on": "0001-01-01T00:00:00Z",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
                 "input": {
                     "created_on": "2006-01-02T15:05:05Z",
                     "text": "13",

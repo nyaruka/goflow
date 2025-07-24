@@ -655,9 +655,10 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 // MarshalJSON marshals this session into JSON
 func (s *session) MarshalJSON() ([]byte, error) {
 	e := &sessionEnvelope{
-		UUID:   s.uuid,
-		Type:   s.type_,
-		Status: s.status,
+		UUID:      s.uuid,
+		Type:      s.type_,
+		CreatedOn: s.createdOn,
+		Status:    s.status,
 	}
 	var err error
 
