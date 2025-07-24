@@ -1,3 +1,7 @@
+v0.251.3 (2025-07-24)
+-------------------------
+ * Fix marshaling of session.created_on
+
 v0.251.2 (2025-07-24)
 -------------------------
  * Don't make event.uuid required just yet
