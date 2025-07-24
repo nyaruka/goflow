@@ -1,3 +1,7 @@
+v0.251.2 (2025-07-24)
+-------------------------
+ * Don't make event.uuid required just yet
+
 v0.251.1 (2025-07-23)
 -------------------------
  * Make recent changes to resumes, triggers and events required
