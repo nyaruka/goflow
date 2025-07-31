@@ -1,3 +1,7 @@
+v0.251.4 (2025-07-31)
+-------------------------
+ * Improve error message when reading action fails
+
 v0.251.3 (2025-07-24)
 -------------------------
  * Fix marshaling of session.created_on
