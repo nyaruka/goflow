@@ -168,7 +168,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	for i := range e.Actions {
 		n.actions[i], err = actions.Read(e.Actions[i])
 		if err != nil {
-			return fmt.Errorf("unable to read action: %w", err)
+			return fmt.Errorf("unable to read action[%d]: %w", i, err)
 		}
 	}
 

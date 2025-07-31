@@ -56,7 +56,7 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"null_action.json",
-			"unable to read action: field 'type' is required",
+			"unable to read action[1]: field 'type' is required",
 		},
 		{
 			"exitless_node.json",
@@ -80,7 +80,7 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"invalid_action_by_tag.json",
-			"unable to read action: field 'text' is required",
+			"unable to read action[0]: field 'text' is required",
 		},
 		{
 			"invalid_action_by_method.json",
