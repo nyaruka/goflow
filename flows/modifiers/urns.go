@@ -49,29 +49,35 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
-	if m.Modification == URNsSet {
-		modified = contact.ClearURNs()
-	}
-
+	// validate modifier URNs and throw away any invalid
+	urnz := make([]urns.URN, 0, len(m.URNs))
 	for _, urn := range m.URNs {
 		urn := urn.Normalize()
-
 		if err := urn.Validate(); err != nil {
 			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn)))
 		} else {
-			if m.Modification == URNsAppend || m.Modification == URNsSet {
-				if len(contact.URNs()) >= flows.MaxContactURNs {
-					log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs)))
-					break
-				} else if contact.AddURN(urn, nil) {
-					modified = true
-				}
-			} else {
-				if contact.RemoveURN(urn) {
-					modified = true
-				}
+			urnz = append(urnz, urn)
+		}
+	}
+
+	switch m.Modification {
+	case URNsAppend:
+		for _, urn := range urnz {
+			if len(contact.URNs()) >= flows.MaxContactURNs {
+				log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs)))
+				break
+			} else if contact.AddURN(urn) {
+				modified = true
 			}
 		}
+	case URNsRemove:
+		for _, urn := range urnz {
+			if contact.RemoveURN(urn) {
+				modified = true
+			}
+		}
+	case URNsSet:
+		modified = contact.SetURNs(urnz)
 	}
 
 	if modified {

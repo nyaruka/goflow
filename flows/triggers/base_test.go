@@ -197,7 +197,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", weather, user)
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddURN(urns.URN("tel:+12065551212"), nil)
+	contact.AddURN(urns.URN("tel:+12065551212"))
 
 	eng := engine.NewBuilder().Build()
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
@@ -353,7 +353,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddURN(urns.URN("tel:+12065551212"), nil)
+	contact.AddURN(urns.URN("tel:+12065551212"))
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 

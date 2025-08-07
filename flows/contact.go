@@ -232,26 +232,19 @@ func (c *Contact) Name() string { return c.name }
 // URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
 
-// ClearURNs clears the URNs on this contact
-func (c *Contact) ClearURNs() bool {
-	hadURNS := len(c.urns) > 0
-	c.urns = URNList{}
-	return hadURNS
-}
-
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
-	if c.HasURN(urn) {
+func (c *Contact) AddURN(urn urns.URN) bool {
+	if c.hasURN(urn) {
 		return false
 	}
 
-	c.urns = append(c.urns, NewContactURN(urn, channel))
+	c.urns = append(c.urns, NewContactURN(urn, nil))
 	return true
 }
 
 // RemoveURN adds a new URN to this contact
 func (c *Contact) RemoveURN(urn urns.URN) bool {
-	if !c.HasURN(urn) {
+	if !c.hasURN(urn) {
 		return false
 	}
 
@@ -266,10 +259,32 @@ func (c *Contact) RemoveURN(urn urns.URN) bool {
 	return true
 }
 
-// HasURN checks whether the contact has the given URN
-func (c *Contact) HasURN(urn urns.URN) bool {
-	urn = urn.Normalize()
+// SetURNs sets the URNs of this contact
+func (c *Contact) SetURNs(urn []urns.URN) bool {
+	isSame := func() bool {
+		if len(c.urns) != len(urn) {
+			return false
+		}
+		for i, u := range c.urns {
+			if u.URN().Identity() != urn[i].Identity() {
+				return false
+			}
+		}
+		return true
+	}
+	if isSame() {
+		return false
+	}
 
+	c.urns = URNList{}
+	for _, u := range urn {
+		c.urns = append(c.urns, NewContactURN(u.Normalize(), nil))
+	}
+
+	return true
+}
+
+func (c *Contact) hasURN(urn urns.URN) bool {
 	for _, u := range c.urns {
 		if u.URN().Identity() == urn.Identity() {
 			return true
