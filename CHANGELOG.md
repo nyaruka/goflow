@@ -1,3 +1,7 @@
+v0.251.6 (2025-08-11)
+-------------------------
+ * Add flows.NewNodeUUID and flows.NewActionUUID functions
+
 v0.251.5 (2025-08-07)
 -------------------------
  * Fix URNs modifier set operations from generating event even when URNs are unchanged
