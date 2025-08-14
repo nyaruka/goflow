@@ -14,8 +14,8 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -102,7 +102,7 @@ var sessionTrigger = `{
     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "No Related Runs"}
 }`
 
-func TestRun(t *testing.T) {
+func TestRuns(t *testing.T) {
 	test.MockUniverse()
 
 	server := test.NewTestHTTPServer(49999)
@@ -114,29 +114,35 @@ func TestRun(t *testing.T) {
 	flow, err := session.Assets().Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
 	require.NoError(t, err)
 
-	run := session.Runs()[0]
+	checkRuns := func(s flows.Session) {
+		r1, r2 := s.Runs()[0], s.Runs()[1]
 
-	checkRun := func(r flows.Run) {
-		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r.UUID())
-		assert.Equal(t, flows.RunStatusCompleted, r.Status())
-		assert.Equal(t, flow, r.Flow())
-		assert.Equal(t, flow.Reference(true), r.FlowReference())
-		assert.Equal(t, 10, len(r.Events()))
-		assert.Equal(t, "Parent", r.Parent().Flow().Name())
-		assert.Equal(t, 0, len(r.Ancestors())) // no parent runs within this session
-		assert.True(t, r.ReceivedInput())
+		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r1.UUID())
+		assert.Equal(t, flows.RunStatusCompleted, r1.Status())
+		assert.Equal(t, flow, r1.Flow())
+		assert.Equal(t, flow.Reference(true), r1.FlowReference())
+		assert.Equal(t, 10, len(r1.Events()))
+		assert.Equal(t, "Parent", r1.Parent().Flow().Name())
+		assert.Equal(t, 0, len(r1.Ancestors())) // no parent runs within this session
+		assert.True(t, r1.ReceivedInput())
+
+		assert.Equal(t, flows.RunUUID("01969b47-28ab-76f8-8f41-6b2d9f33d623"), r2.UUID())
+		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r2.Parent().UUID())
 	}
 
-	checkRun(run)
+	checkRuns(session)
 
 	// check we can marshal and marshal the run and get the same values
-	runJSON, err := jsonx.Marshal(run)
+	sessionJSON, err := jsonx.Marshal(session)
 	require.NoError(t, err)
 
-	run2, err := engine.ReadRun(session, runJSON, assets.IgnoreMissing)
+	session2, err := session.Engine().ReadSession(session.Assets(), sessionJSON, session.Environment(), session.Contact(), nil, assets.IgnoreMissing)
 	require.NoError(t, err)
 
-	checkRun(run2)
+	// needed so that prepareForSprint is invoked that parses the parent run summary from the trigger
+	session2.Resume(t.Context(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
+
+	checkRuns(session2)
 }
 
 func TestRunContext(t *testing.T) {

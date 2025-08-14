@@ -43,7 +43,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 		trigger:    trigger,
 		status:     flows.SessionStatusActive,
 		batchStart: trigger.Batch(),
-		runsByUUID: make(map[flows.RunUUID]flows.Run),
+		runsByUUID: make(map[flows.RunUUID]*run),
 		call:       call,
 	}
 
