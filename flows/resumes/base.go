@@ -40,15 +40,7 @@ func newBaseResume(typeName string) baseResume {
 
 // Type returns the type of this resume
 func (r *baseResume) Type() string         { return r.type_ }
-func (r *baseResume) Event() flows.Event   { return nil }
 func (r *baseResume) ResumedOn() time.Time { return r.resumedOn }
-
-// Apply applies our state changes and saves any events to the run
-func (r *baseResume) Apply(run flows.Run, logEvent flows.EventCallback) {
-	if run.Status() == flows.RunStatusWaiting {
-		run.SetStatus(flows.RunStatusActive)
-	}
-}
 
 func (r *baseResume) Input(flows.SessionAssets) flows.Input { return nil }
 

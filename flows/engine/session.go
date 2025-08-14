@@ -288,22 +288,29 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 	// events because we didn't generate it
 	waitingRun.LogEvent(nil, resume.Event())
 
-	// resumes are also allowed to make state changes
-	resume.Apply(waitingRun, logEvent)
-
 	// and provide or clear input
 	s.setInput(resume.Input(s.assets))
 
-	// ensure groups are correct
-	s.ensureQueryBasedGroups(logEvent)
+	isTimeout := false
 
-	_, isTimeout := resume.(*resumes.WaitTimeout)
+	switch resume.Type() {
+	case resumes.TypeWaitExpiration:
+		waitingRun.Exit(flows.RunStatusExpired)
+	case resumes.TypeWaitTimeout:
+		isTimeout = true
+		fallthrough
+	default:
+		waitingRun.SetStatus(flows.RunStatusActive)
+	}
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {
 		failSession(fmt.Sprintf("unable to resolve router exit: %s", err.Error()))
 		return nil
 	}
+
+	// ensure groups are correct
+	s.ensureQueryBasedGroups(logEvent)
 
 	// off to the races again...
 	return s.continueUntilWait(ctx, sprint, waitingRun, node, exit, operand, step, nil)
