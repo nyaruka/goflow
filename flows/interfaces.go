@@ -199,13 +199,14 @@ type Trigger interface {
 	utils.Typed
 	Contextable
 
-	Initialize(Session) error
 	Event() Event
 	Flow() *assets.FlowReference
 	Batch() bool
 	Params() *types.XObject
 	History() *SessionHistory
 	TriggeredOn() time.Time
+
+	Input(SessionAssets) Input
 }
 
 // TriggerWithRun is special case of trigger that provides a parent run to the session
@@ -223,6 +224,8 @@ type Resume interface {
 	Apply(Run, EventCallback)
 	Event() Event
 	ResumedOn() time.Time
+
+	Input(SessionAssets) Input
 }
 
 // Modifier is something which can modify a contact

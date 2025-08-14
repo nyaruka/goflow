@@ -45,11 +45,6 @@ func NewWaitTimeout(event *events.WaitTimedOut) *WaitTimeout {
 // Event returns the event this resume is based on
 func (r *WaitTimeout) Event() flows.Event { return r.event }
 
-// Apply applies our state changes and saves any events to the run
-func (r *WaitTimeout) Apply(run flows.Run, logEvent flows.EventCallback) {
-	r.baseResume.Apply(run, logEvent)
-}
-
 var _ flows.Resume = (*WaitTimeout)(nil)
 
 //------------------------------------------------------------------------------------------

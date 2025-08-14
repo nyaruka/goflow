@@ -67,7 +67,7 @@ func (s *session) Contact() *flows.Contact             { return s.contact }
 func (s *session) Call() *flows.Call                   { return s.call }
 
 func (s *session) Input() flows.Input { return s.input }
-func (s *session) SetInput(input flows.Input) {
+func (s *session) setInput(input flows.Input) {
 	s.input = input
 
 	// if we have a contact, update their last seen date
@@ -177,9 +177,8 @@ func (s *session) start(ctx context.Context, trigger flows.Trigger, flow flows.F
 
 	s.PushFlow(flow, nil, false)
 
-	if err := s.trigger.Initialize(s); err != nil {
-		return sprint, err
-	}
+	// if trigger provides input, set it
+	s.setInput(s.trigger.Input(s.assets))
 
 	// ensure groups are correct
 	s.ensureQueryBasedGroups(sprint.logEvent)
@@ -291,6 +290,9 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 
 	// resumes are also allowed to make state changes
 	resume.Apply(waitingRun, logEvent)
+
+	// and provide or clear input
+	s.setInput(resume.Input(s.assets))
 
 	// ensure groups are correct
 	s.ensureQueryBasedGroups(logEvent)

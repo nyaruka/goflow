@@ -58,10 +58,7 @@ func (t *baseTrigger) Params() *types.XObject         { return t.params }
 func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
-// Initialize initializes the session
-func (t *baseTrigger) Initialize(session flows.Session) error {
-	return nil
-}
+func (t *baseTrigger) Input(flows.SessionAssets) flows.Input { return nil }
 
 //------------------------------------------------------------------------------------------
 // Expressions context
