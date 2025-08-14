@@ -21,11 +21,11 @@ var searchDirs = []string{
 	"flows/actions",
 	"flows/definition",
 	"flows/definition/migrations",
+	"flows/engine",
 	"flows/events",
 	"flows/inputs",
 	"flows/resumes",
 	"flows/routers/cases",
-	"flows/runs",
 	"flows/triggers",
 }
 

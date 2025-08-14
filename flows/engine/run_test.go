@@ -1,4 +1,4 @@
-package runs_test
+package engine_test
 
 import (
 	"context"
@@ -14,8 +14,8 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -133,7 +133,7 @@ func TestRun(t *testing.T) {
 	runJSON, err := jsonx.Marshal(run)
 	require.NoError(t, err)
 
-	run2, err := runs.ReadRun(session, runJSON, assets.IgnoreMissing)
+	run2, err := engine.ReadRun(session, runJSON, assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	checkRun(run2)

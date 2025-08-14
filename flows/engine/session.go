@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/resumes"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -221,7 +220,7 @@ func (s *session) prepareForSprint() error {
 		// if we have a trigger with a parent run, load that
 		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
 		if hasRun {
-			r, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
+			r, err := ReadRunSummary(s.Assets(), triggerWithRun.RunSummary(), assets.IgnoreMissing)
 			if err != nil {
 				return fmt.Errorf("error reading parent run from trigger: %w", err)
 			}
@@ -355,7 +354,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 
 			// create a new run for it
 			flow := s.pushedFlow.flow
-			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
+			currentRun = NewRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
 			sprint.logFlow(flow)
 
@@ -644,7 +643,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 
 	// read each of our runs
 	for i := range e.Runs {
-		run, err := runs.ReadRun(s, e.Runs[i], missing)
+		run, err := ReadRun(s, e.Runs[i], missing)
 		if err != nil {
 			return nil, fmt.Errorf("unable to read run %d: %w", i, err)
 		}

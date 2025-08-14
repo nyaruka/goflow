@@ -1,4 +1,4 @@
-package runs_test
+package engine_test
 
 import (
 	"testing"
@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -38,37 +37,37 @@ func TestRunSummary(t *testing.T) {
 	assert.Equal(t, run.Status(), summary.Status())
 	assert.Equal(t, run.Results(), summary.Results())
 
-	assert.Equal(t, "Ryan Lewis@Registration", runs.FormatRunSummary(session.Environment(), summary))
+	assert.Equal(t, "Ryan Lewis@Registration", engine.FormatRunSummary(session.Environment(), summary))
 
 	// test marshaling and unmarshaling
 	marshaled, err := jsonx.Marshal(summary)
 	require.NoError(t, err)
 
-	summary, err = runs.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)
+	summary, err = engine.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	assert.Equal(t, run.Flow().Name(), summary.Flow().Name())
 	assert.Equal(t, run.Status(), summary.Status())
-	assert.Equal(t, "Ryan Lewis@Registration", runs.FormatRunSummary(session.Environment(), summary))
+	assert.Equal(t, "Ryan Lewis@Registration", engine.FormatRunSummary(session.Environment(), summary))
 
 	// try reading with missing assets
 	emptyAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil)
 	assert.NoError(t, err)
 
-	summary, err = runs.ReadRunSummary(emptyAssets, marshaled, assets.IgnoreMissing)
+	summary, err = engine.ReadRunSummary(emptyAssets, marshaled, assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	assert.Nil(t, summary.Flow())
 	assert.Equal(t, run.Status(), summary.Status())
-	assert.Equal(t, "Ryan Lewis@<missing>", runs.FormatRunSummary(session.Environment(), summary))
+	assert.Equal(t, "Ryan Lewis@<missing>", engine.FormatRunSummary(session.Environment(), summary))
 
 	// try removing the contact (they're optional) and re-reading
 	marshaled = test.JSONDelete(marshaled, []string{"contact"})
 
-	summary, err = runs.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)
+	summary, err = engine.ReadRunSummary(session.Assets(), marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	assert.Equal(t, run.Flow().Name(), summary.Flow().Name())
 	assert.Equal(t, run.Status(), summary.Status())
-	assert.Equal(t, "<nocontact>@Registration", runs.FormatRunSummary(session.Environment(), summary))
+	assert.Equal(t, "<nocontact>@Registration", engine.FormatRunSummary(session.Environment(), summary))
 }
