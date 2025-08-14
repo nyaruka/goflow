@@ -52,12 +52,8 @@ func NewMsg(event *events.MsgReceived) *Msg {
 // Event returns the event this resume is based on
 func (r *Msg) Event() flows.Event { return r.event }
 
-// Apply applies our state changes
-func (r *Msg) Apply(run flows.Run, logEvent flows.EventCallback) {
-	r.baseResume.Apply(run, logEvent)
-
-	// update our input
-	run.Session().SetInput(inputs.NewMsg(run.Session().Assets(), r.event))
+func (r *Msg) Input(sa flows.SessionAssets) flows.Input {
+	return inputs.NewMsg(sa, r.event)
 }
 
 var _ flows.Resume = (*Msg)(nil)

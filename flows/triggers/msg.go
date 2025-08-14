@@ -71,12 +71,8 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 	return &KeywordMatch{Type: typeName, Keyword: keyword}
 }
 
-// Initialize initializes the session
-func (t *Msg) Initialize(session flows.Session) error {
-	// update our input
-	session.SetInput(inputs.NewMsg(session.Assets(), t.event))
-
-	return t.baseTrigger.Initialize(session)
+func (t *Msg) Input(sa flows.SessionAssets) flows.Input {
+	return inputs.NewMsg(sa, t.event)
 }
 
 // Context for msg triggers additionally exposes the keyword match

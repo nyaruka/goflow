@@ -67,10 +67,7 @@ type Session interface {
 	MergedEnvironment() envs.Environment
 	Contact() *Contact
 	Call() *Call
-
 	Input() Input
-	SetInput(Input)
-
 	Status() SessionStatus
 	Trigger() Trigger
 	CurrentResume() Resume

@@ -67,7 +67,7 @@ func (s *session) Contact() *flows.Contact             { return s.contact }
 func (s *session) Call() *flows.Call                   { return s.call }
 
 func (s *session) Input() flows.Input { return s.input }
-func (s *session) SetInput(input flows.Input) {
+func (s *session) setInput(input flows.Input) {
 	s.input = input
 
 	// if we have a contact, update their last seen date
@@ -177,9 +177,8 @@ func (s *session) start(ctx context.Context, trigger flows.Trigger, flow flows.F
 
 	s.PushFlow(flow, nil, false)
 
-	if err := s.trigger.Initialize(s); err != nil {
-		return sprint, err
-	}
+	// if trigger provides input, set it
+	s.setInput(s.trigger.Input(s.assets))
 
 	// ensure groups are correct
 	s.ensureQueryBasedGroups(sprint.logEvent)
@@ -289,19 +288,29 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 	// events because we didn't generate it
 	waitingRun.LogEvent(nil, resume.Event())
 
-	// resumes are also allowed to make state changes
-	resume.Apply(waitingRun, logEvent)
+	// and provide or clear input
+	s.setInput(resume.Input(s.assets))
 
-	// ensure groups are correct
-	s.ensureQueryBasedGroups(logEvent)
+	isTimeout := false
 
-	_, isTimeout := resume.(*resumes.WaitTimeout)
+	switch resume.Type() {
+	case resumes.TypeWaitExpiration:
+		waitingRun.Exit(flows.RunStatusExpired)
+	case resumes.TypeWaitTimeout:
+		isTimeout = true
+		fallthrough
+	default:
+		waitingRun.SetStatus(flows.RunStatusActive)
+	}
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {
 		failSession(fmt.Sprintf("unable to resolve router exit: %s", err.Error()))
 		return nil
 	}
+
+	// ensure groups are correct
+	s.ensureQueryBasedGroups(logEvent)
 
 	// off to the races again...
 	return s.continueUntilWait(ctx, sprint, waitingRun, node, exit, operand, step, nil)

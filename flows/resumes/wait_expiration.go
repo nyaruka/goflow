@@ -45,13 +45,6 @@ func NewWaitExpiration(event *events.WaitExpired) *WaitExpiration {
 // Event returns the event this resume is based on
 func (r *WaitExpiration) Event() flows.Event { return r.event }
 
-// Apply applies our state changes
-func (r *WaitExpiration) Apply(run flows.Run, logEvent flows.EventCallback) {
-	run.Exit(flows.RunStatusExpired)
-
-	r.baseResume.Apply(run, logEvent)
-}
-
 var _ flows.Resume = (*WaitExpiration)(nil)
 
 //------------------------------------------------------------------------------------------
