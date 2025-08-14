@@ -46,8 +46,8 @@ type relatedRunContext struct {
 	run flows.RunSummary
 }
 
-func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
-	return &relatedRunContext{run: run}
+func newRelatedRunContext(r flows.RunSummary) *relatedRunContext {
+	return &relatedRunContext{run: r}
 }
 
 // Context returns the properties available in expressions for @parent and @child
@@ -127,7 +127,7 @@ func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing asse
 		return nil, err
 	}
 
-	run := &runSummary{
+	r := &runSummary{
 		uuid:    e.UUID,
 		flowRef: e.Flow,
 		status:  e.Status,
@@ -135,18 +135,18 @@ func ReadRunSummary(sessionAssets flows.SessionAssets, data []byte, missing asse
 	}
 
 	// lookup the actual flow
-	if run.flow, err = sessionAssets.Flows().Get(e.Flow.UUID); err != nil {
+	if r.flow, err = sessionAssets.Flows().Get(e.Flow.UUID); err != nil {
 		missing(e.Flow, err)
 	}
 
 	// read the contact
 	if e.Contact != nil {
-		if run.contact, err = e.Contact.Unmarshal(sessionAssets, missing); err != nil {
+		if r.contact, err = e.Contact.Unmarshal(sessionAssets, missing); err != nil {
 			return nil, err
 		}
 	}
 
-	return run, nil
+	return r, nil
 }
 
 // MarshalJSON marshals this run summary into JSON

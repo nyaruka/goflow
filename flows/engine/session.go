@@ -46,7 +46,7 @@ type session struct {
 
 	// state which is temporary to each call
 	batchStart bool
-	runsByUUID map[flows.RunUUID]flows.Run
+	runsByUUID map[flows.RunUUID]*run
 	pushedFlow *pushedFlow
 	parentRun  flows.RunSummary
 
@@ -82,10 +82,10 @@ func (s *session) PushFlow(flow flows.Flow, parentRun flows.Run, terminal bool) 
 }
 
 func (s *session) Runs() []flows.Run { return s.runs }
-func (s *session) GetRun(uuid flows.RunUUID) (flows.Run, error) {
-	run, exists := s.runsByUUID[uuid]
+func (s *session) getRun(uuid flows.RunUUID) (*run, error) {
+	r, exists := s.runsByUUID[uuid]
 	if exists {
-		return run, nil
+		return r, nil
 	}
 	return nil, fmt.Errorf("unable to find run with UUID '%s'", uuid)
 }
@@ -101,16 +101,18 @@ func (s *session) FindStep(uuid flows.StepUUID) (flows.Run, flows.Step) {
 	return nil, nil
 }
 
-func (s *session) addRun(run flows.Run) {
-	s.runs = append(s.runs, run)
-	s.runsByUUID[run.UUID()] = run
+func (s *session) addRun(r *run) {
+	s.runs = append(s.runs, r)
+	s.runsByUUID[r.UUID()] = r
 }
 
-func (s *session) GetCurrentChild(run flows.Run) flows.Run {
+func (s *session) findCurrentChild(r *run) *run {
 	// the current child of a run, is the last added run which has that run as its parent
 	for i := len(s.runs) - 1; i >= 0; i-- {
-		if s.runs[i].ParentInSession() == run {
-			return s.runs[i]
+		sr := s.runs[i].(*run)
+
+		if sr.parent == r {
+			return sr
 		}
 	}
 	return nil
@@ -132,21 +134,24 @@ func (s *session) CurrentContext() *types.XObject {
 }
 
 // looks through this session's run for the one that was last modified
-func (s *session) currentRun() flows.Run {
+func (s *session) currentRun() *run {
 	var last flows.Run
 	for _, r := range s.runs {
 		if last == nil || r.ModifiedOn().After(last.ModifiedOn()) {
 			last = r
 		}
 	}
-	return last
+	if last != nil {
+		return last.(*run)
+	}
+	return nil
 }
 
 // looks through this session's run for the one that is waiting
-func (s *session) waitingRun() flows.Run {
-	for _, run := range s.runs {
-		if run.Status() == flows.RunStatusWaiting {
-			return run
+func (s *session) waitingRun() *run {
+	for _, r := range s.runs {
+		if r.Status() == flows.RunStatusWaiting {
+			return r.(*run)
 		}
 	}
 	return nil
@@ -231,7 +236,7 @@ func (s *session) prepareForSprint() error {
 }
 
 // tries to resume a waiting session with the given resume
-func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun flows.Run, resume flows.Resume) error {
+func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *run, resume flows.Resume) error {
 	failSession := func(msg string, args ...any) {
 		// put failure event in waiting run
 		failRun(sprint, waitingRun, nil, fmt.Errorf(msg, args...))
@@ -299,7 +304,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 		isTimeout = true
 		fallthrough
 	default:
-		waitingRun.SetStatus(flows.RunStatusActive)
+		waitingRun.setStatus(flows.RunStatusActive)
 	}
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
@@ -316,7 +321,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun fl
 }
 
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow
-func (s *session) findResumeExit(sprint *sprint, run flows.Run, isTimeout bool) (flows.Exit, string, error) {
+func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flows.Exit, string, error) {
 	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
 	if run.Status() != flows.RunStatusActive {
 		return nil, "", nil
@@ -336,7 +341,7 @@ func (s *session) findResumeExit(sprint *sprint, run flows.Run, isTimeout bool) 
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, currentRun flows.Run, node flows.Node, exit flows.Exit, operand string, step flows.Step, trigger flows.Trigger) (err error) {
+func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, currentRun *run, node flows.Node, exit flows.Exit, operand string, step flows.Step, trigger flows.Trigger) (err error) {
 	var destination flows.NodeUUID
 	var numNewSteps int
 
@@ -354,7 +359,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 
 			// create a new run for it
 			flow := s.pushedFlow.flow
-			currentRun = NewRun(s, s.pushedFlow.flow, currentRun)
+			currentRun = newRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
 			sprint.logFlow(flow)
 
@@ -391,7 +396,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 				currentRun.Exit(flows.RunStatusCompleted)
 			}
 
-			parentRun := currentRun.ParentInSession()
+			parentRun := currentRun.parent
 
 			// switch back our parent run if it's still active
 			if parentRun != nil && parentRun.Status() == flows.RunStatusActive {
@@ -458,10 +463,10 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
-	step := run.CreateStep(node)
+func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
+	step := r.CreateStep(node)
 	logEvent := func(e flows.Event) {
-		run.LogEvent(step, e)
+		r.LogEvent(step, e)
 		sprint.logEvent(e)
 	}
 
@@ -470,19 +475,19 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
 		// events because we didn't generate it
 		if trigger.Event() != nil {
-			run.LogEvent(nil, trigger.Event())
+			r.LogEvent(nil, trigger.Event())
 		}
 	}
 
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			if err := action.Execute(ctx, run, step, sprint.logModifier, logEvent); err != nil {
+			if err := action.Execute(ctx, r, step, sprint.logModifier, logEvent); err != nil {
 				return step, nil, "", fmt.Errorf("error executing action[type=%s,uuid=%s]: %w", action.Type(), action.UUID(), err)
 			}
 
 			// check if this action has errored the run
-			if run.Status() == flows.RunStatusFailed {
+			if r.Status() == flows.RunStatusFailed {
 				return step, nil, "", nil
 			}
 		}
@@ -502,9 +507,9 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 
 	if wait != nil {
 		// waits have the option to skip themselves
-		if wait.Begin(run, logEvent) {
+		if wait.Begin(r, logEvent) {
 			// mark ouselves as waiting and hand back to
-			run.SetStatus(flows.RunStatusWaiting)
+			r.setStatus(flows.RunStatusWaiting)
 			s.status = flows.SessionStatusWaiting
 
 			return step, nil, "", nil
@@ -512,7 +517,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, run flows.Run, 
 	}
 
 	// use our node's router to determine where to go next
-	exit, operand, err := s.pickNodeExit(sprint, run, node, step, false, logEvent)
+	exit, operand, err := s.pickNodeExit(sprint, r, node, step, false, logEvent)
 	return step, exit, operand, err
 }
 
@@ -624,7 +629,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		env:        env,
 		contact:    contact,
 		call:       call,
-		runsByUUID: make(map[flows.RunUUID]flows.Run),
+		runsByUUID: make(map[flows.RunUUID]*run),
 	}
 
 	if e.Trigger != nil {
@@ -643,11 +648,11 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 
 	// read each of our runs
 	for i := range e.Runs {
-		run, err := ReadRun(s, e.Runs[i], missing)
+		r, err := readRun(s, e.Runs[i], missing)
 		if err != nil {
 			return nil, fmt.Errorf("unable to read run %d: %w", i, err)
 		}
-		s.addRun(run)
+		s.addRun(r)
 	}
 
 	// and our input

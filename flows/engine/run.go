@@ -21,12 +21,12 @@ import (
 
 type run struct {
 	uuid    flows.RunUUID
-	session flows.Session
+	session *session
 
 	flow    flows.Flow
 	flowRef *assets.FlowReference
 
-	parent  flows.Run
+	parent  *run
 	locals  *flows.Locals
 	results flows.Results
 	path    Path
@@ -41,8 +41,7 @@ type run struct {
 	legacyExtra *legacyExtra
 }
 
-// NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(session flows.Session, flow flows.Flow, parent flows.Run) flows.Run {
+func newRun(session *session, flow flows.Flow, parent *run) *run {
 	now := dates.Now()
 	r := &run{
 		uuid:       flows.NewRunUUID(),
@@ -92,7 +91,7 @@ func (r *run) Exit(status flows.RunStatus) {
 	r.modifiedOn = now
 }
 func (r *run) Status() flows.RunStatus { return r.status }
-func (r *run) SetStatus(status flows.RunStatus) {
+func (r *run) setStatus(status flows.RunStatus) {
 	r.status = status
 	r.modifiedOn = dates.Now()
 }
@@ -102,27 +101,24 @@ func (r *run) SetWebhook(call *flows.WebhookCall) {
 	r.webhook = call
 }
 
-// ParentInSession returns the parent of the run within the same session if one exists
-func (r *run) ParentInSession() flows.Run { return r.parent }
-
 // Parent returns either the same session parent or if this session was triggered from a trigger_flow action
 // in another session, that run
 func (r *run) Parent() flows.RunSummary {
 	if r.parent == nil {
 		return r.session.ParentRun()
 	}
-	return r.ParentInSession()
+	return r.parent
 }
 
 func (r *run) Ancestors() []flows.Run {
 	ancestors := make([]flows.Run, 0)
 	if r.parent != nil {
-		pr := r.parent.(*run)
+		pr := r.parent
 		ancestors = append(ancestors, pr)
 
 		for {
 			if pr.parent != nil {
-				pr = pr.parent.(*run)
+				pr = pr.parent
 				ancestors = append(ancestors, pr)
 			} else {
 				break
@@ -219,8 +215,8 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 	}
 
 	var child, parent *relatedRunContext
-	if r.Session().GetCurrentChild(r) != nil {
-		child = newRelatedRunContext(r.Session().GetCurrentChild(r))
+	if r.session.findCurrentChild(r) != nil {
+		child = newRelatedRunContext(r.session.findCurrentChild(r))
 	}
 	if r.Parent() != nil {
 		parent = newRelatedRunContext(r.Parent())
@@ -437,9 +433,9 @@ type runEnvelope struct {
 	ExitedOn   *time.Time `json:"exited_on"`
 }
 
-// ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
+// decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
-func ReadRun(session flows.Session, data []byte, missing assets.MissingCallback) (flows.Run, error) {
+func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, error) {
 	e := &runEnvelope{}
 	var err error
 
@@ -448,7 +444,7 @@ func ReadRun(session flows.Session, data []byte, missing assets.MissingCallback)
 	}
 
 	r := &run{
-		session:    session,
+		session:    s,
 		uuid:       e.UUID,
 		flowRef:    e.Flow,
 		status:     e.Status,
@@ -458,13 +454,13 @@ func ReadRun(session flows.Session, data []byte, missing assets.MissingCallback)
 	}
 
 	// lookup actual flow
-	if r.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
+	if r.flow, err = s.Assets().Flows().Get(e.Flow.UUID); err != nil {
 		missing(e.Flow, err)
 	}
 
 	// lookup parent run
 	if e.ParentUUID != "" {
-		if r.parent, err = session.GetRun(e.ParentUUID); err != nil {
+		if r.parent, err = s.getRun(e.ParentUUID); err != nil {
 			return nil, err
 		}
 	}

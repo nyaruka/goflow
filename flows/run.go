@@ -57,7 +57,6 @@ type Run interface {
 	Session() Session
 	Locals() *Locals
 	SetResult(*Result) (*Result, bool)
-	SetStatus(RunStatus)
 	Webhook() *WebhookCall
 	SetWebhook(*WebhookCall)
 
@@ -79,7 +78,6 @@ type Run interface {
 
 	Snapshot() RunSummary
 	Parent() RunSummary
-	ParentInSession() Run
 	Ancestors() []Run
 
 	CreatedOn() time.Time
