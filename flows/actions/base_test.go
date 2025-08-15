@@ -159,6 +159,16 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			assert.NoError(t, err, "unexpected read error in %s", testName)
 		}
 
+		envBuilder := envs.NewBuilder().
+			WithAllowedLanguages("eng", "spa").
+			WithDefaultCountry("RW")
+
+		if tc.RedactURNs {
+			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
+		}
+
+		env := envBuilder.Build()
+
 		// optionally load our contact
 		contactJSON := defaultContactJSON
 		if tc.Contact != nil {
@@ -171,6 +181,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		if tc.HasTicket {
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
 			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", topic, nil))
+			contact.ReevaluateQueryBasedGroups(env)
 		}
 
 		// and switch their language
@@ -178,20 +189,9 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			contact.SetLanguage(i18n.Language("spa"))
 		}
 
-		envBuilder := envs.NewBuilder().
-			WithAllowedLanguages("eng", "spa").
-			WithDefaultCountry("RW")
-
-		if tc.RedactURNs {
-			envBuilder.WithRedactionPolicy(envs.RedactionPolicyURNs)
-		}
-
-		env := envBuilder.Build()
-
 		var trigger flows.Trigger
 		var call *flows.Call
 
-		ignoreEventCount := 0
 		if tc.NoInput || tc.AsBatch {
 			tb := triggers.NewBuilder(flow.Reference(false)).Manual().AsBatch()
 
@@ -213,7 +213,6 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				"",
 			)
 			trigger = triggers.NewBuilder(flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
-			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
 		// create an engine instance
@@ -240,7 +239,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			Build()
 
 		// create session
-		session, _, err := eng.NewSession(context.Background(), sa, env, contact, trigger, call)
+		session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, call)
 		require.NoError(t, err)
 
 		// check all http mocks were used
@@ -258,8 +257,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// and the events
 		run := session.Runs()[0]
-		runEvents := run.Events()
-		actual.Events, _ = jsonx.Marshal(runEvents[ignoreEventCount:])
+		actual.Events = jsonx.MustMarshal(sprint.Events())
 
 		if tc.Webhook != nil {
 			actual.Webhook = jsonx.MustMarshal(run.Webhook())

@@ -270,15 +270,15 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "msg_wait", sprint.Events()[1].Type())
 
 	// check our wait has a timeout
-	waitEvent := run.Events()[1].(*events.MsgWait)
+	waitEvent := sprint.Events()[1].(*events.MsgWait)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	_, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
+	sprint, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
 	require.Equal(t, 2, len(run.Path()))
-	require.Equal(t, 5, len(run.Events()))
+	require.Equal(t, 2, len(sprint.Events()))
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
