@@ -1,3 +1,7 @@
+v0.252.1 (2025-08-15)
+-------------------------
+ * Add had_input field to runs to replace tracking of msg_received events internally
+
 v0.252.0 (2025-08-15)
 -------------------------
  * Use more engine.run internally to reduce methods needed on flows.Run
