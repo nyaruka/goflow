@@ -15,14 +15,14 @@ func TestBuilder(t *testing.T) {
 	// create engine with no services
 	eng := engine.NewBuilder().
 		WithMaxStepsPerSprint(123).
-		WithMaxResumesPerSession(567).
+		WithMaxSprintsPerSession(567).
 		WithMaxTemplateChars(999).
 		WithMaxFieldChars(888).
 		WithMaxResultChars(777).
 		Build()
 
 	assert.Equal(t, 123, eng.Options().MaxStepsPerSprint)
-	assert.Equal(t, 567, eng.Options().MaxResumesPerSession)
+	assert.Equal(t, 567, eng.Options().MaxSprintsPerSession)
 	assert.Equal(t, 999, eng.Options().MaxTemplateChars)
 	assert.Equal(t, 888, eng.Options().MaxFieldChars)
 	assert.Equal(t, 777, eng.Options().MaxResultChars)

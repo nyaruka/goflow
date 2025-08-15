@@ -261,7 +261,7 @@ type Step interface {
 
 type EngineOptions struct {
 	MaxStepsPerSprint    int
-	MaxResumesPerSession int
+	MaxSprintsPerSession int
 	MaxTemplateChars     int
 	MaxFieldChars        int
 	MaxResultChars       int

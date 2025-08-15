@@ -166,6 +166,7 @@
                         "uuid": "01969b47-113b-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 1,
                 "status": "completed",
                 "trigger": {
                     "flow": {

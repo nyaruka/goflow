@@ -199,6 +199,7 @@
                         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 1,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -448,6 +449,7 @@
                         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 2,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -806,6 +808,7 @@
                         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 3,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -1204,6 +1207,7 @@
                         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 4,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -1640,6 +1644,7 @@
                         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                     }
                 ],
+                "sprints": 5,
                 "status": "completed",
                 "trigger": {
                     "flow": {

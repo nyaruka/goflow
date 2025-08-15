@@ -95,6 +95,7 @@
                         "uuid": "01969b47-113b-76f8-a691-235cbe720980"
                     }
                 ],
+                "sprints": 1,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -285,6 +286,7 @@
                         "uuid": "01969b47-113b-76f8-a691-235cbe720980"
                     }
                 ],
+                "sprints": 2,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -524,6 +526,7 @@
                         "uuid": "01969b47-113b-76f8-a691-235cbe720980"
                     }
                 ],
+                "sprints": 3,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -870,6 +873,7 @@
                         "uuid": "01969b47-113b-76f8-a691-235cbe720980"
                     }
                 ],
+                "sprints": 4,
                 "status": "completed",
                 "trigger": {
                     "flow": {

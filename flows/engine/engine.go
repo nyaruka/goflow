@@ -80,7 +80,7 @@ func NewBuilder() *Builder {
 			services:  newEmptyServices(),
 			options: &flows.EngineOptions{
 				MaxStepsPerSprint:    100,
-				MaxResumesPerSession: 500,
+				MaxSprintsPerSession: 500,
 				MaxTemplateChars:     10000,
 				MaxFieldChars:        640,
 				MaxResultChars:       640,
@@ -126,9 +126,9 @@ func (b *Builder) WithMaxStepsPerSprint(max int) *Builder {
 	return b
 }
 
-// WithMaxResumesPerSession sets the maximum number of resumes allowed in a single session
-func (b *Builder) WithMaxResumesPerSession(max int) *Builder {
-	b.eng.options.MaxResumesPerSession = max
+// WithMaxSprintsPerSession sets the maximum number of resumes allowed in a single session
+func (b *Builder) WithMaxSprintsPerSession(max int) *Builder {
+	b.eng.options.MaxSprintsPerSession = max
 	return b
 }
 

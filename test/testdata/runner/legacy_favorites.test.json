@@ -93,6 +93,7 @@
                         "uuid": "01969b47-113b-76f8-acca-bbca70987315"
                     }
                 ],
+                "sprints": 1,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -273,6 +274,7 @@
                         "uuid": "01969b47-113b-76f8-acca-bbca70987315"
                     }
                 ],
+                "sprints": 2,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -487,6 +489,7 @@
                         "uuid": "01969b47-113b-76f8-acca-bbca70987315"
                     }
                 ],
+                "sprints": 3,
                 "status": "completed",
                 "trigger": {
                     "flow": {

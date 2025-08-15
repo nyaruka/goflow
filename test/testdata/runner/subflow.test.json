@@ -172,6 +172,7 @@
                         "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9"
                     }
                 ],
+                "sprints": 1,
                 "status": "waiting",
                 "trigger": {
                     "flow": {
@@ -428,6 +429,7 @@
                         "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9"
                     }
                 ],
+                "sprints": 2,
                 "status": "completed",
                 "trigger": {
                     "flow": {
