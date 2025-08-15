@@ -259,6 +259,7 @@
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
+                        "had_input": true,
                         "locals": {
                             "_new_ticket": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                         },

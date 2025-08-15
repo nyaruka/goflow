@@ -258,6 +258,7 @@
                             "name": "Date Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:14.123456789Z",
                         "path": [
                             {

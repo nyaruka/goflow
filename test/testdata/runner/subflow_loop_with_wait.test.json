@@ -423,6 +423,7 @@
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:27.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [

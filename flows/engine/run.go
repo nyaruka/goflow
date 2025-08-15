@@ -26,12 +26,13 @@ type run struct {
 	flow    flows.Flow
 	flowRef *assets.FlowReference
 
-	parent  *run
-	locals  *flows.Locals
-	results flows.Results
-	path    Path
-	events  []flows.Event
-	status  flows.RunStatus
+	parent   *run
+	locals   *flows.Locals
+	results  flows.Results
+	path     Path
+	events   []flows.Event
+	status   flows.RunStatus
+	hadInput bool
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -57,7 +58,6 @@ func newRun(session *session, flow flows.Flow, parent *run) *run {
 		modifiedOn: now,
 	}
 
-	r.webhook = nil
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
@@ -132,6 +132,10 @@ func (r *run) Ancestors() []flows.Run {
 func (r *run) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
+	}
+
+	if event.Type() == events.TypeMsgReceived {
+		r.hadInput = true
 	}
 
 	r.events = append(r.events, event)
@@ -419,16 +423,17 @@ var _ flows.RunSummary = (*run)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid"`
-	Flow       *assets.FlowReference `json:"flow" validate:"required"`
-	Path       []*step               `json:"path" validate:"dive"`
+	UUID       flows.RunUUID         `json:"uuid"                  validate:"required,uuid"`
+	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
+	Path       []*step               `json:"path"                  validate:"dive"`
 	Events     []json.RawMessage     `json:"events,omitempty"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
-	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`
-	Status     flows.RunStatus       `json:"status" validate:"required"`
+	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
+	Status     flows.RunStatus       `json:"status"                validate:"required"`
+	HadInput   bool                  `json:"had_input,omitzero"`
 	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 
-	CreatedOn  time.Time  `json:"created_on" validate:"required"`
+	CreatedOn  time.Time  `json:"created_on"  validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
 	ExitedOn   *time.Time `json:"exited_on"`
 }
@@ -448,6 +453,7 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 		uuid:       e.UUID,
 		flowRef:    e.Flow,
 		status:     e.Status,
+		hadInput:   e.HadInput,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
 		exitedOn:   e.ExitedOn,
@@ -507,6 +513,7 @@ func (r *run) MarshalJSON() ([]byte, error) {
 		Locals:     r.locals,
 		Results:    r.results,
 		Status:     r.status,
+		HadInput:   r.hadInput,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,
 		ExitedOn:   r.exitedOn,

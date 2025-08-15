@@ -212,6 +212,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:14.123456789Z",
                         "path": [
                             {
@@ -409,6 +410,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:31.123456789Z",
                         "path": [
                             {
@@ -595,6 +597,7 @@
                             "name": "Two Questions",
                             "uuid": "7c3db26f-e12a-48af-9673-e2feefdf8516"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:34.123456789Z",
                         "path": [
                             {

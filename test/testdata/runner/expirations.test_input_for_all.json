@@ -415,6 +415,7 @@
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "parent_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                         "path": [
@@ -658,6 +659,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:42.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
@@ -739,6 +741,7 @@
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "parent_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                         "path": [
@@ -871,6 +874,7 @@
                             "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:32:05.123456789Z",
                         "path": [
                             {
@@ -970,6 +974,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:42.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
@@ -1051,6 +1056,7 @@
                             "revision": 5,
                             "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "parent_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                         "path": [

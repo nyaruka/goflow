@@ -284,6 +284,7 @@
                             "name": "Another Flow",
                             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "path": [
                             {
