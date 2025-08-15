@@ -110,15 +110,13 @@ var EmptyHistory = &SessionHistory{}
 
 // NewChildHistory creates a new history for a child of the given session
 func NewChildHistory(parent Session) *SessionHistory {
-	return parent.History().Advance(parent.UUID(), sessionReceivedInput(parent))
-}
-
-// looks through a session's events to see if it received input
-func sessionReceivedInput(s Session) bool {
-	for _, r := range s.Runs() {
-		if r.ReceivedInput() {
-			return true
+	parentHadInput := false
+	for _, r := range parent.Runs() {
+		if r.HadInput() {
+			parentHadInput = true
+			break
 		}
 	}
-	return false
+
+	return parent.History().Advance(parent.UUID(), parentHadInput)
 }

@@ -31,8 +31,8 @@ type run struct {
 	results  flows.Results
 	path     Path
 	events   []flows.Event
-	status   flows.RunStatus
 	hadInput bool
+	status   flows.RunStatus
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -70,6 +70,7 @@ func (r *run) Flow() flows.Flow                     { return r.flow }
 func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
 func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
 func (r *run) Events() []flows.Event                { return r.events }
+func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }
 func (r *run) Results() flows.Results { return r.results }
@@ -140,20 +141,6 @@ func (r *run) LogEvent(s flows.Step, event flows.Event) {
 
 	r.events = append(r.events, event)
 	r.modifiedOn = dates.Now()
-}
-
-// find the first event matching the given step UUID and type
-func (r *run) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
-	for _, e := range r.events {
-		if (stepUUID == "" || e.StepUUID() == stepUUID) && e.Type() == eType {
-			return e
-		}
-	}
-	return nil
-}
-
-func (r *run) ReceivedInput() bool {
-	return r.findEvent("", events.TypeMsgReceived) != nil
 }
 
 func (r *run) Path() []flows.Step { return r.path }
@@ -493,6 +480,11 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 	for i := range r.events {
 		if r.events[i], err = events.Read(e.Events[i]); err != nil {
 			return nil, fmt.Errorf("unable to read event %d: %w", i, err)
+		}
+
+		// for older runs that don't have has_input set, infer from events
+		if r.events[i].Type() == events.TypeMsgReceived {
+			r.hadInput = true
 		}
 	}
 

@@ -105,7 +105,7 @@ func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
 		switch typed := r.events[i].(type) {
 		case *events.WebhookCalled:
 			// look for a run result changed event on the same step
-			resultEvent := r.findEvent(typed.StepUUID(), events.TypeRunResultChanged)
+			resultEvent := findRunEvent(r, typed.StepUUID(), events.TypeRunResultChanged)
 
 			if resultEvent != nil {
 				asResultEvent := resultEvent.(*events.RunResultChanged)
@@ -119,6 +119,16 @@ func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
 			}
 		default:
 			continue
+		}
+	}
+	return nil
+}
+
+// find the first run event matching the given step UUID and type
+func findRunEvent(r *run, stepUUID flows.StepUUID, eType string) flows.Event {
+	for _, e := range r.events {
+		if e.StepUUID() == stepUUID && e.Type() == eType {
+			return e
 		}
 	}
 	return nil

@@ -66,7 +66,7 @@ type Run interface {
 
 	LogEvent(Step, Event)
 	Events() []Event
-	ReceivedInput() bool
+	HadInput() bool
 
 	EvaluateTemplateValue(string, EventCallback) (types.XValue, bool)
 	EvaluateTemplateText(string, excellent.Escaping, bool, EventCallback) (string, bool)
