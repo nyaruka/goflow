@@ -1,3 +1,8 @@
+v0.252.0 (2025-08-15)
+-------------------------
+ * Use more engine.run internally to reduce methods needed on flows.Run
+ * Rework triggers and resumes to so they don't directly make state changes
+
 v0.251.6 (2025-08-11)
 -------------------------
  * Add flows.NewNodeUUID and flows.NewActionUUID functions
