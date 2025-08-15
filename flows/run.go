@@ -65,7 +65,6 @@ type Run interface {
 	PathLocation() (Step, Node, error)
 
 	LogEvent(Step, Event)
-	Events() []Event
 	HadInput() bool
 
 	EvaluateTemplateValue(string, EventCallback) (types.XValue, bool)
