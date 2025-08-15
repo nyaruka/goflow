@@ -26,12 +26,13 @@ type run struct {
 	flow    flows.Flow
 	flowRef *assets.FlowReference
 
-	parent  *run
-	locals  *flows.Locals
-	results flows.Results
-	path    Path
-	events  []flows.Event
-	status  flows.RunStatus
+	parent   *run
+	locals   *flows.Locals
+	results  flows.Results
+	path     Path
+	events   []flows.Event
+	hadInput bool
+	status   flows.RunStatus
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -57,7 +58,6 @@ func newRun(session *session, flow flows.Flow, parent *run) *run {
 		modifiedOn: now,
 	}
 
-	r.webhook = nil
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r
@@ -70,6 +70,7 @@ func (r *run) Flow() flows.Flow                     { return r.flow }
 func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
 func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
 func (r *run) Events() []flows.Event                { return r.events }
+func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }
 func (r *run) Results() flows.Results { return r.results }
@@ -134,22 +135,12 @@ func (r *run) LogEvent(s flows.Step, event flows.Event) {
 		event.SetStepUUID(s.UUID())
 	}
 
+	if event.Type() == events.TypeMsgReceived {
+		r.hadInput = true
+	}
+
 	r.events = append(r.events, event)
 	r.modifiedOn = dates.Now()
-}
-
-// find the first event matching the given step UUID and type
-func (r *run) findEvent(stepUUID flows.StepUUID, eType string) flows.Event {
-	for _, e := range r.events {
-		if (stepUUID == "" || e.StepUUID() == stepUUID) && e.Type() == eType {
-			return e
-		}
-	}
-	return nil
-}
-
-func (r *run) ReceivedInput() bool {
-	return r.findEvent("", events.TypeMsgReceived) != nil
 }
 
 func (r *run) Path() []flows.Step { return r.path }
@@ -419,16 +410,17 @@ var _ flows.RunSummary = (*run)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid"`
-	Flow       *assets.FlowReference `json:"flow" validate:"required"`
-	Path       []*step               `json:"path" validate:"dive"`
+	UUID       flows.RunUUID         `json:"uuid"                  validate:"required,uuid"`
+	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
+	Path       []*step               `json:"path"                  validate:"dive"`
 	Events     []json.RawMessage     `json:"events,omitempty"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
-	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`
-	Status     flows.RunStatus       `json:"status" validate:"required"`
+	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
+	Status     flows.RunStatus       `json:"status"                validate:"required"`
+	HadInput   bool                  `json:"had_input,omitzero"`
 	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 
-	CreatedOn  time.Time  `json:"created_on" validate:"required"`
+	CreatedOn  time.Time  `json:"created_on"  validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
 	ExitedOn   *time.Time `json:"exited_on"`
 }
@@ -448,6 +440,7 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 		uuid:       e.UUID,
 		flowRef:    e.Flow,
 		status:     e.Status,
+		hadInput:   e.HadInput,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
 		exitedOn:   e.ExitedOn,
@@ -488,6 +481,11 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 		if r.events[i], err = events.Read(e.Events[i]); err != nil {
 			return nil, fmt.Errorf("unable to read event %d: %w", i, err)
 		}
+
+		// for older runs that don't have has_input set, infer from events
+		if r.events[i].Type() == events.TypeMsgReceived {
+			r.hadInput = true
+		}
 	}
 
 	// create context
@@ -507,6 +505,7 @@ func (r *run) MarshalJSON() ([]byte, error) {
 		Locals:     r.locals,
 		Results:    r.results,
 		Status:     r.status,
+		HadInput:   r.hadInput,
 		CreatedOn:  r.createdOn,
 		ModifiedOn: r.modifiedOn,
 		ExitedOn:   r.exitedOn,

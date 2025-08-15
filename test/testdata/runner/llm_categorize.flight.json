@@ -262,6 +262,7 @@
                             "name": "LLM Categorize",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
+                        "had_input": true,
                         "locals": {
                             "_llm_output": "Hotels"
                         },

@@ -230,6 +230,7 @@
                             "revision": 10,
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:18.123456789Z",
                         "path": [
                             {
@@ -397,6 +398,7 @@
                             "revision": 10,
                             "uuid": "29f5815d-4c0f-403b-b331-2b2e84158804"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:26.123456789Z",
                         "path": [
                             {

@@ -282,6 +282,7 @@
                             "name": "Brochure",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:18.123456789Z",
                         "path": [
                             {

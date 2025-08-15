@@ -258,6 +258,7 @@
                             "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:20.123456789Z",
                         "path": [
                             {
@@ -507,6 +508,7 @@
                             "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:41.123456789Z",
                         "path": [
                             {
@@ -797,6 +799,7 @@
                             "revision": 239,
                             "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                         },
+                        "had_input": true,
                         "modified_on": "2025-05-04T12:31:56.123456789Z",
                         "path": [
                             {
