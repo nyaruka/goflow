@@ -40,9 +40,10 @@ type session struct {
 	contact       *flows.Contact
 	call          *flows.Call
 
-	runs   []flows.Run
-	status flows.SessionStatus
-	input  flows.Input
+	runs    []flows.Run
+	status  flows.SessionStatus
+	input   flows.Input
+	sprints int
 
 	// state which is temporary to each call
 	batchStart bool
@@ -192,6 +193,8 @@ func (s *session) start(ctx context.Context, trigger flows.Trigger, flow flows.F
 		return sprint, err
 	}
 
+	s.sprints++
+
 	return sprint, nil
 }
 
@@ -215,6 +218,8 @@ func (s *session) Resume(ctx context.Context, resume flows.Resume) (flows.Sprint
 	if err := s.tryToResume(ctx, sprint, waitingRun, resume); err != nil {
 		return nil, err
 	}
+
+	s.sprints++
 
 	return sprint, nil
 }
@@ -257,8 +262,8 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 		return nil
 	}
 
-	if s.countWaits() >= s.engine.Options().MaxResumesPerSession {
-		failSession("reached maximum number of resumes per session (%d)", s.engine.Options().MaxResumesPerSession)
+	if s.sprints >= s.engine.Options().MaxSprintsPerSession {
+		failSession("reached maximum number of sprints per session (%d)", s.engine.Options().MaxSprintsPerSession)
 		return nil
 	}
 
@@ -573,18 +578,6 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 	}
 }
 
-func (s *session) countWaits() int {
-	waits := 0
-	for _, r := range s.runs {
-		for _, e := range r.Events() {
-			if strings.HasSuffix(e.Type(), "_wait") {
-				waits++
-			}
-		}
-	}
-	return waits
-}
-
 // utility to fail the current run and log a failRun event
 func failRun(sp *sprint, run flows.Run, step flows.Step, err error) {
 	event := events.NewFailure(err)
@@ -608,6 +601,7 @@ type sessionEnvelope struct {
 	Status      flows.SessionStatus `json:"status"              validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
 	Input       json.RawMessage     `json:"input,omitempty"`
+	Sprints     int                 `json:"sprints"`
 }
 
 // ReadSession decodes a session from the passed in JSON
@@ -620,12 +614,14 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 	}
 
 	s := &session{
-		engine:     eng,
-		assets:     sa,
-		uuid:       e.UUID,
-		type_:      e.Type,
-		createdOn:  e.CreatedOn,
-		status:     e.Status,
+		engine:    eng,
+		assets:    sa,
+		uuid:      e.UUID,
+		type_:     e.Type,
+		createdOn: e.CreatedOn,
+		status:    e.Status,
+		sprints:   e.Sprints,
+
 		env:        env,
 		contact:    contact,
 		call:       call,
@@ -662,6 +658,17 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		}
 	}
 
+	// older sessions won't have a sprints count but we can calculate it from wait events
+	if s.sprints == 0 {
+		for _, r := range s.runsByUUID {
+			for _, e := range r.events {
+				if strings.HasSuffix(e.Type(), "_wait") {
+					s.sprints++
+				}
+			}
+		}
+	}
+
 	return s, nil
 }
 
@@ -672,6 +679,7 @@ func (s *session) MarshalJSON() ([]byte, error) {
 		Type:      s.type_,
 		CreatedOn: s.createdOn,
 		Status:    s.status,
+		Sprints:   s.sprints,
 	}
 	var err error
 

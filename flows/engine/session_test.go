@@ -364,7 +364,7 @@ func TestSessionHistory(t *testing.T) {
 	}, session2.History())
 }
 
-func TestMaxResumesPerSession(t *testing.T) {
+func TestMaxSprintsPerSession(t *testing.T) {
 	ctx := context.Background()
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/two_questions.json").WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
