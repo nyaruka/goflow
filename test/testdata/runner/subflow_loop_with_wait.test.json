@@ -43,10 +43,10 @@
                         "name": "Child flow",
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
-                    "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "terminal": false,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-28ab-76f8-a17e-f85e49829fb9"
                 },
                 {
@@ -165,10 +165,10 @@
                         "name": "Parent Flow",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                     },
-                    "parent_run_uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
+                    "parent_uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "terminal": false,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-6efb-76f8-9654-8a7258fbaae4"
                 },
                 {

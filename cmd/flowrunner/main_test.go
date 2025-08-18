@@ -80,7 +80,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewError("this didn't work"), `⚠️ this didn't work`},
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
-		{events.NewFlowEntered(flow.Reference(false), "", false), `↪️ entered flow 'Registration'`},
+		{events.NewRunStarted(flow.Reference(false), "", false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, expiresOn, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},

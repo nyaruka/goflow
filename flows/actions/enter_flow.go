@@ -18,7 +18,7 @@ const TypeEnterFlow string = "enter_flow"
 
 // EnterFlow can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 //
-// A [event:flow_entered] event will be created to record that the flow was started.
+// A [event:run_started] event will be created to record that a new run was started.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -61,7 +61,7 @@ func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	logEvent(events.NewFlowEntered(flow.Reference(false), run.UUID(), a.Terminal))
+	logEvent(events.NewRunStarted(flow.Reference(false), run.UUID(), a.Terminal))
 	return nil
 }
 

@@ -1,0 +1,11 @@
+{
+    "uuid": "01969b48-c6bb-76f8-9504-776e7d151101",
+    "type": "run_started",
+    "created_on": "2025-05-04T12:32:41.123456789Z",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Collect Age"
+    },
+    "parent_uuid": "0198bf06-4c79-7cd2-9057-d99a1198148d",
+    "terminal": true
+}

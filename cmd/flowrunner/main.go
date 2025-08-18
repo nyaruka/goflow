@@ -270,8 +270,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("⚠️ %s", typed.Text)
 	case *events.Failure:
 		msg = fmt.Sprintf("🛑 %s", typed.Text)
-	case *events.FlowEntered:
-		msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
 	case *events.InputLabelsAdded:
 		labels := make([]string, len(typed.Labels))
 		for i, label := range typed.Labels {
@@ -292,6 +290,8 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		}
 	case *events.RunResultChanged:
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
+	case *events.RunStarted:
+		msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
 	case *events.ServiceCalled:
 		switch typed.Service {
 		case "classifier":

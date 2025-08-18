@@ -106,10 +106,10 @@
                         "name": "Start Actions Child",
                         "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                     },
-                    "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "terminal": true,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-578b-76f8-bebe-b4a1f677cf4c"
                 },
                 {
@@ -136,10 +136,10 @@
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                     },
-                    "parent_run_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
+                    "parent_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
                     "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "terminal": true,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-8e3b-76f8-af9c-ff2f1faac4db"
                 },
                 {
@@ -335,10 +335,10 @@
                         "name": "Start Actions Child",
                         "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                     },
-                    "parent_run_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
+                    "parent_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
                     "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
                     "terminal": true,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-e813-76f8-a13f-9238de2a0b76"
                 },
                 {
@@ -358,10 +358,10 @@
                         "name": "Start Actions Parent",
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                     },
-                    "parent_run_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
+                    "parent_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
                     "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
                     "terminal": true,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b48-1ec3-76f8-b63d-c8dcc2fa9de0"
                 },
                 {
