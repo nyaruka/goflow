@@ -1,3 +1,9 @@
+v0.252.5 (2025-08-18)
+-------------------------
+ * Add run_ended events
+ * Rework run_started event generation so it is created in the engine for all new runs and not just subflows
+ * Replace flow_entered events with run_started events
+
 v0.252.4 (2025-08-18)
 -------------------------
  * Remove Run.events altogether though keeping .events on the envelope to read events to recreate fields like webhook
