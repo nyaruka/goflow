@@ -98,8 +98,9 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 		MustBuild()
 
 	assert.Equal(t, flows.SessionStatusWaiting, session.Status())
-	assert.Equal(t, 1, len(sprint.Events()))
-	assert.Equal(t, "msg_wait", sprint.Events()[0].Type())
+	assert.Equal(t, 2, len(sprint.Events()))
+	assert.Equal(t, "run_started", sprint.Events()[0].Type())
+	assert.Equal(t, "msg_wait", sprint.Events()[1].Type())
 
 	// whereas a msg trigger will skip over it
 	_, session, sprint = test.NewSessionBuilder().WithAssetsJSON([]byte(initialWaitJSON)).
@@ -108,5 +109,6 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 		MustBuild()
 
 	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
-	assert.Equal(t, 0, len(sprint.Events()))
+	assert.Equal(t, 1, len(sprint.Events()))
+	assert.Equal(t, "run_started", sprint.Events()[0].Type())
 }

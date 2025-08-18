@@ -367,6 +367,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			flow := s.pushedFlow.flow
 			currentRun = newRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
+			sprint.logEvent(events.NewRunStarted(currentRun, s.pushedFlow.terminal))
 			sprint.logFlow(flow)
 
 			// our destination is the first node in that flow... if such a node exists

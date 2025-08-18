@@ -40,20 +40,32 @@
                     "uuid": "01969b47-0d53-76f8-9c0b-2014ddc77094"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:54.123456789Z",
+                    "created_on": "2025-05-04T12:30:52.123456789Z",
+                    "flow": {
+                        "name": "Smart Groups",
+                        "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
+                    },
+                    "parent_uuid": "",
+                    "run_uuid": "01969b47-190b-76f8-92a3-d648ab64bccb",
+                    "terminal": false,
+                    "type": "run_started",
+                    "uuid": "01969b47-1cf3-76f8-8228-9728778b6c98"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
                     "field": {
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
+                    "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9",
                     "value": {
                         "text": "MALE"
                     }
                 },
                 {
-                    "created_on": "2025-05-04T12:30:56.123456789Z",
+                    "created_on": "2025-05-04T12:30:58.123456789Z",
                     "groups_added": [
                         {
                             "name": "Males",
@@ -64,26 +76,26 @@
                             "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
                         }
                     ],
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9"
+                    "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:59.123456789Z",
+                    "created_on": "2025-05-04T12:31:01.123456789Z",
                     "field": {
                         "key": "age",
                         "name": "Age"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                    "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
                     "value": {
                         "number": 64,
                         "text": "64"
                     }
                 },
                 {
-                    "created_on": "2025-05-04T12:31:01.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "groups_added": [
                         {
                             "name": "Old Men",
@@ -104,12 +116,12 @@
                             "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3"
                         }
                     ],
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-401b-76f8-b86e-4b881f09a186"
+                    "uuid": "01969b47-47eb-76f8-a691-235cbe720980"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:03.123456789Z",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -119,13 +131,13 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
-                    "uuid": "01969b47-47eb-76f8-a691-235cbe720980"
+                    "uuid": "01969b47-4fbb-76f8-bebe-b4a1f677cf4c"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:05.123456789Z",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "created_on": "2025-05-04T12:31:07.123456789Z",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_urns_changed",
                     "urns": [
                         "tel:+12065551212",
@@ -133,22 +145,22 @@
                         "mailto:ben@macklemore",
                         "tel:+250781234567"
                     ],
-                    "uuid": "01969b47-4fbb-76f8-bebe-b4a1f677cf4c"
+                    "uuid": "01969b47-578b-76f8-8dbf-00ecf5d03034"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:07.123456789Z",
+                    "created_on": "2025-05-04T12:31:09.123456789Z",
                     "groups_added": [
                         {
                             "name": "MTN Callers",
                             "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
                         }
                     ],
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-578b-76f8-8dbf-00ecf5d03034"
+                    "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:09.123456789Z",
+                    "created_on": "2025-05-04T12:31:11.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -158,26 +170,26 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
-                    "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
+                    "uuid": "01969b47-672b-76f8-afcb-91a2073e5459"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "created_on": "2025-05-04T12:31:14.123456789Z",
                     "field": {
                         "key": "age",
                         "name": "Age"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-6b13-76f8-afcb-91a2073e5459",
+                    "uuid": "01969b47-72e3-76f8-9654-8a7258fbaae4",
                     "value": {
                         "number": 17,
                         "text": "17"
                     }
                 },
                 {
-                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "created_on": "2025-05-04T12:31:16.123456789Z",
                     "groups_added": [
                         {
                             "name": "Youth",
@@ -190,12 +202,12 @@
                             "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
                         }
                     ],
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-72e3-76f8-9654-8a7258fbaae4"
+                    "uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:16.123456789Z",
+                    "created_on": "2025-05-04T12:31:18.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -205,9 +217,9 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
-                    "uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae"
+                    "uuid": "01969b47-8283-76f8-b62c-3c781ca3b5da"
                 }
             ],
             "segments": [],
@@ -217,18 +229,18 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:49.123456789Z",
-                        "exited_on": "2025-05-04T12:31:17.123456789Z",
+                        "exited_on": "2025-05-04T12:31:19.123456789Z",
                         "flow": {
                             "name": "Smart Groups",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
-                        "modified_on": "2025-05-04T12:31:17.123456789Z",
+                        "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
                                 "exit_uuid": "a884d1f8-2e1e-43d2-9221-fa08ee29b31b",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
                         ],
                         "status": "completed",

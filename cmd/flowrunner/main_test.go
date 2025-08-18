@@ -30,8 +30,7 @@ func TestRunFlow(t *testing.T) {
 	lines := strings.Split(strings.Replace(out.String(), "> ", "", -1), "\n")
 
 	assert.Equal(t, []string{
-		"Starting flow 'Two Questions'....",
-		"---------------------------------------",
+		"↪️ entered flow 'Two Questions'",
 		"💬 message created \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
 		"⏳ waiting for message (600 sec timeout, type /timeout to simulate)...",
 		"📥 message received \"I like red\"",
@@ -51,7 +50,7 @@ func TestRunFlow(t *testing.T) {
 	_, err = main.RunFlow(test.NewEngine(), "testdata/two_questions.json", "", "", "eng", in, out)
 	require.NoError(t, err)
 
-	assert.Contains(t, out.String(), "Starting flow 'Two Questions'")
+	assert.Contains(t, out.String(), "entered flow 'Two Questions'")
 }
 
 func TestPrintEvent(t *testing.T) {
@@ -59,7 +58,6 @@ func TestPrintEvent(t *testing.T) {
 	require.NoError(t, err)
 
 	sa := session.Assets()
-	flow, _ := sa.Flows().Get("50c3706e-fedb-42c0-8eab-dda3335714b7")
 	timeout := 3
 	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 
@@ -80,7 +78,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewError("this didn't work"), `⚠️ this didn't work`},
 		{events.NewFailure(errors.New("this really didn't work")), `🛑 this really didn't work`},
-		{events.NewRunStarted(flow.Reference(false), "", false), `↪️ entered flow 'Registration'`},
+		{events.NewRunStarted(session.Runs()[0], false), `↪️ entered flow 'Registration'`},
 		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, expiresOn, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},

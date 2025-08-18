@@ -104,7 +104,7 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		run := session.Runs()[0]
 		actual.Results, _ = jsonx.Marshal(run.Results())
-		actual.Events, _ = jsonx.Marshal(sprint.Events())
+		actual.Events, _ = jsonx.Marshal(sprint.Events()[1:]) // skip the run_started event
 
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()

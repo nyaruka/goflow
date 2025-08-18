@@ -25,7 +25,21 @@
     "environment": null,
     "outputs": [
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "flow": {
+                        "name": "Empty Flow",
+                        "revision": 345,
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "parent_uuid": "",
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "terminal": false,
+                    "type": "run_started",
+                    "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
+                }
+            ],
             "segments": [],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -33,13 +47,13 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:30:49.123456789Z",
+                        "exited_on": "2025-05-04T12:30:51.123456789Z",
                         "flow": {
                             "name": "Empty Flow",
                             "revision": 345,
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:30:49.123456789Z",
+                        "modified_on": "2025-05-04T12:30:51.123456789Z",
                         "path": [],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"

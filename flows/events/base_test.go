@@ -44,7 +44,6 @@ func TestEventMarshaling(t *testing.T) {
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
 	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", weather, user)
 	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
-	subflow, _ := session.Assets().Flows().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")
 
 	eventTests := []struct {
 		event    flows.Event
@@ -268,7 +267,7 @@ func TestEventMarshaling(t *testing.T) {
 			`optin_stopped`,
 		},
 		{
-			events.NewRunStarted(subflow.Reference(true), "0198bf06-4c79-7cd2-9057-d99a1198148d", true),
+			events.NewRunStarted(session.Runs()[0], true),
 			`run_started`,
 		},
 		{

@@ -12,31 +12,31 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                "text": "error evaluating @(1 / 0): division by zero"
-            },
-            {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1 / 0): division by zero"
             },
             {
                 "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
-                "type": "email_sent",
+                "type": "error",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                "text": "error evaluating @(1 / 0): division by zero"
+            },
+            {
+                "uuid": "01969b47-47eb-76f8-a691-235cbe720980",
+                "type": "email_sent",
+                "created_on": "2025-05-04T12:31:03.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "to": [
                     "bob@example.com"
                 ],
@@ -78,10 +78,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "email subject evaluated to empty string, skipping"
             }
         ]
@@ -99,10 +99,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "email_sent",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "to": [
                     "bob@example.com"
                 ],
@@ -124,10 +124,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "email body evaluated to empty string, skipping"
             }
         ]
@@ -145,10 +145,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "email address evaluated to empty string, skipping"
             }
         ]
@@ -166,10 +166,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "email_sent",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "to": [
                     "bob@example.com"
                 ],
@@ -203,10 +203,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "email_sent",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "to": [
                     "bob@example.com"
                 ],
@@ -251,10 +251,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "unable to send email: oops can't send"
             }
         ]

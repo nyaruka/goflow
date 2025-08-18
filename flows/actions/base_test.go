@@ -257,7 +257,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// and the events
 		run := session.Runs()[0]
-		actual.Events = jsonx.MustMarshal(sprint.Events())
+		actual.Events = jsonx.MustMarshal(sprint.Events()[1:]) // skip over run_started
 
 		if tc.Webhook != nil {
 			actual.Webhook = jsonx.MustMarshal(run.Webhook())

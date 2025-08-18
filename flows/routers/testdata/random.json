@@ -29,15 +29,15 @@
                 "category": "No",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                 "input": "0.3849275689214193",
-                "created_on": "2025-05-04T12:30:51.123456789Z"
+                "created_on": "2025-05-04T12:30:53.123456789Z"
             }
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Random Result",
                 "value": "1",
                 "category": "No"

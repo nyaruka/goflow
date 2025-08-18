@@ -196,11 +196,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:19.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(run.results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:19.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(parent.contact.urns))`,
@@ -451,9 +451,10 @@ func TestTranslation(t *testing.T) {
 			WithAssetsJSON(assetsJSON).
 			MustBuild()
 
-		require.Len(t, sp.Events(), 1)
-		require.Equal(t, "msg_created", sp.Events()[0].Type())
-		evt := sp.Events()[0].(*events.MsgCreated)
+		require.Len(t, sp.Events(), 2)
+		require.Equal(t, "run_started", sp.Events()[0].Type())
+		require.Equal(t, "msg_created", sp.Events()[1].Type())
+		evt := sp.Events()[1].(*events.MsgCreated)
 
 		assert.Equal(t, tc.expectedText, evt.Msg.Text(), "msg text mismatch in test '%s'", tc.description)
 		assert.Equal(t, tc.expectedAttachments, evt.Msg.Attachments(), "attachments mismatch in test case '%s'", tc.description)

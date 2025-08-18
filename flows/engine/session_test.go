@@ -185,8 +185,9 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, 1, len(sprint.Events()))
+	assert.Equal(t, 2, len(sprint.Events()))
 	assert.Equal(t, "contact_groups_changed", sprint.Events()[0].Type())
+	assert.Equal(t, "run_started", sprint.Events()[1].Type())
 	assert.Equal(t, 1, session.Contact().Groups().Count())
 	assert.Equal(t, "Females", session.Contact().Groups().All()[0].Name())
 }
@@ -265,12 +266,13 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
 	run := session.Runs()[0]
 
-	require.Equal(t, 2, len(sprint.Events()))
-	require.Equal(t, "msg_created", sprint.Events()[0].Type())
-	require.Equal(t, "msg_wait", sprint.Events()[1].Type())
+	require.Equal(t, 3, len(sprint.Events()))
+	require.Equal(t, "run_started", sprint.Events()[0].Type())
+	require.Equal(t, "msg_created", sprint.Events()[1].Type())
+	require.Equal(t, "msg_wait", sprint.Events()[2].Type())
 
 	// check our wait has a timeout
-	waitEvent := sprint.Events()[1].(*events.MsgWait)
+	waitEvent := sprint.Events()[2].(*events.MsgWait)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
 	sprint, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
@@ -390,9 +392,9 @@ func TestFindStep(t *testing.T) {
 	_, session, sprint := test.NewSessionBuilder().MustBuild()
 	evts := sprint.Events()
 
-	run, step := session.FindStep(evts[0].StepUUID())
-	assert.Equal(t, "Registration", run.Flow().Name())
-	assert.Equal(t, step.UUID(), evts[0].StepUUID())
+	run, step := session.FindStep(evts[2].StepUUID())
+	assert.Equal(t, "Collect Age", run.Flow().Name())
+	assert.Equal(t, step.UUID(), evts[2].StepUUID())
 
 	run, step = session.FindStep(flows.StepUUID("4f33917a-d562-4c20-88bd-f1a4c6827848"))
 	assert.Nil(t, run)

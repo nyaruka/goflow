@@ -23,7 +23,19 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:30:51.123456789Z",
+                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "flow": {
+                        "name": "Two Questions",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "parent_uuid": "",
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "terminal": false,
+                    "type": "run_started",
+                    "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:53.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -41,17 +53,17 @@
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
                         "urn": "tel:+12024561111"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
-                    "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
+                    "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:54.123456789Z",
-                    "expires_on": "2025-05-07T12:30:52.123456789Z",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
+                    "expires_on": "2025-05-07T12:30:54.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "timeout_seconds": 600,
                     "type": "msg_wait",
-                    "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623"
+                    "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9"
                 }
             ],
             "segments": [],
@@ -66,12 +78,12 @@
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:30:55.123456789Z",
+                        "modified_on": "2025-05-04T12:30:57.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
                         ],
                         "status": "waiting",
@@ -101,17 +113,17 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:30:56.123456789Z",
+                        "exited_on": "2025-05-04T12:30:58.123456789Z",
                         "flow": {
                             "name": "Two Questions",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:30:56.123456789Z",
+                        "modified_on": "2025-05-04T12:30:58.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:30:49.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             }
                         ],
                         "status": "expired",

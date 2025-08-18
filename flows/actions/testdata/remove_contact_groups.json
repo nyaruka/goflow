@@ -28,10 +28,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "can't remove contacts from the query based group 'Males'"
             }
         ]
@@ -64,10 +64,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -86,10 +86,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -137,10 +137,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:55.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
             }
         ],
