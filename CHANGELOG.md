@@ -1,3 +1,7 @@
+v0.252.4 (2025-08-18)
+-------------------------
+ * Remove Run.events altogether though keeping .events on the envelope to read events to recreate fields like webhook
+
 v0.252.3 (2025-08-18)
 -------------------------
  * Limit events persisted on runs to only those used still needed to recreate @webhook.
