@@ -113,10 +113,10 @@
                         "name": "Registration Flow",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
-                    "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "terminal": false,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-47eb-76f8-a691-235cbe720980"
                 },
                 {

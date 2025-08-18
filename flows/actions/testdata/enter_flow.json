@@ -53,14 +53,14 @@
         "events": [
             {
                 "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                "type": "flow_entered",
+                "type": "run_started",
                 "created_on": "2025-05-04T12:30:55.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "flow": {
                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "name": "Collect Age"
                 },
-                "parent_run_uuid": "01969b47-1cf3-76f8-92a3-d648ab64bccb",
+                "parent_uuid": "01969b47-1cf3-76f8-92a3-d648ab64bccb",
                 "terminal": false
             },
             {

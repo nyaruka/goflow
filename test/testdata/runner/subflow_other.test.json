@@ -47,10 +47,10 @@
                         "name": "Rules",
                         "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
                     },
-                    "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "terminal": false,
-                    "type": "flow_entered",
+                    "type": "run_started",
                     "uuid": "01969b47-28ab-76f8-a17e-f85e49829fb9"
                 },
                 {
