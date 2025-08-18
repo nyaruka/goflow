@@ -132,7 +132,7 @@ func (r *run) Ancestors() []flows.Run {
 	return ancestors
 }
 
-func (r *run) LogEvent(s flows.Step, event flows.Event) {
+func (r *run) logEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 	}
