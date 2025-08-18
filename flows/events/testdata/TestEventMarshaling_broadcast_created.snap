@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b47-f7b3-76f8-ba82-c15b24dd577f",
+    "uuid": "01969b48-0753-76f8-aaa3-04d3fbce5f9a",
     "type": "broadcast_created",
-    "created_on": "2025-05-04T12:31:48.123456789Z",
+    "created_on": "2025-05-04T12:31:52.123456789Z",
     "translations": {
         "eng": {
             "text": "Hello"

@@ -126,6 +126,18 @@
                     "type": "run_result_changed",
                     "uuid": "01969b47-6343-76f8-9853-0310d032b497",
                     "value": "30"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
+                    "flow": {
+                        "name": "Legacy Timeout",
+                        "revision": 196,
+                        "uuid": "eaae833a-4970-4be1-aed4-2e6295903b8f"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-8dbf-00ecf5d03034",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-6efb-76f8-8ab7-4a517a86045c"
                 }
             ],
             "segments": [

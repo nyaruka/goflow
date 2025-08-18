@@ -38,6 +38,18 @@
                     "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:53.123456789Z",
+                    "flow": {
+                        "name": "Empty Flow",
+                        "revision": 345,
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-20db-76f8-8228-9728778b6c98"
                 }
             ],
             "segments": [],

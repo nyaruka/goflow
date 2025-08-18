@@ -199,7 +199,29 @@
                     "uuid": "01969b47-8a53-76f8-8d9f-e51d30290005"
                 },
                 {
+                    "created_on": "2025-05-04T12:31:23.123456789Z",
+                    "flow": {
+                        "name": "Parent Flow",
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-960b-76f8-bec9-e032f4f9af5f"
+                },
+                {
                     "created_on": "2025-05-04T12:31:26.123456789Z",
+                    "flow": {
+                        "name": "Child flow",
+                        "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                    },
+                    "run_uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-a1c3-76f8-9853-0310d032b497"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:30.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -209,9 +231,20 @@
                         "text": "Flow succeeded",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
+                    "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
                     "type": "msg_created",
-                    "uuid": "01969b47-a1c3-76f8-9853-0310d032b497"
+                    "uuid": "01969b47-b163-76f8-97a3-ae27459a6be4"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:33.123456789Z",
+                    "flow": {
+                        "name": "Parent Flow",
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-bd1b-76f8-ba82-c15b24dd577f"
                 }
             ],
             "segments": [
@@ -228,7 +261,7 @@
                     "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
                     "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                    "time": "2025-05-04T12:31:23.123456789Z"
+                    "time": "2025-05-04T12:31:27.123456789Z"
                 }
             ],
             "session": {
@@ -244,12 +277,12 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:27.123456789Z",
+                        "exited_on": "2025-05-04T12:31:31.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
-                        "modified_on": "2025-05-04T12:31:27.123456789Z",
+                        "modified_on": "2025-05-04T12:31:31.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -264,10 +297,10 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:24.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:28.123456789Z",
                                 "exit_uuid": "1a26ab25-fc6d-4324-865b-1d8e7d73bf52",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
-                                "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
+                                "uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c"
                             }
                         ],
                         "status": "completed",
@@ -275,13 +308,13 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:56.123456789Z",
-                        "exited_on": "2025-05-04T12:31:22.123456789Z",
+                        "exited_on": "2025-05-04T12:31:24.123456789Z",
                         "flow": {
                             "name": "Child flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:31:22.123456789Z",
+                        "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {

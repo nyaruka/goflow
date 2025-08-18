@@ -287,6 +287,8 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		} else {
 			msg = "⏳ waiting for message..."
 		}
+	case *events.RunEnded:
+		msg = fmt.Sprintf("↪️ exited flow '%s'", typed.Flow.Name)
 	case *events.RunResultChanged:
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 	case *events.RunStarted:

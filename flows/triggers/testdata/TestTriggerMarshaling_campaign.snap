@@ -4,11 +4,11 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:30:56.123456789Z",
+    "triggered_on": "2025-05-04T12:30:58.123456789Z",
     "event": {
-        "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
+        "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
         "type": "campaign_fired",
-        "created_on": "2025-05-04T12:30:55.123456789Z",
+        "created_on": "2025-05-04T12:30:57.123456789Z",
         "campaign": {
             "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
             "name": "Reminders"

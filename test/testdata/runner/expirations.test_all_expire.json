@@ -172,28 +172,40 @@
             "events": [
                 {
                     "created_on": "2025-05-04T12:31:12.123456789Z",
-                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                    "type": "warning",
+                    "flow": {
+                        "name": "Expiration Test C",
+                        "revision": 5,
+                        "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
+                    },
+                    "run_uuid": "01969b47-384b-76f8-b86e-4b881f09a186",
+                    "status": "expired",
+                    "type": "run_ended",
                     "uuid": "01969b47-6b13-76f8-8e78-3bde7b3370ae"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:16.123456789Z",
+                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
+                    "type": "warning",
+                    "uuid": "01969b47-72e3-76f8-b62c-3c781ca3b5da"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:18.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your middle name?",
                         "unsendable_reason": "no_destination"
                     },
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_created",
-                    "uuid": "01969b47-7ab3-76f8-af9c-ff2f1faac4db"
+                    "uuid": "01969b47-8283-76f8-8d9f-e51d30290005"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:21.123456789Z",
-                    "expires_on": "2025-05-04T14:31:19.123456789Z",
-                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "created_on": "2025-05-04T12:31:23.123456789Z",
+                    "expires_on": "2025-05-04T14:31:21.123456789Z",
+                    "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
                     "type": "msg_wait",
-                    "uuid": "01969b47-8e3b-76f8-bec9-e032f4f9af5f"
+                    "uuid": "01969b47-960b-76f8-9853-0310d032b497"
                 }
             ],
             "segments": [
@@ -203,14 +215,14 @@
                     "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
                     "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082",
                     "operand": "expired",
-                    "time": "2025-05-04T12:31:13.123456789Z"
+                    "time": "2025-05-04T12:31:15.123456789Z"
                 },
                 {
                     "destination_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                     "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                     "flow_uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac",
                     "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
-                    "time": "2025-05-04T12:31:17.123456789Z"
+                    "time": "2025-05-04T12:31:19.123456789Z"
                 }
             ],
             "session": {
@@ -244,7 +256,7 @@
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:22.123456789Z",
+                        "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -254,15 +266,15 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
-                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:18.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
-                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                                "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                             }
                         ],
                         "status": "waiting",
@@ -312,29 +324,41 @@
         {
             "events": [
                 {
-                    "created_on": "2025-05-04T12:31:25.123456789Z",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                    "type": "warning",
-                    "uuid": "01969b47-9ddb-76f8-8ab7-4a517a86045c"
+                    "created_on": "2025-05-04T12:31:27.123456789Z",
+                    "flow": {
+                        "name": "Expiration Test B",
+                        "revision": 8,
+                        "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
+                    },
+                    "run_uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
+                    "status": "expired",
+                    "type": "run_ended",
+                    "uuid": "01969b47-a5ab-76f8-97a3-ae27459a6be4"
                 },
                 {
                     "created_on": "2025-05-04T12:31:29.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
+                    "type": "warning",
+                    "uuid": "01969b47-ad7b-76f8-ba82-c15b24dd577f"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:33.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your last name?",
                         "unsendable_reason": "no_destination"
                     },
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
+                    "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_created",
-                    "uuid": "01969b47-ad7b-76f8-ba82-c15b24dd577f"
+                    "uuid": "01969b47-bd1b-76f8-aaa3-04d3fbce5f9a"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:34.123456789Z",
-                    "expires_on": "2025-05-04T13:31:32.123456789Z",
-                    "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
+                    "created_on": "2025-05-04T12:31:38.123456789Z",
+                    "expires_on": "2025-05-04T13:31:36.123456789Z",
+                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_wait",
-                    "uuid": "01969b47-c103-76f8-aaa3-04d3fbce5f9a"
+                    "uuid": "01969b47-d0a3-76f8-9014-2c868db4022e"
                 }
             ],
             "segments": [
@@ -344,14 +368,14 @@
                     "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
                     "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
                     "operand": "expired",
-                    "time": "2025-05-04T12:31:26.123456789Z"
+                    "time": "2025-05-04T12:31:30.123456789Z"
                 },
                 {
                     "destination_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
                     "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                     "flow_uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af",
                     "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
-                    "time": "2025-05-04T12:31:30.123456789Z"
+                    "time": "2025-05-04T12:31:34.123456789Z"
                 }
             ],
             "session": {
@@ -366,7 +390,7 @@
                             "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2025-05-04T12:31:35.123456789Z",
+                        "modified_on": "2025-05-04T12:31:39.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -375,15 +399,15 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:27.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
-                                "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:35.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
-                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
+                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
                             }
                         ],
                         "status": "waiting",
@@ -391,13 +415,13 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:52.123456789Z",
-                        "exited_on": "2025-05-04T12:31:23.123456789Z",
+                        "exited_on": "2025-05-04T12:31:25.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:23.123456789Z",
+                        "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -407,15 +431,15 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
-                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:18.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
-                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                                "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                             }
                         ],
                         "status": "expired",
@@ -463,7 +487,20 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2025-05-04T12:31:42.123456789Z",
+                    "flow": {
+                        "name": "Expiration Test A",
+                        "revision": 18,
+                        "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "expired",
+                    "type": "run_ended",
+                    "uuid": "01969b47-e043-76f8-ba91-c48ad8c50e6b"
+                }
+            ],
             "segments": [],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -471,13 +508,13 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:36.123456789Z",
+                        "exited_on": "2025-05-04T12:31:40.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
                             "revision": 18,
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
-                        "modified_on": "2025-05-04T12:31:36.123456789Z",
+                        "modified_on": "2025-05-04T12:31:40.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -486,15 +523,15 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:27.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
                                 "exit_uuid": "ed1c77c7-45ad-4674-a0d9-13d0f23ab6d6",
                                 "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7",
-                                "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:35.123456789Z",
                                 "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc",
-                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
+                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
                             }
                         ],
                         "status": "expired",
@@ -502,13 +539,13 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:52.123456789Z",
-                        "exited_on": "2025-05-04T12:31:23.123456789Z",
+                        "exited_on": "2025-05-04T12:31:25.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
                             "revision": 8,
                             "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
                         },
-                        "modified_on": "2025-05-04T12:31:23.123456789Z",
+                        "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
@@ -518,15 +555,15 @@
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:14.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
                                 "exit_uuid": "c00810aa-93bf-4cb3-845e-6fd72aa57ea0",
                                 "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd",
-                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:18.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
                                 "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62",
-                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                                "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
                             }
                         ],
                         "status": "expired",

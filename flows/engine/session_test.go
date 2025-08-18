@@ -185,9 +185,10 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, 2, len(sprint.Events()))
+	assert.Equal(t, 3, len(sprint.Events()))
 	assert.Equal(t, "contact_groups_changed", sprint.Events()[0].Type())
 	assert.Equal(t, "run_started", sprint.Events()[1].Type())
+	assert.Equal(t, "run_ended", sprint.Events()[2].Type())
 	assert.Equal(t, 1, session.Contact().Groups().Count())
 	assert.Equal(t, "Females", session.Contact().Groups().All()[0].Name())
 }
@@ -280,7 +281,7 @@ func TestWaitTimeout(t *testing.T) {
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
 	require.Equal(t, 2, len(run.Path()))
-	require.Equal(t, 2, len(sprint.Events()))
+	require.Equal(t, 3, len(sprint.Events()))
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)

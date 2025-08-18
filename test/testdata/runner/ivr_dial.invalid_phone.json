@@ -57,6 +57,17 @@
                     "type": "run_result_changed",
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                     "value": ""
+                },
+                {
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
+                    "flow": {
+                        "name": "IVR Redirect",
+                        "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                 }
             ],
             "segments": [],

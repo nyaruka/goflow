@@ -158,6 +158,17 @@
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-72e3-76f8-afcb-91a2073e5459"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "flow": {
+                        "name": "Another Flow",
+                        "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-7e9b-76f8-9654-8a7258fbaae4"
                 }
             ],
             "segments": [

@@ -220,6 +220,17 @@
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
                     "uuid": "01969b47-8283-76f8-b62c-3c781ca3b5da"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:21.123456789Z",
+                    "flow": {
+                        "name": "Smart Groups",
+                        "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
+                    },
+                    "run_uuid": "01969b47-190b-76f8-92a3-d648ab64bccb",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-8e3b-76f8-af9c-ff2f1faac4db"
                 }
             ],
             "segments": [],
