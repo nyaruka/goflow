@@ -29,11 +29,11 @@
                     "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:57.123456789Z",
-                    "expires_on": "2025-05-07T12:30:55.123456789Z",
+                    "created_on": "2025-05-04T12:30:56.123456789Z",
+                    "expires_on": "2025-05-07T12:30:54.123456789Z",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_wait",
-                    "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
+                    "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9"
                 }
             ],
             "segments": [
@@ -42,7 +42,7 @@
                     "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                    "time": "2025-05-04T12:30:53.123456789Z"
+                    "time": "2025-05-04T12:30:52.123456789Z"
                 }
             ],
             "session": {
@@ -56,7 +56,7 @@
                             "name": "NLU Test",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
-                        "modified_on": "2025-05-04T12:30:59.123456789Z",
+                        "modified_on": "2025-05-04T12:30:57.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -65,7 +65,7 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:54.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
@@ -93,11 +93,11 @@
             "events": [
                 {
                     "category": "All Responses",
-                    "created_on": "2025-05-04T12:31:05.123456789Z",
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
                     "name": "Response 1",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
+                    "uuid": "01969b47-47eb-76f8-b86e-4b881f09a186",
                     "value": "I'd like to book a flight to Quito"
                 },
                 {
@@ -105,7 +105,7 @@
                         "name": "Booking",
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                     },
-                    "created_on": "2025-05-04T12:31:10.123456789Z",
+                    "created_on": "2025-05-04T12:31:07.123456789Z",
                     "http_logs": [
                         {
                             "created_on": "2019-10-16T13:59:30.123456789Z",
@@ -121,11 +121,11 @@
                     "service": "classifier",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "service_called",
-                    "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
+                    "uuid": "01969b47-578b-76f8-bebe-b4a1f677cf4c"
                 },
                 {
                     "category": "Success",
-                    "created_on": "2025-05-04T12:31:15.123456789Z",
+                    "created_on": "2025-05-04T12:31:11.123456789Z",
                     "extra": {
                         "entities": {
                             "location": [
@@ -149,23 +149,23 @@
                     "name": "_Intent Classification",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-76cb-76f8-8dbf-00ecf5d03034",
+                    "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
                     "value": "book_flight"
                 },
                 {
                     "category": "Book Flight",
-                    "created_on": "2025-05-04T12:31:20.123456789Z",
+                    "created_on": "2025-05-04T12:31:15.123456789Z",
                     "extra": {
                         "location": "Quito"
                     },
                     "name": "Intent",
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-8a53-76f8-acca-bbca70987315",
+                    "uuid": "01969b47-76cb-76f8-acca-bbca70987315",
                     "value": "book_flight"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:25.123456789Z",
+                    "created_on": "2025-05-04T12:31:19.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "So you'd like to book a flight in Quito?",
@@ -173,7 +173,7 @@
                     },
                     "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_created",
-                    "uuid": "01969b47-9ddb-76f8-9654-8a7258fbaae4"
+                    "uuid": "01969b47-866b-76f8-9654-8a7258fbaae4"
                 }
             ],
             "segments": [
@@ -183,7 +183,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                     "operand": "I'd like to book a flight to Quito",
-                    "time": "2025-05-04T12:31:07.123456789Z"
+                    "time": "2025-05-04T12:31:04.123456789Z"
                 },
                 {
                     "destination_uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
@@ -191,7 +191,7 @@
                     "flow_uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e",
                     "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                     "operand": "book_flight",
-                    "time": "2025-05-04T12:31:22.123456789Z"
+                    "time": "2025-05-04T12:31:16.123456789Z"
                 }
             ],
             "session": {
@@ -207,13 +207,13 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:27.123456789Z",
+                        "exited_on": "2025-05-04T12:31:20.123456789Z",
                         "flow": {
                             "name": "NLU Test",
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:31:27.123456789Z",
+                        "modified_on": "2025-05-04T12:31:20.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -222,19 +222,19 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:54.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
                                 "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:08.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:05.123456789Z",
                                 "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a",
                                 "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:17.123456789Z",
                                 "exit_uuid": "b6562dea-d21c-4a99-b904-0fb9583fb5ab",
                                 "node_uuid": "8f4aba68-3250-43b6-8409-93ba44092962",
                                 "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
@@ -243,7 +243,7 @@
                         "results": {
                             "_intent_classification": {
                                 "category": "Success",
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "created_on": "2025-05-04T12:31:08.123456789Z",
                                 "extra": {
                                     "entities": {
                                         "location": [
@@ -271,7 +271,7 @@
                             },
                             "intent": {
                                 "category": "Book Flight",
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
+                                "created_on": "2025-05-04T12:31:12.123456789Z",
                                 "extra": {
                                     "location": "Quito"
                                 },
@@ -282,7 +282,7 @@
                             },
                             "response_1": {
                                 "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "input": "I'd like to book a flight to Quito",
                                 "name": "Response 1",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",

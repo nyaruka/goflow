@@ -40,24 +40,24 @@
                 },
                 {
                     "category": "Other",
-                    "created_on": "2025-05-04T12:31:00.123456789Z",
+                    "created_on": "2025-05-04T12:30:59.123456789Z",
                     "name": "Group Check",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-3c33-76f8-a17e-f85e49829fb9",
+                    "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                     "value": "[]"
                 },
                 {
                     "category": "Valid",
-                    "created_on": "2025-05-04T12:31:07.123456789Z",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "District Check",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-578b-76f8-b86e-4b881f09a186",
+                    "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                     "value": "Rwanda > Kigali City > Gasabo"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "created_on": "2025-05-04T12:31:09.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -69,17 +69,17 @@
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
-                    "uuid": "01969b47-6b13-76f8-bebe-b4a1f677cf4c"
+                    "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:16.123456789Z",
+                    "created_on": "2025-05-04T12:31:12.123456789Z",
                     "field": {
                         "key": "district",
                         "name": "District"
                     },
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-7ab3-76f8-8dbf-00ecf5d03034",
+                    "uuid": "01969b47-6b13-76f8-8dbf-00ecf5d03034",
                     "value": {
                         "district": "Rwanda > Kigali City > Gasabo",
                         "state": "Rwanda > Kigali City",
@@ -93,7 +93,7 @@
                     "exit_uuid": "8f2a3d3f-6522-42ea-8322-c1677bcb324e",
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "time": "2025-05-04T12:30:55.123456789Z"
+                    "time": "2025-05-04T12:30:54.123456789Z"
                 },
                 {
                     "destination_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
@@ -101,7 +101,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                     "operand": "[]",
-                    "time": "2025-05-04T12:31:02.123456789Z"
+                    "time": "2025-05-04T12:31:00.123456789Z"
                 },
                 {
                     "destination_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -109,7 +109,7 @@
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                     "operand": "I live in gasabo",
-                    "time": "2025-05-04T12:31:09.123456789Z"
+                    "time": "2025-05-04T12:31:06.123456789Z"
                 }
             ],
             "session": {
@@ -118,12 +118,12 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:18.123456789Z",
+                        "exited_on": "2025-05-04T12:31:13.123456789Z",
                         "flow": {
                             "name": "Router Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:31:18.123456789Z",
+                        "modified_on": "2025-05-04T12:31:13.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:49.123456789Z",
@@ -132,19 +132,19 @@
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
                                 "exit_uuid": "49247b3d-fd68-4dd8-95c3-e2a9cfe3ba43",
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:03.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
                                 "exit_uuid": "8488c715-3763-4074-ae70-222733e62737",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:10.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
                                 "exit_uuid": "4cfc03fb-33f3-4ca7-bb87-d3bdc2964d5f",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
@@ -153,7 +153,7 @@
                         "results": {
                             "district_check": {
                                 "category": "Valid",
-                                "created_on": "2025-05-04T12:31:04.123456789Z",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
                                 "input": "I live in gasabo",
                                 "name": "District Check",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
@@ -161,7 +161,7 @@
                             },
                             "group_check": {
                                 "category": "Other",
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
+                                "created_on": "2025-05-04T12:30:56.123456789Z",
                                 "input": "[]",
                                 "name": "Group Check",
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",

@@ -69,9 +69,9 @@
                 "name": ""
             },
             {
-                "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:58.123456789Z",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "groups_added": [
                     {

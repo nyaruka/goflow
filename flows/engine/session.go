@@ -290,17 +290,16 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 
 	logEvent := func(e flows.Event) {
 		e.SetStepUUID(step.UUID())
-
-		waitingRun.logEvent(e)
 		sprint.logEvent(e)
 	}
 
-	// resumes are always based on an event (e.g. msg_received) - log that on the run but don't repeat it in the sprint
-	// events because we didn't generate it
-	waitingRun.logEvent(resume.Event())
+	// resumes can set or clear input
+	input := resume.Input(s.assets)
+	s.setInput(input)
 
-	// and provide or clear input
-	s.setInput(resume.Input(s.assets))
+	if input != nil {
+		waitingRun.recordInput()
+	}
 
 	isTimeout := false
 
@@ -340,8 +339,6 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 	}
 	logEvent := func(e flows.Event) {
 		e.SetStepUUID(step.UUID())
-
-		run.logEvent(e)
 		sprint.logEvent(e)
 	}
 
@@ -476,17 +473,12 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 	step := r.CreateStep(node)
 	logEvent := func(e flows.Event) {
 		e.SetStepUUID(step.UUID())
-		r.logEvent(e)
 		sprint.logEvent(e)
 	}
 
-	// this might be the first run of the session in which case a trigger might need to initialize the run
-	if trigger != nil {
-		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
-		// events because we didn't generate it
-		if trigger.Event() != nil {
-			r.logEvent(trigger.Event())
-		}
+	// if this is a new run based on a trigger that provided input, record that on the run
+	if trigger != nil && s.input != nil {
+		r.recordInput()
 	}
 
 	// execute our node's actions
@@ -591,7 +583,6 @@ func failRun(sp *sprint, r *run, step flows.Step, err error) {
 	}
 
 	r.Exit(flows.RunStatusFailed)
-	r.logEvent(evt)
 	sp.logEvent(evt)
 }
 
