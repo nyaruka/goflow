@@ -4,7 +4,7 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:30:57.123456789Z",
+    "triggered_on": "2025-05-04T12:30:59.123456789Z",
     "event": {
         "type": "incoming_call",
         "channel": {

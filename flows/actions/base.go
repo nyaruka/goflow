@@ -161,6 +161,7 @@ func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifie
 func (a *baseAction) fail(run flows.Run, err error, logEvent flows.EventCallback) {
 	run.Exit(flows.RunStatusFailed)
 	logEvent(events.NewFailure(err))
+	logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), flows.RunStatusFailed))
 }
 
 // utility struct which sets the allowed flow types to any

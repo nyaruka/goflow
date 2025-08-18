@@ -417,6 +417,18 @@
                     "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
                     "type": "contact_groups_changed",
                     "uuid": "01969b48-036b-76f8-a8fd-1537ca860f97"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:54.123456789Z",
+                    "flow": {
+                        "name": "Registration",
+                        "revision": 27,
+                        "uuid": "21a5d73f-513f-455a-aa15-e3444ab45d2f"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-a691-235cbe720980",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-0f23-76f8-977d-88574316827e"
                 }
             ],
             "segments": [

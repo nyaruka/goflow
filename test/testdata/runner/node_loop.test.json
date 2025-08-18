@@ -1544,6 +1544,17 @@
                     "text": "reached maximum number of steps per sprint (100)",
                     "type": "failure",
                     "uuid": "01969b4d-3773-76f8-b016-97c9a7f1c7e7"
+                },
+                {
+                    "created_on": "2025-05-04T12:37:35.123456789Z",
+                    "flow": {
+                        "name": "Node Loop",
+                        "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "failed",
+                    "type": "run_ended",
+                    "uuid": "01969b4d-432b-76f8-b3b4-53134c2f53bf"
                 }
             ],
             "segments": [

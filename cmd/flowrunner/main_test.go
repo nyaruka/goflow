@@ -41,6 +41,7 @@ func TestRunFlow(t *testing.T) {
 		"📥 message received \"pepsi\"",
 		"📈 run result 'Soda' changed to 'pepsi' with category 'Pepsi'",
 		"💬 message created \"Great, you are done!\"",
+		"↪️ exited flow 'Two Questions'",
 		"",
 	}, lines)
 

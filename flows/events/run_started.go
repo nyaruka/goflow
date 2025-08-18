@@ -34,7 +34,7 @@ type RunStarted struct {
 	Terminal   bool                  `json:"terminal"`
 }
 
-// NewRunStarted returns a new run started event for the passed in flow and parent
+// NewRunStarted returns a new run started event
 func NewRunStarted(run flows.Run, terminal bool) *RunStarted {
 	var parentUUID flows.RunUUID
 	if run.Parent() != nil {

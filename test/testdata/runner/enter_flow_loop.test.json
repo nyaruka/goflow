@@ -114,66 +114,102 @@
                     "value": "name"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "created_on": "2025-05-04T12:31:10.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-6343-76f8-8dbf-00ecf5d03034"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:14.123456789Z",
                     "flow": {
                         "name": "Start Actions Child",
                         "revision": 15,
                         "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                     },
                     "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "run_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
+                    "run_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
                     "terminal": true,
                     "type": "run_started",
-                    "uuid": "01969b47-6b13-76f8-acca-bbca70987315"
+                    "uuid": "01969b47-72e3-76f8-afcb-91a2073e5459"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:15.123456789Z",
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
                     "msg": {
                         "locale": "und-US",
                         "text": "Clearing name",
                         "unsendable_reason": "no_destination"
                     },
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
-                    "uuid": "01969b47-76cb-76f8-9654-8a7258fbaae4"
+                    "uuid": "01969b47-7e9b-76f8-8e78-3bde7b3370ae"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:19.123456789Z",
+                    "created_on": "2025-05-04T12:31:21.123456789Z",
                     "name": "",
-                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "contact_name_changed",
-                    "uuid": "01969b47-866b-76f8-b62c-3c781ca3b5da"
+                    "uuid": "01969b47-8e3b-76f8-af9c-ff2f1faac4db"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:27.123456789Z",
+                    "created_on": "2025-05-04T12:31:26.123456789Z",
                     "flow": {
                         "name": "Start Actions Parent",
                         "revision": 15,
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                     },
-                    "parent_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
-                    "run_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
-                    "terminal": true,
-                    "type": "run_started",
-                    "uuid": "01969b47-a5ab-76f8-bec9-e032f4f9af5f"
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-a1c3-76f8-bec9-e032f4f9af5f"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:30.123456789Z",
+                    "created_on": "2025-05-04T12:31:29.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Child",
+                        "revision": 15,
+                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
+                    },
+                    "run_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-ad7b-76f8-9853-0310d032b497"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:33.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "parent_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
+                    "run_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
+                    "terminal": true,
+                    "type": "run_started",
+                    "uuid": "01969b47-bd1b-76f8-97a3-ae27459a6be4"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:36.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Enter command: name or exit",
                         "unsendable_reason": "no_destination"
                     },
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
+                    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
                     "type": "msg_created",
-                    "uuid": "01969b47-b163-76f8-8ab7-4a517a86045c"
+                    "uuid": "01969b47-c8d3-76f8-ba7e-53c2263e32f8"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:35.123456789Z",
-                    "expires_on": "2025-05-11T12:31:33.123456789Z",
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
+                    "created_on": "2025-05-04T12:31:41.123456789Z",
+                    "expires_on": "2025-05-11T12:31:39.123456789Z",
+                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
                     "type": "msg_wait",
-                    "uuid": "01969b47-c4eb-76f8-ba82-c15b24dd577f"
+                    "uuid": "01969b47-dc5b-76f8-a13f-9238de2a0b76"
                 }
             ],
             "segments": [
@@ -190,21 +226,21 @@
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                    "time": "2025-05-04T12:31:16.123456789Z"
+                    "time": "2025-05-04T12:31:18.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                    "time": "2025-05-04T12:31:20.123456789Z"
+                    "time": "2025-05-04T12:31:22.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                    "time": "2025-05-04T12:31:31.123456789Z"
+                    "time": "2025-05-04T12:31:37.123456789Z"
                 }
             ],
             "session": {
@@ -220,14 +256,14 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:22.123456789Z",
+                        "exited_on": "2025-05-04T12:31:24.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:31:22.123456789Z",
+                        "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -261,62 +297,62 @@
                         "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:09.123456789Z",
-                        "exited_on": "2025-05-04T12:31:23.123456789Z",
+                        "created_on": "2025-05-04T12:31:11.123456789Z",
+                        "exited_on": "2025-05-04T12:31:27.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "revision": 15,
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2025-05-04T12:31:23.123456789Z",
+                        "modified_on": "2025-05-04T12:31:27.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:17.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                                "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:21.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
-                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
+                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
+                        "uuid": "01969b47-6efb-76f8-acca-bbca70987315"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:24.123456789Z",
+                        "created_on": "2025-05-04T12:31:30.123456789Z",
                         "exited_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2025-05-04T12:31:36.123456789Z",
-                        "parent_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
+                        "modified_on": "2025-05-04T12:31:42.123456789Z",
+                        "parent_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:28.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:34.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                                "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
+                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:32.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                                "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
+                        "uuid": "01969b47-b933-76f8-8ab7-4a517a86045c"
                     }
                 ],
                 "sprints": 2,
@@ -337,67 +373,151 @@
             "events": [
                 {
                     "category": "Name",
-                    "created_on": "2025-05-04T12:31:42.123456789Z",
+                    "created_on": "2025-05-04T12:31:48.123456789Z",
                     "name": "Command",
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
+                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-e043-76f8-aaa3-04d3fbce5f9a",
+                    "uuid": "01969b47-f7b3-76f8-bef6-3979f99a96f9",
                     "value": "name"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:51.123456789Z",
-                    "flow": {
-                        "name": "Start Actions Child",
-                        "revision": 15,
-                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                    },
-                    "parent_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
-                    "run_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
-                    "terminal": true,
-                    "type": "run_started",
-                    "uuid": "01969b48-036b-76f8-bef6-3979f99a96f9"
-                },
-                {
-                    "created_on": "2025-05-04T12:31:54.123456789Z",
-                    "msg": {
-                        "locale": "und-US",
-                        "text": "Clearing name",
-                        "unsendable_reason": "no_destination"
-                    },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
-                    "type": "msg_created",
-                    "uuid": "01969b48-0f23-76f8-be24-6164105d48f2"
-                },
-                {
-                    "created_on": "2025-05-04T12:32:06.123456789Z",
+                    "created_on": "2025-05-04T12:31:53.123456789Z",
                     "flow": {
                         "name": "Start Actions Parent",
                         "revision": 15,
                         "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                     },
-                    "parent_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
-                    "run_uuid": "01969b48-3a1b-76f8-8f9d-465efd6fbb5e",
-                    "terminal": true,
-                    "type": "run_started",
-                    "uuid": "01969b48-3e03-76f8-9566-6fb2598c32d6"
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-0b3b-76f8-be24-6164105d48f2"
                 },
                 {
-                    "created_on": "2025-05-04T12:32:09.123456789Z",
+                    "created_on": "2025-05-04T12:31:56.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Child",
+                        "revision": 15,
+                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
+                    },
+                    "run_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-16f3-76f8-8768-7d0ba4d4f3e8"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:59.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "run_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-22ab-76f8-b63d-c8dcc2fa9de0"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:03.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Child",
+                        "revision": 15,
+                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
+                    },
+                    "parent_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
+                    "run_uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e",
+                    "terminal": true,
+                    "type": "run_started",
+                    "uuid": "01969b48-324b-76f8-9566-6fb2598c32d6"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:06.123456789Z",
+                    "msg": {
+                        "locale": "und-US",
+                        "text": "Clearing name",
+                        "unsendable_reason": "no_destination"
+                    },
+                    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+                    "type": "msg_created",
+                    "uuid": "01969b48-3e03-76f8-977d-88574316827e"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:13.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-595b-76f8-9803-f4a851d20f2b"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:16.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Child",
+                        "revision": 15,
+                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
+                    },
+                    "run_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-6513-76f8-8b56-5e92bbfe0e3f"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:19.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "run_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-70cb-76f8-a71b-fe4af29b871a"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:22.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Child",
+                        "revision": 15,
+                        "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
+                    },
+                    "run_uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-7c83-76f8-bfd7-d22404241e07"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:26.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "parent_uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e",
+                    "run_uuid": "01969b48-883b-76f8-8631-f6b52b12c734",
+                    "terminal": true,
+                    "type": "run_started",
+                    "uuid": "01969b48-8c23-76f8-9491-58ccdc93a8a8"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:29.123456789Z",
                     "msg": {
                         "locale": "eng-US",
                         "text": "Enter command: name or exit",
                         "unsendable_reason": "no_destination"
                     },
-                    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc",
                     "type": "msg_created",
-                    "uuid": "01969b48-49bb-76f8-977d-88574316827e"
+                    "uuid": "01969b48-97db-76f8-a09e-6806aab9f510"
                 },
                 {
-                    "created_on": "2025-05-04T12:32:14.123456789Z",
-                    "expires_on": "2025-05-11T12:32:12.123456789Z",
-                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7",
+                    "created_on": "2025-05-04T12:32:34.123456789Z",
+                    "expires_on": "2025-05-11T12:32:32.123456789Z",
+                    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
                     "type": "msg_wait",
-                    "uuid": "01969b48-5d43-76f8-92ca-6e1d7f550554"
+                    "uuid": "01969b48-ab63-76f8-8ceb-17799a976525"
                 }
             ],
             "segments": [
@@ -407,28 +527,28 @@
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "operand": "name",
-                    "time": "2025-05-04T12:31:43.123456789Z"
+                    "time": "2025-05-04T12:31:49.123456789Z"
                 },
                 {
                     "destination_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
                     "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                    "time": "2025-05-04T12:31:55.123456789Z"
+                    "time": "2025-05-04T12:32:07.123456789Z"
                 },
                 {
                     "destination_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
                     "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                     "flow_uuid": "9010b833-d598-4b31-97eb-3151f25020c6",
                     "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                    "time": "2025-05-04T12:31:57.123456789Z"
+                    "time": "2025-05-04T12:32:09.123456789Z"
                 },
                 {
                     "destination_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
                     "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                     "flow_uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69",
                     "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                    "time": "2025-05-04T12:32:10.123456789Z"
+                    "time": "2025-05-04T12:32:30.123456789Z"
                 }
             ],
             "session": {
@@ -444,14 +564,14 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:59.123456789Z",
+                        "exited_on": "2025-05-04T12:32:11.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:31:59.123456789Z",
+                        "modified_on": "2025-05-04T12:32:11.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -485,71 +605,71 @@
                         "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:09.123456789Z",
-                        "exited_on": "2025-05-04T12:32:00.123456789Z",
+                        "created_on": "2025-05-04T12:31:11.123456789Z",
+                        "exited_on": "2025-05-04T12:32:14.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "revision": 15,
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2025-05-04T12:32:00.123456789Z",
+                        "modified_on": "2025-05-04T12:32:14.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:17.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                                "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:21.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
-                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
+                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
+                        "uuid": "01969b47-6efb-76f8-acca-bbca70987315"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:24.123456789Z",
-                        "exited_on": "2025-05-04T12:32:01.123456789Z",
+                        "created_on": "2025-05-04T12:31:30.123456789Z",
+                        "exited_on": "2025-05-04T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:32:01.123456789Z",
-                        "parent_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
+                        "modified_on": "2025-05-04T12:32:17.123456789Z",
+                        "parent_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:28.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:34.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                                "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
+                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:32.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                                "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:44.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:50.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
-                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
+                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
                             }
                         ],
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2025-05-04T12:31:39.123456789Z",
+                                "created_on": "2025-05-04T12:31:45.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -557,65 +677,65 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
+                        "uuid": "01969b47-b933-76f8-8ab7-4a517a86045c"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:48.123456789Z",
-                        "exited_on": "2025-05-04T12:32:02.123456789Z",
+                        "created_on": "2025-05-04T12:32:00.123456789Z",
+                        "exited_on": "2025-05-04T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "revision": 15,
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2025-05-04T12:32:02.123456789Z",
-                        "parent_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
+                        "modified_on": "2025-05-04T12:32:20.123456789Z",
+                        "parent_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:52.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:04.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                                "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:08.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                                "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
+                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:58.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:10.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
-                                "uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0"
+                                "uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-ff83-76f8-9014-2c868db4022e"
+                        "uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e"
                     },
                     {
-                        "created_on": "2025-05-04T12:32:03.123456789Z",
+                        "created_on": "2025-05-04T12:32:23.123456789Z",
                         "exited_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
-                        "modified_on": "2025-05-04T12:32:15.123456789Z",
-                        "parent_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
+                        "modified_on": "2025-05-04T12:32:35.123456789Z",
+                        "parent_uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:32:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:27.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                                "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
+                                "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:32:11.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:31.123456789Z",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
+                                "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b48-3a1b-76f8-8f9d-465efd6fbb5e"
+                        "uuid": "01969b48-883b-76f8-8631-f6b52b12c734"
                     }
                 ],
                 "sprints": 3,
@@ -636,12 +756,24 @@
             "events": [
                 {
                     "category": "Exit",
-                    "created_on": "2025-05-04T12:32:21.123456789Z",
+                    "created_on": "2025-05-04T12:32:41.123456789Z",
                     "name": "Command",
-                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7",
+                    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
                     "type": "run_result_changed",
-                    "uuid": "01969b48-789b-76f8-8b56-5e92bbfe0e3f",
+                    "uuid": "01969b48-c6bb-76f8-998e-ae5bd773804a",
                     "value": "exit"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:44.123456789Z",
+                    "flow": {
+                        "name": "Start Actions Parent",
+                        "revision": 15,
+                        "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
+                    },
+                    "run_uuid": "01969b48-883b-76f8-8631-f6b52b12c734",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-d273-76f8-87bc-209e78511534"
                 }
             ],
             "segments": [],
@@ -658,14 +790,14 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:59.123456789Z",
+                        "exited_on": "2025-05-04T12:32:11.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:31:59.123456789Z",
+                        "modified_on": "2025-05-04T12:32:11.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -699,71 +831,71 @@
                         "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:09.123456789Z",
-                        "exited_on": "2025-05-04T12:32:00.123456789Z",
+                        "created_on": "2025-05-04T12:31:11.123456789Z",
+                        "exited_on": "2025-05-04T12:32:14.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "revision": 15,
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2025-05-04T12:32:00.123456789Z",
+                        "modified_on": "2025-05-04T12:32:14.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                                "uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                                "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:17.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                                "uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                                "uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:21.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
-                                "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
+                                "uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
+                        "uuid": "01969b47-6efb-76f8-acca-bbca70987315"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:24.123456789Z",
-                        "exited_on": "2025-05-04T12:32:01.123456789Z",
+                        "created_on": "2025-05-04T12:31:30.123456789Z",
+                        "exited_on": "2025-05-04T12:32:17.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:32:01.123456789Z",
-                        "parent_uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034",
+                        "modified_on": "2025-05-04T12:32:17.123456789Z",
+                        "parent_uuid": "01969b47-6efb-76f8-acca-bbca70987315",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:28.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:34.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                                "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
+                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:32.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "exit_uuid": "54e64906-5d5a-4bbf-8549-3c5b2a09f612",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                                "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:44.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:50.123456789Z",
                                 "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba",
-                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
+                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
                             }
                         ],
                         "results": {
                             "command": {
                                 "category": "Name",
-                                "created_on": "2025-05-04T12:31:39.123456789Z",
+                                "created_on": "2025-05-04T12:31:45.123456789Z",
                                 "input": "name",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -771,69 +903,69 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
+                        "uuid": "01969b47-b933-76f8-8ab7-4a517a86045c"
                     },
                     {
-                        "created_on": "2025-05-04T12:31:48.123456789Z",
-                        "exited_on": "2025-05-04T12:32:02.123456789Z",
+                        "created_on": "2025-05-04T12:32:00.123456789Z",
+                        "exited_on": "2025-05-04T12:32:20.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
                             "revision": 15,
                             "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
                         },
-                        "modified_on": "2025-05-04T12:32:02.123456789Z",
-                        "parent_uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005",
+                        "modified_on": "2025-05-04T12:32:20.123456789Z",
+                        "parent_uuid": "01969b47-b933-76f8-8ab7-4a517a86045c",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:31:52.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:04.123456789Z",
                                 "exit_uuid": "05bf0466-7632-42da-8008-06f12f8b46b8",
                                 "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97",
-                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                                "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:08.123456789Z",
                                 "exit_uuid": "742a1400-6a89-46d6-9667-d5dac0900778",
                                 "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61",
-                                "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
+                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:58.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:10.123456789Z",
                                 "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08",
-                                "uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0"
+                                "uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-ff83-76f8-9014-2c868db4022e"
+                        "uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e"
                     },
                     {
-                        "created_on": "2025-05-04T12:32:03.123456789Z",
-                        "exited_on": "2025-05-04T12:32:22.123456789Z",
+                        "created_on": "2025-05-04T12:32:23.123456789Z",
+                        "exited_on": "2025-05-04T12:32:42.123456789Z",
                         "flow": {
                             "name": "Start Actions Parent",
                             "revision": 15,
                             "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:32:22.123456789Z",
-                        "parent_uuid": "01969b47-ff83-76f8-9014-2c868db4022e",
+                        "modified_on": "2025-05-04T12:32:42.123456789Z",
+                        "parent_uuid": "01969b48-2e63-76f8-8f9d-465efd6fbb5e",
                         "path": [
                             {
-                                "arrived_on": "2025-05-04T12:32:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:27.123456789Z",
                                 "exit_uuid": "8e322829-80f0-459e-b8f4-05a4318f4eba",
                                 "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73",
-                                "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
+                                "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:32:11.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:31.123456789Z",
                                 "exit_uuid": "5530b3d4-64e5-44ee-b68d-ab0913aab2b0",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
-                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
+                                "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
                             }
                         ],
                         "results": {
                             "command": {
                                 "category": "Exit",
-                                "created_on": "2025-05-04T12:32:18.123456789Z",
+                                "created_on": "2025-05-04T12:32:38.123456789Z",
                                 "input": "exit",
                                 "name": "Command",
                                 "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069",
@@ -841,7 +973,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b48-3a1b-76f8-8f9d-465efd6fbb5e"
+                        "uuid": "01969b48-883b-76f8-8631-f6b52b12c734"
                     }
                 ],
                 "sprints": 4,

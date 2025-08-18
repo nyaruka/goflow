@@ -125,6 +125,17 @@
                     "type": "run_result_changed",
                     "uuid": "01969b47-72e3-76f8-acca-bbca70987315",
                     "value": "<ERROR>"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "flow": {
+                        "name": "LLM Categorize",
+                        "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
                 }
             ],
             "segments": [

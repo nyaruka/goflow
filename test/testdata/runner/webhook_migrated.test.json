@@ -132,6 +132,17 @@
                     "type": "run_result_changed",
                     "uuid": "01969b47-866b-76f8-afcb-91a2073e5459",
                     "value": "valid"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:22.123456789Z",
+                    "flow": {
+                        "name": "Migrated Webhook",
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-9223-76f8-9654-8a7258fbaae4"
                 }
             ],
             "segments": [

@@ -57,6 +57,17 @@
                     "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created",
                     "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:03.123456789Z",
+                    "flow": {
+                        "name": "Initial Wait",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-47eb-76f8-b86e-4b881f09a186"
                 }
             ],
             "segments": [

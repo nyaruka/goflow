@@ -257,7 +257,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// and the events
 		run := session.Runs()[0]
-		actual.Events = jsonx.MustMarshal(sprint.Events()[1:]) // skip over run_started
+		actual.Events = jsonx.MustMarshal(sprint.Events()[1 : len(sprint.Events())-1]) // trim initial run_started and final run_ended
 
 		if tc.Webhook != nil {
 			actual.Webhook = jsonx.MustMarshal(run.Webhook())
@@ -885,9 +885,11 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	assert.Equal(t, 5, len(sessions))
 
 	// final session should have an error event
+	penultimateEvent := sprint.Events()[len(sprint.Events())-2]
+	assert.Equal(t, events.TypeError, penultimateEvent.Type())
+	assert.Equal(t, "too many sessions have been spawned since the last time input was received", penultimateEvent.(*events.Error).Text)
 	finalEvent := sprint.Events()[len(sprint.Events())-1]
-	assert.Equal(t, events.TypeError, finalEvent.Type())
-	assert.Equal(t, "too many sessions have been spawned since the last time input was received", finalEvent.(*events.Error).Text)
+	assert.Equal(t, events.TypeRunEnded, finalEvent.Type())
 }
 
 func TestStartSessionLoopProtectionWithInput(t *testing.T) {

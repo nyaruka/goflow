@@ -250,6 +250,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 		for _, r := range s.runs {
 			if r.Status() == flows.RunStatusActive || r.Status() == flows.RunStatusWaiting {
 				r.Exit(flows.RunStatusFailed)
+				sprint.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), flows.RunStatusFailed))
 			}
 		}
 
@@ -306,6 +307,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 	switch resume.Type() {
 	case resumes.TypeWaitExpiration:
 		waitingRun.Exit(flows.RunStatusExpired)
+		sprint.logEvent(events.NewRunEnded(waitingRun.UUID(), waitingRun.FlowReference(), flows.RunStatusExpired))
 	case resumes.TypeWaitTimeout:
 		isTimeout = true
 		fallthrough
@@ -360,6 +362,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			if s.pushedFlow.terminal {
 				for _, run := range s.runs {
 					run.Exit(flows.RunStatusCompleted)
+					sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), flows.RunStatusCompleted))
 				}
 			}
 
@@ -401,6 +404,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 		if destination == "" {
 			if currentRun.ExitedOn() == nil {
 				currentRun.Exit(flows.RunStatusCompleted)
+				sprint.logEvent(events.NewRunEnded(currentRun.UUID(), currentRun.FlowReference(), flows.RunStatusCompleted))
 			}
 
 			parentRun := currentRun.parent
@@ -585,6 +589,7 @@ func failRun(sp *sprint, r *run, step flows.Step, err error) {
 
 	r.Exit(flows.RunStatusFailed)
 	sp.logEvent(evt)
+	sp.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), flows.RunStatusFailed))
 }
 
 //------------------------------------------------------------------------------------------

@@ -113,7 +113,7 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		if err != nil {
 			actual.ResumeError = err.Error()
 		} else {
-			actual.Events = jsonx.MustMarshal(sprint.Events())
+			actual.Events = jsonx.MustMarshal(sprint.Events()[0 : len(sprint.Events())-1]) // trim final run_ended event
 		}
 
 		if !test.UpdateSnapshots {

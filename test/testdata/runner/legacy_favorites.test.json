@@ -242,6 +242,18 @@
                     "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",
                     "uuid": "01969b47-99f3-76f8-9014-2c868db4022e"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:27.123456789Z",
+                    "flow": {
+                        "name": "Favorites",
+                        "revision": 30,
+                        "uuid": "64e86aff-61a1-4029-a2da-f1615493d239"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-acca-bbca70987315",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-a5ab-76f8-bef6-3979f99a96f9"
                 }
             ],
             "segments": [

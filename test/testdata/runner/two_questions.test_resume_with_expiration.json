@@ -105,7 +105,19 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2025-05-04T12:31:00.123456789Z",
+                    "flow": {
+                        "name": "Two Questions",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "expired",
+                    "type": "run_ended",
+                    "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186"
+                }
+            ],
             "segments": [],
             "session": {
                 "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",

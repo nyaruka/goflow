@@ -97,6 +97,17 @@
                         "state": "Rwanda > Kigali City",
                         "text": "Rwanda > Kigali City > Gasabo"
                     }
+                },
+                {
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "flow": {
+                        "name": "Router Test",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
                 }
             ],
             "segments": [

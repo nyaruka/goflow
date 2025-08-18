@@ -356,7 +356,18 @@
                     "uuid": "01969b47-bd1b-76f8-97a3-ae27459a6be4"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:38.123456789Z",
+                    "created_on": "2025-05-04T12:31:36.123456789Z",
+                    "flow": {
+                        "name": "Rules",
+                        "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
+                    "run_uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-c8d3-76f8-ba82-c15b24dd577f"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:40.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -366,16 +377,16 @@
                         "text": "Hooray, you did it and said yes. Say yes or no!",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
+                    "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_created",
-                    "uuid": "01969b47-d0a3-76f8-ba7e-53c2263e32f8"
+                    "uuid": "01969b47-d873-76f8-aaa3-04d3fbce5f9a"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:43.123456789Z",
-                    "expires_on": "2025-05-07T12:31:41.123456789Z",
-                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
+                    "created_on": "2025-05-04T12:31:45.123456789Z",
+                    "expires_on": "2025-05-07T12:31:43.123456789Z",
+                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_wait",
-                    "uuid": "01969b47-e42b-76f8-a13f-9238de2a0b76"
+                    "uuid": "01969b47-ebfb-76f8-9014-2c868db4022e"
                 }
             ],
             "segments": [
@@ -393,14 +404,14 @@
                     "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                     "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e",
                     "operand": "completed",
-                    "time": "2025-05-04T12:31:35.123456789Z"
+                    "time": "2025-05-04T12:31:37.123456789Z"
                 },
                 {
                     "destination_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
                     "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                     "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                    "time": "2025-05-04T12:31:39.123456789Z"
+                    "time": "2025-05-04T12:31:41.123456789Z"
                 }
             ],
             "session": {
@@ -425,7 +436,7 @@
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                         },
-                        "modified_on": "2025-05-04T12:31:44.123456789Z",
+                        "modified_on": "2025-05-04T12:31:46.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -440,15 +451,15 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
                                 "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
+                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:40.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:42.123456789Z",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
+                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
                             }
                         ],
                         "status": "waiting",
@@ -528,15 +539,15 @@
             "events": [
                 {
                     "category": "Other",
-                    "created_on": "2025-05-04T12:31:50.123456789Z",
+                    "created_on": "2025-05-04T12:31:52.123456789Z",
                     "name": "Answer",
-                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
+                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-ff83-76f8-bef6-3979f99a96f9",
+                    "uuid": "01969b48-0753-76f8-ba91-c48ad8c50e6b",
                     "value": "never"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:54.123456789Z",
+                    "created_on": "2025-05-04T12:31:56.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -546,16 +557,16 @@
                         "text": "Nope, that's neither",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+                    "step_uuid": "d659b893-76c5-4e9c-be24-6164105d48f2",
                     "type": "msg_created",
-                    "uuid": "01969b48-0f23-76f8-be24-6164105d48f2"
+                    "uuid": "01969b48-16f3-76f8-8768-7d0ba4d4f3e8"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:59.123456789Z",
-                    "expires_on": "2025-05-07T12:31:57.123456789Z",
-                    "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
+                    "created_on": "2025-05-04T12:32:01.123456789Z",
+                    "expires_on": "2025-05-07T12:31:59.123456789Z",
+                    "step_uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0",
                     "type": "msg_wait",
-                    "uuid": "01969b48-22ab-76f8-b63d-c8dcc2fa9de0"
+                    "uuid": "01969b48-2a7b-76f8-8f9d-465efd6fbb5e"
                 }
             ],
             "segments": [
@@ -565,14 +576,14 @@
                     "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "operand": "never",
-                    "time": "2025-05-04T12:31:51.123456789Z"
+                    "time": "2025-05-04T12:31:53.123456789Z"
                 },
                 {
                     "destination_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
                     "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                     "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
-                    "time": "2025-05-04T12:31:55.123456789Z"
+                    "time": "2025-05-04T12:31:57.123456789Z"
                 }
             ],
             "session": {
@@ -598,7 +609,7 @@
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:32:00.123456789Z",
+                        "modified_on": "2025-05-04T12:32:02.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -613,33 +624,33 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
                                 "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
+                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:40.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:42.123456789Z",
                                 "exit_uuid": "5b6fb733-249a-42f6-992e-1253f158404c",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
+                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:52.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:54.123456789Z",
                                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
                                 "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
-                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                                "uuid": "d659b893-76c5-4e9c-be24-6164105d48f2"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:58.123456789Z",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
+                                "uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0"
                             }
                         ],
                         "results": {
                             "answer": {
                                 "category": "Other",
-                                "created_on": "2025-05-04T12:31:47.123456789Z",
+                                "created_on": "2025-05-04T12:31:49.123456789Z",
                                 "input": "never",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
@@ -723,19 +734,19 @@
             "events": [
                 {
                     "category": "No",
-                    "created_on": "2025-05-04T12:32:05.123456789Z",
+                    "created_on": "2025-05-04T12:32:07.123456789Z",
                     "name": "Answer",
                     "previous": {
                         "category": "Other",
                         "value": "never"
                     },
-                    "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
+                    "step_uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0",
                     "type": "run_result_changed",
-                    "uuid": "01969b48-3a1b-76f8-9566-6fb2598c32d6",
+                    "uuid": "01969b48-41eb-76f8-a8fd-1537ca860f97",
                     "value": "no"
                 },
                 {
-                    "created_on": "2025-05-04T12:32:09.123456789Z",
+                    "created_on": "2025-05-04T12:32:11.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -745,9 +756,20 @@
                         "text": "All Done! You said yes in the child and no here.",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+                    "step_uuid": "4ea2415a-21de-432f-977d-88574316827e",
                     "type": "msg_created",
-                    "uuid": "01969b48-49bb-76f8-977d-88574316827e"
+                    "uuid": "01969b48-518b-76f8-92e8-a5e406ecb2a7"
+                },
+                {
+                    "created_on": "2025-05-04T12:32:14.123456789Z",
+                    "flow": {
+                        "name": "Parent Flow",
+                        "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b48-5d43-76f8-92ca-6e1d7f550554"
                 }
             ],
             "segments": [
@@ -757,7 +779,7 @@
                     "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "operand": "no",
-                    "time": "2025-05-04T12:32:06.123456789Z"
+                    "time": "2025-05-04T12:32:08.123456789Z"
                 }
             ],
             "session": {
@@ -777,13 +799,13 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:32:10.123456789Z",
+                        "exited_on": "2025-05-04T12:32:12.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                         },
                         "had_input": true,
-                        "modified_on": "2025-05-04T12:32:10.123456789Z",
+                        "modified_on": "2025-05-04T12:32:12.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
@@ -798,40 +820,40 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
                                 "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
+                                "uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:40.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:42.123456789Z",
                                 "exit_uuid": "5b6fb733-249a-42f6-992e-1253f158404c",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a"
+                                "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:52.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:54.123456789Z",
                                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
                                 "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
-                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                                "uuid": "d659b893-76c5-4e9c-be24-6164105d48f2"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:31:56.123456789Z",
+                                "arrived_on": "2025-05-04T12:31:58.123456789Z",
                                 "exit_uuid": "3a7b37a7-3ea0-4532-8c27-742c467be53a",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
+                                "uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0"
                             },
                             {
-                                "arrived_on": "2025-05-04T12:32:07.123456789Z",
+                                "arrived_on": "2025-05-04T12:32:09.123456789Z",
                                 "exit_uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
                                 "node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1",
-                                "uuid": "e68a851e-6328-426b-a8fd-1537ca860f97"
+                                "uuid": "4ea2415a-21de-432f-977d-88574316827e"
                             }
                         ],
                         "results": {
                             "answer": {
                                 "category": "No",
-                                "created_on": "2025-05-04T12:32:02.123456789Z",
+                                "created_on": "2025-05-04T12:32:04.123456789Z",
                                 "input": "no",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",

@@ -132,6 +132,17 @@
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:12.123456789Z",
+                    "flow": {
+                        "name": "Resthook",
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-6b13-76f8-8dbf-00ecf5d03034"
                 }
             ],
             "segments": [

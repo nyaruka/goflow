@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b47-efe3-76f8-97a3-ae27459a6be4",
+    "uuid": "01969b47-ff83-76f8-ba7e-53c2263e32f8",
     "type": "airtime_transferred",
-    "created_on": "2025-05-04T12:31:46.123456789Z",
+    "created_on": "2025-05-04T12:31:50.123456789Z",
     "external_id": "98765432",
     "sender": "tel:+593979099111",
     "recipient": "tel:+593979099222",
@@ -16,7 +16,7 @@
             "elapsed_ms": 12,
             "retries": 0,
             "status": "success",
-            "created_on": "2025-05-04T12:31:44.123456789Z"
+            "created_on": "2025-05-04T12:31:48.123456789Z"
         }
     ]
 }

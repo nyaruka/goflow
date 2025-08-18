@@ -103,8 +103,8 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 		require.NoError(t, err)
 
 		run := session.Runs()[0]
-		actual.Results, _ = jsonx.Marshal(run.Results())
-		actual.Events, _ = jsonx.Marshal(sprint.Events()[1:]) // skip the run_started event
+		actual.Results = jsonx.MustMarshal(run.Results())
+		actual.Events = jsonx.MustMarshal(sprint.Events()[1 : len(sprint.Events())-1]) // trim initial run_started and final run_ended
 
 		if tc.Templates != nil {
 			actual.Templates = flow.ExtractTemplates()

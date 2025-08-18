@@ -287,6 +287,17 @@
                     "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
                     "type": "msg_created",
                     "uuid": "01969b47-c4eb-76f8-8ab7-4a517a86045c"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:38.123456789Z",
+                    "flow": {
+                        "name": "Legacy Extra",
+                        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-d0a3-76f8-97a3-ae27459a6be4"
                 }
             ],
             "segments": [

@@ -138,6 +138,17 @@
                     "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
                     "uuid": "01969b47-6343-76f8-8dbf-00ecf5d03034"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:13.123456789Z",
+                    "flow": {
+                        "name": "Date Test",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-6efb-76f8-acca-bbca70987315"
                 }
             ],
             "segments": [

@@ -133,6 +133,17 @@
                     ],
                     "type": "email_sent",
                     "uuid": "01969b47-72e3-76f8-9654-8a7258fbaae4"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "flow": {
+                        "name": "Support",
+                        "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-7e9b-76f8-8e78-3bde7b3370ae"
                 }
             ],
             "segments": [
