@@ -157,17 +157,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Backup Phone",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "135532"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Phone Numbers",
@@ -307,30 +296,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Backup Phone",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "135532"
-                            },
-                            {
-                                "category": "Has Phone",
-                                "created_on": "2025-05-04T12:31:24.123456789Z",
-                                "name": "Backup Phone",
-                                "previous": {
-                                    "category": "Other",
-                                    "value": "135532"
-                                },
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-99f3-76f8-9654-8a7258fbaae4",
-                                "value": "+17184567890"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:37.123456789Z",
                         "flow": {
                             "name": "Phone Numbers",

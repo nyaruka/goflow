@@ -156,17 +156,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Name",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-8e78-3bde7b3370ae",
-                                "value": "Bobby"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Registration",
@@ -288,26 +277,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Name",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-8e78-3bde7b3370ae",
-                                "value": "Bobby"
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:27.123456789Z",
-                                "name": "Age",
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-a5ab-76f8-97a3-ae27459a6be4",
-                                "value": "123"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Registration",
@@ -475,48 +444,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Name",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-8e78-3bde7b3370ae",
-                                "value": "Bobby"
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:27.123456789Z",
-                                "name": "Age",
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-a5ab-76f8-97a3-ae27459a6be4",
-                                "value": "123"
-                            },
-                            {
-                                "category": "10 - 100",
-                                "created_on": "2025-05-04T12:31:46.123456789Z",
-                                "name": "Age",
-                                "previous": {
-                                    "category": "Other",
-                                    "value": "123"
-                                },
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-efe3-76f8-bef6-3979f99a96f9",
-                                "value": "18"
-                            },
-                            {
-                                "category": "Youth",
-                                "created_on": "2025-05-04T12:31:58.123456789Z",
-                                "name": "Response 3",
-                                "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
-                                "type": "run_result_changed",
-                                "uuid": "01969b48-1ec3-76f8-b63d-c8dcc2fa9de0",
-                                "value": "18"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:32:05.123456789Z",
                         "flow": {
                             "name": "Registration",

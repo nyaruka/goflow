@@ -118,35 +118,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:30:53.123456789Z",
-                                "name": "URN Check",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-20db-76f8-8228-9728778b6c98",
-                                "value": ""
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:00.123456789Z",
-                                "name": "Group Check",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-3c33-76f8-a17e-f85e49829fb9",
-                                "value": "[]"
-                            },
-                            {
-                                "category": "Valid",
-                                "created_on": "2025-05-04T12:31:07.123456789Z",
-                                "name": "District Check",
-                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-578b-76f8-b86e-4b881f09a186",
-                                "value": "Rwanda > Kigali City > Gasabo"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:18.123456789Z",
                         "flow": {
                             "name": "Router Test",

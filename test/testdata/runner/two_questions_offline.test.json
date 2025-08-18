@@ -132,17 +132,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Red",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "name": "Favorite Color",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-47eb-76f8-ba00-bd7f0d08e671",
-                                "value": "red"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Two Questions",
@@ -247,26 +236,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Red",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "name": "Favorite Color",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-47eb-76f8-ba00-bd7f0d08e671",
-                                "value": "red"
-                            },
-                            {
-                                "category": "Pepsi",
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
-                                "name": "Soda",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-8a53-76f8-acca-bbca70987315",
-                                "value": "pepsi"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Two Questions",
@@ -348,26 +317,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Red",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "name": "Favorite Color",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-47eb-76f8-ba00-bd7f0d08e671",
-                                "value": "red"
-                            },
-                            {
-                                "category": "Pepsi",
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
-                                "name": "Soda",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-8a53-76f8-acca-bbca70987315",
-                                "value": "pepsi"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:34.123456789Z",
                         "flow": {
                             "name": "Two Questions",

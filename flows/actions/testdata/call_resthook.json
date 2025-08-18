@@ -278,12 +278,13 @@
             }
         ],
         "webhook": {
-            "__default__": "POST http://unavailable.com/",
+            "method": "POST",
+            "url": "http://unavailable.com/",
+            "status": 503,
             "headers": {
                 "Content-Type": "text/plain"
             },
-            "json": null,
-            "status": 503
+            "json": null
         },
         "inspection": {
             "counts": {
@@ -433,14 +434,15 @@
             }
         ],
         "webhook": {
-            "__default__": "POST http://temba.io/",
+            "method": "POST",
+            "url": "http://temba.io/",
+            "status": 200,
             "headers": {
                 "Content-Type": "application/json"
             },
             "json": {
                 "ok": "true"
-            },
-            "status": 200
+            }
         },
         "inspection": {
             "counts": {
@@ -670,14 +672,15 @@
             }
         ],
         "webhook": {
-            "__default__": "POST http://unavailable.com/",
+            "method": "POST",
+            "url": "http://unavailable.com/",
+            "status": 503,
             "headers": {},
             "json": {
                 "errors": [
                     "service unavailable"
                 ]
-            },
-            "status": 503
+            }
         },
         "inspection": {
             "counts": {

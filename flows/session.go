@@ -68,6 +68,7 @@ type Session interface {
 	Contact() *Contact
 	Call() *Call
 	Input() Input
+	Sprints() int
 	Status() SessionStatus
 	Trigger() Trigger
 	CurrentResume() Resume

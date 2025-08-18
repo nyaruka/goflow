@@ -147,17 +147,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Blue",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Color",
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-8d9f-e51d30290005",
-                                "value": "blue"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Favorites",
@@ -265,26 +254,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Blue",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Color",
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-8d9f-e51d30290005",
-                                "value": "blue"
-                            },
-                            {
-                                "category": "Pilsner",
-                                "created_on": "2025-05-04T12:31:24.123456789Z",
-                                "name": "Beer",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-99f3-76f8-ba7e-53c2263e32f8",
-                                "value": "Pilsner"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:31.123456789Z",
                         "flow": {
                             "name": "Favorites",

@@ -19,6 +19,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const (
+	persistWebhookBytesLimit = 10_000 // max bytes of webhook response we will persist in a run
+)
+
 type run struct {
 	uuid    flows.RunUUID
 	session *session
@@ -30,16 +34,16 @@ type run struct {
 	locals   *flows.Locals
 	results  flows.Results
 	path     Path
-	events   []flows.Event
 	hadInput bool
 	status   flows.RunStatus
+	webhook  *flows.WebhookCall
 
 	createdOn  time.Time
 	modifiedOn time.Time
 	exitedOn   *time.Time
 
-	webhook     *flows.WebhookCall
-	legacyExtra *legacyExtra
+	legacyExtra     *legacyExtra
+	legacyWaitCount int
 }
 
 func newRun(session *session, flow flows.Flow, parent *run) *run {
@@ -53,7 +57,6 @@ func newRun(session *session, flow flows.Flow, parent *run) *run {
 		locals:     flows.NewLocals(),
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,
-		events:     make([]flows.Event, 0),
 		createdOn:  now,
 		modifiedOn: now,
 	}
@@ -69,7 +72,6 @@ func (r *run) Session() flows.Session { return r.session }
 func (r *run) Flow() flows.Flow                     { return r.flow }
 func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
 func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
-func (r *run) Events() []flows.Event                { return r.events }
 func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }
@@ -137,11 +139,6 @@ func (r *run) LogEvent(s flows.Step, event flows.Event) {
 
 	if event.Type() == events.TypeMsgReceived {
 		r.hadInput = true
-	}
-
-	// only log the event types we still need for recreating @webhook
-	if event.Type() == events.TypeWebhookCalled || event.Type() == events.TypeRunResultChanged {
-		r.events = append(r.events, event)
 	}
 
 	r.modifiedOn = dates.Now()
@@ -417,16 +414,19 @@ type runEnvelope struct {
 	UUID       flows.RunUUID         `json:"uuid"                  validate:"required,uuid"`
 	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
 	Path       []*step               `json:"path"                  validate:"dive"`
-	Events     []json.RawMessage     `json:"events,omitempty"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
 	Status     flows.RunStatus       `json:"status"                validate:"required"`
 	HadInput   bool                  `json:"had_input,omitzero"`
 	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
+	Webhook    *flows.WebhookCall    `json:"webhook,omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on"  validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
 	ExitedOn   *time.Time `json:"exited_on"`
+
+	// older runs will have events which we can use to infer newer fields
+	LegacyEvents []json.RawMessage `json:"events,omitempty"`
 }
 
 // decodes a run from the passed in JSON. Parent run UUID is returned separately as the
@@ -445,6 +445,7 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 		flowRef:    e.Flow,
 		status:     e.Status,
 		hadInput:   e.HadInput,
+		webhook:    e.Webhook,
 		createdOn:  e.CreatedOn,
 		modifiedOn: e.ModifiedOn,
 		exitedOn:   e.ExitedOn,
@@ -479,21 +480,39 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 		r.path[i] = step
 	}
 
-	// read in our events
-	r.events = make([]flows.Event, len(e.Events))
-	for i := range r.events {
-		if r.events[i], err = events.Read(e.Events[i]); err != nil {
+	// older runs will have events which we can use to infer newer fields
+	resultEventsWithExtra := make(map[flows.StepUUID]*events.RunResultChanged, 5)
+	var lastWebhookEvent *events.WebhookCalled
+	for i := range e.LegacyEvents {
+		e, err := events.Read(e.LegacyEvents[i])
+		if err != nil {
 			return nil, fmt.Errorf("unable to read event %d: %w", i, err)
 		}
 
-		// for older runs that don't have has_input set, infer from events
-		if r.events[i].Type() == events.TypeMsgReceived {
+		switch typed := e.(type) {
+		case *events.MsgReceived:
 			r.hadInput = true
+		case *events.RunResultChanged:
+			if typed.Extra != nil {
+				resultEventsWithExtra[typed.StepUUID()] = typed
+			}
+		case *events.WebhookCalled:
+			lastWebhookEvent = typed
+		case *events.MsgWait, *events.DialWait:
+			r.legacyWaitCount++
 		}
 	}
 
-	// create context
-	r.webhook = lastWebhookSavedAsExtra(r)
+	// if we have a webhook event, look for a result event with extra data at the same step
+	if lastWebhookEvent != nil {
+		if resultEvent := resultEventsWithExtra[lastWebhookEvent.StepUUID()]; resultEvent != nil {
+			r.webhook = &flows.WebhookCall{
+				ResponseStatus: lastWebhookEvent.StatusCode,
+				ResponseJSON:   resultEvent.Extra,
+			}
+		}
+	}
+
 	r.legacyExtra = newLegacyExtra(r)
 
 	return r, nil
@@ -501,8 +520,6 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 
 // MarshalJSON marshals this flow run into JSON
 func (r *run) MarshalJSON() ([]byte, error) {
-	var err error
-
 	e := &runEnvelope{
 		UUID:       r.uuid,
 		Flow:       r.flowRef,
@@ -515,6 +532,10 @@ func (r *run) MarshalJSON() ([]byte, error) {
 		ExitedOn:   r.exitedOn,
 	}
 
+	if r.webhook != nil && len(r.webhook.ResponseJSON) <= persistWebhookBytesLimit {
+		e.Webhook = r.webhook
+	}
+
 	if r.parent != nil {
 		e.ParentUUID = r.parent.UUID()
 	}
@@ -522,13 +543,6 @@ func (r *run) MarshalJSON() ([]byte, error) {
 	e.Path = make([]*step, len(r.path))
 	for i, s := range r.path {
 		e.Path[i] = s.(*step)
-	}
-
-	e.Events = make([]json.RawMessage, len(r.events))
-	for i := range r.events {
-		if e.Events[i], err = jsonx.Marshal(r.events[i]); err != nil {
-			return nil, fmt.Errorf("unable to marshal event[type=%s]: %w", r.events[i].Type(), err)
-		}
 	}
 
 	return jsonx.Marshal(e)

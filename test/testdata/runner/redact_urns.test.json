@@ -70,21 +70,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:56.123456789Z",
-                                "elapsed_ms": 1000,
-                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 32\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:+12065551212\") }",
-                                "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
-                                "retries": 0,
-                                "status": "success",
-                                "status_code": 200,
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "webhook_called",
-                                "url": "http://localhost/?cmd=success",
-                                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:30:58.123456789Z",
                         "flow": {
                             "name": "Redacted URNs",
@@ -100,7 +85,16 @@
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                        "webhook": {
+                            "headers": {},
+                            "json": {
+                                "ok": "true"
+                            },
+                            "method": "POST",
+                            "status": 200,
+                            "url": "http://localhost/?cmd=success"
+                        }
                     }
                 ],
                 "sprints": 1,

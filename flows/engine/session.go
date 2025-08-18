@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -65,6 +64,7 @@ func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
 func (s *session) Contact() *flows.Contact             { return s.contact }
 func (s *session) Call() *flows.Call                   { return s.call }
+func (s *session) Sprints() int                        { return s.sprints }
 
 func (s *session) Input() flows.Input { return s.input }
 func (s *session) setInput(input flows.Input) {
@@ -658,14 +658,10 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		}
 	}
 
-	// older sessions won't have a sprints count but we can calculate it from wait events
+	// older sessions won't have a sprints count but will have events and will have set legacyWaitCount
 	if s.sprints == 0 {
 		for _, r := range s.runsByUUID {
-			for _, e := range r.events {
-				if strings.HasSuffix(e.Type(), "_wait") {
-					s.sprints++
-				}
-			}
+			s.sprints += r.legacyWaitCount
 		}
 	}
 

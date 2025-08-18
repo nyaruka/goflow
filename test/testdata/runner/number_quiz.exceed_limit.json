@@ -165,17 +165,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Result 1",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "3"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Number Test",
@@ -319,30 +308,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Result 1",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "3"
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "name": "Result 1",
-                                "previous": {
-                                    "category": "Other",
-                                    "value": "3"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-a1c3-76f8-8e78-3bde7b3370ae",
-                                "value": "5"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Number Test",
@@ -490,43 +455,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Result 1",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "3"
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "name": "Result 1",
-                                "previous": {
-                                    "category": "Other",
-                                    "value": "3"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-a1c3-76f8-8e78-3bde7b3370ae",
-                                "value": "5"
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:47.123456789Z",
-                                "name": "Result 1",
-                                "previous": {
-                                    "category": "Other",
-                                    "value": "5"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-f3cb-76f8-97a3-ae27459a6be4",
-                                "value": "22"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:56.123456789Z",
                         "flow": {
                             "name": "Number Test",
