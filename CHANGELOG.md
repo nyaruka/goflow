@@ -1,3 +1,7 @@
+v0.252.3 (2025-08-18)
+-------------------------
+ * Limit events persisted on runs to only those used still needed to recreate @webhook.
+
 v0.252.2 (2025-08-15)
 -------------------------
  * Remove Run.Events() so that run events can only be used internally.
