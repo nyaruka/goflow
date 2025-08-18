@@ -132,12 +132,8 @@ func (r *run) Ancestors() []flows.Run {
 	return ancestors
 }
 
-func (r *run) logEvent(s flows.Step, event flows.Event) {
-	if s != nil {
-		event.SetStepUUID(s.UUID())
-	}
-
-	if event.Type() == events.TypeMsgReceived {
+func (r *run) logEvent(evt flows.Event) {
+	if evt.Type() == events.TypeMsgReceived {
 		r.hadInput = true
 	}
 

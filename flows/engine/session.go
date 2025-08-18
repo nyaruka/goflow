@@ -289,13 +289,15 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 	sprint.logFlow(waitingRun.Flow())
 
 	logEvent := func(e flows.Event) {
-		waitingRun.logEvent(step, e)
+		e.SetStepUUID(step.UUID())
+
+		waitingRun.logEvent(e)
 		sprint.logEvent(e)
 	}
 
 	// resumes are always based on an event (e.g. msg_received) - log that on the run but don't repeat it in the sprint
 	// events because we didn't generate it
-	waitingRun.logEvent(nil, resume.Event())
+	waitingRun.logEvent(resume.Event())
 
 	// and provide or clear input
 	s.setInput(resume.Input(s.assets))
@@ -337,7 +339,9 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 		return nil, "", err
 	}
 	logEvent := func(e flows.Event) {
-		run.logEvent(step, e)
+		e.SetStepUUID(step.UUID())
+
+		run.logEvent(e)
 		sprint.logEvent(e)
 	}
 
@@ -471,7 +475,8 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
 	step := r.CreateStep(node)
 	logEvent := func(e flows.Event) {
-		r.logEvent(step, e)
+		e.SetStepUUID(step.UUID())
+		r.logEvent(e)
 		sprint.logEvent(e)
 	}
 
@@ -480,7 +485,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
 		// events because we didn't generate it
 		if trigger.Event() != nil {
-			r.logEvent(nil, trigger.Event())
+			r.logEvent(trigger.Event())
 		}
 	}
 
@@ -580,10 +585,14 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 
 // utility to fail the current run and log a failRun event
 func failRun(sp *sprint, r *run, step flows.Step, err error) {
-	event := events.NewFailure(err)
+	evt := events.NewFailure(err)
+	if step != nil {
+		evt.SetStepUUID(step.UUID())
+	}
+
 	r.Exit(flows.RunStatusFailed)
-	r.logEvent(step, event)
-	sp.logEvent(event)
+	r.logEvent(evt)
+	sp.logEvent(evt)
 }
 
 //------------------------------------------------------------------------------------------
