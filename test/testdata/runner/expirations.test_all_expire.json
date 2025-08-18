@@ -75,20 +75,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test B",
-                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
@@ -108,20 +94,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:53.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test C",
-                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
-                                },
-                                "parent_run_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-307b-76f8-ba00-bd7f0d08e671"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test B",
@@ -142,26 +114,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your first name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "msg_created",
-                                "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
-                                "expires_on": "2025-05-04T15:31:07.123456789Z",
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test C",
@@ -252,20 +204,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test B",
-                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
@@ -285,45 +223,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:53.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test C",
-                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
-                                },
-                                "parent_run_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-307b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:15.123456789Z",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                                "type": "warning",
-                                "uuid": "01969b47-76cb-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your middle name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_created",
-                                "uuid": "01969b47-8a53-76f8-b62c-3c781ca3b5da"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "expires_on": "2025-05-04T14:31:24.123456789Z",
-                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test B",
@@ -356,31 +255,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your first name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "msg_created",
-                                "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
-                                "expires_on": "2025-05-04T15:31:07.123456789Z",
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:17.508225-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
@@ -471,45 +345,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test B",
-                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:32.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                                "type": "warning",
-                                "uuid": "01969b47-b933-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:37.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your last name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-ccbb-76f8-97a3-ae27459a6be4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:43.123456789Z",
-                                "expires_on": "2025-05-04T13:31:41.123456789Z",
-                                "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-e42b-76f8-ba7e-53c2263e32f8"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Expiration Test A",
@@ -541,50 +376,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:53.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test C",
-                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
-                                },
-                                "parent_run_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-307b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:15.123456789Z",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                                "type": "warning",
-                                "uuid": "01969b47-76cb-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your middle name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_created",
-                                "uuid": "01969b47-8a53-76f8-b62c-3c781ca3b5da"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "expires_on": "2025-05-04T14:31:24.123456789Z",
-                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:23.165294-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-3a35-7853-926b-d1e8579e2cae"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:30.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
@@ -617,31 +408,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your first name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "msg_created",
-                                "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
-                                "expires_on": "2025-05-04T15:31:07.123456789Z",
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:17.508225-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",
@@ -690,50 +456,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test B",
-                                    "uuid": "c0614f5b-5cda-4822-b1d9-6f15d12f96ac"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:32.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                                "type": "warning",
-                                "uuid": "01969b47-b933-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:37.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your last name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-ccbb-76f8-97a3-ae27459a6be4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:43.123456789Z",
-                                "expires_on": "2025-05-04T13:31:41.123456789Z",
-                                "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-e42b-76f8-ba7e-53c2263e32f8"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:29.501371-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-6c7f-778f-ad69-11798b50fe1f"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:47.123456789Z",
                         "flow": {
                             "name": "Expiration Test A",
@@ -765,50 +487,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:53.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "flow": {
-                                    "name": "Expiration Test C",
-                                    "uuid": "733ceec6-955d-4bf6-81da-ba067670e840"
-                                },
-                                "parent_run_uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "terminal": false,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-307b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:15.123456789Z",
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "text": "deprecated context value accessed: child.run.status: use child.status instead",
-                                "type": "warning",
-                                "uuid": "01969b47-76cb-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:20.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your middle name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_created",
-                                "uuid": "01969b47-8a53-76f8-b62c-3c781ca3b5da"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:26.123456789Z",
-                                "expires_on": "2025-05-04T14:31:24.123456789Z",
-                                "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-a1c3-76f8-8d9f-e51d30290005"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:23.165294-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-3a35-7853-926b-d1e8579e2cae"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:30.123456789Z",
                         "flow": {
                             "name": "Expiration Test B",
@@ -841,31 +519,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your first name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "msg_created",
-                                "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:09.123456789Z",
-                                "expires_on": "2025-05-04T15:31:07.123456789Z",
-                                "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:17.508225-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:13.123456789Z",
                         "flow": {
                             "name": "Expiration Test C",

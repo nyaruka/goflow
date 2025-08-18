@@ -61,39 +61,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "quick_replies": [
-                                        {
-                                            "text": "Red"
-                                        },
-                                        {
-                                            "text": "Blue"
-                                        }
-                                    ],
-                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                                    "urn": "tel:+12024561111"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:55.123456789Z",
-                                "expires_on": "2025-05-07T12:30:53.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "timeout_seconds": 600,
-                                "type": "msg_wait",
-                                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Two Questions",
@@ -134,44 +101,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "quick_replies": [
-                                        {
-                                            "text": "Red"
-                                        },
-                                        {
-                                            "text": "Blue"
-                                        }
-                                    ],
-                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                                    "urn": "tel:+12024561111"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:55.123456789Z",
-                                "expires_on": "2025-05-07T12:30:53.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "timeout_seconds": 600,
-                                "type": "msg_wait",
-                                "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
-                            },
-                            {
-                                "created_on": "2020-10-12T15:38:17.508225-05:00",
-                                "type": "wait_expired",
-                                "uuid": "0198380e-0d7f-7773-8ebc-d81412e49a58"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:30:59.123456789Z",
                         "flow": {
                             "name": "Two Questions",

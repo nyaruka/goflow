@@ -72,15 +72,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2000-01-01T00:00:00Z",
-                                "msg": {
-                                    "text": "PING",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
-                            },
-                            {
                                 "category": "Ping",
                                 "created_on": "2025-05-04T12:30:54.123456789Z",
                                 "name": "Command",
@@ -88,21 +79,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
                                 "value": "PING"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:59.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "You said PING",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_created",
-                                "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:01.123456789Z",

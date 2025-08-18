@@ -130,21 +130,6 @@
                                 "uuid": "01969b47-20db-76f8-8228-9728778b6c98"
                             },
                             {
-                                "created_on": "2025-05-04T12:30:58.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "Hello!",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_created",
-                                "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9"
-                            },
-                            {
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "elapsed_ms": 1000,
                                 "request": "GET /bad HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -154,21 +139,6 @@
                                 "type": "webhook_called",
                                 "url": "http://temba.io/bad",
                                 "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "Failed call to GET http://temba.io/bad",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:12.123456789Z",

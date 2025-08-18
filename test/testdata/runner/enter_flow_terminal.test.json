@@ -70,35 +70,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "This is the parent flow",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
-                                "flow": {
-                                    "name": "Child flow",
-                                    "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:30:56.123456789Z",
                         "flow": {
                             "name": "Parent Flow",
@@ -117,23 +88,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:30:57.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:01.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "You're now in the child flow!",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-                                "type": "msg_created",
-                                "uuid": "01969b47-401b-76f8-b86e-4b881f09a186"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:03.123456789Z",
                         "flow": {
                             "name": "Child flow",
