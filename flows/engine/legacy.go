@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -97,39 +96,4 @@ func arrayToObject(array *types.XArray) *types.XObject {
 		properties[strconv.Itoa(i)] = array.Get(i)
 	}
 	return types.NewXObject(properties)
-}
-
-// finds the last webhook response that was saved as extra on a result
-func lastWebhookSavedAsExtra(r *run) *flows.WebhookCall {
-	for i := len(r.events) - 1; i >= 0; i-- {
-		switch typed := r.events[i].(type) {
-		case *events.WebhookCalled:
-			// look for a run result changed event on the same step
-			resultEvent := findRunEvent(r, typed.StepUUID(), events.TypeRunResultChanged)
-
-			if resultEvent != nil {
-				asResultEvent := resultEvent.(*events.RunResultChanged)
-				if asResultEvent.Extra != nil {
-					return &flows.WebhookCall{ // they just get the fields to recreate @webhook.json
-						ResponseStatus: typed.StatusCode,
-						ResponseJSON:   asResultEvent.Extra,
-						Recreated:      true,
-					}
-				}
-			}
-		default:
-			continue
-		}
-	}
-	return nil
-}
-
-// find the first run event matching the given step UUID and type
-func findRunEvent(r *run, stepUUID flows.StepUUID, eType string) flows.Event {
-	for _, e := range r.events {
-		if e.StepUUID() == stepUUID && e.Type() == eType {
-			return e
-		}
-	}
-	return nil
 }

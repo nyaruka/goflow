@@ -168,17 +168,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Blue",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "name": "Favorite Color",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-47eb-76f8-ba00-bd7f0d08e671",
-                                "value": "blue"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Two Questions",
@@ -301,39 +290,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "Blue",
-                                "created_on": "2025-05-04T12:31:03.123456789Z",
-                                "name": "Favorite Color",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-47eb-76f8-ba00-bd7f0d08e671",
-                                "value": "blue"
-                            },
-                            {
-                                "category": "Coke",
-                                "created_on": "2025-05-04T12:31:23.123456789Z",
-                                "name": "Soda",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-960b-76f8-afcb-91a2073e5459",
-                                "value": "Coke"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:30.123456789Z",
-                                "elapsed_ms": 1000,
-                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-                                "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
-                                "retries": 0,
-                                "status": "success",
-                                "status_code": 200,
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "webhook_called",
-                                "url": "http://localhost/?cmd=success",
-                                "uuid": "01969b47-b163-76f8-8e78-3bde7b3370ae"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:38.123456789Z",
                         "flow": {
                             "name": "Two Questions",
@@ -380,7 +336,16 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
+                        "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                        "webhook": {
+                            "headers": {},
+                            "json": {
+                                "ok": "true"
+                            },
+                            "method": "POST",
+                            "status": 200,
+                            "url": "http://localhost/?cmd=success"
+                        }
                     }
                 ],
                 "sprints": 3,

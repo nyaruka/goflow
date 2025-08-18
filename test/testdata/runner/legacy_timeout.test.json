@@ -130,26 +130,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "No Response",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Take Part",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-af9c-ff2f1faac4db",
-                                "value": ""
-                            },
-                            {
-                                "category": "Other",
-                                "created_on": "2025-05-04T12:31:12.123456789Z",
-                                "name": "Older",
-                                "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-6b13-76f8-bec9-e032f4f9af5f",
-                                "value": "30"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:14.123456789Z",
                         "flow": {
                             "name": "Legacy Timeout",

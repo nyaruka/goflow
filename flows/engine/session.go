@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -65,6 +64,7 @@ func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
 func (s *session) Contact() *flows.Contact             { return s.contact }
 func (s *session) Call() *flows.Call                   { return s.call }
+func (s *session) Sprints() int                        { return s.sprints }
 
 func (s *session) Input() flows.Input { return s.input }
 func (s *session) setInput(input flows.Input) {
@@ -289,13 +289,13 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 	sprint.logFlow(waitingRun.Flow())
 
 	logEvent := func(e flows.Event) {
-		waitingRun.LogEvent(step, e)
+		waitingRun.logEvent(step, e)
 		sprint.logEvent(e)
 	}
 
 	// resumes are always based on an event (e.g. msg_received) - log that on the run but don't repeat it in the sprint
 	// events because we didn't generate it
-	waitingRun.LogEvent(nil, resume.Event())
+	waitingRun.logEvent(nil, resume.Event())
 
 	// and provide or clear input
 	s.setInput(resume.Input(s.assets))
@@ -337,7 +337,7 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 		return nil, "", err
 	}
 	logEvent := func(e flows.Event) {
-		run.LogEvent(step, e)
+		run.logEvent(step, e)
 		sprint.logEvent(e)
 	}
 
@@ -471,7 +471,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
 	step := r.CreateStep(node)
 	logEvent := func(e flows.Event) {
-		r.LogEvent(step, e)
+		r.logEvent(step, e)
 		sprint.logEvent(e)
 	}
 
@@ -480,7 +480,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 		// if trigger was based on an event (e.g. msg received), log that on the run but don't repeat it in the sprint
 		// events because we didn't generate it
 		if trigger.Event() != nil {
-			r.LogEvent(nil, trigger.Event())
+			r.logEvent(nil, trigger.Event())
 		}
 	}
 
@@ -527,16 +527,16 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(sprint *sprint, run flows.Run, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.Exit, string, error) {
+func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.Exit, string, error) {
 	var exitUUID flows.ExitUUID
 	var operand string
 	var err error
 
 	if node.Router() != nil {
 		if isTimeout {
-			exitUUID, err = node.Router().RouteTimeout(run, step, logEvent)
+			exitUUID, err = node.Router().RouteTimeout(r, step, logEvent)
 		} else {
-			exitUUID, operand, err = node.Router().Route(run, step, logEvent)
+			exitUUID, operand, err = node.Router().Route(r, step, logEvent)
 		}
 
 		if err != nil {
@@ -544,7 +544,7 @@ func (s *session) pickNodeExit(sprint *sprint, run flows.Run, node flows.Node, s
 		}
 		// router didn't error.. but it failed to pick a category
 		if exitUUID == "" {
-			failRun(sprint, run, step, fmt.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			failRun(sprint, r, step, fmt.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
 			return nil, "", nil
 		}
 	} else if len(node.Exits()) > 0 {
@@ -579,10 +579,10 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
 }
 
 // utility to fail the current run and log a failRun event
-func failRun(sp *sprint, run flows.Run, step flows.Step, err error) {
+func failRun(sp *sprint, r *run, step flows.Step, err error) {
 	event := events.NewFailure(err)
-	run.Exit(flows.RunStatusFailed)
-	run.LogEvent(step, event)
+	r.Exit(flows.RunStatusFailed)
+	r.logEvent(step, event)
 	sp.logEvent(event)
 }
 
@@ -658,14 +658,10 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		}
 	}
 
-	// older sessions won't have a sprints count but we can calculate it from wait events
+	// older sessions won't have a sprints count but will have events and will have set legacyWaitCount
 	if s.sprints == 0 {
 		for _, r := range s.runsByUUID {
-			for _, e := range r.events {
-				if strings.HasSuffix(e.Type(), "_wait") {
-					s.sprints++
-				}
-			}
+			s.sprints += r.legacyWaitCount
 		}
 	}
 

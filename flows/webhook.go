@@ -12,12 +12,11 @@ import (
 
 // WebhookCall holds the details of a webhook call
 type WebhookCall struct {
-	Method          string
-	URL             string
-	ResponseStatus  int
-	ResponseHeaders map[string]string
-	ResponseJSON    []byte
-	Recreated       bool // whether this was recreated from a result
+	Method          string            `json:"method"`
+	URL             string            `json:"url"`
+	ResponseStatus  int               `json:"status"`
+	ResponseHeaders map[string]string `json:"headers"`
+	ResponseJSON    json.RawMessage   `json:"json"`
 }
 
 // NewWebhookCall creates a new webhook call from a trace
@@ -57,19 +56,6 @@ func NewWebhookCall(t *httpx.Trace) *WebhookCall {
 //
 // @context webhook
 func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
-	// TODO remove when users stop relying on this
-	if w.Recreated {
-		json := types.JSONToXValue(w.ResponseJSON)
-		if types.IsXError(json) {
-			json = nil
-		}
-		if json != nil {
-			json.SetDeprecated("webhook recreated from extra")
-		}
-
-		return map[string]types.XValue{"json": json}
-	}
-
 	headers := types.NewXLazyObject(func() map[string]types.XValue {
 		values := make(map[string]types.XValue, len(w.ResponseHeaders))
 		for k, v := range w.ResponseHeaders {
@@ -89,10 +75,6 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 		"headers":     headers,
 		"json":        json,
 	}
-}
-
-func (w *WebhookCall) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Context(nil))
 }
 
 func ExtractJSON(body []byte) []byte {

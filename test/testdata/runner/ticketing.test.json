@@ -163,26 +163,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "category": "All Responses",
-                                "created_on": "2025-05-04T12:31:05.123456789Z",
-                                "name": "Response 1",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
-                                "value": "Rats"
-                            },
-                            {
-                                "category": "Success",
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "name": "Ticket",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "type": "run_result_changed",
-                                "uuid": "01969b47-7ab3-76f8-acca-bbca70987315",
-                                "value": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:23.123456789Z",
                         "flow": {
                             "name": "Support",
