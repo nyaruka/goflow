@@ -127,7 +127,7 @@ func TestRuns(t *testing.T) {
 		assert.Equal(t, 0, len(r1.Ancestors())) // no parent runs within this session
 		assert.True(t, r1.HadInput())
 
-		assert.Equal(t, flows.RunUUID("01969b47-28ab-76f8-8f41-6b2d9f33d623"), r2.UUID())
+		assert.Equal(t, flows.RunUUID("01969b47-24c3-76f8-8f41-6b2d9f33d623"), r2.UUID())
 		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r2.Parent().UUID())
 	}
 
@@ -161,7 +161,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `01969b47-28ab-76f8-8f41-6b2d9f33d623`},
+		{`@child.uuid`, `01969b47-24c3-76f8-8f41-6b2d9f33d623`},
 		{`@child.run`, `{status: completed}`}, // to be removed in 13.2
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.flow.name`, "Collect Age"},
@@ -196,11 +196,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:22.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(run.results.favorite_color))`,
-			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:22.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
+			`{"category":"Red","category_localized":"Red","created_on":"2025-05-04T12:31:17.123456Z","extra":null,"input":"","name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"}`,
 		},
 		{
 			`@(json(parent.contact.urns))`,

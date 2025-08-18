@@ -132,12 +132,11 @@ func (r *run) Ancestors() []flows.Run {
 	return ancestors
 }
 
-func (r *run) logEvent(evt flows.Event) {
-	if evt.Type() == events.TypeMsgReceived {
-		r.hadInput = true
+func (r *run) recordInput() {
+	if !r.hadInput {
+		r.modifiedOn = dates.Now()
 	}
-
-	r.modifiedOn = dates.Now()
+	r.hadInput = true
 }
 
 func (r *run) Path() []flows.Step { return r.path }

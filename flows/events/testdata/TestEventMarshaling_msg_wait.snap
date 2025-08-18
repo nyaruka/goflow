@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-bb03-76f8-bfd7-d22404241e07",
+    "uuid": "01969b48-900b-76f8-bfd7-d22404241e07",
     "type": "msg_wait",
-    "created_on": "2025-05-04T12:32:38.123456789Z",
+    "created_on": "2025-05-04T12:32:27.123456789Z",
     "timeout_seconds": 500,
     "expires_on": "2022-02-03T13:45:30Z",
     "hint": {
