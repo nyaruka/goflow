@@ -165,7 +165,6 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 		repro.Trigger = tb.Build()
 	}
-	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
 	session, sprint, err := eng.NewSession(ctx, sa, env, contact, repro.Trigger, call)

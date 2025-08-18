@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -61,7 +60,6 @@ func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	}
 
 	run.Session().PushFlow(flow, run, a.Terminal)
-	logEvent(events.NewRunStarted(flow.Reference(false), run.UUID(), a.Terminal))
 	return nil
 }
 

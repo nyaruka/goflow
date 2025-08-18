@@ -184,15 +184,15 @@
                 "category": "Yes",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                 "input": "YES!!",
-                "created_on": "2025-05-04T12:30:51.123456789Z"
+                "created_on": "2025-05-04T12:30:53.123456789Z"
             }
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes"
@@ -278,15 +278,15 @@
                 "category": "Other",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                 "input": "[]",
-                "created_on": "2025-05-04T12:30:51.123456789Z"
+                "created_on": "2025-05-04T12:30:53.123456789Z"
             }
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Is Member",
                 "value": "[]",
                 "category": "Other"
@@ -372,15 +372,15 @@
                 "category": "Other",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                 "input": "[]",
-                "created_on": "2025-05-04T12:30:51.123456789Z"
+                "created_on": "2025-05-04T12:30:53.123456789Z"
             }
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "In Group",
                 "value": "[]",
                 "category": "Other"
@@ -485,15 +485,15 @@
                 "category": "Yes",
                 "node_uuid": "64373978-e8f6-4973-b6ff-a2993f3376fc",
                 "input": "YES!!",
-                "created_on": "2025-05-04T12:30:51.123456789Z"
+                "created_on": "2025-05-04T12:30:53.123456789Z"
             }
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
-                "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes"
@@ -577,10 +577,10 @@
         "results": {},
         "events": [
             {
-                "uuid": "01969b47-1cf3-76f8-8228-9728778b6c98",
+                "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "failure",
-                "created_on": "2025-05-04T12:30:52.123456789Z",
-                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                "created_on": "2025-05-04T12:30:54.123456789Z",
+                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "router on node[uuid=64373978-e8f6-4973-b6ff-a2993f3376fc] failed to pick a category"
             }
         ],
