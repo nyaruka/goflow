@@ -49,23 +49,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Android Channel",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "locale": "eng-US",
-                                    "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:30:53.123456789Z",
                         "flow": {
                             "name": "Triggered Flow",

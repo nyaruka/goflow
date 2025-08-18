@@ -139,7 +139,11 @@ func (r *run) LogEvent(s flows.Step, event flows.Event) {
 		r.hadInput = true
 	}
 
-	r.events = append(r.events, event)
+	// only log the event types we still need for recreating @webhook
+	if event.Type() == events.TypeWebhookCalled || event.Type() == events.TypeRunResultChanged {
+		r.events = append(r.events, event)
+	}
+
 	r.modifiedOn = dates.Now()
 }
 

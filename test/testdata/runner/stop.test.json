@@ -94,47 +94,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "status": "stopped",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "contact_status_changed",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:54.123456789Z",
-                                "groups_removed": [
-                                    {
-                                        "name": "Query Group 1",
-                                        "uuid": "9a4b2f57-d806-4f64-81be-c5109560a85e"
-                                    },
-                                    {
-                                        "name": "Query Group 2",
-                                        "uuid": "19037db9-c1ff-48ec-af06-ee567f9a4190"
-                                    },
-                                    {
-                                        "name": "Query Group 3",
-                                        "uuid": "c3ad01ac-013b-407a-a9a6-f0b2188a31d4"
-                                    },
-                                    {
-                                        "name": "Static Group 1",
-                                        "uuid": "49bf9cf9-772b-49f5-b118-c918f4d36ba2"
-                                    },
-                                    {
-                                        "name": "Static Group 2",
-                                        "uuid": "4dc0fb5d-6759-4e2f-88d1-375d7204acdf"
-                                    },
-                                    {
-                                        "name": "Static Group 3",
-                                        "uuid": "c0afafb1-fdd1-4714-879b-dc47ddd77245"
-                                    }
-                                ],
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "contact_groups_changed",
-                                "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:30:56.123456789Z",
                         "flow": {
                             "name": "Stopper",

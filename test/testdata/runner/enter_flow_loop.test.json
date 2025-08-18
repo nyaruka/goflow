@@ -51,26 +51,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
@@ -227,33 +207,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "name",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Name",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Command",
@@ -261,18 +214,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                                 "value": "name"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Child",
-                                    "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:29.123456789Z",
@@ -317,38 +258,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:13.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
-                                "msg": {
-                                    "locale": "und-US",
-                                    "text": "Clearing name",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_created",
-                                "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "name": "",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-9223-76f8-8e78-3bde7b3370ae"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:27.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Parent",
-                                    "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
-                                },
-                                "parent_run_uuid": "01969b47-76cb-76f8-8dbf-00ecf5d03034",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-a5ab-76f8-af9c-ff2f1faac4db"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:31:30.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
@@ -381,26 +290,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:31.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:35.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-c4eb-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:41.123456789Z",
-                                "expires_on": "2025-05-11T12:31:39.123456789Z",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-dc5b-76f8-97a3-ae27459a6be4"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
@@ -551,33 +440,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "name",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Name",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Command",
@@ -585,18 +447,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                                 "value": "name"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Child",
-                                    "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                             }
                         ],
                         "exited_on": "2025-05-04T12:32:12.123456789Z",
@@ -641,38 +491,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:13.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
-                                "msg": {
-                                    "locale": "und-US",
-                                    "text": "Clearing name",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_created",
-                                "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "name": "",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-9223-76f8-8e78-3bde7b3370ae"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:27.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Parent",
-                                    "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
-                                },
-                                "parent_run_uuid": "01969b47-76cb-76f8-8dbf-00ecf5d03034",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-a5ab-76f8-af9c-ff2f1faac4db"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:32:13.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
@@ -707,33 +525,6 @@
                         "created_on": "2025-05-04T12:31:31.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:31:35.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-c4eb-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:41.123456789Z",
-                                "expires_on": "2025-05-11T12:31:39.123456789Z",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-dc5b-76f8-97a3-ae27459a6be4"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "text": "name",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
-                            },
-                            {
                                 "category": "Name",
                                 "created_on": "2025-05-04T12:31:49.123456789Z",
                                 "name": "Command",
@@ -741,18 +532,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-fb9b-76f8-ba7e-53c2263e32f8",
                                 "value": "name"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:54.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Child",
-                                    "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                                },
-                                "parent_run_uuid": "01969b47-bd1b-76f8-8d9f-e51d30290005",
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b48-0f23-76f8-a13f-9238de2a0b76"
                             }
                         ],
                         "exited_on": "2025-05-04T12:32:14.123456789Z",
@@ -798,31 +577,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:32:03.123456789Z",
-                                "msg": {
-                                    "locale": "und-US",
-                                    "text": "Clearing name",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
-                                "type": "msg_created",
-                                "uuid": "01969b48-324b-76f8-ba91-c48ad8c50e6b"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:32:10.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Parent",
-                                    "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
-                                },
-                                "parent_run_uuid": "01969b48-2a7b-76f8-9014-2c868db4022e",
-                                "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b48-4da3-76f8-b63d-c8dcc2fa9de0"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:32:15.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
@@ -855,26 +609,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:32:16.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:32:20.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
-                                "type": "msg_created",
-                                "uuid": "01969b48-74b3-76f8-a8fd-1537ca860f97"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:32:26.123456789Z",
-                                "expires_on": "2025-05-11T12:32:24.123456789Z",
-                                "step_uuid": "4ea2415a-21de-432f-977d-88574316827e",
-                                "type": "msg_wait",
-                                "uuid": "01969b48-8c23-76f8-92e8-a5e406ecb2a7"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Start Actions Parent",
@@ -942,33 +676,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "name",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Name",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Command",
@@ -976,18 +683,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                                 "value": "name"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Child",
-                                    "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                                },
-                                "parent_run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                                "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-6343-76f8-bebe-b4a1f677cf4c"
                             }
                         ],
                         "exited_on": "2025-05-04T12:32:12.123456789Z",
@@ -1032,38 +727,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:13.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
-                                "msg": {
-                                    "locale": "und-US",
-                                    "text": "Clearing name",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_created",
-                                "uuid": "01969b47-7e9b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:22.123456789Z",
-                                "name": "",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-9223-76f8-8e78-3bde7b3370ae"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:27.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Parent",
-                                    "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
-                                },
-                                "parent_run_uuid": "01969b47-76cb-76f8-8dbf-00ecf5d03034",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b47-a5ab-76f8-af9c-ff2f1faac4db"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:32:13.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
@@ -1098,33 +761,6 @@
                         "created_on": "2025-05-04T12:31:31.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:31:35.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-c4eb-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:41.123456789Z",
-                                "expires_on": "2025-05-11T12:31:39.123456789Z",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-dc5b-76f8-97a3-ae27459a6be4"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "text": "name",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
-                            },
-                            {
                                 "category": "Name",
                                 "created_on": "2025-05-04T12:31:49.123456789Z",
                                 "name": "Command",
@@ -1132,18 +768,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-fb9b-76f8-ba7e-53c2263e32f8",
                                 "value": "name"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:54.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Child",
-                                    "uuid": "9010b833-d598-4b31-97eb-3151f25020c6"
-                                },
-                                "parent_run_uuid": "01969b47-bd1b-76f8-8d9f-e51d30290005",
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b48-0f23-76f8-a13f-9238de2a0b76"
                             }
                         ],
                         "exited_on": "2025-05-04T12:32:14.123456789Z",
@@ -1189,31 +813,6 @@
                     },
                     {
                         "created_on": "2025-05-04T12:31:59.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:32:03.123456789Z",
-                                "msg": {
-                                    "locale": "und-US",
-                                    "text": "Clearing name",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
-                                "type": "msg_created",
-                                "uuid": "01969b48-324b-76f8-ba91-c48ad8c50e6b"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:32:10.123456789Z",
-                                "flow": {
-                                    "name": "Start Actions Parent",
-                                    "uuid": "0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69"
-                                },
-                                "parent_run_uuid": "01969b48-2a7b-76f8-9014-2c868db4022e",
-                                "step_uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8",
-                                "terminal": true,
-                                "type": "flow_entered",
-                                "uuid": "01969b48-4da3-76f8-b63d-c8dcc2fa9de0"
-                            }
-                        ],
                         "exited_on": "2025-05-04T12:32:15.123456789Z",
                         "flow": {
                             "name": "Start Actions Child",
@@ -1247,33 +846,6 @@
                     {
                         "created_on": "2025-05-04T12:32:16.123456789Z",
                         "events": [
-                            {
-                                "created_on": "2025-05-04T12:32:20.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Enter command: name or exit",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
-                                "type": "msg_created",
-                                "uuid": "01969b48-74b3-76f8-a8fd-1537ca860f97"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:32:26.123456789Z",
-                                "expires_on": "2025-05-11T12:32:24.123456789Z",
-                                "step_uuid": "4ea2415a-21de-432f-977d-88574316827e",
-                                "type": "msg_wait",
-                                "uuid": "01969b48-8c23-76f8-92e8-a5e406ecb2a7"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:06:05Z",
-                                "msg": {
-                                    "text": "exit",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
-                            },
                             {
                                 "category": "Exit",
                                 "created_on": "2025-05-04T12:32:34.123456789Z",

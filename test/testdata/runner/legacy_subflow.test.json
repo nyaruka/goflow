@@ -51,26 +51,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "You're in the subflow now. Pick a number!",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a691-235cbe720980"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Subflow Child",
@@ -171,33 +151,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "You're in the subflow now. Pick a number!",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a691-235cbe720980"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "xx",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Other",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Number",
@@ -205,24 +158,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-8dbf-00ecf5d03034",
                                 "value": "xx"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "That's not a number.. try again",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6343-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-11T12:31:14.123456789Z",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae"
                             }
                         ],
                         "exited_on": null,
@@ -318,33 +253,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "You're in the subflow now. Pick a number!",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-ba00-bd7f0d08e671"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-a691-235cbe720980"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "xx",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Other",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Number",
@@ -352,33 +260,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-8dbf-00ecf5d03034",
                                 "value": "xx"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "That's not a number.. try again",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6343-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-11T12:31:14.123456789Z",
-                                "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "text": "13",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
                             },
                             {
                                 "category": "Numeric",

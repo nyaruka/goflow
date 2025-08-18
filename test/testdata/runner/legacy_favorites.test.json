@@ -49,26 +49,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your favorite color?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-b62c-3c781ca3b5da"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Favorites",
@@ -169,37 +149,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your favorite color?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-b62c-3c781ca3b5da"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Blue",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Color",
@@ -207,24 +156,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-8d9f-e51d30290005",
                                 "value": "blue"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your favorite beer?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6343-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-11T12:31:14.123456789Z",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-7ab3-76f8-97a3-ae27459a6be4"
                             }
                         ],
                         "exited_on": null,
@@ -336,37 +267,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your favorite color?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-9654-8a7258fbaae4"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-b62c-3c781ca3b5da"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "I like blue!",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Blue",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Color",
@@ -376,37 +276,6 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "What's your favorite beer?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6343-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:16.123456789Z",
-                                "expires_on": "2025-05-11T12:31:14.123456789Z",
-                                "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-7ab3-76f8-97a3-ae27459a6be4"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "channel": {
-                                        "name": "Nexmo",
-                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                    },
-                                    "text": "Pilsner",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
-                            },
-                            {
                                 "category": "Pilsner",
                                 "created_on": "2025-05-04T12:31:24.123456789Z",
                                 "name": "Beer",
@@ -414,17 +283,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-99f3-76f8-ba7e-53c2263e32f8",
                                 "value": "Pilsner"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:29.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "type": "msg_created",
-                                "uuid": "01969b47-ad7b-76f8-a13f-9238de2a0b76"
                             }
                         ],
                         "exited_on": "2025-05-04T12:31:31.123456789Z",

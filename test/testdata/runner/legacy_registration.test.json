@@ -51,26 +51,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Hi there. What is your name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8dbf-00ecf5d03034"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-afcb-91a2073e5459"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Registration",
@@ -178,33 +158,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Hi there. What is your name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8dbf-00ecf5d03034"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "Bobby",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "All Responses",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Name",
@@ -212,31 +165,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-4fbb-76f8-8e78-3bde7b3370ae",
                                 "value": "Bobby"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "name": "Bobby",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-6343-76f8-af9c-ff2f1faac4db"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Ok Bobby, what age are you?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6efb-76f8-8d9f-e51d30290005"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:19.123456789Z",
-                                "expires_on": "2025-05-11T12:31:17.123456789Z",
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-866b-76f8-9853-0310d032b497"
                             }
                         ],
                         "exited_on": null,
@@ -362,33 +290,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Hi there. What is your name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8dbf-00ecf5d03034"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "Bobby",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "All Responses",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Name",
@@ -398,40 +299,6 @@
                                 "value": "Bobby"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "name": "Bobby",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-6343-76f8-af9c-ff2f1faac4db"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Ok Bobby, what age are you?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6efb-76f8-8d9f-e51d30290005"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:19.123456789Z",
-                                "expires_on": "2025-05-11T12:31:17.123456789Z",
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-866b-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "text": "123",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
-                            },
-                            {
                                 "category": "Other",
                                 "created_on": "2025-05-04T12:31:27.123456789Z",
                                 "name": "Age",
@@ -439,24 +306,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-a5ab-76f8-97a3-ae27459a6be4",
                                 "value": "123"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:32.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Are you sure you're 123... maybe try again",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-b933-76f8-ba7e-53c2263e32f8"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:38.123456789Z",
-                                "expires_on": "2025-05-11T12:31:36.123456789Z",
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-d0a3-76f8-a13f-9238de2a0b76"
                             }
                         ],
                         "exited_on": null,
@@ -628,33 +477,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Hi there. What is your name?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
-                                "type": "msg_created",
-                                "uuid": "01969b47-190b-76f8-8dbf-00ecf5d03034"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:30:57.123456789Z",
-                                "expires_on": "2025-05-11T12:30:55.123456789Z",
-                                "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-307b-76f8-afcb-91a2073e5459"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "Bobby",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "All Responses",
                                 "created_on": "2025-05-04T12:31:05.123456789Z",
                                 "name": "Name",
@@ -664,40 +486,6 @@
                                 "value": "Bobby"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:10.123456789Z",
-                                "name": "Bobby",
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "contact_name_changed",
-                                "uuid": "01969b47-6343-76f8-af9c-ff2f1faac4db"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:13.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Ok Bobby, what age are you?",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
-                                "type": "msg_created",
-                                "uuid": "01969b47-6efb-76f8-8d9f-e51d30290005"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:19.123456789Z",
-                                "expires_on": "2025-05-11T12:31:17.123456789Z",
-                                "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-866b-76f8-9853-0310d032b497"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:05:05Z",
-                                "msg": {
-                                    "text": "123",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
-                            },
-                            {
                                 "category": "Other",
                                 "created_on": "2025-05-04T12:31:27.123456789Z",
                                 "name": "Age",
@@ -705,33 +493,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-a5ab-76f8-97a3-ae27459a6be4",
                                 "value": "123"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:32.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Are you sure you're 123... maybe try again",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
-                                "type": "msg_created",
-                                "uuid": "01969b47-b933-76f8-ba7e-53c2263e32f8"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:38.123456789Z",
-                                "expires_on": "2025-05-11T12:31:36.123456789Z",
-                                "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-d0a3-76f8-a13f-9238de2a0b76"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:06:05Z",
-                                "msg": {
-                                    "text": "18",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
                             },
                             {
                                 "category": "10 - 100",
@@ -747,17 +508,6 @@
                                 "value": "18"
                             },
                             {
-                                "created_on": "2025-05-04T12:31:51.123456789Z",
-                                "msg": {
-                                    "locale": "eng-US",
-                                    "text": "Great, you are 18 years old",
-                                    "unsendable_reason": "no_destination"
-                                },
-                                "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
-                                "type": "msg_created",
-                                "uuid": "01969b48-036b-76f8-be24-6164105d48f2"
-                            },
-                            {
                                 "category": "Youth",
                                 "created_on": "2025-05-04T12:31:58.123456789Z",
                                 "name": "Response 3",
@@ -765,18 +515,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b48-1ec3-76f8-b63d-c8dcc2fa9de0",
                                 "value": "18"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:32:03.123456789Z",
-                                "groups_added": [
-                                    {
-                                        "name": "Youth",
-                                        "uuid": "5ddddd32-9d5e-4102-8aa0-bf54d91a768c"
-                                    }
-                                ],
-                                "step_uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e",
-                                "type": "contact_groups_changed",
-                                "uuid": "01969b48-324b-76f8-9566-6fb2598c32d6"
                             }
                         ],
                         "exited_on": "2025-05-04T12:32:05.123456789Z",

@@ -38,15 +38,6 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "events": [
-                            {
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
-                                "expires_on": "2025-05-07T12:30:50.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-1cf3-76f8-8228-9728778b6c98"
-                            }
-                        ],
                         "exited_on": null,
                         "flow": {
                             "name": "Migrated Webhook",
@@ -164,22 +155,6 @@
                         "created_on": "2025-05-04T12:30:47.123456789Z",
                         "events": [
                             {
-                                "created_on": "2025-05-04T12:30:52.123456789Z",
-                                "expires_on": "2025-05-07T12:30:50.123456789Z",
-                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "msg_wait",
-                                "uuid": "01969b47-1cf3-76f8-8228-9728778b6c98"
-                            },
-                            {
-                                "created_on": "2006-01-02T15:04:05Z",
-                                "msg": {
-                                    "text": "Ryan Lewis",
-                                    "urn": "tel:+12065551212"
-                                },
-                                "type": "msg_received",
-                                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
-                            },
-                            {
                                 "category": "Other",
                                 "created_on": "2025-05-04T12:31:00.123456789Z",
                                 "name": "Country Response",
@@ -212,13 +187,6 @@
                                 "type": "run_result_changed",
                                 "uuid": "01969b47-6b13-76f8-a691-235cbe720980",
                                 "value": "200"
-                            },
-                            {
-                                "created_on": "2025-05-04T12:31:17.123456789Z",
-                                "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
-                                "text": "deprecated context value accessed: legacy_extra",
-                                "type": "warning",
-                                "uuid": "01969b47-7e9b-76f8-8dbf-00ecf5d03034"
                             },
                             {
                                 "category": "Valid",
