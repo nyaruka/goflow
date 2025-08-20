@@ -1,3 +1,7 @@
+v0.252.6 (2025-08-20)
+-------------------------
+ * Add flows.RunStatusInterrupted
+
 v0.252.5 (2025-08-18)
 -------------------------
  * Add run_ended events
