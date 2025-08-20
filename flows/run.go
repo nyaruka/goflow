@@ -35,6 +35,9 @@ const (
 
 	// RunStatusExpired represents a run that expired due to inactivity
 	RunStatusExpired RunStatus = "expired"
+
+	// RunStatusInterrupted is never used by the engine but callers may put runs into this state
+	RunStatusInterrupted RunStatus = "interrupted"
 )
 
 // RunSummary represents the minimum information available about all runs (current or related) and is the
