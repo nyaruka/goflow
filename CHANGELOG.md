@@ -1,3 +1,8 @@
+v0.253.0 (2025-08-21)
+-------------------------
+ * Add call trigger type and call_started event
+ * Tweak marshalling of run_started events
+
 v0.252.8 (2025-08-21)
 -------------------------
  * Add flows.SessionStatusExpired
