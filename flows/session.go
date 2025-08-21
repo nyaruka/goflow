@@ -34,6 +34,9 @@ const (
 	// SessionStatusFailed represents a session that encountered an unrecoverable error
 	SessionStatusFailed SessionStatus = "failed"
 
+	// SessionStatusExpired is never used by the engine but callers may put sessions into this state
+	SessionStatusExpired SessionStatus = "expired"
+
 	// SessionStatusInterrupted is never used by the engine but callers may put sessions into this state
 	SessionStatusInterrupted SessionStatus = "interrupted"
 )
