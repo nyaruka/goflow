@@ -189,15 +189,17 @@ func TestTriggerMarshaling(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
+	nexmo := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", weather, user)
+	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065551212")
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddURN(urns.URN("tel:+12065551212"))
+	contact.AddURN("tel:+12065551212")
 
 	eng := engine.NewBuilder().Build()
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
@@ -219,15 +221,15 @@ func TestTriggerMarshaling(t *testing.T) {
 	}{
 		{
 			triggers.NewBuilder(flow).
-				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
+				Call(events.NewCallStarted(call)).
 				Build(),
-			"campaign",
+			"call",
 		},
 		{
 			triggers.NewBuilder(flow).
-				Channel(channel, triggers.ChannelEventTypeIncomingCall).
+				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
 				Build(),
-			"channel_incoming_call",
+			"campaign",
 		},
 		{
 			triggers.NewBuilder(flow).

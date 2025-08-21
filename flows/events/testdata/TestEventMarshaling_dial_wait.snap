@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-beeb-76f8-8ceb-17799a976525",
+    "uuid": "01969b48-c6bb-76f8-9504-776e7d151101",
     "type": "dial_wait",
-    "created_on": "2025-05-04T12:32:39.123456789Z",
+    "created_on": "2025-05-04T12:32:41.123456789Z",
     "urn": "tel:+1234567890",
     "dial_limit_seconds": 20,
     "call_limit_seconds": 120,
