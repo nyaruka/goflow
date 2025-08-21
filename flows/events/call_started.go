@@ -31,7 +31,7 @@ type CallReceived struct {
 	Call *flows.CallEnvelope `json:"call" validate:"required"`
 }
 
-// NewCallStarted returns a new call received event
+// NewCallReceived returns a new call received event
 func NewCallReceived(call *flows.Call) *CallReceived {
 	return &CallReceived{
 		BaseEvent: NewBaseEvent(TypeCallReceived),
