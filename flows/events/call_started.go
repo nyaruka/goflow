@@ -5,17 +5,17 @@ import (
 )
 
 func init() {
-	registerType(TypeCallStarted, func() flows.Event { return &CallStarted{} })
+	registerType(TypeCallReceived, func() flows.Event { return &CallReceived{} })
 }
 
-// TypeCallStarted is the type of our call started event
-const TypeCallStarted string = "call_started"
+// TypeCallReceived is the type of our call received event
+const TypeCallReceived string = "call_received"
 
-// CallStarted events are created when a session is resumed after waiting for a dial.
+// CallReceived events are created when an incoming call is received.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
-//	  "type": "call_started",
+//	  "type": "call_received",
 //	  "created_on": "2019-01-02T15:04:05Z",
 //	  "call": {
 //	    "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
@@ -24,19 +24,19 @@ const TypeCallStarted string = "call_started"
 //	  }
 //	}
 //
-// @event call_started
-type CallStarted struct {
+// @event call_received
+type CallReceived struct {
 	BaseEvent
 
 	Call *flows.CallEnvelope `json:"call" validate:"required"`
 }
 
-// NewCallStarted returns a new call started event
-func NewCallStarted(call *flows.Call) *CallStarted {
-	return &CallStarted{
-		BaseEvent: NewBaseEvent(TypeCallStarted),
+// NewCallStarted returns a new call received event
+func NewCallReceived(call *flows.Call) *CallReceived {
+	return &CallReceived{
+		BaseEvent: NewBaseEvent(TypeCallReceived),
 		Call:      call.Marshal(),
 	}
 }
 
-var _ flows.Event = (*CallStarted)(nil)
+var _ flows.Event = (*CallReceived)(nil)

@@ -22,7 +22,7 @@ const TypeCall string = "call"
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //	  "event": {
 //	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
-//	    "type": "call_started",
+//	    "type": "call_received",
 //	    "created_on": "2006-01-02T15:04:05Z",
 //	    "call": {
 //	      "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
@@ -37,7 +37,7 @@ const TypeCall string = "call"
 type Call struct {
 	baseTrigger
 
-	event *events.CallStarted
+	event *events.CallReceived
 }
 
 func (t *Call) Event() flows.Event { return t.event }
@@ -54,7 +54,7 @@ type CallBuilder struct {
 }
 
 // Call returns a call trigger builder
-func (b *Builder) Call(e *events.CallStarted) *CallBuilder {
+func (b *Builder) Call(e *events.CallReceived) *CallBuilder {
 	return &CallBuilder{
 		t: &Call{
 			baseTrigger: newBaseTrigger(TypeCall, b.flow, false, nil),
@@ -75,7 +75,7 @@ func (b *CallBuilder) Build() *Call {
 type callEnvelope struct {
 	baseEnvelope
 
-	Event *events.CallStarted `json:"event" validate:"required"`
+	Event *events.CallReceived `json:"event" validate:"required"`
 }
 
 func readCall(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {

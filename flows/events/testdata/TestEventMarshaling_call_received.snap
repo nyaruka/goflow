@@ -1,6 +1,6 @@
 {
     "uuid": "01969b48-0f23-76f8-a13f-9238de2a0b76",
-    "type": "call_started",
+    "type": "call_received",
     "created_on": "2025-05-04T12:31:54.123456789Z",
     "call": {
         "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",

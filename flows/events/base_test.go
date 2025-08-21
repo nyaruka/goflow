@@ -96,8 +96,8 @@ func TestEventMarshaling(t *testing.T) {
 			`broadcast_created`,
 		},
 		{
-			events.NewCallStarted(call),
-			`call_started`,
+			events.NewCallReceived(call),
+			`call_received`,
 		},
 		{
 			events.NewClassifierCalled(

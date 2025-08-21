@@ -221,7 +221,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	}{
 		{
 			triggers.NewBuilder(flow).
-				Call(events.NewCallStarted(call)).
+				Call(events.NewCallReceived(call)).
 				Build(),
 			"call",
 		},

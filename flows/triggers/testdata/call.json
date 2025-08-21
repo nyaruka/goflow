@@ -18,7 +18,7 @@
             "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
                 "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
-                "type": "call_started",
+                "type": "call_received",
                 "created_on": "2000-01-01T00:00:00Z",
                 "call": {
                     "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
