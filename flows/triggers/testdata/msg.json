@@ -1,6 +1,6 @@
 [
     {
-        "description": "flow and msg are required",
+        "description": "flow and event are required",
         "trigger": {
             "type": "msg",
             "triggered_on": "2000-01-01T00:00:00Z"
