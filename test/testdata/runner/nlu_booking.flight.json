@@ -23,9 +23,7 @@
                         "name": "NLU Test",
                         "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

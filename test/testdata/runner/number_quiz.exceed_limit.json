@@ -24,9 +24,7 @@
                         "revision": 239,
                         "uuid": "8f107d42-7416-4cf2-9a51-9490361ad517"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

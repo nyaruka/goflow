@@ -34,7 +34,6 @@
                     },
                     "parent_uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

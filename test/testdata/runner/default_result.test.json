@@ -32,9 +32,7 @@
                         "name": "Another Flow",
                         "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

@@ -28,10 +28,10 @@ const TypeRunStarted string = "run_started"
 type RunStarted struct {
 	BaseEvent
 
-	Flow       *assets.FlowReference `json:"flow"        validate:"required"`
-	RunUUID    flows.RunUUID         `json:"run_uuid"    validate:"required,uuid"`
-	ParentUUID flows.RunUUID         `json:"parent_uuid" validate:"omitempty,uuid"`
-	Terminal   bool                  `json:"terminal"`
+	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
+	RunUUID    flows.RunUUID         `json:"run_uuid"              validate:"required,uuid"`
+	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
+	Terminal   bool                  `json:"terminal,omitempty"`
 }
 
 // NewRunStarted returns a new run started event
