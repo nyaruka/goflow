@@ -1,3 +1,7 @@
+v0.252.7 (2025-08-21)
+-------------------------
+ * Add flows.SessionStatusInterrupted
+
 v0.252.6 (2025-08-20)
 -------------------------
  * Add flows.RunStatusInterrupted
