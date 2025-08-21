@@ -61,9 +61,7 @@
                         "name": "Query Based Groups Correction",
                         "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-190b-76f8-92a3-d648ab64bccb",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1cf3-76f8-8228-9728778b6c98"
                 },

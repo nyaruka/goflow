@@ -30,9 +30,7 @@
                         "revision": 11,
                         "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-ba00-bd7f0d08e671",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-b86e-4b881f09a186"
                 },

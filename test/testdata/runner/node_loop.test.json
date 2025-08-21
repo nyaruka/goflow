@@ -32,9 +32,7 @@
                         "name": "Node Loop",
                         "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

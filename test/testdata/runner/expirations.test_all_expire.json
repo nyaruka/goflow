@@ -24,9 +24,7 @@
                         "revision": 18,
                         "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },
@@ -39,7 +37,6 @@
                     },
                     "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "run_uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-28ab-76f8-a17e-f85e49829fb9"
                 },
@@ -52,7 +49,6 @@
                     },
                     "parent_uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                     "run_uuid": "01969b47-384b-76f8-b86e-4b881f09a186",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-3c33-76f8-a691-235cbe720980"
                 },
