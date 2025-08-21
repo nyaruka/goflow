@@ -1,3 +1,7 @@
+v0.252.8 (2025-08-21)
+-------------------------
+ * Add flows.SessionStatusExpired
+
 v0.252.7 (2025-08-21)
 -------------------------
  * Add flows.SessionStatusInterrupted
