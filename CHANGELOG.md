@@ -1,3 +1,7 @@
+v0.253.1 (2025-08-21)
+-------------------------
+ * Rename call_started to call_received
+
 v0.253.0 (2025-08-21)
 -------------------------
  * Add call trigger type and call_started event
