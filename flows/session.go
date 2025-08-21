@@ -33,6 +33,9 @@ const (
 
 	// SessionStatusFailed represents a session that encountered an unrecoverable error
 	SessionStatusFailed SessionStatus = "failed"
+
+	// SessionStatusInterrupted is never used by the engine but callers may put sessions into this state
+	SessionStatusInterrupted SessionStatus = "interrupted"
 )
 
 // Segment is a movement on the flow graph from an exit to another node
