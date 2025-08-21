@@ -26,9 +26,7 @@
                         "name": "Parent Flow",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

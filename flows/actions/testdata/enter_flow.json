@@ -61,8 +61,7 @@
                     "revision": 123
                 },
                 "run_uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
-                "parent_uuid": "01969b47-1cf3-76f8-92a3-d648ab64bccb",
-                "terminal": false
+                "parent_uuid": "01969b47-1cf3-76f8-92a3-d648ab64bccb"
             },
             {
                 "uuid": "01969b47-4bd3-76f8-a691-235cbe720980",

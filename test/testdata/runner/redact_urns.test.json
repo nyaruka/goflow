@@ -40,9 +40,7 @@
                         "name": "Redacted URNs",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },

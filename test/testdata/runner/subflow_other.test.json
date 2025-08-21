@@ -32,9 +32,7 @@
                         "name": "Parent Flow",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
-                    "parent_uuid": "",
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-1523-76f8-92a3-d648ab64bccb"
                 },
@@ -61,7 +59,6 @@
                     },
                     "parent_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "run_uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
-                    "terminal": false,
                     "type": "run_started",
                     "uuid": "01969b47-384b-76f8-b86e-4b881f09a186"
                 },
