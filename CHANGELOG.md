@@ -1,3 +1,7 @@
+v0.253.2 (2025-08-22)
+-------------------------
+ * Add call_created event
+
 v0.253.1 (2025-08-21)
 -------------------------
  * Rename call_started to call_received
