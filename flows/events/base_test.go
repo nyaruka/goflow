@@ -47,264 +47,329 @@ func TestEventMarshaling(t *testing.T) {
 	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", facebook, "tel:+12065551212")
 
 	eventTests := []struct {
-		event    flows.Event
+		event    func() flows.Event
 		snapshot string
 	}{
 		{
-			events.NewAirtimeTransferred(
-				&flows.AirtimeTransfer{
-					ExternalID: "98765432",
-					Sender:     urns.URN("tel:+593979099111"),
-					Recipient:  urns.URN("tel:+593979099222"),
-					Currency:   "USD",
-					Amount:     decimal.RequireFromString("1.00"),
-				},
-				[]*flows.HTTPLog{
-					{
-						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-							LogWithoutTime: &httpx.LogWithoutTime{
-								URL:        "https://send.money.com/topup",
-								StatusCode: 200,
-								Request:    "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
-								ElapsedMS:  12,
-							},
-							Status: flows.CallStatusSuccess,
-						},
-						CreatedOn: dates.Now(),
+			func() flows.Event {
+				return events.NewAirtimeTransferred(
+					&flows.AirtimeTransfer{
+						ExternalID: "98765432",
+						Sender:     urns.URN("tel:+593979099111"),
+						Recipient:  urns.URN("tel:+593979099222"),
+						Currency:   "USD",
+						Amount:     decimal.RequireFromString("1.00"),
 					},
-				},
-			),
+					[]*flows.HTTPLog{
+						{
+							HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+								LogWithoutTime: &httpx.LogWithoutTime{
+									URL:        "https://send.money.com/topup",
+									StatusCode: 200,
+									Request:    "POST /topup HTTP/1.1\r\nHost: send.money.com\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
+									ElapsedMS:  12,
+								},
+								Status: flows.CallStatusSuccess,
+							},
+							CreatedOn: dates.Now(),
+						},
+					},
+				)
+			},
 			`airtime_transferred`,
 		},
 		{
-			events.NewBroadcastCreated(
-				flows.BroadcastTranslations{
-					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
-					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
-				},
-				i18n.Language("eng"),
-				[]*assets.GroupReference{
-					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
-				},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
-				},
-				"name = \"Bob\"",
-				[]urns.URN{urns.URN("tel:+12345678900")},
-			),
+			func() flows.Event {
+				return events.NewBroadcastCreated(
+					flows.BroadcastTranslations{
+						"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
+						"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
+					},
+					i18n.Language("eng"),
+					[]*assets.GroupReference{
+						assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
+					},
+					[]*flows.ContactReference{
+						flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+					},
+					"name = \"Bob\"",
+					[]urns.URN{urns.URN("tel:+12345678900")},
+				)
+			},
 			`broadcast_created`,
 		},
 		{
-			events.NewCallReceived(call),
+			func() flows.Event {
+				return events.NewCallReceived(call)
+			},
 			`call_received`,
 		},
 		{
-			events.NewClassifierCalled(
-				assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
-				[]*flows.HTTPLog{
-					{
-						HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-							LogWithoutTime: &httpx.LogWithoutTime{
-								URL:        "https://api.wit.ai/message?v=20200513&q=hello",
-								StatusCode: 200,
-								Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-								Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-								ElapsedMS:  12,
+			func() flows.Event {
+				return events.NewClassifierCalled(
+					assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
+					[]*flows.HTTPLog{
+						{
+							HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+								LogWithoutTime: &httpx.LogWithoutTime{
+									URL:        "https://api.wit.ai/message?v=20200513&q=hello",
+									StatusCode: 200,
+									Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+									ElapsedMS:  12,
+								},
+								Status: flows.CallStatusSuccess,
 							},
-							Status: flows.CallStatusSuccess,
+							CreatedOn: dates.Now(),
 						},
-						CreatedOn: dates.Now(),
 					},
-				},
-			),
+				)
+			},
 			`service_called`,
 		},
 		{
-			events.NewContactFieldChanged(
-				gender,
-				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
-			),
+			func() flows.Event {
+				return events.NewContactFieldChanged(
+					gender,
+					flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
+				)
+			},
 			`contact_field_changed`,
 		},
 		{
-			events.NewContactFieldChanged(
-				gender,
-				nil, // value being cleared
-			),
+			func() flows.Event {
+				return events.NewContactFieldChanged(
+					gender,
+					nil, // value being cleared
+				)
+			},
 			`contact_field_changed_clear`,
 		},
 		{
-			events.NewContactGroupsChanged(
-				[]*flows.Group{session.Assets().Groups().FindByName("Customers")},
-				nil,
-			),
+			func() flows.Event {
+				return events.NewContactGroupsChanged(
+					[]*flows.Group{session.Assets().Groups().FindByName("Customers")},
+					nil,
+				)
+			},
 			`contact_groups_changed`,
 		},
 		{
-			events.NewContactStatusChanged(flows.ContactStatusActive),
+			func() flows.Event {
+				return events.NewContactStatusChanged(flows.ContactStatusActive)
+			},
 			`contact_status_changed_active`,
 		},
 		{
-			events.NewContactStatusChanged(flows.ContactStatusBlocked),
+			func() flows.Event {
+				return events.NewContactStatusChanged(flows.ContactStatusBlocked)
+			},
 			`contact_status_changed_blocked`,
 		},
 		{
-			events.NewContactStatusChanged(flows.ContactStatusStopped),
+			func() flows.Event {
+				return events.NewContactStatusChanged(flows.ContactStatusStopped)
+			},
 			`contact_status_changed_stopped`,
 		},
 		{
-			events.NewContactLanguageChanged(i18n.Language("fra")),
+			func() flows.Event {
+				return events.NewContactLanguageChanged(i18n.Language("fra"))
+			},
 			`contact_language_changed`,
 		},
 		{
-			events.NewContactNameChanged("Bryan"),
+			func() flows.Event {
+				return events.NewContactNameChanged("Bryan")
+			},
 			`contact_name_changed`,
 		},
 		{
-			events.NewContactTimezoneChanged(tz),
+			func() flows.Event {
+				return events.NewContactTimezoneChanged(tz)
+			},
 			`contact_timezone_changed`,
 		},
 		{
-			events.NewContactURNsChanged([]urns.URN{
-				urns.URN("tel:+12345678900"),
-				urns.URN("twitterid:8764843252522#bob"),
-			}),
+			func() flows.Event {
+				return events.NewContactURNsChanged([]urns.URN{
+					urns.URN("tel:+12345678900"),
+					urns.URN("twitterid:8764843252522#bob"),
+				})
+			},
 			`contact_urns_changed`,
 		},
 		{
-			events.NewEmailSent([]string{"bob@nyaruka.com", "jim@nyaruka.com"}, "Update", "Flows are great!"),
+			func() flows.Event {
+				return events.NewEmailSent([]string{"bob@nyaruka.com", "jim@nyaruka.com"}, "Update", "Flows are great!")
+			},
 			`email_sent`,
 		},
 		{
-			events.NewError("I'm an error"),
+			func() flows.Event {
+				return events.NewError("I'm an error")
+			},
 			`error`,
 		},
 		{
-			events.NewDependencyError(assets.NewFieldReference("age", "Age")),
+			func() flows.Event {
+				return events.NewDependencyError(assets.NewFieldReference("age", "Age"))
+			},
 			`error_dependency`,
 		},
 		{
-			events.NewFailure(errors.New("503 is an failure")),
+			func() flows.Event {
+				return events.NewFailure(errors.New("503 is an failure"))
+			},
 			`failure`,
 		},
 		{
-			events.NewIVRCreated(
-				flows.NewIVRMsgOut(
-					urns.URN("tel:+12345678900"),
-					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-					"Hi there",
-					"http://example.com/hi.mp3",
-					"eng",
-				),
-			),
+			func() flows.Event {
+				return events.NewIVRCreated(
+					flows.NewIVRMsgOut(
+						urns.URN("tel:+12345678900"),
+						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+						"Hi there",
+						"http://example.com/hi.mp3",
+						"eng",
+					),
+				)
+			},
 			`ivr_created`,
 		},
 		{
-			events.NewLLMCalled(
-				gpt4,
-				"Categorize the following text as Positive or Negative",
-				"Please stop messaging me",
-				&flows.LLMResponse{
-					Output:     "Positive",
-					TokensUsed: 567,
-				},
-				123*time.Millisecond,
-			),
+			func() flows.Event {
+				return events.NewLLMCalled(
+					gpt4,
+					"Categorize the following text as Positive or Negative",
+					"Please stop messaging me",
+					&flows.LLMResponse{Output: "Positive", TokensUsed: 567},
+					123*time.Millisecond,
+				)
+			},
 			`llm_called`,
 		},
 		{
-			events.NewMsgCreated(
-				flows.NewMsgOut(
-					urns.URN("tel:+12345678900"),
-					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-					&flows.MsgContent{Text: "Hi there"},
-					nil,
-					i18n.NilLocale,
-					flows.NilUnsendableReason,
-				),
-			),
+			func() flows.Event {
+				return events.NewMsgCreated(
+					flows.NewMsgOut(
+						urns.URN("tel:+12345678900"),
+						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+						&flows.MsgContent{Text: "Hi there"},
+						nil,
+						i18n.NilLocale,
+						flows.NilUnsendableReason,
+					),
+				)
+			},
 			`msg_created`,
 		},
 		{
-			events.NewMsgCreated(
-				flows.NewMsgOut(
-					urns.URN("tel:+12345678900"),
-					assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-					&flows.MsgContent{
-						Text:         "Hi there",
-						Attachments:  []utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
-						QuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
-					},
-					nil,
-					"eng-US",
-					flows.UnsendableReasonContactStatus,
-				),
-			),
+			func() flows.Event {
+				return events.NewMsgCreated(
+					flows.NewMsgOut(
+						urns.URN("tel:+12345678900"),
+						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+						&flows.MsgContent{
+							Text:         "Hi there",
+							Attachments:  []utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
+							QuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
+						},
+						nil,
+						"eng-US",
+						flows.UnsendableReasonContactStatus,
+					),
+				)
+			},
 			`msg_created_rich`,
 		},
 		{
-			events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImage()),
+			func() flows.Event {
+				return events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImage())
+			},
 			`msg_wait`,
 		},
 		{
-			events.NewWaitTimedOut(),
+			func() flows.Event {
+				return events.NewWaitTimedOut()
+			},
 			`wait_timed_out`,
 		},
 		{
-			events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)),
+			func() flows.Event {
+				return events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0))
+			},
 			`dial_ended`,
 		},
 		{
-			events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)),
+			func() flows.Event {
+				return events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
+			},
 			`dial_wait`,
 		},
 		{
-			events.NewOptInRequested(jotd, facebook.Reference(), urns.URN("facebook:1234567890")),
+			func() flows.Event {
+				return events.NewOptInRequested(jotd, facebook.Reference(), urns.URN("facebook:1234567890"))
+			},
 			`optin_requested`,
 		},
 		{
-			events.NewOptInStarted(jotd, facebook.Reference()),
+			func() flows.Event {
+				return events.NewOptInStarted(jotd, facebook.Reference())
+			},
 			`optin_started`,
 		},
 		{
-			events.NewOptInStopped(jotd, facebook.Reference()),
+			func() flows.Event {
+				return events.NewOptInStopped(jotd, facebook.Reference())
+			},
 			`optin_stopped`,
 		},
 		{
-			events.NewRunStarted(session.Runs()[0], true),
+			func() flows.Event {
+				return events.NewRunStarted(session.Runs()[0], true)
+			},
 			`run_started`,
 		},
 		{
-			events.NewSessionTriggered(
-				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
-				[]*assets.GroupReference{
-					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
-				},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
-				},
-				"age > 20",
-				events.Exclusions{InAFlow: true},
-				false,
-				[]urns.URN{urns.URN("tel:+12345678900")},
-				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
-				&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
-			),
+			func() flows.Event {
+				return events.NewSessionTriggered(
+					assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
+					[]*assets.GroupReference{
+						assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
+					},
+					[]*flows.ContactReference{
+						flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+					},
+					"age > 20",
+					events.Exclusions{InAFlow: true},
+					false,
+					[]urns.URN{urns.URN("tel:+12345678900")},
+					json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
+					&flows.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
+				)
+			},
 			`session_triggered`,
 		},
 		{
-			events.NewTicketClosed(ticket),
+			func() flows.Event {
+				return events.NewTicketClosed(ticket)
+			},
 			`ticket_closed`,
 		},
 		{
-			events.NewTicketOpened(ticket, "this is weird"),
+			func() flows.Event {
+				return events.NewTicketOpened(ticket, "this is weird")
+			},
 			`ticket_opened`,
 		},
 	}
 
 	for _, tc := range eventTests {
-		eventJSON, err := jsonx.MarshalPretty(tc.event)
+		test.MockUniverse()
+
+		eventJSON, err := jsonx.MarshalPretty(tc.event())
 		assert.NoError(t, err)
 
 		test.AssertSnapshot(t, tc.snapshot, string(eventJSON))

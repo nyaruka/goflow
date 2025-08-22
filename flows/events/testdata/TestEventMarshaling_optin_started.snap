@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-d65b-76f8-87bc-209e78511534",
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
     "type": "optin_started",
-    "created_on": "2025-05-04T12:32:45.123456789Z",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
     "optin": {
         "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
         "name": "Joke Of The Day"

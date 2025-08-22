@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-68fb-76f8-92e8-a5e406ecb2a7",
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
     "type": "contact_urns_changed",
-    "created_on": "2025-05-04T12:32:17.123456789Z",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
     "urns": [
         "tel:+12345678900",
         "twitterid:8764843252522#bob"

@@ -1,7 +1,7 @@
 {
-    "uuid": "01969b48-fd6b-76f8-bf05-63393fd408f5",
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
     "type": "ticket_opened",
-    "created_on": "2025-05-04T12:32:55.123456789Z",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
     "ticket": {
         "uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
         "topic": {
