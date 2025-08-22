@@ -101,6 +101,12 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewCallCreated(call)
+			},
+			`call_created`,
+		},
+		{
+			func() flows.Event {
 				return events.NewCallReceived(call)
 			},
 			`call_received`,
