@@ -59,7 +59,7 @@ type CallBuilder struct {
 // Call returns a call trigger builder
 func (b *Builder) Call(e flows.Event) *CallBuilder {
 	if e.Type() != events.TypeCallReceived && e.Type() != events.TypeCallMissed {
-		panic("optin trigger event must be of type optin_started or optin_stopped")
+		panic("call trigger event must be of type call_received or call_missed")
 	}
 
 	return &CallBuilder{
