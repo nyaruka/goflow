@@ -1,6 +1,9 @@
 package triggers
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -15,7 +18,7 @@ func init() {
 // TypeCall is the type for call triggered sessions
 const TypeCall string = "call"
 
-// Call is used to trigger a session for a new incoming call
+// Call is used to trigger a session for a new incoming or missed call
 //
 //	{
 //	  "type": "call",
@@ -37,7 +40,7 @@ const TypeCall string = "call"
 type Call struct {
 	baseTrigger
 
-	event *events.CallReceived
+	event flows.Event // call_received or call_missed
 }
 
 func (t *Call) Event() flows.Event { return t.event }
@@ -54,7 +57,11 @@ type CallBuilder struct {
 }
 
 // Call returns a call trigger builder
-func (b *Builder) Call(e *events.CallReceived) *CallBuilder {
+func (b *Builder) Call(e flows.Event) *CallBuilder {
+	if e.Type() != events.TypeCallReceived && e.Type() != events.TypeCallMissed {
+		panic("call trigger event must be of type call_received or call_missed")
+	}
+
 	return &CallBuilder{
 		t: &Call{
 			baseTrigger: newBaseTrigger(TypeCall, b.flow, false, nil),
@@ -75,7 +82,7 @@ func (b *CallBuilder) Build() *Call {
 type callEnvelope struct {
 	baseEnvelope
 
-	Event *events.CallReceived `json:"event" validate:"required"`
+	Event json.RawMessage `json:"event" validate:"required"`
 }
 
 func readCall(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -84,7 +91,12 @@ func readCall(sa flows.SessionAssets, data []byte, missing assets.MissingCallbac
 		return nil, err
 	}
 
-	t := &Call{event: e.Event}
+	event, err := events.Read(e.Event)
+	if err != nil {
+		return nil, fmt.Errorf("error reading call trigger event: %w", err)
+	}
+
+	t := &Call{event: event}
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
@@ -95,8 +107,13 @@ func readCall(sa flows.SessionAssets, data []byte, missing assets.MissingCallbac
 
 // MarshalJSON marshals this trigger into JSON
 func (t *Call) MarshalJSON() ([]byte, error) {
+	me, err := json.Marshal(t.event)
+	if err != nil {
+		return nil, fmt.Errorf("error marshaling call trigger event: %w", err)
+	}
+
 	e := &callEnvelope{
-		Event: t.event,
+		Event: me,
 	}
 
 	if err := t.marshal(&e.baseEnvelope); err != nil {
