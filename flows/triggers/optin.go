@@ -44,6 +44,7 @@ const TypeOptIn string = "optin"
 // @trigger optin
 type OptIn struct {
 	baseTrigger
+
 	event flows.Event // optin_started or optin_stopped
 	optIn *flows.OptIn
 }

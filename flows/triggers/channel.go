@@ -20,7 +20,6 @@ type ChannelEventType string
 
 // different channel event types
 const (
-	ChannelEventTypeMissedCall      ChannelEventType = "missed_call"
 	ChannelEventTypeNewConversation ChannelEventType = "new_conversation"
 	ChannelEventTypeReferral        ChannelEventType = "referral"
 )
