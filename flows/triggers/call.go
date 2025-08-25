@@ -109,7 +109,7 @@ func readCall(sa flows.SessionAssets, data []byte, missing assets.MissingCallbac
 func (t *Call) MarshalJSON() ([]byte, error) {
 	me, err := json.Marshal(t.event)
 	if err != nil {
-		return nil, fmt.Errorf("error marshaling optin trigger event: %w", err)
+		return nil, fmt.Errorf("error marshaling call trigger event: %w", err)
 	}
 
 	e := &callEnvelope{
