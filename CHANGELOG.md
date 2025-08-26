@@ -1,3 +1,7 @@
+v0.254.3 (2025-08-26)
+-------------------------
+ * Tweak optin event constructors to take references
+
 v0.254.2 (2025-08-26)
 -------------------------
  * Add channel to call_missed events
