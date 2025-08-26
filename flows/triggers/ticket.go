@@ -38,11 +38,8 @@ const TypeTicket string = "ticket"
 type Ticket struct {
 	baseTrigger
 
-	event  *events.TicketClosed
 	ticket *flows.Ticket
 }
-
-func (t *Ticket) Event() flows.Event { return t.event }
 
 // Context for ticket triggers includes the ticket
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
@@ -62,12 +59,10 @@ type TicketBuilder struct {
 	t *Ticket
 }
 
-// Ticket returns a ticket trigger builder
-func (b *Builder) Ticket(ticket *flows.Ticket, event *events.TicketClosed) *TicketBuilder {
+func (b *Builder) TicketClosed(event *events.TicketClosed, ticket *flows.Ticket) *TicketBuilder {
 	return &TicketBuilder{
 		t: &Ticket{
-			baseTrigger: newBaseTrigger(TypeTicket, b.flow, false, nil),
-			event:       event,
+			baseTrigger: newBaseTrigger(TypeTicket, event, b.flow, false, nil),
 			ticket:      ticket,
 		},
 	}
@@ -82,31 +77,20 @@ func (b *TicketBuilder) Build() *Ticket {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketEnvelope struct {
-	baseEnvelope
-
-	Event *events.TicketClosed `json:"event" validate:"required"`
-}
-
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &ticketEnvelope{}
+	e := &baseEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	// older sessions will have events that aren't really events so fix 'em
-	if e.Event.Type() == "closed" {
-		e.Event.Type_ = events.TypeTicketClosed
-		e.Event.CreatedOn_ = e.TriggeredOn // ensure we have a created on time
-	}
+	t := &Ticket{}
 
-	t := &Ticket{
-		event:  e.Event,
-		ticket: e.Event.Ticket.Unmarshal(sa, missing),
-	}
-
-	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
+	if err := t.unmarshal(sa, e, missing); err != nil {
 		return nil, err
+	}
+
+	if event, ok := t.event.(*events.TicketClosed); ok {
+		t.ticket = event.Ticket.Unmarshal(sa, missing)
 	}
 
 	return t, nil
@@ -114,11 +98,9 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 
 // MarshalJSON marshals this trigger into JSON
 func (t *Ticket) MarshalJSON() ([]byte, error) {
-	e := &ticketEnvelope{
-		Event: t.event,
-	}
+	e := &baseEnvelope{}
 
-	if err := t.marshal(&e.baseEnvelope); err != nil {
+	if err := t.marshal(e); err != nil {
 		return nil, err
 	}
 

@@ -45,11 +45,8 @@ const TypeMsg string = "msg"
 type Msg struct {
 	baseTrigger
 
-	event *events.MsgReceived
 	match *KeywordMatch
 }
-
-func (t *Msg) Event() flows.Event { return t.event }
 
 // KeywordMatchType describes how the message matched a keyword
 type KeywordMatchType string
@@ -72,7 +69,10 @@ func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
 }
 
 func (t *Msg) Input(sa flows.SessionAssets) flows.Input {
-	return inputs.NewMsg(sa, t.event)
+	if event, ok := t.event.(*events.MsgReceived); ok {
+		return inputs.NewMsg(sa, event)
+	}
+	return nil
 }
 
 // Context for msg triggers additionally exposes the keyword match
@@ -95,12 +95,10 @@ type MsgBuilder struct {
 	t *Msg
 }
 
-// Msg returns a msg trigger builder
-func (b *Builder) Msg(e *events.MsgReceived) *MsgBuilder {
+func (b *Builder) MsgReceived(event *events.MsgReceived) *MsgBuilder {
 	return &MsgBuilder{
 		t: &Msg{
-			baseTrigger: newBaseTrigger(TypeMsg, b.flow, false, nil),
-			event:       e,
+			baseTrigger: newBaseTrigger(TypeMsg, event, b.flow, false, nil),
 		},
 	}
 }
@@ -123,8 +121,7 @@ func (b *MsgBuilder) Build() *Msg {
 type msgEnvelope struct {
 	baseEnvelope
 
-	Event *events.MsgReceived `json:"event"                   validate:"required"`
-	Match *KeywordMatch       `json:"keyword_match,omitempty" validate:"omitempty"`
+	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty"`
 }
 
 func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -133,7 +130,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 		return nil, err
 	}
 
-	t := &Msg{event: e.Event, match: e.Match}
+	t := &Msg{match: e.Match}
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
@@ -145,7 +142,6 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 // MarshalJSON marshals this trigger into JSON
 func (t *Msg) MarshalJSON() ([]byte, error) {
 	e := &msgEnvelope{
-		Event: t.event,
 		Match: t.match,
 	}
 

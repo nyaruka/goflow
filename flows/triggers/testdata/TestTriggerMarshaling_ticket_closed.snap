@@ -1,10 +1,5 @@
 {
     "type": "ticket",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:31:26.123456789Z",
     "event": {
         "uuid": "01969b47-9ddb-76f8-9654-8a7258fbaae4",
         "type": "ticket_closed",
@@ -17,5 +12,10 @@
                 "name": "Bob McTickets"
             }
         }
-    }
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:31:26.123456789Z"
 }

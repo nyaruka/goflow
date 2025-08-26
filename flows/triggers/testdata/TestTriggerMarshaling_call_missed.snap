@@ -1,13 +1,13 @@
 {
     "type": "call",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:31:01.123456789Z",
     "event": {
         "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671",
         "type": "call_missed",
         "created_on": "2025-05-04T12:31:00.123456789Z"
-    }
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:31:01.123456789Z"
 }

@@ -1,10 +1,5 @@
 {
     "type": "msg",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:31:17.123456789Z",
     "event": {
         "uuid": "01969b47-7ab3-76f8-8dbf-00ecf5d03034",
         "type": "msg_received",
@@ -19,6 +14,11 @@
             "external_id": "SMS1234"
         }
     },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:31:17.123456789Z",
     "keyword_match": {
         "type": "first_word",
         "keyword": "hi"

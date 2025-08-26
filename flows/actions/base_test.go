@@ -212,7 +212,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				},
 				"",
 			)
-			trigger = triggers.NewBuilder(flow.Reference(false)).Msg(events.NewMsgReceived(msg)).Build()
+			trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg)).Build()
 		}
 
 		// create an engine instance

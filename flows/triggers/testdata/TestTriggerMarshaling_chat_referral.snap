@@ -1,10 +1,5 @@
 {
     "type": "chat",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:31:10.123456789Z",
     "event": {
         "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c",
         "type": "chat_started",
@@ -16,5 +11,10 @@
         "params": {
             "referrer_id": "acme"
         }
-    }
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:31:10.123456789Z"
 }

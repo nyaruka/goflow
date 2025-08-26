@@ -1,10 +1,5 @@
 {
     "type": "call",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:30:58.123456789Z",
     "event": {
         "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
         "type": "call_received",
@@ -17,5 +12,10 @@
             },
             "urn": "tel:+12065551212"
         }
-    }
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:30:58.123456789Z"
 }
