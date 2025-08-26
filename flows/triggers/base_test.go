@@ -283,13 +283,13 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				OptInStarted(events.NewOptInStarted(jotd, channel), jotd).
+				OptInStarted(events.NewOptInStarted(jotd.Reference(), channel), jotd).
 				Build(),
 			"optin_started",
 		},
 		{
 			triggers.NewBuilder(flow).
-				OptInStopped(events.NewOptInStopped(jotd, channel), jotd).
+				OptInStopped(events.NewOptInStopped(jotd.Reference(), channel), jotd).
 				Build(),
 			"optin_stopped",
 		},

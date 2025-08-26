@@ -40,10 +40,10 @@ type OptInRequested struct {
 }
 
 // NewOptInRequested returns a new optin requested event
-func NewOptInRequested(optIn *flows.OptIn, ch *assets.ChannelReference, urn urns.URN) *OptInRequested {
+func NewOptInRequested(optIn *assets.OptInReference, ch *assets.ChannelReference, urn urns.URN) *OptInRequested {
 	return &OptInRequested{
 		BaseEvent: NewBaseEvent(TypeOptInRequested),
-		OptIn:     optIn.Reference(),
+		OptIn:     optIn,
 		Channel:   ch,
 		URN:       urn,
 	}

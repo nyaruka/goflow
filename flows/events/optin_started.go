@@ -37,10 +37,10 @@ type OptInStarted struct {
 }
 
 // NewOptInStarted returns a new optin started event
-func NewOptInStarted(optIn *flows.OptIn, ch *assets.ChannelReference) *OptInStarted {
+func NewOptInStarted(optIn *assets.OptInReference, ch *assets.ChannelReference) *OptInStarted {
 	return &OptInStarted{
 		BaseEvent: NewBaseEvent(TypeOptInStarted),
-		OptIn:     optIn.Reference(),
+		OptIn:     optIn,
 		Channel:   ch,
 	}
 }

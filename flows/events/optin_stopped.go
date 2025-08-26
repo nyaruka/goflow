@@ -37,10 +37,10 @@ type OptInStopped struct {
 }
 
 // NewOptInStopped returns a new optin stopped event
-func NewOptInStopped(optIn *flows.OptIn, ch *assets.ChannelReference) *OptInStopped {
+func NewOptInStopped(optIn *assets.OptInReference, ch *assets.ChannelReference) *OptInStopped {
 	return &OptInStopped{
 		BaseEvent: NewBaseEvent(TypeOptInStopped),
-		OptIn:     optIn.Reference(),
+		OptIn:     optIn,
 		Channel:   ch,
 	}
 }
