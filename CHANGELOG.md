@@ -1,3 +1,8 @@
+v0.254.0 (2025-08-26)
+-------------------------
+ * Add chat_started events and chat triggers
+ * Add new call_missed event type and rework call triggers to accept it
+
 v0.253.2 (2025-08-22)
 -------------------------
  * Add call_created event
