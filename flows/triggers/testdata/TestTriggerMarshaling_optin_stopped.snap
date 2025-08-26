@@ -4,11 +4,11 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:31:15.123456789Z",
+    "triggered_on": "2025-05-04T12:31:23.123456789Z",
     "event": {
-        "uuid": "01969b47-72e3-76f8-bebe-b4a1f677cf4c",
+        "uuid": "01969b47-9223-76f8-afcb-91a2073e5459",
         "type": "optin_stopped",
-        "created_on": "2025-05-04T12:31:14.123456789Z",
+        "created_on": "2025-05-04T12:31:22.123456789Z",
         "optin": {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
             "name": "Joke Of The Day"

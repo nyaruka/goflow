@@ -4,11 +4,11 @@
         "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
         "name": "Registration"
     },
-    "triggered_on": "2025-05-04T12:31:09.123456789Z",
+    "triggered_on": "2025-05-04T12:31:17.123456789Z",
     "event": {
-        "uuid": "01969b47-5b73-76f8-b86e-4b881f09a186",
+        "uuid": "01969b47-7ab3-76f8-8dbf-00ecf5d03034",
         "type": "msg_received",
-        "created_on": "2025-05-04T12:31:08.123456789Z",
+        "created_on": "2025-05-04T12:31:16.123456789Z",
         "msg": {
             "urn": "tel:+1234567890",
             "channel": {
