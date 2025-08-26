@@ -1,10 +1,5 @@
 {
     "type": "optin",
-    "flow": {
-        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
-        "name": "Registration"
-    },
-    "triggered_on": "2025-05-04T12:31:20.123456789Z",
     "event": {
         "uuid": "01969b47-866b-76f8-acca-bbca70987315",
         "type": "optin_started",
@@ -17,5 +12,10 @@
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
             "name": "Nexmo"
         }
-    }
+    },
+    "flow": {
+        "uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+        "name": "Registration"
+    },
+    "triggered_on": "2025-05-04T12:31:20.123456789Z"
 }

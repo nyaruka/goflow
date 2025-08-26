@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -32,6 +33,7 @@ func RegisteredTypes() map[string]ReadFunc {
 // base of all trigger types
 type baseTrigger struct {
 	type_       string
+	event       flows.Event
 	flow        *assets.FlowReference
 	batch       bool
 	params      *types.XObject
@@ -40,9 +42,10 @@ type baseTrigger struct {
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, event flows.Event, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
+		event:       event,
 		flow:        flow,
 		batch:       batch,
 		history:     history,
@@ -51,7 +54,7 @@ func newBaseTrigger(typeName string, flow *assets.FlowReference, batch bool, his
 }
 
 func (t *baseTrigger) Type() string                   { return t.type_ }
-func (t *baseTrigger) Event() flows.Event             { return nil }
+func (t *baseTrigger) Event() flows.Event             { return t.event }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Batch() bool                    { return t.batch }
 func (t *baseTrigger) Params() *types.XObject         { return t.params }
@@ -134,6 +137,7 @@ func NewBuilder(flow *assets.FlowReference) *Builder {
 
 type baseEnvelope struct {
 	Type        string                `json:"type"               validate:"required"`
+	Event       json.RawMessage       `json:"event,omitempty"`
 	Flow        *assets.FlowReference `json:"flow"               validate:"required"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
@@ -164,9 +168,15 @@ func (t *baseTrigger) unmarshal(sa flows.SessionAssets, e *baseEnvelope, missing
 	t.history = e.History
 	t.triggeredOn = e.TriggeredOn
 
+	if e.Event != nil {
+		if t.event, err = events.Read(e.Event); err != nil {
+			return fmt.Errorf("unable to read trigger event: %w", err)
+		}
+	}
+
 	if e.Params != nil {
 		if t.params, err = types.ReadXObject(e.Params); err != nil {
-			return fmt.Errorf("unable to read params: %w", err)
+			return fmt.Errorf("unable to read trigger params: %w", err)
 		}
 	}
 
@@ -180,6 +190,13 @@ func (t *baseTrigger) marshal(e *baseEnvelope) error {
 	e.Batch = t.batch
 	e.History = t.history
 	e.TriggeredOn = t.triggeredOn
+
+	if t.event != nil {
+		e.Event, err = jsonx.Marshal(t.event)
+		if err != nil {
+			return err
+		}
+	}
 
 	if t.params != nil {
 		e.Params, err = jsonx.Marshal(t.params)

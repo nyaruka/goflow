@@ -1,21 +1,16 @@
 [
     {
-        "description": "flow and event are required",
+        "description": "flow is required",
         "trigger": {
             "type": "campaign",
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'flow' is required, field 'event' is required"
+        "read_error": "field 'flow' is required"
     },
     {
         "description": "with all required fields",
         "trigger": {
             "type": "campaign",
-            "flow": {
-                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
-                "name": "Trigger Tester"
-            },
-            "triggered_on": "2000-01-01T00:00:00Z",
             "event": {
                 "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
                 "type": "campaign_fired",
@@ -25,7 +20,12 @@
                     "name": "Reminders"
                 },
                 "point_uuid": "b045ae01-5041-4787-8f85-e288822ed728"
-            }
+            },
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
         },
         "context": {
             "campaign": {

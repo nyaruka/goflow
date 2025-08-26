@@ -33,8 +33,6 @@ const TypeChat string = "chat"
 // @trigger chat
 type Chat struct {
 	baseTrigger
-
-	event *events.ChatStarted
 }
 
 // Context for manual triggers always has non-nil params
@@ -42,9 +40,9 @@ func (t *Chat) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
 
 	// expose as @trigger.params for compatibility with old channel trigger
-	if t.event.Params != nil {
-		params := make(map[string]types.XValue, len(t.event.Params))
-		for k, v := range t.event.Params {
+	if event, ok := t.event.(*events.ChatStarted); ok && event.Params != nil {
+		params := make(map[string]types.XValue, len(event.Params))
+		for k, v := range event.Params {
 			params[k] = types.NewXText(v)
 		}
 		c.params = types.NewXObject(params)
@@ -66,14 +64,12 @@ type ChatBuilder struct {
 	t *Chat
 }
 
-// Chat returns a chat trigger builder
-func (b *Builder) Chat(e *events.ChatStarted) *ChatBuilder {
-	t := &Chat{
-		baseTrigger: newBaseTrigger(TypeChat, b.flow, false, nil),
-		event:       e,
+func (b *Builder) ChatStarted(event *events.ChatStarted) *ChatBuilder {
+	return &ChatBuilder{
+		t: &Chat{
+			baseTrigger: newBaseTrigger(TypeChat, event, b.flow, false, nil),
+		},
 	}
-
-	return &ChatBuilder{t: t}
 }
 
 // Build builds the trigger
@@ -85,23 +81,14 @@ func (b *ChatBuilder) Build() *Chat {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type chatEnvelope struct {
-	baseEnvelope
-
-	Event *events.ChatStarted `json:"event" validate:"required"`
-}
-
 func readChat(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &chatEnvelope{}
+	e := &baseEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	t := &Chat{
-		event: e.Event,
-	}
-
-	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
+	t := &Chat{}
+	if err := t.unmarshal(sa, e, missing); err != nil {
 		return nil, err
 	}
 
@@ -110,11 +97,9 @@ func readChat(sa flows.SessionAssets, data []byte, missing assets.MissingCallbac
 
 // MarshalJSON marshals this trigger into JSON
 func (t *Chat) MarshalJSON() ([]byte, error) {
-	e := &chatEnvelope{
-		Event: t.event,
-	}
+	e := &baseEnvelope{}
 
-	if err := t.marshal(&e.baseEnvelope); err != nil {
+	if err := t.marshal(e); err != nil {
 		return nil, err
 	}
 

@@ -213,7 +213,7 @@ type Trigger interface {
 type TriggerWithRun interface {
 	Trigger
 
-	RunSummary() json.RawMessage
+	RunSummary() []byte
 }
 
 // Resume represents something which can resume a session with the flow engine

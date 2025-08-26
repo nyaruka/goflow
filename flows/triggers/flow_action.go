@@ -54,11 +54,11 @@ const TypeFlowAction string = "flow_action"
 type FlowAction struct {
 	baseTrigger
 
-	runSummary json.RawMessage
+	runSummary []byte
 }
 
 // RunSummary returns the summary of the run that triggered this session
-func (t *FlowAction) RunSummary() json.RawMessage { return t.runSummary }
+func (t *FlowAction) RunSummary() []byte { return t.runSummary }
 
 var _ flows.TriggerWithRun = (*FlowAction)(nil)
 
@@ -71,15 +71,14 @@ type FlowActionBuilder struct {
 	t *FlowAction
 }
 
-// FlowAction returns a flow action trigger builder
-func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary json.RawMessage) *FlowActionBuilder {
+func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary []byte) *FlowActionBuilder {
 	if !json.Valid(runSummary) {
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}
 
 	return &FlowActionBuilder{
 		t: &FlowAction{
-			baseTrigger: newBaseTrigger(TypeFlowAction, b.flow, false, history),
+			baseTrigger: newBaseTrigger(TypeFlowAction, nil, b.flow, false, history),
 			runSummary:  runSummary,
 		},
 	}

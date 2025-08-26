@@ -220,32 +220,28 @@ func TestTriggerMarshaling(t *testing.T) {
 		snapshot string
 	}{
 		{
-			triggers.NewBuilder(flow).
-				Call(events.NewCallReceived(call)).
-				Build(),
+			triggers.NewBuilder(flow).CallReceived(events.NewCallReceived(call)).Build(),
 			"call",
 		},
 		{
-			triggers.NewBuilder(flow).
-				Call(events.NewCallMissed()).
-				Build(),
+			triggers.NewBuilder(flow).CallMissed(events.NewCallMissed()).Build(),
 			"call_missed",
 		},
 		{
 			triggers.NewBuilder(flow).
-				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
+				CampaignFired(events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8"), reminders).
 				Build(),
 			"campaign",
 		},
 		{
 			triggers.NewBuilder(flow).
-				Chat(events.NewChatStarted(channel, nil)).
+				ChatStarted(events.NewChatStarted(channel, nil)).
 				Build(),
 			"chat_new_conversation",
 		},
 		{
 			triggers.NewBuilder(flow).
-				Chat(events.NewChatStarted(channel, map[string]string{"referrer_id": "acme"})).
+				ChatStarted(events.NewChatStarted(channel, map[string]string{"referrer_id": "acme"})).
 				Build(),
 			"chat_referral",
 		},
@@ -280,27 +276,25 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				Msg(events.NewMsgReceived(flows.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"))).
+				MsgReceived(events.NewMsgReceived(flows.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"))).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",
 		},
 		{
 			triggers.NewBuilder(flow).
-				OptIn(jotd, events.NewOptInStarted(jotd, channel)).
+				OptInStarted(events.NewOptInStarted(jotd, channel), jotd).
 				Build(),
 			"optin_started",
 		},
 		{
 			triggers.NewBuilder(flow).
-				OptIn(jotd, events.NewOptInStopped(jotd, channel)).
+				OptInStopped(events.NewOptInStopped(jotd, channel), jotd).
 				Build(),
 			"optin_stopped",
 		},
 		{
-			triggers.NewBuilder(flow).
-				Ticket(ticket, events.NewTicketClosed(ticket)).
-				Build(),
+			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket), ticket).Build(),
 			"ticket_closed",
 		},
 	}

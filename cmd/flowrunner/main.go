@@ -151,7 +151,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 	if initialMsg != "" {
 		msg := events.NewMsgReceived(createMessage(contact, initialMsg))
-		repro.Trigger = triggers.NewBuilder(flow.Reference(false)).Msg(msg).Build()
+		repro.Trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(msg).Build()
 
 		printEvents([]flows.Event{msg}, out)
 	} else {

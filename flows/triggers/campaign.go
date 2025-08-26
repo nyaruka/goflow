@@ -1,10 +1,6 @@
 package triggers
 
 import (
-	"encoding/json"
-	"fmt"
-
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -39,7 +35,7 @@ const TypeCampaign string = "campaign"
 // @trigger campaign
 type Campaign struct {
 	baseTrigger
-	event    *events.CampaignFired
+
 	campaign *flows.Campaign
 }
 
@@ -61,12 +57,10 @@ type CampaignBuilder struct {
 	t *Campaign
 }
 
-// Campaign returns a campaign trigger builder
-func (b *Builder) Campaign(campaign *flows.Campaign, event *events.CampaignFired) *CampaignBuilder {
+func (b *Builder) CampaignFired(event *events.CampaignFired, campaign *flows.Campaign) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &Campaign{
-			baseTrigger: newBaseTrigger(TypeCampaign, b.flow, false, nil),
-			event:       event,
+			baseTrigger: newBaseTrigger(TypeCampaign, event, b.flow, false, nil),
 			campaign:    campaign,
 		},
 	}
@@ -81,39 +75,21 @@ func (b *CampaignBuilder) Build() *Campaign {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type campaignEnvelope struct {
-	baseEnvelope
-
-	Event json.RawMessage `json:"event" validate:"required"`
-}
-
 func readCampaign(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &campaignEnvelope{}
+	e := &baseEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	// older sessions will have events that aren't really events so fix 'em
-	e.Event, _ = jsonparser.Set(e.Event, []byte(`"campaign_fired"`), "type")
-	e.Event, _ = jsonparser.Set(e.Event, jsonx.MustMarshal(e.TriggeredOn), "created_on")
-
-	event, err := events.Read(e.Event)
-	if err != nil {
-		return nil, fmt.Errorf("error reading campaign trigger event: %w", err)
-	}
-
-	campEvt := event.(*events.CampaignFired)
-	campaign := sa.Campaigns().Get(campEvt.Campaign.UUID)
-	if campaign == nil {
-		missing(campEvt.Campaign, nil)
-	}
-
-	t := &Campaign{
-		event:    campEvt,
-		campaign: campaign,
-	}
-	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
+	t := &Campaign{}
+	if err := t.unmarshal(sa, e, missing); err != nil {
 		return nil, err
+	}
+
+	campEvt := t.event.(*events.CampaignFired)
+	t.campaign = sa.Campaigns().Get(campEvt.Campaign.UUID)
+	if t.campaign == nil {
+		missing(campEvt.Campaign, nil)
 	}
 
 	return t, nil
@@ -121,16 +97,9 @@ func readCampaign(sa flows.SessionAssets, data []byte, missing assets.MissingCal
 
 // MarshalJSON marshals this trigger into JSON
 func (t *Campaign) MarshalJSON() ([]byte, error) {
-	me, err := json.Marshal(t.event)
-	if err != nil {
-		return nil, fmt.Errorf("error marshaling campaign trigger event: %w", err)
-	}
+	e := &baseEnvelope{}
 
-	e := &campaignEnvelope{
-		Event: me,
-	}
-
-	if err := t.marshal(&e.baseEnvelope); err != nil {
+	if err := t.marshal(e); err != nil {
 		return nil, err
 	}
 
