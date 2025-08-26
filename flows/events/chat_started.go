@@ -12,7 +12,8 @@ func init() {
 // TypeChatStarted is the type of our chat started event
 const TypeChatStarted string = "chat_started"
 
-// ChatStarted events are created when a contact initiates a chat session.
+// ChatStarted events are created when a contact initiates a chat session. Some channel types have a concept of
+// referrals and that information will be passed via params.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

@@ -12,8 +12,8 @@ func init() {
 // TypeContactFieldChanged is the type of our save to contact event
 const TypeContactFieldChanged string = "contact_field_changed"
 
-// ContactFieldChanged events are created when a custom field value of the contact has been changed.
-// A null values indicates that the field value has been cleared.
+// ContactFieldChanged events are created when a field value of the contact has been changed. An empty value indicates
+// that the field value has been cleared.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

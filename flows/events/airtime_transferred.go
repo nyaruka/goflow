@@ -13,7 +13,7 @@ func init() {
 // TypeAirtimeTransferred is the type of our airtime transferred event
 const TypeAirtimeTransferred string = "airtime_transferred"
 
-// AirtimeTransferred events are created when airtime has been transferred to the contact.
+// AirtimeTransferred events are created when and airtime transfer to the contact has been initiated.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

@@ -12,7 +12,7 @@ func init() {
 // TypeCallMissed is the type of our call missed event
 const TypeCallMissed string = "call_missed"
 
-// CallMissed events are missed when an incoming call is missed.
+// CallMissed events are created when an incoming call is missed.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

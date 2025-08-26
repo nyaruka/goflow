@@ -14,7 +14,7 @@ func init() {
 // TypeBroadcastCreated is a constant for outgoing message events
 const TypeBroadcastCreated string = "broadcast_created"
 
-// BroadcastCreated events are created when an action wants to send a message to other contacts.
+// BroadcastCreated events are created when a message is being broadcast to contacts besides the session contact.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
