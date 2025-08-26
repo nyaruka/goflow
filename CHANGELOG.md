@@ -1,3 +1,7 @@
+v0.254.1 (2025-08-26)
+-------------------------
+ * Move event field to base trigger struct
+
 v0.254.0 (2025-08-26)
 -------------------------
  * Add chat_started events and chat triggers
