@@ -1,3 +1,7 @@
+v0.254.2 (2025-08-26)
+-------------------------
+ * Add channel to call_missed events
+
 v0.254.1 (2025-08-26)
 -------------------------
  * Move event field to base trigger struct
