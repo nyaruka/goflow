@@ -107,7 +107,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewCallMissed()
+				return events.NewCallMissed(facebook.Reference())
 			},
 			`call_missed`,
 		},
