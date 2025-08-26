@@ -1,0 +1,75 @@
+[
+    {
+        "description": "flow and event are required",
+        "trigger": {
+            "type": "chat",
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "field 'flow' is required, field 'event' is required"
+    },
+    {
+        "description": "with all required fields",
+        "trigger": {
+            "type": "chat",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c",
+                "type": "chat_started",
+                "created_on": "2025-05-04T12:31:09.123456789Z",
+                "channel": {
+                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+                    "name": "Facebook"
+                }
+            }
+        },
+        "context": {
+            "campaign": null,
+            "keyword": "",
+            "optin": null,
+            "origin": "",
+            "params": {},
+            "ticket": null,
+            "type": "chat",
+            "user": null
+        }
+    },
+    {
+        "description": "with event params",
+        "trigger": {
+            "type": "chat",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z",
+            "event": {
+                "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c",
+                "type": "chat_started",
+                "created_on": "2025-05-04T12:31:09.123456789Z",
+                "channel": {
+                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+                    "name": "Facebook"
+                },
+                "params": {
+                    "referrer_id": "acme"
+                }
+            }
+        },
+        "context": {
+            "campaign": null,
+            "keyword": "",
+            "optin": null,
+            "origin": "",
+            "params": {
+                "referrer_id": "acme"
+            },
+            "ticket": null,
+            "type": "chat",
+            "user": null
+        }
+    }
+]

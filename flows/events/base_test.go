@@ -119,6 +119,12 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewChatStarted(facebook.Reference(), map[string]string{"referrer_id": "acme"})
+			},
+			`chat_started`,
+		},
+		{
+			func() flows.Event {
 				return events.NewClassifierCalled(
 					assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
 					[]*flows.HTTPLog{

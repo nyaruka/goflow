@@ -3,7 +3,6 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -15,18 +14,9 @@ func init() {
 // TypeChannel is the type for sessions triggered by channel events
 const TypeChannel string = "channel"
 
-// ChannelEventType is the type of event that occurred on the channel
-type ChannelEventType string
-
-// different channel event types
-const (
-	ChannelEventTypeNewConversation ChannelEventType = "new_conversation"
-	ChannelEventTypeReferral        ChannelEventType = "referral"
-)
-
 // ChannelEvent describes the specific event on the channel that triggered the session
 type ChannelEvent struct {
-	Type    ChannelEventType         `json:"type" validate:"required"`
+	Type    string                   `json:"type" validate:"required"`
 	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
@@ -49,36 +39,6 @@ type Channel struct {
 }
 
 var _ flows.Trigger = (*Channel)(nil)
-
-//------------------------------------------------------------------------------------------
-// Builder
-//------------------------------------------------------------------------------------------
-
-// ChannelBuilder is a builder for channel type triggers
-type ChannelBuilder struct {
-	t *Channel
-}
-
-// Channel returns a channel trigger builder
-func (b *Builder) Channel(channel *assets.ChannelReference, eventType ChannelEventType) *ChannelBuilder {
-	return &ChannelBuilder{
-		t: &Channel{
-			baseTrigger: newBaseTrigger(TypeChannel, b.flow, false, nil),
-			event:       &ChannelEvent{Type: eventType, Channel: channel},
-		},
-	}
-}
-
-// WithParams sets the params for the trigger
-func (b *ChannelBuilder) WithParams(params *types.XObject) *ChannelBuilder {
-	b.t.params = params
-	return b
-}
-
-// Build builds the trigger
-func (b *ChannelBuilder) Build() *Channel {
-	return b.t
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

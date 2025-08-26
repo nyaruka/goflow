@@ -227,16 +227,27 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
+				Call(events.NewCallMissed()).
+				Build(),
+			"call_missed",
+		},
+		{
+			triggers.NewBuilder(flow).
 				Campaign(reminders, events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8")).
 				Build(),
 			"campaign",
 		},
 		{
 			triggers.NewBuilder(flow).
-				Channel(channel, triggers.ChannelEventTypeNewConversation).
-				WithParams(types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})).
+				Chat(events.NewChatStarted(channel, nil)).
 				Build(),
-			"channel_new_conversation",
+			"chat_new_conversation",
+		},
+		{
+			triggers.NewBuilder(flow).
+				Chat(events.NewChatStarted(channel, map[string]string{"referrer_id": "acme"})).
+				Build(),
+			"chat_referral",
 		},
 		{
 			triggers.NewBuilder(flow).
