@@ -1,0 +1,10 @@
+{
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+    "type": "ticket_assigned",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
+    "assignee": {
+        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+        "name": "Bob"
+    }
+}
