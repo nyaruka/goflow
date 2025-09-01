@@ -1,3 +1,8 @@
+v0.255.0 (2025-09-01)
+-------------------------
+ * Rework ticket triggers to take ticket separately from the event
+ * Add new ticket event types
+
 v0.254.3 (2025-08-26)
 -------------------------
  * Tweak optin event constructors to take references
