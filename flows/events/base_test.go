@@ -372,15 +372,39 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewTicketAssigned("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", user.Reference())
+			},
+			`ticket_assigned`,
+		},
+		{
+			func() flows.Event {
+				return events.NewTicketAssigned("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", nil)
+			},
+			`ticket_assigned_nobody`,
+		},
+		{
+			func() flows.Event {
 				return events.NewTicketClosed(ticket)
 			},
 			`ticket_closed`,
 		},
 		{
 			func() flows.Event {
+				return events.NewTicketNoteAdded("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", "This looks important!")
+			},
+			`ticket_note_added`,
+		},
+		{
+			func() flows.Event {
 				return events.NewTicketOpened(ticket, "this is weird")
 			},
 			`ticket_opened`,
+		},
+		{
+			func() flows.Event {
+				return events.NewTicketTopicChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", weather.Reference())
+			},
+			`ticket_topic_changed`,
 		},
 	}
 
