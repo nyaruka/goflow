@@ -26,10 +26,11 @@ const TypeTicket string = "ticket"
 //	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "ticket_closed",
 //	    "created_on": "2006-01-02T15:04:05Z",
-//	    "ticket": {
-//	      "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-//	      "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
-//	    }
+//	    "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2"
+//	  },
+//	  "ticket": {
+//	    "uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
+//	    "topic": {"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4", "name": "Weather"}
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}
@@ -77,20 +78,33 @@ func (b *TicketBuilder) Build() *Ticket {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type ticketEnvelope struct {
+	baseEnvelope
+
+	Ticket *flows.TicketEnvelope `json:"ticket"`
+}
+
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
-	e := &baseEnvelope{}
+	e := &ticketEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
 	t := &Ticket{}
 
-	if err := t.unmarshal(sa, e, missing); err != nil {
+	if e.Ticket != nil {
+		t.ticket = e.Ticket.Unmarshal(sa, missing)
+	}
+
+	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
 	}
 
 	if event, ok := t.event.(*events.TicketClosed); ok {
-		t.ticket = event.Ticket.Unmarshal(sa, missing)
+		// TODO remove once there are no more triggers passing the ticket by event
+		if t.ticket == nil {
+			t.ticket = event.Ticket.Unmarshal(sa, missing)
+		}
 	}
 
 	return t, nil
@@ -98,9 +112,11 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 
 // MarshalJSON marshals this trigger into JSON
 func (t *Ticket) MarshalJSON() ([]byte, error) {
-	e := &baseEnvelope{}
+	e := &ticketEnvelope{
+		Ticket: t.ticket.Marshal(),
+	}
 
-	if err := t.marshal(e); err != nil {
+	if err := t.marshal(&e.baseEnvelope); err != nil {
 		return nil, err
 	}
 

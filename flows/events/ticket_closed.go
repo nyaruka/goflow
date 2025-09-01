@@ -17,6 +17,7 @@ const TypeTicketClosed string = "ticket_closed"
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "ticket_closed",
 //	  "created_on": "2006-01-02T15:04:05Z",
+//	  "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
 //	  "ticket": {
 //	    "uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
 //	    "topic": {
@@ -31,13 +32,15 @@ const TypeTicketClosed string = "ticket_closed"
 type TicketClosed struct {
 	BaseEvent
 
-	Ticket *flows.TicketEnvelope `json:"ticket"`
+	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"omitempty,uuid"`
+	Ticket     *flows.TicketEnvelope `json:"ticket,omitempty"` // deprecated
 }
 
 // NewTicketClosed returns a new ticket closed event
 func NewTicketClosed(ticket *flows.Ticket) *TicketClosed {
 	return &TicketClosed{
-		BaseEvent: NewBaseEvent(TypeTicketClosed),
-		Ticket:    ticket.Marshal(),
+		BaseEvent:  NewBaseEvent(TypeTicketClosed),
+		TicketUUID: ticket.UUID(),
+		Ticket:     ticket.Marshal(),
 	}
 }

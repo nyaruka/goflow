@@ -402,6 +402,12 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewTicketReopened("019905d4-5f7b-71b8-bcb8-6a68de2d91d2")
+			},
+			`ticket_reopened`,
+		},
+		{
+			func() flows.Event {
 				return events.NewTicketTopicChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", weather.Reference())
 			},
 			`ticket_topic_changed`,
