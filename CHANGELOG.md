@@ -1,3 +1,7 @@
+v0.255.1 (2025-09-01)
+-------------------------
+ * Rename ticket_assigned to ticket_assignee_changed to better reflect that it's for unassignment as well
+
 v0.255.0 (2025-09-01)
 -------------------------
  * Rework ticket triggers to take ticket separately from the event
