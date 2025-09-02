@@ -22,8 +22,7 @@ const TypeTicketAssigneeChanged string = "ticket_assignee_changed"
 //	  "assignee": {
 //	    "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
 //	    "name": "Bob"
-//	  },
-//	  "initial": true
+//	  }
 //	}
 //
 // @event ticket_assignee_changed
@@ -32,15 +31,15 @@ type TicketAssigneeChanged struct {
 
 	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"required,uuid"`
 	Assignee   *assets.UserReference `json:"assignee"`
-	Initial    bool                  `json:"initial,omitempty"`
+	Previous   *assets.UserReference `json:"previous,omitempty"`
 }
 
 // NewTicketAssigneeChanged returns a new ticket assignee changed event
-func NewTicketAssigneeChanged(ticketUUID flows.TicketUUID, assignee *assets.UserReference, initial bool) *TicketAssigneeChanged {
+func NewTicketAssigneeChanged(ticketUUID flows.TicketUUID, assignee, previous *assets.UserReference) *TicketAssigneeChanged {
 	return &TicketAssigneeChanged{
 		BaseEvent:  NewBaseEvent(TypeTicketAssigneeChanged),
 		TicketUUID: ticketUUID,
 		Assignee:   assignee,
-		Initial:    initial,
+		Previous:   previous,
 	}
 }

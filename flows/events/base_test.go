@@ -352,6 +352,21 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewRunResultChanged(flows.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)), nil)
+			},
+			`run_result_changed`,
+		},
+		{
+			func() flows.Event {
+				return events.NewRunResultChanged(
+					flows.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)),
+					flows.NewResult("Age", "43", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2024, 9, 1, 13, 45, 30, 0, time.UTC)),
+				)
+			},
+			`run_result_changed_with_previous`,
+		},
+		{
+			func() flows.Event {
 				return events.NewSessionTriggered(
 					assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 					[]*assets.GroupReference{
@@ -372,13 +387,13 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", user.Reference(), true)
+				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", user.Reference(), nil)
 			},
 			`ticket_assignee_changed`,
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", nil, false)
+				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", nil, user.Reference())
 			},
 			`ticket_assignee_changed_nobody`,
 		},
