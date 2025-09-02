@@ -125,29 +125,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewClassifierCalled(
-					assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
-					[]*flows.HTTPLog{
-						{
-							HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-								LogWithoutTime: &httpx.LogWithoutTime{
-									URL:        "https://api.wit.ai/message?v=20200513&q=hello",
-									StatusCode: 200,
-									Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-									ElapsedMS:  12,
-								},
-								Status: flows.CallStatusSuccess,
-							},
-							CreatedOn: dates.Now(),
-						},
-					},
-				)
-			},
-			`service_called`,
-		},
-		{
-			func() flows.Event {
 				return events.NewContactFieldChanged(
 					gender,
 					flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
@@ -175,6 +152,18 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewContactLanguageChanged(i18n.Language("fra"))
+			},
+			`contact_language_changed`,
+		},
+		{
+			func() flows.Event {
+				return events.NewContactNameChanged("Bryan")
+			},
+			`contact_name_changed`,
+		},
+		{
+			func() flows.Event {
 				return events.NewContactStatusChanged(flows.ContactStatusActive)
 			},
 			`contact_status_changed_active`,
@@ -193,18 +182,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewContactLanguageChanged(i18n.Language("fra"))
-			},
-			`contact_language_changed`,
-		},
-		{
-			func() flows.Event {
-				return events.NewContactNameChanged("Bryan")
-			},
-			`contact_name_changed`,
-		},
-		{
-			func() flows.Event {
 				return events.NewContactTimezoneChanged(tz)
 			},
 			`contact_timezone_changed`,
@@ -217,6 +194,18 @@ func TestEventMarshaling(t *testing.T) {
 				})
 			},
 			`contact_urns_changed`,
+		},
+		{
+			func() flows.Event {
+				return events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0))
+			},
+			`dial_ended`,
+		},
+		{
+			func() flows.Event {
+				return events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
+			},
+			`dial_wait`,
 		},
 		{
 			func() flows.Event {
@@ -310,24 +299,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewWaitTimedOut()
-			},
-			`wait_timed_out`,
-		},
-		{
-			func() flows.Event {
-				return events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0))
-			},
-			`dial_ended`,
-		},
-		{
-			func() flows.Event {
-				return events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
-			},
-			`dial_wait`,
-		},
-		{
-			func() flows.Event {
 				return events.NewOptInRequested(jotd.Reference(), facebook.Reference(), urns.URN("facebook:1234567890"))
 			},
 			`optin_requested`,
@@ -346,12 +317,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewRunStarted(session.Runs()[0], true)
-			},
-			`run_started`,
-		},
-		{
-			func() flows.Event {
 				return events.NewRunResultChanged(flows.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)), nil)
 			},
 			`run_result_changed`,
@@ -364,6 +329,45 @@ func TestEventMarshaling(t *testing.T) {
 				)
 			},
 			`run_result_changed_with_previous`,
+		},
+		{
+			func() flows.Event {
+				return events.NewRunStarted(session.Runs()[0], true)
+			},
+			`run_started`,
+		},
+		{
+			func() flows.Event {
+				return events.NewRunEnded(
+					"01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
+					assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
+					flows.RunStatusCompleted,
+				)
+			},
+			`run_ended`,
+		},
+		{
+			func() flows.Event {
+				return events.NewClassifierCalled(
+					assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
+					[]*flows.HTTPLog{
+						{
+							HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+								LogWithoutTime: &httpx.LogWithoutTime{
+									URL:        "https://api.wit.ai/message?v=20200513&q=hello",
+									StatusCode: 200,
+									Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
+									ElapsedMS:  12,
+								},
+								Status: flows.CallStatusSuccess,
+							},
+							CreatedOn: dates.Now(),
+						},
+					},
+				)
+			},
+			`service_called`,
 		},
 		{
 			func() flows.Event {
@@ -426,6 +430,12 @@ func TestEventMarshaling(t *testing.T) {
 				return events.NewTicketTopicChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", weather.Reference())
 			},
 			`ticket_topic_changed`,
+		},
+		{
+			func() flows.Event {
+				return events.NewWaitTimedOut()
+			},
+			`wait_timed_out`,
 		},
 	}
 
