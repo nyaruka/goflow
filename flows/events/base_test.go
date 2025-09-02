@@ -372,13 +372,13 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", user.Reference())
+				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", user.Reference(), true)
 			},
 			`ticket_assignee_changed`,
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", nil)
+				return events.NewTicketAssigneeChanged("019905d4-5f7b-71b8-bcb8-6a68de2d91d2", nil, false)
 			},
 			`ticket_assignee_changed_nobody`,
 		},
