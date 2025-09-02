@@ -1,3 +1,7 @@
+v0.255.2 (2025-09-02)
+-------------------------
+ * Add initial field to ticket_assignee_changed events
+
 v0.255.1 (2025-09-01)
 -------------------------
  * Rename ticket_assigned to ticket_assignee_changed to better reflect that it's for unassignment as well
