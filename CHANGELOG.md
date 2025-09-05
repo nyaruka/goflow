@@ -1,3 +1,7 @@
+v0.255.5 (2025-09-05)
+-------------------------
+ * Make obfuscation key 4 x int32
+
 v0.255.4 (2025-09-05)
 -------------------------
  * Enable contact queries on ref and expose ref in context as @contact.ref
