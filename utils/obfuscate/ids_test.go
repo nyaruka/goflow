@@ -46,7 +46,7 @@ func TestIDs(t *testing.T) {
 	} {
 		assert.False(t, obfuscate.WasID(id), "WasID should be false for %s", id)
 
-		_, err := obfuscate.DecodeID("E2E6MXXX", key)
+		_, err := obfuscate.DecodeID(id, key)
 		assert.EqualError(t, err, "code is not a valid obfuscated ID")
 	}
 }
