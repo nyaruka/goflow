@@ -25,7 +25,7 @@ const (
 )
 
 // EncodeID encodes a numeric ID into an obfuscated string using a Feistel cipher with the provided key.
-func EncodeID(id int64, key [4]int32) (string, error) {
+func EncodeID(id int64, key [4]uint32) (string, error) {
 	if id <= 0 || id > maxID {
 		return "", errors.New("encode requires id between 1 and 9,999,999,999")
 	}
@@ -51,7 +51,7 @@ func EncodeID(id int64, key [4]int32) (string, error) {
 }
 
 // DecodeID decodes an obfuscated string back into the original numeric ID using a Feistel cipher with the provided key.
-func DecodeID(code string, key [4]int32) (int64, error) {
+func DecodeID(code string, key [4]uint32) (int64, error) {
 	if !WasID(code) {
 		return 0, errors.New("code is not a valid obfuscated ID")
 	}
@@ -86,7 +86,7 @@ func WasID(code string) bool {
 	return true
 }
 
-func feistel30Encrypt(n int64, key [4]int32) int64 {
+func feistel30Encrypt(n int64, key [4]uint32) int64 {
 	left := (n >> f30HalfSize) & f30Mask
 	right := n & f30Mask
 
@@ -98,7 +98,7 @@ func feistel30Encrypt(n int64, key [4]int32) int64 {
 	return (left << f30HalfSize) | right
 }
 
-func feistel30Decrypt(n int64, key [4]int32) int64 {
+func feistel30Decrypt(n int64, key [4]uint32) int64 {
 	left := (n >> f30HalfSize) & f30Mask
 	right := n & f30Mask
 
@@ -110,7 +110,7 @@ func feistel30Decrypt(n int64, key [4]int32) int64 {
 	return (left << f30HalfSize) | right
 }
 
-func feistel34Encrypt(n int64, key [4]int32) int64 {
+func feistel34Encrypt(n int64, key [4]uint32) int64 {
 	left := (n >> f34HalfSize) & f34Mask
 	right := n & f34Mask
 
@@ -122,7 +122,7 @@ func feistel34Encrypt(n int64, key [4]int32) int64 {
 	return (left << f34HalfSize) | right
 }
 
-func feistel34Decrypt(n int64, key [4]int32) int64 {
+func feistel34Decrypt(n int64, key [4]uint32) int64 {
 	left := (n >> f34HalfSize) & f34Mask
 	right := n & f34Mask
 

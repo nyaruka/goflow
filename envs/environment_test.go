@@ -47,7 +47,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
 	assert.Nil(t, env.LocationResolver())
 	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
-	assert.Equal(t, [4]int32{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}, env.ObfuscationKey())
+	assert.Equal(t, [4]uint32{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}, env.ObfuscationKey())
 
 	// can create with valid values
 	env, err = envs.ReadEnvironment([]byte(`{
@@ -69,7 +69,7 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, i18n.Locale("eng-RW"), env.DefaultLocale())
 	assert.Equal(t, envs.CollationDefault, env.InputCollation())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
-	assert.Equal(t, [4]int32{123456, 234567, 345678, 456789}, env.ObfuscationKey())
+	assert.Equal(t, [4]uint32{123456, 234567, 345678, 456789}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 
 	data, err := jsonx.Marshal(env)
@@ -89,7 +89,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
-		WithObfuscationKey([4]int32{123456, 234567, 345678, 456789}).
+		WithObfuscationKey([4]uint32{123456, 234567, 345678, 456789}).
 		WithPromptResolver(envs.NewPromptResolver(map[string]*template.Template{"hello": template.Must(template.New("").Parse("Say hello"))})).
 		Build()
 
@@ -100,7 +100,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, i18n.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
-	assert.Equal(t, [4]int32{123456, 234567, 345678, 456789}, env.ObfuscationKey())
+	assert.Equal(t, [4]uint32{123456, 234567, 345678, 456789}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 	assert.Nil(t, env.LLMPrompt("xxxx"))
 	assert.NotNil(t, env.LLMPrompt("hello"))
@@ -115,7 +115,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: ".", DigitGroupingSymbol: ","}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
-	assert.Equal(t, [4]int32{670492, 863807, 107187, 12648430}, env.ObfuscationKey())
+	assert.Equal(t, [4]uint32{670492, 863807, 107187, 12648430}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 	assert.Nil(t, env.LLMPrompt("xxxx"))
 	assert.Nil(t, env.LLMPrompt("hello"))
