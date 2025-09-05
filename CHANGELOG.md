@@ -1,3 +1,7 @@
+v0.255.4 (2025-09-05)
+-------------------------
+ * Enable contact queries on ref and expose ref in context as @contact.ref
+
 v0.255.3 (2025-09-02)
 -------------------------
  * Instead of a boolean, record the previous assignee on the event
