@@ -1,3 +1,7 @@
+v0.255.6 (2025-09-05)
+-------------------------
+ * Use unsigned integers for keys in obfuscate/ids.go
+
 v0.255.5 (2025-09-05)
 -------------------------
  * Make obfuscation key 4 x int32
