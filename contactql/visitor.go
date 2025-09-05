@@ -11,6 +11,7 @@ import (
 	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/obfuscate"
 )
 
 // an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
@@ -27,7 +28,8 @@ var operatorAliases = map[string]Operator{
 // Fixed attributes that can be searched
 const (
 	AttributeUUID       = "uuid"
-	AttributeID         = "id"
+	AttributeID         = "id" // deprecated in favor of ref
+	AttributeRef        = "ref"
 	AttributeName       = "name"
 	AttributeStatus     = "status"
 	AttributeLanguage   = "language"
@@ -43,6 +45,7 @@ const (
 var attributes = map[string]assets.FieldType{
 	AttributeUUID:       assets.FieldTypeText,
 	AttributeID:         assets.FieldTypeText,
+	AttributeRef:        assets.FieldTypeText,
 	AttributeName:       assets.FieldTypeText,
 	AttributeStatus:     assets.FieldTypeText,
 	AttributeLanguage:   assets.FieldTypeText,
@@ -91,9 +94,8 @@ func (v *visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) any 
 	asURN, _ := urns.Parse(value)
 
 	if v.env.RedactionPolicy() == envs.RedactionPolicyURNs {
-		num, err := strconv.Atoi(value)
-		if err == nil {
-			return NewCondition(PropertyTypeAttribute, AttributeID, OpEqual, strconv.Itoa(num))
+		if obfuscate.WasID(value) {
+			return NewCondition(PropertyTypeAttribute, AttributeRef, OpEqual, value)
 		}
 	} else if asURN != urns.NilURN {
 		scheme, path, _, _ := asURN.ToParts()

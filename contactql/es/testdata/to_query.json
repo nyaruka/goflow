@@ -643,12 +643,12 @@
         "redact_urns": true
     },
     {
-        "description": "implicit id with URN redaction",
-        "query": "7979",
+        "description": "implicit ref to id query with URN redaction",
+        "query": "A6YWQL",
         "elastic": {
             "ids": {
                 "values": [
-                    "7979"
+                    "12345"
                 ]
             }
         },
@@ -1227,6 +1227,46 @@
                     "ids": {
                         "values": [
                             "123"
+                        ]
+                    }
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ref equality",
+        "query": "ref=A6YWQL",
+        "elastic": {
+            "ids": {
+                "values": [
+                    "12345"
+                ]
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ref equality with invalid ref",
+        "query": "ref=A6YWQLXXX",
+        "elastic": {
+            "ids": {
+                "values": [
+                    "0"
+                ]
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ref inequality",
+        "query": "ref!=A6YWQL",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "ids": {
+                        "values": [
+                            "12345"
                         ]
                     }
                 }

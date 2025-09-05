@@ -32,6 +32,8 @@ const (
 	RedactionPolicyURNs RedactionPolicy = "urns"
 )
 
+var defaultObfuscationKey = [4]int64{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}
+
 // NumberFormat describes how numbers should be parsed and formatted
 type NumberFormat struct {
 	DecimalSymbol       string `json:"decimal_symbol"`
@@ -52,6 +54,7 @@ type Environment interface {
 	NumberFormat() *NumberFormat
 	InputCollation() Collation
 	RedactionPolicy() RedactionPolicy
+	ObfuscationKey() [4]int64
 
 	// non-marshalled properties
 	LocationResolver() LocationResolver
@@ -71,6 +74,7 @@ type environment struct {
 	defaultCountry   i18n.Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
+	obfuscationKey   [4]int64
 	inputCollation   Collation
 	locationResolver LocationResolver
 	promptResolver   PromptResolver
@@ -84,6 +88,7 @@ func (e *environment) DefaultCountry() i18n.Country             { return e.defau
 func (e *environment) NumberFormat() *NumberFormat              { return e.numberFormat }
 func (e *environment) InputCollation() Collation                { return e.inputCollation }
 func (e *environment) RedactionPolicy() RedactionPolicy         { return e.redactionPolicy }
+func (e *environment) ObfuscationKey() [4]int64                 { return e.obfuscationKey }
 func (e *environment) LocationResolver() LocationResolver       { return e.locationResolver }
 func (e *environment) LLMPrompt(name string) *template.Template { return e.promptResolver(name) }
 
@@ -116,6 +121,7 @@ type envEnvelope struct {
 	DefaultCountry   i18n.Country    `json:"default_country,omitempty" validate:"omitempty,country"`
 	InputCollation   Collation       `json:"input_collation"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
+	ObfuscationKey   [4]int64        `json:"obfuscation_key"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
@@ -135,6 +141,7 @@ func ReadEnvironment(data []byte) (Environment, error) {
 	env.numberFormat = envelope.NumberFormat
 	env.inputCollation = envelope.InputCollation
 	env.redactionPolicy = envelope.RedactionPolicy
+	env.obfuscationKey = envelope.ObfuscationKey
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -155,6 +162,7 @@ func (e *environment) toEnvelope() *envEnvelope {
 		NumberFormat:     e.numberFormat,
 		InputCollation:   e.inputCollation,
 		RedactionPolicy:  e.redactionPolicy,
+		ObfuscationKey:   e.obfuscationKey,
 	}
 }
 
@@ -184,20 +192,21 @@ func NewBuilder() *EnvironmentBuilder {
 			numberFormat:     DefaultNumberFormat,
 			inputCollation:   CollationDefault,
 			redactionPolicy:  RedactionPolicyNone,
+			obfuscationKey:   defaultObfuscationKey,
 			promptResolver:   EmptyPromptResolver,
 		},
 	}
 }
 
 // WithDateFormat sets the date format
-func (b *EnvironmentBuilder) WithDateFormat(dateFormat DateFormat) *EnvironmentBuilder {
-	b.env.dateFormat = dateFormat
+func (b *EnvironmentBuilder) WithDateFormat(format DateFormat) *EnvironmentBuilder {
+	b.env.dateFormat = format
 	return b
 }
 
 // WithTimeFormat sets the time format
-func (b *EnvironmentBuilder) WithTimeFormat(timeFormat TimeFormat) *EnvironmentBuilder {
-	b.env.timeFormat = timeFormat
+func (b *EnvironmentBuilder) WithTimeFormat(format TimeFormat) *EnvironmentBuilder {
+	b.env.timeFormat = format
 	return b
 }
 
@@ -206,18 +215,18 @@ func (b *EnvironmentBuilder) WithTimezone(timezone *time.Location) *EnvironmentB
 	return b
 }
 
-func (b *EnvironmentBuilder) WithAllowedLanguages(allowedLanguages ...i18n.Language) *EnvironmentBuilder {
-	b.env.allowedLanguages = allowedLanguages
+func (b *EnvironmentBuilder) WithAllowedLanguages(languages ...i18n.Language) *EnvironmentBuilder {
+	b.env.allowedLanguages = languages
 	return b
 }
 
-func (b *EnvironmentBuilder) WithDefaultCountry(defaultCountry i18n.Country) *EnvironmentBuilder {
-	b.env.defaultCountry = defaultCountry
+func (b *EnvironmentBuilder) WithDefaultCountry(country i18n.Country) *EnvironmentBuilder {
+	b.env.defaultCountry = country
 	return b
 }
 
-func (b *EnvironmentBuilder) WithNumberFormat(numberFormat *NumberFormat) *EnvironmentBuilder {
-	b.env.numberFormat = numberFormat
+func (b *EnvironmentBuilder) WithNumberFormat(format *NumberFormat) *EnvironmentBuilder {
+	b.env.numberFormat = format
 	return b
 }
 
@@ -226,8 +235,13 @@ func (b *EnvironmentBuilder) WithInputCollation(col Collation) *EnvironmentBuild
 	return b
 }
 
-func (b *EnvironmentBuilder) WithRedactionPolicy(redactionPolicy RedactionPolicy) *EnvironmentBuilder {
-	b.env.redactionPolicy = redactionPolicy
+func (b *EnvironmentBuilder) WithRedactionPolicy(policy RedactionPolicy) *EnvironmentBuilder {
+	b.env.redactionPolicy = policy
+	return b
+}
+
+func (b *EnvironmentBuilder) WithObfuscationKey(key [4]int64) *EnvironmentBuilder {
+	b.env.obfuscationKey = key
 	return b
 }
 

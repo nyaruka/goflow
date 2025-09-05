@@ -23,6 +23,7 @@ func TestEvaluateQuery(t *testing.T) {
 	var testObj = TestQueryable{
 		"uuid":     []any{"c7d9bece-6bbd-4b3b-8a86-eb0cf1ac9d05"},
 		"id":       []any{"12345"},
+		"ref":      []any{"A6YWQL"},
 		"name":     []any{"Bob Smithwick"},
 		"flow":     []any{"Registration"},
 		"tel":      []any{"+59313145145"},
@@ -49,6 +50,10 @@ func TestEvaluateQuery(t *testing.T) {
 		// ID condition
 		{query: `id = 12345`, result: true},
 		{query: `id = 76543`, result: false},
+
+		// ref condition
+		{query: `ref = A6YWQL`, result: true},
+		{query: `ref = KNGEUX`, result: false},
 
 		// name condition
 		{query: `name = "BOB smithwick"`, result: true},

@@ -421,6 +421,7 @@
             "language": "eng",
             "last_seen_on": "2017-12-31T11:35:09.123456Z",
             "name": "Ryan Lewis",
+            "ref": "PLZGVS",
             "status": "active",
             "tickets": [
                 {
@@ -500,6 +501,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:09.123456Z",
                 "name": "Ryan Lewis",
+                "ref": "PLZGVS",
                 "status": "active",
                 "tickets": [
                     {
@@ -676,6 +678,7 @@
                 "language": "eng",
                 "last_seen_on": "2017-12-31T11:35:09.123456Z",
                 "name": "Ryan Lewis",
+                "ref": "PLZGVS",
                 "status": "active",
                 "tickets": [
                     {
@@ -780,6 +783,7 @@
                 "language": "spa",
                 "last_seen_on": null,
                 "name": "Jasmine",
+                "ref": "",
                 "status": "active",
                 "tickets": [],
                 "timezone": null,

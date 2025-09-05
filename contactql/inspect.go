@@ -68,8 +68,8 @@ func Inspect(query *ContactQuery) *Inspection {
 		}
 	}
 
-	// can't turn a query into a group if it uses id, status, group, flow or history
-	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeStatus] || attributes[AttributeGroup] || attributes[AttributeFlow] || attributes[AttributeHistory])
+	// can't turn a query into a group if it uses id, ref, status, group, flow or history
+	allowAsGroup := !(attributes[AttributeID] || attributes[AttributeRef] || attributes[AttributeStatus] || attributes[AttributeGroup] || attributes[AttributeFlow] || attributes[AttributeHistory])
 
 	return &Inspection{
 		Attributes:   utils.EnsureNonNil(slices.Sorted(maps.Keys(attributes))),

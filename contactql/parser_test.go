@@ -54,8 +54,9 @@ func TestParseQuery(t *testing.T) {
 		{text: `will`, parsed: `name ~ "will"`, redactURNs: true, resolver: resolver},
 		{text: `tel:+0123456566`, parsed: `name ~ "tel:+0123456566"`, redactURNs: true, resolver: resolver},
 		{text: `twitter:bobby`, parsed: `name ~ "twitter:bobby"`, redactURNs: true, resolver: resolver},
-		{text: `0123456566`, parsed: `id = 123456566`, redactURNs: true, resolver: resolver},
-		{text: `+0123456566`, parsed: `id = 123456566`, redactURNs: true, resolver: resolver},
+		{text: `A6YWQL`, parsed: `ref = "A6YWQL"`, redactURNs: true, resolver: resolver},
+		{text: `0123456566`, parsed: `name ~ 0123456566`, redactURNs: true, resolver: resolver},
+		{text: `+0123456566`, parsed: `name ~ "+0123456566"`, redactURNs: true, resolver: resolver},
 		{text: `0123-456-566`, parsed: `name ~ "0123-456-566"`, redactURNs: true, resolver: resolver},
 
 		// explicit conditions on name

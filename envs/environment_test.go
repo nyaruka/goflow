@@ -46,6 +46,8 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Nil(t, env.AllowedLanguages())
 	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
 	assert.Nil(t, env.LocationResolver())
+	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
+	assert.Equal(t, [4]int64{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}, env.ObfuscationKey())
 
 	// can create with valid values
 	env, err = envs.ReadEnvironment([]byte(`{
@@ -53,7 +55,9 @@ func TestEnvironmentMarshaling(t *testing.T) {
 		"time_format": "tt:mm:ss", 
 		"allowed_languages": ["eng", "fra"], 
 		"default_country": "RW", 
-		"timezone": "Africa/Kigali"
+		"timezone": "Africa/Kigali",
+		"redaction_policy": "urns",
+		"obfuscation_key": [123456, 234567, 345678, 456789]
 	}`))
 	assert.NoError(t, err)
 	assert.Equal(t, envs.DateFormatDayMonthYear, env.DateFormat())
@@ -64,12 +68,13 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, i18n.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, i18n.Locale("eng-RW"), env.DefaultLocale())
 	assert.Equal(t, envs.CollationDefault, env.InputCollation())
-	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
+	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
+	assert.Equal(t, [4]int64{123456, 234567, 345678, 456789}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 
 	data, err := jsonx.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","input_collation":"default","redaction_policy":"none"}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","allowed_languages":["eng","fra"],"number_format":{"decimal_symbol":".","digit_grouping_symbol":","},"default_country":"RW","input_collation":"default","redaction_policy":"urns","obfuscation_key":[123456,234567,345678,456789]}`)
 }
 
 func TestEnvironmentBuilder(t *testing.T) {
@@ -84,6 +89,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 		WithDefaultCountry(i18n.Country("RW")).
 		WithNumberFormat(&envs.NumberFormat{DecimalSymbol: "'"}).
 		WithRedactionPolicy(envs.RedactionPolicyURNs).
+		WithObfuscationKey([4]int64{123456, 234567, 345678, 456789}).
 		WithPromptResolver(envs.NewPromptResolver(map[string]*template.Template{"hello": template.Must(template.New("").Parse("Say hello"))})).
 		Build()
 
@@ -94,6 +100,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, i18n.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: "'"}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyURNs, env.RedactionPolicy())
+	assert.Equal(t, [4]int64{123456, 234567, 345678, 456789}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 	assert.Nil(t, env.LLMPrompt("xxxx"))
 	assert.NotNil(t, env.LLMPrompt("hello"))
@@ -108,6 +115,7 @@ func TestEnvironmentBuilder(t *testing.T) {
 	assert.Equal(t, i18n.NilCountry, env.DefaultCountry())
 	assert.Equal(t, &envs.NumberFormat{DecimalSymbol: ".", DigitGroupingSymbol: ","}, env.NumberFormat())
 	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
+	assert.Equal(t, [4]int64{670492, 863807, 107187, 12648430}, env.ObfuscationKey())
 	assert.Nil(t, env.LocationResolver())
 	assert.Nil(t, env.LLMPrompt("xxxx"))
 	assert.Nil(t, env.LLMPrompt("hello"))
