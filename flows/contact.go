@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/obfuscate"
 	"github.com/shopspring/decimal"
 )
 
@@ -335,7 +336,7 @@ func (c *Contact) Format(env envs.Environment) string {
 //
 //	__default__:text -> the name or URN
 //	uuid:text -> the UUID of the contact
-//	id:text -> the numeric ID of the contact
+//	ref:text -> the reference identifier of the contact
 //	first_name:text -> the first name of the contact
 //	name:text -> the name of the contact
 //	language:text -> the language of the contact as 3-letter ISO code
@@ -351,6 +352,8 @@ func (c *Contact) Format(env envs.Environment) string {
 // @context contact
 func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	var firstName, urn, timezone, lastSeenOn types.XValue
+
+	ref, _ := obfuscate.EncodeID(int64(c.id), env.ObfuscationKey())
 
 	if c.timezone != nil {
 		timezone = types.NewXText(c.timezone.String())
@@ -378,7 +381,8 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__":  types.NewXText(c.Format(env)),
 		"uuid":         types.NewXText(string(c.uuid)),
-		"id":           types.NewXText(strconv.Itoa(int(c.id))),
+		"id":           types.NewXText(strconv.Itoa(int(c.id))), // deprecated in favor of ref
+		"ref":          types.NewXText(ref),
 		"name":         types.NewXText(c.name),
 		"first_name":   firstName,
 		"language":     types.NewXText(string(c.language)),
@@ -506,7 +510,7 @@ func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []
 
 // QueryProperty resolves a contact query search key for this contact
 //
-// Note that this method excludes id, group and flow search attributes as those are disallowed
+// Note that this method excludes id, ref, group and flow search attributes as those are disallowed
 // query based groups.
 func (c *Contact) QueryProperty(env envs.Environment, key string, propType contactql.PropertyType) []any {
 	if propType == contactql.PropertyTypeAttribute {

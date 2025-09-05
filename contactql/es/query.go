@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/utils/obfuscate"
 )
 
 // AssetMapper is used to map engine assets to however ES identifies them
@@ -204,6 +205,17 @@ func attributeCondition(env envs.Environment, resolver contactql.Resolver, mappe
 			return elastic.Not(elastic.Ids(value))
 		default:
 			panic(fmt.Sprintf("unsupported ID attribute operator: %s", c.Operator()))
+		}
+	case contactql.AttributeRef:
+		value, _ := obfuscate.DecodeID(c.Value(), env.ObfuscationKey()) // if can't be decoded value will be zero which is fine and just means no match
+
+		switch c.Operator() {
+		case contactql.OpEqual:
+			return elastic.Ids(fmt.Sprint(value))
+		case contactql.OpNotEqual:
+			return elastic.Not(elastic.Ids(fmt.Sprint(value)))
+		default:
+			panic(fmt.Sprintf("unsupported ref attribute operator: %s", c.Operator()))
 		}
 	case contactql.AttributeName:
 		switch c.Operator() {
