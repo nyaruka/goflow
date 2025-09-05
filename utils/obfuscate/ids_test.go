@@ -8,7 +8,7 @@ import (
 )
 
 func TestIDs(t *testing.T) {
-	key := [4]int64{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}
+	key := [4]int32{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}
 	tcs := []struct {
 		id       int64
 		expected string

@@ -32,7 +32,7 @@ const (
 	RedactionPolicyURNs RedactionPolicy = "urns"
 )
 
-var defaultObfuscationKey = [4]int64{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}
+var defaultObfuscationKey = [4]int32{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}
 
 // NumberFormat describes how numbers should be parsed and formatted
 type NumberFormat struct {
@@ -54,7 +54,7 @@ type Environment interface {
 	NumberFormat() *NumberFormat
 	InputCollation() Collation
 	RedactionPolicy() RedactionPolicy
-	ObfuscationKey() [4]int64
+	ObfuscationKey() [4]int32
 
 	// non-marshalled properties
 	LocationResolver() LocationResolver
@@ -74,7 +74,7 @@ type environment struct {
 	defaultCountry   i18n.Country
 	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
-	obfuscationKey   [4]int64
+	obfuscationKey   [4]int32
 	inputCollation   Collation
 	locationResolver LocationResolver
 	promptResolver   PromptResolver
@@ -88,7 +88,7 @@ func (e *environment) DefaultCountry() i18n.Country             { return e.defau
 func (e *environment) NumberFormat() *NumberFormat              { return e.numberFormat }
 func (e *environment) InputCollation() Collation                { return e.inputCollation }
 func (e *environment) RedactionPolicy() RedactionPolicy         { return e.redactionPolicy }
-func (e *environment) ObfuscationKey() [4]int64                 { return e.obfuscationKey }
+func (e *environment) ObfuscationKey() [4]int32                 { return e.obfuscationKey }
 func (e *environment) LocationResolver() LocationResolver       { return e.locationResolver }
 func (e *environment) LLMPrompt(name string) *template.Template { return e.promptResolver(name) }
 
@@ -121,7 +121,7 @@ type envEnvelope struct {
 	DefaultCountry   i18n.Country    `json:"default_country,omitempty" validate:"omitempty,country"`
 	InputCollation   Collation       `json:"input_collation"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
-	ObfuscationKey   [4]int64        `json:"obfuscation_key"`
+	ObfuscationKey   [4]int32        `json:"obfuscation_key"`
 }
 
 // ReadEnvironment reads an environment from the given JSON
@@ -240,7 +240,7 @@ func (b *EnvironmentBuilder) WithRedactionPolicy(policy RedactionPolicy) *Enviro
 	return b
 }
 
-func (b *EnvironmentBuilder) WithObfuscationKey(key [4]int64) *EnvironmentBuilder {
+func (b *EnvironmentBuilder) WithObfuscationKey(key [4]int32) *EnvironmentBuilder {
 	b.env.obfuscationKey = key
 	return b
 }
