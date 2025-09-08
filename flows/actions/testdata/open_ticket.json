@@ -103,6 +103,7 @@
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                    "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
@@ -161,6 +162,7 @@
             },
             "ticket": {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "status": "open",
                 "topic": {
                     "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                     "name": "Weather"
@@ -219,6 +221,7 @@
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                    "status": "open",
                     "topic": {
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                         "name": "General"
@@ -273,6 +276,7 @@
             },
             "ticket": {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "status": "open",
                 "topic": {
                     "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                     "name": "General"
@@ -322,6 +326,7 @@
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                    "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
@@ -380,6 +385,7 @@
             },
             "ticket": {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "status": "open",
                 "topic": {
                     "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                     "name": "Weather"
@@ -447,6 +453,7 @@
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                    "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                         "name": "Weather"
@@ -501,6 +508,7 @@
             },
             "ticket": {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                "status": "open",
                 "topic": {
                     "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
                     "name": "Weather"
@@ -558,6 +566,7 @@
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                    "status": "open",
                     "topic": {
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
                         "name": "General"

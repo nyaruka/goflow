@@ -7,11 +7,13 @@
         "ticket_uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
         "ticket": {
             "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
+            "status": "open",
             "topic": null,
             "assignee": {
                 "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob McTickets"
-            }
+            },
+            "last_activity_on": "2025-09-08T14:27:00Z"
         }
     },
     "flow": {
@@ -21,10 +23,12 @@
     "triggered_on": "2025-05-04T12:31:26.123456789Z",
     "ticket": {
         "uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6",
+        "status": "open",
         "topic": null,
         "assignee": {
             "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
             "name": "Bob McTickets"
-        }
+        },
+        "last_activity_on": "2025-09-08T14:27:00Z"
     }
 }
