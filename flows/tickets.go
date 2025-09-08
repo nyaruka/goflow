@@ -1,6 +1,9 @@
 package flows
 
 import (
+	"time"
+
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -10,33 +13,48 @@ import (
 // TicketUUID is the UUID of a ticket
 type TicketUUID uuids.UUID
 
+type TicketStatus string
+
+const (
+	// TicketStatusOpen is the status of an open ticket
+	TicketStatusOpen TicketStatus = "open"
+	// TicketStatusClosed is the status of a closed ticket
+	TicketStatusClosed TicketStatus = "closed"
+)
+
 // NewTicketUUID generates a new UUID for a ticket
 func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid     TicketUUID
-	topic    *Topic
-	assignee *User
+	uuid           TicketUUID
+	status         TicketStatus
+	topic          *Topic
+	assignee       *User
+	lastActivityOn time.Time
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, topic *Topic, assignee *User) *Ticket {
+func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User, lastActivityOn time.Time) *Ticket {
 	return &Ticket{
-		uuid:     uuid,
-		topic:    topic,
-		assignee: assignee,
+		uuid:           uuid,
+		status:         status,
+		topic:          topic,
+		assignee:       assignee,
+		lastActivityOn: lastActivityOn,
 	}
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(NewTicketUUID(), topic, assignee)
+	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee, dates.Now())
 }
 
-func (t *Ticket) UUID() TicketUUID { return t.uuid }
-func (t *Ticket) Topic() *Topic    { return t.topic }
-func (t *Ticket) Assignee() *User  { return t.assignee }
+func (t *Ticket) UUID() TicketUUID          { return t.uuid }
+func (t *Ticket) Topic() *Topic             { return t.topic }
+func (t *Ticket) Status() TicketStatus      { return t.status }
+func (t *Ticket) Assignee() *User           { return t.assignee }
+func (t *Ticket) LastActivityOn() time.Time { return t.lastActivityOn }
 
 // Context returns the properties available in expressions
 //
@@ -58,14 +76,20 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 //------------------------------------------------------------------------------------------
 
 type TicketEnvelope struct {
-	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
+	UUID           TicketUUID             `json:"uuid"                   validate:"required,uuid"`
+	Status         TicketStatus           `json:"status"`
+	Topic          *assets.TopicReference `json:"topic"                  validate:"omitempty"`
+	Assignee       *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
+	LastActivityOn time.Time              `json:"last_activity_on"`
 }
 
 // Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
 // be found in the assets, we report the missing asset and return ticket without those.
 func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) *Ticket {
+	if e.Status == "" {
+		e.Status = TicketStatusOpen
+	}
+
 	var topic *Topic
 	if e.Topic != nil {
 		topic = sa.Topics().Get(e.Topic.UUID)
@@ -82,7 +106,7 @@ func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallb
 		}
 	}
 
-	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee}
+	return &Ticket{uuid: e.UUID, status: e.Status, topic: topic, assignee: assignee, lastActivityOn: e.LastActivityOn}
 }
 
 // Marshal marshals a ticket into an envelope.
@@ -98,8 +122,10 @@ func (t *Ticket) Marshal() *TicketEnvelope {
 	}
 
 	return &TicketEnvelope{
-		UUID:     t.uuid,
-		Topic:    topicRef,
-		Assignee: assigneeRef,
+		UUID:           t.uuid,
+		Status:         t.status,
+		Topic:          topicRef,
+		Assignee:       assigneeRef,
+		LastActivityOn: t.lastActivityOn,
 	}
 }

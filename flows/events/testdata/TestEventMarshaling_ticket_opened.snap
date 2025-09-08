@@ -4,6 +4,7 @@
     "created_on": "2025-05-04T12:30:46.123456789Z",
     "ticket": {
         "uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe",
+        "status": "open",
         "topic": {
             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
             "name": "Weather"
@@ -11,7 +12,8 @@
         "assignee": {
             "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
             "name": "Bob"
-        }
+        },
+        "last_activity_on": "2025-09-08T14:27:00Z"
     },
     "note": "this is weird"
 }
