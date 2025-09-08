@@ -1,3 +1,7 @@
+v0.255.7 (2025-09-08)
+-------------------------
+ * Deprecate contact.id in favor of ref
+
 v0.255.6 (2025-09-05)
 -------------------------
  * Use unsigned integers for keys in obfuscate/ids.go
