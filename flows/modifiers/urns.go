@@ -3,6 +3,7 @@ package modifiers
 import (
 	"fmt"
 
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -32,16 +33,16 @@ const (
 type URNs struct {
 	baseModifier
 
-	URNs         []urns.URN       `json:"urns" validate:"required"`
-	Modification URNsModification `json:"modification" validate:"required,eq=append|eq=remove|eq=set"`
+	urnz         []urns.URN
+	modification URNsModification
 }
 
 // NewURNs creates a new URNs modifier
 func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 	return &URNs{
 		baseModifier: newBaseModifier(TypeURNs),
-		URNs:         urnz,
-		Modification: modification,
+		urnz:         urnz,
+		modification: modification,
 	}
 }
 
@@ -50,8 +51,8 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 	modified := false
 
 	// validate modifier URNs and throw away any invalid
-	urnz := make([]urns.URN, 0, len(m.URNs))
-	for _, urn := range m.URNs {
+	urnz := make([]urns.URN, 0, len(m.urnz))
+	for _, urn := range m.urnz {
 		urn := urn.Normalize()
 		if err := urn.Validate(); err != nil {
 			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn)))
@@ -60,7 +61,7 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 		}
 	}
 
-	switch m.Modification {
+	switch m.modification {
 	case URNsAppend:
 		for _, urn := range urnz {
 			if len(contact.URNs()) >= flows.MaxContactURNs {
@@ -93,7 +94,26 @@ var _ flows.Modifier = (*URNs)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type urnsEnvelope struct {
+	utils.TypedEnvelope
+
+	URNs         []urns.URN       `json:"urns" validate:"required"`
+	Modification URNsModification `json:"modification" validate:"required,eq=append|eq=remove|eq=set"`
+}
+
 func readURNs(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &URNs{}
-	return m, utils.UnmarshalAndValidate(data, m)
+	e := &urnsEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	return NewURNs(e.URNs, e.Modification), nil
+}
+
+func (m *URNs) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&urnsEnvelope{
+		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
+		URNs:          m.urnz,
+		Modification:  m.modification,
+	})
 }

@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -19,22 +20,22 @@ const TypeStatus string = "status"
 type Status struct {
 	baseModifier
 
-	Status flows.ContactStatus `json:"status" validate:"contact_status"`
+	status flows.ContactStatus
 }
 
 // NewStatus creates a new status modifier
 func NewStatus(status flows.ContactStatus) *Status {
 	return &Status{
 		baseModifier: newBaseModifier(TypeStatus),
-		Status:       status,
+		status:       status,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *Status) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	if contact.Status() != m.Status {
-		contact.SetStatus(m.Status)
-		log(events.NewContactStatusChanged(m.Status))
+	if contact.Status() != m.status {
+		contact.SetStatus(m.status)
+		log(events.NewContactStatusChanged(m.status))
 		return true
 	}
 	return false
@@ -46,7 +47,24 @@ var _ flows.Modifier = (*Status)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type statusEnvelope struct {
+	utils.TypedEnvelope
+
+	Status flows.ContactStatus `json:"status" validate:"contact_status"`
+}
+
 func readStatus(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &Status{}
-	return m, utils.UnmarshalAndValidate(data, m)
+	e := &statusEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	return NewStatus(e.Status), nil
+}
+
+func (m *Status) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&statusEnvelope{
+		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
+		Status:        m.status,
+	})
 }
