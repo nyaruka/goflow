@@ -55,6 +55,7 @@ var _ flows.Modifier = (*Timezone)(nil)
 
 type timezoneEnvelope struct {
 	utils.TypedEnvelope
+
 	Timezone string `json:"timezone"`
 }
 
@@ -81,5 +82,8 @@ func (m *Timezone) MarshalJSON() ([]byte, error) {
 	if m.timezone != nil {
 		tzName = m.timezone.String()
 	}
-	return jsonx.Marshal(&timezoneEnvelope{TypedEnvelope: utils.TypedEnvelope{Type: m.Type()}, Timezone: tzName})
+	return jsonx.Marshal(&timezoneEnvelope{
+		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
+		Timezone:      tzName,
+	})
 }

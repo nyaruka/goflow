@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -20,22 +21,22 @@ const TypeName string = "name"
 type Name struct {
 	baseModifier
 
-	Name string `json:"name"`
+	name string
 }
 
 // NewName creates a new name modifier
 func NewName(name string) *Name {
 	return &Name{
 		baseModifier: newBaseModifier(TypeName),
-		Name:         name,
+		name:         name,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *Name) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	if contact.Name() != m.Name {
+	if contact.Name() != m.name {
 		// truncate value if necessary
-		name := stringsx.Truncate(m.Name, eng.Options().MaxFieldChars)
+		name := stringsx.Truncate(m.name, eng.Options().MaxFieldChars)
 
 		contact.SetName(name)
 		log(events.NewContactNameChanged(name))
@@ -50,7 +51,24 @@ var _ flows.Modifier = (*Name)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type nameEnvelope struct {
+	utils.TypedEnvelope
+
+	Name string `json:"name"`
+}
+
 func readName(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	m := &Name{}
-	return m, utils.UnmarshalAndValidate(data, m)
+	e := &nameEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	return NewName(e.Name), nil
+}
+
+func (m *Name) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&nameEnvelope{
+		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
+		Name:          m.name,
+	})
 }
