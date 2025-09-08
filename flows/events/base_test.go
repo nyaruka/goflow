@@ -42,7 +42,7 @@ func TestEventMarshaling(t *testing.T) {
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", flows.TicketStatusOpen, weather, user, time.Date(2025, 9, 8, 14, 27, 0, 0, time.UTC))
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", flows.TicketStatusOpen, weather, user)
 	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
 	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", facebook, "tel:+12065551212")
 

@@ -1,9 +1,6 @@
 package flows
 
 import (
-	"time"
-
-	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -34,7 +31,7 @@ type Ticket struct {
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User, lastActivityOn time.Time) *Ticket {
+func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		status:   status,
@@ -45,7 +42,7 @@ func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *Use
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee, dates.Now())
+	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee)
 }
 
 func (t *Ticket) UUID() TicketUUID { return t.uuid }

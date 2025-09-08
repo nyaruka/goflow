@@ -10,7 +10,6 @@ import (
 	"sort"
 	"testing"
 	"text/template"
-	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/i18n"
@@ -181,7 +180,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		if tc.HasTicket {
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", flows.TicketStatusOpen, topic, nil, time.Date(2025, 9, 8, 14, 27, 0, 0, time.UTC)))
+			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", flows.TicketStatusOpen, topic, nil))
 			contact.ReevaluateQueryBasedGroups(env)
 		}
 
