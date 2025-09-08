@@ -26,16 +26,16 @@ func registerType(name string, f readFunc) {
 
 // base of all modifier types
 type baseModifier struct {
-	Type_ string `json:"type" validate:"required"`
+	typ string
 }
 
 // creates new base modifier
 func newBaseModifier(typeName string) baseModifier {
-	return baseModifier{Type_: typeName}
+	return baseModifier{typ: typeName}
 }
 
 // Type returns the type of this modifier
-func (m *baseModifier) Type() string { return m.Type_ }
+func (m *baseModifier) Type() string { return m.typ }
 
 // Apply applies the given modifier to the given contact and re-evaluates query based groups if necessary
 func Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, c *flows.Contact, mod flows.Modifier, logEvent flows.EventCallback) bool {

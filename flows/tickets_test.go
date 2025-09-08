@@ -43,6 +43,7 @@ func TestTickets(t *testing.T) {
 	require.NoError(t, err)
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
+	computers := sa.Topics().Get("daa356b6-32af-44f0-9d35-6126d55ec3e9")
 	assert.Equal(t, assets.TopicUUID("472a7a73-96cb-4736-b567-056d987cc5b4"), weather.UUID())
 	assert.Equal(t, "Weather", weather.Name())
 	assert.Equal(t, assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"), weather.Reference())
@@ -92,4 +93,16 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, flows.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
+
+	prevLastActivity := ticket3.LastActivityOn()
+
+	ticket3.SetStatus(flows.TicketStatusClosed)
+	ticket3.SetTopic(computers)
+	ticket3.SetAssignee(nil)
+	ticket3.RecordActivity()
+
+	assert.Equal(t, flows.TicketStatusClosed, ticket3.Status())
+	assert.Equal(t, computers, ticket3.Topic())
+	assert.Nil(t, ticket3.Assignee())
+	assert.True(t, ticket3.LastActivityOn().After(prevLastActivity))
 }

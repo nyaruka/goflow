@@ -50,11 +50,19 @@ func OpenTicket(topic *Topic, assignee *User) *Ticket {
 	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee, dates.Now())
 }
 
-func (t *Ticket) UUID() TicketUUID          { return t.uuid }
-func (t *Ticket) Topic() *Topic             { return t.topic }
-func (t *Ticket) Status() TicketStatus      { return t.status }
-func (t *Ticket) Assignee() *User           { return t.assignee }
+func (t *Ticket) UUID() TicketUUID { return t.uuid }
+
+func (t *Ticket) Status() TicketStatus          { return t.status }
+func (t *Ticket) SetStatus(status TicketStatus) { t.status = status }
+
+func (t *Ticket) Topic() *Topic         { return t.topic }
+func (t *Ticket) SetTopic(topic *Topic) { t.topic = topic }
+
+func (t *Ticket) Assignee() *User        { return t.assignee }
+func (t *Ticket) SetAssignee(user *User) { t.assignee = user }
+
 func (t *Ticket) LastActivityOn() time.Time { return t.lastActivityOn }
+func (t *Ticket) RecordActivity()           { t.lastActivityOn = dates.Now() }
 
 // Context returns the properties available in expressions
 //
