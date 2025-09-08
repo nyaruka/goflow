@@ -1,3 +1,7 @@
+v0.256.1 (2025-09-08)
+-------------------------
+ * Remove Ticket.last_activity_on
+
 v0.256.0 (2025-09-08)
 -------------------------
  * Add ticket modifiers for assignee, note, and topic
