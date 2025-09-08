@@ -34,8 +34,7 @@
                 "assignee": {
                     "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
-                },
-                "last_activity_on": "2025-05-04T12:30:46.123456789Z"
+                }
             }
         },
         "events": [
@@ -53,8 +52,7 @@
                     "assignee": {
                         "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                         "name": "Bob"
-                    },
-                    "last_activity_on": "2025-05-04T12:30:46.123456789Z"
+                    }
                 },
                 "note": "this is a note"
             }
@@ -77,8 +75,7 @@
                 "assignee": {
                     "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
-                },
-                "last_activity_on": "0001-01-01T00:00:00Z"
+                }
             }
         },
         "modifier": {
@@ -105,8 +102,7 @@
                 "assignee": {
                     "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                     "name": "Bob"
-                },
-                "last_activity_on": "0001-01-01T00:00:00Z"
+                }
             }
         },
         "events": []

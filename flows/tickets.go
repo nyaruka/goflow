@@ -27,21 +27,19 @@ func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid           TicketUUID
-	status         TicketStatus
-	topic          *Topic
-	assignee       *User
-	lastActivityOn time.Time
+	uuid     TicketUUID
+	status   TicketStatus
+	topic    *Topic
+	assignee *User
 }
 
 // NewTicket creates a new ticket
 func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User, lastActivityOn time.Time) *Ticket {
 	return &Ticket{
-		uuid:           uuid,
-		status:         status,
-		topic:          topic,
-		assignee:       assignee,
-		lastActivityOn: lastActivityOn,
+		uuid:     uuid,
+		status:   status,
+		topic:    topic,
+		assignee: assignee,
 	}
 }
 
@@ -60,9 +58,6 @@ func (t *Ticket) SetTopic(topic *Topic) { t.topic = topic }
 
 func (t *Ticket) Assignee() *User        { return t.assignee }
 func (t *Ticket) SetAssignee(user *User) { t.assignee = user }
-
-func (t *Ticket) LastActivityOn() time.Time { return t.lastActivityOn }
-func (t *Ticket) RecordActivity()           { t.lastActivityOn = dates.Now() }
 
 // Context returns the properties available in expressions
 //
@@ -84,11 +79,10 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 //------------------------------------------------------------------------------------------
 
 type TicketEnvelope struct {
-	UUID           TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status         TicketStatus           `json:"status"`
-	Topic          *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Assignee       *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
-	LastActivityOn time.Time              `json:"last_activity_on"`
+	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
+	Status   TicketStatus           `json:"status"`
+	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
+	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }
 
 // Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
@@ -114,7 +108,7 @@ func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallb
 		}
 	}
 
-	return &Ticket{uuid: e.UUID, status: e.Status, topic: topic, assignee: assignee, lastActivityOn: e.LastActivityOn}
+	return &Ticket{uuid: e.UUID, status: e.Status, topic: topic, assignee: assignee}
 }
 
 // Marshal marshals a ticket into an envelope.
@@ -130,10 +124,9 @@ func (t *Ticket) Marshal() *TicketEnvelope {
 	}
 
 	return &TicketEnvelope{
-		UUID:           t.uuid,
-		Status:         t.status,
-		Topic:          topicRef,
-		Assignee:       assigneeRef,
-		LastActivityOn: t.lastActivityOn,
+		UUID:     t.uuid,
+		Status:   t.status,
+		Topic:    topicRef,
+		Assignee: assigneeRef,
 	}
 }

@@ -112,7 +112,6 @@
                     "note": "Last message: Rats",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "ticket": {
-                        "last_activity_on": "2025-05-04T12:31:09.123456789Z",
                         "status": "open",
                         "topic": {
                             "name": "Weather",

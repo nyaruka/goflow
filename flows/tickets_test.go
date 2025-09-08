@@ -94,15 +94,11 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
-	prevLastActivity := ticket3.LastActivityOn()
-
 	ticket3.SetStatus(flows.TicketStatusClosed)
 	ticket3.SetTopic(computers)
 	ticket3.SetAssignee(nil)
-	ticket3.RecordActivity()
 
 	assert.Equal(t, flows.TicketStatusClosed, ticket3.Status())
 	assert.Equal(t, computers, ticket3.Topic())
 	assert.Nil(t, ticket3.Assignee())
-	assert.True(t, ticket3.LastActivityOn().After(prevLastActivity))
 }

@@ -26,7 +26,6 @@ func NewNote(note string) *Note {
 
 // Apply applies this modification to the given ticket
 func (m *Note) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, ticket *flows.Ticket, log flows.EventCallback) bool {
-	ticket.RecordActivity()
 	log(events.NewTicketNoteAdded(ticket.UUID(), m.note))
 	return true
 }
