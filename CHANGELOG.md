@@ -1,3 +1,8 @@
+v0.256.0 (2025-09-08)
+-------------------------
+ * Add ticket modifiers for assignee, note, and topic
+ * Add status and last_activity_on to Ticket
+
 v0.255.7 (2025-09-08)
 -------------------------
  * Deprecate contact.id in favor of ref
