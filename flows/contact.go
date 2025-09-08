@@ -353,6 +353,9 @@ func (c *Contact) Format(env envs.Environment) string {
 func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	var firstName, urn, timezone, lastSeenOn types.XValue
 
+	id := types.NewXText(strconv.Itoa(int(c.id)))
+	id.SetDeprecated("id: use ref instead")
+
 	ref, _ := obfuscate.EncodeID(int64(c.id), env.ObfuscationKey())
 
 	if c.timezone != nil {
@@ -381,7 +384,7 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__":  types.NewXText(c.Format(env)),
 		"uuid":         types.NewXText(string(c.uuid)),
-		"id":           types.NewXText(strconv.Itoa(int(c.id))), // deprecated in favor of ref
+		"id":           id,
 		"ref":          types.NewXText(ref),
 		"name":         types.NewXText(c.name),
 		"first_name":   firstName,
