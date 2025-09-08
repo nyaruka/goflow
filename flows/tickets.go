@@ -1,6 +1,9 @@
 package flows
 
 import (
+	"time"
+
+	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -15,28 +18,31 @@ func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid     TicketUUID
-	topic    *Topic
-	assignee *User
+	uuid           TicketUUID
+	topic          *Topic
+	assignee       *User
+	lastActivityOn time.Time
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, topic *Topic, assignee *User) *Ticket {
+func NewTicket(uuid TicketUUID, topic *Topic, assignee *User, lastActivityOn time.Time) *Ticket {
 	return &Ticket{
-		uuid:     uuid,
-		topic:    topic,
-		assignee: assignee,
+		uuid:           uuid,
+		topic:          topic,
+		assignee:       assignee,
+		lastActivityOn: lastActivityOn,
 	}
 }
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(NewTicketUUID(), topic, assignee)
+	return NewTicket(NewTicketUUID(), topic, assignee, dates.Now())
 }
 
-func (t *Ticket) UUID() TicketUUID { return t.uuid }
-func (t *Ticket) Topic() *Topic    { return t.topic }
-func (t *Ticket) Assignee() *User  { return t.assignee }
+func (t *Ticket) UUID() TicketUUID          { return t.uuid }
+func (t *Ticket) Topic() *Topic             { return t.topic }
+func (t *Ticket) Assignee() *User           { return t.assignee }
+func (t *Ticket) LastActivityOn() time.Time { return t.lastActivityOn }
 
 // Context returns the properties available in expressions
 //
@@ -58,9 +64,10 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 //------------------------------------------------------------------------------------------
 
 type TicketEnvelope struct {
-	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
+	UUID           TicketUUID             `json:"uuid"                   validate:"required,uuid"`
+	Topic          *assets.TopicReference `json:"topic"                  validate:"omitempty"`
+	Assignee       *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
+	LastActivityOn time.Time              `json:"last_activity_on"`
 }
 
 // Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
@@ -82,7 +89,7 @@ func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallb
 		}
 	}
 
-	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee}
+	return &Ticket{uuid: e.UUID, topic: topic, assignee: assignee, lastActivityOn: e.LastActivityOn}
 }
 
 // Marshal marshals a ticket into an envelope.
@@ -98,8 +105,9 @@ func (t *Ticket) Marshal() *TicketEnvelope {
 	}
 
 	return &TicketEnvelope{
-		UUID:     t.uuid,
-		Topic:    topicRef,
-		Assignee: assigneeRef,
+		UUID:           t.uuid,
+		Topic:          topicRef,
+		Assignee:       assigneeRef,
+		LastActivityOn: t.lastActivityOn,
 	}
 }
