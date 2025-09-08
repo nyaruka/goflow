@@ -46,6 +46,13 @@
                 },
                 {
                     "created_on": "2025-05-04T12:30:53.123456789Z",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "text": "deprecated context value accessed: id: use ref instead",
+                    "type": "warning",
+                    "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:55.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -57,10 +64,10 @@
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
-                    "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
+                    "uuid": "01969b47-28ab-76f8-a17e-f85e49829fb9"
                 },
                 {
-                    "created_on": "2025-05-04T12:30:57.123456789Z",
+                    "created_on": "2025-05-04T12:30:59.123456789Z",
                     "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 32\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": \"tel:+12065551212\") }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
@@ -70,10 +77,10 @@
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=success",
-                    "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
+                    "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:00.123456789Z",
+                    "created_on": "2025-05-04T12:31:02.123456789Z",
                     "flow": {
                         "name": "Redacted URNs",
                         "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -81,7 +88,7 @@
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
+                    "uuid": "01969b47-4403-76f8-b86e-4b881f09a186"
                 }
             ],
             "segments": [],
@@ -91,12 +98,12 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:30:58.123456789Z",
+                        "exited_on": "2025-05-04T12:31:00.123456789Z",
                         "flow": {
                             "name": "Redacted URNs",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "modified_on": "2025-05-04T12:30:58.123456789Z",
+                        "modified_on": "2025-05-04T12:31:00.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
