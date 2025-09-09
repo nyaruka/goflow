@@ -71,13 +71,68 @@ func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	}
 }
 
+type TicketList struct {
+	all []*Ticket
+}
+
+func NewTicketList(tickets []*Ticket) *TicketList {
+	return &TicketList{all: tickets}
+}
+
+func (l *TicketList) Add(t *Ticket) {
+	l.all = append(l.all, t)
+}
+
+func (l *TicketList) LastOpen() *Ticket {
+	for i := len(l.all) - 1; i >= 0; i-- {
+		if l.all[i].status == TicketStatusOpen {
+			return l.all[i]
+		}
+	}
+	return nil
+}
+
+func (l *TicketList) OpenCount() int {
+	count := 0
+	for _, t := range l.all {
+		if t.status == TicketStatusOpen {
+			count++
+		}
+	}
+	return count
+}
+
+// returns a clone of this group list
+func (l *TicketList) clone() *TicketList {
+	clone := make([]*Ticket, len(l.all))
+	copy(clone, l.all)
+	return &TicketList{all: clone}
+}
+
+// ToXValue returns a representation of this object for use in expressions
+func (l *TicketList) ToXValue(env envs.Environment) types.XValue {
+	array := make([]types.XValue, len(l.all))
+	for i, val := range l.all {
+		array[i] = Context(env, val)
+	}
+	return types.NewXArray(array...)
+}
+
+func (l *TicketList) Marshal() []*TicketEnvelope {
+	envelopes := make([]*TicketEnvelope, len(l.all))
+	for i, t := range l.all {
+		envelopes[i] = t.Marshal()
+	}
+	return envelopes
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type TicketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status   TicketStatus           `json:"status"`
+	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=open|eq=closed"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }

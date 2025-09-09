@@ -38,14 +38,14 @@ func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *Ticket {
 // Apply applies this modification to the given contact
 func (m *Ticket) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, _ *flows.Ticket, log flows.EventCallback) bool {
 	// if there's already an open ticket, nothing to do
-	if contact.Ticket() != nil {
+	if contact.Tickets().OpenCount() > 0 {
 		return false
 	}
 
 	ticket := flows.OpenTicket(m.topic, m.assignee)
 	log(events.NewTicketOpened(ticket, m.note))
 
-	contact.SetTicket(ticket)
+	contact.Tickets().Add(ticket)
 	return true
 }
 

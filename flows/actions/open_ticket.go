@@ -99,7 +99,9 @@ func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.Use
 
 	if a.applyModifier(run, mod, logModifier, logEvent) {
 		// if we were able to open a ticket, return it
-		return run.Session().Contact().Ticket()
+		if lastOpen := run.Session().Contact().Tickets().LastOpen(); lastOpen != nil {
+			return lastOpen
+		}
 	}
 	return nil
 }

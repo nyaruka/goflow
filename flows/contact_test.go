@@ -129,13 +129,13 @@ func TestContact(t *testing.T) {
 		"whatsapp":   flows.NewContactURN(urns.URN("whatsapp:235423721788"), nil).ToXValue(env),
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
-	assert.Nil(t, contact.Ticket())
+	assert.Equal(t, 0, contact.Tickets().OpenCount())
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	ticket := flows.OpenTicket(weather, nil)
-	contact.SetTicket(ticket)
+	contact.Tickets().Add(ticket)
 
-	assert.NotNil(t, contact.Ticket())
+	assert.Equal(t, 1, contact.Tickets().OpenCount())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -144,7 +144,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
-	assert.NotNil(t, contact.Ticket())
+	assert.Equal(t, 1, clone.Tickets().OpenCount())
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
@@ -167,7 +167,7 @@ func TestContact(t *testing.T) {
 		"name":         types.NewXText("Joe Bloggs"),
 		"ref":          types.NewXText("A6YWQL"),
 		"status":       types.NewXText(string(contact.Status())),
-		"tickets":      types.NewXArray(flows.Context(env, contact.Ticket())),
+		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
@@ -267,14 +267,17 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 				"text": "AACC55"
 			}
 		},
-		"ticket": {
-			"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
-			"topic": {
-				"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-				"name": "Weather"
-			},
-			"assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
-		}
+		"tickets": [
+			{
+				"uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+				"status": "open",
+				"topic": {
+					"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+					"name": "Weather"
+				},
+				"assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
+			}
+		]
 	}`), missing)
 
 	refs := make([]string, len(missingAssets))
@@ -453,12 +456,15 @@ func TestContactQuery(t *testing.T) {
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
 			{"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
 		],
-		"ticket": {
-			"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
-			"subject": "Old ticket",
-			"body": "I have a problem",
-			"assignee": null
-		},
+		"tickets": [
+			{
+				"uuid": "e5f5a9b0-1c08-4e56-8f5c-92e00bc3cf52",
+				"status": "open",
+				"subject": "Old ticket",
+				"body": "I have a problem",
+				"assignee": null
+			}
+		],
 		"language": "eng",
 		"timezone": "America/Guayaquil",
 		"urns": [

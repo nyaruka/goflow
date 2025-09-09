@@ -332,14 +332,17 @@ var sessionContact = `{
             "text": "AACC55"
         }
     },
-    "ticket": {
-        "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
-        "topic": {
-            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
-            "name": "Weather"
-        },
-        "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
-    }
+    "tickets": [
+        {
+            "uuid": "78d1fe0d-7e39-461e-81c3-a6a25f15ed69",
+            "status": "open",
+            "topic": {
+                "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+                "name": "Weather"
+            },
+            "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
+        }
+    ]
 }`
 
 var sessionTrigger = `{

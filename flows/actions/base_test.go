@@ -180,7 +180,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		if tc.HasTicket {
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-			contact.SetTicket(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", flows.TicketStatusOpen, topic, nil))
+			contact.Tickets().Add(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", flows.TicketStatusOpen, topic, nil))
 			contact.ReevaluateQueryBasedGroups(env)
 		}
 
