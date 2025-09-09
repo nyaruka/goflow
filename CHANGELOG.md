@@ -1,3 +1,7 @@
+v0.256.3 (2025-09-09)
+-------------------------
+ * Replace contact.ticket with list that can hold other tickets
+
 v0.256.2 (2025-09-09)
 -------------------------
  * Rework ticket modifiers to be just normal modifiers, adding ticket to state that modifiers can modify
