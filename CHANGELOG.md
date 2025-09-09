@@ -1,3 +1,7 @@
+v0.256.2 (2025-09-09)
+-------------------------
+ * Rework ticket modifiers to be just normal modifiers, adding ticket to state that modifiers can modify
+
 v0.256.1 (2025-09-08)
 -------------------------
  * Remove Ticket.last_activity_on
