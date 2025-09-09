@@ -105,6 +105,11 @@
     ],
     "users": [
         {
+            "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
+            "name": "Ann",
+            "email": "ann@nyaruka.com"
+        },
+        {
             "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
             "name": "Bob",
             "email": "bob@nyaruka.com"

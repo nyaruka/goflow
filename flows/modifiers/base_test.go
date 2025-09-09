@@ -42,9 +42,11 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 	tests := []struct {
 		Description   string                 `json:"description"`
 		ContactBefore *flows.ContactEnvelope `json:"contact_before"`
+		TicketBefore  *flows.TicketEnvelope  `json:"ticket_before,omitempty"`
 		Modifier      json.RawMessage        `json:"modifier"`
 
 		ContactAfter *flows.ContactEnvelope `json:"contact_after"`
+		TicketAfter  *flows.TicketEnvelope  `json:"ticket_after,omitempty"`
 		Events       json.RawMessage        `json:"events"`
 	}{}
 
@@ -64,9 +66,16 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		contact, err := tc.ContactBefore.Unmarshal(sa, assets.PanicOnMissing)
 		require.NoError(t, err, "error loading contact_before in %s", testName)
 
+		// read the initial ticket state
+		var ticket *flows.Ticket
+		if tc.TicketBefore != nil {
+			ticket = tc.TicketBefore.Unmarshal(sa, assets.PanicOnMissing)
+			require.NoError(t, err, "error loading ticket_before in %s", testName)
+		}
+
 		// apply the modifier
 		eventLog := test.NewEventLog()
-		modifiers.Apply(eng, env, sa, contact, modifier, eventLog.Log)
+		modifiers.Apply(eng, env, sa, contact, ticket, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
@@ -78,6 +87,11 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		// and the contact
 		actual.ContactAfter = contact.Marshal()
 
+		// and the ticket
+		if ticket != nil {
+			actual.TicketAfter = ticket.Marshal()
+		}
+
 		// and the events
 		actual.Events, _ = jsonx.Marshal(eventLog.Events)
 
@@ -87,6 +101,11 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 
 			// check contact is in the expected state
 			test.AssertEqualJSON(t, jsonx.MustMarshal(tc.ContactAfter), jsonx.MustMarshal(actual.ContactAfter), "contact mismatch in %s", testName)
+
+			// check ticket is in the expected state
+			if tc.TicketAfter != nil {
+				test.AssertEqualJSON(t, jsonx.MustMarshal(tc.TicketAfter), jsonx.MustMarshal(actual.TicketAfter), "ticket mismatch in %s", testName)
+			}
 
 			// check events are what we expected
 			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch in %s", testName)
