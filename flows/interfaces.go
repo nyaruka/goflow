@@ -231,16 +231,11 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) bool
+	Apply(Engine, envs.Environment, SessionAssets, *Contact, *Ticket, EventCallback) bool
 }
 
 // ModifierCallback is a callback invoked when a modifier has been generated
 type ModifierCallback func(Modifier)
-
-// TicketModifier is something which can modify a contact and their ticket
-type TicketModifier interface {
-	Apply(Engine, envs.Environment, SessionAssets, *Contact, *Ticket, EventCallback) bool
-}
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {

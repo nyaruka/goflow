@@ -38,7 +38,7 @@ func NewField(field *flows.Field, value string) *Field {
 }
 
 // Apply applies this modification to the given contact
-func (m *Field) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Field) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, ticket *flows.Ticket, log flows.EventCallback) bool {
 	oldValue := contact.Fields().Get(m.field)
 
 	newValue := contact.Fields().Parse(env, sa.Fields(), m.field, m.value)
