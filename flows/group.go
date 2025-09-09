@@ -153,7 +153,7 @@ func (l *GroupList) Count() int {
 }
 
 // ToXValue returns a representation of this object for use in expressions
-func (l GroupList) ToXValue(env envs.Environment) types.XValue {
+func (l *GroupList) ToXValue(env envs.Environment) types.XValue {
 	array := make([]types.XValue, len(l.groups))
 	for i, group := range l.groups {
 		array[i] = group.ToXValue(env)
