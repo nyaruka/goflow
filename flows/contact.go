@@ -138,12 +138,8 @@ func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, time
 	}
 }
 
-// Clone creates a copy of this contact
+// Clone clones this contact when we need to snapshot as part of parent run summary.
 func (c *Contact) Clone() *Contact {
-	if c == nil {
-		return nil
-	}
-
 	return &Contact{
 		uuid:       c.uuid,
 		id:         c.id,
@@ -156,7 +152,7 @@ func (c *Contact) Clone() *Contact {
 		urns:       c.urns.clone(),
 		groups:     c.groups.clone(),
 		fields:     c.fields.clone(),
-		tickets:    c.tickets.clone(),
+		tickets:    NewTicketList(nil), // tickets not included
 		assets:     c.assets,
 	}
 }
