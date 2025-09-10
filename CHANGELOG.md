@@ -1,3 +1,7 @@
+v0.256.5 (2025-09-10)
+-------------------------
+ * Tweak cloning of contacts to not include tickets
+
 v0.256.4 (2025-09-10)
 -------------------------
  * Ticket modifiers have a set of ticket UUIDs  and operate on the contact's associated tickets.
