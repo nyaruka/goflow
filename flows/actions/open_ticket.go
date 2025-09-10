@@ -95,7 +95,7 @@ func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.Use
 		return nil
 	}
 
-	mod := modifiers.NewTicket(topic, assignee, note)
+	mod := modifiers.NewTicketOpen(topic, assignee, note)
 
 	if a.applyModifier(run, mod, logModifier, logEvent) {
 		// if we were able to open a ticket, return it

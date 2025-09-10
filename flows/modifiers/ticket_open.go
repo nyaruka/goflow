@@ -10,14 +10,15 @@ import (
 )
 
 func init() {
-	registerType(TypeTicket, readTicket)
+	registerType(TypeTicketOpen, readTicketOpen)
+	registerType("ticket", readTicketOpen) // deprecated
 }
 
-// TypeTicket is the type of our ticket modifier
-const TypeTicket string = "ticket"
+// TypeTicketOpen is the type of our ticket modifier
+const TypeTicketOpen string = "ticket_open"
 
-// Ticket opens a ticket for the contact
-type Ticket struct {
+// TicketOpen opens a ticket for the contact
+type TicketOpen struct {
 	baseModifier
 
 	topic    *flows.Topic
@@ -25,10 +26,10 @@ type Ticket struct {
 	note     string
 }
 
-// NewTicket creates a new ticket modifier
-func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *Ticket {
-	return &Ticket{
-		baseModifier: newBaseModifier(TypeTicket),
+// NewTicketOpen creates a new ticket open modifier
+func NewTicketOpen(topic *flows.Topic, assignee *flows.User, note string) *TicketOpen {
+	return &TicketOpen{
+		baseModifier: newBaseModifier(TypeTicketOpen),
 		topic:        topic,
 		assignee:     assignee,
 		note:         note,
@@ -36,7 +37,7 @@ func NewTicket(topic *flows.Topic, assignee *flows.User, note string) *Ticket {
 }
 
 // Apply applies this modification to the given contact
-func (m *Ticket) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, _ *flows.Ticket, log flows.EventCallback) bool {
+func (m *TicketOpen) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, _ *flows.Ticket, log flows.EventCallback) bool {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().OpenCount() > 0 {
 		return false
@@ -49,13 +50,13 @@ func (m *Ticket) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionA
 	return true
 }
 
-var _ flows.Modifier = (*Ticket)(nil)
+var _ flows.Modifier = (*TicketOpen)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type ticketEnvelope struct {
+type ticketOpenEnvelope struct {
 	utils.TypedEnvelope
 
 	Topic    *assets.TopicReference `json:"topic" validate:"required"`
@@ -63,8 +64,8 @@ type ticketEnvelope struct {
 	Note     string                 `json:"note"`
 }
 
-func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
-	e := &ticketEnvelope{}
+func readTicketOpen(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
+	e := &ticketOpenEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
@@ -83,11 +84,11 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 		}
 	}
 
-	return NewTicket(topic, assignee, e.Note), nil
+	return NewTicketOpen(topic, assignee, e.Note), nil
 }
 
-func (m *Ticket) MarshalJSON() ([]byte, error) {
-	return jsonx.Marshal(&ticketEnvelope{
+func (m *TicketOpen) MarshalJSON() ([]byte, error) {
+	return jsonx.Marshal(&ticketOpenEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		Topic:         m.topic.Reference(),
 		Assignee:      m.assignee.Reference(),
