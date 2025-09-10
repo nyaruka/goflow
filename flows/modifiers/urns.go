@@ -47,7 +47,7 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, ticket *flows.Ticket, log flows.EventCallback) bool {
+func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
 	// validate modifier URNs and throw away any invalid

@@ -5,22 +5,35 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "assignee": {
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+                        "name": "Bob"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_before": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            },
-            "assignee": {
-                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
-                "name": "Bob"
-            }
         },
         "modifier": {
             "type": "ticket_assignee",
+            "ticket_uuids": [
+                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
+            ],
             "assignee": {
                 "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
                 "name": "Ann"
@@ -30,19 +43,29 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "assignee": {
+                        "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
+                        "name": "Ann"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_after": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            },
-            "assignee": {
-                "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
-                "name": "Ann"
-            }
         },
         "events": [
             {
@@ -67,18 +90,31 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_before": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            }
         },
         "modifier": {
             "type": "ticket_assignee",
+            "ticket_uuids": [
+                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
+            ],
             "assignee": {
                 "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
                 "name": "Ann"
@@ -88,19 +124,29 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "assignee": {
+                        "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
+                        "name": "Ann"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_after": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            },
-            "assignee": {
-                "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
-                "name": "Ann"
-            }
         },
         "events": [
             {
@@ -121,22 +167,35 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "assignee": {
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+                        "name": "Bob"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_before": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            },
-            "assignee": {
-                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
-                "name": "Bob"
-            }
         },
         "modifier": {
             "type": "ticket_assignee",
+            "ticket_uuids": [
+                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
+            ],
             "assignee": {
                 "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob"
@@ -146,19 +205,29 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "tickets": [
+                {
+                    "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
+                    "status": "closed",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    }
+                },
+                {
+                    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                    "status": "open",
+                    "topic": {
+                        "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+                        "name": "Computers"
+                    },
+                    "assignee": {
+                        "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
+                        "name": "Bob"
+                    }
+                }
+            ],
             "created_on": "2018-06-20T11:40:30.123456789Z"
-        },
-        "ticket_after": {
-            "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-            "status": "open",
-            "topic": {
-                "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
-                "name": "Computers"
-            },
-            "assignee": {
-                "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
-                "name": "Bob"
-            }
         },
         "events": []
     }
