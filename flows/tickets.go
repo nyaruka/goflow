@@ -79,6 +79,10 @@ func NewTicketList(tickets []*Ticket) *TicketList {
 	return &TicketList{all: tickets}
 }
 
+func (l *TicketList) All() []*Ticket {
+	return l.all
+}
+
 func (l *TicketList) Add(t *Ticket) {
 	l.all = append(l.all, t)
 }

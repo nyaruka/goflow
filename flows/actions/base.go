@@ -154,7 +154,7 @@ func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifie
 	logModifier(mod)
 
 	s := run.Session()
-	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), nil, mod, logEvent)
+	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, logEvent)
 }
 
 // helper to log a failure
