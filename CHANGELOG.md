@@ -1,3 +1,8 @@
+v0.256.4 (2025-09-10)
+-------------------------
+ * Ticket modifiers have a set of ticket UUIDs  and operate on the contact's associated tickets.
+ * Rename ticket modifier to ticket_open
+
 v0.256.3 (2025-09-09)
 -------------------------
  * Replace contact.ticket with list that can hold other tickets
