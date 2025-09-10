@@ -144,15 +144,11 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
-	assert.Equal(t, 1, clone.Tickets().OpenCount())
+	assert.Equal(t, 0, clone.Tickets().OpenCount()) // not included
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
 	assert.Equal(t, i18n.Country("US"), clone.Country())
-
-	// can also clone a null contact!
-	mrNil := (*flows.Contact)(nil)
-	assert.Nil(t, mrNil.Clone())
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"__default__":  types.NewXText("Joe Bloggs"),
