@@ -1,3 +1,7 @@
+v0.256.6 (2025-09-11)
+-------------------------
+ * Limit @contact.tickets to be open tickets and mark as deprecated
+
 v0.256.5 (2025-09-10)
 -------------------------
  * Tweak cloning of contacts to not include tickets
