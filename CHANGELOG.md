@@ -1,3 +1,7 @@
+v0.256.7 (2025-09-11)
+-------------------------
+ * Add ticket_close modifier
+
 v0.256.6 (2025-09-11)
 -------------------------
  * Limit @contact.tickets to be open tickets and mark as deprecated
