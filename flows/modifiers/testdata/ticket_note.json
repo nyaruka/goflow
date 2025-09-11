@@ -37,9 +37,7 @@
         },
         "modifier": {
             "type": "ticket_note",
-            "ticket_uuids": [
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ],
+            "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
             "note": "Looks important"
         },
         "contact_after": {

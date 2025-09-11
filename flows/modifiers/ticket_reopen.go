@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"slices"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,18 +16,18 @@ func init() {
 // TypeTicketReopen is the type of our reopen modifier
 const TypeTicketReopen string = "ticket_reopen"
 
-// TicketReopen reopens closed tickets
+// TicketReopen reopens a closed ticket
 type TicketReopen struct {
 	baseModifier
 
-	ticketUUIDs []flows.TicketUUID
+	ticketUUID flows.TicketUUID
 }
 
 // NewTicketReopen creates a new reopen modifier
-func NewTicketReopen(ticketUUIDs []flows.TicketUUID) *TicketReopen {
+func NewTicketReopen(ticketUUID flows.TicketUUID) *TicketReopen {
 	return &TicketReopen{
 		baseModifier: newBaseModifier(TypeTicketReopen),
-		ticketUUIDs:  ticketUUIDs,
+		ticketUUID:   ticketUUID,
 	}
 }
 
@@ -40,12 +38,12 @@ func (m *TicketReopen) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 		return false
 	}
 
-	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Status() != flows.TicketStatusOpen {
-			ticket.SetStatus(flows.TicketStatusOpen)
-			log(events.NewTicketReopened(ticket.UUID()))
-			return true
-		}
+	ticket := contact.Tickets().Find(m.ticketUUID)
+
+	if ticket != nil && ticket.Status() != flows.TicketStatusOpen {
+		ticket.SetStatus(flows.TicketStatusOpen)
+		log(events.NewTicketReopened(ticket.UUID()))
+		return true
 	}
 	return false
 }
@@ -59,7 +57,7 @@ var _ flows.Modifier = (*TicketReopen)(nil)
 type ticketReopenEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUIDs []flows.TicketUUID `json:"ticket_uuids" validate:"required,dive,uuid"`
+	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 func readTicketReopen(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -68,12 +66,12 @@ func readTicketReopen(sa flows.SessionAssets, data []byte, missing assets.Missin
 		return nil, err
 	}
 
-	return NewTicketReopen(e.TicketUUIDs), nil
+	return NewTicketReopen(e.TicketUUID), nil
 }
 
 func (m *TicketReopen) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketReopenEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
-		TicketUUIDs:   m.ticketUUIDs,
+		TicketUUID:    m.ticketUUID,
 	})
 }

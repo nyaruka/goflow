@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"slices"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,34 +16,32 @@ func init() {
 // TypeTicketNote is the type of our note modifier
 const TypeTicketNote string = "ticket_note"
 
-// TicketNote adds a note to tickets
+// TicketNote adds a note to a ticket
 type TicketNote struct {
 	baseModifier
 
-	ticketUUIDs []flows.TicketUUID
-	note        string
+	ticketUUID flows.TicketUUID
+	note       string
 }
 
 // NewTicketNote creates a new note modifier
-func NewTicketNote(ticketUUIDs []flows.TicketUUID, note string) *TicketNote {
+func NewTicketNote(ticketUUID flows.TicketUUID, note string) *TicketNote {
 	return &TicketNote{
 		baseModifier: newBaseModifier(TypeTicketNote),
-		ticketUUIDs:  ticketUUIDs,
+		ticketUUID:   ticketUUID,
 		note:         note,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *TicketNote) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	modified := false
+	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) {
-			log(events.NewTicketNoteAdded(ticket.UUID(), m.note))
-			modified = true
-		}
+	if ticket != nil {
+		log(events.NewTicketNoteAdded(ticket.UUID(), m.note))
+		return true
 	}
-	return modified
+	return false
 }
 
 var _ flows.Modifier = (*TicketNote)(nil)
@@ -57,8 +53,8 @@ var _ flows.Modifier = (*TicketNote)(nil)
 type ticketNoteEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUIDs []flows.TicketUUID `json:"ticket_uuids" validate:"required,dive,uuid"`
-	Note        string             `json:"note"`
+	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	Note       string           `json:"note"`
 }
 
 func readTicketNote(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -67,13 +63,13 @@ func readTicketNote(sa flows.SessionAssets, data []byte, missing assets.MissingC
 		return nil, err
 	}
 
-	return NewTicketNote(e.TicketUUIDs, e.Note), nil
+	return NewTicketNote(e.TicketUUID, e.Note), nil
 }
 
 func (m *TicketNote) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketNoteEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
-		TicketUUIDs:   m.ticketUUIDs,
+		TicketUUID:    m.ticketUUID,
 		Note:          m.note,
 	})
 }

@@ -87,6 +87,15 @@ func (l *TicketList) Add(t *Ticket) {
 	l.all = append(l.all, t)
 }
 
+func (l *TicketList) Find(uuid TicketUUID) *Ticket {
+	for _, t := range l.all {
+		if t.uuid == uuid {
+			return t
+		}
+	}
+	return nil
+}
+
 func (l *TicketList) LastOpen() *Ticket {
 	for i := len(l.all) - 1; i >= 0; i-- {
 		if l.all[i].status == TicketStatusOpen {

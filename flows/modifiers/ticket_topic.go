@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"slices"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,35 +16,33 @@ func init() {
 // TypeTicketTopic is the type of our topic modifier
 const TypeTicketTopic string = "ticket_topic"
 
-// TicketTopic modifies the topic of tickets
+// TicketTopic modifies the topic of a ticket
 type TicketTopic struct {
 	baseModifier
 
-	ticketUUIDs []flows.TicketUUID
-	topic       *flows.Topic
+	ticketUUID flows.TicketUUID
+	topic      *flows.Topic
 }
 
 // NewTicketTopic creates a new topic modifier
-func NewTicketTopic(ticketUUIDs []flows.TicketUUID, topic *flows.Topic) *TicketTopic {
+func NewTicketTopic(ticketUUID flows.TicketUUID, topic *flows.Topic) *TicketTopic {
 	return &TicketTopic{
 		baseModifier: newBaseModifier(TypeTicketTopic),
-		ticketUUIDs:  ticketUUIDs,
+		ticketUUID:   ticketUUID,
 		topic:        topic,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *TicketTopic) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	modified := false
+	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Topic() != m.topic {
-			ticket.SetTopic(m.topic)
-			log(events.NewTicketTopicChanged(ticket.UUID(), m.topic.Reference()))
-			modified = true
-		}
+	if ticket != nil && ticket.Topic() != m.topic {
+		ticket.SetTopic(m.topic)
+		log(events.NewTicketTopicChanged(ticket.UUID(), m.topic.Reference()))
+		return true
 	}
-	return modified
+	return false
 }
 
 var _ flows.Modifier = (*TicketTopic)(nil)
@@ -58,8 +54,8 @@ var _ flows.Modifier = (*TicketTopic)(nil)
 type ticketTopicEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUIDs []flows.TicketUUID     `json:"ticket_uuids" validate:"required,dive,uuid"`
-	Topic       *assets.TopicReference `json:"topic"`
+	TicketUUID flows.TicketUUID       `json:"ticket_uuid" validate:"required,uuid"`
+	Topic      *assets.TopicReference `json:"topic"`
 }
 
 func readTicketTopic(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -74,13 +70,13 @@ func readTicketTopic(sa flows.SessionAssets, data []byte, missing assets.Missing
 		return nil, ErrNoModifier // can't proceed without a topic
 	}
 
-	return NewTicketTopic(e.TicketUUIDs, topic), nil
+	return NewTicketTopic(e.TicketUUID, topic), nil
 }
 
 func (m *TicketTopic) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketTopicEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
-		TicketUUIDs:   m.ticketUUIDs,
+		TicketUUID:    m.ticketUUID,
 		Topic:         m.topic.Reference(),
 	})
 }
