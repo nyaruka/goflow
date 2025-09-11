@@ -47,7 +47,7 @@
                 {
                     "created_on": "2025-05-04T12:30:53.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "text": "deprecated context value accessed: id: use ref instead",
+                    "text": "deprecated context value accessed: contact.id: use contact.ref instead",
                     "type": "warning",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },

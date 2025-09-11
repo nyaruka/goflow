@@ -347,9 +347,6 @@ func (c *Contact) Format(env envs.Environment) string {
 func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	var firstName, urn, timezone, lastSeenOn types.XValue
 
-	id := types.NewXText(strconv.Itoa(int(c.id)))
-	id.SetDeprecated("id: use ref instead")
-
 	ref, _ := obfuscate.EncodeID(int64(c.id), env.ObfuscationKey())
 
 	if c.timezone != nil {
@@ -370,10 +367,15 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		lastSeenOn = types.NewXDateTime(*c.lastSeenOn)
 	}
 
+	id := types.NewXText(strconv.Itoa(int(c.id)))
+	id.SetDeprecated("contact.id: use contact.ref instead")
+
+	tickets := c.tickets.Open().ToXValue(env)
+	tickets.SetDeprecated("contact.tickets: use ticket instead")
+
 	return map[string]types.XValue{
 		"__default__":  types.NewXText(c.Format(env)),
 		"uuid":         types.NewXText(string(c.uuid)),
-		"id":           id,
 		"ref":          types.NewXText(ref),
 		"name":         types.NewXText(c.name),
 		"first_name":   firstName,
@@ -387,7 +389,8 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		"groups":       c.groups.ToXValue(env),
 		"fields":       Context(env, c.Fields()),
 		"channel":      Context(env, c.PreferredChannel()),
-		"tickets":      c.tickets.ToXValue(env),
+		"id":           id,
+		"tickets":      tickets,
 	}
 }
 
@@ -526,7 +529,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return vals
 		case contactql.AttributeTickets:
-			return []any{decimal.NewFromInt(int64(c.tickets.OpenCount()))}
+			return []any{decimal.NewFromInt(int64(c.tickets.Open().Count()))}
 		case contactql.AttributeCreatedOn:
 			return []any{c.createdOn}
 		case contactql.AttributeLastSeenOn:

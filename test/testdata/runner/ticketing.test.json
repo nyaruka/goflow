@@ -132,18 +132,25 @@
                     "value": "01969b47-5f5b-76f8-8dbf-00ecf5d03034"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-8dbf-00ecf5d03034\"}]",
                     "created_on": "2025-05-04T12:31:18.123456789Z",
+                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
+                    "text": "deprecated context value accessed: contact.tickets: use ticket instead",
+                    "type": "warning",
+                    "uuid": "01969b47-8283-76f8-8e78-3bde7b3370ae"
+                },
+                {
+                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-8dbf-00ecf5d03034\"}]",
+                    "created_on": "2025-05-04T12:31:20.123456789Z",
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "subject": "New ticket: 01969b47-5f5b-76f8-8dbf-00ecf5d03034",
                     "to": [
                         "bob@nyaruka.com"
                     ],
                     "type": "email_sent",
-                    "uuid": "01969b47-8283-76f8-8e78-3bde7b3370ae"
+                    "uuid": "01969b47-8a53-76f8-b62c-3c781ca3b5da"
                 },
                 {
-                    "created_on": "2025-05-04T12:31:21.123456789Z",
+                    "created_on": "2025-05-04T12:31:23.123456789Z",
                     "flow": {
                         "name": "Support",
                         "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
@@ -151,7 +158,7 @@
                     "run_uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-8e3b-76f8-b62c-3c781ca3b5da"
+                    "uuid": "01969b47-960b-76f8-af9c-ff2f1faac4db"
                 }
             ],
             "segments": [
@@ -185,7 +192,7 @@
                 "runs": [
                     {
                         "created_on": "2025-05-04T12:30:47.123456789Z",
-                        "exited_on": "2025-05-04T12:31:19.123456789Z",
+                        "exited_on": "2025-05-04T12:31:21.123456789Z",
                         "flow": {
                             "name": "Support",
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
@@ -194,7 +201,7 @@
                         "locals": {
                             "_new_ticket": "01969b47-5f5b-76f8-8dbf-00ecf5d03034"
                         },
-                        "modified_on": "2025-05-04T12:31:19.123456789Z",
+                        "modified_on": "2025-05-04T12:31:21.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
