@@ -1,3 +1,8 @@
+v0.256.8 (2025-09-11)
+-------------------------
+ * Simplify ticket modifiers so that they only operate on a single ticket
+ * Add ticket_reopen modifier
+
 v0.256.7 (2025-09-11)
 -------------------------
  * Add ticket_close modifier
