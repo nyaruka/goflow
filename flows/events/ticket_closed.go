@@ -32,8 +32,8 @@ const TypeTicketClosed string = "ticket_closed"
 type TicketClosed struct {
 	BaseEvent
 
-	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"omitempty,uuid"`
-	Ticket     *flows.TicketEnvelope `json:"ticket,omitempty"` // deprecated
+	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"omitempty,uuid"` // TODO make required
+	Ticket     *flows.TicketEnvelope `json:"ticket,omitempty"`                      // deprecated
 }
 
 // NewTicketClosed returns a new ticket closed event

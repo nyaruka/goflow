@@ -91,6 +91,11 @@
             "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
             "name": "Nameless",
             "query": "name = \"\""
+        },
+        {
+            "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+            "name": "Open Tickets",
+            "query": "tickets > 0"
         }
     ],
     "topics": [

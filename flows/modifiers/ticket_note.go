@@ -18,7 +18,7 @@ func init() {
 // TypeTicketNote is the type of our note modifier
 const TypeTicketNote string = "ticket_note"
 
-// TicketNote adds a note to a ticket
+// TicketNote adds a note to tickets
 type TicketNote struct {
 	baseModifier
 
@@ -35,7 +35,7 @@ func NewTicketNote(ticketUUIDs []flows.TicketUUID, note string) *TicketNote {
 	}
 }
 
-// Apply applies this modification to the given ticket
+// Apply applies this modification to the given contact
 func (m *TicketNote) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 

@@ -18,7 +18,7 @@ func init() {
 // TypeTicketAssignee is the type of our assignee modifier
 const TypeTicketAssignee string = "ticket_assignee"
 
-// TicketAssignee modifies the assignee of a ticket
+// TicketAssignee modifies the assignee of tickets
 type TicketAssignee struct {
 	baseModifier
 
@@ -35,20 +35,18 @@ func NewTicketAssignee(ticketUUIDs []flows.TicketUUID, assignee *flows.User) *Ti
 	}
 }
 
-// Apply applies this modification to the given ticket
+// Apply applies this modification to the given contact
 func (m *TicketAssignee) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
 	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) {
-			if ticket.Assignee() != m.assignee {
-				prevAssignee := ticket.Assignee().Reference()
-				thisAssignee := m.assignee.Reference()
+		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Assignee() != m.assignee {
+			prevAssignee := ticket.Assignee().Reference()
+			thisAssignee := m.assignee.Reference()
 
-				ticket.SetAssignee(m.assignee)
-				log(events.NewTicketAssigneeChanged(ticket.UUID(), thisAssignee, prevAssignee))
-				modified = true
-			}
+			ticket.SetAssignee(m.assignee)
+			log(events.NewTicketAssigneeChanged(ticket.UUID(), thisAssignee, prevAssignee))
+			modified = true
 		}
 	}
 	return modified
