@@ -96,21 +96,18 @@ func (l *TicketList) LastOpen() *Ticket {
 	return nil
 }
 
-func (l *TicketList) OpenCount() int {
-	count := 0
+func (l *TicketList) Open() *TicketList {
+	open := make([]*Ticket, 0, len(l.all))
 	for _, t := range l.all {
 		if t.status == TicketStatusOpen {
-			count++
+			open = append(open, t)
 		}
 	}
-	return count
+	return NewTicketList(open)
 }
 
-// returns a clone of this group list
-func (l *TicketList) clone() *TicketList {
-	clone := make([]*Ticket, len(l.all))
-	copy(clone, l.all)
-	return &TicketList{all: clone}
+func (l *TicketList) Count() int {
+	return len(l.all)
 }
 
 // ToXValue returns a representation of this object for use in expressions

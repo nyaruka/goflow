@@ -129,13 +129,13 @@ func TestContact(t *testing.T) {
 		"whatsapp":   flows.NewContactURN(urns.URN("whatsapp:235423721788"), nil).ToXValue(env),
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
-	assert.Equal(t, 0, contact.Tickets().OpenCount())
+	assert.Equal(t, 0, contact.Tickets().Open().Count())
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	ticket := flows.OpenTicket(weather, nil)
 	contact.Tickets().Add(ticket)
 
-	assert.Equal(t, 1, contact.Tickets().OpenCount())
+	assert.Equal(t, 1, contact.Tickets().Open().Count())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -144,7 +144,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
-	assert.Equal(t, 0, clone.Tickets().OpenCount()) // not included
+	assert.Equal(t, 0, clone.Tickets().Open().Count()) // not included
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
