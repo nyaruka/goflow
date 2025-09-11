@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"slices"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,33 +16,31 @@ func init() {
 // TypeTicketClose is the type of our close modifier
 const TypeTicketClose string = "ticket_close"
 
-// TicketClose closes tickets
+// TicketClose closes an open ticket
 type TicketClose struct {
 	baseModifier
 
-	ticketUUIDs []flows.TicketUUID
+	ticketUUID flows.TicketUUID
 }
 
 // NewTicketClose creates a new close modifier
-func NewTicketClose(ticketUUIDs []flows.TicketUUID) *TicketClose {
+func NewTicketClose(ticketUUID flows.TicketUUID) *TicketClose {
 	return &TicketClose{
 		baseModifier: newBaseModifier(TypeTicketClose),
-		ticketUUIDs:  ticketUUIDs,
+		ticketUUID:   ticketUUID,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *TicketClose) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	modified := false
+	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Status() != flows.TicketStatusClosed {
-			ticket.SetStatus(flows.TicketStatusClosed)
-			log(events.NewTicketClosed(ticket))
-			modified = true
-		}
+	if ticket != nil && ticket.Status() != flows.TicketStatusClosed {
+		ticket.SetStatus(flows.TicketStatusClosed)
+		log(events.NewTicketClosed(ticket))
+		return true
 	}
-	return modified
+	return false
 }
 
 var _ flows.Modifier = (*TicketClose)(nil)
@@ -56,7 +52,7 @@ var _ flows.Modifier = (*TicketClose)(nil)
 type ticketCloseEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUIDs []flows.TicketUUID `json:"ticket_uuids" validate:"required,dive,uuid"`
+	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 func readTicketClose(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -65,12 +61,12 @@ func readTicketClose(sa flows.SessionAssets, data []byte, missing assets.Missing
 		return nil, err
 	}
 
-	return NewTicketClose(e.TicketUUIDs), nil
+	return NewTicketClose(e.TicketUUID), nil
 }
 
 func (m *TicketClose) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketCloseEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
-		TicketUUIDs:   m.ticketUUIDs,
+		TicketUUID:    m.ticketUUID,
 	})
 }

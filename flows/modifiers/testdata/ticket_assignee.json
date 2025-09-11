@@ -37,9 +37,7 @@
         },
         "modifier": {
             "type": "ticket_assignee",
-            "ticket_uuids": [
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ],
+            "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
             "assignee": {
                 "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
                 "name": "Ann"
@@ -130,9 +128,7 @@
         },
         "modifier": {
             "type": "ticket_assignee",
-            "ticket_uuids": [
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ],
+            "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
             "assignee": {
                 "uuid": "23d5108e-b25e-41d5-9482-1501d12a74ae",
                 "name": "Ann"
@@ -223,9 +219,7 @@
         },
         "modifier": {
             "type": "ticket_assignee",
-            "ticket_uuids": [
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ],
+            "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
             "assignee": {
                 "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
                 "name": "Bob"

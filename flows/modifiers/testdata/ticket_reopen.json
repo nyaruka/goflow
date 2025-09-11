@@ -31,10 +31,7 @@
         },
         "modifier": {
             "type": "ticket_reopen",
-            "ticket_uuids": [
-                "01992f54-5ab6-725e-be9c-0c6407efd755",
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ]
+            "ticket_uuid": "01992f54-5ab6-725e-be9c-0c6407efd755"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -128,9 +125,7 @@
         },
         "modifier": {
             "type": "ticket_reopen",
-            "ticket_uuids": [
-                "01992f54-5ab6-725e-be9c-0c6407efd755"
-            ]
+            "ticket_uuid": "01992f54-5ab6-725e-be9c-0c6407efd755"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -206,9 +201,7 @@
         },
         "modifier": {
             "type": "ticket_reopen",
-            "ticket_uuids": [
-                "01969b47-0583-76f8-ae7f-f8b243c49ff5"
-            ]
+            "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5"
         },
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",

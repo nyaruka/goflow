@@ -1,8 +1,6 @@
 package modifiers
 
 import (
-	"slices"
-
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -18,38 +16,36 @@ func init() {
 // TypeTicketAssignee is the type of our assignee modifier
 const TypeTicketAssignee string = "ticket_assignee"
 
-// TicketAssignee modifies the assignee of tickets
+// TicketAssignee modifies the assignee of a ticket
 type TicketAssignee struct {
 	baseModifier
 
-	ticketUUIDs []flows.TicketUUID
-	assignee    *flows.User
+	ticketUUID flows.TicketUUID
+	assignee   *flows.User
 }
 
 // NewTicketAssignee creates a new assignee modifier
-func NewTicketAssignee(ticketUUIDs []flows.TicketUUID, assignee *flows.User) *TicketAssignee {
+func NewTicketAssignee(ticketUUID flows.TicketUUID, assignee *flows.User) *TicketAssignee {
 	return &TicketAssignee{
 		baseModifier: newBaseModifier(TypeTicketAssignee),
-		ticketUUIDs:  ticketUUIDs,
+		ticketUUID:   ticketUUID,
 		assignee:     assignee,
 	}
 }
 
 // Apply applies this modification to the given contact
 func (m *TicketAssignee) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
-	modified := false
+	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Assignee() != m.assignee {
-			prevAssignee := ticket.Assignee().Reference()
-			thisAssignee := m.assignee.Reference()
+	if ticket != nil && ticket.Assignee() != m.assignee {
+		prevAssignee := ticket.Assignee().Reference()
+		thisAssignee := m.assignee.Reference()
 
-			ticket.SetAssignee(m.assignee)
-			log(events.NewTicketAssigneeChanged(ticket.UUID(), thisAssignee, prevAssignee))
-			modified = true
-		}
+		ticket.SetAssignee(m.assignee)
+		log(events.NewTicketAssigneeChanged(ticket.UUID(), thisAssignee, prevAssignee))
+		return true
 	}
-	return modified
+	return false
 }
 
 var _ flows.Modifier = (*TicketAssignee)(nil)
@@ -61,8 +57,8 @@ var _ flows.Modifier = (*TicketAssignee)(nil)
 type ticketAssigneeEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUIDs []flows.TicketUUID    `json:"ticket_uuids" validate:"required,dive,uuid"`
-	Assignee    *assets.UserReference `json:"assignee"`
+	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"required,uuid"`
+	Assignee   *assets.UserReference `json:"assignee"`
 }
 
 func readTicketAssignee(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -79,13 +75,13 @@ func readTicketAssignee(sa flows.SessionAssets, data []byte, missing assets.Miss
 		}
 	}
 
-	return NewTicketAssignee(e.TicketUUIDs, assignee), nil
+	return NewTicketAssignee(e.TicketUUID, assignee), nil
 }
 
 func (m *TicketAssignee) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketAssigneeEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
-		TicketUUIDs:   m.ticketUUIDs,
+		TicketUUID:    m.ticketUUID,
 		Assignee:      m.assignee.Reference(),
 	})
 }
