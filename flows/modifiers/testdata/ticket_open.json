@@ -24,6 +24,12 @@
             "name": "Bob",
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
@@ -57,6 +63,17 @@
                     }
                 },
                 "note": "this is a note"
+            },
+            {
+                "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094",
+                "type": "contact_groups_changed",
+                "created_on": "2025-05-04T12:30:49.123456789Z",
+                "groups_added": [
+                    {
+                        "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                        "name": "Open Tickets"
+                    }
+                ]
             }
         ]
     },
@@ -67,6 +84,12 @@
             "name": "Bob",
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
@@ -96,6 +119,12 @@
             "name": "Bob",
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",

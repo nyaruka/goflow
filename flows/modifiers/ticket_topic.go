@@ -18,7 +18,7 @@ func init() {
 // TypeTicketTopic is the type of our topic modifier
 const TypeTicketTopic string = "ticket_topic"
 
-// TicketTopic modifies the topic of a ticket
+// TicketTopic modifies the topic of tickets
 type TicketTopic struct {
 	baseModifier
 
@@ -35,17 +35,15 @@ func NewTicketTopic(ticketUUIDs []flows.TicketUUID, topic *flows.Topic) *TicketT
 	}
 }
 
-// Apply applies this modification to the given ticket
+// Apply applies this modification to the given contact
 func (m *TicketTopic) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
 	modified := false
 
 	for _, ticket := range contact.Tickets().All() {
-		if slices.Contains(m.ticketUUIDs, ticket.UUID()) {
-			if ticket.Topic() != m.topic {
-				ticket.SetTopic(m.topic)
-				log(events.NewTicketTopicChanged(ticket.UUID(), m.topic.Reference()))
-				modified = true
-			}
+		if slices.Contains(m.ticketUUIDs, ticket.UUID()) && ticket.Topic() != m.topic {
+			ticket.SetTopic(m.topic)
+			log(events.NewTicketTopicChanged(ticket.UUID(), m.topic.Reference()))
+			modified = true
 		}
 	}
 	return modified

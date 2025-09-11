@@ -5,6 +5,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
@@ -22,8 +29,7 @@
                         "name": "Computers"
                     }
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "ticket_topic",
@@ -39,6 +45,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
@@ -56,8 +69,7 @@
                         "name": "Weather"
                     }
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": [
             {
@@ -78,6 +90,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
@@ -95,8 +114,7 @@
                         "name": "Computers"
                     }
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "modifier": {
             "type": "ticket_topic",
@@ -112,6 +130,13 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bobby",
             "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
+                    "name": "Open Tickets"
+                }
+            ],
             "tickets": [
                 {
                     "uuid": "01992f54-5ab6-725e-be9c-0c6407efd755",
@@ -129,8 +154,7 @@
                         "name": "Computers"
                     }
                 }
-            ],
-            "created_on": "2018-06-20T11:40:30.123456789Z"
+            ]
         },
         "events": []
     }
