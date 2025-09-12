@@ -1,11 +1,11 @@
 [
     {
-        "description": "flow is required",
+        "description": "flow and ticket are required",
         "trigger": {
             "type": "ticket",
             "triggered_on": "2000-01-01T00:00:00Z"
         },
-        "read_error": "field 'flow' is required"
+        "read_error": "field 'flow' is required, field 'ticket' is required"
     },
     {
         "description": "with all required fields",
