@@ -1,3 +1,7 @@
+v0.256.9 (2025-09-12)
+-------------------------
+ * Ticket closed events should only have ticket UUID
+
 v0.256.8 (2025-09-11)
 -------------------------
  * Simplify ticket modifiers so that they only operate on a single ticket
