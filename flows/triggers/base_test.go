@@ -168,6 +168,16 @@ var assetsJSON = `{
             "name": "Joke Of The Day"
         }
     ],
+    "topics": [
+        {
+            "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
+            "name": "Weather"
+        },
+        {
+            "uuid": "daa356b6-32af-44f0-9d35-6126d55ec3e9",
+            "name": "Computers"
+        }
+    ],
     "users": [
         {
             "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
@@ -294,7 +304,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			"optin_stopped",
 		},
 		{
-			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket), ticket).Build(),
+			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket.UUID()), ticket).Build(),
 			"ticket_closed",
 		},
 	}

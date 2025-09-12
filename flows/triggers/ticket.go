@@ -81,7 +81,7 @@ func (b *TicketBuilder) Build() *Ticket {
 type ticketEnvelope struct {
 	baseEnvelope
 
-	Ticket *flows.TicketEnvelope `json:"ticket"`
+	Ticket *flows.TicketEnvelope `json:"ticket" validate:"required"`
 }
 
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -98,13 +98,6 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
 		return nil, err
-	}
-
-	if event, ok := t.event.(*events.TicketClosed); ok {
-		// TODO remove once there are no more triggers passing the ticket by event
-		if t.ticket == nil {
-			t.ticket = event.Ticket.Unmarshal(sa, missing)
-		}
 	}
 
 	return t, nil

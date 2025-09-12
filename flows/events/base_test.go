@@ -403,7 +403,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketClosed(ticket)
+				return events.NewTicketClosed(ticket.UUID())
 			},
 			`ticket_closed`,
 		},

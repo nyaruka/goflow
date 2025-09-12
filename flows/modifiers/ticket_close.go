@@ -37,7 +37,7 @@ func (m *TicketClose) Apply(eng flows.Engine, env envs.Environment, sa flows.Ses
 
 	if ticket != nil && ticket.Status() != flows.TicketStatusClosed {
 		ticket.SetStatus(flows.TicketStatusClosed)
-		log(events.NewTicketClosed(ticket))
+		log(events.NewTicketClosed(ticket.UUID()))
 		return true
 	}
 	return false

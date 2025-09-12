@@ -19,6 +19,7 @@ const TypeTicketOpened string = "ticket_opened"
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "ticket": {
 //	    "uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
+//	    "status": "open",
 //	    "topic": {
 //	      "uuid": "add17edf-0b6e-4311-bcd7-a64b2a459157",
 //	      "name": "Weather"
