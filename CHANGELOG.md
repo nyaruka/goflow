@@ -1,3 +1,7 @@
+v0.256.10 (2025-09-16)
+-------------------------
+ * Make test.NewHTTPServer usable for other things
+
 v0.256.9 (2025-09-12)
 -------------------------
  * Ticket closed events should only have ticket UUID
