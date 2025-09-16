@@ -31,7 +31,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	test.MockUniverse()
 
-	server := test.NewTestHTTPServer(49992)
+	server := test.NewHTTPServer(49992, test.MockWebhooksHandler)
 	defer server.Close()
 
 	sessionWithURNs, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)

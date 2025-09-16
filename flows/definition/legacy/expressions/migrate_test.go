@@ -227,7 +227,7 @@ func TestMigrateTemplate(t *testing.T) {
 		})
 	}
 
-	server := test.NewTestHTTPServer(49997)
+	server := test.NewHTTPServer(49997, test.MockWebhooksHandler)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)

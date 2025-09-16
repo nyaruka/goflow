@@ -34,7 +34,7 @@ type webhook struct {
 }
 
 func TestWebhookService(t *testing.T) {
-	server := test.NewTestHTTPServer(49994)
+	server := test.NewHTTPServer(49994, test.MockWebhooksHandler)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)
@@ -212,7 +212,7 @@ func TestGzipEncoding(t *testing.T) {
 	defer dates.SetNowFunc(time.Now)
 	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2019, 10, 7, 15, 21, 30, 123456789, time.UTC), time.Second))
 
-	server := test.NewTestHTTPServer(52025)
+	server := test.NewHTTPServer(52025, test.MockWebhooksHandler)
 
 	request, err := http.NewRequest("GET", server.URL+"?cmd=gzipped&content=Hello", nil)
 	require.NoError(t, err)

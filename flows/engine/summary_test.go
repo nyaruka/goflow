@@ -22,7 +22,7 @@ func TestRunSummary(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 	defer dates.SetNowFunc(time.Now)
 
-	server := test.NewTestHTTPServer(49999)
+	server := test.NewHTTPServer(49999, test.MockWebhooksHandler)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)

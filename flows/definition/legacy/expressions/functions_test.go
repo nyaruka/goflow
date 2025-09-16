@@ -140,7 +140,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		{old: `@(YEAR(NOW()))`, new: `@(format_date(now(), "YYYY"))`},
 	}
 
-	server := test.NewTestHTTPServer(49991)
+	server := test.NewHTTPServer(49991, test.MockWebhooksHandler)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)

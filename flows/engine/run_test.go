@@ -107,7 +107,7 @@ var sessionTrigger = `{
 func TestRuns(t *testing.T) {
 	test.MockUniverse()
 
-	server := test.NewTestHTTPServer(49999)
+	server := test.NewHTTPServer(49999, test.MockWebhooksHandler)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, envs.RedactionPolicyNone)

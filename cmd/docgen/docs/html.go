@@ -209,7 +209,7 @@ func copyFile(src, dst string) error {
 
 // builds the documentation generation context from the given documented items
 func buildTemplateContext(items map[string][]*TaggedItem) (map[string]string, error) {
-	server := test.NewTestHTTPServer(49998)
+	server := test.NewHTTPServer(49998, test.MockWebhooksHandler)
 	defer server.Close()
 
 	defer random.SetGenerator(random.DefaultGenerator)

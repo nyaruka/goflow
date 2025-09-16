@@ -10,9 +10,9 @@ import (
 	"strconv"
 )
 
-// NewTestHTTPServer sets up a mock server for webhook actions
-func NewTestHTTPServer(port int) *httptest.Server {
-	server := httptest.NewUnstartedServer(http.HandlerFunc(testHTTPHandler))
+// NewHTTPServer sets up a mock server
+func NewHTTPServer(port int, handler http.HandlerFunc) *httptest.Server {
+	server := httptest.NewUnstartedServer(http.HandlerFunc(handler))
 
 	if port > 0 {
 		// manually create a listener for our test server so that our output is predictable
@@ -26,7 +26,8 @@ func NewTestHTTPServer(port int) *httptest.Server {
 	return server
 }
 
-func testHTTPHandler(w http.ResponseWriter, r *http.Request) {
+// MockWebhooksHandler is our standard handler for testing webhooks
+func MockWebhooksHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	statusCode := http.StatusOK
