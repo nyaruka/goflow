@@ -1,3 +1,7 @@
+v0.257.0 (2025-09-24)
+-------------------------
+ * Add broadcast and ticket references to msg_created events
+
 v0.256.10 (2025-09-16)
 -------------------------
  * Make test.NewHTTPServer usable for other things
