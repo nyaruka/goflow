@@ -1,3 +1,7 @@
+v0.257.1 (2025-09-24)
+-------------------------
+ * Add flows.NewBroadcastUUID function
+
 v0.257.0 (2025-09-24)
 -------------------------
  * Add broadcast and ticket references to msg_created events
