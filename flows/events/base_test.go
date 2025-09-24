@@ -268,6 +268,8 @@ func TestEventMarshaling(t *testing.T) {
 						i18n.NilLocale,
 						flows.NilUnsendableReason,
 					),
+					"",
+					"",
 				)
 			},
 			`msg_created`,
@@ -287,6 +289,8 @@ func TestEventMarshaling(t *testing.T) {
 						"eng-US",
 						flows.UnsendableReasonContactStatus,
 					),
+					"",
+					"01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
 				)
 			},
 			`msg_created_rich`,

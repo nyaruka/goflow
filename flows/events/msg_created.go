@@ -30,13 +30,17 @@ const TypeMsgCreated string = "msg_created"
 type MsgCreated struct {
 	BaseEvent
 
-	Msg *flows.MsgOut `json:"msg" validate:"required"`
+	Msg           *flows.MsgOut       `json:"msg"                      validate:"required"`
+	BroadcastUUID flows.BroadcastUUID `json:"broadcast_uuid,omitempty" validate:"omitempty,uuid"`
+	TicketUUID    flows.TicketUUID    `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
 }
 
 // NewMsgCreated creates a new outgoing msg event to a single contact
-func NewMsgCreated(msg *flows.MsgOut) *MsgCreated {
+func NewMsgCreated(msg *flows.MsgOut, bcastUUID flows.BroadcastUUID, ticketUUID flows.TicketUUID) *MsgCreated {
 	return &MsgCreated{
-		BaseEvent: NewBaseEvent(TypeMsgCreated),
-		Msg:       msg,
+		BaseEvent:     NewBaseEvent(TypeMsgCreated),
+		Msg:           msg,
+		BroadcastUUID: bcastUUID,
+		TicketUUID:    ticketUUID,
 	}
 }
