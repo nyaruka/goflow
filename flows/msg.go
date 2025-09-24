@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
@@ -207,6 +208,8 @@ type MsgContent struct {
 func (c *MsgContent) Empty() bool {
 	return c.Text == "" && len(c.Attachments) == 0 && len(c.QuickReplies) == 0
 }
+
+type BroadcastUUID uuids.UUID
 
 type BroadcastTranslations map[i18n.Language]*MsgContent
 
