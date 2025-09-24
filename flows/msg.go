@@ -211,6 +211,8 @@ func (c *MsgContent) Empty() bool {
 
 type BroadcastUUID uuids.UUID
 
+func NewBroadcastUUID() BroadcastUUID { return BroadcastUUID(uuids.NewV7()) }
+
 type BroadcastTranslations map[i18n.Language]*MsgContent
 
 // ForContact is a utility to help callers get the message content for a contact
