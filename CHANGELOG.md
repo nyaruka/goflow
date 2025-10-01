@@ -1,3 +1,7 @@
+v0.257.2 (2025-10-01)
+-------------------------
+ * Allow message issendable check configured via engine options
+
 v0.257.1 (2025-09-24)
 -------------------------
  * Add flows.NewBroadcastUUID function
