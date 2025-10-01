@@ -63,7 +63,7 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
 
-func defaultCheckSendable(envs.Environment, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
+func defaultCheckSendable(flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
 	return flows.NilUnsendableReason, nil
 }
 
@@ -161,8 +161,8 @@ func (b *Builder) WithLLMPrompts(prompts map[string]*template.Template) *Builder
 	return b
 }
 
-// WithIsSendable sets the function to use to determine if a message is sendable
-func (b *Builder) WithIsSendable(fn flows.CheckSendableCallback) *Builder {
+// WithCheckSendable sets the function to use to determine if a message is sendable
+func (b *Builder) WithCheckSendable(fn flows.CheckSendableCallback) *Builder {
 	b.eng.options.CheckSendable = fn
 	return b
 }

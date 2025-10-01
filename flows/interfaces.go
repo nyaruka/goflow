@@ -259,7 +259,7 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
-type CheckSendableCallback func(envs.Environment, *Contact, *MsgContent) (UnsendableReason, error)
+type CheckSendableCallback func(SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
 
 type EngineOptions struct {
 	MaxStepsPerSprint    int
