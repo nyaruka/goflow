@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strings"
 	"testing"
 	"text/template"
 
@@ -235,6 +236,12 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return services.NewAirtime("RWF"), nil
+			}).
+			WithIsSendable(func(env envs.Environment, contact *flows.Contact, content *flows.MsgContent) (flows.UnsendableReason, error) {
+				if strings.Contains(content.Text, "FORBIDDEN") {
+					return flows.UnsendableReason("forbidden_content"), nil
+				}
+				return flows.NilUnsendableReason, nil
 			}).
 			Build()
 

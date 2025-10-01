@@ -1071,5 +1071,48 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Content considered unsendable by engine options",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "this content is FORBIDDEN"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "type": "msg_created",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                "msg": {
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    },
+                    "text": "this content is FORBIDDEN",
+                    "unsendable_reason": "forbidden_content",
+                    "locale": "eng-US"
+                }
+            }
+        ],
+        "templates": [
+            "this content is FORBIDDEN"
+        ],
+        "localizables": [
+            "this content is FORBIDDEN"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
@@ -62,14 +63,19 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 
 // Execute runs this action
 func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	// a message to a non-active contact is unsendable but can still be created
+	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
+
+	// determine if this message can be sent - unsendable messages are still created for history's sake
 	unsendableReason := flows.NilUnsendableReason
 	if run.Contact().Status() != flows.ContactStatusActive {
 		unsendableReason = flows.UnsendableReasonContactStatus
+	} else {
+		var err error
+		unsendableReason, err = run.Session().Engine().Options().IsSendable(run.Session().Environment(), run.Contact(), content)
+		if err != nil {
+			return fmt.Errorf("error checking if message is sendable: %w", err)
+		}
 	}
-
-	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
-	locale := currentLocale(run, lang)
 
 	sa := run.Session().Assets()
 
@@ -88,6 +94,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	}
 
 	destinations := run.Contact().ResolveDestinations(a.AllURNs)
+	locale := currentLocale(run, lang)
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
