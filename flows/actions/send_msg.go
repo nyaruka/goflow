@@ -71,14 +71,23 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 	locale := currentLocale(run, lang)
 
-	destinations := run.Contact().ResolveDestinations(a.AllURNs)
-
 	sa := run.Session().Assets()
 
 	var template *flows.Template
+	var templateVariables []string
 	if a.Template != nil {
 		template = sa.Templates().Get(a.Template.UUID)
+
+		if template != nil {
+			templateVariables = make([]string, len(a.TemplateVariables))
+			for i, varExp := range a.TemplateVariables {
+				v, _ := run.EvaluateTemplate(varExp, logEvent)
+				templateVariables[i] = v
+			}
+		}
 	}
+
+	destinations := run.Contact().ResolveDestinations(a.AllURNs)
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
@@ -90,14 +99,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
 			translation := template.FindTranslation(dest.Channel, locales)
 			if translation != nil {
-				// evaluate the variables
-				evaluatedVariables := make([]string, len(a.TemplateVariables))
-				for i, varExp := range a.TemplateVariables {
-					v, _ := run.EvaluateTemplate(varExp, logEvent)
-					evaluatedVariables[i] = v
-				}
-
-				templating := template.Templating(translation, evaluatedVariables)
+				templating := template.Templating(translation, templateVariables)
 
 				// the message we return is an approximate preview of what the channel will send using the template
 				preview := translation.Preview(templating.Variables)
