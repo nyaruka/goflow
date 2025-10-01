@@ -1,3 +1,7 @@
+v0.257.3 (2025-10-01)
+-------------------------
+ * Rename EngineOptions.IsSendable to CheckSendable and add type for it
+
 v0.257.2 (2025-10-01)
 -------------------------
  * Allow message issendable check configured via engine options
