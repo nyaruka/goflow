@@ -266,6 +266,7 @@ type EngineOptions struct {
 	MaxFieldChars        int
 	MaxResultChars       int
 	LLMPrompts           map[string]*template.Template
+	IsSendable           func(envs.Environment, *Contact, *MsgContent) (UnsendableReason, error)
 }
 
 // Engine provides callers with session starting and resuming

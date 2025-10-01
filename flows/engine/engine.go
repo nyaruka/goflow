@@ -85,6 +85,9 @@ func NewBuilder() *Builder {
 				MaxFieldChars:        640,
 				MaxResultChars:       640,
 				LLMPrompts:           make(map[string]*template.Template),
+				IsSendable: func(envs.Environment, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
+					return flows.NilUnsendableReason, nil
+				},
 			},
 		},
 	}
@@ -153,6 +156,12 @@ func (b *Builder) WithMaxResultChars(max int) *Builder {
 // WithLLMPrompts sets the LLM prompts to use with LLM services
 func (b *Builder) WithLLMPrompts(prompts map[string]*template.Template) *Builder {
 	b.eng.options.LLMPrompts = prompts
+	return b
+}
+
+// WithIsSendable sets the function to use to determine if a message is sendable
+func (b *Builder) WithIsSendable(fn func(envs.Environment, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error)) *Builder {
+	b.eng.options.IsSendable = fn
 	return b
 }
 
