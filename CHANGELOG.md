@@ -1,3 +1,7 @@
+v0.257.4 (2025-10-01)
+-------------------------
+ * Change first param of CheckSendableCallback to SessionAssets from Environment
+
 v0.257.3 (2025-10-01)
 -------------------------
  * Rename EngineOptions.IsSendable to CheckSendable and add type for it
