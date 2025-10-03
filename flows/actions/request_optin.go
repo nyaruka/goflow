@@ -45,7 +45,7 @@ func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *Reque
 }
 
 // Execute creates the optin events
-func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
 	destinations := run.Contact().ResolveDestinations(false)
 
@@ -54,7 +54,7 @@ func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.St
 		urn := destinations[0].URN
 
 		if ch.HasFeature(assets.ChannelFeatureOptIns) {
-			logEvent(events.NewOptInRequested(optIn.Reference(), ch.Reference(), urn.URN()))
+			log(events.NewOptInRequested(optIn.Reference(), ch.Reference(), urn.URN()))
 		}
 	}
 

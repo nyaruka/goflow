@@ -61,8 +61,8 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups [
 }
 
 // Execute runs our action
-func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
+func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, log)
 	if err != nil {
 		return err
 	}
@@ -70,20 +70,20 @@ func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.St
 	// check that flow exists - error event if not
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 	if err != nil {
-		logEvent(events.NewDependencyError(a.Flow))
+		log(events.NewDependencyError(a.Flow))
 		return nil
 	}
 
 	// batch footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
-		logEvent(events.NewError("can't start new sessions for groups or queries during batch starts"))
+		log(events.NewError("can't start new sessions for groups or queries during batch starts"))
 		return nil
 	}
 
 	// loop footgun prevention
 	ref := run.Session().History()
 	if ref.AncestorsSinceInput >= maxAncestorsSinceInput {
-		logEvent(events.NewError("too many sessions have been spawned since the last time input was received"))
+		log(events.NewError("too many sessions have been spawned since the last time input was received"))
 		return nil
 	}
 
@@ -99,7 +99,7 @@ func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.St
 
 	history := flows.NewChildHistory(run.Session())
 
-	logEvent(events.NewSessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
+	log(events.NewSessionTriggered(flow.Reference(false), groupRefs, contactRefs, contactQuery, a.Exclusions, a.CreateContact, urnList, runSnapshot, history))
 	return nil
 }
 

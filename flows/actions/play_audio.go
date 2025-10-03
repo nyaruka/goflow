@@ -43,17 +43,17 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudio {
 }
 
 // Execute runs this action
-func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
-	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, logEvent)
+	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, log)
 	if !ok {
 		return nil
 	}
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		logEvent(events.NewError("audio URL evaluated to empty, skipping"))
+		log(events.NewError("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 
@@ -62,7 +62,7 @@ func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step,
 
 	// if we have an audio URL, turn it into a message
 	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
-	logEvent(events.NewIVRCreated(msg))
+	log(events.NewIVRCreated(msg))
 
 	return nil
 }

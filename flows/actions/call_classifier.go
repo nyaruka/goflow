@@ -54,38 +54,38 @@ func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierRefer
 }
 
 // Execute runs this action
-func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 
 	// substitute any variables in our input
-	input, _ := run.EvaluateTemplate(a.Input, logEvent)
+	input, _ := run.EvaluateTemplate(a.Input, log)
 
-	classification, skipped := a.classify(ctx, run, input, classifier, logEvent)
+	classification, skipped := a.classify(ctx, run, input, classifier, log)
 	if classification != nil {
-		a.saveSuccess(run, step, input, classification, logEvent)
+		a.saveSuccess(run, step, input, classification, log)
 	} else if skipped {
-		a.saveSkipped(run, step, input, logEvent)
+		a.saveSkipped(run, step, input, log)
 	} else {
-		a.saveFailure(run, step, input, logEvent)
+		a.saveFailure(run, step, input, log)
 	}
 
 	return nil
 }
 
-func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, logEvent flows.EventCallback) (*flows.Classification, bool) {
+func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, log flows.EventLogger) (*flows.Classification, bool) {
 	if input == "" {
-		logEvent(events.NewError("can't classify empty input, skipping classification"))
+		log(events.NewError("can't classify empty input, skipping classification"))
 		return nil, true
 	}
 	if classifier == nil {
-		logEvent(events.NewDependencyError(a.Classifier))
+		log(events.NewDependencyError(a.Classifier))
 		return nil, false
 	}
 
 	svc, err := run.Session().Engine().Services().Classification(classifier)
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil, false
 	}
 
@@ -94,18 +94,18 @@ func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input stri
 	classification, err := svc.Classify(ctx, run.Session().MergedEnvironment(), input, httpLogger.Log)
 
 	if len(httpLogger.Logs) > 0 {
-		logEvent(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))
+		log(events.NewClassifierCalled(classifier.Reference(), httpLogger.Logs))
 	}
 
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil, false
 	}
 
 	return classification, false
 }
 
-func (a *CallClassifier) saveSuccess(run flows.Run, step flows.Step, input string, classification *flows.Classification, logEvent flows.EventCallback) {
+func (a *CallClassifier) saveSuccess(run flows.Run, step flows.Step, input string, classification *flows.Classification, log flows.EventLogger) {
 	// result value is name of top ranked intent if there is one
 	value := ""
 	if len(classification.Intents) > 0 {
@@ -113,15 +113,15 @@ func (a *CallClassifier) saveSuccess(run flows.Run, step flows.Step, input strin
 	}
 	extra, _ := jsonx.Marshal(classification)
 
-	a.saveResult(run, step, a.ResultName, value, CategorySuccess, "", input, extra, logEvent)
+	a.saveResult(run, step, a.ResultName, value, CategorySuccess, "", input, extra, log)
 }
 
-func (a *CallClassifier) saveSkipped(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, "0", CategorySkipped, "", input, nil, logEvent)
+func (a *CallClassifier) saveSkipped(run flows.Run, step flows.Step, input string, log flows.EventLogger) {
+	a.saveResult(run, step, a.ResultName, "0", CategorySkipped, "", input, nil, log)
 }
 
-func (a *CallClassifier) saveFailure(run flows.Run, step flows.Step, input string, logEvent flows.EventCallback) {
-	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, logEvent)
+func (a *CallClassifier) saveFailure(run flows.Run, step flows.Step, input string, log flows.EventLogger) {
+	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, log)
 }
 
 func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

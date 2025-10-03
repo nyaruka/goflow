@@ -58,15 +58,15 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 }
 
 // Execute runs this action
-func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
+func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, log)
 	if err != nil {
 		return err
 	}
 
 	// footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
-		logEvent(events.NewError("can't send broadcasts to groups during batch starts"))
+		log(events.NewError("can't send broadcasts to groups during batch starts"))
 		return nil
 	}
 
@@ -77,7 +77,7 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 	for _, language := range languages {
 		languages := []i18n.Language{language, run.Flow().Language()}
 
-		content, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, logEvent)
+		content, _ := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, log)
 		translations[language] = content
 	}
 
@@ -86,7 +86,7 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 		return nil
 	}
 
-	logEvent(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList))
+	log(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList))
 	return nil
 }
 

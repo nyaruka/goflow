@@ -34,7 +34,7 @@ func (r *Random) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *Random) Route(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, string, error) {
+func (r *Random) Route(run flows.Run, step flows.Step, logEvent flows.EventLogger) (flows.ExitUUID, string, error) {
 	// pick a random category
 	rand := random.Decimal()
 	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()

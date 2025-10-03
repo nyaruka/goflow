@@ -48,10 +48,10 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsg {
 }
 
 // Execute runs this action
-func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
-	evaluatedText, _ := run.EvaluateTemplate(localizedText, logEvent)
+	evaluatedText, _ := run.EvaluateTemplate(localizedText, log)
 	evaluatedText = strings.TrimSpace(evaluatedText)
 
 	// localize the audio URL
@@ -59,7 +59,7 @@ func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, lo
 
 	// if we have neither an audio URL or backdown text, skip
 	if evaluatedText == "" && localizedAudioURL == "" {
-		logEvent(events.NewError("need either audio URL or backdown text, skipping"))
+		log(events.NewError("need either audio URL or backdown text, skipping"))
 		return nil
 	}
 
@@ -67,7 +67,7 @@ func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, lo
 	call := run.Session().Call()
 
 	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
-	logEvent(events.NewIVRCreated(msg))
+	log(events.NewIVRCreated(msg))
 
 	return nil
 }

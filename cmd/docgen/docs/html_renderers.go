@@ -437,7 +437,6 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 
 	run := session.Runs()[0]
 	step := run.Path()[len(run.Path())-1]
-	modifierLog := func(flows.Modifier) {}
 
 	eventList := make([]flows.Event, 0)
 	eventLog := func(e flows.Event) {
@@ -445,7 +444,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 		eventList = append(eventList, e)
 	}
 
-	err = action.Execute(context.Background(), run, step, modifierLog, eventLog)
+	err = action.Execute(context.Background(), run, step, eventLog)
 	if err != nil {
 		return nil, err
 	}

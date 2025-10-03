@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/modifiers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -75,9 +74,6 @@ func TestSprint(t *testing.T) {
 	node2Exit1 := node2.Exits()[0]
 	node3 := flow.Nodes()[2]
 
-	mod1 := modifiers.NewName("Bob")
-	mod2 := modifiers.NewName("Joe")
-
 	event1 := events.NewError("error 1")
 	event2 := events.NewError("error 1")
 
@@ -86,17 +82,14 @@ func TestSprint(t *testing.T) {
 	sprint := newEmptySprint(true)
 	sprint.logFlow(flow)
 	sprint.logSegment(flow, node1, node1Exit1, "yes", node2)
-	sprint.logModifier(mod1)
 	sprint.logEvent(event1)
 	sprint.logSegment(flow, node2, node2Exit1, "", node3)
-	sprint.logModifier(mod2)
 	sprint.logEvent(event2)
 
 	var seg1 flows.Segment = &segment{flow: flow, node: node1, exit: node1Exit1, operand: "yes", destination: node2, time: time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC)}
 	var seg2 flows.Segment = &segment{flow: flow, node: node2, exit: node2Exit1, destination: node3, time: time.Date(2021, 12, 8, 10, 13, 31, 0, time.UTC)}
 
 	assert.True(t, sprint.IsInitial())
-	assert.Equal(t, []flows.Modifier{mod1, mod2}, sprint.Modifiers())
 	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
 	assert.Equal(t, []flows.Segment{seg1, seg2}, sprint.Segments())
 	assert.Equal(t, []flows.Flow{flow}, sprint.Flows())

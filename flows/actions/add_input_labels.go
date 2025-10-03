@@ -45,18 +45,18 @@ func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		logEvent(events.NewError("no input to add labels to"))
+		log(events.NewError("no input to add labels to"))
 		return nil
 	}
 
-	labels := resolveLabels(run, a.Labels, logEvent)
+	labels := resolveLabels(run, a.Labels, log)
 
 	if len(labels) > 0 {
-		logEvent(events.NewInputLabelsAdded(input.UUID(), labels))
+		log(events.NewInputLabelsAdded(input.UUID(), labels))
 	}
 
 	return nil

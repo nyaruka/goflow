@@ -34,13 +34,13 @@ func NewTimezone(timezone *time.Location) *Timezone {
 }
 
 // Apply applies this modification to the given contact
-func (m *Timezone) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Timezone) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChanged(m.timezone))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {

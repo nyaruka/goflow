@@ -55,7 +55,7 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note str
 }
 
 // Execute runs this action
-func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default
@@ -68,14 +68,16 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 
 	var assignee *flows.User
 	if a.Assignee != nil {
-		assignee = resolveUser(run, a.Assignee, logEvent)
+		assignee = resolveUser(run, a.Assignee, log)
 	}
 
-	evaluatedNote, _ := run.EvaluateTemplate(a.Note, logEvent)
+	evaluatedNote, _ := run.EvaluateTemplate(a.Note, log)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
-	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
-	if ticket != nil {
+	ticket, err := a.open(run, topic, assignee, evaluatedNote, log)
+	if err != nil {
+		return err
+	} else if ticket != nil {
 		run.Locals().Set(OpenTicketOutputLocal, string(ticket.UUID()))
 	} else {
 		run.Locals().Set(OpenTicketOutputLocal, "")
@@ -84,26 +86,29 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
-		logEvent(events.NewError("can't open tickets during batch starts"))
-		return nil
+		log(events.NewError("can't open tickets during batch starts"))
+		return nil, nil
 	}
 
 	if a.Topic != nil && topic == nil {
-		logEvent(events.NewDependencyError(a.Topic))
-		return nil
+		log(events.NewDependencyError(a.Topic))
+		return nil, nil
 	}
 
 	mod := modifiers.NewTicketOpen(topic, assignee, note)
-
-	if a.applyModifier(run, mod, logModifier, logEvent) {
+	modified, err := a.applyModifier(run, mod, log)
+	if err != nil {
+		return nil, err
+	}
+	if modified {
 		// if we were able to open a ticket, return it
 		if lastOpen := run.Session().Contact().Tickets().LastOpen(); lastOpen != nil {
-			return lastOpen
+			return lastOpen, nil
 		}
 	}
-	return nil
+	return nil, nil
 }
 
 func (a *OpenTicket) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

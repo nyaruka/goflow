@@ -45,17 +45,17 @@ func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bo
 }
 
 // Execute runs our action
-func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
 	if err != nil {
-		a.fail(run, err, logEvent)
+		a.fail(run, err, log)
 		return nil
 	}
 
 	if run.Session().Type() != flow.Type() {
-		a.fail(run, fmt.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), logEvent)
+		a.fail(run, fmt.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), log)
 		return nil
 	}
 

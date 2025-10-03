@@ -32,16 +32,16 @@ func NewChannel(channel *flows.Channel) *Channel {
 }
 
 // Apply applies this modification to the given contact
-func (m *Channel) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Channel) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if m.channel != nil && !m.channel.HasRole(assets.ChannelRoleSend) {
 		log(events.NewError("can't set channel that can't send as the preferred channel"))
 
 	} else if contact.UpdatePreferredChannel(m.channel) {
 		// if URNs change in anyway, generate a URNs changed event
 		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*Channel)(nil)
