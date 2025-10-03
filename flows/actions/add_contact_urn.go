@@ -47,7 +47,7 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 }
 
 // Execute runs the labeling action
-func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	evaluatedPath, _ := run.EvaluateTemplate(a.Path, logEvent)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
@@ -58,6 +58,6 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 	// create URN - modifier will take care of validating it
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
 
-	_, err := a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), logModifier, logEvent)
+	_, err := a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), logEvent)
 	return err
 }

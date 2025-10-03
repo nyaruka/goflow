@@ -48,7 +48,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsg {
 }
 
 // Execute runs this action
-func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText, logEvent)

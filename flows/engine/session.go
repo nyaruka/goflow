@@ -489,7 +489,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			if err := action.Execute(ctx, r, step, sprint.logModifier, logEvent); err != nil {
+			if err := action.Execute(ctx, r, step, logEvent); err != nil {
 				return step, nil, "", fmt.Errorf("error executing action[type=%s,uuid=%s]: %w", action.Type(), action.UUID(), err)
 			}
 

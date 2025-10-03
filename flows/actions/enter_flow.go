@@ -45,7 +45,7 @@ func NewEnterFlow(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bo
 }
 
 // Execute runs our action
-func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	flow, err := run.Session().Assets().Flows().Get(a.Flow.UUID)
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue

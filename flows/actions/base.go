@@ -150,9 +150,7 @@ func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, nam
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logModifier flows.ModifierCallback, logEvent flows.EventCallback) (bool, error) {
-	logModifier(mod)
-
+func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logEvent flows.EventCallback) (bool, error) {
 	s := run.Session()
 	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, logEvent)
 }

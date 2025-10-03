@@ -126,7 +126,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
+	Execute(context.Context, Run, Step, EventCallback) error
 	Validate() error
 	Inspect(func(assets.Reference), func(string), func(*ResultInfo))
 }
@@ -233,9 +233,6 @@ type Modifier interface {
 
 	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) (bool, error)
 }
-
-// ModifierCallback is a callback invoked when a modifier has been generated
-type ModifierCallback func(Modifier)
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {

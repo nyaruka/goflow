@@ -44,7 +44,7 @@ func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReferenc
 }
 
 // Execute runs our action
-func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	var channel *flows.Channel
 	if a.Channel != nil {
 		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)
@@ -54,7 +54,7 @@ func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flo
 		}
 	}
 
-	_, err := a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)
+	_, err := a.applyModifier(run, modifiers.NewChannel(channel), logEvent)
 	return err
 }
 

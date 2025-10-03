@@ -62,7 +62,7 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 }
 
 // Execute runs this action
-func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake

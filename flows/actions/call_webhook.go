@@ -85,7 +85,7 @@ func (a *CallWebhook) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	url, _ := run.EvaluateTemplate(a.URL, logEvent)
 	url = strings.TrimSpace(url)
 

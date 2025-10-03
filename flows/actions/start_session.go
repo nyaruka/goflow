@@ -61,7 +61,7 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups [
 }
 
 // Execute runs our action
-func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, logEvent)
 	if err != nil {
 		return err

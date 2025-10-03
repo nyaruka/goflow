@@ -56,7 +56,7 @@ func (a *RemoveContactGroups) Validate() error {
 }
 
 // Execute runs the action
-func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	var groups []*flows.Group
 
 	if a.AllGroups {
@@ -69,7 +69,7 @@ func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step f
 		groups = resolveGroups(run, a.Groups, logEvent)
 	}
 
-	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), logModifier, logEvent)
+	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), logEvent)
 	return err
 }
 

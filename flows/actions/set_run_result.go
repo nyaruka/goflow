@@ -51,7 +51,7 @@ func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category 
 }
 
 // Execute runs this action
-func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	value, ok := run.EvaluateTemplate(a.Value, logEvent)
 	if !ok {
 		return nil

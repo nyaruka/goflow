@@ -43,7 +43,7 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudio {
 }
 
 // Execute runs this action
-func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, logEvent)

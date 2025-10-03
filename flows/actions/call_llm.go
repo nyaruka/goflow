@@ -58,7 +58,7 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 }
 
 // Execute runs this action
-func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	resp := a.call(ctx, run, logEvent)
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)

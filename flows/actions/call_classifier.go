@@ -54,7 +54,7 @@ func NewCallClassifier(uuid flows.ActionUUID, classifier *assets.ClassifierRefer
 }
 
 // Execute runs this action
-func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	classifiers := run.Session().Assets().Classifiers()
 	classifier := classifiers.Get(a.Classifier.UUID)
 

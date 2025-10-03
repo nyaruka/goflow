@@ -44,7 +44,7 @@ func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLa
 }
 
 // Execute runs this action
-func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
 	language, ok := run.EvaluateTemplate(a.Language, logEvent)
 	language = strings.TrimSpace(language)
 
@@ -63,6 +63,6 @@ func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step fl
 		}
 	}
 
-	_, err = a.applyModifier(run, modifiers.NewLanguage(lang), logModifier, logEvent)
+	_, err = a.applyModifier(run, modifiers.NewLanguage(lang), logEvent)
 	return err
 }
