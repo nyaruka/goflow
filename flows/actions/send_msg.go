@@ -62,8 +62,8 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 }
 
 // Execute runs this action
-func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, logEvent)
+func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, log)
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake
 	unsendableReason := flows.NilUnsendableReason
@@ -87,7 +87,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		if template != nil {
 			templateVariables = make([]string, len(a.TemplateVariables))
 			for i, varExp := range a.TemplateVariables {
-				v, _ := run.EvaluateTemplate(varExp, logEvent)
+				v, _ := run.EvaluateTemplate(varExp, log)
 				templateVariables[i] = v
 			}
 		}
@@ -120,14 +120,14 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 			msg = flows.NewMsgOut(urn, channelRef, content, nil, locale, unsendableReason)
 		}
 
-		logEvent(events.NewMsgCreated(msg, "", ""))
+		log(events.NewMsgCreated(msg, "", ""))
 	}
 
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
 		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, locale, flows.UnsendableReasonNoDestination)
-		logEvent(events.NewMsgCreated(msg, "", ""))
+		log(events.NewMsgCreated(msg, "", ""))
 	}
 
 	return nil

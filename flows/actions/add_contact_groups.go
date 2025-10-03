@@ -44,10 +44,10 @@ func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference)
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	groups := resolveGroups(run, a.Groups, logEvent)
+func (a *AddContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	groups := resolveGroups(run, a.Groups, log)
 
-	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), logEvent)
+	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), log)
 	return err
 }
 

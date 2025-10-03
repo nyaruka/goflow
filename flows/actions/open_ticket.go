@@ -55,7 +55,7 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note str
 }
 
 // Execute runs this action
-func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
+func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default
@@ -68,13 +68,13 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 
 	var assignee *flows.User
 	if a.Assignee != nil {
-		assignee = resolveUser(run, a.Assignee, logEvent)
+		assignee = resolveUser(run, a.Assignee, log)
 	}
 
-	evaluatedNote, _ := run.EvaluateTemplate(a.Note, logEvent)
+	evaluatedNote, _ := run.EvaluateTemplate(a.Note, log)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
-	ticket, err := a.open(run, topic, assignee, evaluatedNote, logEvent)
+	ticket, err := a.open(run, topic, assignee, evaluatedNote, log)
 	if err != nil {
 		return err
 	} else if ticket != nil {
@@ -86,19 +86,19 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logEvent flows.EventCallback) (*flows.Ticket, error) {
+func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
-		logEvent(events.NewError("can't open tickets during batch starts"))
+		log(events.NewError("can't open tickets during batch starts"))
 		return nil, nil
 	}
 
 	if a.Topic != nil && topic == nil {
-		logEvent(events.NewDependencyError(a.Topic))
+		log(events.NewDependencyError(a.Topic))
 		return nil, nil
 	}
 
 	mod := modifiers.NewTicketOpen(topic, assignee, note)
-	modified, err := a.applyModifier(run, mod, logEvent)
+	modified, err := a.applyModifier(run, mod, log)
 	if err != nil {
 		return nil, err
 	}

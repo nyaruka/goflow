@@ -68,9 +68,9 @@ type Run interface {
 	PathLocation() (Step, Node, error)
 	HadInput() bool
 
-	EvaluateTemplateValue(string, EventCallback) (types.XValue, bool)
-	EvaluateTemplateText(string, excellent.Escaping, bool, EventCallback) (string, bool)
-	EvaluateTemplate(string, EventCallback) (string, bool)
+	EvaluateTemplateValue(string, EventLogger) (types.XValue, bool)
+	EvaluateTemplateText(string, excellent.Escaping, bool, EventLogger) (string, bool)
+	EvaluateTemplate(string, EventLogger) (string, bool)
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) (string, i18n.Language)

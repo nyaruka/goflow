@@ -58,8 +58,8 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 }
 
 // Execute runs this action
-func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	resp := a.call(ctx, run, logEvent)
+func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	resp := a.call(ctx, run, log)
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)
 	} else {
@@ -69,21 +69,21 @@ func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	return nil
 }
 
-func (a *CallLLM) call(ctx context.Context, run flows.Run, logEvent flows.EventCallback) *flows.LLMResponse {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger) *flows.LLMResponse {
 	llms := run.Session().Assets().LLMs()
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {
-		logEvent(events.NewDependencyError(a.LLM))
+		log(events.NewDependencyError(a.LLM))
 		return nil
 	}
 
 	// substitute any variables in our instructions and input
-	instructions, _ := run.EvaluateTemplate(a.Instructions, logEvent)
-	input, _ := run.EvaluateTemplate(a.Input, logEvent)
+	instructions, _ := run.EvaluateTemplate(a.Instructions, log)
+	input, _ := run.EvaluateTemplate(a.Input, log)
 
 	svc, err := run.Session().Engine().Services().LLM(llm)
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil
 	}
 
@@ -91,11 +91,11 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, logEvent flows.EventC
 
 	resp, err := svc.Response(ctx, instructions, input, 2500)
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil
 	}
 
-	logEvent(events.NewLLMCalled(llm, instructions, input, resp, dates.Since(start)))
+	log(events.NewLLMCalled(llm, instructions, input, resp, dates.Since(start)))
 
 	return resp
 }

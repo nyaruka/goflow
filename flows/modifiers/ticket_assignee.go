@@ -34,7 +34,7 @@ func NewTicketAssignee(ticketUUID flows.TicketUUID, assignee *flows.User) *Ticke
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketAssignee) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) (bool, error) {
+func (m *TicketAssignee) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Assignee() != m.assignee {

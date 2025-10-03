@@ -304,7 +304,7 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *run) EvaluateTemplateValue(template string, log flows.EventCallback) (types.XValue, bool) {
+func (r *run) EvaluateTemplateValue(template string, log flows.EventLogger) (types.XValue, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
 	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
@@ -318,7 +318,7 @@ func (r *run) EvaluateTemplateValue(template string, log flows.EventCallback) (t
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
-func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log flows.EventCallback) (string, bool) {
+func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log flows.EventLogger) (string, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
 	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
@@ -335,7 +335,7 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 }
 
 // EvaluateTemplate is a convenience function for evaluating as text with truncating but no escaping
-func (r *run) EvaluateTemplate(template string, log flows.EventCallback) (string, bool) {
+func (r *run) EvaluateTemplate(template string, log flows.EventLogger) (string, bool) {
 	return r.EvaluateTemplateText(template, nil, true, log)
 }
 

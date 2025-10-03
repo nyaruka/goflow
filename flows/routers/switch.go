@@ -104,7 +104,7 @@ func (r *Switch) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *Switch) Route(run flows.Run, step flows.Step, log flows.EventCallback) (flows.ExitUUID, string, error) {
+func (r *Switch) Route(run flows.Run, step flows.Step, log flows.EventLogger) (flows.ExitUUID, string, error) {
 	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand
@@ -139,7 +139,7 @@ func (r *Switch) Route(run flows.Run, step flows.Step, log flows.EventCallback) 
 	return exit, operandAsStr, err
 }
 
-func (r *Switch) matchCase(run flows.Run, operand types.XValue, log flows.EventCallback) (string, flows.CategoryUUID, *types.XObject, error) {
+func (r *Switch) matchCase(run flows.Run, operand types.XValue, log flows.EventLogger) (string, flows.CategoryUUID, *types.XObject, error) {
 	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 

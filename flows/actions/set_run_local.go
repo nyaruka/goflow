@@ -56,8 +56,8 @@ func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocal {
 }
 
 // Execute runs this action
-func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	value, ok := run.EvaluateTemplate(a.Value, logEvent)
+func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	value, ok := run.EvaluateTemplate(a.Value, log)
 	if !ok {
 		return nil
 	}
@@ -68,7 +68,7 @@ func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		existing, _ := strconv.Atoi(run.Locals().Get(a.Local))
 		increment, err := strconv.Atoi(value)
 		if err != nil {
-			logEvent(events.NewError("increment value is not an integer"))
+			log(events.NewError("increment value is not an integer"))
 		} else {
 			run.Locals().Set(a.Local, fmt.Sprint(existing+increment))
 		}

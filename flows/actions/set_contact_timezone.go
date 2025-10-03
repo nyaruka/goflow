@@ -45,8 +45,8 @@ func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTi
 }
 
 // Execute runs this action
-func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	timezone, ok := run.EvaluateTemplate(a.Timezone, logEvent)
+func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	timezone, ok := run.EvaluateTemplate(a.Timezone, log)
 	timezone = strings.TrimSpace(timezone)
 
 	if !ok {
@@ -59,11 +59,11 @@ func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step fl
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			logEvent(events.NewError(fmt.Sprintf("unrecognized timezone: '%s'", timezone)))
+			log(events.NewError(fmt.Sprintf("unrecognized timezone: '%s'", timezone)))
 			return nil
 		}
 	}
 
-	_, err = a.applyModifier(run, modifiers.NewTimezone(tz), logEvent)
+	_, err = a.applyModifier(run, modifiers.NewTimezone(tz), log)
 	return err
 }

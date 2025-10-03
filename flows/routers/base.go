@@ -127,7 +127,7 @@ func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 }
 
 // RouteTimeout routes in the case that this router's wait timed out
-func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows.EventLogger) (flows.ExitUUID, error) {
 	if !r.AllowTimeout() {
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}
@@ -135,7 +135,7 @@ func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows
 	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), "", "", nil, logEvent)
 }
 
-func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent flows.EventCallback) (flows.ExitUUID, error) {
+func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent flows.EventLogger) (flows.ExitUUID, error) {
 	// router failed to pick a category
 	if categoryUUID == "" {
 		return "", nil

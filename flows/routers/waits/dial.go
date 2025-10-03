@@ -60,7 +60,7 @@ func (w *Dial) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *Dial) Begin(run flows.Run, log flows.EventCallback) bool {
+func (w *Dial) Begin(run flows.Run, log flows.EventLogger) bool {
 	phone, _ := run.EvaluateTemplate(w.phone, log)
 	country := run.Session().MergedEnvironment().DefaultCountry()
 

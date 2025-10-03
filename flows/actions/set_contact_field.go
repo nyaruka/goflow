@@ -47,8 +47,8 @@ func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, val
 }
 
 // Execute runs this action
-func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
-	value, ok := run.EvaluateTemplate(a.Value, logEvent)
+func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	value, ok := run.EvaluateTemplate(a.Value, log)
 	value = strings.TrimSpace(value)
 
 	if !ok {
@@ -59,12 +59,12 @@ func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows
 	field := fields.Get(a.Field.Key)
 
 	if field != nil {
-		_, err := a.applyModifier(run, modifiers.NewField(field, value), logEvent)
+		_, err := a.applyModifier(run, modifiers.NewField(field, value), log)
 		if err != nil {
 			return err
 		}
 	} else {
-		logEvent(events.NewDependencyError(a.Field))
+		log(events.NewDependencyError(a.Field))
 	}
 	return nil
 }

@@ -83,7 +83,7 @@ func NewCallResthook(uuid flows.ActionUUID, resthook string, resultName string) 
 }
 
 // Execute runs this action
-func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.Step, logEvent flows.EventCallback) error {
+func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	// NOOP if resthook doesn't exist
 	resthook := run.Session().Assets().Resthooks().FindBySlug(a.Resthook)
 	if resthook == nil {
@@ -91,7 +91,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	}
 
 	// build our payload (not truncated)
-	payload, _ := run.EvaluateTemplateText(ResthookPayload, nil, false, logEvent)
+	payload, _ := run.EvaluateTemplateText(ResthookPayload, nil, false, log)
 
 	// check the payload is valid JSON - it ends up in the session so needs to be valid
 	if !json.Valid([]byte(payload)) {
@@ -99,7 +99,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	}
 
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
-	logEvent(events.NewResthookCalled(a.Resthook, []byte(payload)))
+	log(events.NewResthookCalled(a.Resthook, []byte(payload)))
 
 	// make a call to each subscriber URL
 	calls := make([]*httpx.Trace, 0, len(resthook.Subscribers()))
@@ -107,7 +107,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
-			logEvent(events.NewError(err.Error()))
+			log(events.NewError(err.Error()))
 			return nil
 		}
 
@@ -115,18 +115,18 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 
 		svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 		if err != nil {
-			logEvent(events.NewError(err.Error()))
+			log(events.NewError(err.Error()))
 			return nil
 		}
 
 		call, err := svc.Call(req)
 
 		if err != nil {
-			logEvent(events.NewError(err.Error()))
+			log(events.NewError(err.Error()))
 		}
 		if call != nil {
 			calls = append(calls, call)
-			logEvent(events.NewWebhookCalled(call, callStatus(call, nil, true), a.Resthook))
+			log(events.NewWebhookCalled(call, callStatus(call, nil, true), a.Resthook))
 		}
 	}
 
@@ -139,7 +139,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	run.SetWebhook(call)
 
 	if a.ResultName != "" && call != nil {
-		a.saveLegacyWebhookResult(run, step, a.ResultName, call, callStatus(asResult, nil, true), logEvent)
+		a.saveLegacyWebhookResult(run, step, a.ResultName, call, callStatus(asResult, nil, true), log)
 	}
 
 	return nil

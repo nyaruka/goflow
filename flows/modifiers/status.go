@@ -32,7 +32,7 @@ func NewStatus(status flows.ContactStatus) *Status {
 }
 
 // Apply applies this modification to the given contact
-func (m *Status) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) (bool, error) {
+func (m *Status) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if contact.Status() != m.status {
 		contact.SetStatus(m.status)
 		log(events.NewContactStatusChanged(m.status))

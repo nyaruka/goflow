@@ -529,7 +529,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventCallback) (flows.Exit, string, error) {
+func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent flows.EventLogger) (flows.Exit, string, error) {
 	var exitUUID flows.ExitUUID
 	var operand string
 	var err error
@@ -567,7 +567,7 @@ func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flo
 }
 
 // ensures that our session contact is in the correct query based groups as as far as the engine is concerned
-func (s *session) ensureQueryBasedGroups(logEvent flows.EventCallback) {
+func (s *session) ensureQueryBasedGroups(logEvent flows.EventLogger) {
 	if s.contact == nil {
 		return
 	}

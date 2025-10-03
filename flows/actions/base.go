@@ -78,23 +78,23 @@ func (a *baseAction) Inspect(dependency func(assets.Reference), local func(strin
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, logEvent flows.EventCallback) (*flows.MsgContent, i18n.Language) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLogger) (*flows.MsgContent, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
-	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], logEvent)
+	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], log)
 
 	// localize and evaluate the message attachments
 	translatedAttachments, attLang := run.GetTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for _, a := range translatedAttachments {
-		evaluatedAttachment, _ := run.EvaluateTemplate(a, logEvent)
+		evaluatedAttachment, _ := run.EvaluateTemplate(a, log)
 		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
 		if !utils.IsValidAttachment(evaluatedAttachment) {
-			logEvent(events.NewError("attachment evaluated to invalid value, skipping"))
+			log(events.NewError("attachment evaluated to invalid value, skipping"))
 			continue
 		}
 		if len(evaluatedAttachment) > flows.MaxAttachmentLength {
-			logEvent(events.NewError(fmt.Sprintf("evaluated attachment is longer than %d limit, skipping", flows.MaxAttachmentLength)))
+			log(events.NewError(fmt.Sprintf("evaluated attachment is longer than %d limit, skipping", flows.MaxAttachmentLength)))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))
@@ -104,9 +104,9 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]flows.QuickReply, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
-		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, logEvent)
+		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, log)
 		if evaluatedQuickReply == "" {
-			logEvent(events.NewError("quick reply evaluated to empty string, skipping"))
+			log(events.NewError("quick reply evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, flows.QuickReply{Text: stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength)})
@@ -127,16 +127,16 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 }
 
 // helper to save a run result and log it as an event
-func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra []byte, logEvent flows.EventCallback) {
+func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra []byte, log flows.EventLogger) {
 	result := flows.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	prev, changed := run.SetResult(result)
 	if changed {
-		logEvent(events.NewRunResultChanged(result, prev))
+		log(events.NewRunResultChanged(result, prev))
 	}
 }
 
 // helper to save a run result based on a webhook call and log it as an event.. new webhook nodes don't use this
-func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, logEvent flows.EventCallback) {
+func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status flows.CallStatus, log flows.EventLogger) {
 	input := fmt.Sprintf("%s %s", call.Method, call.URL)
 	value := strconv.Itoa(call.ResponseStatus)
 	category := webhookStatusCategories[status]
@@ -146,20 +146,20 @@ func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, nam
 		extra = call.ResponseJSON
 	}
 
-	a.saveResult(run, step, name, value, category, "", input, extra, logEvent)
+	a.saveResult(run, step, name, value, category, "", input, extra, log)
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, logEvent flows.EventCallback) (bool, error) {
+func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, log flows.EventLogger) (bool, error) {
 	s := run.Session()
-	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, logEvent)
+	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, log)
 }
 
 // helper to log a failure
-func (a *baseAction) fail(run flows.Run, err error, logEvent flows.EventCallback) {
+func (a *baseAction) fail(run flows.Run, err error, log flows.EventLogger) {
 	run.Exit(flows.RunStatusFailed)
-	logEvent(events.NewFailure(err))
-	logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), flows.RunStatusFailed))
+	log(events.NewFailure(err))
+	log(events.NewRunEnded(run.UUID(), run.FlowReference(), flows.RunStatusFailed))
 }
 
 // utility struct which sets the allowed flow types to any
@@ -212,7 +212,7 @@ func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local f
 	}
 }
 
-func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.EventCallback) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
+func (a *otherContactsAction) resolveRecipients(run flows.Run, log flows.EventLogger) ([]*assets.GroupReference, []*flows.ContactReference, string, []urns.URN, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -224,7 +224,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 	contactRefs = append(contactRefs, a.Contacts...)
 
 	// resolve group references
-	groups := resolveGroups(run, a.Groups, logEvent)
+	groups := resolveGroups(run, a.Groups, log)
 	groupRefs := make([]*assets.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		groupRefs = append(groupRefs, group.Reference())
@@ -232,7 +232,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 
 	// evaluate the legacy variables
 	for _, legacyVar := range a.LegacyVars {
-		evaluatedLegacyVar, _ := run.EvaluateTemplate(legacyVar, logEvent)
+		evaluatedLegacyVar, _ := run.EvaluateTemplate(legacyVar, log)
 
 		evaluatedLegacyVar = strings.TrimSpace(evaluatedLegacyVar)
 
@@ -255,14 +255,14 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, logEvent flows.Ev
 					urn, _ := urns.New(urns.Phone, parsedTel)
 					urnList = append(urnList, urn)
 				} else {
-					logEvent(events.NewError(fmt.Sprintf("'%s' couldn't be resolved to a contact, group or URN", evaluatedLegacyVar)))
+					log(events.NewError(fmt.Sprintf("'%s' couldn't be resolved to a contact, group or URN", evaluatedLegacyVar)))
 				}
 			}
 		}
 	}
 
 	// evaluate contact query
-	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true, logEvent)
+	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true, log)
 	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
@@ -276,7 +276,7 @@ type createMsgAction struct {
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent flows.EventCallback) []*flows.Group {
+func resolveGroups(run flows.Run, references []*assets.GroupReference, log flows.EventLogger) []*flows.Group {
 	groupAssets := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -285,20 +285,20 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent 
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing group's name
-			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, logEvent)
+			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, log)
 			if ok {
 
 				// look up the set of all groups to see if such a group exists
 				group = groupAssets.FindByName(evaluatedName)
 				if group == nil {
-					logEvent(events.NewError(fmt.Sprintf("no such group with name '%s'", evaluatedName)))
+					log(events.NewError(fmt.Sprintf("no such group with name '%s'", evaluatedName)))
 				}
 			}
 		} else {
 			// group is a fixed group with a UUID
 			group = groupAssets.Get(ref.UUID)
 			if group == nil {
-				logEvent(events.NewDependencyError(ref))
+				log(events.NewDependencyError(ref))
 			}
 		}
 
@@ -311,7 +311,7 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, logEvent 
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent flows.EventCallback) []*flows.Label {
+func resolveLabels(run flows.Run, references []*assets.LabelReference, log flows.EventLogger) []*flows.Label {
 	labelAssets := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
@@ -320,19 +320,19 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent 
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing label's name
-			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, logEvent)
+			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, log)
 			if ok {
 				// look up the set of all labels to see if such a label exists
 				label = labelAssets.FindByName(evaluatedName)
 				if label == nil {
-					logEvent(events.NewError(fmt.Sprintf("no such label with name '%s'", evaluatedName)))
+					log(events.NewError(fmt.Sprintf("no such label with name '%s'", evaluatedName)))
 				}
 			}
 		} else {
 			// label is a fixed label with a UUID
 			label = labelAssets.Get(ref.UUID)
 			if label == nil {
-				logEvent(events.NewDependencyError(ref))
+				log(events.NewDependencyError(ref))
 			}
 		}
 
@@ -345,25 +345,25 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, logEvent 
 }
 
 // helper function to resolve a user reference to a user
-func resolveUser(run flows.Run, ref *assets.UserReference, logEvent flows.EventCallback) *flows.User {
+func resolveUser(run flows.Run, ref *assets.UserReference, log flows.EventLogger) *flows.User {
 	userAssets := run.Session().Assets().Users()
 	var user *flows.User
 
 	if ref.Variable() {
 		// is an expression that evaluates to an existing user's email
-		evaluatedEmail, ok := run.EvaluateTemplate(ref.EmailMatch, logEvent)
+		evaluatedEmail, ok := run.EvaluateTemplate(ref.EmailMatch, log)
 		if ok {
 			// look up to see if such a user exists
 			user = userAssets.FindByEmail(evaluatedEmail)
 			if user == nil {
-				logEvent(events.NewError(fmt.Sprintf("no such user with email '%s'", evaluatedEmail)))
+				log(events.NewError(fmt.Sprintf("no such user with email '%s'", evaluatedEmail)))
 			}
 		}
 	} else {
 		// user is a fixed user with this UUID
 		user = userAssets.Get(ref.UUID)
 		if user == nil {
-			logEvent(events.NewDependencyError(ref))
+			log(events.NewDependencyError(ref))
 		}
 	}
 
