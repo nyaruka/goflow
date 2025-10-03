@@ -1,3 +1,7 @@
+v0.257.5 (2025-10-03)
+-------------------------
+ * airtime_transferred and optin_requested events should use identity URNs
+
 v0.257.4 (2025-10-01)
 -------------------------
  * Change first param of CheckSendableCallback to SessionAssets from Environment
