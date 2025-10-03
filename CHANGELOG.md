@@ -1,3 +1,7 @@
+v0.257.6 (2025-10-03)
+-------------------------
+ * Revert "optin_requested events should also use identity URN"
+
 v0.257.5 (2025-10-03)
 -------------------------
  * airtime_transferred and optin_requested events should use identity URNs
