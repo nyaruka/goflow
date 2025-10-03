@@ -1092,8 +1092,8 @@
                         "name": "My Android Phone"
                     },
                     "text": "this content is FORBIDDEN",
-                    "unsendable_reason": "forbidden_content",
-                    "locale": "eng-US"
+                    "locale": "eng-US",
+                    "unsendable_reason": "forbidden_content"
                 }
             }
         ],

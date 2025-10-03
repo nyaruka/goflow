@@ -50,11 +50,16 @@ type AirtimeTransferred struct {
 
 // NewAirtimeTransferred creates a new airtime transferred event
 func NewAirtimeTransferred(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeTransferred {
+	sender := t.Sender
+	if sender != "" {
+		sender = sender.Identity()
+	}
+
 	return &AirtimeTransferred{
 		BaseEvent:  NewBaseEvent(TypeAirtimeTransferred),
 		ExternalID: t.ExternalID,
-		Sender:     t.Sender,
-		Recipient:  t.Recipient,
+		Sender:     sender,
+		Recipient:  t.Recipient.Identity(),
 		Currency:   t.Currency,
 		Amount:     t.Amount,
 		HTTPLogs:   httpLogs,
