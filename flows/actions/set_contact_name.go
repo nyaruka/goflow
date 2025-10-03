@@ -50,6 +50,6 @@ func (a *SetContactName) Execute(ctx context.Context, run flows.Run, step flows.
 		return nil
 	}
 
-	a.applyModifier(run, modifiers.NewName(name), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewName(name), logModifier, logEvent)
+	return err
 }

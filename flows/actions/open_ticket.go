@@ -74,8 +74,10 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	evaluatedNote, _ := run.EvaluateTemplate(a.Note, logEvent)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
-	ticket := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
-	if ticket != nil {
+	ticket, err := a.open(run, topic, assignee, evaluatedNote, logModifier, logEvent)
+	if err != nil {
+		return err
+	} else if ticket != nil {
 		run.Locals().Set(OpenTicketOutputLocal, string(ticket.UUID()))
 	} else {
 		run.Locals().Set(OpenTicketOutputLocal, "")
@@ -84,26 +86,29 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) *flows.Ticket {
+func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, logModifier flows.ModifierCallback, logEvent flows.EventCallback) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
 		logEvent(events.NewError("can't open tickets during batch starts"))
-		return nil
+		return nil, nil
 	}
 
 	if a.Topic != nil && topic == nil {
 		logEvent(events.NewDependencyError(a.Topic))
-		return nil
+		return nil, nil
 	}
 
 	mod := modifiers.NewTicketOpen(topic, assignee, note)
-
-	if a.applyModifier(run, mod, logModifier, logEvent) {
+	modified, err := a.applyModifier(run, mod, logModifier, logEvent)
+	if err != nil {
+		return nil, err
+	}
+	if modified {
 		// if we were able to open a ticket, return it
 		if lastOpen := run.Session().Contact().Tickets().LastOpen(); lastOpen != nil {
-			return lastOpen
+			return lastOpen, nil
 		}
 	}
-	return nil
+	return nil, nil
 }
 
 func (a *OpenTicket) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

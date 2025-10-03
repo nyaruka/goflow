@@ -32,10 +32,10 @@ func NewTicketReopen(ticketUUID flows.TicketUUID) *TicketReopen {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketReopen) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *TicketReopen) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) (bool, error) {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().Open().Count() > 0 {
-		return false
+		return false, nil
 	}
 
 	ticket := contact.Tickets().Find(m.ticketUUID)
@@ -43,9 +43,9 @@ func (m *TicketReopen) Apply(eng flows.Engine, env envs.Environment, sa flows.Se
 	if ticket != nil && ticket.Status() != flows.TicketStatusOpen {
 		ticket.SetStatus(flows.TicketStatusOpen)
 		log(events.NewTicketReopened(ticket.UUID()))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*TicketReopen)(nil)

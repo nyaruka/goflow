@@ -54,8 +54,8 @@ func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flo
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)
+	return err
 }
 
 func (a *SetContactChannel) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

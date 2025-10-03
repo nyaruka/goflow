@@ -38,12 +38,15 @@ func newBaseModifier(typeName string) baseModifier {
 func (m *baseModifier) Type() string { return m.typ }
 
 // Apply applies the given modifier to the given contact and re-evaluates query based groups if necessary
-func Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, c *flows.Contact, mod flows.Modifier, logEvent flows.EventCallback) bool {
-	modified := mod.Apply(eng, env, sa, c, logEvent)
+func Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, c *flows.Contact, mod flows.Modifier, logEvent flows.EventCallback) (bool, error) {
+	modified, err := mod.Apply(eng, env, sa, c, logEvent)
+	if err != nil {
+		return false, err
+	}
 	if modified {
 		ReevaluateGroups(env, c, logEvent)
 	}
-	return modified
+	return modified, nil
 }
 
 // ReevaluateGroups is a helper to re-evaluate groups and log any changes to membership

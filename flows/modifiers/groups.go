@@ -45,10 +45,10 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *Groups {
 }
 
 // Apply applies this modification to the given contact
-func (m *Groups) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *Groups) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) (bool, error) {
 	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
 		log(events.NewError("can't add blocked or stopped contacts to groups"))
-		return false
+		return false, nil
 	}
 
 	diff := make([]*flows.Group, 0, len(m.groups))
@@ -72,7 +72,7 @@ func (m *Groups) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionA
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
 			log(events.NewContactGroupsChanged(diff, nil))
-			return true
+			return true, nil
 		}
 
 	} else if m.modification == GroupsRemove {
@@ -94,11 +94,11 @@ func (m *Groups) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionA
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
 			log(events.NewContactGroupsChanged(nil, diff))
-			return true
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*Groups)(nil)

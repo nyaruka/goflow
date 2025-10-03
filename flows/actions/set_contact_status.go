@@ -41,6 +41,6 @@ func NewSetContactStatus(uuid flows.ActionUUID, status flows.ContactStatus) *Set
 
 // Execute runs this action
 func (a *SetContactStatus) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	a.applyModifier(run, modifiers.NewStatus(a.Status), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewStatus(a.Status), logModifier, logEvent)
+	return err
 }

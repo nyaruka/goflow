@@ -64,6 +64,6 @@ func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step fl
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewTimezone(tz), logModifier, logEvent)
-	return nil
+	_, err = a.applyModifier(run, modifiers.NewTimezone(tz), logModifier, logEvent)
+	return err
 }

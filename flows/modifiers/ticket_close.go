@@ -32,15 +32,15 @@ func NewTicketClose(ticketUUID flows.TicketUUID) *TicketClose {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketClose) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *TicketClose) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Status() != flows.TicketStatusClosed {
 		ticket.SetStatus(flows.TicketStatusClosed)
 		log(events.NewTicketClosed(ticket.UUID()))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*TicketClose)(nil)

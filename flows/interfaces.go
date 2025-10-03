@@ -231,7 +231,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) bool
+	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) (bool, error)
 }
 
 // ModifierCallback is a callback invoked when a modifier has been generated

@@ -63,6 +63,6 @@ func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step fl
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewLanguage(lang), logModifier, logEvent)
-	return nil
+	_, err = a.applyModifier(run, modifiers.NewLanguage(lang), logModifier, logEvent)
+	return err
 }
