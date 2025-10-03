@@ -54,7 +54,7 @@ func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.St
 		urn := destinations[0].URN
 
 		if ch.HasFeature(assets.ChannelFeatureOptIns) {
-			logEvent(events.NewOptInRequested(optIn.Reference(), ch.Reference(), urn.URN()))
+			logEvent(events.NewOptInRequested(optIn.Reference(), ch.Reference(), urn.URN().Identity()))
 		}
 	}
 
