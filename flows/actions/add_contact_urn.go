@@ -47,17 +47,17 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 }
 
 // Execute runs the labeling action
-func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	evaluatedPath, _ := run.EvaluateTemplate(a.Path, logEvent)
+func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	evaluatedPath, _ := run.EvaluateTemplate(a.Path, log)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
-		logEvent(events.NewError("can't add URN with empty path"))
+		log(events.NewError("can't add URN with empty path"))
 		return nil
 	}
 
 	// create URN - modifier will take care of validating it
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
 
-	a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), log)
+	return err
 }

@@ -22,5 +22,5 @@ type Event interface {
 	SetStepUUID(StepUUID)
 }
 
-// EventCallback is a callback invoked when an event has been generated
-type EventCallback func(Event)
+// EventLogger is a callback invoked when an event has been generated
+type EventLogger func(Event)

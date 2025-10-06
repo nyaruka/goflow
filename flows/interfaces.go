@@ -126,7 +126,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(context.Context, Run, Step, ModifierCallback, EventCallback) error
+	Execute(context.Context, Run, Step, EventLogger) error
 	Validate() error
 	Inspect(func(assets.Reference), func(string), func(*ResultInfo))
 }
@@ -149,8 +149,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, EventCallback) (ExitUUID, string, error)
-	RouteTimeout(Run, Step, EventCallback) (ExitUUID, error)
+	Route(Run, Step, EventLogger) (ExitUUID, string, error)
+	RouteTimeout(Run, Step, EventLogger) (ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -177,7 +177,7 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(Run, EventCallback) bool
+	Begin(Run, EventLogger) bool
 	Accepts(Resume) bool
 }
 
@@ -231,11 +231,8 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventCallback) bool
+	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventLogger) (bool, error)
 }
-
-// ModifierCallback is a callback invoked when a modifier has been generated
-type ModifierCallback func(Modifier)
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {

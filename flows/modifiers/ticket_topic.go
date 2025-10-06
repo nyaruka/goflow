@@ -34,15 +34,15 @@ func NewTicketTopic(ticketUUID flows.TicketUUID, topic *flows.Topic) *TicketTopi
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketTopic) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *TicketTopic) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Topic() != m.topic {
 		ticket.SetTopic(m.topic)
 		log(events.NewTicketTopicChanged(ticket.UUID(), m.topic.Reference()))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*TicketTopic)(nil)

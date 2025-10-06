@@ -42,14 +42,14 @@ func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactName {
 }
 
 // Execute runs this action
-func (a *SetContactName) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	name, ok := run.EvaluateTemplate(a.Name, logEvent)
+func (a *SetContactName) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	name, ok := run.EvaluateTemplate(a.Name, log)
 	name = strings.TrimSpace(name)
 
 	if !ok {
 		return nil
 	}
 
-	a.applyModifier(run, modifiers.NewName(name), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewName(name), log)
+	return err
 }

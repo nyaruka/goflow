@@ -44,18 +44,18 @@ func NewSetContactChannel(uuid flows.ActionUUID, channel *assets.ChannelReferenc
 }
 
 // Execute runs our action
-func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
+func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	var channel *flows.Channel
 	if a.Channel != nil {
 		channel = run.Session().Assets().Channels().Get(a.Channel.UUID)
 		if channel == nil {
-			logEvent(events.NewDependencyError(a.Channel))
+			log(events.NewDependencyError(a.Channel))
 			return nil
 		}
 	}
 
-	a.applyModifier(run, modifiers.NewChannel(channel), logModifier, logEvent)
-	return nil
+	_, err := a.applyModifier(run, modifiers.NewChannel(channel), log)
+	return err
 }
 
 func (a *SetContactChannel) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

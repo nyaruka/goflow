@@ -34,14 +34,14 @@ func NewTicketNote(ticketUUID flows.TicketUUID, note string) *TicketNote {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketNote) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventCallback) bool {
+func (m *TicketNote) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil {
 		log(events.NewTicketNoteAdded(ticket.UUID(), m.note))
-		return true
+		return true, nil
 	}
-	return false
+	return false, nil
 }
 
 var _ flows.Modifier = (*TicketNote)(nil)

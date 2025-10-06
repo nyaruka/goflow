@@ -85,16 +85,16 @@ func (a *CallWebhook) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, logModifier flows.ModifierCallback, logEvent flows.EventCallback) error {
-	url, _ := run.EvaluateTemplate(a.URL, logEvent)
+func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+	url, _ := run.EvaluateTemplate(a.URL, log)
 	url = strings.TrimSpace(url)
 
 	if url == "" {
-		logEvent(events.NewError("webhook URL evaluated to empty string"))
+		log(events.NewError("webhook URL evaluated to empty string"))
 		return nil
 	}
 	if !isValidURL(url) {
-		logEvent(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url)))
+		log(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url)))
 		return nil
 	}
 
@@ -104,51 +104,51 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	// substitute any body variables
 	if body != "" {
 		// webhook bodies aren't truncated like other templates
-		body, _ = run.EvaluateTemplateText(body, nil, false, logEvent)
+		body, _ = run.EvaluateTemplateText(body, nil, false, log)
 	}
 
-	call := a.call(ctx, run, step, url, method, body, logEvent)
+	call := a.call(ctx, run, step, url, method, body, log)
 	run.SetWebhook(call)
 
 	return nil
 }
 
 // Execute runs this action
-func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, logEvent flows.EventCallback) *flows.WebhookCall {
+func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, log flows.EventLogger) *flows.WebhookCall {
 	// build our request
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
 		// in theory this can't happen because we're already validating the method and the URL.. but just in case
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil
 	}
 
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, _ := run.EvaluateTemplate(value, logEvent)
+		headerValue, _ := run.EvaluateTemplate(value, log)
 
 		req.Header.Add(key, headerValue)
 	}
 
 	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 		return nil
 	}
 
 	trace, err := svc.Call(req)
 	if err != nil {
-		logEvent(events.NewError(err.Error()))
+		log(events.NewError(err.Error()))
 	}
 
 	if trace != nil {
 		call := flows.NewWebhookCall(trace)
 		status := callStatus(trace, err, false)
 
-		logEvent(events.NewWebhookCalled(trace, status, ""))
+		log(events.NewWebhookCalled(trace, status, ""))
 
 		if a.ResultName != "" {
-			a.saveLegacyWebhookResult(run, step, a.ResultName, call, status, logEvent)
+			a.saveLegacyWebhookResult(run, step, a.ResultName, call, status, log)
 		}
 
 		return call

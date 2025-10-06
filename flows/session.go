@@ -55,7 +55,6 @@ type Segment interface {
 type Sprint interface {
 	UUID() SprintUUID
 	IsInitial() bool
-	Modifiers() []Modifier
 	Events() []Event
 	Segments() []Segment
 	Flows() []Flow
