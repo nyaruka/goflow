@@ -1,3 +1,9 @@
+v0.258.0 (2025-10-06)
+-------------------------
+ * Rename event logging callback functions for clarity
+ * Actions shouldn't log modifiers
+ * Allow modifiers to return real errors
+
 v0.257.6 (2025-10-03)
 -------------------------
  * Revert "optin_requested events should also use identity URN"
