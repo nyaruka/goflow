@@ -23,9 +23,11 @@ const (
 	// max length of a quick reply
 	MaxQuickReplyLength = 64
 
-	NilUnsendableReason           UnsendableReason = ""
-	UnsendableReasonNoDestination UnsendableReason = "no_destination" // no sendable channel+URN pair
-	UnsendableReasonContactStatus UnsendableReason = "contact_status" // contact is blocked or stopped or archived
+	NilUnsendableReason            UnsendableReason = ""
+	UnsendableReasonNoDestination  UnsendableReason = "no_destination"  // no sendable channel+URN pair
+	UnsendableReasonContactBlocked UnsendableReason = "contact_blocked" // contact is blocked
+	UnsendableReasonContactStopped UnsendableReason = "contact_stopped" // contact is stopped
+	UnsendableReasonContactArchived UnsendableReason = "contact_archived" // contact is archived
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact

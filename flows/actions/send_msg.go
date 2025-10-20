@@ -67,8 +67,13 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake
 	unsendableReason := flows.NilUnsendableReason
-	if run.Contact().Status() != flows.ContactStatusActive {
-		unsendableReason = flows.UnsendableReasonContactStatus
+	contactStatus := run.Contact().Status()
+	if contactStatus == flows.ContactStatusBlocked {
+		unsendableReason = flows.UnsendableReasonContactBlocked
+	} else if contactStatus == flows.ContactStatusStopped {
+		unsendableReason = flows.UnsendableReasonContactStopped
+	} else if contactStatus == flows.ContactStatusArchived {
+		unsendableReason = flows.UnsendableReasonContactArchived
 	} else {
 		var err error
 		unsendableReason, err = run.Session().Engine().Options().CheckSendable(run.Session().Assets(), run.Contact(), content)
