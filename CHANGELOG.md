@@ -1,3 +1,7 @@
+v0.259.2 (2025-10-21)
+-------------------------
+ * Rename no_destination to no_route
+
 v0.259.1 (2025-10-21)
 -------------------------
  * Remove unncessary NilUnsendableReason constant
