@@ -1,3 +1,7 @@
+v0.259.0 (2025-10-21)
+-------------------------
+ * Split contact_status unsendable reason into specific reasons by status
+
 v0.258.0 (2025-10-06)
 -------------------------
  * Rename event logging callback functions for clarity
