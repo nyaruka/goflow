@@ -287,7 +287,7 @@ func TestEventMarshaling(t *testing.T) {
 						},
 						nil,
 						"eng-US",
-						flows.UnsendableReasonContactStatus,
+						flows.UnsendableReasonContactBlocked,
 					),
 					"",
 					"01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
