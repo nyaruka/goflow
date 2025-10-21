@@ -1,3 +1,7 @@
+v0.259.1 (2025-10-21)
+-------------------------
+ * Remove unncessary NilUnsendableReason constant
+
 v0.259.0 (2025-10-21)
 -------------------------
  * Split contact_status unsendable reason into specific reasons by status
