@@ -241,7 +241,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				if strings.Contains(content.Text, "FORBIDDEN") {
 					return flows.UnsendableReason("forbidden_content"), nil
 				}
-				return flows.NilUnsendableReason, nil
+				return "", nil
 			}).
 			Build()
 

@@ -66,7 +66,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, log)
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake
-	unsendableReason := flows.NilUnsendableReason
+	var unsendableReason flows.UnsendableReason
 	contactStatus := run.Contact().Status()
 	if contactStatus == flows.ContactStatusBlocked {
 		unsendableReason = flows.UnsendableReasonContactBlocked
