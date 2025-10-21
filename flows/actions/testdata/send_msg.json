@@ -382,7 +382,7 @@
                 "msg": {
                     "text": "Hi there",
                     "locale": "eng-RW",
-                    "unsendable_reason": "no_destination"
+                    "unsendable_reason": "no_route"
                 }
             }
         ]

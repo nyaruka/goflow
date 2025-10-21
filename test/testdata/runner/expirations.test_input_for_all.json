@@ -57,7 +57,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your first name?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
@@ -199,7 +199,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your middle name?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "type": "msg_created",
@@ -380,7 +380,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your last name?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",

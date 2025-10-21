@@ -33,7 +33,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Hi there. What is your name?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_created",
@@ -123,7 +123,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Ok Bobby, what age are you?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_created",
@@ -244,7 +244,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Are you sure you're 123... maybe try again",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_created",
@@ -389,7 +389,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Great, you are 18 years old",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "d659b893-76c5-4e9c-be24-6164105d48f2",
                     "type": "msg_created",

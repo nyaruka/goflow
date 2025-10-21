@@ -71,7 +71,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_created",

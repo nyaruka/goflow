@@ -32,7 +32,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Hi! What can I help you with?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
@@ -179,7 +179,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "So you'd like to book a flight in Quito?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",

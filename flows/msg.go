@@ -23,10 +23,9 @@ const (
 	// max length of a quick reply
 	MaxQuickReplyLength = 64
 
-	NilUnsendableReason            UnsendableReason = ""
-	UnsendableReasonNoDestination  UnsendableReason = "no_destination"  // no sendable channel+URN pair
-	UnsendableReasonContactBlocked UnsendableReason = "contact_blocked" // contact is blocked
-	UnsendableReasonContactStopped UnsendableReason = "contact_stopped" // contact is stopped
+	UnsendableReasonNoRoute         UnsendableReason = "no_route"         // no sendable channel+URN pair
+	UnsendableReasonContactBlocked  UnsendableReason = "contact_blocked"  // contact is blocked
+	UnsendableReasonContactStopped  UnsendableReason = "contact_stopped"  // contact is stopped
 	UnsendableReasonContactArchived UnsendableReason = "contact_archived" // contact is archived
 )
 

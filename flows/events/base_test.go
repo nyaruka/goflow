@@ -266,7 +266,7 @@ func TestEventMarshaling(t *testing.T) {
 						&flows.MsgContent{Text: "Hi there"},
 						nil,
 						i18n.NilLocale,
-						flows.NilUnsendableReason,
+						"",
 					),
 					"",
 					"",

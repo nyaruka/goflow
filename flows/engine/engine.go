@@ -64,7 +64,7 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 var _ flows.Engine = (*engine)(nil)
 
 func defaultCheckSendable(flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
-	return flows.NilUnsendableReason, nil
+	return "", nil
 }
 
 //------------------------------------------------------------------------------------------

@@ -67,7 +67,7 @@ func TestMsgOut(t *testing.T) {
 		},
 		nil,
 		"eng-US",
-		flows.NilUnsendableReason,
+		"",
 	)
 
 	// test marshaling our msg

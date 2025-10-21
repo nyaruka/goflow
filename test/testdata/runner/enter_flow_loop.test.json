@@ -33,7 +33,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Enter command: name or exit",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
@@ -141,7 +141,7 @@
                     "msg": {
                         "locale": "und-US",
                         "text": "Clearing name",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
@@ -196,7 +196,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Enter command: name or exit",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
                     "type": "msg_created",
@@ -432,7 +432,7 @@
                     "msg": {
                         "locale": "und-US",
                         "text": "Clearing name",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
                     "type": "msg_created",
@@ -504,7 +504,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Enter command: name or exit",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc",
                     "type": "msg_created",

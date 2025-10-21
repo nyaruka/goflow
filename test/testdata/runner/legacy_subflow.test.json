@@ -33,7 +33,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "You're in the subflow now. Pick a number!",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "msg_created",
@@ -116,7 +116,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "That's not a number.. try again",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_created",

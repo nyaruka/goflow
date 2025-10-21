@@ -131,7 +131,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(destinations) == 0 {
-		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, locale, flows.UnsendableReasonNoDestination)
+		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, locale, flows.UnsendableReasonNoRoute)
 		log(events.NewMsgCreated(msg, "", ""))
 	}
 

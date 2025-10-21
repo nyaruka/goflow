@@ -56,7 +56,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "It's a !",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",

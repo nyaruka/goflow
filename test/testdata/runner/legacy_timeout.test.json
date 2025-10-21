@@ -37,7 +37,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "Hi there. Do you want to take part?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_created",

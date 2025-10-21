@@ -31,7 +31,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your favorite color?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
@@ -114,7 +114,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "What's your favorite beer?",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "msg_created",
@@ -235,7 +235,7 @@
                     "msg": {
                         "locale": "eng-US",
                         "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
-                        "unsendable_reason": "no_destination"
+                        "unsendable_reason": "no_route"
                     },
                     "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",
