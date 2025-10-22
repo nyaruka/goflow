@@ -21,7 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -77,10 +76,11 @@ func TestContact(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.URNList{}, contact.URNs())
+	assert.Equal(t, flows.RouteList{}, contact.Routes())
 	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.LastSeenOn())
-	assert.Nil(t, contact.PreferredChannel())
+	assert.Nil(t, contact.PreferredRoute())
+	assert.Equal(t, i18n.NilCountry, contact.Country())
 
 	contact.SetLastSeenOn(time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC))
 	assert.Equal(t, time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC), *contact.LastSeenOn())
@@ -93,7 +93,9 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
 	assert.Equal(t, tz, contact.Timezone())
 	assert.Equal(t, i18n.Language("eng"), contact.Language())
-	assert.Equal(t, android, contact.PreferredChannel())
+	if assert.NotNil(t, android, contact.PreferredRoute()) {
+		assert.Equal(t, android, contact.PreferredRoute().Channel())
+	}
 	assert.Equal(t, i18n.Country("US"), contact.Country())
 	assert.Equal(t, i18n.Locale("eng-US"), contact.Locale(env))
 
@@ -118,16 +120,16 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
-		"tel":        flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
+		"tel":        flows.NewRoute(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
 		"telegram":   nil,
-		"twitter":    flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
+		"twitter":    flows.NewRoute(urns.URN("twitter:joey"), nil).ToXValue(env),
 		"twitterid":  nil,
 		"viber":      nil,
 		"vk":         nil,
 		"webchat":    nil,
 		"wechat":     nil,
-		"whatsapp":   flows.NewContactURN(urns.URN("whatsapp:235423721788"), nil).ToXValue(env),
-	}), flows.ContextFunc(env, contact.URNs().MapContext))
+		"whatsapp":   flows.NewRoute(urns.URN("whatsapp:235423721788"), nil).ToXValue(env),
+	}), flows.ContextFunc(env, contact.Routes().MapContext))
 
 	assert.Equal(t, 0, contact.Tickets().Open().Count())
 
@@ -143,7 +145,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
-	assert.Equal(t, android, clone.PreferredChannel())
+	assert.Equal(t, android, clone.PreferredRoute().Channel())
 	assert.Equal(t, 0, clone.Tickets().Open().Count()) // not included
 
 	// country can be resolved from tel urns if there's no preferred channel
@@ -165,8 +167,8 @@ func TestContact(t *testing.T) {
 		"status":       types.NewXText(string(contact.Status())),
 		"tickets":      contact.Tickets().ToXValue(env),
 		"timezone":     types.NewXText("America/Bogota"),
-		"urn":          contact.URNs()[0].ToXValue(env),
-		"urns":         contact.URNs().ToXValue(env),
+		"urn":          contact.Routes()[0].ToXValue(env),
+		"urns":         contact.Routes().ToXValue(env),
 		"uuid":         types.NewXText(string(contact.UUID())),
 	}), flows.Context(env, contact))
 
@@ -179,7 +181,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, contact.UUID(), unmarshaled.UUID())
 }
 
-func TestContactURNs(t *testing.T) {
+func TestContactRoutes(t *testing.T) {
 	source, err := static.NewSource([]byte(`{}`))
 	require.NoError(t, err)
 
@@ -190,22 +192,22 @@ func TestContactURNs(t *testing.T) {
 
 	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
-	assert.Len(t, contact.URNs(), 0)
+	assert.Len(t, contact.Routes(), 0)
 	assert.True(t, contact.AddURN("tel:+12024561111"))  // didn't have URN so returns true
 	assert.False(t, contact.AddURN("tel:+12024561111")) // did have
 
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024561111", nil)}, contact.Routes())
 	assert.True(t, contact.AddURN("tel:+12024562222"))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024562222", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024561111", nil), flows.NewRoute("tel:+12024562222", nil)}, contact.Routes())
 	assert.False(t, contact.SetURNs([]urns.URN{"tel:+12024561111", "tel:+12024562222"})) // no change
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024562222", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024561111", nil), flows.NewRoute("tel:+12024562222", nil)}, contact.Routes())
 	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111"})) // order changed
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024561111", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024562222", nil), flows.NewRoute("tel:+12024561111", nil)}, contact.Routes())
 	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111", "tel:+12024563333"}))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024563333", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024562222", nil), flows.NewRoute("tel:+12024561111", nil), flows.NewRoute("tel:+12024563333", nil)}, contact.Routes())
 	assert.True(t, contact.RemoveURN("tel:+12024561111"))
 	assert.False(t, contact.RemoveURN("tel:+12024566666"))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024563333", nil)}, contact.URNs())
+	assert.Equal(t, flows.RouteList{flows.NewRoute("tel:+12024562222", nil), flows.NewRoute("tel:+12024563333", nil)}, contact.Routes())
 }
 
 func TestReadContact(t *testing.T) {
@@ -243,10 +245,10 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 		"language": "eng",
 		"timezone": "America/Guayaquil",
 		"created_on": "2018-06-20T11:40:30.123456789-00:00",
-		"urns": [
-			"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
-			"twitterid:54784326227#nyaruka",
-			"mailto:foo@bar.com"
+		"routes": [
+			{"urn": "tel:+12024561111", "channel": {"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d", "name": "Android"}},
+			{"urn": "twitterid:54784326227#nyaruka"},
+			{"urn": "mailto:foo@bar.com"}
 		],
 		"groups": [
 			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -285,7 +287,7 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 	sort.Strings(refs)
 
 	assert.Equal(t, []string{
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=]",
+		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=Android]",
 		"field[key=activation_token,name=]",
 		"field[key=gender,name=]",
 		"field[key=join_date,name=]",
@@ -349,47 +351,46 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
-	contact.AddURN(urns.URN("tel:+12345678999"))
-	contact.AddURN(urns.URN("tel:+18005555777"))
-	contact.AddURN(urns.URN("whatsapp:18005555888"))
+	contact.AddURN("twitter:joey")
+	contact.AddURN("tel:+12345678999")
+	contact.AddURN("tel:+18005555777")
+	contact.AddURN("whatsapp:18005555888")
 
 	contact.UpdatePreferredChannel(android)
 
 	// tel channels should be re-assigned to that channel, and moved to front of list
-	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].URN())
-	assert.Equal(t, android, contact.URNs()[0].Channel())
-	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[1].URN())
-	assert.Equal(t, android, contact.URNs()[1].Channel())
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
-	assert.Nil(t, contact.URNs()[2].Channel())
+	assert.Equal(t, urns.URN("tel:+12345678999"), contact.Routes()[0].URN())
+	assert.Equal(t, android, contact.Routes()[0].Channel())
+	assert.Equal(t, urns.URN("tel:+18005555777"), contact.Routes()[1].URN())
+	assert.Equal(t, android, contact.Routes()[1].Channel())
+	assert.Equal(t, urns.URN("twitter:joey"), contact.Routes()[2].URN())
+	assert.Nil(t, contact.Routes()[2].Channel())
 
 	// same only applies to URNs of other schemes if they don't have a channel already
 	contact.UpdatePreferredChannel(twitter1)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("twitter:joey"), contact.Routes()[0].URN())
 
 	contact.UpdatePreferredChannel(twitter2)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("twitter:joey"), contact.Routes()[0].URN())
 
 	contact.UpdatePreferredChannel(whatsapp1)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("whatsapp:18005555888"), contact.Routes()[0].URN())
 
 	contact.UpdatePreferredChannel(whatsapp2)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("whatsapp:18005555888"), contact.Routes()[0].URN())
 
 	// if they are already associated with the channel, then they become the preferred URN
 	contact.UpdatePreferredChannel(android)
 	contact.UpdatePreferredChannel(twitter1)
 
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
-	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
+	assert.Equal(t, urns.URN("twitter:joey"), contact.Routes()[0].URN())
+	assert.Equal(t, twitter1, contact.Routes()[0].Channel())
 
 	contact.UpdatePreferredChannel(android2)
 
-	for _, urn := range contact.URNs() {
+	for _, urn := range contact.Routes() {
 		assert.NotEqual(t, android2, urn.Channel())
 	}
-
 }
 
 func TestReevaluateQueryBasedGroups(t *testing.T) {
@@ -463,10 +464,10 @@ func TestContactQuery(t *testing.T) {
 		],
 		"language": "eng",
 		"timezone": "America/Guayaquil",
-		"urns": [
-			"tel:+12065551212", 
-			"tel:+12065551313", 
-			"twitter:ewok"
+		"routes": [
+			{"urn": "tel:+12065551212"}, 
+			{"urn": "tel:+12065551313"}, 
+			{"urn": "twitter:ewok"}
 		],
 		"created_on": "2020-01-24T13:24:30Z",
 		"last_seen_on": "2020-08-06T15:41:30Z"

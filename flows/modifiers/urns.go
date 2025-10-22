@@ -64,7 +64,7 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 	switch m.modification {
 	case URNsAppend:
 		for _, urn := range urnz {
-			if len(contact.URNs()) >= flows.MaxContactURNs {
+			if len(contact.Routes()) >= flows.MaxContactURNs {
 				log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs)))
 				break
 			} else if contact.AddURN(urn) {
@@ -82,7 +82,7 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 	}
 
 	if modified {
-		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
+		log(events.NewContactURNsChanged(contact.Routes().Encode()))
 		return true, nil
 	}
 	return false, nil

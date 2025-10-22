@@ -92,7 +92,9 @@ var sessionContact = `{
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"created_on": "2018-06-20T11:40:30.123456789-00:00",
-	"urns": [ "tel:+12065551212"],
+	"routes": [
+		{"urn": "tel:+12065551212"}
+	],
 	"fields": {
 		"gender": {"text": "M"}
 	}

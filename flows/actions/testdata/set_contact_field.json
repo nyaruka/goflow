@@ -105,9 +105,17 @@
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "last_seen_on": "2025-05-04T12:30:46.123456789Z",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
+            "routes": [
+                {
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    }
+                },
+                {
+                    "urn": "twitterid:54784326227#nyaruka"
+                }
             ],
             "groups": [
                 {
@@ -170,9 +178,17 @@
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "last_seen_on": "2025-05-04T12:30:46.123456789Z",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
+            "routes": [
+                {
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    }
+                },
+                {
+                    "urn": "twitterid:54784326227#nyaruka"
+                }
             ],
             "groups": [
                 {
@@ -228,9 +244,17 @@
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "last_seen_on": "2025-05-04T12:30:46.123456789Z",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-                "twitterid:54784326227#nyaruka"
+            "routes": [
+                {
+                    "urn": "tel:+12065551212",
+                    "channel": {
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                        "name": "My Android Phone"
+                    }
+                },
+                {
+                    "urn": "twitterid:54784326227#nyaruka"
+                }
             ],
             "groups": [
                 {

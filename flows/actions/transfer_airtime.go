@@ -69,18 +69,17 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 	contact := run.Contact()
 
 	// fail if the contact doesn't have a phone URN or whatsap URN
-	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix)
-	if len(telURNs) == 0 {
+	tels := contact.Routes().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix)
+	if len(tels) == 0 {
 		return nil, errors.New("can't transfer airtime to contact without a phone number")
 	}
 
-	recipient := telURNs[0].URN()
+	recipient := tels[0].URN()
 
 	// if contact's preferred channel is a phone number, use that as the sender
 	var sender urns.URN
-	channel := contact.PreferredChannel()
-	if channel != nil && channel.SupportsScheme(recipient.Scheme()) {
-		sender, _ = urns.Parse(recipient.Scheme() + ":" + channel.Address())
+	if route := contact.PreferredRoute(); route != nil && route.Channel().SupportsScheme(recipient.Scheme()) {
+		sender, _ = urns.Parse(recipient.Scheme() + ":" + route.Channel().Address())
 	}
 
 	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())

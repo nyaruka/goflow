@@ -701,9 +701,9 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		return nil, nil, nil, fmt.Errorf("error getting flow %s from assets: %w", b.flowUUID, err)
 	}
 
-	var urnz []urns.URN
+	var routes []*flows.RouteEnvelope
 	if b.contactURN != "" {
-		urnz = []urns.URN{b.contactURN}
+		routes = []*flows.RouteEnvelope{{URN: b.contactURN}}
 	}
 
 	contact, err := flows.NewContact(sa,
@@ -715,7 +715,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		nil,
 		time.Date(2020, 1, 1, 12, 45, 30, 123456, time.UTC),
 		nil,
-		urnz,
+		routes,
 		nil,
 		nil,
 		nil,

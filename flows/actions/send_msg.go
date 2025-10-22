@@ -98,18 +98,18 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		}
 	}
 
-	destinations := run.Contact().ResolveDestinations(a.AllURNs)
+	destinations := run.Contact().ResolveRoutes(a.AllURNs)
 	locale := currentLocale(run, lang)
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
-		urn := dest.URN.URN()
-		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
+		urn := dest.URN()
+		channelRef := assets.NewChannelReference(dest.Channel().UUID(), dest.Channel().Name())
 		var msg *flows.MsgOut
 
 		if template != nil {
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
-			translation := template.FindTranslation(dest.Channel, locales)
+			translation := template.FindTranslation(dest.Channel(), locales)
 			if translation != nil {
 				templating := template.Templating(translation, templateVariables)
 

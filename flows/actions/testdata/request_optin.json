@@ -19,8 +19,10 @@
             "status": "active",
             "language": "eng",
             "timezone": "America/Guayaquil",
-            "urns": [
-                "facebook:1234567890"
+            "routes": [
+                {
+                    "urn": "facebook:1234567890"
+                }
             ],
             "groups": [],
             "fields": {},

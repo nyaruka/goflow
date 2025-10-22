@@ -193,7 +193,7 @@ func (r *run) ExitedOn() *time.Time  { return r.exitedOn }
 func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 	var urns, fields, ticket, node types.XValue
 	if r.Contact() != nil {
-		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
+		urns = flows.ContextFunc(env, r.Contact().Routes().MapContext)
 		fields = flows.Context(env, r.Contact().Fields())
 
 		if t := r.Contact().Tickets().LastOpen(); t != nil {

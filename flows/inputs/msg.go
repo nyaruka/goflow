@@ -24,7 +24,7 @@ const TypeMsg string = "msg"
 type Msg struct {
 	baseInput
 
-	urn         *flows.ContactURN
+	urn         urns.URN
 	text        string
 	attachments []utils.Attachment
 	externalID  string
@@ -40,7 +40,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 
 	return &Msg{
 		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
-		urn:         flows.NewContactURN(evt.Msg.URN(), nil),
+		urn:         evt.Msg.URN(),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),
 		externalID:  evt.Msg.ExternalID(),
@@ -66,18 +66,13 @@ func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 		attachments[i] = types.NewXText(string(attachment))
 	}
 
-	var urn types.XValue
-	if i.urn != nil {
-		urn = i.urn.ToXValue(env)
-	}
-
 	return map[string]types.XValue{
 		"__default__": types.NewXText(i.format()),
 		"type":        types.NewXText(i.type_),
 		"uuid":        types.NewXText(string(i.uuid)),
 		"created_on":  types.NewXDateTime(i.createdOn),
 		"channel":     flows.Context(env, i.channel),
-		"urn":         urn,
+		"urn":         flows.NewRoute(i.urn, nil).ToXValue(env), // handles URN redaction
 		"text":        types.NewXText(i.text),
 		"attachments": types.NewXArray(attachments...),
 		"external_id": types.NewXText(i.externalID),
@@ -118,7 +113,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 	}
 
 	i := &Msg{
-		urn:         flows.NewContactURN(e.URN, nil),
+		urn:         e.URN,
 		text:        e.Text,
 		attachments: e.Attachments,
 		externalID:  e.ExternalID,
@@ -134,7 +129,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 // MarshalJSON marshals this msg input into JSON
 func (i *Msg) MarshalJSON() ([]byte, error) {
 	e := &msgEnvelope{
-		URN:         i.urn.URN(),
+		URN:         i.urn,
 		Text:        i.text,
 		Attachments: i.attachments,
 		ExternalID:  i.externalID,
