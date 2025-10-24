@@ -34,7 +34,7 @@ func TestRunSummary(t *testing.T) {
 	assert.Equal(t, run.Flow(), summary.Flow())
 	assert.Equal(t, run.Contact().UUID(), summary.Contact().UUID())
 	assert.Equal(t, run.Contact().Name(), summary.Contact().Name())
-	assert.Equal(t, run.Contact().URNs(), summary.Contact().URNs())
+	assert.Equal(t, run.Contact().Routes(), summary.Contact().Routes())
 	assert.Equal(t, run.Contact().Status(), summary.Contact().Status())
 	assert.Equal(t, run.Contact().Language(), summary.Contact().Language())
 	assert.Equal(t, run.Contact().Fields(), summary.Contact().Fields())

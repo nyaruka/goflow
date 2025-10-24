@@ -42,9 +42,9 @@ var defaultContactJSON = []byte(`{
 	"status": "active",
 	"language": "eng",
 	"timezone": "America/Guayaquil",
-	"urns": [
-		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
-		"twitterid:54784326227#nyaruka"
+	"routes": [
+		{"urn": "tel:+12065551212", "channel": {"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"}},
+		{"urn": "twitterid:54784326227#nyaruka"}
 	],
 	"groups": [
 		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},

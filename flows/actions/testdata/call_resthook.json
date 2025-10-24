@@ -580,7 +580,7 @@
             "status": "active",
             "language": "eng",
             "timezone": "America/Guayaquil",
-            "urns": [],
+            "routes": [],
             "groups": [],
             "fields": {},
             "created_on": "2018-06-20T11:40:30.123456789-00:00"

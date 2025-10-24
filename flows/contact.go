@@ -68,7 +68,7 @@ type Contact struct {
 	timezone   *time.Location
 	createdOn  time.Time
 	lastSeenOn *time.Time
-	urns       URNList
+	routes     RouteList
 	groups     *GroupList
 	fields     FieldValues
 	tickets    *TicketList
@@ -88,17 +88,13 @@ func NewContact(
 	timezone *time.Location,
 	createdOn time.Time,
 	lastSeenOn *time.Time,
-	urns []urns.URN,
+	routes []*RouteEnvelope,
 	groups []*assets.GroupReference,
 	fields map[string]*Value,
 	tickets []*Ticket,
 	missing assets.MissingCallback) (*Contact, error) {
 
-	urnList, err := ReadURNList(sa, urns, missing)
-	if err != nil {
-		return nil, err
-	}
-
+	routeList := NewRouteList(sa, routes, missing)
 	groupList := NewGroupList(sa, groups, missing)
 	fieldValues := NewFieldValues(sa, fields, missing)
 	ticketsList := NewTicketList(tickets)
@@ -112,7 +108,7 @@ func NewContact(
 		timezone:   timezone,
 		createdOn:  createdOn,
 		lastSeenOn: lastSeenOn,
-		urns:       urnList,
+		routes:     routeList,
 		groups:     groupList,
 		fields:     fieldValues,
 		tickets:    ticketsList,
@@ -130,7 +126,7 @@ func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, time
 		timezone:   timezone,
 		createdOn:  dates.Now(),
 		lastSeenOn: nil,
-		urns:       URNList{},
+		routes:     RouteList{},
 		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
 		fields:     make(FieldValues),
 		tickets:    NewTicketList(nil),
@@ -149,7 +145,7 @@ func (c *Contact) Clone() *Contact {
 		timezone:   c.timezone,
 		createdOn:  c.createdOn,
 		lastSeenOn: c.lastSeenOn,
-		urns:       c.urns.clone(),
+		routes:     c.routes.clone(),
 		groups:     c.groups.clone(),
 		fields:     c.fields.clone(),
 		tickets:    NewTicketList(nil), // tickets not included
@@ -174,14 +170,13 @@ func (c *Contact) Language() i18n.Language { return c.language }
 // TODO: currently this is derived from their preferred channel or any tel URNs but probably should become an explicit
 // field at some point
 func (c *Contact) Country() i18n.Country {
-	ch := c.PreferredChannel()
-	if ch != nil && ch.Country() != i18n.NilCountry {
-		return ch.Country()
+	if route := c.PreferredRoute(); route != nil && route.Channel().Country() != i18n.NilCountry {
+		return route.Channel().Country()
 	}
 
-	for _, u := range c.urns {
-		if u.urn.Scheme() == urns.Phone.Prefix {
-			c := i18n.DeriveCountryFromTel(u.urn.Path())
+	for _, r := range c.routes {
+		if r.urn.Scheme() == urns.Phone.Prefix {
+			c := i18n.DeriveCountryFromTel(r.urn.Path())
 			if c != i18n.NilCountry {
 				return c
 			}
@@ -227,8 +222,8 @@ func (c *Contact) SetName(name string) { c.name = name }
 // Name returns the name of this contact
 func (c *Contact) Name() string { return c.name }
 
-// URNs returns the URNs of this contact
-func (c *Contact) URNs() URNList { return c.urns }
+// Routes returns the routes of this contact
+func (c *Contact) Routes() RouteList { return c.routes }
 
 // AddURN adds a new URN to this contact
 func (c *Contact) AddURN(urn urns.URN) bool {
@@ -236,7 +231,7 @@ func (c *Contact) AddURN(urn urns.URN) bool {
 		return false
 	}
 
-	c.urns = append(c.urns, NewContactURN(urn, nil))
+	c.routes = append(c.routes, &Route{urn: urn})
 	return true
 }
 
@@ -246,25 +241,25 @@ func (c *Contact) RemoveURN(urn urns.URN) bool {
 		return false
 	}
 
-	newURNs := make([]*ContactURN, 0, len(c.urns)-1)
-	for _, u := range c.urns {
-		if u.URN().Identity() != urn.Identity() {
-			newURNs = append(newURNs, u)
+	newRoutes := make([]*Route, 0, len(c.routes)-1)
+	for _, r := range c.routes {
+		if r.URN().Identity() != urn.Identity() {
+			newRoutes = append(newRoutes, r)
 		}
 	}
 
-	c.urns = URNList(newURNs)
+	c.routes = RouteList(newRoutes)
 	return true
 }
 
 // SetURNs sets the URNs of this contact
-func (c *Contact) SetURNs(urn []urns.URN) bool {
+func (c *Contact) SetURNs(urnz []urns.URN) bool {
 	isSame := func() bool {
-		if len(c.urns) != len(urn) {
+		if len(c.routes) != len(urnz) {
 			return false
 		}
-		for i, u := range c.urns {
-			if u.URN().Identity() != urn[i].Identity() {
+		for i, r := range c.routes {
+			if r.URN().Identity() != urnz[i].Identity() {
 				return false
 			}
 		}
@@ -274,17 +269,17 @@ func (c *Contact) SetURNs(urn []urns.URN) bool {
 		return false
 	}
 
-	c.urns = URNList{}
-	for _, u := range urn {
-		c.urns = append(c.urns, NewContactURN(u.Normalize(), nil))
+	c.routes = RouteList{}
+	for _, u := range urnz {
+		c.routes = append(c.routes, &Route{urn: u.Normalize()})
 	}
 
 	return true
 }
 
 func (c *Contact) hasURN(urn urns.URN) bool {
-	for _, u := range c.urns {
-		if u.URN().Identity() == urn.Identity() {
+	for _, r := range c.routes {
+		if r.URN().Identity() == urn.Identity() {
 			return true
 		}
 	}
@@ -319,8 +314,8 @@ func (c *Contact) Format(env envs.Environment) string {
 	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
 		return strconv.Itoa(int(c.id))
 	}
-	if len(c.urns) > 0 {
-		return c.urns[0].URN().Format()
+	if len(c.routes) > 0 {
+		return c.routes[0].URN().Format()
 	}
 
 	return ""
@@ -353,9 +348,10 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		timezone = types.NewXText(c.timezone.String())
 	}
 
-	preferredURN := c.PreferredURN()
-	if preferredURN != nil {
-		urn = preferredURN.ToXValue(env)
+	var channel *Channel
+	if preferredRoute := c.PreferredRoute(); preferredRoute != nil {
+		urn = preferredRoute.ToXValue(env)
+		channel = preferredRoute.Channel()
 	}
 
 	names := utils.TokenizeString(c.name)
@@ -384,97 +380,81 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		"status":       types.NewXText(string(c.status)),
 		"created_on":   types.NewXDateTime(c.createdOn),
 		"last_seen_on": lastSeenOn,
-		"urns":         c.urns.ToXValue(env),
+		"urns":         c.routes.ToXValue(env),
 		"urn":          urn,
 		"groups":       c.groups.ToXValue(env),
 		"fields":       Context(env, c.Fields()),
-		"channel":      Context(env, c.PreferredChannel()),
+		"channel":      Context(env, channel),
 		"id":           id,
 		"tickets":      tickets,
 	}
 }
 
-// Destination is a sendable channel and URN pair
-type Destination struct {
-	Channel *Channel
-	URN     *ContactURN
-}
+// ResolveRoutes resolves possible URN/channel routes
+func (c *Contact) ResolveRoutes(all bool) []*Route {
+	routes := []*Route{}
 
-// ResolveDestinations resolves possible URN/channel destinations
-func (c *Contact) ResolveDestinations(all bool) []Destination {
-	destinations := []Destination{}
-
-	for _, u := range c.urns {
+	for _, u := range c.routes {
 		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
-			destinations = append(destinations, Destination{URN: u, Channel: channel})
+			routes = append(routes, &Route{urn: u.URN(), channel: channel})
 			if !all {
 				break
 			}
 		}
 	}
-	return destinations
+	return routes
 }
 
-// PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
-func (c *Contact) PreferredURN() *ContactURN {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].URN
-	}
-	return nil
-}
-
-// PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
-func (c *Contact) PreferredChannel() *Channel {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].Channel
+// PreferredRoute gets the preferred route for this contact, i.e. the channel+URN pair we would use for sending
+func (c *Contact) PreferredRoute() *Route {
+	if destinations := c.ResolveRoutes(false); len(destinations) > 0 {
+		return destinations[0]
 	}
 	return nil
 }
 
 // UpdatePreferredChannel updates the preferred channel and returns whether any change was made
 func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
-	oldURNs := c.urns.clone()
+	oldRoutes := c.routes.clone()
 
 	// setting preferred channel to nil means clearing affinity on all URNs
 	if channel == nil {
-		for _, urn := range c.urns {
-			urn.SetChannel(nil)
+		for _, r := range c.routes {
+			r.SetChannel(nil)
 		}
 	} else {
 		if !channel.HasRole(assets.ChannelRoleSend) {
 			return false
 		}
 
-		priorityURNs := make([]*ContactURN, 0)
-		otherURNs := make([]*ContactURN, 0)
+		priorityRoutes := make([]*Route, 0)
+		otherRoutes := make([]*Route, 0)
 
-		for _, urn := range c.urns {
+		for _, r := range c.routes {
 			// portable URNs can be re-assigned when supported by channel
-			if portableURNSchemes[urn.URN().Scheme()] && channel.SupportsScheme(urn.URN().Scheme()) {
-				urn.SetChannel(channel)
+			if portableURNSchemes[r.URN().Scheme()] && channel.SupportsScheme(r.URN().Scheme()) {
+				r.SetChannel(channel)
 			}
 
 			// If URN doesn't have a channel and is a scheme supported by the channel, then we can set its
 			// channel. This may result in unsendable URN/channel pairing but can't do much about that.
-			if urn.Channel() == nil && channel.SupportsScheme(urn.URN().Scheme()) {
-				urn.SetChannel(channel)
+			if r.Channel() == nil && channel.SupportsScheme(r.URN().Scheme()) {
+				r.SetChannel(channel)
 			}
 
 			// move any URNs with this channel to the front of the list
-			if urn.Channel() == channel {
-				priorityURNs = append(priorityURNs, urn)
+			if r.Channel() == channel {
+				priorityRoutes = append(priorityRoutes, r)
 			} else {
-				otherURNs = append(otherURNs, urn)
+				otherRoutes = append(otherRoutes, r)
 			}
 		}
 
-		c.urns = append(priorityURNs, otherURNs...)
+		c.routes = append(priorityRoutes, otherRoutes...)
 	}
 
-	return !oldURNs.Equal(c.urns)
+	return !oldRoutes.Equal(c.routes)
 }
 
 // ReevaluateQueryBasedGroups reevaluates membership of all query based groups for this contact
@@ -523,8 +503,8 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return nil
 		case contactql.AttributeURN:
-			vals := make([]any, len(c.URNs()))
-			for i, urn := range c.URNs() {
+			vals := make([]any, len(c.Routes()))
+			for i, urn := range c.Routes() {
 				vals[i] = urn.URN().Path()
 			}
 			return vals
@@ -541,10 +521,10 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			return nil
 		}
 	} else if propType == contactql.PropertyTypeURN {
-		urnsWithScheme := c.urns.WithScheme(key)
-		vals := make([]any, len(urnsWithScheme))
-		for i := range urnsWithScheme {
-			vals[i] = urnsWithScheme[i].URN().Path()
+		withScheme := c.routes.WithScheme(key)
+		vals := make([]any, len(withScheme))
+		for i := range withScheme {
+			vals[i] = withScheme[i].URN().Path()
 		}
 		return vals
 	}
@@ -605,7 +585,7 @@ type ContactEnvelope struct {
 	Timezone   string                   `json:"timezone,omitempty"`
 	CreatedOn  time.Time                `json:"created_on"          validate:"required"`
 	LastSeenOn *time.Time               `json:"last_seen_on,omitempty"`
-	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
+	Routes     []*RouteEnvelope         `json:"routes,omitempty"    validate:"dive"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
 	Tickets    []*TicketEnvelope        `json:"tickets,omitempty"`
@@ -630,15 +610,7 @@ func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCall
 		}
 	}
 
-	if e.URNs == nil {
-		c.urns = make(URNList, 0)
-	} else {
-		var err error
-		if c.urns, err = ReadURNList(sa, e.URNs, missing); err != nil {
-			return nil, fmt.Errorf("error reading urns: %w", err)
-		}
-	}
-
+	c.routes = NewRouteList(sa, e.Routes, missing)
 	c.groups = NewGroupList(sa, e.Groups, missing)
 	c.fields = NewFieldValues(sa, e.Fields, missing)
 
@@ -660,7 +632,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 		Language:   c.language,
 		CreatedOn:  c.createdOn,
 		LastSeenOn: c.lastSeenOn,
-		URNs:       c.urns.RawURNs(),
+		Routes:     c.routes.marshal(),
 		Groups:     c.groups.references(),
 	}
 

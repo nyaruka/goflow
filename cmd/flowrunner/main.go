@@ -38,10 +38,10 @@ const contactJSON = `{
 	"created_on": "2018-01-01T12:00:00.000000000-00:00",
 	"fields": {},
 	"timezone": "America/Guayaquil",
-	"urns": [
-		"tel:+12065551212",
-		"facebook:1122334455667788",
-		"mailto:ben@macklemore"
+	"routes": [
+		{"urn": "tel:+12065551212"},
+		{"urn": "facebook:1122334455667788"},
+		{"urn": "mailto:ben@macklemore"}
 	]
 }
 `
@@ -159,7 +159,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 
 		// if we're starting a voice flow we need a call
 		if flow.Type() == flows.FlowTypeVoice {
-			channel := sa.Channels().GetForURN(flows.NewContactURN(urns.URN("tel:+12065551212"), nil), assets.ChannelRoleCall)
+			channel := sa.Channels().GetForURN(flows.NewRoute("tel:+12065551212", nil), assets.ChannelRoleCall)
 			call = flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
 		}
 
@@ -211,7 +211,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 }
 
 func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(contact.URNs()[0].URN(), nil, text, []utils.Attachment{}, "")
+	return flows.NewMsgIn(contact.Routes()[0].URN(), nil, text, []utils.Attachment{}, "")
 }
 
 func printEvents(log []flows.Event, out io.Writer) {

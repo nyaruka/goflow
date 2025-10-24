@@ -65,7 +65,7 @@ func newRelatedRunContext(r flows.RunSummary) *relatedRunContext {
 func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
-		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
+		urns = flows.ContextFunc(env, c.run.Contact().Routes().MapContext)
 		fields = flows.Context(env, c.run.Contact().Fields())
 	}
 

@@ -8,8 +8,10 @@
             "language": "eng",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                }
             ],
             "groups": [
                 {
@@ -25,8 +27,10 @@
             "language": "eng",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                }
             ],
             "groups": [
                 {
@@ -43,10 +47,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -65,10 +75,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -115,10 +131,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -137,10 +159,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "active",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -179,10 +207,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "blocked",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -201,10 +235,16 @@
             "language": "spa",
             "status": "blocked",
             "name": "Joe",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -225,10 +265,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "stopped",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -247,10 +293,16 @@
             "language": "spa",
             "status": "stopped",
             "name": "Joe",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -271,10 +323,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "blocked",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -293,10 +351,16 @@
             "language": "spa",
             "status": "blocked",
             "name": "Joe",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -317,10 +381,16 @@
             "language": "spa",
             "name": "Joe",
             "status": "stopped",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {
@@ -339,10 +409,16 @@
             "language": "spa",
             "status": "stopped",
             "name": "Joe",
-            "urns": [
-                "tel:+12345678999",
-                "twitter:crazy_joe",
-                "tel:+18005555777"
+            "routes": [
+                {
+                    "urn": "tel:+12345678999"
+                },
+                {
+                    "urn": "twitter:crazy_joe"
+                },
+                {
+                    "urn": "tel:+18005555777"
+                }
             ],
             "created_on": "2017-12-15T10:00:00Z",
             "fields": {

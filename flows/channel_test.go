@@ -64,48 +64,48 @@ func TestChannelSetGetForURN(t *testing.T) {
 
 	// nil if no channel
 	emptySet := flows.NewChannelAssets(nil)
-	assert.Nil(t, emptySet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil), assets.ChannelRoleSend))
+	assert.Nil(t, emptySet.GetForURN(flows.NewRoute(urns.URN("tel:+12345678999"), nil), assets.ChannelRoleSend))
 
 	// nil if not channel with correct role
-	assert.Nil(t, receiverSet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleSend))
+	assert.Nil(t, receiverSet.GetForURN(flows.NewRoute(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleSend))
 
 	// can still match URN has a preferred channel with matching role
-	assert.Equal(t, receiver, receiverSet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleReceive))
+	assert.Equal(t, receiver, receiverSet.GetForURN(flows.NewRoute(urns.URN("tel:+12345678999"), receiver), assets.ChannelRoleReceive))
 
 	// nil if no channel with correct scheme
-	assert.Nil(t, all.GetForURN(flows.NewContactURN(urns.URN("mailto:rowan@foo.bar"), nil), assets.ChannelRoleSend))
+	assert.Nil(t, all.GetForURN(flows.NewRoute(urns.URN("mailto:rowan@foo.bar"), nil), assets.ChannelRoleSend))
 
 	// if URN has a preferred channel, that is always used
-	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), tigo), assets.ChannelRoleSend))
+	assert.Equal(t, tigo, all.GetForURN(flows.NewRoute(urns.URN("tel:+250962222222"), tigo), assets.ChannelRoleSend))
 
 	// if there's only one channel for that scheme, it's used
-	assert.Equal(t, twitter, all.GetForURN(flows.NewContactURN(urns.URN("twitter:nyaruka2"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, twitter, all.GetForURN(flows.NewRoute(urns.URN("twitter:nyaruka2"), nil), assets.ChannelRoleSend))
 
 	// if there's only one channel for that country, it's used
-	assert.Equal(t, claro, all.GetForURN(flows.NewContactURN(urns.URN("tel:+593971234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, claro, all.GetForURN(flows.NewRoute(urns.URN("tel:+593971234567"), nil), assets.ChannelRoleSend))
 
 	// return nil for international send if the channels don't allow it
-	assert.Nil(t, rwOnly.GetForURN(flows.NewContactURN(urns.URN("tel:+593971234567"), nil), assets.ChannelRoleSend))
+	assert.Nil(t, rwOnly.GetForURN(flows.NewRoute(urns.URN("tel:+593971234567"), nil), assets.ChannelRoleSend))
 
 	// but use them if they do
-	assert.Equal(t, claro, all.GetForURN(flows.NewContactURN(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, claro, all.GetForURN(flows.NewRoute(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
 
 	// or if they're implicitly international by having no country
-	assert.Equal(t, twilio, twOnly.GetForURN(flows.NewContactURN(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, twilio, twOnly.GetForURN(flows.NewRoute(urns.URN("tel:+57971234567"), nil), assets.ChannelRoleSend))
 
 	// if there's multiple channels, one with longest number overlap wins
-	assert.Equal(t, mtn, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))
-	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, mtn, all.GetForURN(flows.NewRoute(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, tigo, all.GetForURN(flows.NewRoute(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
 
 	// if there's no overlap, then last/newest channel wins
-	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, tigo, all.GetForURN(flows.NewRoute(urns.URN("tel:+250962222222"), nil), assets.ChannelRoleSend))
 
 	// matching prefixes can be explicitly set too
 	short1 := test.NewTelChannel("Shortcode 1", "1234", rolesSend, nil, "RW", []string{"25078", "25077"}, false)
 	short2 := test.NewTelChannel("Shortcode 2", "1235", rolesSend, nil, "RW", []string{"25072"}, false)
 	all = flows.NewChannelAssets([]assets.Channel{short1.Asset(), short2.Asset()})
 
-	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))
-	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250771234567"), nil), assets.ChannelRoleSend))
-	assert.Equal(t, short2, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, short1, all.GetForURN(flows.NewRoute(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, short1, all.GetForURN(flows.NewRoute(urns.URN("tel:+250771234567"), nil), assets.ChannelRoleSend))
+	assert.Equal(t, short2, all.GetForURN(flows.NewRoute(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
 }

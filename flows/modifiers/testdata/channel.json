@@ -93,7 +93,7 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?id=123",
+                "tel:+12065551212",
                 "twitterid:54784326227#nyaruka"
             ]
         },
@@ -103,7 +103,7 @@
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
-                    "tel:+12065551212?id=123",
+                    "tel:+12065551212",
                     "twitterid:54784326227#nyaruka"
                 ]
             }

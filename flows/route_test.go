@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -35,7 +34,7 @@ func TestURNValidation(t *testing.T) {
 	assert.EqualError(t, err, "field 'invalid_urn' is not a valid URN, field 'invalid_scheme' is not a valid URN scheme")
 }
 
-func TestContactURN(t *testing.T) {
+func TestRoute(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
@@ -57,60 +56,60 @@ func TestContactURN(t *testing.T) {
     }`))
 	require.NoError(t, err)
 
-	sessionAssets, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	channels := sessionAssets.Channels()
-	channel := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+	channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
-	// check that parsing a URN properly extracts its channel affinity
-	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
+	// check that unmarshaling a route properly extracts its channel affinity
+	envelope := &flows.RouteEnvelope{URN: "tel:+250781234567", Channel: assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Android")}
+
+	route1 := envelope.Unmarshal(sa, assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
-	assert.Equal(t, channel, urn.Channel())
-	assert.Equal(t, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3", urn.String())
+	assert.Equal(t, urns.URN("tel:+250781234567"), route1.URN())
+	assert.Equal(t, channel, route1.Channel())
 
 	// check equality
-	urn2, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
-	urn3, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?id=3"), assets.PanicOnMissing)
-	assert.True(t, urn.Equal(urn2))
-	assert.False(t, urn.Equal(urn3))
+	route2 := flows.NewRoute("tel:+250781234567", channel)
+	route3 := flows.NewRoute("tel:+250781234567", nil)
+	assert.True(t, route1.Equal(route2))
+	assert.False(t, route1.Equal(route3))
 
-	// check using URN in expressions
-	assert.Equal(t, types.NewXText("tel:+250781234567"), urn.ToXValue(env))
+	// becomes just a URN string in expressions
+	assert.Equal(t, types.NewXText("tel:+250781234567"), route1.ToXValue(env))
 
 	// check when URNs have to be redacted
 	env = envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
-	assert.Equal(t, types.NewXText("tel:********"), urn.ToXValue(env))
+	assert.Equal(t, types.NewXText("tel:********"), route1.ToXValue(env))
 
 	// we can clear the channel affinity
-	urn.SetChannel(nil)
-	assert.Equal(t, urns.URN("tel:+250781234567?id=3"), urn.URN())
-	assert.Nil(t, urn.Channel())
+	route1.SetChannel(nil)
+	assert.Equal(t, urns.URN("tel:+250781234567"), route1.URN())
+	assert.Nil(t, route1.Channel())
 
 	// and change it
-	urn.SetChannel(channel)
-	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
-	assert.Equal(t, channel, urn.Channel())
+	route1.SetChannel(channel)
+	assert.Equal(t, urns.URN("tel:+250781234567"), route1.URN())
+	assert.Equal(t, channel, route1.Channel())
 }
 
-func TestURNList(t *testing.T) {
-	urn1 := flows.NewContactURN("tel:+250781234567", nil)
-	urn2 := flows.NewContactURN("twitter:134252511151#billy_bob", nil)
-	urn3 := flows.NewContactURN("tel:+250781111222", nil)
-	urnList := flows.URNList{urn1, urn2, urn3}
+func TestRouteList(t *testing.T) {
+	r1 := flows.NewRoute("tel:+250781234567", nil)
+	r2 := flows.NewRoute("twitter:134252511151#billy_bob", nil)
+	r3 := flows.NewRoute("tel:+250781111222", nil)
+	routes := flows.RouteList{r1, r2, r3}
 
 	env := envs.NewBuilder().Build()
 
 	// check equality
-	assert.True(t, urnList.Equal(flows.URNList{urn1, urn2, urn3}))
-	assert.False(t, urnList.Equal(flows.URNList{urn3, urn2, urn1}))
-	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
+	assert.True(t, routes.Equal(flows.RouteList{r1, r2, r3}))
+	assert.False(t, routes.Equal(flows.RouteList{r3, r2, r1}))
+	assert.False(t, routes.Equal(flows.RouteList{r1, r2}))
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(
 		types.NewXText("tel:+250781234567"),
 		types.NewXText("twitter:134252511151#billy_bob"),
 		types.NewXText("tel:+250781111222"),
-	), urnList.ToXValue(env))
+	), routes.ToXValue(env))
 }

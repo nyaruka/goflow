@@ -103,8 +103,8 @@ const contactJSON = `{
 	"fields": {},
 	"language": "fra",
 	"timezone": "America/Guayaquil",
-	"urns": [
-		"tel:+12065551212"
+	"routes": [
+		{"urn": "tel:+12065551212"}
 	]
 }`
 
