@@ -118,7 +118,7 @@
                 "created_on": "2025-05-04T12:31:11.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -174,7 +174,7 @@
                 "created_on": "2025-05-04T12:31:01.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -210,7 +210,7 @@
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -242,7 +242,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -275,7 +275,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -329,7 +329,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -344,7 +344,7 @@
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "twitterid:54784326227#nyaruka",
+                    "urn": "twitterid:54784326227",
                     "channel": {
                         "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
                         "name": "Twitter Channel"
@@ -409,7 +409,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -482,7 +482,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -564,7 +564,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -631,7 +631,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -709,7 +709,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -789,7 +789,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -905,7 +905,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -1002,7 +1002,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
@@ -1086,7 +1086,7 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "msg": {
-                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                         "name": "My Android Phone"
