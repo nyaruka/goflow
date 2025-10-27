@@ -117,12 +117,12 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 				preview := translation.Preview(templating.Variables)
 				locale := translation.Locale()
 
-				msg = flows.NewMsgOut(urn, channelRef, preview, templating, locale, unsendableReason)
+				msg = flows.NewMsgOut(urn.Identity(), channelRef, preview, templating, locale, unsendableReason)
 			}
 		}
 
 		if msg == nil {
-			msg = flows.NewMsgOut(urn, channelRef, content, nil, locale, unsendableReason)
+			msg = flows.NewMsgOut(urn.Identity(), channelRef, content, nil, locale, unsendableReason)
 		}
 
 		log(events.NewMsgCreated(msg, "", ""))
