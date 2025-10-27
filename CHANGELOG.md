@@ -1,3 +1,7 @@
+v0.259.3 (2025-10-27)
+-------------------------
+ * Use identity URNs for messages
+
 v0.259.2 (2025-10-21)
 -------------------------
  * Rename no_destination to no_route
