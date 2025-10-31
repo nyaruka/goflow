@@ -82,7 +82,7 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 	}
 
 	if modified {
-		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
+		log(events.NewContactURNsChanged(contact.URNs().Encode()))
 		return true, nil
 	}
 	return false, nil

@@ -35,7 +35,7 @@ func TestURNValidation(t *testing.T) {
 	assert.EqualError(t, err, "field 'invalid_urn' is not a valid URN, field 'invalid_scheme' is not a valid URN scheme")
 }
 
-func TestContactURN(t *testing.T) {
+func TestURN(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
@@ -64,15 +64,18 @@ func TestContactURN(t *testing.T) {
 	channel := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
 	// check that parsing a URN properly extracts its channel affinity
-	urn, err := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
+	urn, err := flows.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
-	assert.Equal(t, channel, urn.Channel())
-	assert.Equal(t, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3", urn.String())
+	assert.Equal(t, "tel", urn.Scheme)
+	assert.Equal(t, "+250781234567", urn.Path)
+	assert.Equal(t, "", urn.Display)
+	assert.Equal(t, channel, urn.Channel)
+	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"), urn.Encode())
+	assert.Equal(t, urns.URN("tel:+250781234567"), urn.Identity())
 
 	// check equality
-	urn2, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), assets.PanicOnMissing)
-	urn3, _ := flows.ParseRawURN(channels, urns.URN("tel:+250781234567?id=3"), assets.PanicOnMissing)
+	urn2, _ := flows.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
+	urn3, _ := flows.ParseURN(channels, "tel:+250781234567", assets.PanicOnMissing)
 	assert.True(t, urn.Equal(urn2))
 	assert.False(t, urn.Equal(urn3))
 
@@ -84,20 +87,20 @@ func TestContactURN(t *testing.T) {
 	assert.Equal(t, types.NewXText("tel:********"), urn.ToXValue(env))
 
 	// we can clear the channel affinity
-	urn.SetChannel(nil)
-	assert.Equal(t, urns.URN("tel:+250781234567?id=3"), urn.URN())
-	assert.Nil(t, urn.Channel())
+	urn.Channel = nil
+	assert.Equal(t, urns.URN("tel:+250781234567"), urn.Encode())
+	assert.Nil(t, urn.Channel)
 
 	// and change it
-	urn.SetChannel(channel)
-	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=3"), urn.URN())
-	assert.Equal(t, channel, urn.Channel())
+	urn.Channel = channel
+	assert.Equal(t, urns.URN("tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"), urn.Encode())
+	assert.Equal(t, channel, urn.Channel)
 }
 
 func TestURNList(t *testing.T) {
-	urn1 := flows.NewContactURN("tel:+250781234567", nil)
-	urn2 := flows.NewContactURN("twitter:134252511151#billy_bob", nil)
-	urn3 := flows.NewContactURN("tel:+250781111222", nil)
+	urn1 := flows.NewURN("tel", "+250781234567", "", nil)
+	urn2 := flows.NewURN("twitter", "134252511151", "billy_bob", nil)
+	urn3 := flows.NewURN("tel", "+250781111222", "", nil)
 	urnList := flows.URNList{urn1, urn2, urn3}
 
 	env := envs.NewBuilder().Build()

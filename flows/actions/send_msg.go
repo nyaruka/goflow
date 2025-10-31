@@ -103,7 +103,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
-		urn := dest.URN.URN()
+		urn := dest.URN
 		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
 		var msg *flows.MsgOut
 

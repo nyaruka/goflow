@@ -74,13 +74,13 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 		return nil, errors.New("can't transfer airtime to contact without a phone number")
 	}
 
-	recipient := telURNs[0].URN()
+	recipient := telURNs[0]
 
 	// if contact's preferred channel is a phone number, use that as the sender
 	var sender urns.URN
 	channel := contact.PreferredChannel()
-	if channel != nil && channel.SupportsScheme(recipient.Scheme()) {
-		sender, _ = urns.Parse(recipient.Scheme() + ":" + channel.Address())
+	if channel != nil && channel.SupportsScheme(recipient.Scheme) {
+		sender, _ = urns.Parse(recipient.Scheme + ":" + channel.Address())
 	}
 
 	svc, err := run.Session().Engine().Services().Airtime(run.Session().Assets())
@@ -90,7 +90,7 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(ctx, sender, recipient, a.Amounts, httpLogger.Log)
+	transfer, err := svc.Transfer(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
 	if transfer != nil { // can be non-nil for failed transfer
 		log(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
 	}

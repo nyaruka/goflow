@@ -38,7 +38,7 @@ func (m *Channel) Apply(eng flows.Engine, env envs.Environment, sa flows.Session
 
 	} else if contact.UpdatePreferredChannel(m.channel) {
 		// if URNs change in anyway, generate a URNs changed event
-		log(events.NewContactURNsChanged(contact.URNs().RawURNs()))
+		log(events.NewContactURNsChanged(contact.URNs().Encode()))
 		return true, nil
 	}
 	return false, nil
