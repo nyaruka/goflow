@@ -96,15 +96,15 @@ func (s *ChannelAssets) Get(uuid assets.ChannelUUID) *Channel {
 }
 
 // GetForURN returns the best channel for the given URN
-func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Channel {
+func (s *ChannelAssets) GetForURN(urn *URN, role assets.ChannelRole) *Channel {
 	// if caller has told us which channel to use for this URN, use that
-	if urn.Channel() != nil && urn.Channel().HasRole(role) {
-		return urn.Channel()
+	if urn.Channel != nil && urn.Channel.HasRole(role) {
+		return urn.Channel
 	}
 
 	// tel is a special case because we do number based matching
-	if urn.URN().Scheme() == urns.Phone.Prefix {
-		countryCode := i18n.DeriveCountryFromTel(urn.URN().Path())
+	if urn.Scheme == urns.Phone.Prefix {
+		countryCode := i18n.DeriveCountryFromTel(urn.Path)
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {
@@ -124,7 +124,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		if len(candidates) > 1 {
 			// we don't have a channel for this contact yet, let's try to pick one from the same carrier
 			// we need at least one digit to overlap to infer a channel
-			contactNumber := strings.TrimPrefix(urn.URN().Path(), "+")
+			contactNumber := strings.TrimPrefix(urn.Path, "+")
 			maxOverlap := 0
 			for _, candidate := range candidates {
 				candidatePrefixes := candidate.MatchPrefixes()
@@ -152,7 +152,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		return nil
 	}
 
-	return s.getForSchemeAndRole(urn.URN().Scheme(), role)
+	return s.getForSchemeAndRole(urn.Scheme, role)
 }
 
 func (s *ChannelAssets) getForSchemeAndRole(scheme string, role assets.ChannelRole) *Channel {

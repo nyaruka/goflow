@@ -24,7 +24,7 @@ const TypeMsg string = "msg"
 type Msg struct {
 	baseInput
 
-	urn         *flows.ContactURN
+	urn         *flows.URN
 	text        string
 	attachments []utils.Attachment
 	externalID  string
@@ -40,7 +40,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 
 	return &Msg{
 		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
-		urn:         flows.NewContactURN(evt.Msg.URN(), nil),
+		urn:         flows.NewURN(evt.Msg.URN().Scheme(), evt.Msg.URN().Path(), "", nil),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),
 		externalID:  evt.Msg.ExternalID(),
@@ -118,7 +118,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 	}
 
 	i := &Msg{
-		urn:         flows.NewContactURN(e.URN, nil),
+		urn:         flows.NewURN(e.URN.Scheme(), e.URN.Path(), "", nil),
 		text:        e.Text,
 		attachments: e.Attachments,
 		externalID:  e.ExternalID,
@@ -134,7 +134,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 // MarshalJSON marshals this msg input into JSON
 func (i *Msg) MarshalJSON() ([]byte, error) {
 	e := &msgEnvelope{
-		URN:         i.urn.URN(),
+		URN:         i.urn.Identity(),
 		Text:        i.text,
 		Attachments: i.attachments,
 		ExternalID:  i.externalID,

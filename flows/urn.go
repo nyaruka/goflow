@@ -35,25 +35,22 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 	return urns.IsValidScheme(fl.Field().String())
 }
 
-// ContactURN represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3
-// components: scheme, path, and display (optional). For example:
-//
-//   - _tel:+16303524567_
-//   - _twitterid:54784326227#nyaruka_
-//   - _telegram:34642632786#bobby_
-type ContactURN struct {
-	urn     urns.URN
-	channel *Channel
+// URN adds additional functionality around urns.URN such as channel affinity.
+type URN struct {
+	Scheme  string
+	Path    string
+	Display string
+	Channel *Channel
 }
 
-// NewContactURN creates a new contact URN with associated channel
-func NewContactURN(urn urns.URN, channel *Channel) *ContactURN {
-	return &ContactURN{urn: urn, channel: channel}
+// NewURN creates a new contact URN with associated channel
+func NewURN(scheme, path, display string, channel *Channel) *URN {
+	return &URN{Scheme: scheme, Path: path, Display: display, Channel: channel}
 }
 
-// ParseRawURN converts a raw URN to a ContactURN by extracting it's channel reference
-func ParseRawURN(ca *ChannelAssets, rawURN urns.URN, missing assets.MissingCallback) (*ContactURN, error) {
-	_, _, query, _ := rawURN.ToParts()
+// ParseURN converts an encoded urns.URN to a URN
+func ParseURN(ca *ChannelAssets, encoded urns.URN, missing assets.MissingCallback) (*URN, error) {
+	scheme, path, query, display := encoded.ToParts()
 
 	parsedQuery, err := url.ParseQuery(query)
 	if err != nil {
@@ -61,94 +58,80 @@ func ParseRawURN(ca *ChannelAssets, rawURN urns.URN, missing assets.MissingCallb
 	}
 
 	var channel *Channel
-	channelUUID := assets.ChannelUUID(parsedQuery.Get("channel"))
-	if channelUUID != "" {
-		if channel = ca.Get(channelUUID); channel == nil {
-			missing(assets.NewChannelReference(channelUUID, ""), nil)
+	if chUUID := parsedQuery.Get("channel"); chUUID != "" {
+		if channel = ca.Get(assets.ChannelUUID(chUUID)); channel == nil {
+			missing(assets.NewChannelReference(assets.ChannelUUID(chUUID), ""), nil)
 		}
 	}
 
-	return NewContactURN(rawURN, channel), nil
+	return NewURN(scheme, path, display, channel), nil
 }
 
-// URN gets the underlying URN
-func (u *ContactURN) URN() urns.URN { return u.urn }
+// Encode gets the URN as an encoded string
+func (u *URN) Encode() urns.URN {
+	return u.encode(true, true)
+}
 
-// Channel gets the channel associated with this URN
-func (u *ContactURN) Channel() *Channel { return u.channel }
+// Identity gets the URN as an identity URN (just scheme and path)
+func (u *URN) Identity() urns.URN {
+	return u.encode(false, false)
+}
 
-// SetChannel sets the channel associated with this URN
-func (u *ContactURN) SetChannel(channel *Channel) {
-	u.channel = channel
-
-	scheme, path, query, display := u.urn.ToParts()
-
-	parsedQuery, _ := url.ParseQuery(query)
-
-	if channel != nil {
-		parsedQuery.Set("channel", string(channel.UUID()))
-	} else {
-		parsedQuery.Del("channel")
+func (u *URN) encode(display, channel bool) urns.URN {
+	var fragment string
+	if display {
+		fragment = u.Display
 	}
 
-	urn, _ := urns.NewFromParts(scheme, path, parsedQuery, display)
-	u.urn = urn
-}
-
-func (u *ContactURN) String() string {
-	return string(u.urn)
-}
-
-// Equal determines if this URN is equal to another
-func (u *ContactURN) Equal(other *ContactURN) bool {
-	return other != nil && u.String() == other.String()
-}
-
-// returns this URN as a raw URN without the query portion (i.e. only scheme, path, display)
-func (u *ContactURN) withoutQuery(redact bool) urns.URN {
-	scheme, path, _, display := u.urn.ToParts()
-
-	if redact {
-		return urns.URN(fmt.Sprintf("%s:%s", scheme, redacted))
+	query := url.Values{}
+	if channel && u.Channel != nil {
+		query.Set("channel", string(u.Channel.UUID()))
 	}
 
-	urn, _ := urns.NewFromParts(scheme, path, nil, display)
-
+	urn, _ := urns.NewFromParts(u.Scheme, u.Path, query, fragment)
 	return urn
 }
 
-// ToXValue returns a representation of this object for use in expressions
-func (u *ContactURN) ToXValue(env envs.Environment) types.XValue {
-	redact := env.RedactionPolicy() == envs.RedactionPolicyURNs
+// Equal determines if this URN is equal to another
+func (u *URN) Equal(other *URN) bool {
+	return other != nil && u.Encode() == other.Encode()
+}
 
-	return types.NewXText(string(u.withoutQuery(redact)))
+func (u *URN) clone() *URN {
+	return NewURN(u.Scheme, u.Path, u.Display, u.Channel)
+}
+
+// ToXValue returns a representation of this object for use in expressions
+func (u *URN) ToXValue(env envs.Environment) types.XValue {
+	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
+		return types.NewXText(fmt.Sprintf("%s:%s", u.Scheme, redacted))
+	}
+
+	return types.NewXText(string(u.encode(true, false)))
 }
 
 // URNList is the list of a contact's URNs
-type URNList []*ContactURN
+type URNList []*URN
 
-// ReadURNList parses contact URN list from the given list of raw URNs
-func ReadURNList(a SessionAssets, rawURNs []urns.URN, missing assets.MissingCallback) (URNList, error) {
-	l := make(URNList, len(rawURNs))
-
-	for i := range rawURNs {
-		parsed, err := ParseRawURN(a.Channels(), rawURNs[i], missing)
+func NewURNList(sa SessionAssets, encoded []urns.URN, missing assets.MissingCallback) (URNList, error) {
+	urns := make(URNList, len(encoded))
+	for i, e := range encoded {
+		parsed, err := ParseURN(sa.Channels(), e, missing)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to parse URN %s: %w", e, err)
 		}
-		l[i] = parsed
+		urns[i] = parsed
 	}
-
-	return l, nil
+	return urns, nil
 }
 
-// RawURNs returns the raw URNs
-func (l URNList) RawURNs() []urns.URN {
-	raw := make([]urns.URN, len(l))
+// Encode returns encoded URNs
+func (l URNList) Encode() []urns.URN {
+	encoded := make([]urns.URN, len(l))
 	for i := range l {
-		raw[i] = l[i].urn
+		encoded[i] = l[i].Encode()
 	}
-	return raw
+	return encoded
 }
 
 // Equal returns whether this list of URNs is equal to another
@@ -168,8 +151,8 @@ func (l URNList) Equal(other URNList) bool {
 // Clone returns a clone of this URN list
 func (l URNList) clone() URNList {
 	urns := make(URNList, len(l))
-	for i := range l {
-		urns[i] = NewContactURN(l[i].urn, l[i].channel)
+	for i, u := range l {
+		urns[i] = u.clone()
 	}
 	return urns
 }
@@ -178,7 +161,7 @@ func (l URNList) clone() URNList {
 func (l URNList) WithScheme(schemes ...string) URNList {
 	var matching URNList
 	for _, u := range l {
-		if slices.Contains(schemes, u.urn.Scheme()) {
+		if slices.Contains(schemes, u.Scheme) {
 			matching = append(matching, u)
 		}
 	}
@@ -201,7 +184,7 @@ func (l URNList) MapContext(env envs.Environment) map[string]types.XValue {
 	byScheme := make(map[string]types.XValue)
 
 	for _, u := range l {
-		scheme := u.URN().Scheme()
+		scheme := u.Scheme
 		if _, seen := byScheme[scheme]; !seen {
 			byScheme[scheme] = u.ToXValue(env)
 		}

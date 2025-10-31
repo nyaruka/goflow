@@ -21,7 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -118,15 +117,15 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
-		"tel":        flows.NewContactURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil).ToXValue(env),
+		"tel":        flows.NewURN("tel", "+12024561111", "", android).ToXValue(env),
 		"telegram":   nil,
-		"twitter":    flows.NewContactURN(urns.URN("twitter:joey"), nil).ToXValue(env),
+		"twitter":    flows.NewURN("twitter", "joey", "", nil).ToXValue(env),
 		"twitterid":  nil,
 		"viber":      nil,
 		"vk":         nil,
 		"webchat":    nil,
 		"wechat":     nil,
-		"whatsapp":   flows.NewContactURN(urns.URN("whatsapp:235423721788"), nil).ToXValue(env),
+		"whatsapp":   flows.NewURN("whatsapp", "235423721788", "", nil).ToXValue(env),
 	}), flows.ContextFunc(env, contact.URNs().MapContext))
 
 	assert.Equal(t, 0, contact.Tickets().Open().Count())
@@ -194,18 +193,18 @@ func TestContactURNs(t *testing.T) {
 	assert.True(t, contact.AddURN("tel:+12024561111"))  // didn't have URN so returns true
 	assert.False(t, contact.AddURN("tel:+12024561111")) // did have
 
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.AddURN("tel:+12024562222"))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024562222", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
 	assert.False(t, contact.SetURNs([]urns.URN{"tel:+12024561111", "tel:+12024562222"})) // no change
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024562222", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
 	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111"})) // order changed
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024561111", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111", "tel:+12024563333"}))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024561111", nil), flows.NewContactURN("tel:+12024563333", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 	assert.True(t, contact.RemoveURN("tel:+12024561111"))
 	assert.False(t, contact.RemoveURN("tel:+12024566666"))
-	assert.Equal(t, flows.URNList{flows.NewContactURN("tel:+12024562222", nil), flows.NewContactURN("tel:+12024563333", nil)}, contact.URNs())
+	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 }
 
 func TestReadContact(t *testing.T) {
@@ -357,37 +356,37 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	contact.UpdatePreferredChannel(android)
 
 	// tel channels should be re-assigned to that channel, and moved to front of list
-	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].URN())
-	assert.Equal(t, android, contact.URNs()[0].Channel())
-	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[1].URN())
-	assert.Equal(t, android, contact.URNs()[1].Channel())
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
-	assert.Nil(t, contact.URNs()[2].Channel())
+	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, android, contact.URNs()[0].Channel)
+	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[1].Encode())
+	assert.Equal(t, android, contact.URNs()[1].Channel)
+	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].Encode())
+	assert.Nil(t, contact.URNs()[2].Channel)
 
 	// same only applies to URNs of other schemes if they don't have a channel already
 	contact.UpdatePreferredChannel(twitter1)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
 
 	contact.UpdatePreferredChannel(twitter2)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
 
 	contact.UpdatePreferredChannel(whatsapp1)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
 
 	contact.UpdatePreferredChannel(whatsapp2)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].URN())
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
 
 	// if they are already associated with the channel, then they become the preferred URN
 	contact.UpdatePreferredChannel(android)
 	contact.UpdatePreferredChannel(twitter1)
 
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].URN())
-	assert.Equal(t, twitter1, contact.URNs()[0].Channel())
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, twitter1, contact.URNs()[0].Channel)
 
 	contact.UpdatePreferredChannel(android2)
 
 	for _, urn := range contact.URNs() {
-		assert.NotEqual(t, android2, urn.Channel())
+		assert.NotEqual(t, android2, urn.Channel)
 	}
 
 }
