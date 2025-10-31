@@ -1,3 +1,7 @@
+v0.260.0 (2025-10-31)
+-------------------------
+ * Rework how URNs are modeled internally
+
 v0.259.3 (2025-10-27)
 -------------------------
  * Use identity URNs for messages
