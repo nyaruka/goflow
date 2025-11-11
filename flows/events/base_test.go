@@ -297,6 +297,30 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewMsgDeleted("01990b6d-de7e-7d28-8e40-806ac2c2f3f2", false)
+			},
+			`msg_deleted`,
+		},
+		{
+			func() flows.Event {
+				return events.NewMsgDeleted("01990b6d-de7e-7d28-8e40-806ac2c2f3f2", true)
+			},
+			`msg_deleted_by_contact`,
+		},
+		{
+			func() flows.Event {
+				return events.NewMsgStatusChanged("01990b6d-de7e-7d28-8e40-806ac2c2f3f2", "sent", "")
+			},
+			`msg_status_changed_sent`,
+		},
+		{
+			func() flows.Event {
+				return events.NewMsgStatusChanged("01990b6d-de7e-7d28-8e40-806ac2c2f3f2", "failed", "error_limit")
+			},
+			`msg_status_changed_failed`,
+		},
+		{
+			func() flows.Event {
 				return events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImage())
 			},
 			`msg_wait`,

@@ -1,0 +1,8 @@
+{
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+    "type": "msg_status_changed",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "msg_uuid": "01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
+    "status": "failed",
+    "reason": "error_limit"
+}
