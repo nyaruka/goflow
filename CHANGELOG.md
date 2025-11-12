@@ -1,3 +1,7 @@
+v0.261.1 (2025-11-12)
+-------------------------
+ * Update to latest gocommon
+
 v0.261.0 (2025-11-12)
 -------------------------
  * Add new msg_deleted and msg_status_changed events
