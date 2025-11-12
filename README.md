@@ -68,16 +68,6 @@ Takes a legacy flow definition as piped input and outputs the migrated definitio
 % cat legacy_export.json | jq '.flows[0]' | $GOPATH/bin/flowmigrate
 ```
 
-### Expression Tester
-
-Provides a quick way to test evaluation of expressions which can be used in flows:
-
-```
-% go install github.com/nyaruka/goflow/cmd/exptester
-% $GOPATH/bin/exptester '@(10 / 5 >= 2)'
-% $GOPATH/bin/exptester '@(TITLE("foo"))'
-```
-
 ## Development
 
 You can run all the tests with:

@@ -3,7 +3,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-06-25 15:03+0000\n"
+"POT-Creation-Date: 2025-11-12 15:31-0500\n"
 "Language-Team: French (https://www.transifex.com/rapidpro/teams/226/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -758,9 +758,6 @@ msgstr ""
 msgid "the name or email"
 msgstr ""
 
-msgid "the numeric ID of the contact"
-msgstr ""
-
 msgid "the open ticket for the contact"
 msgstr ""
 
@@ -777,6 +774,9 @@ msgid "the preferred URN of the contact"
 msgstr ""
 
 msgid "the preferred channel of the contact"
+msgstr ""
+
+msgid "the reference identifier of the contact"
 msgstr ""
 
 msgid "the response body if valid JSON"

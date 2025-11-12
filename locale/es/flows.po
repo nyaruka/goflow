@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-06-25 15:03+0000\n"
+"POT-Creation-Date: 2025-11-12 15:31-0500\n"
 "Last-Translator: Rowan Seymour <rowanseymour@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/rapidpro/teams/226/es/)\n"
 "Language: es\n"
@@ -953,9 +953,6 @@ msgstr "el nombre o URN"
 msgid "the name or email"
 msgstr "el nombre o correo"
 
-msgid "the numeric ID of the contact"
-msgstr "el ID numérico del contacto"
-
 #, fuzzy
 #| msgid "the open tickets of the contact"
 msgid "the open ticket for the contact"
@@ -974,6 +971,11 @@ msgid "the preferred URN of the contact"
 msgstr "la URN preferida del contacto"
 
 msgid "the preferred channel of the contact"
+msgstr "el canal preferido del contacto"
+
+#, fuzzy
+#| msgid "the preferred channel of the contact"
+msgid "the reference identifier of the contact"
 msgstr "el canal preferido del contacto"
 
 msgid "the response body if valid JSON"
@@ -1067,6 +1069,9 @@ msgstr "{type} URN para el contacto"
 
 #~ msgid "the last opened ticket for the contact"
 #~ msgstr "el último ticket que se ha abierto para el contacto"
+
+#~ msgid "the numeric ID of the contact"
+#~ msgstr "el ID numérico del contacto"
 
 #, fuzzy
 #~| msgid "the creation date of the result"

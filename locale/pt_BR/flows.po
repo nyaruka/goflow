@@ -7,7 +7,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-06-25 15:03+0000\n"
+"POT-Creation-Date: 2025-11-12 15:31-0500\n"
 "Last-Translator: Ilhasoft <contato@ilhasoft.com.br>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/rapidpro/teams/226/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -830,9 +830,6 @@ msgstr "o nome da URN"
 msgid "the name or email"
 msgstr ""
 
-msgid "the numeric ID of the contact"
-msgstr "o ID numérico do contato"
-
 #, fuzzy
 #| msgid "the name of the contact"
 msgid "the open ticket for the contact"
@@ -851,6 +848,11 @@ msgid "the preferred URN of the contact"
 msgstr "a URN preferida do contato"
 
 msgid "the preferred channel of the contact"
+msgstr "o canal preferido do contato"
+
+#, fuzzy
+#| msgid "the preferred channel of the contact"
+msgid "the reference identifier of the contact"
 msgstr "o canal preferido do contato"
 
 msgid "the response body if valid JSON"
@@ -941,6 +943,9 @@ msgstr "{type} URN para o contato"
 
 #~ msgid "the extra data of the result such as a webhook response"
 #~ msgstr "os dados extras do resultado como resposta de webhook"
+
+#~ msgid "the numeric ID of the contact"
+#~ msgstr "o ID numérico do contato"
 
 #, fuzzy
 #~| msgid "the creation date of the result"
