@@ -102,7 +102,7 @@
     },
     {
         "template": "@urns",
-        "output": "{discord: , ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }"
+        "output": "{ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }"
     },
     {
         "template": "@urns.tel",
@@ -734,7 +734,6 @@
             },
             "status": "completed",
             "urns": {
-                "discord": null,
                 "ext": null,
                 "facebook": null,
                 "fcm": null,
@@ -824,7 +823,6 @@
             },
             "status": "active",
             "urns": {
-                "discord": null,
                 "ext": null,
                 "facebook": null,
                 "fcm": null,

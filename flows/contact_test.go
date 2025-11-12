@@ -106,7 +106,6 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, flows.ContactStatusActive, contact.Status())
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
-		"discord":    nil,
 		"ext":        nil,
 		"facebook":   nil,
 		"fcm":        nil,

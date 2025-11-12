@@ -9,7 +9,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/go-playground/validator/v10 v10.28.0
-	github.com/nyaruka/gocommon v1.71.0
+	github.com/nyaruka/gocommon v1.72.0
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1

@@ -192,7 +192,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(urns))`,
-			`{"discord":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12024561111","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12024561111","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,
@@ -208,7 +208,7 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.urns))`,
-			`{"discord":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":null,"rocketchat":null,"slack":null,"tel":"tel:+12024562222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
+			`{"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":null,"rocketchat":null,"slack":null,"tel":"tel:+12024562222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(parent.fields))`,
