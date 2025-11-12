@@ -1,3 +1,7 @@
+v0.261.0 (2025-11-12)
+-------------------------
+ * Add new msg_deleted and msg_status_changed events
+
 v0.260.0 (2025-10-31)
 -------------------------
  * Rework how URNs are modeled internally
