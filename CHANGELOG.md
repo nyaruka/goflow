@@ -1,3 +1,10 @@
+v0.262.0 (2025-11-27)
+-------------------------
+ * Add _user field to events to be set by caller
+ * Remove reading of legacy events on runs
+ * Remove note property from ticket_opened events and change open_ticket actions to create separate ticket_note_added events instead.
+ * Re-add devcontainer configuration
+
 v0.261.2 (2025-11-20)
 -------------------------
  * Bump golang.org/x/crypto from 0.44.0 to 0.45.0
