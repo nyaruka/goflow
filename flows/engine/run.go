@@ -468,6 +468,7 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 	// read in our path
 	r.path = make([]flows.Step, len(e.Path))
 	for i, step := range e.Path {
+		step.run = r
 		r.path[i] = step
 	}
 
