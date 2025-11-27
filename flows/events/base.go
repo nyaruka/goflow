@@ -24,7 +24,7 @@ type BaseEvent struct {
 	CreatedOn_ time.Time       `json:"created_on"          validate:"required"`
 
 	// can be used by callers to locate events but not persisted
-	StepUUID_ flows.StepUUID `json:"-"`
+	Step_ flows.Step `json:"-"`
 
 	// not set by engine but can be set by callers for storage of events
 	User_ *assets.UserReference `json:"_user,omitempty"`
@@ -44,11 +44,11 @@ func (e *BaseEvent) Type() string { return e.Type_ }
 // CreatedOn returns the created on time of this event
 func (e *BaseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
 
-// StepUUID returns the UUID of the step in the path where this event occurred
-func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
+// Step returns the step in the path where this event occurred
+func (e *BaseEvent) Step() flows.Step { return e.Step_ }
 
-// SetStepUUID sets the UUID of the step in the path where this event occurred
-func (e *BaseEvent) SetStepUUID(u flows.StepUUID) { e.StepUUID_ = u }
+// SetStep sets the UUID of the step in the path where this event occurred
+func (e *BaseEvent) SetStep(s flows.Step) { e.Step_ = s }
 
 // SetUser can be used by callers to set the user associated with this event
 func (e *BaseEvent) SetUser(u *assets.UserReference) { e.User_ = u }

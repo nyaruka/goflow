@@ -141,7 +141,7 @@ func (r *run) recordInput() {
 func (r *run) Path() []flows.Step { return r.path }
 func (r *run) CreateStep(node flows.Node) flows.Step {
 	now := dates.Now()
-	step := NewStep(node, now)
+	step := NewStep(r, node, now)
 	r.path = append(r.path, step)
 	r.modifiedOn = now
 	return step

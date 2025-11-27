@@ -91,17 +91,6 @@ func (s *session) getRun(uuid flows.RunUUID) (*run, error) {
 	return nil, fmt.Errorf("unable to find run with UUID '%s'", uuid)
 }
 
-func (s *session) FindStep(uuid flows.StepUUID) (flows.Run, flows.Step) {
-	for _, r := range s.runs {
-		for _, t := range r.Path() {
-			if t.UUID() == uuid {
-				return r, t
-			}
-		}
-	}
-	return nil, nil
-}
-
 func (s *session) addRun(r *run) {
 	s.runs = append(s.runs, r)
 	s.runsByUUID[r.UUID()] = r
@@ -290,7 +279,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 	sprint.logFlow(waitingRun.Flow())
 
 	logEvent := func(e flows.Event) {
-		e.SetStepUUID(step.UUID())
+		e.SetStep(step)
 		sprint.logEvent(e)
 	}
 
@@ -340,7 +329,7 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 		return nil, "", err
 	}
 	logEvent := func(e flows.Event) {
-		e.SetStepUUID(step.UUID())
+		e.SetStep(step)
 		sprint.logEvent(e)
 	}
 
@@ -477,7 +466,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
 	step := r.CreateStep(node)
 	logEvent := func(e flows.Event) {
-		e.SetStepUUID(step.UUID())
+		e.SetStep(step)
 		sprint.logEvent(e)
 	}
 
@@ -584,7 +573,7 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventLogger) {
 func failRun(sp *sprint, r *run, step flows.Step, err error) {
 	evt := events.NewFailure(err)
 	if step != nil {
-		evt.SetStepUUID(step.UUID())
+		evt.SetStep(step)
 	}
 
 	r.Exit(flows.RunStatusFailed)

@@ -389,19 +389,6 @@ func TestMaxSprintsPerSession(t *testing.T) {
 	assert.Equal(t, 500, numResumes)
 }
 
-func TestFindStep(t *testing.T) {
-	_, session, sprint := test.NewSessionBuilder().MustBuild()
-	evts := sprint.Events()
-
-	run, step := session.FindStep(evts[2].StepUUID())
-	assert.Equal(t, "Collect Age", run.Flow().Name())
-	assert.Equal(t, step.UUID(), evts[2].StepUUID())
-
-	run, step = session.FindStep(flows.StepUUID("4f33917a-d562-4c20-88bd-f1a4c6827848"))
-	assert.Nil(t, run)
-	assert.Nil(t, step)
-}
-
 func TestEngineErrors(t *testing.T) {
 	ctx := context.Background()
 
