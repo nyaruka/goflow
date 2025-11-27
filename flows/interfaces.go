@@ -254,6 +254,7 @@ type Step interface {
 	ArrivedOn() time.Time
 
 	Leave(ExitUUID)
+	Run() Run
 }
 
 type CheckSendableCallback func(SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
