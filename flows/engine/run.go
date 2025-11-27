@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -419,9 +418,6 @@ type runEnvelope struct {
 	CreatedOn  time.Time  `json:"created_on"  validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
 	ExitedOn   *time.Time `json:"exited_on"`
-
-	// older runs will have events which we can use to infer newer fields
-	LegacyEvents []json.RawMessage `json:"events,omitempty"`
 }
 
 // decodes a run from the passed in JSON. Parent run UUID is returned separately as the
@@ -473,39 +469,6 @@ func readRun(s *session, data []byte, missing assets.MissingCallback) (*run, err
 	r.path = make([]flows.Step, len(e.Path))
 	for i, step := range e.Path {
 		r.path[i] = step
-	}
-
-	// older runs will have events which we can use to infer newer fields
-	resultEventsWithExtra := make(map[flows.StepUUID]*events.RunResultChanged, 5)
-	var lastWebhookEvent *events.WebhookCalled
-	for i := range e.LegacyEvents {
-		e, err := events.Read(e.LegacyEvents[i])
-		if err != nil {
-			return nil, fmt.Errorf("unable to read event %d: %w", i, err)
-		}
-
-		switch typed := e.(type) {
-		case *events.MsgReceived:
-			r.hadInput = true
-		case *events.RunResultChanged:
-			if typed.Extra != nil {
-				resultEventsWithExtra[typed.StepUUID()] = typed
-			}
-		case *events.WebhookCalled:
-			lastWebhookEvent = typed
-		case *events.MsgWait, *events.DialWait:
-			r.legacyWaitCount++
-		}
-	}
-
-	// if we have a webhook event, look for a result event with extra data at the same step
-	if lastWebhookEvent != nil {
-		if resultEvent := resultEventsWithExtra[lastWebhookEvent.StepUUID()]; resultEvent != nil {
-			r.webhook = &flows.WebhookCall{
-				ResponseStatus: lastWebhookEvent.StatusCode,
-				ResponseJSON:   resultEvent.Extra,
-			}
-		}
 	}
 
 	r.legacyExtra = newLegacyExtra(r)
