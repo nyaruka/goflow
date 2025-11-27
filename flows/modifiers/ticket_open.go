@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"strings"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -44,7 +46,11 @@ func (m *TicketOpen) Apply(eng flows.Engine, env envs.Environment, sa flows.Sess
 	}
 
 	ticket := flows.OpenTicket(m.topic, m.assignee)
-	log(events.NewTicketOpened(ticket, m.note))
+	log(events.NewTicketOpened(ticket))
+
+	if note := strings.TrimSpace(m.note); note != "" {
+		log(events.NewTicketNoteAdded(ticket.UUID(), note))
+	}
 
 	contact.Tickets().Add(ticket)
 	return true, nil
