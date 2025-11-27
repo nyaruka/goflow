@@ -55,7 +55,6 @@
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9",
                     "value": {
@@ -74,7 +73,6 @@
                             "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
                         }
                     ],
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 },
@@ -84,7 +82,6 @@
                         "key": "age",
                         "name": "Age"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
                     "value": {
@@ -114,7 +111,6 @@
                             "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3"
                         }
                     ],
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
                     "uuid": "01969b47-47eb-76f8-a691-235cbe720980"
                 },
@@ -129,13 +125,11 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
                     "uuid": "01969b47-4fbb-76f8-bebe-b4a1f677cf4c"
                 },
                 {
                     "created_on": "2025-05-04T12:31:07.123456789Z",
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_urns_changed",
                     "urns": [
                         "tel:+12065551212",
@@ -153,7 +147,6 @@
                             "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
                         }
                     ],
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
                     "uuid": "01969b47-5f5b-76f8-acca-bbca70987315"
                 },
@@ -168,7 +161,6 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Old Men, Has Age, Complicated, MTN Callers]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
                     "uuid": "01969b47-672b-76f8-afcb-91a2073e5459"
                 },
@@ -178,7 +170,6 @@
                         "key": "age",
                         "name": "Age"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-72e3-76f8-9654-8a7258fbaae4",
                     "value": {
@@ -200,7 +191,6 @@
                             "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
                         }
                     ],
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "contact_groups_changed",
                     "uuid": "01969b47-7ab3-76f8-8e78-3bde7b3370ae"
                 },
@@ -215,7 +205,6 @@
                         "text": "Current groups: [Stateless, Males, Has Gender, Has Age, Complicated, MTN Callers, Youth]",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                     "type": "msg_created",
                     "uuid": "01969b47-8283-76f8-b62c-3c781ca3b5da"
                 },

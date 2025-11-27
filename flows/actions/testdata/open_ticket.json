@@ -15,7 +15,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]"
             }
         ],
@@ -69,7 +68,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "can't open tickets during batch starts"
             }
         ],
@@ -100,7 +98,6 @@
                 "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                     "status": "open",
@@ -118,7 +115,6 @@
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket_uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "note": "Last message: Hi everybody"
             },
@@ -126,7 +122,6 @@
                 "uuid": "01969b47-4403-76f8-a691-235cbe720980",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
@@ -224,7 +219,6 @@
                 "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                     "status": "open",
@@ -238,7 +232,6 @@
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
@@ -325,7 +318,6 @@
                 "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                     "status": "open",
@@ -343,7 +335,6 @@
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket_uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "note": "Last message: Hi everybody"
             },
@@ -351,7 +342,6 @@
                 "uuid": "01969b47-4403-76f8-a691-235cbe720980",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
@@ -452,14 +442,12 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "no such user with email 'EVE@NYARUKA.COM'"
             },
             {
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                     "status": "open",
@@ -473,7 +461,6 @@
                 "uuid": "01969b47-4403-76f8-a691-235cbe720980",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket_uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "note": "Last message: Hi everybody"
             },
@@ -481,7 +468,6 @@
                 "uuid": "01969b47-4bd3-76f8-bebe-b4a1f677cf4c",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:04.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",
@@ -572,14 +558,12 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1/ 0): division by zero"
             },
             {
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "ticket": {
                     "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                     "status": "open",
@@ -593,7 +577,6 @@
                 "uuid": "01969b47-4403-76f8-a691-235cbe720980",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "91564dee-e7ea-49b2-a903-598ce71b1d07",

@@ -70,7 +70,6 @@
                         }
                     },
                     "resthook": "new-registration",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "resthook_called",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
@@ -83,7 +82,6 @@
                     "retries": 0,
                     "status": "response_error",
                     "status_code": 400,
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=badrequest",
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9"
@@ -97,7 +95,6 @@
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=success",
                     "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671"
@@ -111,7 +108,6 @@
                         ]
                     },
                     "name": "Response 1",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-b86e-4b881f09a186",
                     "value": "400"
@@ -127,7 +123,6 @@
                         "text": "Resthook: {\"errors\":[\"bad_request\"]}",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-bebe-b4a1f677cf4c"
                 },

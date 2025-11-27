@@ -36,7 +36,6 @@
                     "category": "Ping",
                     "created_on": "2025-05-04T12:30:56.123456789Z",
                     "name": "Command",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                     "value": "PING"
@@ -52,7 +51,6 @@
                         "text": "You said PING",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created",
                     "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671"
                 },

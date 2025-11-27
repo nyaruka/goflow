@@ -13,7 +13,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "need either audio URL or backdown text, skipping"
             }
         ]
@@ -33,7 +32,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "ivr_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "msg": {
                     "urn": "tel:+12065551212",
                     "channel": {
@@ -80,7 +78,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "ivr_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "msg": {
                     "urn": "tel:+12065551212",
                     "channel": {
@@ -120,7 +117,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "ivr_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "msg": {
                     "urn": "tel:+12065551212",
                     "channel": {

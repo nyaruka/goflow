@@ -32,14 +32,12 @@
                         "text": "Hi! What can I help you with?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-07T12:30:56.123456789Z",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 }
@@ -103,7 +101,6 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Response 1",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-a691-235cbe720980",
                     "value": "I'd like to book a flight to Quito"
@@ -118,7 +115,6 @@
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                     },
                     "output": "Hotels",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "tokens_used": 123,
                     "type": "llm_called",
                     "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
@@ -127,7 +123,6 @@
                     "category": "Hotels",
                     "created_on": "2025-05-04T12:31:15.123456789Z",
                     "name": "Intent",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "run_result_changed",
                     "uuid": "01969b47-76cb-76f8-acca-bbca70987315",
                     "value": "Hotels"
@@ -139,7 +134,6 @@
                         "text": "So you'd like to book a hotel?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_created",
                     "uuid": "01969b47-866b-76f8-9654-8a7258fbaae4"
                 },

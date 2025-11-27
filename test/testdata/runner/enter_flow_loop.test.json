@@ -35,14 +35,12 @@
                         "text": "Enter command: name or exit",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-11T12:30:56.123456789Z",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 }
@@ -106,7 +104,6 @@
                     "category": "Name",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Command",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-a691-235cbe720980",
                     "value": "name"
@@ -143,14 +140,12 @@
                         "text": "Clearing name",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
                     "uuid": "01969b47-7e9b-76f8-8e78-3bde7b3370ae"
                 },
                 {
                     "created_on": "2025-05-04T12:31:21.123456789Z",
                     "name": "",
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "contact_name_changed",
                     "uuid": "01969b47-8e3b-76f8-af9c-ff2f1faac4db"
                 },
@@ -198,14 +193,12 @@
                         "text": "Enter command: name or exit",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
                     "type": "msg_created",
                     "uuid": "01969b47-c8d3-76f8-ba7e-53c2263e32f8"
                 },
                 {
                     "created_on": "2025-05-04T12:31:41.123456789Z",
                     "expires_on": "2025-05-11T12:31:39.123456789Z",
-                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
                     "type": "msg_wait",
                     "uuid": "01969b47-dc5b-76f8-a13f-9238de2a0b76"
                 }
@@ -373,7 +366,6 @@
                     "category": "Name",
                     "created_on": "2025-05-04T12:31:48.123456789Z",
                     "name": "Command",
-                    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
                     "type": "run_result_changed",
                     "uuid": "01969b47-f7b3-76f8-bef6-3979f99a96f9",
                     "value": "name"
@@ -434,7 +426,6 @@
                         "text": "Clearing name",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
                     "type": "msg_created",
                     "uuid": "01969b48-3e03-76f8-977d-88574316827e"
                 },
@@ -506,14 +497,12 @@
                         "text": "Enter command: name or exit",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc",
                     "type": "msg_created",
                     "uuid": "01969b48-97db-76f8-a09e-6806aab9f510"
                 },
                 {
                     "created_on": "2025-05-04T12:32:34.123456789Z",
                     "expires_on": "2025-05-11T12:32:32.123456789Z",
-                    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
                     "type": "msg_wait",
                     "uuid": "01969b48-ab63-76f8-8ceb-17799a976525"
                 }
@@ -756,7 +745,6 @@
                     "category": "Exit",
                     "created_on": "2025-05-04T12:32:41.123456789Z",
                     "name": "Command",
-                    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
                     "type": "run_result_changed",
                     "uuid": "01969b48-c6bb-76f8-998e-ae5bd773804a",
                     "value": "exit"

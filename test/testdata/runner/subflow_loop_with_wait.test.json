@@ -43,7 +43,6 @@
                         "text": "This is the parent flow",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
@@ -69,14 +68,12 @@
                         "text": "This is the child flow. What's your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
                     "uuid": "01969b47-4403-76f8-bebe-b4a1f677cf4c"
                 },
                 {
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "expires_on": "2025-05-07T12:31:03.123456789Z",
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_wait",
                     "uuid": "01969b47-4fbb-76f8-8dbf-00ecf5d03034"
                 }
@@ -160,7 +157,6 @@
                         "key": "activation_token",
                         "name": "Activation Token"
                     },
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-6efb-76f8-9654-8a7258fbaae4",
                     "value": {
@@ -190,7 +186,6 @@
                         "text": "This is the parent flow",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_created",
                     "uuid": "01969b47-8a53-76f8-8d9f-e51d30290005"
                 },
@@ -227,7 +222,6 @@
                         "text": "Flow succeeded",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
                     "type": "msg_created",
                     "uuid": "01969b47-b163-76f8-97a3-ae27459a6be4"
                 },

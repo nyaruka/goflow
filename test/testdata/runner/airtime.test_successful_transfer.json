@@ -45,7 +45,6 @@
                     ],
                     "recipient": "tel:+12065551212",
                     "sender": "",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "airtime_transferred",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
@@ -53,7 +52,6 @@
                     "category": "Success",
                     "created_on": "2025-05-04T12:30:57.123456789Z",
                     "name": "Transfer",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                     "value": "5OKA5LEG5N"

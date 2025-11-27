@@ -32,14 +32,12 @@
                         "text": "Hi! What can I help you with?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-07T12:30:56.123456789Z",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 }
@@ -102,14 +100,12 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Response 1",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-a691-235cbe720980",
                     "value": "Rats"
                 },
                 {
                     "created_on": "2025-05-04T12:31:10.123456789Z",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "ticket": {
                         "status": "open",
                         "topic": {
@@ -124,7 +120,6 @@
                 {
                     "created_on": "2025-05-04T12:31:12.123456789Z",
                     "note": "Last message: Rats",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "ticket_uuid": "01969b47-5f5b-76f8-8dbf-00ecf5d03034",
                     "type": "ticket_note_added",
                     "uuid": "01969b47-6b13-76f8-afcb-91a2073e5459"
@@ -133,14 +128,12 @@
                     "category": "Success",
                     "created_on": "2025-05-04T12:31:16.123456789Z",
                     "name": "Ticket",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "run_result_changed",
                     "uuid": "01969b47-7ab3-76f8-9654-8a7258fbaae4",
                     "value": "01969b47-5f5b-76f8-8dbf-00ecf5d03034"
                 },
                 {
                     "created_on": "2025-05-04T12:31:20.123456789Z",
-                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "text": "deprecated context value accessed: contact.tickets: use ticket instead",
                     "type": "warning",
                     "uuid": "01969b47-8a53-76f8-b62c-3c781ca3b5da"
@@ -148,7 +141,6 @@
                 {
                     "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-8dbf-00ecf5d03034\"}]",
                     "created_on": "2025-05-04T12:31:22.123456789Z",
-                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "subject": "New ticket: 01969b47-5f5b-76f8-8dbf-00ecf5d03034",
                     "to": [
                         "bob@nyaruka.com"

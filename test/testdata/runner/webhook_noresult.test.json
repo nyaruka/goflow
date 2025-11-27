@@ -48,7 +48,6 @@
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "webhook_called",
                     "url": "http://temba.io/good",
                     "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623"
@@ -64,7 +63,6 @@
                         "text": "Hello!",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created",
                     "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671"
                 },
@@ -74,7 +72,6 @@
                     "request": "GET /bad HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n",
                     "retries": 0,
                     "status": "connection_error",
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "webhook_called",
                     "url": "http://temba.io/bad",
                     "uuid": "01969b47-4fbb-76f8-a691-235cbe720980"
@@ -90,7 +87,6 @@
                         "text": "Failed call to GET http://temba.io/bad",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-8dbf-00ecf5d03034"
                 },

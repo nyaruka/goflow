@@ -35,14 +35,12 @@
                         "text": "Hi there. What is your name?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-acca-bbca70987315"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-11T12:30:56.123456789Z",
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-9654-8a7258fbaae4"
                 }
@@ -106,7 +104,6 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Name",
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-b62c-3c781ca3b5da",
                     "value": "Bobby"
@@ -114,7 +111,6 @@
                 {
                     "created_on": "2025-05-04T12:31:09.123456789Z",
                     "name": "Bobby",
-                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "contact_name_changed",
                     "uuid": "01969b47-5f5b-76f8-8d9f-e51d30290005"
                 },
@@ -125,14 +121,12 @@
                         "text": "Ok Bobby, what age are you?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
                     "type": "msg_created",
                     "uuid": "01969b47-672b-76f8-bec9-e032f4f9af5f"
                 },
                 {
                     "created_on": "2025-05-04T12:31:16.123456789Z",
                     "expires_on": "2025-05-11T12:31:14.123456789Z",
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "msg_wait",
                     "uuid": "01969b47-7ab3-76f8-8ab7-4a517a86045c"
                 }
@@ -234,7 +228,6 @@
                     "category": "Other",
                     "created_on": "2025-05-04T12:31:22.123456789Z",
                     "name": "Age",
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "run_result_changed",
                     "uuid": "01969b47-9223-76f8-ba82-c15b24dd577f",
                     "value": "123"
@@ -246,14 +239,12 @@
                         "text": "Are you sure you're 123... maybe try again",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_created",
                     "uuid": "01969b47-a1c3-76f8-aaa3-04d3fbce5f9a"
                 },
                 {
                     "created_on": "2025-05-04T12:31:31.123456789Z",
                     "expires_on": "2025-05-11T12:31:29.123456789Z",
-                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_wait",
                     "uuid": "01969b47-b54b-76f8-9014-2c868db4022e"
                 }
@@ -379,7 +370,6 @@
                         "category": "Other",
                         "value": "123"
                     },
-                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "run_result_changed",
                     "uuid": "01969b47-ccbb-76f8-ba91-c48ad8c50e6b",
                     "value": "18"
@@ -391,7 +381,6 @@
                         "text": "Great, you are 18 years old",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "d659b893-76c5-4e9c-be24-6164105d48f2",
                     "type": "msg_created",
                     "uuid": "01969b47-dc5b-76f8-8768-7d0ba4d4f3e8"
                 },
@@ -399,7 +388,6 @@
                     "category": "Youth",
                     "created_on": "2025-05-04T12:31:47.123456789Z",
                     "name": "Response 3",
-                    "step_uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0",
                     "type": "run_result_changed",
                     "uuid": "01969b47-f3cb-76f8-8f9d-465efd6fbb5e",
                     "value": "18"
@@ -412,7 +400,6 @@
                             "uuid": "5ddddd32-9d5e-4102-8aa0-bf54d91a768c"
                         }
                     ],
-                    "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
                     "type": "contact_groups_changed",
                     "uuid": "01969b48-036b-76f8-a8fd-1537ca860f97"
                 },

@@ -24,7 +24,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
@@ -68,7 +67,6 @@
                 "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "name": "Response 1",
                 "value": "Male",
                 "category": "Set"
@@ -120,7 +118,6 @@
                 "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "name": "Response 1",
                 "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis sus",
                 "category": "Yes"
@@ -165,7 +162,6 @@
                 "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "name": "Response 1",
                 "value": "",
                 "category": ""
@@ -215,7 +211,6 @@
                 "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "name": "Preference",
                 "value": "yeah",
                 "category": "Yes"

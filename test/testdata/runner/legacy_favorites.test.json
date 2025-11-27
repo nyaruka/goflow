@@ -33,14 +33,12 @@
                         "text": "What's your favorite color?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8e78-3bde7b3370ae"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-11T12:30:56.123456789Z",
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-af9c-ff2f1faac4db"
                 }
@@ -104,7 +102,6 @@
                     "category": "Blue",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Color",
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-bec9-e032f4f9af5f",
                     "value": "blue"
@@ -116,14 +113,12 @@
                         "text": "What's your favorite beer?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-8ab7-4a517a86045c"
                 },
                 {
                     "created_on": "2025-05-04T12:31:14.123456789Z",
                     "expires_on": "2025-05-11T12:31:12.123456789Z",
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
                     "type": "msg_wait",
                     "uuid": "01969b47-72e3-76f8-ba82-c15b24dd577f"
                 }
@@ -225,7 +220,6 @@
                     "category": "Pilsner",
                     "created_on": "2025-05-04T12:31:20.123456789Z",
                     "name": "Beer",
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
                     "type": "run_result_changed",
                     "uuid": "01969b47-8a53-76f8-aaa3-04d3fbce5f9a",
                     "value": "Pilsner"
@@ -237,7 +231,6 @@
                         "text": "If only they made Blue Pilsner !!\n\nBeer: Pilsner\nColor: blue",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",
                     "uuid": "01969b47-99f3-76f8-9014-2c868db4022e"
                 },
