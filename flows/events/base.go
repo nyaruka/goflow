@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -22,6 +23,9 @@ type BaseEvent struct {
 	Type_      string          `json:"type"                validate:"required"`
 	CreatedOn_ time.Time       `json:"created_on"          validate:"required"`
 	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
+
+	// not set by engine but can be set by callers for storage of events
+	User_ *assets.UserReference `json:"_user,omitempty"    validate:"omitempty,dive"`
 }
 
 // NewBaseEvent creates a new base event
@@ -42,7 +46,10 @@ func (e *BaseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
 func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 
 // SetStepUUID sets the UUID of the step in the path where this event occurred
-func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
+func (e *BaseEvent) SetStepUUID(u flows.StepUUID) { e.StepUUID_ = u }
+
+// SetUser can be used by callers to set the user associated with this event
+func (e *BaseEvent) SetUser(u *assets.UserReference) { e.User_ = u }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

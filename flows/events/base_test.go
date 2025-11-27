@@ -479,6 +479,16 @@ func TestEventMarshaling(t *testing.T) {
 		_, err = events.Read(eventJSON)
 		assert.NoError(t, err)
 	}
+
+	// check setting of user reference field and clearing of step UUID
+	var evt flows.Event = events.NewTicketClosed(ticket.UUID())
+	evt.SetUser(user.Reference())
+	evt.SetStepUUID("")
+
+	eventJSON, err := jsonx.MarshalPretty(evt)
+	assert.NoError(t, err)
+
+	test.AssertSnapshot(t, "ticket_closed_with_user_ref", string(eventJSON))
 }
 
 func TestReadEvent(t *testing.T) {
