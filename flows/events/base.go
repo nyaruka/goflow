@@ -25,7 +25,7 @@ type BaseEvent struct {
 	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
 
 	// not set by engine but can be set by callers for storage of events
-	User_ *assets.UserReference `json:"_user,omitempty"    validate:"omitempty,dive"`
+	User_ *assets.UserReference `json:"_user,omitempty"`
 }
 
 // NewBaseEvent creates a new base event
