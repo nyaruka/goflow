@@ -82,7 +82,6 @@ type Session interface {
 
 	Resume(context.Context, Resume) (Sprint, error)
 	Runs() []Run
-	FindStep(uuid StepUUID) (Run, Step)
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
 	History() *SessionHistory

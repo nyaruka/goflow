@@ -23,7 +23,7 @@ func TestStep(t *testing.T) {
 	node := definition.NewNode(flows.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)
 
 	d := time.Date(2018, 10, 26, 14, 50, 30, 1234567890, time.UTC)
-	step := engine.NewStep(node, d)
+	step := engine.NewStep(nil, node, d)
 
 	assert.Equal(t, flows.StepUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.UUID())
 	assert.Equal(t, flows.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), step.NodeUUID())

@@ -19,8 +19,8 @@ type Event interface {
 
 	UUID() EventUUID
 	CreatedOn() time.Time
-	StepUUID() StepUUID
-	SetStepUUID(StepUUID)
+	Step() Step
+	SetStep(Step)
 	SetUser(*assets.UserReference)
 }
 

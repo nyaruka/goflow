@@ -440,7 +440,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 
 	eventList := make([]flows.Event, 0)
 	eventLog := func(e flows.Event) {
-		e.SetStepUUID(step.UUID())
+		e.SetStep(step)
 		eventList = append(eventList, e)
 	}
 

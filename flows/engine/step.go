@@ -11,25 +11,30 @@ import (
 )
 
 type step struct {
-	stepUUID  flows.StepUUID
+	uuid      flows.StepUUID
 	nodeUUID  flows.NodeUUID
 	exitUUID  flows.ExitUUID
 	arrivedOn time.Time
+
+	run flows.Run // transient
 }
 
 // NewStep creates a new step
-func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
+func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		stepUUID:  flows.StepUUID(uuids.NewV4()),
-		nodeUUID:  node.UUID(),
+		uuid:      flows.StepUUID(uuids.NewV4()),
+		nodeUUID:  n.UUID(),
 		arrivedOn: arrivedOn,
+
+		run: r,
 	}
 }
 
-func (s *step) UUID() flows.StepUUID     { return s.stepUUID }
+func (s *step) UUID() flows.StepUUID     { return s.uuid }
 func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
 func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
 func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
+func (s *step) Run() flows.Run           { return s.run }
 
 func (s *step) Leave(exit flows.ExitUUID) {
 	s.exitUUID = exit
@@ -79,7 +84,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	s.stepUUID = se.UUID
+	s.uuid = se.UUID
 	s.nodeUUID = se.NodeUUID
 	s.exitUUID = se.ExitUUID
 	s.arrivedOn = se.ArrivedOn
@@ -89,7 +94,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 // MarshalJSON marshals this run step into JSON
 func (s *step) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&stepEnvelope{
-		UUID:      s.stepUUID,
+		UUID:      s.uuid,
 		NodeUUID:  s.nodeUUID,
 		ExitUUID:  s.exitUUID,
 		ArrivedOn: s.arrivedOn,

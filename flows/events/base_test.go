@@ -19,6 +19,8 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -480,10 +482,10 @@ func TestEventMarshaling(t *testing.T) {
 		assert.NoError(t, err)
 	}
 
-	// check setting of user reference field and clearing of step UUID
+	// check setting of user reference field and non marshaling of steps
 	var evt flows.Event = events.NewTicketClosed(ticket.UUID())
 	evt.SetUser(user.Reference())
-	evt.SetStepUUID("")
+	evt.SetStep(engine.NewStep(nil, definition.NewNode("72ecb927-db78-4acf-b947-db2f29bf6662", nil, nil, nil), time.Now()))
 
 	eventJSON, err := jsonx.MarshalPretty(evt)
 	assert.NoError(t, err)
