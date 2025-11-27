@@ -443,7 +443,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewTicketOpened(ticket, "this is weird")
+				return events.NewTicketOpened(ticket)
 			},
 			`ticket_opened`,
 		},

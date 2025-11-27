@@ -477,8 +477,8 @@ func TestConstructors(t *testing.T) {
 			actions.NewOpenTicket(
 				actionUUID,
 				assets.NewTopicReference("472a7a73-96cb-4736-b567-056d987cc5b4", "Weather"),
-				"Where are my cookies?",
 				assets.NewUserReference("0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "Bob McTickets"),
+				"Looks sus",
 			),
 			`{
 				"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -487,11 +487,11 @@ func TestConstructors(t *testing.T) {
 					"uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 					"name": "Weather"
 				},
-				"note": "Where are my cookies?",
 				"assignee": {
 					"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
 					"name": "Bob McTickets"
-				}
+				},
+				"note": "Looks sus"
 			}`,
 		},
 		{

@@ -25,8 +25,7 @@ const TypeTicketOpened string = "ticket_opened"
 //	      "name": "Weather"
 //	    },
 //	    "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob"}
-//	  },
-//	  "note": "this is weird"
+//	  }
 //	}
 //
 // @event ticket_opened
@@ -34,14 +33,12 @@ type TicketOpened struct {
 	BaseEvent
 
 	Ticket *flows.TicketEnvelope `json:"ticket"`
-	Note   string                `json:"note,omitempty"`
 }
 
 // NewTicketOpened returns a new ticket opened event
-func NewTicketOpened(ticket *flows.Ticket, note string) *TicketOpened {
+func NewTicketOpened(ticket *flows.Ticket) *TicketOpened {
 	return &TicketOpened{
 		BaseEvent: NewBaseEvent(TypeTicketOpened),
 		Ticket:    ticket.Marshal(),
-		Note:      note,
 	}
 }

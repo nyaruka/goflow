@@ -30,8 +30,8 @@ const (
 //	    "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
 //	    "name": "Weather"
 //	  },
-//	  "note": "@input",
-//	  "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob McTickets"}
+//	  "assignee": {"uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44", "name": "Bob McTickets"},
+//	  "note": "@input"
 //	}
 //
 // @action open_ticket
@@ -40,17 +40,17 @@ type OpenTicket struct {
 	onlineAction
 
 	Topic    *assets.TopicReference `json:"topic"`
-	Note     string                 `json:"note"                engine:"evaluated"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"`
+	Note     string                 `json:"note,omitempty"     engine:"evaluated"`
 }
 
 // NewOpenTicket creates a new open ticket action
-func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, note string, assignee *assets.UserReference) *OpenTicket {
+func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, assignee *assets.UserReference, note string) *OpenTicket {
 	return &OpenTicket{
 		baseAction: newBaseAction(TypeOpenTicket, uuid),
 		Topic:      topic,
-		Note:       note,
 		Assignee:   assignee,
+		Note:       note,
 	}
 }
 
