@@ -1,3 +1,7 @@
+v0.262.1 (2025-11-27)
+-------------------------
+ * Fix unmarshaling of events with _user set
+
 v0.262.0 (2025-11-27)
 -------------------------
  * Add _user field to events to be set by caller
