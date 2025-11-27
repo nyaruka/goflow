@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -20,6 +21,7 @@ type Event interface {
 	CreatedOn() time.Time
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)
+	SetUser(*assets.UserReference)
 }
 
 // EventLogger is a callback invoked when an event has been generated
