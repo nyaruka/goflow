@@ -1,3 +1,7 @@
+v0.262.4 (2025-11-27)
+-------------------------
+ * Add missing Run method to Step interface
+
 v0.262.3 (2025-11-27)
 -------------------------
  * Change Event.Step to be actual step object with transient run object
