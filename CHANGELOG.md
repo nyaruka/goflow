@@ -1,3 +1,7 @@
+v0.262.5 (2025-11-27)
+-------------------------
+ * Set Step.run when reading steps in run paths
+
 v0.262.4 (2025-11-27)
 -------------------------
  * Add missing Run method to Step interface
