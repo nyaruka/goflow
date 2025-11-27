@@ -26,7 +26,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "urns": [
                     "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
                     "twitterid:54784326227#nyaruka"
@@ -49,7 +48,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "urns": [
                     "twitterid:54784326227?channel=8e21f093-99aa-413b-b55b-758b54308fcb#nyaruka",
                     "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"
@@ -69,7 +67,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "urns": [
                     "tel:+12065551212",
                     "twitterid:54784326227#nyaruka"
@@ -92,7 +89,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]"
             }
         ],
@@ -142,7 +138,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "can't set channel that can't send as the preferred channel"
             }
         ]

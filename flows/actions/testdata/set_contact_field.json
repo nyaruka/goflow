@@ -15,7 +15,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @( 1/ 0): division by zero"
             }
         ],
@@ -69,7 +68,6 @@
                 "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "contact_field_changed",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
@@ -82,7 +80,6 @@
                 "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
@@ -142,7 +139,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_field_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
@@ -153,7 +149,6 @@
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
@@ -198,7 +193,6 @@
                 "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "contact_field_changed",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "field": {
                     "key": "gender",
                     "name": "Gender"
@@ -211,7 +205,6 @@
                 "uuid": "01969b47-3c33-76f8-ba00-bd7f0d08e671",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
@@ -261,7 +254,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: field[key=score,name=Score]"
             }
         ],

@@ -33,7 +33,6 @@
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                     "value": {
@@ -46,7 +45,6 @@
                         "key": "gender",
                         "name": "Gender"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-2c93-76f8-a17e-f85e49829fb9",
                     "value": null
@@ -58,7 +56,6 @@
                         "text": "It's a !",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 },

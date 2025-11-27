@@ -24,7 +24,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
@@ -59,7 +58,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "increment value is not an integer"
             }
         ],

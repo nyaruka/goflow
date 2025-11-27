@@ -13,7 +13,6 @@
                 "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
                 "type": "dial_ended",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "dial": {
                     "status": "answered",
                     "duration": 5
@@ -25,7 +24,6 @@
                 "uuid": "01969b47-4403-76f8-b86e-4b881f09a186",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "name": "Redirect",
                 "value": "answered",
                 "category": "Success"

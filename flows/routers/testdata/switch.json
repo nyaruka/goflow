@@ -192,7 +192,6 @@
                 "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes"
@@ -286,7 +285,6 @@
                 "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Is Member",
                 "value": "[]",
                 "category": "Other"
@@ -380,7 +378,6 @@
                 "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "In Group",
                 "value": "[]",
                 "category": "Other"
@@ -493,7 +490,6 @@
                 "uuid": "01969b47-2c93-76f8-8f41-6b2d9f33d623",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:30:56.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "name": "Favorite Color",
                 "value": "YES",
                 "category": "Yes"
@@ -580,7 +576,6 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "failure",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                 "text": "router on node[uuid=64373978-e8f6-4973-b6ff-a2993f3376fc] failed to pick a category"
             }
         ],

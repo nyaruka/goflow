@@ -59,14 +59,12 @@
                         "text": "What's your first name?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-47eb-76f8-8dbf-00ecf5d03034"
                 },
                 {
                     "created_on": "2025-05-04T12:31:08.123456789Z",
                     "expires_on": "2025-05-04T15:31:06.123456789Z",
-                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_wait",
                     "uuid": "01969b47-5b73-76f8-afcb-91a2073e5459"
                 }
@@ -170,7 +168,6 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:15.123456789Z",
                     "name": "First Name",
-                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "run_result_changed",
                     "uuid": "01969b47-76cb-76f8-8e78-3bde7b3370ae",
                     "value": "Dwayne"
@@ -189,7 +186,6 @@
                 },
                 {
                     "created_on": "2025-05-04T12:31:20.123456789Z",
-                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "text": "deprecated context value accessed: child.run.status: use child.status instead",
                     "type": "warning",
                     "uuid": "01969b47-8a53-76f8-af9c-ff2f1faac4db"
@@ -201,14 +197,12 @@
                         "text": "What's your middle name?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "type": "msg_created",
                     "uuid": "01969b47-99f3-76f8-bec9-e032f4f9af5f"
                 },
                 {
                     "created_on": "2025-05-04T12:31:29.123456789Z",
                     "expires_on": "2025-05-04T14:31:27.123456789Z",
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "msg_wait",
                     "uuid": "01969b47-ad7b-76f8-8ab7-4a517a86045c"
                 }
@@ -351,7 +345,6 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:36.123456789Z",
                     "name": "Middle Name",
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "run_result_changed",
                     "uuid": "01969b47-c8d3-76f8-ba82-c15b24dd577f",
                     "value": "Douglas"
@@ -370,7 +363,6 @@
                 },
                 {
                     "created_on": "2025-05-04T12:31:41.123456789Z",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "text": "deprecated context value accessed: child.run.status: use child.status instead",
                     "type": "warning",
                     "uuid": "01969b47-dc5b-76f8-aaa3-04d3fbce5f9a"
@@ -382,14 +374,12 @@
                         "text": "What's your last name?",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",
                     "uuid": "01969b47-ebfb-76f8-9014-2c868db4022e"
                 },
                 {
                     "created_on": "2025-05-04T12:31:50.123456789Z",
                     "expires_on": "2025-05-04T13:31:48.123456789Z",
-                    "step_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
                     "type": "msg_wait",
                     "uuid": "01969b47-ff83-76f8-ba91-c48ad8c50e6b"
                 }
@@ -556,7 +546,6 @@
                     "category": "All Responses",
                     "created_on": "2025-05-04T12:31:57.123456789Z",
                     "name": "Last Name",
-                    "step_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
                     "type": "run_result_changed",
                     "uuid": "01969b48-1adb-76f8-8768-7d0ba4d4f3e8",
                     "value": "Johnson"

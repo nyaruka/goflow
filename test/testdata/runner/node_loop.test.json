@@ -47,7 +47,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
@@ -62,7 +61,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_created",
                     "uuid": "01969b47-307b-76f8-ba00-bd7f0d08e671"
                 },
@@ -77,7 +75,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "msg_created",
                     "uuid": "01969b47-401b-76f8-a691-235cbe720980"
                 },
@@ -92,7 +89,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-4fbb-76f8-8dbf-00ecf5d03034"
                 },
@@ -107,7 +103,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-afcb-91a2073e5459"
                 },
@@ -122,7 +117,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4",
                     "type": "msg_created",
                     "uuid": "01969b47-6efb-76f8-8e78-3bde7b3370ae"
                 },
@@ -137,7 +131,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
                     "type": "msg_created",
                     "uuid": "01969b47-7e9b-76f8-af9c-ff2f1faac4db"
                 },
@@ -152,7 +145,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "type": "msg_created",
                     "uuid": "01969b47-8e3b-76f8-bec9-e032f4f9af5f"
                 },
@@ -167,7 +159,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
                     "type": "msg_created",
                     "uuid": "01969b47-9ddb-76f8-8ab7-4a517a86045c"
                 },
@@ -182,7 +173,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "457e423f-85de-46f3-97a3-ae27459a6be4",
                     "type": "msg_created",
                     "uuid": "01969b47-ad7b-76f8-ba82-c15b24dd577f"
                 },
@@ -197,7 +187,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "4c9abf31-d821-4e97-ba7e-53c2263e32f8",
                     "type": "msg_created",
                     "uuid": "01969b47-bd1b-76f8-aaa3-04d3fbce5f9a"
                 },
@@ -212,7 +201,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76",
                     "type": "msg_created",
                     "uuid": "01969b47-ccbb-76f8-9014-2c868db4022e"
                 },
@@ -227,7 +215,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
                     "type": "msg_created",
                     "uuid": "01969b47-dc5b-76f8-ba91-c48ad8c50e6b"
                 },
@@ -242,7 +229,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "d659b893-76c5-4e9c-be24-6164105d48f2",
                     "type": "msg_created",
                     "uuid": "01969b47-ebfb-76f8-8768-7d0ba4d4f3e8"
                 },
@@ -257,7 +243,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5254b218-3673-41f2-b63d-c8dcc2fa9de0",
                     "type": "msg_created",
                     "uuid": "01969b47-fb9b-76f8-8f9d-465efd6fbb5e"
                 },
@@ -272,7 +257,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
                     "type": "msg_created",
                     "uuid": "01969b48-0b3b-76f8-a8fd-1537ca860f97"
                 },
@@ -287,7 +271,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "4ea2415a-21de-432f-977d-88574316827e",
                     "type": "msg_created",
                     "uuid": "01969b48-1adb-76f8-92e8-a5e406ecb2a7"
                 },
@@ -302,7 +285,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554",
                     "type": "msg_created",
                     "uuid": "01969b48-2a7b-76f8-9803-f4a851d20f2b"
                 },
@@ -317,7 +299,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "6bbfa705-894a-4651-8b56-5e92bbfe0e3f",
                     "type": "msg_created",
                     "uuid": "01969b48-3a1b-76f8-a71b-fe4af29b871a"
                 },
@@ -332,7 +313,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07",
                     "type": "msg_created",
                     "uuid": "01969b48-49bb-76f8-8631-f6b52b12c734"
                 },
@@ -347,7 +327,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8",
                     "type": "msg_created",
                     "uuid": "01969b48-595b-76f8-acdc-e181352d44cc"
                 },
@@ -362,7 +341,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "19ebde80-3969-47d3-a09e-6806aab9f510",
                     "type": "msg_created",
                     "uuid": "01969b48-68fb-76f8-a5ef-59cf4d9d7a5b"
                 },
@@ -377,7 +355,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
                     "type": "msg_created",
                     "uuid": "01969b48-789b-76f8-9504-776e7d151101"
                 },
@@ -392,7 +369,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a",
                     "type": "msg_created",
                     "uuid": "01969b48-883b-76f8-87bc-209e78511534"
                 },
@@ -407,7 +383,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
                     "type": "msg_created",
                     "uuid": "01969b48-97db-76f8-8c15-15a7c0c5228d"
                 },
@@ -422,7 +397,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14",
                     "type": "msg_created",
                     "uuid": "01969b48-a77b-76f8-9e14-020037f6ddea"
                 },
@@ -437,7 +411,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "76c98188-cfe6-4072-bf05-63393fd408f5",
                     "type": "msg_created",
                     "uuid": "01969b48-b71b-76f8-be22-6e6983962829"
                 },
@@ -452,7 +425,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "bcfb7b96-7c87-48ba-ad03-b49f80627da4",
                     "type": "msg_created",
                     "uuid": "01969b48-c6bb-76f8-88b2-5d345629f07f"
                 },
@@ -467,7 +439,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
                     "type": "msg_created",
                     "uuid": "01969b48-d65b-76f8-8c2c-eb689cc91cf8"
                 },
@@ -482,7 +453,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
                     "type": "msg_created",
                     "uuid": "01969b48-e5fb-76f8-a52e-e58736ac73ba"
                 },
@@ -497,7 +467,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "8dcfcdef-9e29-44e0-8556-4ba6c70c1678",
                     "type": "msg_created",
                     "uuid": "01969b48-f59b-76f8-956a-5bc98156b0ad"
                 },
@@ -512,7 +481,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
                     "type": "msg_created",
                     "uuid": "01969b49-053b-76f8-a2d8-44b4f9caf25c"
                 },
@@ -527,7 +495,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "9972fa41-f437-4bbd-881a-ef06948e0f99",
                     "type": "msg_created",
                     "uuid": "01969b49-14db-76f8-802a-9fffea2a27fa"
                 },
@@ -542,7 +509,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
                     "type": "msg_created",
                     "uuid": "01969b49-247b-76f8-88da-b2056ae679d2"
                 },
@@ -557,7 +523,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
                     "type": "msg_created",
                     "uuid": "01969b49-341b-76f8-b4c4-260cfebfde0b"
                 },
@@ -572,7 +537,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7bdffc44-d323-42bf-8fb7-9f7a1d1cb701",
                     "type": "msg_created",
                     "uuid": "01969b49-43bb-76f8-851c-386828964858"
                 },
@@ -587,7 +551,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5937675f-81d2-4eea-88a2-a356de113e34",
                     "type": "msg_created",
                     "uuid": "01969b49-535b-76f8-8188-76dd971a6205"
                 },
@@ -602,7 +565,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
                     "type": "msg_created",
                     "uuid": "01969b49-62fb-76f8-9869-2c286badfdad"
                 },
@@ -617,7 +579,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "08b826b4-03e0-4528-b379-f167ef86d03e",
                     "type": "msg_created",
                     "uuid": "01969b49-729b-76f8-9ea1-dbfb3ec798f1"
                 },
@@ -632,7 +593,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "8ffec076-3c61-4142-9741-d46beab654c1",
                     "type": "msg_created",
                     "uuid": "01969b49-823b-76f8-8e75-1c4d799cd67a"
                 },
@@ -647,7 +607,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
                     "type": "msg_created",
                     "uuid": "01969b49-91db-76f8-9b19-ce8a2dca70df"
                 },
@@ -662,7 +621,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92",
                     "type": "msg_created",
                     "uuid": "01969b49-a17b-76f8-90a5-61a502fc0a9a"
                 },
@@ -677,7 +635,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f",
                     "type": "msg_created",
                     "uuid": "01969b49-b11b-76f8-a8fa-2f769abd7608"
                 },
@@ -692,7 +649,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
                     "type": "msg_created",
                     "uuid": "01969b49-c0bb-76f8-8742-c1eff0201012"
                 },
@@ -707,7 +663,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "43bdd132-957b-464b-bdca-2ca05d3bc6b3",
                     "type": "msg_created",
                     "uuid": "01969b49-d05b-76f8-8048-98e1606ea811"
                 },
@@ -722,7 +677,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "442a167e-f3e5-492d-ae70-2e66d56136ab",
                     "type": "msg_created",
                     "uuid": "01969b49-dffb-76f8-a1e8-f3d011def86a"
                 },
@@ -737,7 +691,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
                     "type": "msg_created",
                     "uuid": "01969b49-ef9b-76f8-9029-066bfcb36cf8"
                 },
@@ -752,7 +705,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e0e8ce1b-5368-4e92-ba1b-6cc3bea197e4",
                     "type": "msg_created",
                     "uuid": "01969b49-ff3b-76f8-b4b7-2e34e644276e"
                 },
@@ -767,7 +719,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "2fee4162-d41e-4bcc-82a1-bfdfc82552e0",
                     "type": "msg_created",
                     "uuid": "01969b4a-0edb-76f8-9676-22cd6062f002"
                 },
@@ -782,7 +733,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
                     "type": "msg_created",
                     "uuid": "01969b4a-1e7b-76f8-94b4-ef0c4720292f"
                 },
@@ -797,7 +747,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "95dc7ae3-0788-4fb7-b19f-d98753239d65",
                     "type": "msg_created",
                     "uuid": "01969b4a-2e1b-76f8-9418-6d3e4ae5a100"
                 },
@@ -812,7 +761,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "0df5d5bc-99aa-466a-b715-6b60849cfb2b",
                     "type": "msg_created",
                     "uuid": "01969b4a-3dbb-76f8-b09a-ec8aca1372ed"
                 },
@@ -827,7 +775,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "fa46b59a-0718-4d3d-a78c-f0fb1858f3a2",
                     "type": "msg_created",
                     "uuid": "01969b4a-4d5b-76f8-962a-76fbcac8bf7f"
                 },
@@ -842,7 +789,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "636bcfe8-1dd9-4bbd-a2a5-6b6ffeeada26",
                     "type": "msg_created",
                     "uuid": "01969b4a-5cfb-76f8-b038-6776a9290118"
                 },
@@ -857,7 +803,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "17de0954-e818-46a3-89c9-308c16612438",
                     "type": "msg_created",
                     "uuid": "01969b4a-6c9b-76f8-aac5-484f64970a84"
                 },
@@ -872,7 +817,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "6d743761-7e6e-41ab-8989-213a09ccb9c4",
                     "type": "msg_created",
                     "uuid": "01969b4a-7c3b-76f8-85ee-f261b5a4c5a1"
                 },
@@ -887,7 +831,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e485ab25-c3c6-45ee-9ad9-7b76948880e3",
                     "type": "msg_created",
                     "uuid": "01969b4a-8bdb-76f8-b1f8-3d29c913263a"
                 },
@@ -902,7 +845,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e83ce5ec-cc78-483c-ab24-17061eb32600",
                     "type": "msg_created",
                     "uuid": "01969b4a-9b7b-76f8-93ca-b93dc25ffd65"
                 },
@@ -917,7 +859,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1fbe497b-2fec-4ec6-9c41-cf3f881022fb",
                     "type": "msg_created",
                     "uuid": "01969b4a-ab1b-76f8-82ae-81542083c6c6"
                 },
@@ -932,7 +873,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "77edcde6-5d7c-4ae9-b660-52c755c4d15c",
                     "type": "msg_created",
                     "uuid": "01969b4a-babb-76f8-8c6f-7b85c24bcbca"
                 },
@@ -947,7 +887,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7e1f8144-4686-42de-a0b3-062f119f1823",
                     "type": "msg_created",
                     "uuid": "01969b4a-ca5b-76f8-bdc4-de873c294fa4"
                 },
@@ -962,7 +901,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "3566819d-81f2-432f-86f5-36e944bfe3ab",
                     "type": "msg_created",
                     "uuid": "01969b4a-d9fb-76f8-a261-a8a7a2e749fe"
                 },
@@ -977,7 +915,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "77405d28-851d-4051-a8e1-fc82b887c3ff",
                     "type": "msg_created",
                     "uuid": "01969b4a-e99b-76f8-a679-1ed579b6107a"
                 },
@@ -992,7 +929,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a1599b62-36cb-496a-bacd-395cb76a94ff",
                     "type": "msg_created",
                     "uuid": "01969b4a-f93b-76f8-b7c0-f8febf09c836"
                 },
@@ -1007,7 +943,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5bc28e77-810a-4720-b1ab-eaf1963053e5",
                     "type": "msg_created",
                     "uuid": "01969b4b-08db-76f8-953f-02873e472264"
                 },
@@ -1022,7 +957,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a452b30e-f118-4701-aba9-6b3f291e2750",
                     "type": "msg_created",
                     "uuid": "01969b4b-187b-76f8-90ee-12dde5710639"
                 },
@@ -1037,7 +971,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "780f2d7e-bc54-4b73-87a4-829f406eba5b",
                     "type": "msg_created",
                     "uuid": "01969b4b-281b-76f8-bf6a-1226b912128e"
                 },
@@ -1052,7 +985,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "962f49fb-f56d-40fd-98dc-b94fc84d107e",
                     "type": "msg_created",
                     "uuid": "01969b4b-37bb-76f8-84d9-5a7f32b0df10"
                 },
@@ -1067,7 +999,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "993446bf-409a-4bcc-8dd2-94af022945d5",
                     "type": "msg_created",
                     "uuid": "01969b4b-475b-76f8-bce7-327cd204f237"
                 },
@@ -1082,7 +1013,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "a5ce69e2-c0d1-4056-847b-6bc0920e49d7",
                     "type": "msg_created",
                     "uuid": "01969b4b-56fb-76f8-940a-7f5d5b936ff6"
                 },
@@ -1097,7 +1027,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "31cc1fd1-2f30-4566-b6ba-86e9ca4a3725",
                     "type": "msg_created",
                     "uuid": "01969b4b-669b-76f8-b4be-130fc41c2e01"
                 },
@@ -1112,7 +1041,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "72f5d1cd-fa2b-4313-b79f-52e1499b6db5",
                     "type": "msg_created",
                     "uuid": "01969b4b-763b-76f8-9ae4-8f981e14e81c"
                 },
@@ -1127,7 +1055,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "dd9f85f1-44f1-46cc-ad78-6ed5a8aad1c2",
                     "type": "msg_created",
                     "uuid": "01969b4b-85db-76f8-9284-8f296bccbc6f"
                 },
@@ -1142,7 +1069,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "46f82819-3f35-461b-8540-58dfcd677b60",
                     "type": "msg_created",
                     "uuid": "01969b4b-957b-76f8-8f4a-ef8ecd0530ea"
                 },
@@ -1157,7 +1083,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "175cc99b-4c88-4f07-bf2d-3f2e51927b6c",
                     "type": "msg_created",
                     "uuid": "01969b4b-a51b-76f8-9036-10d878f7fb4b"
                 },
@@ -1172,7 +1097,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7dbc8996-c0f0-460b-a23f-a7c1e36a9103",
                     "type": "msg_created",
                     "uuid": "01969b4b-b4bb-76f8-b19a-4bd9d238b1cc"
                 },
@@ -1187,7 +1111,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "66595216-3739-4a5e-a225-4e488c77a340",
                     "type": "msg_created",
                     "uuid": "01969b4b-c45b-76f8-882d-141eef7b838f"
                 },
@@ -1202,7 +1125,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "8a87f674-985b-455d-bbcf-a4f5511edd66",
                     "type": "msg_created",
                     "uuid": "01969b4b-d3fb-76f8-9335-8897fc44d8a1"
                 },
@@ -1217,7 +1139,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "d89b4b2f-e653-400b-a623-5fd270f90900",
                     "type": "msg_created",
                     "uuid": "01969b4b-e39b-76f8-9837-3fc5ba0d14d9"
                 },
@@ -1232,7 +1153,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1348fd9e-c478-42de-b8bf-413ebe9265fa",
                     "type": "msg_created",
                     "uuid": "01969b4b-f33b-76f8-8cbe-2c85e2683e7b"
                 },
@@ -1247,7 +1167,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "32e498f3-6f3e-4187-a175-d32b27bea38d",
                     "type": "msg_created",
                     "uuid": "01969b4c-02db-76f8-90d1-cdd90e7922b5"
                 },
@@ -1262,7 +1181,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "0d5919ab-1ab8-403b-9ac4-044feac3acb1",
                     "type": "msg_created",
                     "uuid": "01969b4c-127b-76f8-b7a4-4570ce108b83"
                 },
@@ -1277,7 +1195,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "00f9edcc-d6c5-4c81-91ce-99ba5dcfa517",
                     "type": "msg_created",
                     "uuid": "01969b4c-221b-76f8-aba1-501a64e22c55"
                 },
@@ -1292,7 +1209,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "8fe599f1-bf4f-43be-83dd-3099689741ac",
                     "type": "msg_created",
                     "uuid": "01969b4c-31bb-76f8-aa7c-54a1aeb512e8"
                 },
@@ -1307,7 +1223,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "824f54df-df2b-4089-9667-f1bd9d67b3fb",
                     "type": "msg_created",
                     "uuid": "01969b4c-415b-76f8-a91f-655632268298"
                 },
@@ -1322,7 +1237,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "7b2ffd2e-6273-4ddf-b2b4-f7f01c0d2496",
                     "type": "msg_created",
                     "uuid": "01969b4c-50fb-76f8-acc9-6718b565b0f7"
                 },
@@ -1337,7 +1251,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "137b8a4c-f6f6-4f9f-bd08-0a4bbb71abae",
                     "type": "msg_created",
                     "uuid": "01969b4c-609b-76f8-b046-5d86ca3ccb3d"
                 },
@@ -1352,7 +1265,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "0c806cbd-1caf-456f-914f-d5bb3d251ae4",
                     "type": "msg_created",
                     "uuid": "01969b4c-703b-76f8-97d4-0be64772394d"
                 },
@@ -1367,7 +1279,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "c37ad640-2d15-430b-9006-4ccd4ce56245",
                     "type": "msg_created",
                     "uuid": "01969b4c-7fdb-76f8-a67c-d0bf481b0273"
                 },
@@ -1382,7 +1293,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "ce373630-87ae-4d49-9d0e-d761461500e4",
                     "type": "msg_created",
                     "uuid": "01969b4c-8f7b-76f8-8e17-03c6453a7a7d"
                 },
@@ -1397,7 +1307,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "8b12ac19-d990-46ae-9577-4bd3c4fa46aa",
                     "type": "msg_created",
                     "uuid": "01969b4c-9f1b-76f8-8c1b-b2200caa5fcd"
                 },
@@ -1412,7 +1321,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "d23631b0-d882-476e-8c2a-faba95e0eea2",
                     "type": "msg_created",
                     "uuid": "01969b4c-aebb-76f8-b16e-61b2b6cfcc8e"
                 },
@@ -1427,7 +1335,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "95d2d42b-d8d3-4773-8ed7-ac4c8c4988d6",
                     "type": "msg_created",
                     "uuid": "01969b4c-be5b-76f8-b81f-eec65230f9b0"
                 },
@@ -1442,7 +1349,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "ccfd7ed7-178e-4771-a39e-c0d1211438e6",
                     "type": "msg_created",
                     "uuid": "01969b4c-cdfb-76f8-a67f-391232aae904"
                 },
@@ -1457,7 +1363,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "e879cb65-78d0-4ab6-8804-2a078c81b9b1",
                     "type": "msg_created",
                     "uuid": "01969b4c-dd9b-76f8-8669-e3ef5ce1dbe0"
                 },
@@ -1472,7 +1377,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5be47a00-fe8d-4a06-99f2-09ec5a59bb12",
                     "type": "msg_created",
                     "uuid": "01969b4c-ed3b-76f8-aad7-1cd74ed6e67b"
                 },
@@ -1487,7 +1391,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "bc74a8e7-ccbd-42d5-93d9-830e52c4b3d1",
                     "type": "msg_created",
                     "uuid": "01969b4c-fcdb-76f8-a292-9b65879f729e"
                 },
@@ -1502,7 +1405,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "4294ffc0-5736-45f7-b23e-fb942cb78a75",
                     "type": "msg_created",
                     "uuid": "01969b4d-0c7b-76f8-9995-de5ff20a1717"
                 },
@@ -1517,7 +1419,6 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "d67c1713-db75-4403-a020-37bccfcdf0e7",
                     "type": "msg_created",
                     "uuid": "01969b4d-1c1b-76f8-b5c7-259f428a465e"
                 },
@@ -1532,13 +1433,11 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "71d672cc-0135-4b89-b255-30a39b501876",
                     "type": "msg_created",
                     "uuid": "01969b4d-2bbb-76f8-b464-e7f3aaa0dc9d"
                 },
                 {
                     "created_on": "2025-05-04T12:37:32.123456789Z",
-                    "step_uuid": "71d672cc-0135-4b89-b255-30a39b501876",
                     "text": "reached maximum number of steps per sprint (100)",
                     "type": "failure",
                     "uuid": "01969b4d-3773-76f8-b016-97c9a7f1c7e7"

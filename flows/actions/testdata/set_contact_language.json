@@ -11,7 +11,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "error evaluating @(1 / 0): division by zero"
             }
         ],
@@ -42,7 +41,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "iso-639-3 codes must be 3 characters, got: xxxxxxxxxx"
             }
         ],
@@ -82,7 +80,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_language_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "language": ""
             }
         ],
@@ -126,14 +123,12 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_language_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "language": "fra"
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_added": [
                     {
                         "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",

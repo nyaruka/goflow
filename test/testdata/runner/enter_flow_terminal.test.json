@@ -41,7 +41,6 @@
                         "text": "This is the parent flow",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
@@ -79,7 +78,6 @@
                         "text": "You're now in the child flow!",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "msg_created",
                     "uuid": "01969b47-47eb-76f8-bebe-b4a1f677cf4c"
                 },

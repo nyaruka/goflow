@@ -31,7 +31,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "can't remove contacts from the query based group 'Males'"
             }
         ]
@@ -67,7 +66,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -89,7 +87,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "groups_removed": [
                     {
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -140,7 +137,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
             }
         ],

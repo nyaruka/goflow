@@ -22,7 +22,9 @@ type BaseEvent struct {
 	UUID_      flows.EventUUID `json:"uuid"                validate:"required,uuid"`
 	Type_      string          `json:"type"                validate:"required"`
 	CreatedOn_ time.Time       `json:"created_on"          validate:"required"`
-	StepUUID_  flows.StepUUID  `json:"step_uuid,omitempty" validate:"omitempty,uuid"`
+
+	// can be used by callers to locate events but not persisted
+	StepUUID_ flows.StepUUID `json:"-"`
 
 	// not set by engine but can be set by callers for storage of events
 	User_ *assets.UserReference `json:"_user,omitempty"`

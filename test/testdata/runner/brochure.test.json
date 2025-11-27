@@ -47,14 +47,12 @@
                         "text": "Hi! What is your name?",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
                     "expires_on": "2025-05-07T12:30:56.123456789Z",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "msg_wait",
                     "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671"
                 }
@@ -117,7 +115,6 @@
                     "category": "Not Empty",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
                     "name": "Name",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "uuid": "01969b47-4fbb-76f8-a691-235cbe720980",
                     "value": "Ryan Lewis"
@@ -125,7 +122,6 @@
                 {
                     "created_on": "2025-05-04T12:31:09.123456789Z",
                     "name": "Ryan Lewis",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "contact_name_changed",
                     "uuid": "01969b47-5f5b-76f8-8dbf-00ecf5d03034"
                 },
@@ -137,7 +133,6 @@
                             "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                         }
                     ],
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "contact_groups_changed",
                     "uuid": "01969b47-672b-76f8-acca-bbca70987315"
                 },
@@ -152,7 +147,6 @@
                         "text": "Great, you are Ryan Lewis, thanks for joining!",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-6efb-76f8-afcb-91a2073e5459"
                 },

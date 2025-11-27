@@ -42,7 +42,6 @@
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=foo",
                     "uuid": "01969b47-28ab-76f8-bebe-b4a1f677cf4c"
@@ -54,14 +53,12 @@
                         "foo": "bar"
                     },
                     "name": "Webhook Result",
-                    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
                     "type": "run_result_changed",
                     "uuid": "01969b47-384b-76f8-8dbf-00ecf5d03034",
                     "value": "200"
                 },
                 {
                     "created_on": "2025-05-04T12:31:03.123456789Z",
-                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "text": "deprecated context value accessed: legacy_extra",
                     "type": "warning",
                     "uuid": "01969b47-47eb-76f8-afcb-91a2073e5459"
@@ -73,7 +70,6 @@
                         "text": "Webhook was successful\n\nResult value: 200 \nResult category: Success \nResult text: POST http://localhost/?cmd=foo \nExtra: bar",
                         "unsendable_reason": "no_route"
                     },
-                    "step_uuid": "44fe8d72-00ed-4736-acca-bbca70987315",
                     "type": "msg_created",
                     "uuid": "01969b47-4fbb-76f8-9654-8a7258fbaae4"
                 },

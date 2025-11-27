@@ -17,7 +17,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "text": "missing dependency: llm[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
             }
         ],
@@ -76,7 +75,6 @@
                 "uuid": "01969b47-384b-76f8-a17e-f85e49829fb9",
                 "type": "llm_called",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
                 "llm": {
                     "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                     "name": "Claude"

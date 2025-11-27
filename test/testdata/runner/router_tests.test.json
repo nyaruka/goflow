@@ -43,7 +43,6 @@
                     "category": "Other",
                     "created_on": "2025-05-04T12:30:55.123456789Z",
                     "name": "URN Check",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "uuid": "01969b47-28ab-76f8-8f41-6b2d9f33d623",
                     "value": ""
@@ -52,7 +51,6 @@
                     "category": "Other",
                     "created_on": "2025-05-04T12:31:01.123456789Z",
                     "name": "Group Check",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
                     "type": "run_result_changed",
                     "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671",
                     "value": "[]"
@@ -61,7 +59,6 @@
                     "category": "Valid",
                     "created_on": "2025-05-04T12:31:07.123456789Z",
                     "name": "District Check",
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
                     "uuid": "01969b47-578b-76f8-a691-235cbe720980",
                     "value": "Rwanda > Kigali City > Gasabo"
@@ -77,7 +74,6 @@
                         "text": "URN Check: \nGroup Check: []",
                         "urn": "tel:+12065551212"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "msg_created",
                     "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
                 },
@@ -87,7 +83,6 @@
                         "key": "district",
                         "name": "District"
                     },
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "contact_field_changed",
                     "uuid": "01969b47-72e3-76f8-acca-bbca70987315",
                     "value": {

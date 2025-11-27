@@ -36,7 +36,6 @@
                 {
                     "created_on": "2025-05-04T12:30:54.123456789Z",
                     "expires_on": "2025-05-07T12:30:52.123456789Z",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_wait",
                     "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623"
                 }
@@ -85,7 +84,6 @@
                     "category": "Other",
                     "created_on": "2025-05-04T12:31:01.123456789Z",
                     "name": "Country Response",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "run_result_changed",
                     "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671",
                     "value": "Ryan Lewis"
@@ -98,7 +96,6 @@
                     "retries": 0,
                     "status": "success",
                     "status_code": 200,
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=country",
                     "uuid": "01969b47-578b-76f8-a691-235cbe720980"
@@ -110,14 +107,12 @@
                         "exists": "valid"
                     },
                     "name": "Country Webhook",
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
                     "type": "run_result_changed",
                     "uuid": "01969b47-672b-76f8-bebe-b4a1f677cf4c",
                     "value": "200"
                 },
                 {
                     "created_on": "2025-05-04T12:31:15.123456789Z",
-                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "text": "deprecated context value accessed: legacy_extra",
                     "type": "warning",
                     "uuid": "01969b47-76cb-76f8-acca-bbca70987315"
@@ -126,7 +121,6 @@
                     "category": "Valid",
                     "created_on": "2025-05-04T12:31:19.123456789Z",
                     "name": "Country",
-                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
                     "type": "run_result_changed",
                     "uuid": "01969b47-866b-76f8-afcb-91a2073e5459",
                     "value": "valid"
