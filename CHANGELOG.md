@@ -1,3 +1,7 @@
+v0.262.2 (2025-11-27)
+-------------------------
+ * Don't persist step UUID on events
+
 v0.262.1 (2025-11-27)
 -------------------------
  * Fix unmarshaling of events with _user set
