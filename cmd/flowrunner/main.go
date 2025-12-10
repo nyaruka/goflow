@@ -49,13 +49,14 @@ const contactJSON = `{
 const usage = `usage: flowrunner [flags] <assets.json> [flow_uuid]`
 
 func main() {
-	var initialMsg, contactLang, witToken string
+	var initialMsg, contactLang, witToken, contactPath string // <--- ADD contactPath
 	var printRepro bool
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
 	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
 	flags.StringVar(&witToken, "wit.token", "", "access token for wit.ai")
 	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
+	flags.StringVar(&contactPath, "contact", "", "path to optional contact JSON file") // <--- ADD NEW FLAG
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
@@ -73,7 +74,7 @@ func main() {
 
 	engine := createEngine(witToken)
 
-	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, i18n.Language(contactLang), os.Stdin, os.Stdout)
+	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, i18n.Language(contactLang), contactPath, os.Stdin, os.Stdout)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -104,7 +105,7 @@ func createEngine(witToken string) flows.Engine {
 }
 
 // RunFlow steps through a flow
-func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang i18n.Language, in io.Reader, out io.Writer) (*Repro, error) {
+func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang i18n.Language, contactPath string, in io.Reader, out io.Writer) (*Repro, error) {
 	ctx := context.Background()
 
 	assetsJSON, err := os.ReadFile(assetsPath)
@@ -136,9 +137,24 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		return nil, err
 	}
 
-	contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.PanicOnMissing)
+	var contactJSONBytes []byte
+	var contactSource string
+
+	if contactPath != "" {
+		data, err := os.ReadFile(contactPath)
+		if err != nil {
+			return nil, fmt.Errorf("error reading contact JSON file '%s': %w", contactPath, err)
+		}
+		contactJSONBytes = data
+		contactSource = contactPath
+	} else {
+		contactJSONBytes = []byte(contactJSON)
+		contactSource = "hardcoded constant"
+	}
+
+	contact, err := flows.ReadContact(sa, contactJSONBytes, assets.PanicOnMissing)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error reading contact from %s: %w", contactSource, err)
 	}
 	contact.SetLanguage(contactLang)
 
