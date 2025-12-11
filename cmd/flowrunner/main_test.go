@@ -23,7 +23,7 @@ func TestRunFlow(t *testing.T) {
 	in := strings.NewReader("I like red\npepsi\n")
 	out := &strings.Builder{}
 
-	_, err := main.RunFlow(test.NewEngine(), "testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), "", "eng", in, out)
+	_, err := main.RunFlow(test.NewEngine(), "testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), "", "eng", "", in, out)
 	require.NoError(t, err)
 
 	// remove input prompts and split output by line to get each event
@@ -48,7 +48,7 @@ func TestRunFlow(t *testing.T) {
 	// run again but don't specify the flow
 	in = strings.NewReader("I like red\npepsi\n")
 	out = &strings.Builder{}
-	_, err = main.RunFlow(test.NewEngine(), "testdata/two_questions.json", "", "", "eng", in, out)
+	_, err = main.RunFlow(test.NewEngine(), "testdata/two_questions.json", "", "", "eng", "", in, out)
 	require.NoError(t, err)
 
 	assert.Contains(t, out.String(), "entered flow 'Two Questions'")
