@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -39,7 +40,7 @@ func NewTicketOpen(topic *flows.Topic, assignee *flows.User, note string) *Ticke
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketOpen) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().Open().Count() > 0 {
 		return false, nil

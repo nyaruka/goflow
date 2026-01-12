@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -32,7 +34,7 @@ func NewTicketReopen(ticketUUID flows.TicketUUID) *TicketReopen {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketReopen) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().Open().Count() > 0 {
 		return false, nil

@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"context"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -34,7 +35,7 @@ func NewTimezone(timezone *time.Location) *Timezone {
 }
 
 // Apply applies this modification to the given contact
-func (m *Timezone) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Timezone) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if !timezonesEqual(contact.Timezone(), m.timezone) {
 		contact.SetTimezone(m.timezone)
 		log(events.NewContactTimezoneChanged(m.timezone))

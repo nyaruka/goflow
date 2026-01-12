@@ -69,7 +69,7 @@ func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step f
 		groups = resolveGroups(run, a.Groups, log)
 	}
 
-	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsRemove), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewGroups(groups, modifiers.GroupsRemove), log)
 	return err
 }
 

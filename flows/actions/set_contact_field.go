@@ -59,7 +59,7 @@ func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows
 	field := fields.Get(a.Field.Key)
 
 	if field != nil {
-		_, err := a.applyModifier(run, modifiers.NewField(field, value), log)
+		_, err := a.applyModifier(ctx, run, modifiers.NewField(field, value), log)
 		if err != nil {
 			return err
 		}

@@ -65,12 +65,12 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 var _ flows.Engine = (*engine)(nil)
 
 // by default we allow all messages to be sendable
-func defaultCheckSendable(flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
+func defaultCheckSendable(context.Context, flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
 	return "", nil
 }
 
 // by default we allow claiming of any URN
-func defaultClaimURN(flows.SessionAssets, *flows.Contact, urns.URN) (bool, error) {
+func defaultClaimURN(context.Context, flows.SessionAssets, *flows.Contact, urns.URN) (bool, error) {
 	return true, nil
 }
 

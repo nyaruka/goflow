@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -150,9 +151,9 @@ func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, nam
 }
 
 // helper to apply a contact modifier
-func (a *baseAction) applyModifier(run flows.Run, mod flows.Modifier, log flows.EventLogger) (bool, error) {
+func (a *baseAction) applyModifier(ctx context.Context, run flows.Run, mod flows.Modifier, log flows.EventLogger) (bool, error) {
 	s := run.Session()
-	return modifiers.Apply(s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, log)
+	return modifiers.Apply(ctx, s.Engine(), s.MergedEnvironment(), s.Assets(), run.Contact(), mod, log)
 }
 
 // helper to log a failure

@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -47,7 +48,7 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	modified := false
 
 	urnz := make([]urns.URN, 0, len(m.urnz))
@@ -62,7 +63,7 @@ func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAss
 
 		// if adding or setting, try to claim the URN
 		if (m.modification == URNsAppend || m.modification == URNsSet) && !contact.HasURN(urn) {
-			claimed, err := eng.Options().ClaimURN(sa, contact, urn)
+			claimed, err := eng.Options().ClaimURN(ctx, sa, contact, urn)
 			if err != nil {
 				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
 			}

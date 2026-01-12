@@ -74,7 +74,7 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	evaluatedNote, _ := run.EvaluateTemplate(a.Note, log)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
-	ticket, err := a.open(run, topic, assignee, evaluatedNote, log)
+	ticket, err := a.open(ctx, run, topic, assignee, evaluatedNote, log)
 	if err != nil {
 		return err
 	} else if ticket != nil {
@@ -86,7 +86,7 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
+func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
 		log(events.NewError("can't open tickets during batch starts"))
 		return nil, nil
@@ -98,7 +98,7 @@ func (a *OpenTicket) open(run flows.Run, topic *flows.Topic, assignee *flows.Use
 	}
 
 	mod := modifiers.NewTicketOpen(topic, assignee, note)
-	modified, err := a.applyModifier(run, mod, log)
+	modified, err := a.applyModifier(ctx, run, mod, log)
 	if err != nil {
 		return nil, err
 	}
