@@ -1,3 +1,8 @@
+v0.263.0 (2026-01-12)
+-------------------------
+ * Update dependencies
+ * Require claiming of URNs via engine callback
+
 v0.262.5 (2025-11-27)
 -------------------------
  * Set Step.run when reading steps in run paths
