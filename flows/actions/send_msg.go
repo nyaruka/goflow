@@ -76,7 +76,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		unsendableReason = flows.UnsendableReasonContactArchived
 	} else {
 		var err error
-		unsendableReason, err = run.Session().Engine().Options().CheckSendable(run.Session().Assets(), run.Contact(), content)
+		unsendableReason, err = run.Session().Engine().Options().CheckSendable(ctx, run.Session().Assets(), run.Contact(), content)
 		if err != nil {
 			return fmt.Errorf("error checking if message is sendable: %w", err)
 		}

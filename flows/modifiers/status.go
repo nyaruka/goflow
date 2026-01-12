@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -32,7 +34,7 @@ func NewStatus(status flows.ContactStatus) *Status {
 }
 
 // Apply applies this modification to the given contact
-func (m *Status) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Status) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if contact.Status() != m.status {
 		contact.SetStatus(m.status)
 		log(events.NewContactStatusChanged(m.status))

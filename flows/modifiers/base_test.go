@@ -65,7 +65,7 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 
 		// apply the modifier
 		eventLog := test.NewEventLog()
-		modifiers.Apply(eng, env, sa, contact, modifier, eventLog.Log)
+		modifiers.Apply(t.Context(), eng, env, sa, contact, modifier, eventLog.Log)
 
 		// clone test case and populate with actual values
 		actual := tc

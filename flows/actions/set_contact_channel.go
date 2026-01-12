@@ -54,7 +54,7 @@ func (a *SetContactChannel) Execute(ctx context.Context, run flows.Run, step flo
 		}
 	}
 
-	_, err := a.applyModifier(run, modifiers.NewChannel(channel), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewChannel(channel), log)
 	return err
 }
 

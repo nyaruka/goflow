@@ -58,6 +58,6 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 	// create URN - modifier will take care of validating it
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
 
-	_, err := a.applyModifier(run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), log)
 	return err
 }

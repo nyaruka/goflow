@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -38,8 +39,8 @@ func newBaseModifier(typeName string) baseModifier {
 func (m *baseModifier) Type() string { return m.typ }
 
 // Apply applies the given modifier to the given contact and re-evaluates query based groups if necessary
-func Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, c *flows.Contact, mod flows.Modifier, logEvent flows.EventLogger) (bool, error) {
-	modified, err := mod.Apply(eng, env, sa, c, logEvent)
+func Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, c *flows.Contact, mod flows.Modifier, logEvent flows.EventLogger) (bool, error) {
+	modified, err := mod.Apply(ctx, eng, env, sa, c, logEvent)
 	if err != nil {
 		return false, err
 	}

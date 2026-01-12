@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -33,7 +35,7 @@ func NewLanguage(language i18n.Language) *Language {
 }
 
 // Apply applies this modification to the given contact
-func (m *Language) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Language) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if contact.Language() != m.language {
 		contact.SetLanguage(m.language)
 		log(events.NewContactLanguageChanged(m.language))

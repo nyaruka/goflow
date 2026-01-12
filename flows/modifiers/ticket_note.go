@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"context"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -34,7 +36,7 @@ func NewTicketNote(ticketUUID flows.TicketUUID, note string) *TicketNote {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketNote) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketNote) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil {

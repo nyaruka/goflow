@@ -232,7 +232,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(Engine, envs.Environment, SessionAssets, *Contact, EventLogger) (bool, error)
+	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, EventLogger) (bool, error)
 }
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
@@ -258,9 +258,9 @@ type Step interface {
 	Run() Run
 }
 
-type CheckSendableCallback func(SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
+type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
 
-type ClaimURNCallback func(SessionAssets, *Contact, urns.URN) (bool, error)
+type ClaimURNCallback func(context.Context, SessionAssets, *Contact, urns.URN) (bool, error)
 
 type EngineOptions struct {
 	MaxStepsPerSprint    int

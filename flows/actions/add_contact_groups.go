@@ -47,7 +47,7 @@ func NewAddContactGroups(uuid flows.ActionUUID, groups []*assets.GroupReference)
 func (a *AddContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	groups := resolveGroups(run, a.Groups, log)
 
-	_, err := a.applyModifier(run, modifiers.NewGroups(groups, modifiers.GroupsAdd), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewGroups(groups, modifiers.GroupsAdd), log)
 	return err
 }
 

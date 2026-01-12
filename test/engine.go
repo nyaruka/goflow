@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"net/http"
 	"strings"
 	"text/template"
@@ -36,10 +37,10 @@ func NewEngine() flows.Engine {
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
 		}).
-		WithCheckSendable(func(sa flows.SessionAssets, c *flows.Contact, mc *flows.MsgContent) (flows.UnsendableReason, error) {
+		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *flows.MsgContent) (flows.UnsendableReason, error) {
 			return "", nil
 		}).
-		WithClaimURN(func(sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
+		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
 			return !strings.Contains(u.Path(), "taken"), nil
 		}).
 		Build()
