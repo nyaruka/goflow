@@ -1,3 +1,7 @@
+v0.263.1 (2026-01-12)
+-------------------------
+ * Pass context into modifiers and engine callbacks
+
 v0.263.0 (2026-01-12)
 -------------------------
  * Update dependencies
