@@ -14,6 +14,11 @@ func init() {
 // TypeError is the type of our error events
 const TypeError string = "error"
 
+const (
+	ErrorCodeDependencyMissing = "dependency_missing"
+	ErrorCodeURNTaken          = "urn_taken"
+)
+
 // Error events are created when an error occurs during flow execution.
 //
 //	{
@@ -27,18 +32,25 @@ const TypeError string = "error"
 type Error struct {
 	BaseEvent
 
-	Text string `json:"text" validate:"required"`
+	Text string `json:"text"           validate:"required"`
+	Code string `json:"code,omitempty"`
 }
 
 // NewError returns a new error event for the passed in text
-func NewError(text string) *Error {
+func NewError(text, code string) *Error {
 	return &Error{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      text,
+		Code:      code,
 	}
+}
+
+// NewRawError returns a new error event for the passed in error
+func NewRawError(err error) *Error {
+	return NewError(err.Error(), "")
 }
 
 // NewDependencyError returns an error event for a missing dependency
 func NewDependencyError(ref assets.Reference) *Error {
-	return NewError(fmt.Sprintf("missing dependency: %s", ref.String()))
+	return NewError(fmt.Sprintf("missing dependency: %s", ref.String()), ErrorCodeDependencyMissing)
 }

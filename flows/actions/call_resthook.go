@@ -107,7 +107,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
-			log(events.NewError(err.Error()))
+			log(events.NewRawError(err))
 			return nil
 		}
 
@@ -115,14 +115,14 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 
 		svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 		if err != nil {
-			log(events.NewError(err.Error()))
+			log(events.NewRawError(err))
 			return nil
 		}
 
 		call, err := svc.Call(req)
 
 		if err != nil {
-			log(events.NewError(err.Error()))
+			log(events.NewRawError(err))
 		}
 		if call != nil {
 			calls = append(calls, call)

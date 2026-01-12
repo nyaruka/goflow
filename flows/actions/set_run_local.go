@@ -68,7 +68,7 @@ func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		existing, _ := strconv.Atoi(run.Locals().Get(a.Local))
 		increment, err := strconv.Atoi(value)
 		if err != nil {
-			log(events.NewError("increment value is not an integer"))
+			log(events.NewError("increment value is not an integer", ""))
 		} else {
 			run.Locals().Set(a.Local, fmt.Sprint(existing+increment))
 		}

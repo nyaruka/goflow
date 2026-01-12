@@ -15,7 +15,8 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]"
+                "text": "missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]",
+                "code": "dependency_missing"
             }
         ],
         "templates": [

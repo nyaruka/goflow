@@ -88,7 +88,7 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 
 func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
-		log(events.NewError("can't open tickets during batch starts"))
+		log(events.NewError("can't open tickets during batch starts", ""))
 		return nil, nil
 	}
 

@@ -58,7 +58,7 @@ func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step fl
 	if language != "" {
 		lang, err = i18n.ParseLanguage(language)
 		if err != nil {
-			log(events.NewError(err.Error()))
+			log(events.NewRawError(err))
 			return nil
 		}
 	}

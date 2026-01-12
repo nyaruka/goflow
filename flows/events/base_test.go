@@ -217,7 +217,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewError("I'm an error")
+				return events.NewError("I'm an error", "test_error")
 			},
 			`error`,
 		},

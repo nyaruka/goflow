@@ -53,7 +53,7 @@ func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step,
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		log(events.NewError("audio URL evaluated to empty, skipping"))
+		log(events.NewError("audio URL evaluated to empty, skipping", ""))
 		return nil
 	}
 

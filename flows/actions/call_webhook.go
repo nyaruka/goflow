@@ -90,11 +90,11 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	url = strings.TrimSpace(url)
 
 	if url == "" {
-		log(events.NewError("webhook URL evaluated to empty string"))
+		log(events.NewError("webhook URL evaluated to empty string", ""))
 		return nil
 	}
 	if !isValidURL(url) {
-		log(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url)))
+		log(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url), ""))
 		return nil
 	}
 
@@ -119,7 +119,7 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
 		// in theory this can't happen because we're already validating the method and the URL.. but just in case
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 		return nil
 	}
 
@@ -132,13 +132,13 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 
 	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 		return nil
 	}
 
 	trace, err := svc.Call(req)
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 	}
 
 	if trace != nil {

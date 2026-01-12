@@ -17,7 +17,8 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: llm[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]"
+                "text": "missing dependency: llm[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]",
+                "code": "dependency_missing"
             }
         ],
         "templates": [

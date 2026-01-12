@@ -61,14 +61,14 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	evaluatedSubject = strings.TrimSpace(evaluatedSubject)
 
 	if evaluatedSubject == "" {
-		log(events.NewError("email subject evaluated to empty string, skipping"))
+		log(events.NewError("email subject evaluated to empty string, skipping", ""))
 		return nil
 	}
 
 	localizedBody, _ := run.GetText(uuids.UUID(a.UUID()), "body", a.Body)
 	evaluatedBody, _ := run.EvaluateTemplate(localizedBody, log)
 	if evaluatedBody == "" {
-		log(events.NewError("email body evaluated to empty string, skipping"))
+		log(events.NewError("email body evaluated to empty string, skipping", ""))
 		return nil
 	}
 
@@ -77,7 +77,7 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	for _, address := range a.Addresses {
 		evaluatedAddress, _ := run.EvaluateTemplate(address, log)
 		if evaluatedAddress == "" {
-			log(events.NewError("email address evaluated to empty string, skipping"))
+			log(events.NewError("email address evaluated to empty string, skipping", ""))
 			continue
 		}
 
@@ -94,13 +94,13 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 
 	svc, err := run.Session().Engine().Services().Email(run.Session().Assets())
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 		return nil
 	}
 
 	err = svc.Send(evaluatedAddresses, evaluatedSubject, evaluatedBody)
 	if err != nil {
-		log(events.NewError(fmt.Sprintf("unable to send email: %s", err.Error())))
+		log(events.NewError(fmt.Sprintf("unable to send email: %s", err.Error()), ""))
 	} else {
 		log(events.NewEmailSent(evaluatedAddresses, evaluatedSubject, evaluatedBody))
 	}
