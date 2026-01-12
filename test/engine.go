@@ -2,10 +2,12 @@ package test
 
 import (
 	"net/http"
+	"strings"
 	"text/template"
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -33,6 +35,12 @@ func NewEngine() flows.Engine {
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
+		}).
+		WithCheckSendable(func(sa flows.SessionAssets, c *flows.Contact, mc *flows.MsgContent) (flows.UnsendableReason, error) {
+			return "", nil
+		}).
+		WithClaimURN(func(sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
+			return !strings.Contains(u.Path(), "taken"), nil
 		}).
 		Build()
 }

@@ -50,15 +50,29 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 func (m *URNs) Apply(eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	modified := false
 
-	// validate modifier URNs and throw away any invalid
 	urnz := make([]urns.URN, 0, len(m.urnz))
 	for _, urn := range m.urnz {
 		urn := urn.Normalize()
+
+		// throw away invalid URNs
 		if err := urn.Validate(); err != nil {
 			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn)))
-		} else {
-			urnz = append(urnz, urn)
+			continue
 		}
+
+		// if adding or setting, try to claim the URN
+		if (m.modification == URNsAppend || m.modification == URNsSet) && !contact.HasURN(urn) {
+			claimed, err := eng.Options().ClaimURN(sa, contact, urn)
+			if err != nil {
+				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
+			}
+			if !claimed {
+				log(events.NewError(fmt.Sprintf("URN '%s' is taken", urn)))
+				continue
+			}
+		}
+
+		urnz = append(urnz, urn)
 	}
 
 	switch m.modification {

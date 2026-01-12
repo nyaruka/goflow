@@ -232,7 +232,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
 func (c *Contact) AddURN(urn urns.URN) bool {
-	if c.hasURN(urn) {
+	if c.HasURN(urn) {
 		return false
 	}
 
@@ -244,7 +244,7 @@ func (c *Contact) AddURN(urn urns.URN) bool {
 
 // RemoveURN adds a new URN to this contact
 func (c *Contact) RemoveURN(urn urns.URN) bool {
-	if !c.hasURN(urn) {
+	if !c.HasURN(urn) {
 		return false
 	}
 
@@ -286,7 +286,7 @@ func (c *Contact) SetURNs(urnz []urns.URN) bool {
 	return true
 }
 
-func (c *Contact) hasURN(urn urns.URN) bool {
+func (c *Contact) HasURN(urn urns.URN) bool {
 	for _, u := range c.urns {
 		if u.Identity() == urn.Identity() {
 			return true

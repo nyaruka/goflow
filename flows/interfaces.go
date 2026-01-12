@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
@@ -259,6 +260,8 @@ type Step interface {
 
 type CheckSendableCallback func(SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
 
+type ClaimURNCallback func(SessionAssets, *Contact, urns.URN) (bool, error)
+
 type EngineOptions struct {
 	MaxStepsPerSprint    int
 	MaxSprintsPerSession int
@@ -267,6 +270,7 @@ type EngineOptions struct {
 	MaxResultChars       int
 	LLMPrompts           map[string]*template.Template
 	CheckSendable        CheckSendableCallback
+	ClaimURN             ClaimURNCallback
 }
 
 // Engine provides callers with session starting and resuming
