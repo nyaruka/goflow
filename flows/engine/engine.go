@@ -7,6 +7,7 @@ import (
 	"text/template"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
@@ -63,8 +64,14 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
 
+// by default we allow all messages to be sendable
 func defaultCheckSendable(flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
 	return "", nil
+}
+
+// by default we allow claiming of any URN
+func defaultClaimURN(flows.SessionAssets, *flows.Contact, urns.URN) (bool, error) {
+	return true, nil
 }
 
 //------------------------------------------------------------------------------------------
@@ -90,6 +97,7 @@ func NewBuilder() *Builder {
 				MaxResultChars:       640,
 				LLMPrompts:           make(map[string]*template.Template),
 				CheckSendable:        defaultCheckSendable,
+				ClaimURN:             defaultClaimURN,
 			},
 		},
 	}
@@ -164,6 +172,12 @@ func (b *Builder) WithLLMPrompts(prompts map[string]*template.Template) *Builder
 // WithCheckSendable sets the function to use to determine if a message is sendable
 func (b *Builder) WithCheckSendable(fn flows.CheckSendableCallback) *Builder {
 	b.eng.options.CheckSendable = fn
+	return b
+}
+
+// WithClaimURN sets the function to use to claim a URN
+func (b *Builder) WithClaimURN(fn flows.ClaimURNCallback) *Builder {
+	b.eng.options.ClaimURN = fn
 	return b
 }
 
