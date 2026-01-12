@@ -1,3 +1,7 @@
+v0.263.2 (2026-01-12)
+-------------------------
+ * Add codes to error events
+
 v0.263.1 (2026-01-12)
 -------------------------
  * Pass context into modifiers and engine callbacks
