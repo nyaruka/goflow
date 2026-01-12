@@ -76,14 +76,14 @@ func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.St
 
 	// batch footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
-		log(events.NewError("can't start new sessions for groups or queries during batch starts"))
+		log(events.NewError("can't start new sessions for groups or queries during batch starts", ""))
 		return nil
 	}
 
 	// loop footgun prevention
 	ref := run.Session().History()
 	if ref.AncestorsSinceInput >= maxAncestorsSinceInput {
-		log(events.NewError("too many sessions have been spawned since the last time input was received"))
+		log(events.NewError("too many sessions have been spawned since the last time input was received", ""))
 		return nil
 	}
 

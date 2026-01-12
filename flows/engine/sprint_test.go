@@ -74,8 +74,8 @@ func TestSprint(t *testing.T) {
 	node2Exit1 := node2.Exits()[0]
 	node3 := flow.Nodes()[2]
 
-	event1 := events.NewError("error 1")
-	event2 := events.NewError("error 1")
+	event1 := events.NewError("error 1", "")
+	event2 := events.NewError("error 1", "")
 
 	dates.SetNowFunc(dates.NewSequentialNow(time.Date(2021, 12, 8, 10, 13, 30, 0, time.UTC), time.Second))
 

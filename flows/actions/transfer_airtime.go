@@ -52,7 +52,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	transfer, err := a.transfer(ctx, run, log)
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 	}
 
 	if transfer != nil {

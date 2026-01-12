@@ -57,7 +57,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 
 		// throw away invalid URNs
 		if err := urn.Validate(); err != nil {
-			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn)))
+			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn), ""))
 			continue
 		}
 
@@ -68,7 +68,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
 			}
 			if !claimed {
-				log(events.NewError(fmt.Sprintf("URN '%s' is taken", urn)))
+				log(events.NewError(fmt.Sprintf("URN '%s' is taken", urn), events.ErrorCodeURNTaken))
 				continue
 			}
 		}
@@ -80,7 +80,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 	case URNsAppend:
 		for _, urn := range urnz {
 			if len(contact.URNs()) >= flows.MaxContactURNs {
-				log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs)))
+				log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break
 			} else if contact.AddURN(urn) {
 				modified = true

@@ -83,7 +83,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 
 	svc, err := run.Session().Engine().Services().LLM(llm)
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewError(err.Error(), ""))
 		return nil
 	}
 
@@ -91,7 +91,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 
 	resp, err := svc.Response(ctx, instructions, input, 2500)
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewError(err.Error(), ""))
 		return nil
 	}
 

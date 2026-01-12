@@ -48,7 +48,7 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *Groups {
 // Apply applies this modification to the given contact
 func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
-		log(events.NewError("can't add blocked or stopped contacts to groups"))
+		log(events.NewError("can't add blocked or stopped contacts to groups", ""))
 		return false, nil
 	}
 
@@ -57,7 +57,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {
 			if group.UsesQuery() {
-				log(events.NewError(fmt.Sprintf("can't add contacts to the query based group '%s'", group.Name())))
+				log(events.NewError(fmt.Sprintf("can't add contacts to the query based group '%s'", group.Name()), ""))
 				continue
 			}
 
@@ -79,7 +79,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 	} else if m.modification == GroupsRemove {
 		for _, group := range m.groups {
 			if group.UsesQuery() {
-				log(events.NewError(fmt.Sprintf("can't remove contacts from the query based group '%s'", group.Name())))
+				log(events.NewError(fmt.Sprintf("can't remove contacts from the query based group '%s'", group.Name()), ""))
 				continue
 			}
 

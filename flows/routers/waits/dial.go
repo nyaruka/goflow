@@ -66,7 +66,7 @@ func (w *Dial) Begin(run flows.Run, log flows.EventLogger) bool {
 
 	urn, err := urns.ParsePhone(phone, country, false, false)
 	if err != nil {
-		log(events.NewError(err.Error()))
+		log(events.NewRawError(err))
 		return false
 	}
 

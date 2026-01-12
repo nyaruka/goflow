@@ -59,7 +59,7 @@ func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, lo
 
 	// if we have neither an audio URL or backdown text, skip
 	if evaluatedText == "" && localizedAudioURL == "" {
-		log(events.NewError("need either audio URL or backdown text, skipping"))
+		log(events.NewError("need either audio URL or backdown text, skipping", ""))
 		return nil
 	}
 

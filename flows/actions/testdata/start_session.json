@@ -51,7 +51,8 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: flow[uuid=dede1e50-db55-4b50-8929-2116bfc56148,name=Missing]"
+                "text": "missing dependency: flow[uuid=dede1e50-db55-4b50-8929-2116bfc56148,name=Missing]",
+                "code": "dependency_missing"
             }
         ],
         "inspection": {
@@ -112,7 +113,8 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]"
+                "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
+                "code": "dependency_missing"
             }
         ],
         "inspection": {
