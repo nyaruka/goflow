@@ -15,7 +15,7 @@
                 "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "failure",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+                "text": "Unable to find flow 'Long Lost Flow'"
             }
         ]
     },
@@ -34,7 +34,7 @@
                 "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "failure",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "can't enter flow[uuid=7a84463d-d209-4d3e-a0ff-79f977cd7bd0,name=Voice Action Tester] of type voice from type messaging"
+                "text": "Can't enter flow[uuid=7a84463d-d209-4d3e-a0ff-79f977cd7bd0,name=Voice Action Tester] of type voice from type messaging"
             }
         ]
     },
@@ -128,7 +128,7 @@
                 "uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
                 "type": "failure",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+                "text": "Unable to find flow 'Long Lost Flow'"
             }
         ],
         "inspection": {
