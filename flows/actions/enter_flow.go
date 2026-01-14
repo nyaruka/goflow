@@ -50,12 +50,12 @@ func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step,
 
 	// we ignore other missing asset types but a missing flow means we don't know how to route so we can't continue
 	if err != nil {
-		a.fail(run, err, log)
+		a.fail(run, fmt.Sprintf("Unable to find flow '%s'", a.Flow.Name), log)
 		return nil
 	}
 
 	if run.Session().Type() != flow.Type() {
-		a.fail(run, fmt.Errorf("can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), log)
+		a.fail(run, fmt.Sprintf("Can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), log)
 		return nil
 	}
 

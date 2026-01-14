@@ -28,9 +28,9 @@ type Failure struct {
 }
 
 // NewFailure returns a new failure event for the passed in error
-func NewFailure(err error) *Failure {
+func NewFailure(text string) *Failure {
 	return &Failure{
 		BaseEvent: NewBaseEvent(TypeFailure),
-		Text:      err.Error(),
+		Text:      text,
 	}
 }

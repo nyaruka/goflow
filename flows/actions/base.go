@@ -157,7 +157,7 @@ func (a *baseAction) applyModifier(ctx context.Context, run flows.Run, mod flows
 }
 
 // helper to log a failure
-func (a *baseAction) fail(run flows.Run, err error, log flows.EventLogger) {
+func (a *baseAction) fail(run flows.Run, err string, log flows.EventLogger) {
 	run.Exit(flows.RunStatusFailed)
 	log(events.NewFailure(err))
 	log(events.NewRunEnded(run.UUID(), run.FlowReference(), flows.RunStatusFailed))

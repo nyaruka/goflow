@@ -1438,7 +1438,7 @@
                 },
                 {
                     "created_on": "2025-05-04T12:37:32.123456789Z",
-                    "text": "reached maximum number of steps per sprint (100)",
+                    "text": "Reached maximum number of steps per sprint (100)",
                     "type": "failure",
                     "uuid": "01969b4d-3773-76f8-b016-97c9a7f1c7e7"
                 },

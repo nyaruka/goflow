@@ -3,7 +3,6 @@ package events_test
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"strings"
 	"testing"
@@ -229,7 +228,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewFailure(errors.New("503 is an failure"))
+				return events.NewFailure("503 is an failure")
 			},
 			`failure`,
 		},

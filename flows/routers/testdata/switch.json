@@ -576,7 +576,7 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "failure",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "text": "router on node[uuid=64373978-e8f6-4973-b6ff-a2993f3376fc] failed to pick a category"
+                "text": "Router failed to pick a category"
             }
         ],
         "templates": [

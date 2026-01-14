@@ -3,7 +3,6 @@ package engine
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
@@ -231,9 +230,9 @@ func (s *session) prepareForSprint() error {
 
 // tries to resume a waiting session with the given resume
 func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *run, resume flows.Resume) error {
-	failSession := func(msg string, args ...any) {
+	failSession := func(msg string) {
 		// put failure event in waiting run
-		failRun(sprint, waitingRun, nil, fmt.Errorf(msg, args...))
+		failRun(sprint, waitingRun, nil, msg)
 
 		// but also fail any other non-exited runs
 		for _, r := range s.runs {
@@ -248,24 +247,24 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 
 	// if flow for this run is a missing asset, we have a problem
 	if waitingRun.Flow() == nil {
-		failSession("can't resume run with missing flow asset")
+		failSession("Can't resume run with missing flow asset")
 		return nil
 	}
 
 	if s.sprints >= s.engine.Options().MaxSprintsPerSession {
-		failSession("reached maximum number of sprints per session (%d)", s.engine.Options().MaxSprintsPerSession)
+		failSession(fmt.Sprintf("Reached maximum number of sprints per session (%d)", s.engine.Options().MaxSprintsPerSession))
 		return nil
 	}
 
 	// figure out where in the flow we began waiting on
 	step, node, err := waitingRun.PathLocation()
 	if err != nil {
-		failSession(fmt.Sprintf("unable to find resume location: %s", err.Error()))
+		failSession(fmt.Sprintf("Unable to find resume location: %s", err.Error()))
 		return nil
 	}
 
 	if node.Router() == nil || node.Router().Wait() == nil {
-		failSession("can't resume from node without a router or wait")
+		failSession("Can't resume from node without a router or wait")
 		return nil
 	}
 
@@ -306,7 +305,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
 	if err != nil {
-		failSession(fmt.Sprintf("unable to resolve router exit: %s", err.Error()))
+		failSession(fmt.Sprintf("Unable to resolve router exit: %s", err.Error()))
 		return nil
 	}
 
@@ -407,16 +406,16 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 				if childRun.Status() != flows.RunStatusFailed {
 					// if flow for this run is a missing asset, we have a problem
 					if currentRun.Flow() == nil {
-						failRun(sprint, currentRun, nil, errors.New("can't resume run with missing flow asset"))
+						failRun(sprint, currentRun, nil, "Can't resume run with missing flow asset")
 					} else {
 						if exit, operand, err = s.findResumeExit(sprint, currentRun, false); err != nil {
-							failRun(sprint, currentRun, nil, fmt.Errorf("can't resume run as node no longer exists: %w", err))
+							failRun(sprint, currentRun, nil, "Can't resume run as node no longer exists")
 						}
 					}
 				} else {
 					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					failRun(sprint, currentRun, step, nil)
+					failRun(sprint, currentRun, step, "")
 				}
 
 			} else {
@@ -438,7 +437,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 
 			if numNewSteps > s.engine.Options().MaxStepsPerSprint {
 				// we've hit the step limit - usually a sign of a loop
-				failRun(sprint, currentRun, step, fmt.Errorf("reached maximum number of steps per sprint (%d)", s.engine.Options().MaxStepsPerSprint))
+				failRun(sprint, currentRun, step, fmt.Sprintf("Reached maximum number of steps per sprint (%d)", s.engine.Options().MaxStepsPerSprint))
 			} else {
 				node = currentRun.Flow().GetNode(destination)
 				if node == nil {
@@ -535,7 +534,7 @@ func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flo
 		}
 		// router didn't error.. but it failed to pick a category
 		if exitUUID == "" {
-			failRun(sprint, r, step, fmt.Errorf("router on node[uuid=%s] failed to pick a category", node.UUID()))
+			failRun(sprint, r, step, "Router failed to pick a category")
 			return nil, "", nil
 		}
 	} else if len(node.Exits()) > 0 {
@@ -569,10 +568,10 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventLogger) {
 	}
 }
 
-// utility to fail the current run and log a failRun event
-func failRun(sp *sprint, r *run, step flows.Step, err error) {
-	if err != nil {
-		evt := events.NewFailure(err)
+// utility to fail the current run and log a failure event
+func failRun(sp *sprint, r *run, step flows.Step, text string) {
+	if text != "" {
+		evt := events.NewFailure(text)
 		if step != nil {
 			evt.SetStep(step)
 		}
