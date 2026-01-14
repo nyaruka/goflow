@@ -80,7 +80,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 	case URNsAppend:
 		for _, urn := range urnz {
 			if len(contact.URNs()) >= flows.MaxContactURNs {
-				log(events.NewError(fmt.Sprintf("contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
+				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break
 			} else if contact.AddURN(urn) {
 				modified = true

@@ -90,11 +90,11 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	url = strings.TrimSpace(url)
 
 	if url == "" {
-		log(events.NewError("webhook URL evaluated to empty string", ""))
+		log(events.NewError("Webhook URL evaluated to empty string", ""))
 		return nil
 	}
 	if !isValidURL(url) {
-		log(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url), ""))
+		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", url), ""))
 		return nil
 	}
 

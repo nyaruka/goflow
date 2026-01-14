@@ -465,7 +465,7 @@
                 "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
-                "text": "contact has too many URNs, limit is 50"
+                "text": "Contact has too many URNs, limit is 50"
             },
             {
                 "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",

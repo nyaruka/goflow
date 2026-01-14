@@ -66,7 +66,7 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 
 	// footgun prevention
 	if run.Session().BatchStart() && (len(groupRefs) > 0 || contactQuery != "") {
-		log(events.NewError("can't send broadcasts to groups during batch starts", ""))
+		log(events.NewError("Can't send broadcasts to groups during batch starts", ""))
 		return nil
 	}
 

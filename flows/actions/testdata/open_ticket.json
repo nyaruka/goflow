@@ -15,7 +15,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]",
+                "text": "Missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]",
                 "code": "dependency_missing"
             }
         ],
@@ -69,7 +69,7 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "text": "can't open tickets during batch starts"
+                "text": "Can't open tickets during batch starts"
             }
         ],
         "locals_after": {
@@ -443,7 +443,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "no such user with email 'EVE@NYARUKA.COM'"
+                "text": "No such user with email 'EVE@NYARUKA.COM'"
             },
             {
                 "uuid": "01969b47-3c33-76f8-b86e-4b881f09a186",

@@ -49,7 +49,7 @@ func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		log(events.NewError("no input to add labels to", ""))
+		log(events.NewError("No input to add labels to", ""))
 		return nil
 	}
 

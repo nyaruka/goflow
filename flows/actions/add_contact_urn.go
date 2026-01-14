@@ -51,7 +51,7 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 	evaluatedPath, _ := run.EvaluateTemplate(a.Path, log)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
-		log(events.NewError("can't add URN with empty path", ""))
+		log(events.NewError("Can't add URN with empty path", ""))
 		return nil
 	}
 

@@ -17,7 +17,7 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "text": "no input to add labels to"
+                "text": "No input to add labels to"
             }
         ]
     },
@@ -71,7 +71,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "no such label with name 'Crazy Deals'"
+                "text": "No such label with name 'Crazy Deals'"
             }
         ]
     },
@@ -119,7 +119,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]",
+                "text": "Missing dependency: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]",
                 "code": "dependency_missing"
             }
         ],

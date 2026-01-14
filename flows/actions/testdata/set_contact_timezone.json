@@ -41,7 +41,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "unrecognized timezone: 'xxxxxxxxxx'"
+                "text": "Unrecognized timezone: 'xxxxxxxxxx'"
             }
         ],
         "templates": [

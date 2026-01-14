@@ -894,7 +894,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	// final session should have an error event
 	penultimateEvent := sprint.Events()[len(sprint.Events())-2]
 	assert.Equal(t, events.TypeError, penultimateEvent.Type())
-	assert.Equal(t, "too many sessions have been spawned since the last time input was received", penultimateEvent.(*events.Error).Text)
+	assert.Equal(t, "Too many sessions have been spawned since the last time input was received", penultimateEvent.(*events.Error).Text)
 	finalEvent := sprint.Events()[len(sprint.Events())-1]
 	assert.Equal(t, events.TypeRunEnded, finalEvent.Type())
 }
