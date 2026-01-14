@@ -588,7 +588,7 @@ func failRun(sp *sprint, r *run, step flows.Step, err error) {
 type sessionEnvelope struct {
 	UUID        flows.SessionUUID   `json:"uuid"                validate:"required"`
 	Type        flows.FlowType      `json:"type"                validate:"required"`
-	CreatedOn   time.Time           `json:"created_on"` // TODO validate:"required"`
+	CreatedOn   time.Time           `json:"created_on"          validate:"required"`
 	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
 	ContactUUID flows.ContactUUID   `json:"contact_uuid"        validate:"required,uuid"`
 	CallUUID    flows.CallUUID      `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
