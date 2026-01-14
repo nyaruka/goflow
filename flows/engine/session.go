@@ -416,7 +416,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 				} else {
 					// if we did fail then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					failRun(sprint, currentRun, step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.FlowReference().UUID))
+					failRun(sprint, currentRun, step, nil)
 				}
 
 			} else {
@@ -571,13 +571,17 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventLogger) {
 
 // utility to fail the current run and log a failRun event
 func failRun(sp *sprint, r *run, step flows.Step, err error) {
-	evt := events.NewFailure(err)
-	if step != nil {
-		evt.SetStep(step)
+	if err != nil {
+		evt := events.NewFailure(err)
+		if step != nil {
+			evt.SetStep(step)
+		}
+
+		sp.logEvent(evt)
 	}
 
 	r.Exit(flows.RunStatusFailed)
-	sp.logEvent(evt)
+
 	sp.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), flows.RunStatusFailed))
 }
 
