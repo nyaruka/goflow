@@ -17,6 +17,7 @@ const TypeError string = "error"
 const (
 	ErrorCodeDependencyMissing = "dependency_missing"
 	ErrorCodeURNTaken          = "urn_taken"
+	ErrorCodeExpression        = "expression"
 )
 
 // Error events are created when an error occurs during flow execution.
@@ -32,16 +33,29 @@ const (
 type Error struct {
 	BaseEvent
 
-	Text string `json:"text"           validate:"required"`
-	Code string `json:"code,omitempty"`
+	Text  string            `json:"text"           validate:"required"`
+	Code  string            `json:"code,omitempty"`
+	Extra map[string]string `json:"extra,omitempty"`
 }
 
 // NewError returns a new error event for the passed in text
-func NewError(text, code string) *Error {
+func NewError(text, code string, extra ...string) *Error {
+	var extraMap map[string]string
+	if len(extra)%2 != 0 {
+		panic("extra fields must be key/value pairs")
+	}
+	if len(extra) > 0 {
+		extraMap = make(map[string]string, len(extra)/2)
+		for i := 0; i < len(extra); i += 2 {
+			extraMap[extra[i]] = extra[i+1]
+		}
+	}
+
 	return &Error{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      text,
 		Code:      code,
+		Extra:     extraMap,
 	}
 }
 

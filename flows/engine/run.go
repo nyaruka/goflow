@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -308,7 +309,7 @@ func (r *run) EvaluateTemplateValue(template string, log flows.EventLogger) (typ
 
 	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
 	if err != nil {
-		log(events.NewRawError(err))
+		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
 		log(events.NewWarning(w))
@@ -322,7 +323,7 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 
 	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
 	if err != nil {
-		log(events.NewRawError(err))
+		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
 		log(events.NewWarning(w))
@@ -331,6 +332,17 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)
 	}
 	return value, err == nil
+}
+
+func (r *run) errorToEvents(err error, log flows.EventLogger) {
+	var tplErrs *excellent.TemplateErrors
+	if errors.As(err, &tplErrs) {
+		for _, terr := range tplErrs.Errors {
+			log(events.NewError(fmt.Sprintf("Error evaluating expression: %s", terr.Message), events.ErrorCodeExpression, "expression", terr.Expression))
+		}
+	} else {
+		log(events.NewRawError(err))
+	}
 }
 
 // EvaluateTemplate is a convenience function for evaluating as text with truncating but no escaping

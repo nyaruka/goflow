@@ -243,8 +243,12 @@
                     "uuid": "01969b47-99f3-76f8-b62c-3c781ca3b5da"
                 },
                 {
+                    "code": "expression",
                     "created_on": "2025-05-04T12:31:26.123456789Z",
-                    "text": "error evaluating @results.webhook.value: object has no property 'webhook'",
+                    "extra": {
+                        "expression": "@results.webhook.value"
+                    },
+                    "text": "Error evaluating expression: object has no property 'webhook'",
                     "type": "error",
                     "uuid": "01969b47-a1c3-76f8-af9c-ff2f1faac4db"
                 },

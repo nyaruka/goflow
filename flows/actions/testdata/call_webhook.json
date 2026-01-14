@@ -66,19 +66,31 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "error evaluating @(1 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(1 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "text": "error evaluating @(3 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(3 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
-                "text": "error evaluating @(2 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(2 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-4fbb-76f8-a691-235cbe720980",
