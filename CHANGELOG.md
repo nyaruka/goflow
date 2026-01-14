@@ -1,3 +1,7 @@
+v0.263.4 (2026-01-14)
+-------------------------
+ * Change failure event messages to be user facing
+
 v0.263.3 (2026-01-14)
 -------------------------
  * Don't create failure events in parent runs when unwinding from failure
