@@ -1,3 +1,8 @@
+v0.263.3 (2026-01-14)
+-------------------------
+ * Don't create failure events in parent runs when unwinding from failure
+ * Make Session.created_on required
+
 v0.263.2 (2026-01-12)
 -------------------------
  * Add codes to error events
