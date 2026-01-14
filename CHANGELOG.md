@@ -1,3 +1,10 @@
+v0.263.5 (2026-01-14)
+-------------------------
+ * Tweak error messages related to URN claiming
+ * Make error events from template evaluation more user friendly
+ * Truncate bad webhook URL error message
+ * Update error event texts to be more user friendly
+
 v0.263.4 (2026-01-14)
 -------------------------
  * Change failure event messages to be user facing
