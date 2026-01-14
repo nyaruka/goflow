@@ -75,7 +75,7 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 
 func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input string, classifier *flows.Classifier, log flows.EventLogger) (*flows.Classification, bool) {
 	if input == "" {
-		log(events.NewError("can't classify empty input, skipping classification", ""))
+		log(events.NewError("Can't classify empty input, skipping", ""))
 		return nil, true
 	}
 	if classifier == nil {
@@ -85,7 +85,7 @@ func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input stri
 
 	svc, err := run.Session().Engine().Services().Classification(classifier)
 	if err != nil {
-		log(events.NewError(err.Error(), ""))
+		log(events.NewRawError(err))
 		return nil, false
 	}
 
@@ -98,7 +98,7 @@ func (a *CallClassifier) classify(ctx context.Context, run flows.Run, input stri
 	}
 
 	if err != nil {
-		log(events.NewError(err.Error(), ""))
+		log(events.NewRawError(err))
 		return nil, false
 	}
 

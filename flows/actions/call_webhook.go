@@ -9,6 +9,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -90,11 +91,11 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	url = strings.TrimSpace(url)
 
 	if url == "" {
-		log(events.NewError("webhook URL evaluated to empty string", ""))
+		log(events.NewError("Webhook URL evaluated to empty string", ""))
 		return nil
 	}
 	if !isValidURL(url) {
-		log(events.NewError(fmt.Sprintf("webhook URL evaluated to an invalid URL: '%s'", url), ""))
+		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", stringsx.TruncateEllipsis(url, 255)), ""))
 		return nil
 	}
 

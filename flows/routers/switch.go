@@ -171,7 +171,7 @@ func (r *Switch) matchCase(run flows.Run, operand types.XValue, log flows.EventL
 		switch typed := result.(type) {
 		case *types.XError:
 			// test functions can return an error
-			log(events.NewError(fmt.Sprintf("error calling test %s: %s", xtest.Describe(), typed.Error()), ""))
+			log(events.NewError(fmt.Sprintf("Error calling test %s: %s", xtest.Describe(), typed.Error()), ""))
 		case *types.XObject:
 			matched := typed.Truthy()
 			if !matched {
@@ -183,7 +183,7 @@ func (r *Switch) matchCase(run flows.Run, operand types.XValue, log flows.EventL
 
 			extraAsObject, isObject := extra.(*types.XObject)
 			if extra != nil && !isObject {
-				log(events.NewError(fmt.Sprintf("test %s returned non-object extra", strings.ToUpper(test)), ""))
+				log(events.NewError(fmt.Sprintf("Test %s returned non-object extra", strings.ToUpper(test)), ""))
 			}
 
 			resultAsStr, xerr := types.ToXText(run.Session().MergedEnvironment(), match)

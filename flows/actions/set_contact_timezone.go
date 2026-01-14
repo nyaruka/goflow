@@ -59,7 +59,7 @@ func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step fl
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			log(events.NewError(fmt.Sprintf("unrecognized timezone: '%s'", timezone), ""))
+			log(events.NewError(fmt.Sprintf("Unrecognized timezone: '%s'", timezone), ""))
 			return nil
 		}
 	}

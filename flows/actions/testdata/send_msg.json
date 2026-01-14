@@ -85,7 +85,7 @@
                 "uuid": "01969b47-47eb-76f8-a691-235cbe720980",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:03.123456789Z",
-                "text": "attachment evaluated to invalid value, skipping"
+                "text": "Attachment evaluated to invalid value and will be ignored"
             },
             {
                 "uuid": "01969b47-4fbb-76f8-bebe-b4a1f677cf4c",
@@ -103,7 +103,7 @@
                 "uuid": "01969b47-5f5b-76f8-acca-bbca70987315",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:09.123456789Z",
-                "text": "quick reply evaluated to empty string, skipping"
+                "text": "Quick reply evaluated to empty string and will be ignored"
             },
             {
                 "uuid": "01969b47-672b-76f8-afcb-91a2073e5459",
@@ -150,13 +150,13 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "attachment evaluated to invalid value, skipping"
+                "text": "Attachment evaluated to invalid value and will be ignored"
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "text": "quick reply evaluated to empty string, skipping"
+                "text": "Quick reply evaluated to empty string and will be ignored"
             },
             {
                 "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
@@ -190,7 +190,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "evaluated attachment is longer than 2048 limit, skipping"
+                "text": "Evaluated attachment is longer than the 2048 limit and will be ignored"
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",

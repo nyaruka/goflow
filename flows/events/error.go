@@ -52,5 +52,5 @@ func NewRawError(err error) *Error {
 
 // NewDependencyError returns an error event for a missing dependency
 func NewDependencyError(ref assets.Reference) *Error {
-	return NewError(fmt.Sprintf("missing dependency: %s", ref.String()), ErrorCodeDependencyMissing)
+	return NewError(fmt.Sprintf("Missing dependency: %s", ref.String()), ErrorCodeDependencyMissing)
 }

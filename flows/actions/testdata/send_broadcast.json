@@ -43,7 +43,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
+                "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
                 "code": "dependency_missing"
             }
         ],
@@ -100,7 +100,7 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "text": "can't send broadcasts to groups during batch starts"
+                "text": "Can't send broadcasts to groups during batch starts"
             }
         ]
     },

@@ -30,7 +30,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
+                "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
                 "code": "dependency_missing"
             }
         ],
@@ -82,7 +82,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "can't add contacts to the query based group 'Females'"
+                "text": "Can't add contacts to the query based group 'Females'"
             }
         ]
     },
@@ -136,7 +136,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "no such group with name 'Climbers'"
+                "text": "No such group with name 'Climbers'"
             }
         ],
         "templates": [

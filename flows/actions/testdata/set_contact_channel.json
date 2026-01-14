@@ -89,7 +89,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]",
+                "text": "Missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]",
                 "code": "dependency_missing"
             }
         ],
@@ -139,7 +139,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "can't set channel that can't send as the preferred channel"
+                "text": "Can't set channel that can't send as the preferred channel"
             }
         ]
     }
