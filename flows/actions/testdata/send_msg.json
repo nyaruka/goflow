@@ -67,19 +67,31 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "error evaluating @(1 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(1 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "text": "error evaluating @(1 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(1 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
-                "text": "error evaluating @(xxxxx): context has no property 'xxxxx'"
+                "text": "Error evaluating expression: context has no property 'xxxxx'",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(xxxxx)"
+                }
             },
             {
                 "uuid": "01969b47-47eb-76f8-a691-235cbe720980",
@@ -91,13 +103,21 @@
                 "uuid": "01969b47-4fbb-76f8-bebe-b4a1f677cf4c",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:05.123456789Z",
-                "text": "error evaluating @(1 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(1 / 0)"
+                }
             },
             {
                 "uuid": "01969b47-578b-76f8-8dbf-00ecf5d03034",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:07.123456789Z",
-                "text": "error evaluating @(xxxxx): context has no property 'xxxxx'"
+                "text": "Error evaluating expression: context has no property 'xxxxx'",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(xxxxx)"
+                }
             },
             {
                 "uuid": "01969b47-5f5b-76f8-acca-bbca70987315",

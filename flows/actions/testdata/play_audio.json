@@ -13,7 +13,11 @@
                 "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
-                "text": "error evaluating @(1 / 0): division by zero"
+                "text": "Error evaluating expression: division by zero",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(1 / 0)"
+                }
             }
         ],
         "templates": [

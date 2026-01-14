@@ -165,8 +165,12 @@
                     "value": "Ok"
                 },
                 {
+                    "code": "expression",
                     "created_on": "2025-05-04T12:31:19.123456789Z",
-                    "text": "error evaluating @webhook.json: null doesn't support lookups",
+                    "extra": {
+                        "expression": "@webhook.json"
+                    },
+                    "text": "Error evaluating expression: null doesn't support lookups",
                     "type": "error",
                     "uuid": "01969b47-866b-76f8-9654-8a7258fbaae4"
                 },

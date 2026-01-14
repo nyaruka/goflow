@@ -1,364 +1,507 @@
 [
     {
         "template": "@contact.uuid",
-        "output": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        "output": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+        "events": []
     },
     {
         "template": "@contact.id",
-        "output": "1234567"
+        "output": "1234567",
+        "events": [
+            {
+                "uuid": "01969b48-f1b3-76f8-8ceb-17799a976525",
+                "type": "warning",
+                "created_on": "2025-05-04T12:32:52.123456789Z",
+                "text": "deprecated context value accessed: contact.id: use contact.ref instead"
+            }
+        ]
     },
     {
         "template": "@CONTACT.NAME",
-        "output": "Ryan Lewis"
+        "output": "Ryan Lewis",
+        "events": []
     },
     {
         "template": "@contact.name",
-        "output": "Ryan Lewis"
+        "output": "Ryan Lewis",
+        "events": []
     },
     {
         "template": "@contact.language",
-        "output": "eng"
+        "output": "eng",
+        "events": []
     },
     {
         "template": "@contact.timezone",
-        "output": "America/Guayaquil"
+        "output": "America/Guayaquil",
+        "events": []
     },
     {
         "template": "@contact.urn",
-        "output": "tel:+12024561111"
+        "output": "tel:+12024561111",
+        "events": []
     },
     {
         "template": "@(urn_parts(contact.urn).scheme)",
-        "output": "tel"
+        "output": "tel",
+        "events": []
     },
     {
         "template": "@(urn_parts(contact.urn).path)",
-        "output": "+12024561111"
+        "output": "+12024561111",
+        "events": []
     },
     {
         "template": "@(format_urn(contact.urn))",
-        "output": "(202) 456-1111"
+        "output": "(202) 456-1111",
+        "events": []
     },
     {
         "template": "@contact.urn",
         "redact_urns": true,
-        "output": "tel:********"
+        "output": "tel:********",
+        "events": []
     },
     {
         "template": "@(urn_parts(contact.urn).scheme)",
         "redact_urns": true,
-        "output": "tel"
+        "output": "tel",
+        "events": []
     },
     {
         "template": "@(urn_parts(contact.urn).path)",
         "redact_urns": true,
-        "output": "********"
+        "output": "********",
+        "events": []
     },
     {
         "template": "@(format_urn(contact.urn))",
         "redact_urns": true,
-        "output": "********"
+        "output": "********",
+        "events": []
     },
     {
         "template": "@contact.urns",
-        "output": "[tel:+12024561111, twitterid:54784326227#nyaruka, mailto:foo@bar.com]"
+        "output": "[tel:+12024561111, twitterid:54784326227#nyaruka, mailto:foo@bar.com]",
+        "events": []
     },
     {
         "template": "@(contact.urns[0])",
-        "output": "tel:+12024561111"
+        "output": "tel:+12024561111",
+        "events": []
     },
     {
         "template": "@(contact.urns[110])",
-        "error": "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"
+        "events": [
+            {
+                "uuid": "01969b48-f983-76f8-9504-776e7d151101",
+                "type": "error",
+                "created_on": "2025-05-04T12:32:54.123456789Z",
+                "text": "Error evaluating expression: index 110 out of range for 3 items",
+                "code": "expression",
+                "extra": {
+                    "expression": "@(contact.urns[110])"
+                }
+            }
+        ]
     },
     {
         "template": "@(urn_parts(contact.urns[0]).scheme)",
-        "output": "tel"
+        "output": "tel",
+        "events": []
     },
     {
         "template": "@(urn_parts(contact.urns[0]).path)",
-        "output": "+12024561111"
+        "output": "+12024561111",
+        "events": []
     },
     {
-        "template": "@(urn_parts(contact.urns[0]).display)"
+        "template": "@(urn_parts(contact.urns[0]).display)",
+        "events": []
     },
     {
         "template": "@(contact.urns[1])",
-        "output": "twitterid:54784326227#nyaruka"
+        "output": "twitterid:54784326227#nyaruka",
+        "events": []
     },
     {
         "template": "@(format_urn(contact.urns[0]))",
-        "output": "(202) 456-1111"
+        "output": "(202) 456-1111",
+        "events": []
     },
     {
         "template": "@contact.urns",
         "redact_urns": true,
-        "output": "[tel:********, twitterid:********, mailto:********]"
+        "output": "[tel:********, twitterid:********, mailto:********]",
+        "events": []
     },
     {
         "template": "@(contact.urns[0])",
         "redact_urns": true,
-        "output": "tel:********"
+        "output": "tel:********",
+        "events": []
     },
     {
         "template": "@urns",
-        "output": "{ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }"
+        "output": "{ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }",
+        "events": []
     },
     {
         "template": "@urns.tel",
-        "output": "tel:+12024561111"
+        "output": "tel:+12024561111",
+        "events": []
     },
     {
         "template": "@urns.mailto",
-        "output": "mailto:foo@bar.com"
+        "output": "mailto:foo@bar.com",
+        "events": []
     },
     {
-        "template": "@urns.viber"
+        "template": "@urns.viber",
+        "events": []
     },
     {
         "template": "@(format_urn(urns.tel))",
-        "output": "(202) 456-1111"
+        "output": "(202) 456-1111",
+        "events": []
     },
     {
         "template": "@urns.tel",
         "redact_urns": true,
-        "output": "tel:********"
+        "output": "tel:********",
+        "events": []
     },
     {
         "template": "@urns.viber",
-        "redact_urns": true
+        "redact_urns": true,
+        "events": []
     },
     {
         "template": "@(foreach(contact.groups, extract, \"name\"))",
-        "output": "[Testers, Males]"
+        "output": "[Testers, Males]",
+        "events": []
     },
     {
         "template": "@(join(foreach(contact.groups, extract, \"name\"), \"|\"))",
-        "output": "Testers|Males"
+        "output": "Testers|Males",
+        "events": []
     },
     {
         "template": "@(count(contact.groups))",
-        "output": "2"
+        "output": "2",
+        "events": []
     },
     {
         "template": "@contact.fields",
-        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"
+        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00",
+        "events": []
     },
     {
         "template": "@contact.fields.activation_token",
-        "output": "AACC55"
+        "output": "AACC55",
+        "events": []
     },
     {
         "template": "@contact.fields.age",
-        "output": "23"
+        "output": "23",
+        "events": []
     },
     {
         "template": "@contact.fields.join_date",
-        "output": "2017-12-02T00:00:00.000000-02:00"
+        "output": "2017-12-02T00:00:00.000000-02:00",
+        "events": []
     },
     {
         "template": "@contact.fields.favorite_icecream",
-        "error": "error evaluating @contact.fields.favorite_icecream: object has no property 'favorite_icecream'"
+        "events": [
+            {
+                "uuid": "01969b49-0153-76f8-998e-ae5bd773804a",
+                "type": "error",
+                "created_on": "2025-05-04T12:32:56.123456789Z",
+                "text": "Error evaluating expression: object has no property 'favorite_icecream'",
+                "code": "expression",
+                "extra": {
+                    "expression": "@contact.fields.favorite_icecream"
+                }
+            }
+        ]
     },
     {
         "template": "@(is_error(contact.fields.favorite_icecream))",
-        "output": "true"
+        "output": "true",
+        "events": []
     },
     {
         "template": "@(has_error(contact.fields.favorite_icecream).match)",
-        "output": "object has no property 'favorite_icecream'"
+        "output": "object has no property 'favorite_icecream'",
+        "events": []
     },
     {
         "template": "@(count(contact.fields))",
-        "output": "7"
+        "output": "7",
+        "events": []
     },
     {
         "template": "@fields",
-        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00"
+        "output": "Activation Token: AACC55\nAge: 23\nGender: Male\nJoin Date: 2017-12-02T00:00:00.000000-02:00",
+        "events": []
     },
     {
         "template": "@fields.activation_token",
-        "output": "AACC55"
+        "output": "AACC55",
+        "events": []
     },
     {
         "template": "@fields.age",
-        "output": "23"
+        "output": "23",
+        "events": []
     },
     {
         "template": "@fields.join_date",
-        "output": "2017-12-02T00:00:00.000000-02:00"
+        "output": "2017-12-02T00:00:00.000000-02:00",
+        "events": []
     },
     {
         "template": "@fields.favorite_icecream",
-        "error": "error evaluating @fields.favorite_icecream: object has no property 'favorite_icecream'"
+        "events": [
+            {
+                "uuid": "01969b49-0923-76f8-87bc-209e78511534",
+                "type": "error",
+                "created_on": "2025-05-04T12:32:58.123456789Z",
+                "text": "Error evaluating expression: object has no property 'favorite_icecream'",
+                "code": "expression",
+                "extra": {
+                    "expression": "@fields.favorite_icecream"
+                }
+            }
+        ]
     },
     {
         "template": "@(is_error(fields.favorite_icecream))",
-        "output": "true"
+        "output": "true",
+        "events": []
     },
     {
         "template": "@(has_error(fields.favorite_icecream).match)",
-        "output": "object has no property 'favorite_icecream'"
+        "output": "object has no property 'favorite_icecream'",
+        "events": []
     },
     {
         "template": "@(count(fields))",
-        "output": "7"
+        "output": "7",
+        "events": []
     },
     {
         "template": "@input",
-        "output": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3"
+        "output": "Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3",
+        "events": []
     },
     {
         "template": "@input.text",
-        "output": "Hi there"
+        "output": "Hi there",
+        "events": []
     },
     {
         "template": "@input.attachments",
-        "output": "[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]"
+        "output": "[image/jpeg:http://s3.amazon.com/bucket/test.jpg, audio/mp3:http://s3.amazon.com/bucket/test.mp3]",
+        "events": []
     },
     {
         "template": "@(input.attachments[0])",
-        "output": "image/jpeg:http://s3.amazon.com/bucket/test.jpg"
+        "output": "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+        "events": []
     },
     {
         "template": "@input.created_on",
-        "output": "2017-12-31T11:35:09.123456Z"
+        "output": "2017-12-31T11:35:09.123456Z",
+        "events": []
     },
     {
         "template": "@input.channel.name",
-        "output": "My Android Phone"
+        "output": "My Android Phone",
+        "events": []
     },
     {
         "template": "@results.favorite_color",
-        "output": "red"
+        "output": "red",
+        "events": []
     },
     {
         "template": "@results.favorite_color.value",
-        "output": "red"
+        "output": "red",
+        "events": []
     },
     {
         "template": "@results.favorite_color.category",
-        "output": "Red"
+        "output": "Red",
+        "events": []
     },
     {
         "template": "@results.favorite_color.category_localized",
-        "output": "Red"
+        "output": "Red",
+        "events": []
     },
     {
         "template": "@(is_error(results.favorite_icecream))",
-        "output": "true"
+        "output": "true",
+        "events": []
     },
     {
         "template": "@(has_error(results.favorite_icecream).match)",
-        "output": "object has no property 'favorite_icecream'"
+        "output": "object has no property 'favorite_icecream'",
+        "events": []
     },
     {
         "template": "@(count(results))",
-        "output": "5"
+        "output": "5",
+        "events": []
     },
     {
         "template": "@run.results.favorite_color",
-        "output": "red"
+        "output": "red",
+        "events": []
     },
     {
         "template": "@run.results.favorite_color.value",
-        "output": "red"
+        "output": "red",
+        "events": []
     },
     {
         "template": "@run.results.favorite_color.category",
-        "output": "Red"
+        "output": "Red",
+        "events": []
     },
     {
         "template": "@run.results.favorite_color.category_localized",
-        "output": "Red"
+        "output": "Red",
+        "events": []
     },
     {
         "template": "@run.results.favorite_icecream",
-        "error": "error evaluating @run.results.favorite_icecream: object has no property 'favorite_icecream'"
+        "events": [
+            {
+                "uuid": "01969b49-10f3-76f8-8a34-b008aed3f772",
+                "type": "error",
+                "created_on": "2025-05-04T12:33:00.123456789Z",
+                "text": "Error evaluating expression: object has no property 'favorite_icecream'",
+                "code": "expression",
+                "extra": {
+                    "expression": "@run.results.favorite_icecream"
+                }
+            }
+        ]
     },
     {
         "template": "@(is_error(run.results.favorite_icecream))",
-        "output": "true"
+        "output": "true",
+        "events": []
     },
     {
         "template": "@(has_error(run.results.favorite_icecream).match)",
-        "output": "object has no property 'favorite_icecream'"
+        "output": "object has no property 'favorite_icecream'",
+        "events": []
     },
     {
         "template": "@(count(run.results))",
-        "output": "5"
+        "output": "5",
+        "events": []
     },
     {
         "template": "@run.status",
-        "output": "completed"
+        "output": "completed",
+        "events": []
     },
     {
         "template": "@webhook.headers",
-        "output": "{Content-Length: 43, Content-Type: text/plain; charset=utf-8, Date: Wed, 11 Apr 2018 18:24:30 GMT}"
+        "output": "{Content-Length: 43, Content-Type: text/plain; charset=utf-8, Date: Wed, 11 Apr 2018 18:24:30 GMT}",
+        "events": []
     },
     {
         "template": "@(webhook.headers[\"Content-Type\"])",
-        "output": "text/plain; charset=utf-8"
+        "output": "text/plain; charset=utf-8",
+        "events": []
     },
     {
         "template": "@webhook.json",
-        "output": "{results: [{state: WA}, {state: IN}]}"
+        "output": "{results: [{state: WA}, {state: IN}]}",
+        "events": []
     },
     {
         "template": "@webhook.json.results",
-        "output": "[{state: WA}, {state: IN}]"
+        "output": "[{state: WA}, {state: IN}]",
+        "events": []
     },
     {
         "template": "@(webhook.json.results[1])",
-        "output": "{state: IN}"
+        "output": "{state: IN}",
+        "events": []
     },
     {
         "template": "@(webhook.json.results[1].state)",
-        "output": "IN"
+        "output": "IN",
+        "events": []
     },
     {
         "template": "@trigger.params",
-        "output": "{address: {state: WA}, source: website}"
+        "output": "{address: {state: WA}, source: website}",
+        "events": []
     },
     {
         "template": "@trigger.params.source",
-        "output": "website"
+        "output": "website",
+        "events": []
     },
     {
         "template": "@(count(trigger.params.address))",
-        "output": "1"
+        "output": "1",
+        "events": []
     },
     {
         "template": "@(if(is_error(results.favorite_color.value), \"@flow.favorite_color\", results.favorite_color.value))",
-        "output": "red"
+        "output": "red",
+        "events": []
     },
     {
         "template": "@(if(is_error(legacy_extra[\"0\"].default_city), \"@extra.0.default_city\", legacy_extra[\"0\"].default_city))",
-        "output": "@extra.0.default_city"
+        "output": "@extra.0.default_city",
+        "events": [
+            {
+                "uuid": "01969b49-18c3-76f8-8c15-15a7c0c5228d",
+                "type": "warning",
+                "created_on": "2025-05-04T12:33:02.123456789Z",
+                "text": "deprecated context value accessed: legacy_extra"
+            }
+        ]
     },
     {
         "template": "bob@nyaruka.com",
-        "output": "bob@nyaruka.com"
+        "output": "bob@nyaruka.com",
+        "events": []
     },
     {
         "template": "@twitter_handle",
-        "output": "@twitter_handle"
+        "output": "@twitter_handle",
+        "events": []
     },
     {
         "template": "@(json(contact.uuid))",
-        "output": "\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\""
+        "output": "\"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\"",
+        "events": []
     },
     {
         "template": "@(json(contact.name))",
-        "output": "\"Ryan Lewis\""
+        "output": "\"Ryan Lewis\"",
+        "events": []
     },
     {
         "template": "@(json(contact.urns))",
-        "output": "[\"tel:+12024561111\",\"twitterid:54784326227#nyaruka\",\"mailto:foo@bar.com\"]"
+        "output": "[\"tel:+12024561111\",\"twitterid:54784326227#nyaruka\",\"mailto:foo@bar.com\"]",
+        "events": []
     },
     {
         "template": "@(json(contact.urns[0]))",
-        "output": "\"tel:+12024561111\""
+        "output": "\"tel:+12024561111\"",
+        "events": []
     },
     {
         "template": "@(json(contact.fields))",
@@ -370,23 +513,35 @@
             "language": null,
             "not_set": null,
             "state": null
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(contact.fields.age))",
-        "output": "23"
+        "output": "23",
+        "events": []
     },
     {
         "template": "@(json(contact.tickets))",
-        "output": "[{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]"
+        "output": "[{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}]",
+        "events": [
+            {
+                "uuid": "01969b49-2093-76f8-9c02-6222e1badc14",
+                "type": "warning",
+                "created_on": "2025-05-04T12:33:04.123456789Z",
+                "text": "deprecated context value accessed: contact.tickets: use ticket instead"
+            }
+        ]
     },
     {
         "template": "@ticket",
-        "output": "{assignee: Bob, topic: Weather, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}"
+        "output": "{assignee: Bob, topic: Weather, uuid: 78d1fe0d-7e39-461e-81c3-a6a25f15ed69}",
+        "events": []
     },
     {
         "template": "@(json(ticket))",
-        "output": "{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}"
+        "output": "{\"assignee\":{\"email\":\"bob@nyaruka.com\",\"first_name\":\"Bob\",\"name\":\"Bob\"},\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"78d1fe0d-7e39-461e-81c3-a6a25f15ed69\"}",
+        "events": []
     },
     {
         "template": "@(json(contact))",
@@ -445,7 +600,8 @@
                 "mailto:foo@bar.com"
             ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(input))",
@@ -465,7 +621,8 @@
             "type": "msg",
             "urn": "tel:+12065551212",
             "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(run))",
@@ -642,7 +799,8 @@
             },
             "status": "completed",
             "uuid": "01969b47-113b-76f8-9c0b-2014ddc77094"
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(child))",
@@ -755,7 +913,8 @@
                 "whatsapp": null
             },
             "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623"
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(parent))",
@@ -844,7 +1003,8 @@
                 "whatsapp": null
             },
             "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
-        }
+        },
+        "events": []
     },
     {
         "template": "@(json(trigger))",
@@ -862,6 +1022,7 @@
             "ticket": null,
             "type": "flow_action",
             "user": null
-        }
+        },
+        "events": []
     }
 ]

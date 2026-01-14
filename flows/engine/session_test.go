@@ -45,7 +45,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		Output     string          `json:"output,omitempty"`
 		OutputJSON json.RawMessage `json:"output_json,omitempty"`
-		Error      string          `json:"error,omitempty"`
+		Events     json.RawMessage `json:"events,omitempty"`
 	}{}
 
 	jsonx.MustUnmarshal(testFile, &tests)
@@ -59,7 +59,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		}
 
 		log := test.NewEventLog()
-		eval, ok := run.EvaluateTemplate(tc.Template, log.Log)
+		eval, _ := run.EvaluateTemplate(tc.Template, log.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
@@ -68,9 +68,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		} else {
 			actual.Output = eval
 		}
-		if !ok {
-			actual.Error = log.Error().Error()
-		}
+
+		actual.Events = jsonx.MustMarshal(log.Events)
 
 		if !test.UpdateSnapshots {
 			if tc.OutputJSON != nil {
@@ -78,7 +77,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			} else {
 				assert.Equal(t, tc.Output, actual.Output, "output mismatch evaluating template: '%s'", tc.Template)
 			}
-			assert.Equal(t, tc.Error, actual.Error, "error mismatch evaluating template: '%s'", tc.Template)
+			test.AssertEqualJSON(t, tc.Events, actual.Events, "events mismatch evaluating template: '%s'", tc.Template)
 		} else {
 			tests[i] = actual
 		}
