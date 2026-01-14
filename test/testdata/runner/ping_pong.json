@@ -1,0 +1,168 @@
+{
+    "flows": [
+        {
+            "uuid": "2e9c05fa-2c89-4035-983f-0da6a7c0a6bc",
+            "name": "Ping",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c",
+                    "actions": [
+                        {
+                            "uuid": "fda917c7-fb22-4553-8e12-85dca0599710",
+                            "type": "enter_flow",
+                            "flow": {
+                                "uuid": "e38a1fdd-3d36-45d1-a396-959e36231ddd",
+                                "name": "Pong"
+                            }
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@child.status",
+                        "cases": [
+                            {
+                                "uuid": "5011c74f-22ff-4a35-9e08-77765d8999e8",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "completed"
+                                ],
+                                "category_uuid": "23be2581-96cb-4d78-b907-81603e692a8b"
+                            },
+                            {
+                                "uuid": "3d0eb456-93d0-4bf7-946d-603589de3ed8",
+                                "arguments": [
+                                    "expired"
+                                ],
+                                "type": "has_only_text",
+                                "category_uuid": "ec06cc75-eee5-4a17-8a60-7ccb914fb33c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "23be2581-96cb-4d78-b907-81603e692a8b",
+                                "name": "Complete",
+                                "exit_uuid": "224700d3-4a0a-48c3-9edf-dc05c590ddda"
+                            },
+                            {
+                                "uuid": "ec06cc75-eee5-4a17-8a60-7ccb914fb33c",
+                                "name": "Expired",
+                                "exit_uuid": "0dae3011-9ad3-401d-9e2b-ef6d706ad953"
+                            }
+                        ],
+                        "default_category_uuid": "ec06cc75-eee5-4a17-8a60-7ccb914fb33c"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "224700d3-4a0a-48c3-9edf-dc05c590ddda",
+                            "destination_uuid": null
+                        },
+                        {
+                            "uuid": "0dae3011-9ad3-401d-9e2b-ef6d706ad953",
+                            "destination_uuid": null
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "f603b93d-d2a3-41b2-87ba-60e37184998c": {
+                        "type": "split_by_subflow",
+                        "position": {
+                            "left": 0,
+                            "top": 0
+                        },
+                        "config": {}
+                    }
+                }
+            },
+            "revision": 2,
+            "expire_after_minutes": 10080,
+            "localization": {}
+        },
+        {
+            "uuid": "e38a1fdd-3d36-45d1-a396-959e36231ddd",
+            "name": "Pong",
+            "spec_version": "13.1.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90",
+                    "actions": [
+                        {
+                            "uuid": "18fc87c2-c28b-48b9-8fb9-8cf5b721f71e",
+                            "type": "enter_flow",
+                            "flow": {
+                                "uuid": "2e9c05fa-2c89-4035-983f-0da6a7c0a6bc",
+                                "name": "Ping"
+                            }
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@child.status",
+                        "cases": [
+                            {
+                                "uuid": "105eb64d-f01c-41e1-86fc-5bc847d11444",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "completed"
+                                ],
+                                "category_uuid": "6f8ca574-745c-4c9a-bbcd-bb5c724af05e"
+                            },
+                            {
+                                "uuid": "6f650687-f8f6-4875-a22b-193eafe71300",
+                                "arguments": [
+                                    "expired"
+                                ],
+                                "type": "has_only_text",
+                                "category_uuid": "ac306c30-523c-496c-a97f-269da68fde64"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "6f8ca574-745c-4c9a-bbcd-bb5c724af05e",
+                                "name": "Complete",
+                                "exit_uuid": "aacd5bcb-9291-4854-b3ce-1b68c0b0fe93"
+                            },
+                            {
+                                "uuid": "ac306c30-523c-496c-a97f-269da68fde64",
+                                "name": "Expired",
+                                "exit_uuid": "71ebf028-f388-4b0f-8008-f5557e5b676e"
+                            }
+                        ],
+                        "default_category_uuid": "ac306c30-523c-496c-a97f-269da68fde64"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "aacd5bcb-9291-4854-b3ce-1b68c0b0fe93",
+                            "destination_uuid": null
+                        },
+                        {
+                            "uuid": "71ebf028-f388-4b0f-8008-f5557e5b676e",
+                            "destination_uuid": null
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "a73d356d-d85f-4d1a-9744-28bb9884ae90": {
+                        "type": "split_by_subflow",
+                        "position": {
+                            "left": 0,
+                            "top": 0
+                        },
+                        "config": {}
+                    }
+                }
+            },
+            "revision": 2,
+            "expire_after_minutes": 10080,
+            "localization": {}
+        }
+    ]
+}
