@@ -68,7 +68,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
 			}
 			if !claimed {
-				log(events.NewError(fmt.Sprintf("URN '%s' is taken", urn), events.ErrorCodeURNTaken))
+				log(events.NewError("URN is taken by another contact", events.ErrorCodeURNTaken, "urn", string(urn)))
 				continue
 			}
 		}
