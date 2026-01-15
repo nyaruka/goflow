@@ -1,3 +1,7 @@
+v0.263.6 (2026-01-15)
+-------------------------
+ * Add _via field to Event struct
+
 v0.263.5 (2026-01-14)
 -------------------------
  * Tweak error messages related to URN claiming
