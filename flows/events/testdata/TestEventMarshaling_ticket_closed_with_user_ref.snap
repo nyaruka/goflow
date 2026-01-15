@@ -6,5 +6,6 @@
         "uuid": "0c78ef47-7d56-44d8-8f57-96e0f30e8f44",
         "name": "Bob"
     },
+    "_via": "ui",
     "ticket_uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe"
 }

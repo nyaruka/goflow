@@ -483,7 +483,7 @@ func TestEventMarshaling(t *testing.T) {
 
 	// check setting of user reference field and non marshaling of steps
 	var evt flows.Event = events.NewTicketClosed(ticket.UUID())
-	evt.SetUser(user.Reference())
+	evt.SetUser(user.Reference(), "ui")
 	evt.SetStep(engine.NewStep(nil, definition.NewNode("72ecb927-db78-4acf-b947-db2f29bf6662", nil, nil, nil), time.Now()))
 
 	eventJSON, err := jsonx.MarshalPretty(evt)
