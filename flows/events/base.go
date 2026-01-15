@@ -28,6 +28,7 @@ type BaseEvent struct {
 
 	// not set by engine but can be set by callers for storage of events
 	User_ *assets.UserReference `json:"_user,omitempty"`
+	Via_  string                `json:"_via,omitempty"`
 }
 
 // NewBaseEvent creates a new base event
@@ -51,7 +52,10 @@ func (e *BaseEvent) Step() flows.Step { return e.Step_ }
 func (e *BaseEvent) SetStep(s flows.Step) { e.Step_ = s }
 
 // SetUser can be used by callers to set the user associated with this event
-func (e *BaseEvent) SetUser(u *assets.UserReference) { e.User_ = u }
+func (e *BaseEvent) SetUser(u *assets.UserReference, via string) {
+	e.User_ = u
+	e.Via_ = via
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

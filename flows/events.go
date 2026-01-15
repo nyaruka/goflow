@@ -21,7 +21,7 @@ type Event interface {
 	CreatedOn() time.Time
 	Step() Step
 	SetStep(Step)
-	SetUser(*assets.UserReference)
+	SetUser(*assets.UserReference, string)
 }
 
 // EventLogger is a callback invoked when an event has been generated
