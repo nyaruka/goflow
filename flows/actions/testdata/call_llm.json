@@ -21,6 +21,9 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {
+            "_llm_output": "\u003cERROR\u003e"
+        },
         "templates": [
             "Categorize the following text as positive or negative",
             "@input.text"
@@ -87,6 +90,9 @@
                 "elapsed_ms": 1000
             }
         ],
+        "locals_after": {
+            "_llm_output": "negative"
+        },
         "templates": [
             "Categorize the following text as positive or negative",
             "@input.text"

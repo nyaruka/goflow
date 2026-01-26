@@ -11,6 +11,7 @@
             "exclusions": {}
         },
         "events": [],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -55,6 +56,7 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -117,6 +119,7 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -174,9 +177,27 @@
                 "text": "Can't start new sessions for groups or queries during batch starts"
             }
         ],
+        "locals_after": {},
         "templates": [
             "age > 20"
-        ]
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Error event if executed in batch start and uses group",
@@ -203,7 +224,30 @@
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't start new sessions for groups or queries during batch starts"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Session triggered event if executed in batch start but doesn't use query or group",
@@ -282,7 +326,30 @@
                     "ancestors_since_input": 1
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "945493e3-933f-4668-9761-ce990fae5e5c",
+                    "name": "Stavros",
+                    "type": "contact"
+                },
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Session triggered event if new session can be triggered",
@@ -386,6 +453,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "age > 20 OR gender = @fields.gender",
             "@(\"5129165834\")"
@@ -455,6 +523,7 @@
                 "text": "'oui' couldn't be resolved to a contact, group or URN"
             }
         ],
+        "locals_after": {},
         "templates": [
             "oui"
         ],
@@ -554,6 +623,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,

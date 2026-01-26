@@ -19,6 +19,9 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {
+            "_new_ticket": ""
+        },
         "templates": [
             "Where are my cookies?"
         ],
@@ -77,7 +80,20 @@
         },
         "templates": [
             "Where are my cookies?"
-        ]
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_new_ticket"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Local set and contact tickets appended to if ticket opened (has assignee)",

@@ -52,6 +52,7 @@
                 "body": "So I was thinking..."
             }
         ],
+        "locals_after": {},
         "templates": [
             "bob@example.com@(1 / 0)",
             "Hi there@(1 / 0)",
@@ -91,7 +92,28 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email subject evaluated to empty string, skipping"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "bob@example.com",
+            "@(\"\")",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "@(\"\")",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "New lines and tabs in subject removed",
@@ -115,7 +137,28 @@
                 "subject": "Hi there Bob",
                 "body": "So I was thinking..."
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "bob@example.com",
+            "\nHi\tthere  \n   Bob",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "\nHi\tthere  \n   Bob",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Error event and action skipped if body evaluates to empty",
@@ -135,7 +178,28 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email body evaluated to empty string, skipping"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "bob@example.com",
+            "Hi there",
+            "@(\"\")"
+        ],
+        "localizables": [
+            "Hi there",
+            "@(\"\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Error event and address ignored if it evaluates to empty",
@@ -155,7 +219,28 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email address evaluated to empty string, skipping"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "@(\"\")",
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Mailto prefixes stripped from addresses",
@@ -179,7 +264,28 @@
                 "subject": "Hi there",
                 "body": "So I was thinking..."
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "mailto:bob@example.com",
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Subject and body can be localized",
@@ -216,6 +322,7 @@
                 "body": "Pues estuve pensando..."
             }
         ],
+        "locals_after": {},
         "templates": [
             "bob@example.com",
             "Hi there",
@@ -258,6 +365,27 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Unable to send email: oops can't send"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "bob@example.com",
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "Hi there",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

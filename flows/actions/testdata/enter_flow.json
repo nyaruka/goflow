@@ -17,7 +17,38 @@
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "text": "Unable to find flow 'Long Lost Flow'"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Long Lost Flow",
+                    "type": "flow",
+                    "missing": true
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing flow dependency '33382939-babf-4982-9395-8793feb4e7c6'",
+                    "dependency": {
+                        "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                        "name": "Long Lost Flow",
+                        "type": "flow"
+                    }
+                }
+            ]
+        }
     },
     {
         "description": "Failure event if flow is of different type",
@@ -36,7 +67,25 @@
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "text": "Can't enter flow[uuid=7a84463d-d209-4d3e-a0ff-79f977cd7bd0,name=Voice Action Tester] of type voice from type messaging"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
+                    "name": "Voice Action Tester",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Flow triggered event if flow can be started",
@@ -95,6 +144,7 @@
                 "status": "completed"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -131,6 +181,7 @@
                 "text": "Unable to find flow 'Long Lost Flow'"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,

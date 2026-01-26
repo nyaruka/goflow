@@ -254,6 +254,9 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			require.False(t, tc.HTTPMocks.HasUnused(), "unused HTTP mocks in %s", testName)
 		}
 
+		tc.Templates = utils.EnsureNonNil(tc.Templates)
+		tc.LocalizedText = utils.EnsureNonNil(tc.LocalizedText)
+
 		// clone test case and populate with actual values
 		actual := tc
 		actual.HTTPMocks = clonedMocks
@@ -272,18 +275,10 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		if tc.ContactAfter != nil {
 			actual.ContactAfter, _ = jsonx.Marshal(session.Contact())
 		}
-		if tc.LocalsAfter != nil {
-			actual.LocalsAfter, _ = jsonx.Marshal(run.Locals())
-		}
-		if tc.Templates != nil {
-			actual.Templates = flow.ExtractTemplates()
-		}
-		if tc.LocalizedText != nil {
-			actual.LocalizedText = flow.ExtractLocalizables()
-		}
-		if tc.Inspection != nil {
-			actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
-		}
+		actual.LocalsAfter, _ = jsonx.Marshal(run.Locals())
+		actual.Templates = flow.ExtractTemplates()
+		actual.LocalizedText = flow.ExtractLocalizables()
+		actual.Inspection, _ = jsonx.Marshal(flow.Inspect(sa))
 
 		if !test.UpdateSnapshots {
 			// check the action marshaled correctly
@@ -302,25 +297,10 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				test.AssertEqualJSON(t, tc.ContactAfter, actual.ContactAfter, "contact mismatch in %s", testName)
 			}
 
-			// check locals match
-			if tc.LocalsAfter != nil {
-				test.AssertEqualJSON(t, tc.LocalsAfter, actual.LocalsAfter, "locals mismatch in %s", testName)
-			}
-
-			// check extracted templates
-			if tc.Templates != nil {
-				assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
-			}
-
-			// check extracted localized text
-			if tc.LocalizedText != nil {
-				assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
-			}
-
-			// check inspection results
-			if tc.Inspection != nil {
-				test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)
-			}
+			test.AssertEqualJSON(t, tc.LocalsAfter, actual.LocalsAfter, "locals mismatch in %s", testName)
+			assert.Equal(t, tc.Templates, actual.Templates, "extracted templates mismatch in %s", testName)
+			assert.Equal(t, tc.LocalizedText, actual.LocalizedText, "extracted localized text mismatch in %s", testName)
+			test.AssertEqualJSON(t, tc.Inspection, actual.Inspection, "inspection mismatch in %s", testName)
 		} else {
 			tests[i] = actual
 		}

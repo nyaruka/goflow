@@ -17,6 +17,7 @@
             "resthook": "doesnt-exist"
         },
         "events": [],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -139,6 +140,7 @@
                 "resthook": "new-registration"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -279,6 +281,7 @@
             },
             "json": null
         },
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -433,6 +436,7 @@
                 "ok": "true"
             }
         },
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -522,6 +526,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -666,6 +671,7 @@
                 ]
             }
         },
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -756,6 +762,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,

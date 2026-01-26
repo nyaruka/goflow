@@ -15,7 +15,25 @@
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't say message without audio URL or backdown text"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "@(\"\")"
+        ],
+        "localizables": [
+            "@(\"\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "IVR created event with msg attachment if we have an audio URL",
@@ -46,6 +64,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there @contact.name"
         ],
@@ -88,7 +107,25 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there @contact.name"
+        ],
+        "localizables": [
+            "Hi there @contact.name"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Text and audio URL can be localized",
@@ -131,6 +168,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there @contact.name",
             "Hola @contact.name"

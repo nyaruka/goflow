@@ -9,7 +9,25 @@
                 "name": "Joke Of The Day"
             }
         },
-        "events": []
+        "events": [],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                    "name": "Joke Of The Day",
+                    "type": "optin"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Event created when channel does support optins feature",
@@ -49,6 +67,24 @@
                 },
                 "urn": "facebook:1234567890"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
+                    "name": "Joke Of The Day",
+                    "type": "optin"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

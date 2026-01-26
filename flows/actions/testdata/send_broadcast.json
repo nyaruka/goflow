@@ -7,6 +7,7 @@
             "text": "Hi there!"
         },
         "events": [],
+        "locals_after": {},
         "templates": [
             "Hi there!"
         ],
@@ -47,7 +48,11 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {},
         "templates": [
+            "Hi there!"
+        ],
+        "localizables": [
             "Hi there!"
         ],
         "inspection": {
@@ -102,7 +107,31 @@
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't send broadcasts to groups during batch starts"
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there!"
+        ],
+        "localizables": [
+            "Hi there!"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Broadcast created event for the message if executed in batch start but doesn't use a group",
@@ -130,7 +159,25 @@
                     "tel:+1234567890"
                 ]
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there!"
+        ],
+        "localizables": [
+            "Hi there!"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Broadcast created event for the message",
@@ -216,6 +263,7 @@
                 ]
             }
         ],
+        "locals_after": {},
         "templates": [
             "name = \"Bob\"",
             "@(\"\")",
@@ -224,6 +272,9 @@
             "@contact.urn",
             "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
             "  11708c34-d4ab-4b04-b82a-2578f6e0013c  ",
+            "Hi there!"
+        ],
+        "localizables": [
             "Hi there!"
         ],
         "inspection": {
@@ -328,6 +379,7 @@
                 ]
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there!",
             "Hola!",
@@ -336,6 +388,12 @@
             "Yes",
             "No",
             "Si",
+            "No"
+        ],
+        "localizables": [
+            "Hi there!",
+            "image:http://example.com/red.jpg",
+            "Yes",
             "No"
         ],
         "inspection": {

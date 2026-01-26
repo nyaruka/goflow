@@ -34,6 +34,7 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,
@@ -84,7 +85,25 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't add contacts to the query based group 'Females'"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                    "name": "Females",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Error event if a group is name with expression error",
@@ -109,6 +128,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Customers@(1 / 0)"
         ],
@@ -143,6 +163,7 @@
                 "text": "No such group with name 'Climbers'"
             }
         ],
+        "locals_after": {},
         "templates": [
             "Climbers"
         ],
@@ -170,7 +191,25 @@
                 }
             ]
         },
-        "events": []
+        "events": [],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Groups changed event if contact added to group",
@@ -228,6 +267,24 @@
                     "text": "Male"
                 }
             }
+        },
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]

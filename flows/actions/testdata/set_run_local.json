@@ -31,6 +31,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "@(1 / 0)"
         ],
@@ -65,6 +66,7 @@
                 "text": "Increment value is not an integer"
             }
         ],
+        "locals_after": {},
         "templates": [
             "xxx"
         ],

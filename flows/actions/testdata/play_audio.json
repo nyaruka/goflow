@@ -20,6 +20,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "@(1 / 0).mp3"
         ],
@@ -55,6 +56,7 @@
                 "text": "Audio URL evaluated to empty, skipping"
             }
         ],
+        "locals_after": {},
         "templates": [
             "@(\"\")"
         ],
@@ -101,7 +103,11 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+        ],
+        "localizables": [
             "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
         ],
         "inspection": {
@@ -153,9 +159,13 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "http://uploads.temba.io/welcome/@(contact.uuid).m4a",
             "http://uploads.temba.io/bienvenido/@(contact.uuid).m4a"
+        ],
+        "localizables": [
+            "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
         ],
         "inspection": {
             "counts": {

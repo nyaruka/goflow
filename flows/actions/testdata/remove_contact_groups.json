@@ -33,7 +33,25 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't remove contacts from the query based group 'Males'"
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "NOOP if contact isn't already in group",
@@ -47,7 +65,25 @@
                 }
             ]
         },
-        "events": []
+        "events": [],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Groups changed event if contact removed from group",
@@ -73,7 +109,25 @@
                     }
                 ]
             }
-        ]
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers",
+                    "type": "group"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Groups changed event when contact removed from all groups",
@@ -118,6 +172,18 @@
                     "text": "Male"
                 }
             }
+        },
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -141,6 +207,7 @@
                 "code": "dependency_missing"
             }
         ],
+        "locals_after": {},
         "inspection": {
             "counts": {
                 "languages": 0,

@@ -150,7 +150,35 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there @(1 / 0)",
+            "image:http://example.com/red.jpg@(1 / 0)",
+            "image:@(xxxxx)",
+            "Red@(1 / 0)",
+            "Blue",
+            "@(xxxxx)"
+        ],
+        "localizables": [
+            "Hi there @(1 / 0)",
+            "image:http://example.com/red.jpg@(1 / 0)",
+            "image:@(xxxxx)",
+            "Red@(1 / 0)",
+            "Blue",
+            "@(xxxxx)"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Attachments and quick replies ignored if they are expressions which evaluate to empty",
@@ -192,7 +220,29 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there",
+            "image:@(\" \")",
+            "@(\"\")"
+        ],
+        "localizables": [
+            "Hi there",
+            "image:@(\" \")",
+            "@(\"\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Attachments skipped if they evaluate to something too long",
@@ -229,7 +279,29 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there",
+            "image:@(json(run) & json(run) & json(run))",
+            "image/jpeg:http://exacmple.com/test.jpg"
+        ],
+        "localizables": [
+            "Hi there",
+            "image:@(json(run) & json(run) & json(run))",
+            "image/jpeg:http://exacmple.com/test.jpg"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Quick replies truncated if they evaluate to something too long",
@@ -265,7 +337,29 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there",
+            "yes",
+            "@(repeat(\"1234567890\", 10))"
+        ],
+        "localizables": [
+            "Hi there",
+            "yes",
+            "@(repeat(\"1234567890\", 10))"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Msg text that includes globals",
@@ -290,6 +384,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there @contact welcome to @globals.org_name, the secret password is @globals.password"
         ],
@@ -356,7 +451,25 @@
                     "locale": "eng-US"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there"
+        ],
+        "localizables": [
+            "Hi there"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Msg created event even if contact has no sendable URNs",
@@ -387,7 +500,25 @@
                     "unsendable_reason": "no_route"
                 }
             }
-        ]
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi there"
+        ],
+        "localizables": [
+            "Hi there"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Msg with a missing template",
@@ -420,6 +551,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi @contact.name, who's a good boy?",
             "@contact.name",
@@ -518,6 +650,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi Ryan Lewis, who's a good boy?",
             "@contact.name",
@@ -579,6 +712,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there, it's time to get up!"
         ],
@@ -645,6 +779,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi Ryan, wakeup!",
             "Hola Ryan, despierta!"
@@ -727,6 +862,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hi there!",
             "Hola!",
@@ -840,6 +976,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "Hey Ryan Lewis, your gender is saved as boy.",
             "Yes",
@@ -945,6 +1082,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "The Maine Coone is the only native American long haired breed.",
             "image/jpeg:http://example.com/cat1.jpg",
@@ -1038,6 +1176,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "The Maine Coone is the only native American long haired breed.",
             "cat",
@@ -1090,6 +1229,7 @@
                 }
             }
         ],
+        "locals_after": {},
         "templates": [
             "this content is FORBIDDEN"
         ],

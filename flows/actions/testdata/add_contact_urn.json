@@ -15,7 +15,23 @@
                 "text": "Can't add URN with empty path"
             }
         ],
-        "locals_after": {}
+        "locals_after": {},
+        "templates": [
+            "@(\"\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     },
     {
         "description": "Error event if path has expression error",
@@ -49,6 +65,22 @@
         ],
         "locals_after": {
             "_has_urn": "mailto:bob@nyaruka.com"
+        },
+        "templates": [
+            "bob@nyaruka.com@(1 / 0)"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -69,6 +101,22 @@
         ],
         "locals_after": {
             "_has_urn": ""
+        },
+        "templates": [
+            "qwerty"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -82,6 +130,22 @@
         "events": [],
         "locals_after": {
             "_has_urn": "tel:+12065551212"
+        },
+        "templates": [
+            "12065551212"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -135,6 +199,22 @@
         },
         "locals_after": {
             "_has_urn": "mailto:bob@nyaruka.com"
+        },
+        "templates": [
+            "bob@nyaruka.com"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     },
     {
@@ -188,6 +268,22 @@
         },
         "locals_after": {
             "_has_urn": "tel:+12044443333"
+        },
+        "templates": [
+            " 12044443333 "
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_has_urn"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
         }
     }
 ]
