@@ -14,7 +14,8 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't add URN with empty path"
             }
-        ]
+        ],
+        "locals_after": {}
     },
     {
         "description": "Error event if path has expression error",
@@ -45,7 +46,10 @@
                     "mailto:bob@nyaruka.com"
                 ]
             }
-        ]
+        ],
+        "locals_after": {
+            "_has_urn": "mailto:bob@nyaruka.com"
+        }
     },
     {
         "description": "Error event if final URN is invalid",
@@ -62,7 +66,10 @@
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "'telegram:qwerty' is not valid URN"
             }
-        ]
+        ],
+        "locals_after": {
+            "_has_urn": ""
+        }
     },
     {
         "description": "NOOP if URN already exists on contact",
@@ -72,7 +79,10 @@
             "scheme": "tel",
             "path": "12065551212"
         },
-        "events": []
+        "events": [],
+        "locals_after": {
+            "_has_urn": "tel:+12065551212"
+        }
     },
     {
         "description": "URNs changed event if URN added",
@@ -122,6 +132,9 @@
                     "text": "Male"
                 }
             }
+        },
+        "locals_after": {
+            "_has_urn": "mailto:bob@nyaruka.com"
         }
     },
     {
@@ -172,6 +185,9 @@
                     "text": "Male"
                 }
             }
+        },
+        "locals_after": {
+            "_has_urn": "tel:+12044443333"
         }
     }
 ]

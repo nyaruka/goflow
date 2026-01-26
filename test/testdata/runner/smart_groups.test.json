@@ -232,6 +232,9 @@
                             "name": "Smart Groups",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
+                        "locals": {
+                            "_has_urn": "tel:+250781234567"
+                        },
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "path": [
                             {

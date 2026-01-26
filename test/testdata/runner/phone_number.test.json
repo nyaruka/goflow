@@ -317,6 +317,9 @@
                             "uuid": "825f87d3-b160-4a03-877f-ae1a200794d4"
                         },
                         "had_input": true,
+                        "locals": {
+                            "_has_urn": "tel:+17184567890"
+                        },
                         "modified_on": "2025-05-04T12:31:29.123456789Z",
                         "path": [
                             {
