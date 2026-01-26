@@ -1,3 +1,7 @@
+v0.264.0 (2026-01-26)
+-------------------------
+ * AddContactURN action should set local if successful
+
 v0.263.6 (2026-01-15)
 -------------------------
  * Add _via field to Event struct
