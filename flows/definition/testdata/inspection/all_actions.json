@@ -61,6 +61,7 @@
         }
     ],
     "locals": [
+        "_has_urn",
         "counter"
     ],
     "results": [

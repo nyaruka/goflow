@@ -483,6 +483,7 @@
                         },
                         "had_input": true,
                         "locals": {
+                            "_has_urn": "twitter:ben_haggerty",
                             "counter": "2"
                         },
                         "modified_on": "2025-05-04T12:31:55.123456789Z",

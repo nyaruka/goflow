@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -15,8 +16,13 @@ func init() {
 	registerType(TypeAddContactURN, func() flows.Action { return &AddContactURN{} })
 }
 
-// TypeAddContactURN is our type for the add URN action
-const TypeAddContactURN string = "add_contact_urn"
+const (
+	// TypeAddContactURN is our type for the add URN action
+	TypeAddContactURN string = "add_contact_urn"
+
+	// AddURNOutputLocal receives the identity of the URN if it was added or if it was already present
+	AddURNOutputLocal = "_has_urn"
+)
 
 // AddContactURN can be used to add a URN to the current contact. A [event:contact_urns_changed] event
 // will be created when this action is encountered.
@@ -57,7 +63,18 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 
 	// create URN - modifier will take care of validating it
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
+	urn = urn.Normalize()
 
 	_, err := a.applyModifier(ctx, run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), log)
+	if run.Contact().HasURN(urn) {
+		run.Locals().Set(AddURNOutputLocal, string(urn))
+	} else {
+		run.Locals().Set(AddURNOutputLocal, "")
+	}
+
 	return err
+}
+
+func (a *AddContactURN) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+	local(AddURNOutputLocal)
 }
