@@ -23,6 +23,9 @@ const (
 	// max length of a quick reply
 	MaxQuickReplyLength = 64
 
+	// special prompt text used to request the contact's location, temporary workaround
+	PromptTextLocationRequest = "#LOCATION#"
+
 	UnsendableReasonNoRoute         UnsendableReason = "no_route"         // no sendable channel+URN pair
 	UnsendableReasonContactBlocked  UnsendableReason = "contact_blocked"  // contact is blocked
 	UnsendableReasonContactStopped  UnsendableReason = "contact_stopped"  // contact is stopped
@@ -52,6 +55,7 @@ type MsgOut struct {
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
 	Locale_           i18n.Locale      `json:"locale,omitempty"`
 	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
+	Prompt_           string           `json:"prompt,omitempty"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -69,6 +73,16 @@ func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attac
 
 // NewMsgOut creates a new outgoing message
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, locale i18n.Locale, reason UnsendableReason) *MsgOut {
+	prompt := ""
+	quickReplies := []QuickReply{}
+	if slices.ContainsFunc(content.QuickReplies, func(qr QuickReply) bool { return qr.Text == PromptTextLocationRequest }) {
+		prompt = "location"
+		// when the special #LOCATION# quick reply is present, set the prompt and clear quick replies
+		quickReplies = []QuickReply{}
+	} else {
+		quickReplies = content.QuickReplies
+	}
+
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			URN_:         urn,
@@ -76,10 +90,11 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgConte
 			Text_:        content.Text,
 			Attachments_: content.Attachments,
 		},
-		QuickReplies_:     content.QuickReplies,
+		QuickReplies_:     quickReplies,
 		Templating_:       templating,
 		Locale_:           locale,
 		UnsendableReason_: reason,
+		Prompt_:           prompt,
 	}
 }
 
@@ -132,6 +147,9 @@ func (m *MsgOut) Locale() i18n.Locale { return m.Locale_ }
 
 // UnsendableReason returns the reason this message can't be sent (if any)
 func (m *MsgOut) UnsendableReason() UnsendableReason { return m.UnsendableReason_ }
+
+// Prompt returns the prompt type for this message (if any)
+func (m *MsgOut) Prompt() string { return m.Prompt_ }
 
 type TemplatingVariable struct {
 	Type  string `json:"type"`
