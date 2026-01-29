@@ -81,6 +81,53 @@ func TestMsgOut(t *testing.T) {
 		"attachments": ["image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"],
 		"locale": "eng-US"
 	}`), marshaled, "JSON mismatch")
+
+	msg = flows.NewMsgOut(
+		urns.URN("tel:+1234567890"),
+		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
+		&flows.MsgContent{
+			Text:         "Hi there",
+			QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}},
+		},
+		nil,
+		"eng-US",
+		"",
+	)
+
+	marshaled, err = jsonx.Marshal(msg)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"urn": "tel:+1234567890",
+		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
+		"text": "Hi there",
+		"quick_replies": [{"text":"Yes"},{"text":"No"}],
+		"locale": "eng-US"
+	}`), marshaled, "JSON mismatch")
+
+	msg = flows.NewMsgOut(
+		urns.URN("tel:+1234567890"),
+		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
+		&flows.MsgContent{
+			Text:         "Hi there",
+			QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "#LOCATION#"}, {Text: "No"}},
+		},
+		nil,
+		"eng-US",
+		"",
+	)
+
+	marshaled, err = jsonx.Marshal(msg)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"urn": "tel:+1234567890",
+		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
+		"text": "Hi there",
+		"prompt": "location",
+		"locale": "eng-US"
+	}`), marshaled, "JSON mismatch")
+
 }
 
 func TestIVRMsgOut(t *testing.T) {
