@@ -24,7 +24,7 @@ const (
 	MaxQuickReplyLength = 64
 
 	// special prompt text used to request the contact's location, temporary workaround
-	PromptTextLocationRequest = "#LOCATION#"
+	LocationRequestTriggerText = "#LOCATION#"
 
 	UnsendableReasonNoRoute         UnsendableReason = "no_route"         // no sendable channel+URN pair
 	UnsendableReasonContactBlocked  UnsendableReason = "contact_blocked"  // contact is blocked
@@ -55,7 +55,7 @@ type MsgOut struct {
 	Templating_       *MsgTemplating   `json:"templating,omitempty"`
 	Locale_           i18n.Locale      `json:"locale,omitempty"`
 	UnsendableReason_ UnsendableReason `json:"unsendable_reason,omitempty"`
-	Prompt_           string           `json:"prompt,omitempty"`
+	Prompt_           string           `json:"prompt,omitempty" validate:"omitempty,eq=location"`
 }
 
 // NewMsgIn creates a new incoming message
@@ -75,7 +75,7 @@ func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attac
 func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, content *MsgContent, templating *MsgTemplating, locale i18n.Locale, reason UnsendableReason) *MsgOut {
 	prompt := ""
 	quickReplies := []QuickReply{}
-	if slices.ContainsFunc(content.QuickReplies, func(qr QuickReply) bool { return qr.Text == PromptTextLocationRequest }) {
+	if slices.ContainsFunc(content.QuickReplies, func(qr QuickReply) bool { return qr.Text == LocationRequestTriggerText }) {
 		prompt = "location"
 		// when the special #LOCATION# quick reply is present, set the prompt and clear quick replies
 		quickReplies = []QuickReply{}

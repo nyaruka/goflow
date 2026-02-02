@@ -146,6 +146,75 @@ func TestMsgOut(t *testing.T) {
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
 	assert.Equal(t, "My Android", msg.Channel().Name)
+	assert.Equal(t, []flows.QuickReply(nil), msg.QuickReplies())
+	assert.Equal(t, "location", msg.Prompt())
+
+	msg = flows.NewMsgOut(
+		urns.URN("tel:+1234567890"),
+		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
+		&flows.MsgContent{
+			Text:         "Hi there",
+			QuickReplies: []flows.QuickReply{{Text: "#LOCATION#"}},
+		},
+		nil,
+		"eng-US",
+		"",
+	)
+
+	marshaled, err = jsonx.Marshal(msg)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"urn": "tel:+1234567890",
+		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
+		"text": "Hi there",
+		"prompt": "location",
+		"locale": "eng-US"
+	}`), marshaled, "JSON mismatch")
+
+	// test unmarshaling
+	msg = &flows.MsgOut{}
+	err = utils.UnmarshalAndValidate(marshaled, msg)
+	require.NoError(t, err)
+	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
+	assert.Equal(t, "Hi there", msg.Text())
+	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
+	assert.Equal(t, "My Android", msg.Channel().Name)
+	assert.Equal(t, []flows.QuickReply(nil), msg.QuickReplies())
+	assert.Equal(t, "location", msg.Prompt())
+
+	msg = flows.NewMsgOut(
+		urns.URN("tel:+1234567890"),
+		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
+		&flows.MsgContent{
+			Text:         "Hi there",
+			QuickReplies: []flows.QuickReply{{Text: "#LOCATION#"}, {Text: "#LOCATION#", Extra: "Please share"}, {Text: "#LOCATION#"}},
+		},
+		nil,
+		"eng-US",
+		"",
+	)
+
+	marshaled, err = jsonx.Marshal(msg)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(`{
+		"urn": "tel:+1234567890",
+		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
+		"text": "Hi there",
+		"prompt": "location",
+		"locale": "eng-US"
+	}`), marshaled, "JSON mismatch")
+
+	// test unmarshaling
+	msg = &flows.MsgOut{}
+	err = utils.UnmarshalAndValidate(marshaled, msg)
+	require.NoError(t, err)
+	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
+	assert.Equal(t, "Hi there", msg.Text())
+	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
+	assert.Equal(t, "My Android", msg.Channel().Name)
+	assert.Equal(t, []flows.QuickReply(nil), msg.QuickReplies())
 	assert.Equal(t, "location", msg.Prompt())
 
 }
