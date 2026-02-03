@@ -1,3 +1,7 @@
+v0.265.1 (2026-02-03)
+-------------------------
+ * Add type field to quick replies and add more inteligent parsing
+
 v0.265.0 (2026-02-03)
 -------------------------
  * Add modifier for last_seen_on
