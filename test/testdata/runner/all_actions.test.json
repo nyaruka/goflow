@@ -332,10 +332,12 @@
                         "locale": "eng-US",
                         "quick_replies": [
                             {
-                                "text": "Yes"
+                                "text": "Yes",
+                                "type": "text"
                             },
                             {
-                                "text": "No"
+                                "text": "No",
+                                "type": "text"
                             }
                         ],
                         "text": "This is a reply with attachments and quick replies",

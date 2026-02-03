@@ -42,10 +42,12 @@
                         "locale": "eng-US",
                         "quick_replies": [
                             {
-                                "text": "Red"
+                                "text": "Red",
+                                "type": "text"
                             },
                             {
-                                "text": "Blue"
+                                "text": "Blue",
+                                "type": "text"
                             }
                         ],
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",

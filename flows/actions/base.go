@@ -110,7 +110,12 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 			log(events.NewError("Quick reply evaluated to empty string and will be ignored", ""))
 			continue
 		}
-		evaluatedQuickReplies = append(evaluatedQuickReplies, flows.QuickReply{Text: stringsx.TruncateEllipsis(evaluatedQuickReply, flows.MaxQuickReplyLength)})
+
+		var quickReply flows.QuickReply
+		_ = quickReply.UnmarshalText([]byte(evaluatedQuickReply))
+		quickReply.Text = stringsx.TruncateEllipsis(quickReply.Text, flows.MaxQuickReplyLength)
+
+		evaluatedQuickReplies = append(evaluatedQuickReplies, quickReply)
 	}
 
 	// although it's possible for the different parts of the message to have different languages, we want to resolve

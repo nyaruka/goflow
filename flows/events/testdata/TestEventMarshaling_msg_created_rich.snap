@@ -14,9 +14,11 @@
         ],
         "quick_replies": [
             {
+                "type": "text",
                 "text": "yes"
             },
             {
+                "type": "text",
                 "text": "no"
             }
         ],

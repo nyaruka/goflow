@@ -141,9 +141,11 @@
                     ],
                     "quick_replies": [
                         {
+                            "type": "text",
                             "text": "Red"
                         },
                         {
+                            "type": "text",
                             "text": "Blue"
                         }
                     ],
@@ -310,7 +312,7 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "text": "Hi there",
             "quick_replies": [
-                "yes",
+                "yes<extra>For real",
                 "@(repeat(\"1234567890\", 10))"
             ]
         },
@@ -328,9 +330,12 @@
                     "text": "Hi there",
                     "quick_replies": [
                         {
-                            "text": "yes"
+                            "type": "text",
+                            "text": "yes",
+                            "extra": "For real"
                         },
                         {
+                            "type": "text",
                             "text": "1234567890123456789012345678901234567890123456789012345678901..."
                         }
                     ],
@@ -341,12 +346,12 @@
         "locals_after": {},
         "templates": [
             "Hi there",
-            "yes",
+            "yes<extra>For real",
             "@(repeat(\"1234567890\", 10))"
         ],
         "localizables": [
             "Hi there",
-            "yes",
+            "yes<extra>For real",
             "@(repeat(\"1234567890\", 10))"
         ],
         "inspection": {
@@ -852,9 +857,11 @@
                     ],
                     "quick_replies": [
                         {
+                            "type": "text",
                             "text": "Si"
                         },
                         {
+                            "type": "text",
                             "text": "No"
                         }
                     ],
@@ -929,9 +936,11 @@
                     "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como boy.",
                     "quick_replies": [
                         {
+                            "type": "text",
                             "text": "Yeah"
                         },
                         {
+                            "type": "text",
                             "text": "No"
                         }
                     ],

@@ -157,29 +157,44 @@ func NewMsgTemplating(template *assets.TemplateReference, components []*Templati
 }
 
 type QuickReply struct {
-	Text  string `json:"text"`
+	Type  string `json:"type"`
+	Text  string `json:"text,omitempty"`
 	Extra string `json:"extra,omitempty"`
 }
 
-// MarshalText marshals a quick reply into a text representation using a new line if extra is present
+// MarshalText marshals a quick reply into a text representation using placeholders
 func (q QuickReply) MarshalText() (text []byte, err error) {
-	vs := []string{q.Text}
-	if q.Extra != "" {
-		vs = append(vs, q.Extra)
+	if q.Type == "location" {
+		return []byte("<location>" + q.Text), nil
 	}
-	return []byte(strings.Join(vs, "\n")), nil
+	if q.Extra != "" {
+		return []byte(q.Text + "<extra>" + q.Extra), nil
+	}
+	return []byte(q.Text), nil
 }
 
 func (q *QuickReply) UnmarshalText(text []byte) error {
-	vs := strings.SplitN(string(text), "\n", 2)
-	q.Text = vs[0]
-	if len(vs) > 1 {
-		q.Extra = vs[1]
+	s := string(text)
+	if strings.HasPrefix(s, "<location>") {
+		q.Type = "location"
+		q.Text = strings.TrimPrefix(s, "<location>")
+		return nil
+	}
+
+	q.Type = "text"
+	parts := strings.SplitN(s, "<extra>", 2)
+	q.Text = parts[0]
+	if len(parts) > 1 {
+		q.Extra = parts[1]
 	}
 	return nil
 }
 
 func (q QuickReply) MarshalJSON() ([]byte, error) {
+	if q.Type == "" {
+		q.Type = "text"
+	}
+
 	// alias our type so we don't end up here again
 	type alias QuickReply
 
@@ -188,9 +203,13 @@ func (q QuickReply) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QuickReply) UnmarshalJSON(d []byte) error {
-	// if we just have a string we unmarshal it into the text field
+	// if we just have a string we unmarshal it using UnmarshalText logic
 	if len(d) > 2 && d[0] == '"' && d[len(d)-1] == '"' {
-		return jsonx.Unmarshal(d, &q.Text)
+		var s string
+		if err := jsonx.Unmarshal(d, &s); err != nil {
+			return err
+		}
+		return q.UnmarshalText([]byte(s))
 	}
 
 	// alias our type so we don't end up here again
