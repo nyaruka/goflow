@@ -19,7 +19,7 @@ const TypeContactLastSeenChanged string = "contact_last_seen_changed"
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "contact_last_seen_changed",
 //	  "created_on": "2006-01-02T15:04:05Z",
-//	  "seen_on": "2026-02-03T15:04:05Z"
+//	  "last_seen_on": "2026-02-03T15:04:05Z"
 //	}
 //
 // @event contact_last_seen_changed
