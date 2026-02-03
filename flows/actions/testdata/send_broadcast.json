@@ -351,9 +351,11 @@
                         ],
                         "quick_replies": [
                             {
+                                "type": "text",
                                 "text": "Yes"
                             },
                             {
+                                "type": "text",
                                 "text": "No"
                             }
                         ]
@@ -365,9 +367,11 @@
                         ],
                         "quick_replies": [
                             {
+                                "type": "text",
                                 "text": "Si"
                             },
                             {
+                                "type": "text",
                                 "text": "No"
                             }
                         ]

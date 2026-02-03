@@ -367,7 +367,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action has all fields",
@@ -378,7 +378,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "si"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "si"}},
 		},
 		{
 			description:  "contact language is allowed but no translations exist, msg action has all fields",
@@ -390,7 +390,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:  "contact language is not allowed and translations exist, msg action has all fields",
@@ -402,7 +402,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:          "contact language is valid and is flow base language, msg action only has text",
@@ -422,7 +422,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "si"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "si"}},
 		},
 		{
 			description:  "attachments and quick replies translations are single empty strings and should be ignored",
@@ -434,7 +434,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Text: "yes"}, {Text: "no"}},
+			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 	}
 

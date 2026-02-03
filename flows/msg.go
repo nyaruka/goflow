@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -187,6 +188,34 @@ func (q *QuickReply) UnmarshalText(text []byte) error {
 		q.Extra = parts[1]
 	}
 	return nil
+}
+
+func (q QuickReply) MarshalJSON() ([]byte, error) {
+	if q.Type == "" {
+		q.Type = "text"
+	}
+
+	// alias our type so we don't end up here again
+	type alias QuickReply
+
+	// we need to provide a MarshalJSON or the json package uses our MarshalText
+	return jsonx.Marshal((alias)(q))
+}
+
+func (q *QuickReply) UnmarshalJSON(d []byte) error {
+	// if we just have a string we unmarshal it using UnmarshalText logic
+	if len(d) > 2 && d[0] == '"' && d[len(d)-1] == '"' {
+		var s string
+		if err := jsonx.Unmarshal(d, &s); err != nil {
+			return err
+		}
+		return q.UnmarshalText([]byte(s))
+	}
+
+	// alias our type so we don't end up here again
+	type alias QuickReply
+
+	return jsonx.Unmarshal(d, (*alias)(q))
 }
 
 // MsgContent is message content in a particular language
