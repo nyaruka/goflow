@@ -1,0 +1,47 @@
+[
+    {
+        "description": "last seen changed event if changed",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "seen",
+            "seen_on": "2026-02-03T11:40:30.123456789Z"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2026-02-03T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "uuid": "23d0f9a4-5bb8-4577-b518-d404caef8cf3",
+                    "name": "Seen In 2026"
+                }
+            ]
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "type": "contact_last_seen_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "last_seen_on": "2026-02-03T11:40:30.123456789Z"
+            },
+            {
+                "uuid": "01969b47-0d53-76f8-bd38-d266ec8d3716",
+                "type": "contact_groups_changed",
+                "created_on": "2025-05-04T12:30:48.123456789Z",
+                "groups_added": [
+                    {
+                        "uuid": "23d0f9a4-5bb8-4577-b518-d404caef8cf3",
+                        "name": "Seen In 2026"
+                    }
+                ]
+            }
+        ]
+    }
+]

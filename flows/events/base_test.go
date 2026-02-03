@@ -159,6 +159,12 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewContactLastSeenChanged(time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
+			},
+			`contact_last_seen_changed`,
+		},
+		{
+			func() flows.Event {
 				return events.NewContactNameChanged("Bryan")
 			},
 			`contact_name_changed`,

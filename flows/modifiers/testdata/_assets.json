@@ -96,6 +96,11 @@
             "uuid": "b4546d78-e202-4d59-9114-9bcaa2b6ee86",
             "name": "Open Tickets",
             "query": "tickets > 0"
+        },
+        {
+            "uuid": "23d0f9a4-5bb8-4577-b518-d404caef8cf3",
+            "name": "Seen In 2026",
+            "query": "last_seen_on >= 2026-01-01"
         }
     ],
     "topics": [
