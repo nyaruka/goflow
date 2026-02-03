@@ -1,3 +1,7 @@
+v0.265.0 (2026-02-03)
+-------------------------
+ * Add modifier for last_seen_on
+
 v0.264.0 (2026-01-26)
 -------------------------
  * AddContactURN action should set local if successful
