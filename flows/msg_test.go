@@ -257,9 +257,11 @@ func TestQuickReplies(t *testing.T) {
 		text     string
 		expected flows.QuickReply
 	}{
-		{"", flows.QuickReply{Text: ""}},
-		{"Yes", flows.QuickReply{Text: "Yes"}},
-		{"Yes\nReally", flows.QuickReply{Text: "Yes", Extra: "Really"}},
+		{"", flows.QuickReply{Type: "text", Text: ""}},
+		{"Yes", flows.QuickReply{Type: "text", Text: "Yes"}},
+		{"Yes<extra>Really", flows.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
+		{"<location>", flows.QuickReply{Type: "location"}},
+		{"<location>Click", flows.QuickReply{Type: "location", Text: "Click"}},
 	}
 	for _, tc := range texts {
 		qr := flows.QuickReply{}
@@ -271,24 +273,4 @@ func TestQuickReplies(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, tc.text, string(marshaled))
 	}
-
-	jsons := []struct {
-		json     []byte
-		expected flows.QuickReply
-	}{
-		{[]byte(`"Yes"`), flows.QuickReply{Text: "Yes"}},
-		{[]byte(`{"text": "Yes"}`), flows.QuickReply{Text: "Yes"}},
-		{[]byte(`{"text": "Yes", "extra": "Really"}`), flows.QuickReply{Text: "Yes", Extra: "Really"}},
-	}
-	for _, tc := range jsons {
-		qr := flows.QuickReply{}
-		err := json.Unmarshal(tc.json, &qr)
-		require.NoError(t, err)
-		assert.Equal(t, tc.expected, qr)
-	}
-
-	// marshaling is always as struct
-	assert.Equal(t, []byte(`{"text":"Yes"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes"}))
-	assert.Equal(t, []byte(`{"text":"Yes","extra":"Really"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes", Extra: "Really"}))
-	assert.Equal(t, []byte(`[{"text":"Yes"},{"text":"No"}]`), jsonx.MustMarshal([]flows.QuickReply{{Text: "Yes"}, {Text: "No"}}))
 }
