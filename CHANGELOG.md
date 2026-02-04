@@ -1,3 +1,7 @@
+v0.265.2 (2026-02-04)
+-------------------------
+ * Truncate quick reply text and extra to max lengths
+
 v0.265.1 (2026-02-03)
 -------------------------
  * Add type field to quick replies and add more inteligent parsing
