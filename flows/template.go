@@ -112,7 +112,7 @@ func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 			if comp.Type() == "header/text" || comp.Type() == "body/text" || comp.Type() == "footer/text" {
 				text = append(text, content)
 			} else if strings.HasPrefix(comp.Type(), "button/") {
-				quickReplies = append(quickReplies, QuickReply{Text: stringsx.TruncateEllipsis(content, MaxQuickReplyLength)})
+				quickReplies = append(quickReplies, QuickReply{Text: stringsx.TruncateEllipsis(content, MaxQuickReplyTextLength)})
 			}
 		}
 	}

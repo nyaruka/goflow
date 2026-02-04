@@ -113,8 +113,8 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 
 		var quickReply flows.QuickReply
 		_ = quickReply.UnmarshalText([]byte(evaluatedQuickReply))
-		quickReply.Text = stringsx.TruncateEllipsis(quickReply.Text, flows.MaxQuickReplyLength)
-		quickReply.Extra = stringsx.TruncateEllipsis(quickReply.Extra, flows.MaxQuickReplyLength)
+		quickReply.Text = stringsx.TruncateEllipsis(quickReply.Text, flows.MaxQuickReplyTextLength)
+		quickReply.Extra = stringsx.TruncateEllipsis(quickReply.Extra, flows.MaxQuickReplyExtraLength)
 
 		evaluatedQuickReplies = append(evaluatedQuickReplies, quickReply)
 	}
