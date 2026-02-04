@@ -21,7 +21,8 @@ const (
 	MaxAttachmentLength = 2048
 
 	// max length of a quick reply
-	MaxQuickReplyLength = 64
+	MaxQuickReplyTextLength  = 64
+	MaxQuickReplyExtraLength = 72
 
 	UnsendableReasonNoRoute         UnsendableReason = "no_route"         // no sendable channel+URN pair
 	UnsendableReasonContactBlocked  UnsendableReason = "contact_blocked"  // contact is blocked
