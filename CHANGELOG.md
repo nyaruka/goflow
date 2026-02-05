@@ -1,3 +1,7 @@
+v0.266.0 (2026-02-05)
+-------------------------
+ * Add affinity modifier
+
 v0.265.2 (2026-02-04)
 -------------------------
  * Truncate quick reply text and extra to max lengths
