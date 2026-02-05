@@ -390,6 +390,76 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 }
 
+func TestContactSetAffinity(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	roles := []assets.ChannelRole{assets.ChannelRoleSend}
+
+	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
+	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
+	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
+
+	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
+	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(urns.URN("tel:+12345678999"))
+	contact.AddURN(urns.URN("tel:+18005555777"))
+	contact.AddURN(urns.URN("whatsapp:18005555888"))
+
+	// test moving a URN to the front with channel
+	changed := contact.SetAffinity(urns.URN("tel:+18005555777"), android)
+	assert.True(t, changed)
+	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, android, contact.URNs()[0].Channel)
+
+	// test moving another URN to the front with channel
+	changed = contact.SetAffinity(urns.URN("tel:+12345678999"), android)
+	assert.True(t, changed)
+	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, android, contact.URNs()[0].Channel)
+
+	// test setting the same URN again with same channel (no change)
+	changed = contact.SetAffinity(urns.URN("tel:+12345678999"), android)
+	assert.False(t, changed)
+
+	// test setting a URN with a different scheme
+	changed = contact.SetAffinity(urns.URN("twitter:joey"), twitter)
+	assert.True(t, changed)
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, twitter, contact.URNs()[0].Channel)
+
+	// test reassigning the same URN to a different channel
+	changed = contact.SetAffinity(urns.URN("twitter:joey"), android)
+	assert.True(t, changed)
+	assert.Equal(t, android, contact.URNs()[0].Channel) // channel should be updated to android
+
+	// test whatsapp URN with channel assignment
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp1)
+	assert.True(t, changed)
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, whatsapp1, contact.URNs()[0].Channel)
+
+	// test whatsapp channel reassignment to different channel
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp2)
+	assert.True(t, changed)
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, whatsapp2, contact.URNs()[0].Channel)
+
+	// test URN that doesn't exist
+	changed = contact.SetAffinity(urns.URN("tel:+99999999999"), android)
+	assert.False(t, changed)
+
+	// test moving URN that's already at front with same channel (no change)
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp2)
+	assert.False(t, changed)
+
+	// verify URN order after all operations
+	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(android.UUID())), contact.URNs()[1].Encode())
+	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[2].Encode())
+	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[3].Encode())
+}
+
 func TestReevaluateQueryBasedGroups(t *testing.T) {
 	source, err := static.LoadSource("testdata/smart_groups.assets.json")
 	require.NoError(t, err)
