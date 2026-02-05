@@ -1,0 +1,153 @@
+[
+    {
+        "description": "URN moved to front and channel set",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212",
+                "tel:+12065551313",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "modifier": {
+            "type": "affinity",
+            "urn": "tel:+12065551313",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551313?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "tel:+12065551212",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "type": "contact_urns_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "urns": [
+                    "tel:+12065551313?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                    "tel:+12065551212",
+                    "twitterid:54784326227#nyaruka"
+                ]
+            }
+        ]
+    },
+    {
+        "description": "noop if URN already at front with same channel",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "modifier": {
+            "type": "affinity",
+            "urn": "tel:+12065551212",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "noop if URN not found",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "modifier": {
+            "type": "affinity",
+            "urn": "tel:+99999999999",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "channel changed on URN already at front",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "modifier": {
+            "type": "affinity",
+            "urn": "tel:+12065551212",
+            "channel": {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "My Android Phone"
+            }
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "twitterid:54784326227#nyaruka"
+            ]
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "type": "contact_urns_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "urns": [
+                    "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "twitterid:54784326227#nyaruka"
+                ]
+            }
+        ]
+    }
+]

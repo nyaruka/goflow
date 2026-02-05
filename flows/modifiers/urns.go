@@ -112,7 +112,7 @@ var _ flows.Modifier = (*URNs)(nil)
 type urnsEnvelope struct {
 	utils.TypedEnvelope
 
-	URNs         []urns.URN       `json:"urns" validate:"required"`
+	URNs         []urns.URN       `json:"urns"         validate:"required"`
 	Modification URNsModification `json:"modification" validate:"required,eq=append|eq=remove|eq=set"`
 }
 

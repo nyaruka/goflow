@@ -295,6 +295,38 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	return false
 }
 
+// SetAffinity sets the preferred URN/channel for this contact by moving it to the front of the list and returns whether
+// any change was made. If the URN is not already associated with the contact then this is a no-op and returns false.
+func (c *Contact) SetAffinity(urn urns.URN, ch *Channel) bool {
+	oldURNs := c.urns.clone()
+
+	// find the URN in our list
+	var urnIndex = -1
+	for i, u := range c.urns {
+		if u.Identity() == urn.Identity() {
+			urnIndex = i
+			break
+		}
+	}
+
+	// URN not found
+	if urnIndex == -1 {
+		return false
+	}
+
+	targetURN := c.urns[urnIndex]
+
+	// set the channel - we assume channel and URN are compatible since we received something on them
+	targetURN.Channel = ch
+
+	// move URN to front if not already there
+	if urnIndex > 0 {
+		c.urns = append([]*URN{targetURN}, append(c.urns[:urnIndex], c.urns[urnIndex+1:]...)...)
+	}
+
+	return !oldURNs.Equal(c.urns)
+}
+
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
