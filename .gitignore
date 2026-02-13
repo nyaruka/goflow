@@ -37,3 +37,5 @@ fabconfig.*
 
 antlr/.antlr
 docs.tar.gz
+
+.claude/
