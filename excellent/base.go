@@ -131,8 +131,7 @@ func VisitTemplate(template string, allowedTopLevels []string, unescapeBody bool
 	errors := NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
-		err := callback(tokenType, token)
-		if err != nil {
+		if err := callback(tokenType, token); err != nil {
 			var repr string
 			if tokenType == IDENTIFIER {
 				repr = "@" + token

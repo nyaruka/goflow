@@ -261,8 +261,7 @@ func NewBoolCombination(op BoolOperator, children ...QueryNode) *BoolCombination
 // Validate validates this node
 func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) error {
 	for _, child := range b.children {
-		err := child.validate(env, resolver)
-		if err != nil {
+		if err := child.validate(env, resolver); err != nil {
 			return err
 		}
 	}
@@ -370,8 +369,7 @@ func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQ
 	tree := p.Parse()
 
 	// if we ran into errors parsing, bail
-	err := errListener.Error()
-	if err != nil {
+	if err := errListener.Error(); err != nil {
 		return nil, err
 	}
 

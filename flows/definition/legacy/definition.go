@@ -323,8 +323,7 @@ func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLo
 
 	case "email":
 		var msg string
-		err := jsonx.Unmarshal(a.Msg, &msg)
-		if err != nil {
+		if err := jsonx.Unmarshal(a.Msg, &msg); err != nil {
 			return nil, err
 		}
 
@@ -378,16 +377,14 @@ func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLo
 		}
 
 		if a.Media != nil {
-			err := jsonx.Unmarshal(a.Media, &media)
-			if err != nil {
+			if err := jsonx.Unmarshal(a.Media, &media); err != nil {
 				return nil, err
 			}
 		}
 		if a.QuickReplies != nil {
 			legacyQuickReplies := make([]Translations, 0)
 
-			err := jsonx.Unmarshal(a.QuickReplies, &legacyQuickReplies)
-			if err != nil {
+			if err := jsonx.Unmarshal(a.QuickReplies, &legacyQuickReplies); err != nil {
 				return nil, err
 			}
 
@@ -527,8 +524,7 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 	// load the config for this ruleset
 	var config RulesetConfig
 	if r.Config != nil {
-		err := jsonx.Unmarshal(r.Config, &config)
-		if err != nil {
+		if err := jsonx.Unmarshal(r.Config, &config); err != nil {
 			return nil, "", nil, err
 		}
 	}

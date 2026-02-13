@@ -147,8 +147,7 @@ func Validate(obj any) error {
 
 // UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
 func UnmarshalAndValidate(data []byte, obj any) error {
-	err := jsonx.Unmarshal(data, obj)
-	if err != nil {
+	if err := jsonx.Unmarshal(data, obj); err != nil {
 		return err
 	}
 

@@ -55,8 +55,7 @@ func Generate(baseDir, outputDir, localeDir string) error {
 
 	// generate docs in each supported locale
 	for _, language := range locales.Locales() {
-		err := generateForLang(baseDir, outputDir, taggedItems, locales, language, msgUsed)
-		if err != nil {
+		if err := generateForLang(baseDir, outputDir, taggedItems, locales, language, msgUsed); err != nil {
 			return err
 		}
 	}
