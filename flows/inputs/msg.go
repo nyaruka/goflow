@@ -112,8 +112,7 @@ type msgEnvelope struct {
 
 func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
 	e := &msgEnvelope{}
-	err := utils.UnmarshalAndValidate(data, e)
-	if err != nil {
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
