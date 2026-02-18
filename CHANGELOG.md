@@ -1,3 +1,7 @@
+v0.267.0 (2026-02-18)
+-------------------------
+ * Add ticket_uuid to msg_received event
+
 v0.266.0 (2026-02-05)
 -------------------------
  * Add affinity modifier
