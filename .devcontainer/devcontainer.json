@@ -15,6 +15,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "anthropic.claude-code",
                 "netcorext.uuid-generator"
             ],
             "settings": {
