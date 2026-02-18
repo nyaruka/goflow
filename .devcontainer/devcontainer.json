@@ -6,6 +6,9 @@
             "version": "latest"
         }
     },
+    "mounts": [
+        "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind"
+    ],
     "runArgs": [
         "--name=dev-goflow"
     ],
