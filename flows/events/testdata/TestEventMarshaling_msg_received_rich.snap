@@ -1,0 +1,18 @@
+{
+    "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+    "type": "msg_received",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "msg": {
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone"
+        },
+        "text": "hi there",
+        "attachments": [
+            "image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"
+        ],
+        "external_id": "ext-id-123"
+    },
+    "ticket_uuid": "7481888c-07dd-47dc-bf22-ef7448696ffe"
+}

@@ -31,14 +31,16 @@ const TypeMsgReceived string = "msg_received"
 type MsgReceived struct {
 	BaseEvent
 
-	Msg *flows.MsgIn `json:"msg" validate:"required"`
+	Msg        *flows.MsgIn     `json:"msg" validate:"required"`
+	TicketUUID flows.TicketUUID `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
 }
 
 // NewMsgReceived creates a new incoming msg event for the passed in channel, URN and text
-func NewMsgReceived(msg *flows.MsgIn) *MsgReceived {
+func NewMsgReceived(msg *flows.MsgIn, ticketUUID flows.TicketUUID) *MsgReceived {
 	return &MsgReceived{
-		BaseEvent: NewBaseEvent(TypeMsgReceived),
-		Msg:       msg,
+		BaseEvent:  NewBaseEvent(TypeMsgReceived),
+		Msg:        msg,
+		TicketUUID: ticketUUID,
 	}
 }
 

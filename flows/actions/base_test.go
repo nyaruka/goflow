@@ -213,7 +213,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				},
 				"",
 			)
-			trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg)).Build()
+			trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg, "")).Build()
 		}
 
 		// create an engine instance
@@ -982,7 +982,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			resume := resumes.NewMsg(events.NewMsgReceived(flows.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234")))
+			resume := resumes.NewMsg(events.NewMsgReceived(flows.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234"), ""))
 			sprint, err = session.Resume(ctx, resume)
 			require.NoError(t, err)
 		}

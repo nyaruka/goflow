@@ -374,7 +374,7 @@ func TestMaxSprintsPerSession(t *testing.T) {
 	numResumes := 0
 	for {
 		msg := flows.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234")
-		resume := resumes.NewMsg(events.NewMsgReceived(msg))
+		resume := resumes.NewMsg(events.NewMsgReceived(msg, ""))
 		numResumes++
 
 		_, err := session.Resume(ctx, resume)

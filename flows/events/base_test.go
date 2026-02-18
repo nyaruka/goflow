@@ -266,6 +266,36 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
+				return events.NewMsgReceived(
+					flows.NewMsgIn(
+						urns.URN("tel:+12065551212"),
+						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+						"hi there",
+						nil,
+						"",
+					),
+					"",
+				)
+			},
+			`msg_received`,
+		},
+		{
+			func() flows.Event {
+				return events.NewMsgReceived(
+					flows.NewMsgIn(
+						urns.URN("tel:+12065551212"),
+						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+						"hi there",
+						[]utils.Attachment{"image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"},
+						"ext-id-123",
+					),
+					"7481888c-07dd-47dc-bf22-ef7448696ffe",
+				)
+			},
+			`msg_received_rich`,
+		},
+		{
+			func() flows.Event {
 				return events.NewMsgCreated(
 					flows.NewMsgOut(
 						urns.URN("tel:+12345678900"),
