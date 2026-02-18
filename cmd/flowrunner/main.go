@@ -163,7 +163,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	var call *flows.Call
 
 	if initialMsg != "" {
-		msg := events.NewMsgReceived(createMessage(contact, initialMsg))
+		msg := events.NewMsgReceived(createMessage(contact, initialMsg), "")
 		repro.Trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(msg).Build()
 
 		printEvents([]flows.Event{msg}, out)
@@ -204,7 +204,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 			status := flows.DialStatus(strings.TrimSpace(text[5:]))
 			resume = resumes.NewDial(events.NewDialEnded(flows.NewDial(status, 10)))
 		} else {
-			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()))
+			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()), "")
 			resume = resumes.NewMsg(msg)
 
 			printEvents([]flows.Event{msg}, out)

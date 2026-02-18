@@ -33,7 +33,7 @@ func TestMsgInput(t *testing.T) {
 			"video/mp4:http://example.com/test.mp4",
 		},
 		"ext12345",
-	))
+	), "")
 
 	input := inputs.NewMsg(session.Assets(), msgEvt)
 	assert.Equal(t, "msg", input.Type())
