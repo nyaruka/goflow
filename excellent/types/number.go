@@ -15,6 +15,9 @@ import (
 // only parse numbers like 123 or 123.456 or .456
 var decimalRegexp = regexp.MustCompile(`^-?(([0-9]+)|([0-9]+\.[0-9]+)|(\.[0-9]+))$`)
 
+// MaxNumberDigits is the maximum number of significant digits in a number
+const MaxNumberDigits = 36
+
 func init() {
 	decimal.MarshalJSONWithoutQuotes = true
 }
@@ -33,19 +36,28 @@ type XNumber struct {
 	native decimal.Decimal
 }
 
-// NewXNumber creates a new XNumber
-func NewXNumber(value decimal.Decimal) *XNumber {
+// newXNumber creates a new XNumber without range checking - for use with known-safe values
+func newXNumber(value decimal.Decimal) *XNumber {
 	return &XNumber{native: value}
+}
+
+// NewXNumber creates a new XNumber from the given decimal value, returning an error if the value
+// is outside the range of values that can be persisted
+func NewXNumber(value decimal.Decimal) XValue {
+	if err := CheckDecimalRange(value); err != nil {
+		return NewXErrorf("number value out of range")
+	}
+	return newXNumber(value)
 }
 
 // NewXNumberFromInt creates a new XNumber from the given int
 func NewXNumberFromInt(value int) *XNumber {
-	return NewXNumber(decimal.New(int64(value), 0))
+	return newXNumber(decimal.New(int64(value), 0))
 }
 
 // NewXNumberFromInt64 creates a new XNumber from the given int
 func NewXNumberFromInt64(value int64) *XNumber {
-	return NewXNumber(decimal.New(value, 0))
+	return newXNumber(decimal.New(value, 0))
 }
 
 // RequireXNumberFromString creates a new XNumber from the given string or panics (used for tests)
@@ -133,8 +145,42 @@ func (x *XNumber) UnmarshalJSON(data []byte) error {
 }
 
 // XNumberZero is the zero number value
-var XNumberZero = NewXNumber(decimal.Zero)
+var XNumberZero = newXNumber(decimal.Zero)
 var _ XValue = XNumberZero
+
+// CheckDecimalRange checks that the given decimal value is within the range of values that can be
+// persisted to our database. It enforces two constraints:
+//
+//  1. The number of significant digits (excluding trailing zeros) must not exceed MaxNumberDigits (36).
+//  2. The magnitude (adjusted exponent) must be within ±100.
+//
+// Trailing zeros in the coefficient are not counted as significant, so a number like
+// 1234567895171680000000000000000000000000 (15 significant digits) is valid despite having 40 total digits.
+func CheckDecimalRange(d decimal.Decimal) error {
+	if d.IsZero() {
+		return nil
+	}
+
+	// count significant digits by removing trailing zeros from the coefficient
+	s := d.Coefficient().String()
+	s = strings.TrimLeft(s, "-")
+	s = strings.TrimRight(s, "0")
+	if len(s) > MaxNumberDigits {
+		return errors.New("number has too many digits")
+	}
+
+	adjExp := int64(d.Exponent()) + int64(d.NumDigits()) - 1
+	if adjExp > 100 || adjExp < -100 {
+		return errors.New("number value is out of permitted range")
+	}
+
+	return nil
+}
+
+// NewXNumberFromString parses a number from a string
+func NewXNumberFromString(s string) (*XNumber, error) {
+	return newXNumberFromString(s)
+}
 
 // parses a number from a string
 func newXNumberFromString(s string) (*XNumber, error) {
@@ -147,7 +193,11 @@ func newXNumberFromString(s string) (*XNumber, error) {
 	// we can assume anything that matched our regex is parseable
 	d := decimal.RequireFromString(s)
 
-	return NewXNumber(d), nil
+	if err := CheckDecimalRange(d); err != nil {
+		return XNumberZero, err
+	}
+
+	return newXNumber(d), nil
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible

@@ -439,6 +439,10 @@ func TestEvaluationErrors(t *testing.T) {
 		{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling format_datetime(...): unable to convert "x" to a datetime`},
 		{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling format_datetime(...): unable to convert 3 to a datetime`},
 
+		// number range errors
+		{`@(2 ^ 400)`, `error evaluating @(2 ^ 400): number value out of range`},
+		{`@(1234567890123456789012345678901234567)`, `error evaluating @(1234567890123456789012345678901234567): number 1234567890123456789012345678901234567 is out of range`},
+
 		// function call errors
 		{`@(FOO())`, `error evaluating @(FOO()): foo is not a function`},
 		{`@(count(1))`, `error evaluating @(count(1)): error calling count(...): value isn't countable`},

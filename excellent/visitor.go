@@ -218,7 +218,11 @@ func (v *visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) any {
 
 // VisitNumberLiteral deals with numbers like 123 or 1.5
 func (v *visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) any {
-	return &NumberLiteral{Value: types.RequireXNumberFromString(ctx.GetText())}
+	num, err := types.NewXNumberFromString(ctx.GetText())
+	if err != nil {
+		return &ErrorLiteral{Err: types.NewXErrorf("number %s is out of range", ctx.GetText())}
+	}
+	return &NumberLiteral{Value: num}
 }
 
 // VisitTrue deals with the `true` reserved word

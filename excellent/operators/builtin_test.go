@@ -73,8 +73,13 @@ func TestBinaryOperators(t *testing.T) {
 		{operators.Exponent, xn("2"), xn("32.000"), xn("4294967296")},
 		{operators.Exponent, xn("9"), xn("0.5"), xn("3")},
 		{operators.Exponent, xn("4"), xn("2.5"), xn("32")},
+		{operators.Exponent, xn("2"), xn("400"), ERROR}, // overflow
 		{operators.Exponent, ERROR, xi(1), ERROR},
 		{operators.Exponent, xi(1), ERROR, ERROR},
+
+		// overflow cases
+		{operators.Multiply, xn("9999999999999999999"), xn("9999999999999999999"), ERROR}, // product > 36 digits
+		{operators.Add, xn("999999999999999999999999999999999999"), xn("999999999999999999999999999999999999"), ERROR}, // sum > 36 significant digits
 
 		{operators.LessThan, xi(2), xi(3), types.XBooleanTrue},
 		{operators.LessThan, xi(3), xi(3), types.XBooleanFalse},

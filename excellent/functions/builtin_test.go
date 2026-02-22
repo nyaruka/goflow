@@ -622,6 +622,7 @@ func TestFunctions(t *testing.T) {
 
 		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), xs("3"))}, xn("6")},
 		{"sum", dmy, []types.XValue{xa()}, xn("0")},
+		{"sum", dmy, []types.XValue{xa(xn("999999999999999999999999999999999999"), xn("999999999999999999999999999999999999"))}, ERROR}, // overflow
 		{"sum", dmy, []types.XValue{xs("xx")}, ERROR},
 		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), xs("xx"))}, ERROR},
 		{"sum", dmy, []types.XValue{xa(xn("1"), xn("2"), ERROR)}, ERROR},

@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -48,6 +49,14 @@ func TestXNumber(t *testing.T) {
 	data, err := jsonx.Marshal(types.RequireXNumberFromString("23.45"))
 	assert.NoError(t, err)
 	assert.Equal(t, []byte(`23.45`), data)
+
+	// test NewXNumber range check
+	assert.False(t, types.IsXError(types.NewXNumber(decimal.New(123, 0))))
+	assert.True(t, types.IsXError(types.NewXNumber(decimal.New(1, 200))))             // magnitude too large
+	assert.True(t, types.IsXError(types.NewXNumber(decimal.New(1, -200))))            // magnitude too small
+	assert.False(t, types.IsXError(types.NewXNumber(decimal.New(1, 50))))             // within range
+	assert.False(t, types.IsXError(types.NewXNumber(decimal.New(1, -50))))            // within range
+	assert.False(t, types.IsXError(types.NewXNumber(decimal.RequireFromString("0")))) // zero always ok
 }
 
 func TestToXNumberAndInteger(t *testing.T) {
@@ -66,9 +75,11 @@ func TestToXNumberAndInteger(t *testing.T) {
 			"__default__": types.NewXNumberFromInt(123), // should use default
 			"foo":         types.NewXNumberFromInt(234),
 		}), types.NewXNumberFromInt(123), 123, false},
-		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true}, // out of int range
-		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
-		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                     // scientific notation not allowed
+		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true},                                 // out of int range
+		{types.NewXText("123456789012345678901234567890123456"), types.RequireXNumberFromString("123456789012345678901234567890123456"), 0, true}, // 36 digits, ok as number but out of int range
+		{types.NewXText("1234567890123456789012345678901234567"), types.XNumberZero, 0, true},                                                     // 37 digits, too many
+		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                                                     // scientific notation not allowed
+		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                                                     // scientific notation not allowed
 		{types.NewXText("234."), types.XNumberZero, 0, true},
 		{types.NewXText("+1800567890"), types.XNumberZero, 0, true},
 	}
@@ -85,6 +96,37 @@ func TestToXNumberAndInteger(t *testing.T) {
 			assert.NoError(t, err.Native(), "unexpected error for input %T{%s}", test.value, test.value)
 			assert.Equal(t, test.asNumber.Native(), number.Native(), "number mismatch for input %T{%s}", test.value, test.value)
 			assert.Equal(t, test.asInteger, integer, "integer mismatch for input %T{%s}", test.value, test.value)
+		}
+	}
+}
+
+func TestCheckDecimalRange(t *testing.T) {
+	tests := []struct {
+		value   decimal.Decimal
+		isError bool
+	}{
+		{decimal.Zero, false},
+		{decimal.New(1, 0), false},
+		{decimal.New(-1, 0), false},
+		{decimal.New(123, 0), false},
+		{decimal.RequireFromString("123456789012345678901234567890123456"), false},                  // 36 significant digits - ok
+		{decimal.RequireFromString("1234567890123456789012345678901234567"), true},                 // 37 significant digits - too many
+		{decimal.RequireFromString("-1234567890123456789012345678901234567"), true},                // negative 37 significant digits
+		{decimal.RequireFromString("1234567895171680000000000000000000000000"), false},             // 40 digits but only 15 significant - ok
+		{decimal.RequireFromString("12345678901234567890123456789012345670000000"), true},          // 37 significant digits with trailing zeros
+		{decimal.RequireFromString("0.000000000000000000000000000000000001"), false},
+		{decimal.New(1, 100), false}, // 1E100 - ok magnitude
+		{decimal.New(1, 200), true},  // 1E200 - too large magnitude
+		{decimal.New(1, -100), false},
+		{decimal.New(1, -200), true}, // 1E-200 - too small magnitude
+	}
+
+	for _, tc := range tests {
+		err := types.CheckDecimalRange(tc.value)
+		if tc.isError {
+			assert.Error(t, err, "expected error for %s", tc.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for %s", tc.value)
 		}
 	}
 }
