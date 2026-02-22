@@ -45,7 +45,7 @@ func newXNumber(value decimal.Decimal) *XNumber {
 // is outside the range of values that can be persisted
 func NewXNumber(value decimal.Decimal) XValue {
 	if err := CheckDecimalRange(value); err != nil {
-		return NewXErrorf("number value too large")
+		return NewXErrorf("number value out of range")
 	}
 	return newXNumber(value)
 }
