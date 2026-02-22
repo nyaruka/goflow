@@ -476,6 +476,23 @@ func (x *NumberLiteral) String() string {
 	return x.Value.Describe()
 }
 
+// ErrorLiteral is a literal error value
+type ErrorLiteral struct {
+	Err *types.XError
+}
+
+func (x *ErrorLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return x.Err
+}
+
+func (x *ErrorLiteral) Visit(v func(Expression)) {
+	v(x)
+}
+
+func (x *ErrorLiteral) String() string {
+	return "ERROR"
+}
+
 // BooleanLiteral is a literal bool
 type BooleanLiteral struct {
 	Value *types.XBoolean

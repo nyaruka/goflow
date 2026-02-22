@@ -100,6 +100,7 @@ var Divide = numericalBinary(func(env envs.Environment, num1 *types.XNumber, num
 // Exponent raises a number to the power of a another number.
 //
 //	@(2 ^ 8) -> 256
+//	@(2 ^ 400) -> ERROR
 //
 // @operator exponent "^"
 var Exponent = numericalBinary(func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {

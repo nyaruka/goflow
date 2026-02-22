@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 
 	"github.com/shopspring/decimal"
 )
@@ -67,5 +68,14 @@ func ParseDecimal(val string, format *envs.NumberFormat) (decimal.Decimal, error
 	// replace non-Arabic (0-9) numerals with their equivalents
 	cleaned = strings.Map(numeralMapper, cleaned)
 
-	return decimal.NewFromString(cleaned)
+	d, err := decimal.NewFromString(cleaned)
+	if err != nil {
+		return d, err
+	}
+
+	if err := types.CheckDecimalRange(d); err != nil {
+		return decimal.Zero, err
+	}
+
+	return d, nil
 }

@@ -46,4 +46,8 @@ func TestParseDecimal(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)
 	}
+
+	// test that oversized numbers are rejected
+	_, err := cases.ParseDecimal("1234567890123456789012345678901234567", envs.DefaultNumberFormat)
+	assert.EqualError(t, err, "number has too many digits")
 }
