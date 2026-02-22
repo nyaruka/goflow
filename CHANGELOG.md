@@ -1,3 +1,7 @@
+v0.268.0 (2026-02-22)
+-------------------------
+ * Add range check for numbers to prevent DynamoDB overflow
+
 v0.267.0 (2026-02-18)
 -------------------------
  * Add ticket_uuid to msg_received event
