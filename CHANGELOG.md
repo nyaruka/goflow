@@ -1,3 +1,7 @@
+v0.268.1 (2026-02-23)
+-------------------------
+ * Export test.MockStartTime var
+
 v0.268.0 (2026-02-22)
 -------------------------
  * Add range check for numbers to prevent DynamoDB overflow
