@@ -17,9 +17,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// MockStartTime is the start time used by MockUniverse
+var MockStartTime = time.Date(2025, 5, 4, 12, 30, 45, 123456789, time.UTC)
+
 // MockUniverse mocks time and random generators for testing
 func MockUniverse() func() {
-	now := dates.NewSequentialNow(time.Date(2025, 5, 4, 12, 30, 45, 123456789, time.UTC), time.Second)
+	now := dates.NewSequentialNow(MockStartTime, time.Second)
 
 	dates.SetNowFunc(now)
 	uuids.SetGenerator(uuids.NewSeededGenerator(123456, now))
