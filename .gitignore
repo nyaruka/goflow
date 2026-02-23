@@ -6,4 +6,6 @@ coverage.text
 deploy
 fabfile.*
 
+antlr/.antlr
 docs/
+docs.tar.gz
