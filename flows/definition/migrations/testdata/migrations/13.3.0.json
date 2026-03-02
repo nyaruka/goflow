@@ -47,8 +47,7 @@
                                 "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
                                 "type": "has_any_word",
                                 "arguments": [
-                                    "no",
-                                    "nope"
+                                    "no nope"
                                 ],
                                 "category_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
                             }
@@ -131,8 +130,7 @@
                                 "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
                                 "type": "has_any_word",
                                 "arguments": [
-                                    "no",
-                                    "nope"
+                                    "no nope"
                                 ],
                                 "category_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
                             }

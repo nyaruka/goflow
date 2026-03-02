@@ -103,6 +103,10 @@ func TestBrokenFlows(t *testing.T) {
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: invalid case[uuid=5d6abc80-39e7-4620-9988-a2447bffe526]: category 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid category",
 		},
 		{
+			"invalid_case_arguments.json",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: invalid case[uuid=5d6abc80-39e7-4620-9988-a2447bffe526]: can't have more than 2 arguments (has 3)",
+		},
+		{
 			"invalid_exit_dest.json",
 			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node",
 		},
@@ -192,8 +196,7 @@ func TestNewFlow(t *testing.T) {
                         "uuid": "9f593e22-7886-4c08-a52f-0e8780504d75",
                         "type": "has_any_word",
                         "arguments": [
-                            "yes",
-                            "yeah"
+                            "yes yeah"
                         ],
                         "category_uuid": "97b9451c-2856-475b-af38-32af68100897"
                     }
@@ -290,7 +293,7 @@ func TestNewFlow(t *testing.T) {
 					},
 					"@input.text",
 					[]*routers.Case{
-						routers.NewCase(uuids.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
+						routers.NewCase(uuids.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes yeah"}, flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897")),
 					},
 					flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 				),
