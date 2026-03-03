@@ -1,3 +1,7 @@
+v0.269.1 (2026-03-03)
+-------------------------
+ * Allow cases to have up to 10 arguments
+
 v0.269.0 (2026-03-03)
 -------------------------
  * Restrict case tests to maximum 2 arguments and fix bad test files
