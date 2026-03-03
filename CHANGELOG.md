@@ -1,3 +1,7 @@
+v0.269.2 (2026-03-03)
+-------------------------
+ * Add flow migration to fix invalid case arguments
+
 v0.269.1 (2026-03-03)
 -------------------------
  * Allow cases to have up to 10 arguments
