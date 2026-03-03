@@ -26,9 +26,17 @@
                                 "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
                                 "type": "has_only_text",
                                 "arguments": [
-                                    "M",
+                                    "A",
+                                    "B",
+                                    "C",
+                                    "D",
+                                    "E",
                                     "F",
-                                    "X"
+                                    "G",
+                                    "H",
+                                    "I",
+                                    "J",
+                                    "K"
                                 ],
                                 "category_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126"
                             }

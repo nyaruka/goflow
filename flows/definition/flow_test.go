@@ -104,7 +104,7 @@ func TestBrokenFlows(t *testing.T) {
 		},
 		{
 			"invalid_case_arguments.json",
-			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: invalid case[uuid=5d6abc80-39e7-4620-9988-a2447bffe526]: can't have more than 2 arguments (has 3)",
+			"invalid node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: invalid router: invalid case[uuid=5d6abc80-39e7-4620-9988-a2447bffe526]: can't have more than 10 arguments (has 11)",
 		},
 		{
 			"invalid_exit_dest.json",
