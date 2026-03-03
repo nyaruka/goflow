@@ -10,18 +10,18 @@ import (
 )
 
 func init() {
-	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
+	registerMigration(semver.MustParse("14.3.1"), Migrate14_3_1)
 	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
 }
 
-// Migrate14_4_0 fixes switch router cases for text tests which should have a single argument but due to an editor
+// Migrate14_3_1 fixes switch router cases for text tests which should have a single argument but due to an editor
 // bug may have been encoded as multiple arguments.
 //
-// @version 14_4_0 "14.4.0"
-func Migrate14_4_0(f Flow, cfg *Config) (Flow, error) {
+// @version 14_3_1 "14.3.1"
+func Migrate14_3_1(f Flow, cfg *Config) (Flow, error) {
 	singleArgTypes := map[string]bool{
 		"has_only_text":   true,
 		"has_phrase":      true,
