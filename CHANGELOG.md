@@ -1,3 +1,7 @@
+v0.269.3 (2026-03-03)
+-------------------------
+ * Use minor version for last migration
+
 v0.269.2 (2026-03-03)
 -------------------------
  * Add flow migration to fix invalid case arguments
