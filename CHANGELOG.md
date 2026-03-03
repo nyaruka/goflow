@@ -1,3 +1,7 @@
+v0.269.0 (2026-03-03)
+-------------------------
+ * Restrict case tests to maximum 2 arguments and fix bad test files
+
 v0.268.2 (2026-02-23)
 -------------------------
  * Update .gitignore
