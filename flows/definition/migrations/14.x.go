@@ -10,10 +10,94 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
 	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_4_0 fixes switch router cases for text tests which should have a single argument but due to an editor
+// bug may have been encoded as multiple arguments.
+//
+// @version 14_4_0 "14.4.0"
+func Migrate14_4_0(f Flow, cfg *Config) (Flow, error) {
+	singleArgTypes := map[string]bool{
+		"has_only_text":   true,
+		"has_phrase":      true,
+		"has_only_phrase": true,
+		"has_any_word":    true,
+		"has_all_words":   true,
+		"has_beginning":   true,
+		"has_pattern":     true,
+	}
+
+	for _, node := range f.Nodes() {
+		router := node.Router()
+		if router == nil || router.Type() != "switch" {
+			continue
+		}
+
+		cases, _ := router["cases"].([]any)
+		for _, c := range cases {
+			cs, _ := c.(map[string]any)
+			if cs == nil {
+				continue
+			}
+
+			caseType, _ := cs["type"].(string)
+			if !singleArgTypes[caseType] {
+				continue
+			}
+
+			args, _ := cs["arguments"].([]any)
+			if len(args) <= 1 {
+				continue
+			}
+
+			// join multiple arguments into a single space-separated argument
+			parts := make([]string, len(args))
+			for i, a := range args {
+				parts[i], _ = a.(string)
+			}
+			cs["arguments"] = []any{strings.Join(parts, " ")}
+		}
+	}
+
+	// also fix localized arguments
+	if localization := f.Localization(); localization != nil {
+		for _, lang := range localization.Languages() {
+			lt := localization.GetLanguageTranslation(lang)
+
+			for _, node := range f.Nodes() {
+				router := node.Router()
+				if router == nil || router.Type() != "switch" {
+					continue
+				}
+
+				cases, _ := router["cases"].([]any)
+				for _, c := range cases {
+					cs, _ := c.(map[string]any)
+					if cs == nil {
+						continue
+					}
+
+					caseType, _ := cs["type"].(string)
+					if !singleArgTypes[caseType] {
+						continue
+					}
+
+					caseUUID := GetObjectUUID(cs)
+					trans := lt.GetTranslation(caseUUID, "arguments")
+					if len(trans) > 1 {
+						lt.SetTranslation(caseUUID, "arguments", []string{strings.Join(trans, " ")})
+					}
+				}
+			}
+		}
+	}
+
+	return f, nil
 }
 
 // Migrate14_3_0 changes airtime and ticket nodes to split on their output local instead of the action's result.

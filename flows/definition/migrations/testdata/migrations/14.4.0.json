@@ -1,0 +1,353 @@
+[
+    {
+        "description": "flow with has_any_word case with multiple arguments",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "yeah",
+                                    "yes",
+                                    "yep"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Other",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "yeah yes yep"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Other",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with multiple affected case types and localized arguments",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "ff810df6-23c2-4dff-9be1-eebffae2bb9d": {
+                        "arguments": [
+                            "sí",
+                            "claro"
+                        ]
+                    },
+                    "a51e5c8c-c891-401d-9c62-15fc37278c94": {
+                        "arguments": [
+                            "no",
+                            "nunca"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_phrase",
+                                "arguments": [
+                                    "yes",
+                                    "please"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            },
+                            {
+                                "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                                "type": "has_all_words",
+                                "arguments": [
+                                    "no",
+                                    "never"
+                                ],
+                                "category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "No",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "ff810df6-23c2-4dff-9be1-eebffae2bb9d": {
+                        "arguments": [
+                            "sí claro"
+                        ]
+                    },
+                    "a51e5c8c-c891-401d-9c62-15fc37278c94": {
+                        "arguments": [
+                            "no nunca"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_phrase",
+                                "arguments": [
+                                    "yes please"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            },
+                            {
+                                "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                                "type": "has_all_words",
+                                "arguments": [
+                                    "no never"
+                                ],
+                                "category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "No",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "flow with single argument case (no change needed)",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "yeah yes yep"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Other",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@input.text",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "yeah yes yep"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Yes",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Other",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
