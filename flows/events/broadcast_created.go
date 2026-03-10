@@ -34,31 +34,37 @@ const TypeBroadcastCreated string = "broadcast_created"
 //	  },
 //	  "base_language": "eng",
 //	  "urns": ["tel:+12065551212"],
-//	  "contacts": [{"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"}]
+//	  "contacts": [{"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"}],
+//	  "template": {"uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2", "name": "revive_issue"},
+//	  "template_variables": ["Ryan Lewis", "boy"]
 //	}
 //
 // @event broadcast_created
 type BroadcastCreated struct {
 	BaseEvent
 
-	Translations flows.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
-	BaseLanguage i18n.Language               `json:"base_language" validate:"required"`
-	Groups       []*assets.GroupReference    `json:"groups,omitempty" validate:"dive"`
-	Contacts     []*flows.ContactReference   `json:"contacts,omitempty" validate:"dive"`
-	ContactQuery string                      `json:"contact_query,omitempty"`
-	URNs         []urns.URN                  `json:"urns,omitempty" validate:"dive,urn"`
+	Translations      flows.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
+	BaseLanguage      i18n.Language                `json:"base_language" validate:"required"`
+	Groups            []*assets.GroupReference      `json:"groups,omitempty" validate:"dive"`
+	Contacts          []*flows.ContactReference     `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery      string                        `json:"contact_query,omitempty"`
+	URNs              []urns.URN                    `json:"urns,omitempty" validate:"dive,urn"`
+	Template          *assets.TemplateReference     `json:"template,omitempty"`
+	TemplateVariables []string                      `json:"template_variables,omitempty"`
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN) *BroadcastCreated {
+func NewBroadcastCreated(translations flows.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, template *assets.TemplateReference, templateVariables []string) *BroadcastCreated {
 	return &BroadcastCreated{
-		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
-		Translations: translations,
-		BaseLanguage: baseLanguage,
-		Groups:       groups,
-		Contacts:     contacts,
-		ContactQuery: contactQuery,
-		URNs:         urns,
+		BaseEvent:         NewBaseEvent(TypeBroadcastCreated),
+		Translations:      translations,
+		BaseLanguage:      baseLanguage,
+		Groups:            groups,
+		Contacts:          contacts,
+		ContactQuery:      contactQuery,
+		URNs:              urns,
+		Template:          template,
+		TemplateVariables: templateVariables,
 	}
 }
 

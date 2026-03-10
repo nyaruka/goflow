@@ -277,9 +277,17 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log flows.EventLo
 
 // utility struct for actions which create a message
 type createMsgAction struct {
-	Text         string   `json:"text"                    validate:"required,max=10000"     engine:"localized,evaluated"`
-	Attachments  []string `json:"attachments,omitempty"   validate:"max=10,dive,attachment" engine:"localized,evaluated"`
-	QuickReplies []string `json:"quick_replies,omitempty" validate:"max=10,dive,max=1000"   engine:"localized,evaluated"`
+	Text              string                    `json:"text"                       validate:"required,max=10000"     engine:"localized,evaluated"`
+	Attachments       []string                  `json:"attachments,omitempty"      validate:"max=10,dive,attachment" engine:"localized,evaluated"`
+	QuickReplies      []string                  `json:"quick_replies,omitempty"    validate:"max=10,dive,max=1000"   engine:"localized,evaluated"`
+	Template          *assets.TemplateReference `json:"template,omitempty"`
+	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"evaluated"`
+}
+
+func (a *createMsgAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
+	if a.Template != nil {
+		dependency(a.Template)
+	}
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
