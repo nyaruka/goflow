@@ -44,6 +44,7 @@
                 ".groups[*].name_match",
                 ".legacy_vars[*]",
                 ".quick_replies[*]",
+                ".template_variables[*]",
                 ".text"
             ],
             "send_email": [

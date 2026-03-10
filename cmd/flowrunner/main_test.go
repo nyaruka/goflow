@@ -65,7 +65,7 @@ func TestPrintEvent(t *testing.T) {
 		event    flows.Event
 		expected string
 	}{
-		{events.NewBroadcastCreated(flows.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil), `🔉 broadcasted 'hello' to ...`},
+		{events.NewBroadcastCreated(flows.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender"), flows.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender"), nil), `✏️ field 'gender' cleared`},
 		{events.NewContactGroupsChanged([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}, nil), `👪 added to 'Testers'`},

@@ -27,7 +27,12 @@ const TypeSendBroadcast string = "send_broadcast"
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "send_broadcast",
 //	  "urns": ["tel:+12065551212"],
-//	  "text": "Hi @contact.name, are you ready to complete today's survey?"
+//	  "text": "Hi @contact.name, are you ready to complete today's survey?",
+//	  "template": {
+//	    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
+//	    "name": "revive_issue"
+//	  },
+//	  "template_variables": ["@contact.name"]
 //	}
 //
 // @action send_broadcast
@@ -39,7 +44,7 @@ type SendBroadcast struct {
 }
 
 // NewSendBroadcast creates a new send broadcast action
-func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string) *SendBroadcast {
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, template *assets.TemplateReference, templateVariables []string) *SendBroadcast {
 	return &SendBroadcast{
 		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
@@ -50,9 +55,11 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 			LegacyVars:   legacyVars,
 		},
 		createMsgAction: createMsgAction{
-			Text:         text,
-			Attachments:  attachments,
-			QuickReplies: quickReplies,
+			Text:              text,
+			Attachments:       attachments,
+			QuickReplies:      quickReplies,
+			Template:          template,
+			TemplateVariables: templateVariables,
 		},
 	}
 }
@@ -86,10 +93,28 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 		return nil
 	}
 
-	log(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList))
+	// evaluate template variables if we have a template
+	var templateRef *assets.TemplateReference
+	var templateVariables []string
+	if a.Template != nil {
+		sa := run.Session().Assets()
+		template := sa.Templates().Get(a.Template.UUID)
+
+		if template != nil {
+			templateRef = a.Template
+			templateVariables = make([]string, len(a.TemplateVariables))
+			for i, varExp := range a.TemplateVariables {
+				v, _ := run.EvaluateTemplate(varExp, log)
+				templateVariables[i] = v
+			}
+		}
+	}
+
+	log(events.NewBroadcastCreated(translations, run.Flow().Language(), groupRefs, contactRefs, contactQuery, urnList, templateRef, templateVariables))
 	return nil
 }
 
 func (a *SendBroadcast) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	a.otherContactsAction.Inspect(dependency, local, result)
+	a.createMsgAction.Inspect(dependency, local, result)
 }

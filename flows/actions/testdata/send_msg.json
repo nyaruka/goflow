@@ -563,9 +563,7 @@
             "boy"
         ],
         "localizables": [
-            "Hi @contact.name, who's a good boy?",
-            "@contact.name",
-            "boy"
+            "Hi @contact.name, who's a good boy?"
         ],
         "inspection": {
             "counts": {
@@ -662,9 +660,7 @@
             "boy"
         ],
         "localizables": [
-            "Hi Ryan Lewis, who's a good boy?",
-            "@contact.name",
-            "boy"
+            "Hi Ryan Lewis, who's a good boy?"
         ],
         "inspection": {
             "counts": {
@@ -998,11 +994,7 @@
         "localizables": [
             "Hey Ryan Lewis, your gender is saved as boy.",
             "Yes",
-            "No",
-            "@contact.name",
-            "boy",
-            "Yeah",
-            "Nope"
+            "No"
         ],
         "inspection": {
             "counts": {
@@ -1100,9 +1092,7 @@
         ],
         "localizables": [
             "The Maine Coone is the only native American long haired breed.",
-            "image/jpeg:http://example.com/cat1.jpg",
-            "image/jpeg:http://example.com/cat2.jpg",
-            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+            "image/jpeg:http://example.com/cat1.jpg"
         ],
         "inspection": {
             "counts": {
@@ -1192,9 +1182,7 @@
             "The first true cats came into existence about 12 million years ago and were the Proailurus."
         ],
         "localizables": [
-            "The Maine Coone is the only native American long haired breed.",
-            "cat",
-            "The first true cats came into existence about 12 million years ago and were the Proailurus."
+            "The Maine Coone is the only native American long haired breed."
         ],
         "inspection": {
             "counts": {

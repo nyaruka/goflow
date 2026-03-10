@@ -43,9 +43,7 @@ type SendMsg struct {
 	universalAction
 	createMsgAction
 
-	AllURNs           bool                      `json:"all_urns,omitempty"`
-	Template          *assets.TemplateReference `json:"template,omitempty"`
-	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"localized,evaluated"`
+	AllURNs bool `json:"all_urns,omitempty"`
 }
 
 // NewSendMsg creates a new send msg action
@@ -139,7 +137,5 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 }
 
 func (a *SendMsg) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
-	if a.Template != nil {
-		dependency(a.Template)
-	}
+	a.createMsgAction.Inspect(dependency, local, result)
 }

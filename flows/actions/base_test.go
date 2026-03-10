@@ -536,6 +536,8 @@ func TestConstructors(t *testing.T) {
 				"fields.age > 20",
 				[]urns.URN{"twitter:nyaruka"},
 				nil,
+				nil,
+				nil,
 			),
 			`{
 			"type": "send_broadcast",

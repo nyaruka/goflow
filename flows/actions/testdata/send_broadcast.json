@@ -411,5 +411,148 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Broadcast with a template",
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "urns": [
+                "tel:+1234567890"
+            ],
+            "text": "Hi @contact.name, who's a good boy?",
+            "template": {
+                "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                "name": "affirmation"
+            },
+            "template_variables": [
+                "@contact.name",
+                "boy"
+            ]
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "type": "broadcast_created",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "translations": {
+                    "eng": {
+                        "text": "Hi Ryan Lewis, who's a good boy?"
+                    }
+                },
+                "base_language": "eng",
+                "urns": [
+                    "tel:+1234567890"
+                ],
+                "template": {
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                    "name": "affirmation"
+                },
+                "template_variables": [
+                    "Ryan Lewis",
+                    "boy"
+                ]
+            }
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi @contact.name, who's a good boy?",
+            "@contact.name",
+            "boy"
+        ],
+        "localizables": [
+            "Hi @contact.name, who's a good boy?"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
+                    "name": "affirmation",
+                    "type": "template"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Broadcast with a missing template",
+        "action": {
+            "type": "send_broadcast",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "urns": [
+                "tel:+1234567890"
+            ],
+            "text": "Hi @contact.name, who's a good boy?",
+            "template": {
+                "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
+                "name": "missing"
+            },
+            "template_variables": [
+                "@contact.name",
+                "boy"
+            ]
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "type": "broadcast_created",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "translations": {
+                    "eng": {
+                        "text": "Hi Ryan Lewis, who's a good boy?"
+                    }
+                },
+                "base_language": "eng",
+                "urns": [
+                    "tel:+1234567890"
+                ]
+            }
+        ],
+        "locals_after": {},
+        "templates": [
+            "Hi @contact.name, who's a good boy?",
+            "@contact.name",
+            "boy"
+        ],
+        "localizables": [
+            "Hi @contact.name, who's a good boy?"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
+                    "name": "missing",
+                    "type": "template",
+                    "missing": true
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing template dependency 'b620b463-8d15-427f-b2e3-4f44f9f071ec'",
+                    "dependency": {
+                        "uuid": "b620b463-8d15-427f-b2e3-4f44f9f071ec",
+                        "name": "missing",
+                        "type": "template"
+                    }
+                }
+            ]
+        }
     }
 ]

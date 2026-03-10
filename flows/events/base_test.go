@@ -96,6 +96,8 @@ func TestEventMarshaling(t *testing.T) {
 					},
 					"name = \"Bob\"",
 					[]urns.URN{urns.URN("tel:+12345678900")},
+					nil,
+					nil,
 				)
 			},
 			`broadcast_created`,
