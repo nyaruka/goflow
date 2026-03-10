@@ -1,3 +1,7 @@
+v0.270.0 (2026-03-10)
+-------------------------
+ * Add template support to send_broadcast actions
+
 v0.269.3 (2026-03-03)
 -------------------------
  * Use minor version for last migration
