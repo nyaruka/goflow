@@ -30,7 +30,7 @@ func (t *unknownAssetType) Variable() bool   { return false }
 func TestDependencies(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
-	action1 := actions.NewSendMsg("ed08e6b9-ed22-4294-9871-c7ac7d82cbd5", "Hi there", nil, nil, false)
+	action1 := actions.NewSendMsg("ed08e6b9-ed22-4294-9871-c7ac7d82cbd5", "Hi there", nil, nil)
 	node1 := definition.NewNode("91b20e13-d6e2-42a9-b74f-bce85c9da8c8", []flows.Action{action1}, nil, nil)
 	router2 := routers.NewRandom(nil, "", nil)
 	node2 := definition.NewNode("7c959933-4c30-4277-9810-adc95a459bd0", nil, router2, nil)

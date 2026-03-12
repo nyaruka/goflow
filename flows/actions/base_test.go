@@ -596,15 +596,13 @@ func TestConstructors(t *testing.T) {
 				"Hi there",
 				[]string{"http://example.com/red.jpg"},
 				[]string{"Red", "Blue"},
-				true,
 			),
 			`{
 			"type": "send_msg",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 			"text": "Hi there",
 			"attachments": ["http://example.com/red.jpg"],
-			"quick_replies": ["Red", "Blue"],
-			"all_urns": true
+			"quick_replies": ["Red", "Blue"]
 		}`,
 		},
 		{
