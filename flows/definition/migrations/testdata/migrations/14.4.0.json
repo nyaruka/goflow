@@ -1,0 +1,56 @@
+[
+    {
+        "description": "flow with send_msg action using all_urns",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.3.1",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "send_msg",
+                            "text": "Hello there",
+                            "all_urns": true
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "send_msg",
+                            "text": "Hello there"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

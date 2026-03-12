@@ -10,11 +10,27 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
 	registerMigration(semver.MustParse("14.3.1"), Migrate14_3_1)
 	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_4_0 removes the all_urns field from send_msg actions.
+//
+// @version 14_4_0 "14.4.0"
+func Migrate14_4_0(f Flow, cfg *Config) (Flow, error) {
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "send_msg" {
+				delete(action, "all_urns")
+			}
+		}
+	}
+
+	return f, nil
 }
 
 // Migrate14_3_1 fixes switch router cases for text tests which should have a single argument but due to an editor
