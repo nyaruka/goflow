@@ -1,3 +1,7 @@
+v0.271.0 (2026-03-19)
+-------------------------
+ * Remove all_urns field from send_msg actions
+
 v0.270.0 (2026-03-10)
 -------------------------
  * Add template support to send_broadcast actions
