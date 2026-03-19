@@ -274,7 +274,6 @@ func TestNewFlow(t *testing.T) {
 						"Do you like beer?",
 						nil,
 						nil,
-						false,
 					),
 				},
 				routers.NewSwitch(

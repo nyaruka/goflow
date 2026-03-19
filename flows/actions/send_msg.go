@@ -29,7 +29,6 @@ const TypeSendMsg string = "send_msg"
 //	  "type": "send_msg",
 //	  "text": "Hi @contact.name, are you ready to complete today's survey?",
 //	  "attachments": [],
-//	  "all_urns": false,
 //	  "template": {
 //	    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",
 //	    "name": "revive_issue"
@@ -42,12 +41,10 @@ type SendMsg struct {
 	baseAction
 	universalAction
 	createMsgAction
-
-	AllURNs bool `json:"all_urns,omitempty"`
 }
 
 // NewSendMsg creates a new send msg action
-func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsg {
+func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string) *SendMsg {
 	return &SendMsg{
 		baseAction: newBaseAction(TypeSendMsg, uuid),
 		createMsgAction: createMsgAction{
@@ -55,7 +52,6 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 			Attachments:  attachments,
 			QuickReplies: quickReplies,
 		},
-		AllURNs: allURNs,
 	}
 }
 
@@ -96,7 +92,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		}
 	}
 
-	destinations := run.Contact().ResolveDestinations(a.AllURNs)
+	destinations := run.Contact().ResolveDestinations(false)
 	locale := currentLocale(run, lang)
 
 	// create a new message for each URN+channel destination
