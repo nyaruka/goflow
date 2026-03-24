@@ -7,7 +7,7 @@ require (
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/blevesearch/segment v0.9.1
-	github.com/buger/jsonparser v1.1.1
+	github.com/buger/jsonparser v1.1.2
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/nyaruka/gocommon v1.74.0
 	github.com/sergi/go-diff v1.4.0
