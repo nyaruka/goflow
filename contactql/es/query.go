@@ -22,12 +22,12 @@ type AssetMapper interface {
 type Converter struct {
 	env      envs.Environment
 	assets   AssetMapper
-	resolver contactql.Resolver
+	resolver contactql.Resolver // set from the parsed query during Query()
 }
 
 // NewConverter creates a new Converter
-func NewConverter(env envs.Environment, assets AssetMapper, resolver contactql.Resolver) *Converter {
-	return &Converter{env: env, assets: assets, resolver: resolver}
+func NewConverter(env envs.Environment, assets AssetMapper) *Converter {
+	return &Converter{env: env, assets: assets}
 }
 
 // we store contact status in elastic as single char codes
@@ -43,6 +43,8 @@ func (c *Converter) Query(query *contactql.ContactQuery) elastic.Query {
 	if query.Resolver() == nil {
 		panic("can only convert queries parsed with a resolver")
 	}
+
+	c.resolver = query.Resolver()
 
 	return c.nodeToElastic(query.Root())
 }

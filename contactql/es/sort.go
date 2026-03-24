@@ -10,7 +10,7 @@ import (
 )
 
 // Sort converts a sort string to an Elastic sort
-func (c *Converter) Sort(sortBy string) (elastic.Sort, error) {
+func (c *Converter) Sort(sortBy string, resolver contactql.Resolver) (elastic.Sort, error) {
 	// default to most recent first by id
 	if sortBy == "" {
 		return elastic.SortBy("id", false), nil
@@ -37,7 +37,7 @@ func (c *Converter) Sort(sortBy string) (elastic.Sort, error) {
 	}
 
 	// we are sorting by a custom field
-	field := c.resolver.ResolveField(property)
+	field := resolver.ResolveField(property)
 	if field == nil {
 		return nil, fmt.Errorf("no such field with key: %s", property)
 	}
