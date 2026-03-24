@@ -20,9 +20,8 @@ type AssetMapper interface {
 
 // Converter converts contactql queries and sorts to Elasticsearch queries and sorts
 type Converter struct {
-	env      envs.Environment
-	assets   AssetMapper
-	resolver contactql.Resolver // set from the parsed query during Query()
+	env    envs.Environment
+	assets AssetMapper
 }
 
 // NewConverter creates a new Converter
@@ -44,26 +43,24 @@ func (c *Converter) Query(query *contactql.ContactQuery) elastic.Query {
 		panic("can only convert queries parsed with a resolver")
 	}
 
-	c.resolver = query.Resolver()
-
-	return c.nodeToElastic(query.Root())
+	return c.nodeToElastic(query.Resolver(), query.Root())
 }
 
-func (c *Converter) nodeToElastic(node contactql.QueryNode) elastic.Query {
+func (c *Converter) nodeToElastic(resolver contactql.Resolver, node contactql.QueryNode) elastic.Query {
 	switch n := node.(type) {
 	case *contactql.BoolCombination:
-		return c.boolCombination(n)
+		return c.boolCombination(resolver, n)
 	case *contactql.Condition:
-		return c.condition(n)
+		return c.condition(resolver, n)
 	default:
 		panic(fmt.Sprintf("unsupported node type: %T", n))
 	}
 }
 
-func (c *Converter) boolCombination(combination *contactql.BoolCombination) elastic.Query {
+func (c *Converter) boolCombination(resolver contactql.Resolver, combination *contactql.BoolCombination) elastic.Query {
 	queries := make([]elastic.Query, len(combination.Children()))
 	for i, child := range combination.Children() {
-		queries[i] = c.nodeToElastic(child)
+		queries[i] = c.nodeToElastic(resolver, child)
 	}
 
 	if combination.Operator() == contactql.BoolOperatorAnd {
@@ -73,12 +70,12 @@ func (c *Converter) boolCombination(combination *contactql.BoolCombination) elas
 	return elastic.Any(queries...)
 }
 
-func (c *Converter) condition(cond *contactql.Condition) elastic.Query {
+func (c *Converter) condition(resolver contactql.Resolver, cond *contactql.Condition) elastic.Query {
 	switch cond.PropertyType() {
 	case contactql.PropertyTypeField:
-		return c.fieldCondition(cond)
+		return c.fieldCondition(resolver, cond)
 	case contactql.PropertyTypeAttribute:
-		return c.attributeCondition(cond)
+		return c.attributeCondition(resolver, cond)
 	case contactql.PropertyTypeURN:
 		return c.schemeCondition(cond)
 	default:
@@ -86,8 +83,8 @@ func (c *Converter) condition(cond *contactql.Condition) elastic.Query {
 	}
 }
 
-func (c *Converter) fieldCondition(cond *contactql.Condition) elastic.Query {
-	field := c.resolver.ResolveField(cond.PropertyKey())
+func (c *Converter) fieldCondition(resolver contactql.Resolver, cond *contactql.Condition) elastic.Query {
+	field := resolver.ResolveField(cond.PropertyKey())
 	fieldType := field.Type()
 	fieldQuery := elastic.Term("fields.field", field.UUID())
 
@@ -191,7 +188,7 @@ func (c *Converter) fieldCondition(cond *contactql.Condition) elastic.Query {
 	panic(fmt.Sprintf("unsupported field type: %s", fieldType))
 }
 
-func (c *Converter) attributeCondition(cond *contactql.Condition) elastic.Query {
+func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contactql.Condition) elastic.Query {
 	key := cond.PropertyKey()
 	value := strings.ToLower(cond.Value())
 
@@ -329,7 +326,7 @@ func (c *Converter) attributeCondition(cond *contactql.Condition) elastic.Query 
 			return query
 		}
 
-		group := cond.ValueAsGroup(c.resolver)
+		group := cond.ValueAsGroup(resolver)
 
 		switch cond.Operator() {
 		case contactql.OpEqual:
@@ -354,7 +351,7 @@ func (c *Converter) attributeCondition(cond *contactql.Condition) elastic.Query 
 			return query
 		}
 
-		flow := cond.ValueAsFlow(c.resolver)
+		flow := cond.ValueAsFlow(resolver)
 
 		switch cond.Operator() {
 		case contactql.OpEqual:
