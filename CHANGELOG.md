@@ -1,3 +1,10 @@
+v0.272.0 (2026-03-24)
+-------------------------
+ * Update deps
+ * Add uuidAsDocID option to es.Converter for indexes where _id is UUID
+ * Update to go 1.26
+ * Refactor contactql/es to use Converter struct instead of standalone functions
+
 v0.271.0 (2026-03-19)
 -------------------------
  * Remove all_urns field from send_msg actions
