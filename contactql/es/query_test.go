@@ -93,7 +93,7 @@ func TestElasticQuery(t *testing.T) {
 		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
 		require.NoError(t, err)
 
-		conv := es.NewConverter(env, mapper)
+		conv := es.NewConverter(env, mapper, false)
 		query := conv.Query(parsed)
 		assert.NotNil(t, query, tc.Description)
 
@@ -118,4 +118,40 @@ func TestElasticQuery(t *testing.T) {
 		err = os.WriteFile("testdata/to_query.json", actualJSON, 0666)
 		require.NoError(t, err)
 	}
+}
+
+func TestElasticQueryUUIDAsDocID(t *testing.T) {
+	resolver := newMockResolver()
+	mapper := newMockMapper(
+		map[assets.FlowUUID]int64{},
+		map[assets.GroupUUID]int64{},
+	)
+	ny, _ := time.LoadLocation("America/New_York")
+	env := envs.NewBuilder().WithTimezone(ny).Build()
+
+	conv := es.NewConverter(env, mapper, true)
+
+	// uuid = X should query _id
+	parsed, err := contactql.ParseQuery(env, `uuid = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
+	require.NoError(t, err)
+	asJSON := jsonx.MustMarshal(conv.Query(parsed))
+	test.AssertEqualJSON(t, []byte(`{"ids":{"values":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"]}}`), asJSON, "uuid query mismatch")
+
+	// uuid != X should query _id with NOT
+	parsed, err = contactql.ParseQuery(env, `uuid != "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
+	require.NoError(t, err)
+	asJSON = jsonx.MustMarshal(conv.Query(parsed))
+	test.AssertEqualJSON(t, []byte(`{"bool":{"must_not":{"ids":{"values":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"]}}}}`), asJSON, "uuid != query mismatch")
+
+	// id = X should query id field
+	parsed, err = contactql.ParseQuery(env, `id = 123`, resolver)
+	require.NoError(t, err)
+	asJSON = jsonx.MustMarshal(conv.Query(parsed))
+	test.AssertEqualJSON(t, []byte(`{"term":{"id":{"value":"123"}}}`), asJSON, "id query mismatch")
+
+	// id != X should query id field with NOT
+	parsed, err = contactql.ParseQuery(env, `id != 123`, resolver)
+	require.NoError(t, err)
+	asJSON = jsonx.MustMarshal(conv.Query(parsed))
+	test.AssertEqualJSON(t, []byte(`{"bool":{"must_not":{"term":{"id":{"value":"123"}}}}}`), asJSON, "id != query mismatch")
 }
