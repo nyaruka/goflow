@@ -29,8 +29,10 @@ func TestElasticSort(t *testing.T) {
 	err = json.Unmarshal(tcJSON, &tcs)
 	require.NoError(t, err)
 
+	conv := es.NewConverter(nil, nil, resolver)
+
 	for _, tc := range tcs {
-		sort, err := es.ToElasticSort(tc.SortBy, resolver)
+		sort, err := conv.Sort(tc.SortBy)
 
 		if tc.Error != "" {
 			assert.EqualError(t, err, tc.Error)

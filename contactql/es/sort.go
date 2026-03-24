@@ -9,8 +9,8 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 )
 
-// ToElasticSort returns the elastic sort for the passed in sort by string
-func ToElasticSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, error) {
+// Sort converts a sort string to an Elastic sort
+func (c *Converter) Sort(sortBy string) (elastic.Sort, error) {
 	// default to most recent first by id
 	if sortBy == "" {
 		return elastic.SortBy("id", false), nil
@@ -37,7 +37,7 @@ func ToElasticSort(sortBy string, resolver contactql.Resolver) (elastic.Sort, er
 	}
 
 	// we are sorting by a custom field
-	field := resolver.ResolveField(property)
+	field := c.resolver.ResolveField(property)
 	if field == nil {
 		return nil, fmt.Errorf("no such field with key: %s", property)
 	}

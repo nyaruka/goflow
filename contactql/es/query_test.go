@@ -93,7 +93,8 @@ func TestElasticQuery(t *testing.T) {
 		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
 		require.NoError(t, err)
 
-		query := es.ToElasticQuery(env, mapper, parsed)
+		conv := es.NewConverter(env, mapper, resolver)
+		query := conv.Query(parsed)
 		assert.NotNil(t, query, tc.Description)
 
 		asJSON, err := jsonx.Marshal(query)
