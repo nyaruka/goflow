@@ -20,13 +20,14 @@ type AssetMapper interface {
 
 // Converter converts contactql queries and sorts to Elasticsearch queries and sorts
 type Converter struct {
-	env    envs.Environment
-	assets AssetMapper
+	env         envs.Environment
+	assets      AssetMapper
+	uuidAsDocID bool // if true, _id is UUID and id is db ID; if false, _id is db ID and uuid is a field
 }
 
 // NewConverter creates a new Converter
-func NewConverter(env envs.Environment, assets AssetMapper) *Converter {
-	return &Converter{env: env, assets: assets}
+func NewConverter(env envs.Environment, assets AssetMapper, uuidAsDocID bool) *Converter {
+	return &Converter{env: env, assets: assets, uuidAsDocID: uuidAsDocID}
 }
 
 // we store contact status in elastic as single char codes
@@ -207,27 +208,22 @@ func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contac
 
 	switch cond.PropertyKey() {
 	case contactql.AttributeUUID:
+		if c.uuidAsDocID {
+			return c.docQuery(cond, value)
+		}
 		return textAttributeQuery(cond, "uuid", strings.ToLower)
 	case contactql.AttributeID:
-		switch cond.Operator() {
-		case contactql.OpEqual:
-			return elastic.Ids(value)
-		case contactql.OpNotEqual:
-			return elastic.Not(elastic.Ids(value))
-		default:
-			panic(fmt.Sprintf("unsupported ID attribute operator: %s", cond.Operator()))
+		if c.uuidAsDocID {
+			return textAttributeQuery(cond, "id", strings.ToLower)
 		}
+		return c.docQuery(cond, value)
 	case contactql.AttributeRef:
 		value, _ := obfuscate.DecodeID(cond.Value(), c.env.ObfuscationKey()) // if can't be decoded value will be zero which is fine and just means no match
 
-		switch cond.Operator() {
-		case contactql.OpEqual:
-			return elastic.Ids(fmt.Sprint(value))
-		case contactql.OpNotEqual:
-			return elastic.Not(elastic.Ids(fmt.Sprint(value)))
-		default:
-			panic(fmt.Sprintf("unsupported ref attribute operator: %s", cond.Operator()))
+		if c.uuidAsDocID {
+			return textAttributeQuery(cond, "id", func(string) string { return fmt.Sprint(value) })
 		}
+		return c.docQuery(cond, fmt.Sprint(value))
 	case contactql.AttributeName:
 		switch cond.Operator() {
 		case contactql.OpEqual:
@@ -390,6 +386,18 @@ func (c *Converter) schemeCondition(cond *contactql.Condition) elastic.Query {
 		return elastic.Nested("urns", elastic.All(elastic.MatchPhrase("urns.path", value), elastic.Term("urns.scheme", key)))
 	default:
 		panic(fmt.Sprintf("unsupported scheme operator: %s", cond.Operator()))
+	}
+}
+
+// docQuery queries the _id field using elastic.Ids
+func (c *Converter) docQuery(cond *contactql.Condition, value string) elastic.Query {
+	switch cond.Operator() {
+	case contactql.OpEqual:
+		return elastic.Ids(value)
+	case contactql.OpNotEqual:
+		return elastic.Not(elastic.Ids(value))
+	default:
+		panic(fmt.Sprintf("unsupported _id operator: %s", cond.Operator()))
 	}
 }
 
