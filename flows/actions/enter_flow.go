@@ -54,7 +54,7 @@ func (a *EnterFlow) Execute(ctx context.Context, run flows.Run, step flows.Step,
 		return nil
 	}
 
-	if run.Session().Type() != flow.Type() {
+	if run.Session().Type() != flow.Type() && flow.Type() != flows.FlowTypeMessagingBackground {
 		a.fail(run, fmt.Sprintf("Can't enter %s of type %s from type %s", flow.Reference(false), flow.Type(), run.Session().Type()), log)
 		return nil
 	}

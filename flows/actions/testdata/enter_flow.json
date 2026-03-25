@@ -88,6 +88,69 @@
         }
     },
     {
+        "description": "Background flow can be entered from messaging flow",
+        "action": {
+            "type": "enter_flow",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "5765539a-0e4f-4861-8f71-a3d69e723c67",
+                "name": "Background Flow"
+            }
+        },
+        "events": [
+            {
+                "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                "type": "run_started",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "flow": {
+                    "uuid": "5765539a-0e4f-4861-8f71-a3d69e723c67",
+                    "name": "Background Flow",
+                    "revision": 123
+                },
+                "run_uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
+                "parent_uuid": "01969b47-1cf3-76f8-92a3-d648ab64bccb"
+            },
+            {
+                "uuid": "01969b47-4bd3-76f8-a691-235cbe720980",
+                "type": "run_result_changed",
+                "created_on": "2025-05-04T12:31:04.123456789Z",
+                "name": "Status",
+                "value": "done",
+                "category": "Complete"
+            },
+            {
+                "uuid": "01969b47-578b-76f8-bebe-b4a1f677cf4c",
+                "type": "run_ended",
+                "created_on": "2025-05-04T12:31:07.123456789Z",
+                "run_uuid": "01969b47-3463-76f8-a17e-f85e49829fb9",
+                "flow": {
+                    "uuid": "5765539a-0e4f-4861-8f71-a3d69e723c67",
+                    "name": "Background Flow",
+                    "revision": 123
+                },
+                "status": "completed"
+            }
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "5765539a-0e4f-4861-8f71-a3d69e723c67",
+                    "name": "Background Flow",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "Flow triggered event if flow can be started",
         "action": {
             "type": "enter_flow",

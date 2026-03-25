@@ -75,6 +75,33 @@
                     ]
                 }
             ]
+        },
+        {
+            "uuid": "5765539a-0e4f-4861-8f71-a3d69e723c67",
+            "name": "Background Flow",
+            "spec_version": "14.1.0",
+            "revision": 123,
+            "language": "eng",
+            "type": "messaging_background",
+            "nodes": [
+                {
+                    "uuid": "f041ad04-7339-4677-85f1-b6a5c834b2c5",
+                    "actions": [
+                        {
+                            "uuid": "88c28e42-2d36-4dad-8716-6a05c7d0a3a7",
+                            "type": "set_run_result",
+                            "name": "Status",
+                            "value": "done",
+                            "category": "Complete"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "a1e27e1f-d5e3-4ba0-a89b-ff3c63543ada"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "channels": [
