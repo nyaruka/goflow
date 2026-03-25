@@ -1,3 +1,7 @@
+v0.272.1 (2026-03-25)
+-------------------------
+ * Allow entering background flows from any flow type
+
 v0.272.0 (2026-03-24)
 -------------------------
  * Update deps
