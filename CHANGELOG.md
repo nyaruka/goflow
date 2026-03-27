@@ -1,3 +1,7 @@
+v0.272.3 (2026-03-27)
+-------------------------
+ * Update tests for new bsuid URN scheme from gocommon
+
 v0.272.2 (2026-03-27)
 -------------------------
  * Update gocommon
