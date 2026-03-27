@@ -1,3 +1,7 @@
+v0.272.2 (2026-03-27)
+-------------------------
+ * Update gocommon
+
 v0.272.1 (2026-03-25)
 -------------------------
  * Allow entering background flows from any flow type
