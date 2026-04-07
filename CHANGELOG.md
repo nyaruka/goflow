@@ -1,3 +1,7 @@
+v0.273.3 (2026-04-07)
+-------------------------
+ * Preserve channel affinity in routes modifier set mode
+
 v0.273.2 (2026-04-07)
 -------------------------
  * Deprecate URNs modifier in favor of routes modifier
