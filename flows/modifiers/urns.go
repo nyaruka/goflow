@@ -93,9 +93,17 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 			}
 		}
 	case URNsSet:
+		// preserve any existing channel affinity for URNs that are still on the contact
 		routes := make([]flows.Route, len(urnz))
 		for i, u := range urnz {
-			routes[i] = flows.Route{URN: u}
+			var ch *flows.Channel
+			for _, existing := range contact.URNs() {
+				if existing.Identity() == u.Identity() {
+					ch = existing.Channel
+					break
+				}
+			}
+			routes[i] = flows.Route{URN: u, Channel: ch}
 		}
 		modified = contact.SetRoutes(routes)
 	}

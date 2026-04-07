@@ -267,7 +267,7 @@ func (c *Contact) SetRoutes(routes []Route) bool {
 			return false
 		}
 		for i, u := range c.urns {
-			if u.Identity() != routes[i].URN || u.Channel != routes[i].Channel {
+			if u.Identity() != routes[i].URN.Identity() || u.Channel != routes[i].Channel {
 				return false
 			}
 		}
