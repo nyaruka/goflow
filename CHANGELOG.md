@@ -1,3 +1,7 @@
+v0.273.0 (2026-04-07)
+-------------------------
+ * Add routes modifier for setting contact URNs with channel affinity
+
 v0.272.3 (2026-03-27)
 -------------------------
  * Update tests for new bsuid URN scheme from gocommon
