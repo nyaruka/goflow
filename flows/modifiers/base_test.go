@@ -201,7 +201,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewRoutes([]modifiers.Route{
+			modifiers.NewRoutes([]flows.Route{
 				{URN: urns.URN("tel:+1234567890"), Channel: nexmo},
 			}, modifiers.RoutesSet),
 			`{

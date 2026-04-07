@@ -477,42 +477,43 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	}
 }
 
-// Destination is a sendable channel and URN pair
-type Destination struct {
+// Route is a URN paired with the channel that should handle it
+type Route struct {
+	URN     urns.URN
 	Channel *Channel
-	URN     *URN
 }
 
-// ResolveDestinations resolves possible URN/channel destinations
-func (c *Contact) ResolveDestinations(all bool) []Destination {
-	destinations := []Destination{}
+// ResolveRoutes resolves possible URN/channel routes for sending
+func (c *Contact) ResolveRoutes(all bool) []Route {
+	routes := []Route{}
 
 	for _, u := range c.urns {
 		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
-			destinations = append(destinations, Destination{URN: u, Channel: channel})
+			routes = append(routes, Route{URN: u.Identity(), Channel: channel})
 			if !all {
 				break
 			}
 		}
 	}
-	return destinations
+	return routes
 }
 
 // PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
 func (c *Contact) PreferredURN() *URN {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].URN
+	for _, u := range c.urns {
+		if c.assets.Channels().GetForURN(u, assets.ChannelRoleSend) != nil {
+			return u
+		}
 	}
 	return nil
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
 func (c *Contact) PreferredChannel() *Channel {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].Channel
+	routes := c.ResolveRoutes(false)
+	if len(routes) > 0 {
+		return routes[0].Channel
 	}
 	return nil
 }

@@ -92,18 +92,17 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		}
 	}
 
-	destinations := run.Contact().ResolveDestinations(false)
+	routes := run.Contact().ResolveRoutes(false)
 	locale := currentLocale(run, lang)
 
-	// create a new message for each URN+channel destination
-	for _, dest := range destinations {
-		urn := dest.URN
-		channelRef := assets.NewChannelReference(dest.Channel.UUID(), dest.Channel.Name())
+	// create a new message for each URN+channel route
+	for _, route := range routes {
+		channelRef := assets.NewChannelReference(route.Channel.UUID(), route.Channel.Name())
 		var msg *flows.MsgOut
 
 		if template != nil {
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
-			translation := template.FindTranslation(dest.Channel, locales)
+			translation := template.FindTranslation(route.Channel, locales)
 			if translation != nil {
 				templating := template.Templating(translation, templateVariables)
 
@@ -111,20 +110,20 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 				preview := translation.Preview(templating.Variables)
 				locale := translation.Locale()
 
-				msg = flows.NewMsgOut(urn.Identity(), channelRef, preview, templating, locale, unsendableReason)
+				msg = flows.NewMsgOut(route.URN, channelRef, preview, templating, locale, unsendableReason)
 			}
 		}
 
 		if msg == nil {
-			msg = flows.NewMsgOut(urn.Identity(), channelRef, content, nil, locale, unsendableReason)
+			msg = flows.NewMsgOut(route.URN, channelRef, content, nil, locale, unsendableReason)
 		}
 
 		log(events.NewMsgCreated(msg, "", ""))
 	}
 
-	// if we couldn't find a destination, create a msg without a URN or channel and it's up to the caller
+	// if we couldn't find a route, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
-	if len(destinations) == 0 {
+	if len(routes) == 0 {
 		msg := flows.NewMsgOut(urns.NilURN, nil, content, nil, locale, flows.UnsendableReasonNoRoute)
 		log(events.NewMsgCreated(msg, "", ""))
 	}

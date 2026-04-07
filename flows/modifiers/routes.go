@@ -30,22 +30,16 @@ const (
 	RoutesSet    RoutesModification = "set"
 )
 
-// Route is a URN paired with the channel that should handle it
-type Route struct {
-	URN     urns.URN
-	Channel *flows.Channel
-}
-
 // Routes modifies the URNs on a contact while preserving channel affinity
 type Routes struct {
 	baseModifier
 
-	routes       []Route
+	routes       []flows.Route
 	modification RoutesModification
 }
 
 // NewRoutes creates a new routes modifier
-func NewRoutes(routes []Route, modification RoutesModification) *Routes {
+func NewRoutes(routes []flows.Route, modification RoutesModification) *Routes {
 	return &Routes{
 		baseModifier: newBaseModifier(TypeRoutes),
 		routes:       routes,
@@ -57,7 +51,7 @@ func NewRoutes(routes []Route, modification RoutesModification) *Routes {
 func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	modified := false
 
-	valid := make([]Route, 0, len(m.routes))
+	valid := make([]flows.Route, 0, len(m.routes))
 	for _, r := range m.routes {
 		urn := r.URN.Normalize()
 
@@ -79,7 +73,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			}
 		}
 
-		valid = append(valid, Route{URN: urn, Channel: r.Channel})
+		valid = append(valid, flows.Route{URN: urn, Channel: r.Channel})
 	}
 
 	switch m.modification {
@@ -142,14 +136,14 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 		return nil, err
 	}
 
-	routes := make([]Route, 0, len(e.Routes))
+	routes := make([]flows.Route, 0, len(e.Routes))
 	for _, re := range e.Routes {
 		channel := sa.Channels().Get(re.Channel.UUID)
 		if channel == nil {
 			missing(re.Channel, nil)
 			continue
 		}
-		routes = append(routes, Route{URN: re.URN, Channel: channel})
+		routes = append(routes, flows.Route{URN: re.URN, Channel: channel})
 	}
 
 	// if we had routes in the envelope but all their channels are missing, nothing to modify
