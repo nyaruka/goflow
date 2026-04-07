@@ -230,9 +230,9 @@ func (c *Contact) Name() string { return c.name }
 // URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
 
-// AddURN adds a new URN to this contact with optional channel affinity. Returns whether the contact was changed.
+// AddRoute adds a new URN to this contact with optional channel affinity. Returns whether the contact was changed.
 // If the URN is already on the contact this is a no-op - to update channel affinity use SetAffinity or SetRoutes.
-func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
+func (c *Contact) AddRoute(urn urns.URN, channel *Channel) bool {
 	if c.HasURN(urn) {
 		return false
 	}

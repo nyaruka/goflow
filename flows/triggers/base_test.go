@@ -209,7 +209,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065551212")
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddURN("tel:+12065551212", nil)
+	contact.AddRoute("tel:+12065551212", nil)
 
 	eng := engine.NewBuilder().Build()
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
@@ -370,7 +370,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddURN(urns.URN("tel:+12065551212"), nil)
+	contact.AddRoute(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 
