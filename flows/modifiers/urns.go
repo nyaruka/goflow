@@ -2,14 +2,12 @@ package modifiers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -30,7 +28,11 @@ const (
 	URNsSet    URNsModification = "set"
 )
 
-// URNs modifies the URNs on a contact
+// URNs modifies the URNs on a contact.
+//
+// Deprecated: use the routes modifier instead, which takes (URN, channel) pairs and can set channel affinity in
+// the same operation. This modifier is retained for backwards compatibility and delegates to the routes modifier
+// internally.
 type URNs struct {
 	baseModifier
 
@@ -49,70 +51,35 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 
 // Apply applies this modification to the given contact
 func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
-	modified := false
-
-	urnz := make([]urns.URN, 0, len(m.urnz))
-	for _, urn := range m.urnz {
-		urn := urn.Normalize()
-
-		// throw away invalid URNs
-		if err := urn.Validate(); err != nil {
-			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn), ""))
-			continue
-		}
-
-		// if adding or setting, try to claim the URN
-		if (m.modification == URNsAppend || m.modification == URNsSet) && !contact.HasURN(urn) {
-			claimed, err := eng.Options().ClaimURN(ctx, sa, contact, urn)
-			if err != nil {
-				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
-			}
-			if !claimed {
-				log(events.NewError("URN is taken by another contact", events.ErrorCodeURNTaken, "urn", string(urn)))
-				continue
-			}
-		}
-
-		urnz = append(urnz, urn)
-	}
-
-	switch m.modification {
-	case URNsAppend:
-		for _, urn := range urnz {
-			if len(contact.URNs()) >= flows.MaxContactURNs {
-				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
-				break
-			} else if contact.AddRoute(urn, nil) {
-				modified = true
-			}
-		}
-	case URNsRemove:
-		for _, urn := range urnz {
-			if contact.RemoveURN(urn) {
-				modified = true
-			}
-		}
-	case URNsSet:
-		// preserve any existing channel affinity for URNs that are still on the contact
-		routes := make([]flows.Route, len(urnz))
-		for i, u := range urnz {
-			var ch *flows.Channel
+	// translate to the equivalent routes modifier - for set, preserve any existing channel affinity for URNs
+	// that are still on the contact. We normalize here so identity comparisons against existing (already
+	// normalized) URNs on the contact match correctly.
+	routes := make([]flows.Route, len(m.urnz))
+	for i, u := range m.urnz {
+		u = u.Normalize()
+		var ch *flows.Channel
+		if m.modification == URNsSet {
 			for _, existing := range contact.URNs() {
 				if existing.Identity() == u.Identity() {
 					ch = existing.Channel
 					break
 				}
 			}
-			routes[i] = flows.Route{URN: u, Channel: ch}
 		}
-		modified = contact.SetRoutes(routes)
+		routes[i] = flows.Route{URN: u, Channel: ch}
 	}
 
-	if modified {
-		log(events.NewContactURNsChanged(contact.URNs().Encode()))
-		return true, nil
+	var routesMod RoutesModification
+	switch m.modification {
+	case URNsAppend:
+		routesMod = RoutesAppend
+	case URNsRemove:
+		routesMod = RoutesRemove
+	case URNsSet:
+		routesMod = RoutesSet
 	}
-	return false, nil
+
+	return NewRoutes(routes, routesMod).Apply(ctx, eng, env, sa, contact, log)
 }
 
 var _ flows.Modifier = (*URNs)(nil)
