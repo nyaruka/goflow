@@ -79,7 +79,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 	switch m.modification {
 	case RoutesAppend:
 		for _, r := range valid {
-			// only count budget for new URNs - updating an existing URN's channel doesn't grow the list
+			// only count budget against new URNs - existing URNs are no-ops and shouldn't trigger the limit error
 			if !contact.HasURN(r.URN) && len(contact.URNs()) >= flows.MaxContactURNs {
 				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break

@@ -231,7 +231,7 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact with optional channel affinity. Returns whether the contact was changed.
-// If the URN is already on the contact this is a no-op - to update channel affinity use the affinity modifier or SetURNs.
+// If the URN is already on the contact this is a no-op - to update channel affinity use SetAffinity or SetURNsWithChannels.
 func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
 	if c.HasURN(urn) {
 		return false
