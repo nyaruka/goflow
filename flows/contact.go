@@ -230,19 +230,20 @@ func (c *Contact) Name() string { return c.name }
 // URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
 
-// AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn urns.URN) bool {
+// AddRoute adds a new URN to this contact with optional channel affinity. Returns whether the contact was changed.
+// If the URN is already on the contact this is a no-op - to update channel affinity use SetAffinity or SetRoutes.
+func (c *Contact) AddRoute(urn urns.URN, channel *Channel) bool {
 	if c.HasURN(urn) {
 		return false
 	}
 
 	scheme, path, _, _ := urn.ToParts()
 
-	c.urns = append(c.urns, NewURN(scheme, path, "", nil))
+	c.urns = append(c.urns, NewURN(scheme, path, "", channel))
 	return true
 }
 
-// RemoveURN adds a new URN to this contact
+// RemoveURN removes an existing URN from this contact
 func (c *Contact) RemoveURN(urn urns.URN) bool {
 	if !c.HasURN(urn) {
 		return false
@@ -259,14 +260,14 @@ func (c *Contact) RemoveURN(urn urns.URN) bool {
 	return true
 }
 
-// SetURNs sets the URNs of this contact
-func (c *Contact) SetURNs(urnz []urns.URN) bool {
+// SetRoutes replaces this contact's URNs with the given routes, each carrying optional channel affinity.
+func (c *Contact) SetRoutes(routes []Route) bool {
 	isSame := func() bool {
-		if len(c.urns) != len(urnz) {
+		if len(c.urns) != len(routes) {
 			return false
 		}
 		for i, u := range c.urns {
-			if u.Identity() != urnz[i].Identity() {
+			if u.Identity() != routes[i].URN.Identity() || u.Channel != routes[i].Channel {
 				return false
 			}
 		}
@@ -277,10 +278,10 @@ func (c *Contact) SetURNs(urnz []urns.URN) bool {
 	}
 
 	c.urns = URNList{}
-	for _, u := range urnz {
-		scheme, path, _, _ := u.ToParts()
+	for _, r := range routes {
+		scheme, path, _, _ := r.URN.ToParts()
 
-		c.urns = append(c.urns, NewURN(scheme, path, "", nil))
+		c.urns = append(c.urns, NewURN(scheme, path, "", r.Channel))
 	}
 
 	return true
@@ -430,42 +431,43 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	}
 }
 
-// Destination is a sendable channel and URN pair
-type Destination struct {
+// Route is a URN paired with the channel that should handle it
+type Route struct {
+	URN     urns.URN
 	Channel *Channel
-	URN     *URN
 }
 
-// ResolveDestinations resolves possible URN/channel destinations
-func (c *Contact) ResolveDestinations(all bool) []Destination {
-	destinations := []Destination{}
+// ResolveRoutes resolves possible URN/channel routes for sending
+func (c *Contact) ResolveRoutes(all bool) []Route {
+	routes := []Route{}
 
 	for _, u := range c.urns {
 		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
-			destinations = append(destinations, Destination{URN: u, Channel: channel})
+			routes = append(routes, Route{URN: u.Identity(), Channel: channel})
 			if !all {
 				break
 			}
 		}
 	}
-	return destinations
+	return routes
 }
 
 // PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
 func (c *Contact) PreferredURN() *URN {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].URN
+	for _, u := range c.urns {
+		if c.assets.Channels().GetForURN(u, assets.ChannelRoleSend) != nil {
+			return u
+		}
 	}
 	return nil
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
 func (c *Contact) PreferredChannel() *Channel {
-	destinations := c.ResolveDestinations(false)
-	if len(destinations) > 0 {
-		return destinations[0].Channel
+	routes := c.ResolveRoutes(false)
+	if len(routes) > 0 {
+		return routes[0].Channel
 	}
 	return nil
 }

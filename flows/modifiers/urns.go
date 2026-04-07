@@ -82,7 +82,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 			if len(contact.URNs()) >= flows.MaxContactURNs {
 				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break
-			} else if contact.AddURN(urn) {
+			} else if contact.AddRoute(urn, nil) {
 				modified = true
 			}
 		}
@@ -93,7 +93,19 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 			}
 		}
 	case URNsSet:
-		modified = contact.SetURNs(urnz)
+		// preserve any existing channel affinity for URNs that are still on the contact
+		routes := make([]flows.Route, len(urnz))
+		for i, u := range urnz {
+			var ch *flows.Channel
+			for _, existing := range contact.URNs() {
+				if existing.Identity() == u.Identity() {
+					ch = existing.Channel
+					break
+				}
+			}
+			routes[i] = flows.Route{URN: u, Channel: ch}
+		}
+		modified = contact.SetRoutes(routes)
 	}
 
 	if modified {
