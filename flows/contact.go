@@ -242,6 +242,25 @@ func (c *Contact) AddURN(urn urns.URN) bool {
 	return true
 }
 
+// AddURNWithChannel adds a new URN with the given channel affinity, or updates the channel affinity of an existing URN.
+// Returns whether the contact was changed.
+func (c *Contact) AddURNWithChannel(urn urns.URN, channel *Channel) bool {
+	for _, u := range c.urns {
+		if u.Identity() == urn.Identity() {
+			if u.Channel == channel {
+				return false
+			}
+			u.Channel = channel
+			return true
+		}
+	}
+
+	scheme, path, _, _ := urn.ToParts()
+
+	c.urns = append(c.urns, NewURN(scheme, path, "", channel))
+	return true
+}
+
 // RemoveURN adds a new URN to this contact
 func (c *Contact) RemoveURN(urn urns.URN) bool {
 	if !c.HasURN(urn) {
@@ -281,6 +300,34 @@ func (c *Contact) SetURNs(urnz []urns.URN) bool {
 		scheme, path, _, _ := u.ToParts()
 
 		c.urns = append(c.urns, NewURN(scheme, path, "", nil))
+	}
+
+	return true
+}
+
+// SetURNsWithChannels replaces this contact's URNs with the given list, each carrying the corresponding channel affinity.
+// urnz and channels must be the same length; channels[i] is the affinity for urnz[i] (may be nil).
+func (c *Contact) SetURNsWithChannels(urnz []urns.URN, channels []*Channel) bool {
+	isSame := func() bool {
+		if len(c.urns) != len(urnz) {
+			return false
+		}
+		for i, u := range c.urns {
+			if u.Identity() != urnz[i].Identity() || u.Channel != channels[i] {
+				return false
+			}
+		}
+		return true
+	}
+	if isSame() {
+		return false
+	}
+
+	c.urns = URNList{}
+	for i, u := range urnz {
+		scheme, path, _, _ := u.ToParts()
+
+		c.urns = append(c.urns, NewURN(scheme, path, "", channels[i]))
 	}
 
 	return true

@@ -200,6 +200,24 @@ func TestConstructors(t *testing.T) {
 				"modification": "set"
 			}`,
 		},
+		{
+			modifiers.NewRoutes([]modifiers.Route{
+				{URN: urns.URN("tel:+1234567890"), Channel: nexmo},
+			}, modifiers.RoutesSet),
+			`{
+				"type": "routes",
+				"routes": [
+					{
+						"urn": "tel:+1234567890",
+						"channel": {
+							"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+							"name": "Nexmo"
+						}
+					}
+				],
+				"modification": "set"
+			}`,
+		},
 	}
 
 	for _, tc := range tests {
@@ -257,6 +275,27 @@ func TestReadModifier(t *testing.T) {
 	assert.NotNil(t, mod)
 	assert.Equal(t, "groups", mod.Type())
 	assert.Equal(t, assets.NewGroupReference(assets.GroupUUID("cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb"), "Losers"), missingAssets[len(missingAssets)-1])
+
+	// no-modifier error if we load a routes modifier and none of its channels exist
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "routes", "modification": "append", "routes": [{"urn": "tel:+1234567890", "channel": {"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Nexmo"}}]}`), missing)
+	assert.Equal(t, modifiers.ErrNoModifier, err)
+	assert.Nil(t, mod)
+	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("8632b9f0-ac2f-40ad-808f-77781a444dc9"), "Nexmo"), missingAssets[len(missingAssets)-1])
+
+	// but if at least one route's channel exists, we still get a modifier
+	source, _ = static.NewSource([]byte(`{
+		"channels": [
+			{"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7", "name": "Nexmo", "address": "+", "schemes": ["tel"], "roles": ["send", "receive"]}
+		]
+	}`))
+	sessionAssets, err = engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "routes", "modification": "append", "routes": [{"urn": "tel:+1234567890", "channel": {"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Missing"}}, {"urn": "tel:+1234567891", "channel": {"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7", "name": "Nexmo"}}]}`), missing)
+	assert.NoError(t, err)
+	assert.NotNil(t, mod)
+	assert.Equal(t, "routes", mod.Type())
+	assert.Equal(t, assets.NewChannelReference(assets.ChannelUUID("cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb"), "Missing"), missingAssets[len(missingAssets)-1])
 }
 
 func TestFieldValueTypes(t *testing.T) {
