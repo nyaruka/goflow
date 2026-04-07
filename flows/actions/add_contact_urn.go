@@ -65,7 +65,7 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
 	urn = urn.Normalize()
 
-	_, err := a.applyModifier(ctx, run, modifiers.NewURNs([]urns.URN{urn}, modifiers.URNsAppend), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewRoutes([]flows.Route{{URN: urn}}, modifiers.RoutesAppend), log)
 	if run.Contact().HasURN(urn) {
 		run.Locals().Set(AddURNOutputLocal, string(urn))
 	} else {
