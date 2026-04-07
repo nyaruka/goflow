@@ -1,3 +1,7 @@
+v0.273.1 (2026-04-07)
+-------------------------
+ * Use routes modifier in add_contact_urn action
+
 v0.273.0 (2026-04-07)
 -------------------------
  * Add routes modifier for setting contact URNs with channel affinity
