@@ -84,7 +84,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break
 			}
-			if contact.AddURNWithChannel(r.URN, r.Channel) {
+			if contact.AddURN(r.URN, r.Channel) {
 				modified = true
 			}
 		}

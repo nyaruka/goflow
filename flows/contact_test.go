@@ -84,9 +84,9 @@ func TestContact(t *testing.T) {
 	contact.SetLastSeenOn(time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC))
 	assert.Equal(t, time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC), *contact.LastSeenOn())
 
-	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"))
-	contact.AddURN(urns.URN("twitter:joey"))
-	contact.AddURN(urns.URN("whatsapp:235423721788"))
+	contact.AddURN(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
+	contact.AddURN(urns.URN("twitter:joey"), nil)
+	contact.AddURN(urns.URN("whatsapp:235423721788"), nil)
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
@@ -190,11 +190,11 @@ func TestContactURNs(t *testing.T) {
 	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	assert.Len(t, contact.URNs(), 0)
-	assert.True(t, contact.AddURN("tel:+12024561111"))  // didn't have URN so returns true
-	assert.False(t, contact.AddURN("tel:+12024561111")) // did have
+	assert.True(t, contact.AddURN("tel:+12024561111", nil))  // didn't have URN so returns true
+	assert.False(t, contact.AddURN("tel:+12024561111", nil)) // did have
 
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
-	assert.True(t, contact.AddURN("tel:+12024562222"))
+	assert.True(t, contact.AddURN("tel:+12024562222", nil))
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
 	assert.False(t, contact.SetURNs([]urns.URN{"tel:+12024561111", "tel:+12024562222"})) // no change
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
@@ -301,7 +301,7 @@ func TestContactFormat(t *testing.T) {
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
@@ -321,7 +321,7 @@ func TestContactFormat(t *testing.T) {
 		nil,
 		assets.PanicOnMissing,
 	)
-	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "joey", contact.Format(env))
 
 	anonEnv := envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
@@ -348,10 +348,10 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
-	contact.AddURN(urns.URN("tel:+12345678999"))
-	contact.AddURN(urns.URN("tel:+18005555777"))
-	contact.AddURN(urns.URN("whatsapp:18005555888"))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
+	contact.AddURN(urns.URN("tel:+12345678999"), nil)
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
+	contact.AddURN(urns.URN("whatsapp:18005555888"), nil)
 
 	contact.UpdatePreferredChannel(android)
 
@@ -402,10 +402,10 @@ func TestContactSetAffinity(t *testing.T) {
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
 	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
-	contact.AddURN(urns.URN("tel:+12345678999"))
-	contact.AddURN(urns.URN("tel:+18005555777"))
-	contact.AddURN(urns.URN("whatsapp:18005555888"))
+	contact.AddURN(urns.URN("twitter:joey"), nil)
+	contact.AddURN(urns.URN("tel:+12345678999"), nil)
+	contact.AddURN(urns.URN("tel:+18005555777"), nil)
+	contact.AddURN(urns.URN("whatsapp:18005555888"), nil)
 
 	// test moving a URN to the front with channel
 	changed := contact.SetAffinity(urns.URN("tel:+18005555777"), android)

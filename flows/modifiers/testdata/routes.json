@@ -55,7 +55,7 @@
         ]
     },
     {
-        "description": "URNs changed event if existing URN's channel is updated via append",
+        "description": "No URNs changed event if appended route's URN already exists - append does not update channel affinity",
         "contact_before": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bob",
@@ -84,19 +84,10 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+17036971111?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7"
+                "tel:+17036971111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"
             ]
         },
-        "events": [
-            {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
-                "type": "contact_urns_changed",
-                "created_on": "2025-05-04T12:30:46.123456789Z",
-                "urns": [
-                    "tel:+17036971111?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7"
-                ]
-            }
-        ]
+        "events": []
     },
     {
         "description": "No URNs changed event if appended route has same URN and channel",
