@@ -261,7 +261,7 @@ func (c *Contact) AddURNWithChannel(urn urns.URN, channel *Channel) bool {
 	return true
 }
 
-// RemoveURN adds a new URN to this contact
+// RemoveURN removes an existing URN from this contact
 func (c *Contact) RemoveURN(urn urns.URN) bool {
 	if !c.HasURN(urn) {
 		return false
