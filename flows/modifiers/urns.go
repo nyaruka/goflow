@@ -52,9 +52,11 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 // Apply applies this modification to the given contact
 func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	// translate to the equivalent routes modifier - for set, preserve any existing channel affinity for URNs
-	// that are still on the contact
+	// that are still on the contact. We normalize here so identity comparisons against existing (already
+	// normalized) URNs on the contact match correctly.
 	routes := make([]flows.Route, len(m.urnz))
 	for i, u := range m.urnz {
+		u = u.Normalize()
 		var ch *flows.Channel
 		if m.modification == URNsSet {
 			for _, existing := range contact.URNs() {
