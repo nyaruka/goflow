@@ -231,7 +231,7 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact with optional channel affinity. Returns whether the contact was changed.
-// If the URN is already on the contact this is a no-op - to update channel affinity use SetAffinity or SetURNsWithChannels.
+// If the URN is already on the contact this is a no-op - to update channel affinity use SetAffinity or SetRoutes.
 func (c *Contact) AddURN(urn urns.URN, channel *Channel) bool {
 	if c.HasURN(urn) {
 		return false
@@ -260,14 +260,14 @@ func (c *Contact) RemoveURN(urn urns.URN) bool {
 	return true
 }
 
-// SetURNs sets the URNs of this contact
-func (c *Contact) SetURNs(urnz []urns.URN) bool {
+// SetRoutes replaces this contact's URNs with the given routes, each carrying optional channel affinity.
+func (c *Contact) SetRoutes(routes []Route) bool {
 	isSame := func() bool {
-		if len(c.urns) != len(urnz) {
+		if len(c.urns) != len(routes) {
 			return false
 		}
 		for i, u := range c.urns {
-			if u.Identity() != urnz[i].Identity() {
+			if u.Identity() != routes[i].URN || u.Channel != routes[i].Channel {
 				return false
 			}
 		}
@@ -278,38 +278,10 @@ func (c *Contact) SetURNs(urnz []urns.URN) bool {
 	}
 
 	c.urns = URNList{}
-	for _, u := range urnz {
-		scheme, path, _, _ := u.ToParts()
+	for _, r := range routes {
+		scheme, path, _, _ := r.URN.ToParts()
 
-		c.urns = append(c.urns, NewURN(scheme, path, "", nil))
-	}
-
-	return true
-}
-
-// SetURNsWithChannels replaces this contact's URNs with the given list, each carrying the corresponding channel affinity.
-// urnz and channels must be the same length; channels[i] is the affinity for urnz[i] (may be nil).
-func (c *Contact) SetURNsWithChannels(urnz []urns.URN, channels []*Channel) bool {
-	isSame := func() bool {
-		if len(c.urns) != len(urnz) {
-			return false
-		}
-		for i, u := range c.urns {
-			if u.Identity() != urnz[i].Identity() || u.Channel != channels[i] {
-				return false
-			}
-		}
-		return true
-	}
-	if isSame() {
-		return false
-	}
-
-	c.urns = URNList{}
-	for i, u := range urnz {
-		scheme, path, _, _ := u.ToParts()
-
-		c.urns = append(c.urns, NewURN(scheme, path, "", channels[i]))
+		c.urns = append(c.urns, NewURN(scheme, path, "", r.Channel))
 	}
 
 	return true

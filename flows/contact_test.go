@@ -196,11 +196,11 @@ func TestContactURNs(t *testing.T) {
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.AddURN("tel:+12024562222", nil))
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.False(t, contact.SetURNs([]urns.URN{"tel:+12024561111", "tel:+12024562222"})) // no change
+	assert.False(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024561111"}, {URN: "tel:+12024562222"}})) // no change
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111"})) // order changed
+	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}})) // order changed
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetURNs([]urns.URN{"tel:+12024562222", "tel:+12024561111", "tel:+12024563333"}))
+	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}, {URN: "tel:+12024563333"}}))
 	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 	assert.True(t, contact.RemoveURN("tel:+12024561111"))
 	assert.False(t, contact.RemoveURN("tel:+12024566666"))

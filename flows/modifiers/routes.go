@@ -96,13 +96,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			}
 		}
 	case RoutesSet:
-		urnz := make([]urns.URN, len(valid))
-		channels := make([]*flows.Channel, len(valid))
-		for i, r := range valid {
-			urnz[i] = r.URN
-			channels[i] = r.Channel
-		}
-		modified = contact.SetURNsWithChannels(urnz, channels)
+		modified = contact.SetRoutes(valid)
 	}
 
 	if modified {

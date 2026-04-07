@@ -93,7 +93,11 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 			}
 		}
 	case URNsSet:
-		modified = contact.SetURNs(urnz)
+		routes := make([]flows.Route, len(urnz))
+		for i, u := range urnz {
+			routes[i] = flows.Route{URN: u}
+		}
+		modified = contact.SetRoutes(routes)
 	}
 
 	if modified {
