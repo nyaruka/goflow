@@ -1,6 +1,7 @@
 package modifiers_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -100,6 +101,50 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 		err = os.WriteFile(testPath, actualJSON, 0666)
 		require.NoError(t, err)
 	}
+}
+
+func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	sa, err := test.LoadSessionAssets(env, "testdata/_assets.json")
+	require.NoError(t, err)
+
+	// track which URNs are claimed so we can assert we don't claim URNs we'll never add
+	claimed := make([]urns.URN, 0)
+	eng := engine.NewBuilder().
+		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
+			claimed = append(claimed, u)
+			return true, nil
+		}).
+		Build()
+
+	// start the contact with MaxContactURNs-1 URNs so there's budget for exactly one more
+	existing := make([]urns.URN, flows.MaxContactURNs-1)
+	for i := range existing {
+		existing[i] = urns.URN(fmt.Sprintf("tel:+170200%05d", i))
+	}
+	contact, err := flows.NewContact(sa, flows.NewContactUUID(), flows.ContactID(1), "Bob", i18n.NilLanguage, flows.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
+	require.NoError(t, err)
+
+	// try to append three new URNs - only the first should fit
+	fit := urns.URN("tel:+17030000001")
+	overflow1 := urns.URN("tel:+17030000002")
+	overflow2 := urns.URN("tel:+17030000003")
+
+	mod := modifiers.NewRoutes([]flows.Route{
+		{URN: fit, Channel: nil},
+		{URN: overflow1, Channel: nil},
+		{URN: overflow2, Channel: nil},
+	}, modifiers.RoutesAppend)
+
+	eventLog := test.NewEventLog()
+	modifiers.Apply(t.Context(), eng, env, sa, contact, mod, eventLog.Log)
+
+	// only the URN that actually fit should have been claimed
+	assert.Equal(t, []urns.URN{fit}, claimed, "ClaimURN should only be called for URNs that actually get added")
+	assert.Equal(t, flows.MaxContactURNs, len(contact.URNs()))
+	assert.True(t, contact.HasURN(fit))
+	assert.False(t, contact.HasURN(overflow1))
+	assert.False(t, contact.HasURN(overflow2))
 }
 
 func TestConstructors(t *testing.T) {

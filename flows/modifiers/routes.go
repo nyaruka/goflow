@@ -51,29 +51,34 @@ func NewRoutes(routes []flows.Route, modification RoutesModification) *Routes {
 func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
 	modified := false
 
+	// first pass: normalize and validate URNs - claiming is deferred until we know a URN will actually be added,
+	// so that a claim side-effect isn't incurred for URNs that we later skip (e.g. due to MaxContactURNs)
 	valid := make([]flows.Route, 0, len(m.routes))
 	for _, r := range m.routes {
 		urn := r.URN.Normalize()
 
-		// throw away invalid URNs
 		if err := urn.Validate(); err != nil {
 			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn), ""))
 			continue
 		}
 
-		// if adding or setting, try to claim the URN
-		if (m.modification == RoutesAppend || m.modification == RoutesSet) && !contact.HasURN(urn) {
-			claimed, err := eng.Options().ClaimURN(ctx, sa, contact, urn)
-			if err != nil {
-				return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
-			}
-			if !claimed {
-				log(events.NewError("URN is taken by another contact", events.ErrorCodeURNTaken, "urn", string(urn)))
-				continue
-			}
-		}
-
 		valid = append(valid, flows.Route{URN: urn, Channel: r.Channel})
+	}
+
+	// claims a URN if it isn't already on the contact - returns whether the URN can be added
+	claim := func(urn urns.URN) (bool, error) {
+		if contact.HasURN(urn) {
+			return true, nil
+		}
+		claimed, err := eng.Options().ClaimURN(ctx, sa, contact, urn)
+		if err != nil {
+			return false, fmt.Errorf("error claiming URN %s: %w", urn, err)
+		}
+		if !claimed {
+			log(events.NewError("URN is taken by another contact", events.ErrorCodeURNTaken, "urn", string(urn)))
+			return false, nil
+		}
+		return true, nil
 	}
 
 	switch m.modification {
@@ -83,6 +88,13 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			if !contact.HasURN(r.URN) && len(contact.URNs()) >= flows.MaxContactURNs {
 				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
 				break
+			}
+			ok, err := claim(r.URN)
+			if err != nil {
+				return false, err
+			}
+			if !ok {
+				continue
 			}
 			if contact.AddRoute(r.URN, r.Channel) {
 				modified = true
@@ -96,7 +108,18 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			}
 		}
 	case RoutesSet:
-		modified = contact.SetRoutes(valid)
+		routes := make([]flows.Route, 0, len(valid))
+		for _, r := range valid {
+			ok, err := claim(r.URN)
+			if err != nil {
+				return false, err
+			}
+			if !ok {
+				continue
+			}
+			routes = append(routes, r)
+		}
+		modified = contact.SetRoutes(routes)
 	}
 
 	if modified {
