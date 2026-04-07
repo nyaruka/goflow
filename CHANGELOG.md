@@ -1,3 +1,7 @@
+v0.273.2 (2026-04-07)
+-------------------------
+ * Deprecate URNs modifier in favor of routes modifier
+
 v0.273.1 (2026-04-07)
 -------------------------
  * Use routes modifier in add_contact_urn action
