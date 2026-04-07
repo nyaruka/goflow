@@ -117,6 +117,16 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			if !ok {
 				continue
 			}
+			// preserve existing channel affinity if the caller didn't specify a channel for a URN already on the
+			// contact - this matters for UI edits where the client may send URNs back without channels
+			if r.Channel == nil {
+				for _, existing := range contact.URNs() {
+					if existing.Identity() == r.URN.Identity() {
+						r.Channel = existing.Channel
+						break
+					}
+				}
+			}
 			routes = append(routes, r)
 		}
 		modified = contact.SetRoutes(routes)
@@ -136,8 +146,8 @@ var _ flows.Modifier = (*Routes)(nil)
 //------------------------------------------------------------------------------------------
 
 type routeEnvelope struct {
-	URN     urns.URN                 `json:"urn"     validate:"required"`
-	Channel *assets.ChannelReference `json:"channel" validate:"required"`
+	URN     urns.URN                 `json:"urn"               validate:"required"`
+	Channel *assets.ChannelReference `json:"channel,omitempty"`
 }
 
 type routesEnvelope struct {
@@ -155,15 +165,18 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 
 	routes := make([]flows.Route, 0, len(e.Routes))
 	for _, re := range e.Routes {
-		channel := sa.Channels().Get(re.Channel.UUID)
-		if channel == nil {
-			missing(re.Channel, nil)
-			continue
+		var channel *flows.Channel
+		if re.Channel != nil {
+			channel = sa.Channels().Get(re.Channel.UUID)
+			if channel == nil {
+				missing(re.Channel, nil)
+				continue
+			}
 		}
 		routes = append(routes, flows.Route{URN: re.URN, Channel: channel})
 	}
 
-	// if we had routes in the envelope but all their channels are missing, nothing to modify
+	// if we had routes in the envelope but all of their (specified) channels are missing, nothing to modify
 	if len(e.Routes) > 0 && len(routes) == 0 {
 		return nil, ErrNoModifier
 	}
@@ -174,7 +187,11 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 func (m *Routes) MarshalJSON() ([]byte, error) {
 	re := make([]routeEnvelope, len(m.routes))
 	for i, r := range m.routes {
-		re[i] = routeEnvelope{URN: r.URN, Channel: r.Channel.Reference()}
+		var ch *assets.ChannelReference
+		if r.Channel != nil {
+			ch = r.Channel.Reference()
+		}
+		re[i] = routeEnvelope{URN: r.URN, Channel: ch}
 	}
 	return jsonx.Marshal(&routesEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
