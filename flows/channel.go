@@ -97,8 +97,8 @@ func (s *ChannelAssets) Get(uuid assets.ChannelUUID) *Channel {
 
 // GetForURN returns the best channel for the given URN
 func (s *ChannelAssets) GetForURN(urn *URN, role assets.ChannelRole) *Channel {
-	// if caller has told us which channel to use for this URN, use that
-	if urn.Channel != nil && urn.Channel.HasRole(role) {
+	// if caller has told us which channel to use for this URN, use that as long as it still supports the scheme and role
+	if urn.Channel != nil && urn.Channel.HasRole(role) && urn.Channel.SupportsScheme(urn.Scheme) {
 		return urn.Channel
 	}
 
