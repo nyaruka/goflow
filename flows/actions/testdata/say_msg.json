@@ -69,7 +69,8 @@
             "Hi there @contact.name"
         ],
         "localizables": [
-            "Hi there @contact.name"
+            "Hi there @contact.name",
+            "http://uploads.temba.io/welcome.m4a"
         ],
         "inspection": {
             "counts": {
@@ -174,7 +175,8 @@
             "Hola @contact.name"
         ],
         "localizables": [
-            "Hi there @contact.name"
+            "Hi there @contact.name",
+            "http://uploads.temba.io/welcome.m4a"
         ],
         "inspection": {
             "counts": {
