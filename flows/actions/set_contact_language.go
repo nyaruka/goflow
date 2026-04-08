@@ -17,8 +17,8 @@ func init() {
 // TypeSetContactLanguage is the type for the set contact Language action
 const TypeSetContactLanguage string = "set_contact_language"
 
-// SetContactLanguage can be used to update the name of the contact. The language is a localizable
-// template and white space is trimmed from the final value. An empty string clears the language.
+// SetContactLanguage can be used to update the language of the contact. The language is a template
+// and white space is trimmed from the final value. An empty string clears the language.
 // A [event:contact_language_changed] event will be created with the corresponding value.
 //
 //	{

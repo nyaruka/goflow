@@ -17,8 +17,8 @@ func init() {
 // TypeSetContactField is the type for the set contact field action
 const TypeSetContactField string = "set_contact_field"
 
-// SetContactField can be used to update a field value on the contact. The value is a localizable
-// template and white space is trimmed from the final value. An empty string clears the value.
+// SetContactField can be used to update a field value on the contact. The value is a template
+// and white space is trimmed from the final value. An empty string clears the value.
 // A [event:contact_field_changed] event will be created with the corresponding value.
 //
 //	{

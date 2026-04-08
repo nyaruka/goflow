@@ -15,8 +15,8 @@ func init() {
 // TypeSetContactName is the type for the set contact name action
 const TypeSetContactName string = "set_contact_name"
 
-// SetContactName can be used to update the name of the contact. The name is a localizable
-// template and white space is trimmed from the final value. An empty string clears the name.
+// SetContactName can be used to update the name of the contact. The name is a template
+// and white space is trimmed from the final value. An empty string clears the name.
 // A [event:contact_name_changed] event will be created with the corresponding value.
 //
 //	{
