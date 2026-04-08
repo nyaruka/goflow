@@ -35,7 +35,7 @@ type SayMsg struct {
 	voiceAction
 
 	Text     string `json:"text"                 validate:"required,max=10000" engine:"localized,evaluated"`
-	AudioURL string `json:"audio_url,omitempty"`
+	AudioURL string `json:"audio_url,omitempty"                                engine:"localized"`
 }
 
 // NewSayMsg creates a new say message action

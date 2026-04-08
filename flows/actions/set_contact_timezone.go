@@ -18,8 +18,8 @@ func init() {
 // TypeSetContactTimezone is the type for the set contact timezone action
 const TypeSetContactTimezone string = "set_contact_timezone"
 
-// SetContactTimezone can be used to update the timezone of the contact. The timezone is a localizable
-// template and white space is trimmed from the final value. An empty string clears the timezone.
+// SetContactTimezone can be used to update the timezone of the contact. The timezone is a template
+// and white space is trimmed from the final value. An empty string clears the timezone.
 // A [event:contact_timezone_changed] event will be created with the corresponding value.
 //
 //	{
