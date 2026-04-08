@@ -1,3 +1,8 @@
+v0.273.5 (2026-04-08)
+-------------------------
+ * Fix stale 'localizable template' docstrings on set_contact_* actions
+ * Add localized engine tag to say_msg audio_url field
+
 v0.273.4 (2026-04-08)
 -------------------------
  * Check scheme when resolving URN's affinity channel
