@@ -1,3 +1,7 @@
+v0.273.4 (2026-04-08)
+-------------------------
+ * Check scheme when resolving URN's affinity channel
+
 v0.273.3 (2026-04-07)
 -------------------------
  * Preserve channel affinity in routes modifier set mode
