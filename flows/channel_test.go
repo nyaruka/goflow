@@ -79,7 +79,7 @@ func TestChannelSetGetForURN(t *testing.T) {
 	waOnly := flows.NewChannelAssets([]assets.Channel{whatsapp.Asset()})
 	assert.Nil(t, waOnly.GetForURN(flows.NewURN("bsuid", "abc123", "", whatsapp), assets.ChannelRoleSend))
 
-	// if URN has a preferred channel, that is always used
+	// if URN has a preferred channel with the required role and matching scheme, that is used
 	assert.Equal(t, tigo, all.GetForURN(flows.NewURN("tel", "+250962222222", "", tigo), assets.ChannelRoleSend))
 
 	// if there's only one channel for that scheme, it's used
