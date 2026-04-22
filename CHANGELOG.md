@@ -1,3 +1,7 @@
+v0.273.6 (2026-04-22)
+-------------------------
+ * Honor \return and \error directives in first element of JSON array input
+
 v0.273.5 (2026-04-08)
 -------------------------
  * Fix stale 'localizable template' docstrings on set_contact_* actions
