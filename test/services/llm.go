@@ -52,14 +52,17 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 	} else if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
 		words := strings.Fields(instructions)
 		output = strings.TrimSuffix(words[len(words)-1], "]")
-	} else if strings.HasPrefix(instructions, "Translate") { // "Translate..." leetifies the input; if "JSON" is mentioned, values of a string->string object
+	} else if strings.HasPrefix(instructions, "Translate") { // "Translate..." leetifies the input; if "JSON" is mentioned, values of a string->[]string object
 		if strings.Contains(instructions, "JSON") {
-			obj := map[string]string{}
+			obj := map[string][]string{}
 			if err := json.Unmarshal([]byte(input), &obj); err != nil {
 				return nil, fmt.Errorf("invalid JSON object input: %w", err)
 			}
-			for k, v := range obj {
-				obj[k] = leetify(v)
+			for k, vs := range obj {
+				for i, v := range vs {
+					vs[i] = leetify(v)
+				}
+				obj[k] = vs
 			}
 			b, _ := json.Marshal(obj)
 			output = string(b)

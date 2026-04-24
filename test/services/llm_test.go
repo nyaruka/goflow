@@ -27,10 +27,10 @@ func TestLLMService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "You asked:\n\nplease translate this\n\nHello", resp.Output)
 
-	// "Translate" instructions mentioning "JSON" parse the input as a string->string object and leetify values
-	resp, err = svc.Response(ctx, "Translate as JSON", `{"greeting":"Hello","name":"World"}`, 100)
+	// "Translate" instructions mentioning "JSON" parse the input as a string->[]string object and leetify values
+	resp, err = svc.Response(ctx, "Translate as JSON", `{"greeting":["Hello","Hi"],"name":["World"]}`, 100)
 	assert.NoError(t, err)
-	assert.JSONEq(t, `{"greeting":"H3110","name":"W0r1d"}`, resp.Output)
+	assert.JSONEq(t, `{"greeting":["H3110","H1"],"name":["W0r1d"]}`, resp.Output)
 
 	// invalid JSON input with a JSON translate instruction errors
 	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
