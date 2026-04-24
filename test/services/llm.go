@@ -29,11 +29,14 @@ var leetify = strings.NewReplacer(
 	"t", "7", "T", "7",
 ).Replace
 
-func translate(s string) string {
-	if s == "untranslatable" {
-		return "<CANT>"
+func translate(s string) (string, error) {
+	if s == "error" {
+		return "", errors.New("simulated LLM error")
 	}
-	return leetify(s)
+	if s == "untranslatable" {
+		return "<CANT>", nil
+	}
+	return leetify(s), nil
 }
 
 func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*flows.LLMResponse, error) {
@@ -53,14 +56,22 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 			}
 			for k, vs := range obj {
 				for i, v := range vs {
-					vs[i] = translate(v)
+					tv, err := translate(v)
+					if err != nil {
+						return nil, err
+					}
+					vs[i] = tv
 				}
 				obj[k] = vs
 			}
 			b, _ := json.Marshal(obj)
 			output = string(b)
 		} else {
-			output = translate(input)
+			tv, err := translate(input)
+			if err != nil {
+				return nil, err
+			}
+			output = tv
 		}
 	} else {
 		output = "You asked:\n\n" + instructions + "\n\n" + input
