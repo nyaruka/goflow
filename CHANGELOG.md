@@ -1,3 +1,7 @@
+v0.273.8 (2026-04-24)
+-------------------------
+ * Test LLM translate returns <CANT> for value 'untranslatable'
+
 v0.273.7 (2026-04-24)
 -------------------------
  * Remove codecov integration
