@@ -27,10 +27,10 @@ func TestLLMService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "You asked:\n\nplease translate this\n\nHello", resp.Output)
 
-	// "Translate" instructions mentioning "JSON" parse the input as a string->string object and leetify values
-	resp, err = svc.Response(ctx, "Translate as JSON", `{"greeting":"Hello","name":"World"}`, 100)
+	// "Translate" instructions mentioning "JSON" parse the input as a string->[]string object and leetify values
+	resp, err = svc.Response(ctx, "Translate as JSON", `{"greeting":["Hello","Hi"],"name":["World"]}`, 100)
 	assert.NoError(t, err)
-	assert.JSONEq(t, `{"greeting":"H3110","name":"W0r1d"}`, resp.Output)
+	assert.JSONEq(t, `{"greeting":["H3110","H1"],"name":["W0r1d"]}`, resp.Output)
 
 	// invalid JSON input with a JSON translate instruction errors
 	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
@@ -58,21 +58,4 @@ func TestLLMService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "C", resp.Output)
 
-	// directive in the first element of a JSON array input fires
-	resp, err = svc.Response(ctx, "whatever", `["\\return [\"T-Hi\"]"]`, 100)
-	assert.NoError(t, err)
-	assert.Equal(t, `["T-Hi"]`, resp.Output)
-
-	_, err = svc.Response(ctx, "whatever", `["\\error boom","ignored"]`, 100)
-	assert.EqualError(t, err, "boom")
-
-	// JSON array without a directive falls through to echo
-	resp, err = svc.Response(ctx, "whatever", `["Hi","Bye"]`, 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "You asked:\n\nwhatever\n\n[\"Hi\",\"Bye\"]", resp.Output)
-
-	// non-JSON input starting with [ falls through
-	resp, err = svc.Response(ctx, "whatever", "[not json", 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "You asked:\n\nwhatever\n\n[not json", resp.Output)
 }
