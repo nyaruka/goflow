@@ -32,6 +32,15 @@ func TestLLMService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.JSONEq(t, `{"greeting":["H3110","H1"],"name":["W0r1d"]}`, resp.Output)
 
+	// values exactly equal to "untranslatable" become "<CANT>"
+	resp, err = svc.Response(ctx, "Translate to Spanish", "untranslatable", 100)
+	assert.NoError(t, err)
+	assert.Equal(t, "<CANT>", resp.Output)
+
+	resp, err = svc.Response(ctx, "Translate as JSON", `{"a":["Hi","untranslatable"]}`, 100)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"a":["H1","<CANT>"]}`, resp.Output)
+
 	// invalid JSON input with a JSON translate instruction errors
 	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
 	assert.Error(t, err)
