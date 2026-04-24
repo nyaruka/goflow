@@ -30,25 +30,11 @@ var leetify = strings.NewReplacer(
 ).Replace
 
 func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*flows.LLMResponse, error) {
-	// If input is a JSON array of strings whose first element is an \error or
-	// \return directive, apply the directive as if the input were just that
-	// element. Lets callers that marshal their input as a JSON array still
-	// exercise the directives without needing a wrapper.
-	effective := input
-	if len(input) > 0 && input[0] == '[' {
-		var arr []string
-		if err := json.Unmarshal([]byte(input), &arr); err == nil && len(arr) > 0 {
-			if strings.HasPrefix(arr[0], "\\error ") || strings.HasPrefix(arr[0], "\\return ") {
-				effective = arr[0]
-			}
-		}
-	}
-
 	var output string
-	if strings.HasPrefix(effective, "\\error ") { // an input like "\error foo" will return the error "foo"
-		return nil, errors.New(effective[7:])
-	} else if strings.HasPrefix(effective, "\\return ") { // an input like "\return foo" will return "foo"
-		output = effective[8:]
+	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
+		return nil, errors.New(input[7:])
+	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will return "foo"
+		output = input[8:]
 	} else if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
 		words := strings.Fields(instructions)
 		output = strings.TrimSuffix(words[len(words)-1], "]")

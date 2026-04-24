@@ -58,21 +58,4 @@ func TestLLMService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "C", resp.Output)
 
-	// directive in the first element of a JSON array input fires
-	resp, err = svc.Response(ctx, "whatever", `["\\return [\"T-Hi\"]"]`, 100)
-	assert.NoError(t, err)
-	assert.Equal(t, `["T-Hi"]`, resp.Output)
-
-	_, err = svc.Response(ctx, "whatever", `["\\error boom","ignored"]`, 100)
-	assert.EqualError(t, err, "boom")
-
-	// JSON array without a directive falls through to echo
-	resp, err = svc.Response(ctx, "whatever", `["Hi","Bye"]`, 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "You asked:\n\nwhatever\n\n[\"Hi\",\"Bye\"]", resp.Output)
-
-	// non-JSON input starting with [ falls through
-	resp, err = svc.Response(ctx, "whatever", "[not json", 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "You asked:\n\nwhatever\n\n[not json", resp.Output)
 }
