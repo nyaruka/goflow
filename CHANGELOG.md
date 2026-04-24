@@ -1,3 +1,8 @@
+v0.273.7 (2026-04-24)
+-------------------------
+ * Remove codecov integration
+ * Add Translate prefix to test LLM service that converts input to leetspeak
+
 v0.273.6 (2026-04-22)
 -------------------------
  * Honor \return and \error directives in first element of JSON array input
