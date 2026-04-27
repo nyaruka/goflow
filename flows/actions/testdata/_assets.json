@@ -251,12 +251,14 @@
         {
             "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
             "name": "GPT-4",
-            "type": "openai"
+            "type": "openai",
+            "roles": ["translation", "flows"]
         },
         {
             "uuid": "51ade705-8338-40a9-8a77-37657a936966",
             "name": "Claude",
-            "type": "anthropic"
+            "type": "anthropic",
+            "roles": ["translation", "flows"]
         }
     ],
     "optins": [

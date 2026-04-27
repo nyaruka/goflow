@@ -6,17 +6,19 @@ import (
 
 // LLM is a JSON serializable implementation of an LLM asset
 type LLM struct {
-	UUID_ assets.LLMUUID `json:"uuid" validate:"required,uuid"`
-	Name_ string         `json:"name"`
-	Type_ string         `json:"type"`
+	UUID_  assets.LLMUUID   `json:"uuid"  validate:"required,uuid"`
+	Name_  string           `json:"name"`
+	Type_  string           `json:"type"`
+	Roles_ []assets.LLMRole `json:"roles" validate:"min=1,dive,eq=translation|eq=flows"`
 }
 
 // NewLLM creates a new LLM
-func NewLLM(uuid assets.LLMUUID, name string, type_ string) assets.LLM {
+func NewLLM(uuid assets.LLMUUID, name string, type_ string, roles []assets.LLMRole) assets.LLM {
 	return &LLM{
-		UUID_: uuid,
-		Name_: name,
-		Type_: type_,
+		UUID_:  uuid,
+		Name_:  name,
+		Type_:  type_,
+		Roles_: roles,
 	}
 }
 
@@ -28,3 +30,6 @@ func (l *LLM) Name() string { return l.Name_ }
 
 // Type returns the type of this LLM
 func (l *LLM) Type() string { return l.Type_ }
+
+// Roles returns the roles of this LLM
+func (l *LLM) Roles() []assets.LLMRole { return l.Roles_ }

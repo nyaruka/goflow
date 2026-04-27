@@ -9,12 +9,22 @@ import (
 // LLMUUID is the UUID of an LLM
 type LLMUUID uuids.UUID
 
+// LLMRole is a role that an LLM can perform
+type LLMRole string
+
+// different roles that LLMs can perform
+const (
+	LLMRoleTranslation LLMRole = "translation"
+	LLMRoleFlows       LLMRole = "flows"
+)
+
 // LLM is a large language model.
 //
 //	{
 //	  "uuid": "00cc7310-4bb9-473f-851e-39b0880aad78",
 //	  "name": "ChatGPT-4",
-//	  "type": "openai"
+//	  "type": "openai",
+//	  "roles": ["translation", "flows"]
 //	}
 //
 // @asset llm
@@ -22,6 +32,7 @@ type LLM interface {
 	UUID() LLMUUID
 	Name() string
 	Type() string
+	Roles() []LLMRole
 }
 
 // LLMReference is used to reference an LLM

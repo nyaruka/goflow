@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
@@ -74,6 +75,10 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {
 		log(events.NewDependencyError(a.LLM))
+		return nil
+	}
+	if !llm.HasRole(assets.LLMRoleFlows) {
+		log(events.NewError(fmt.Sprintf("LLM %s does not have the flows role", a.LLM.UUID), ""))
 		return nil
 	}
 
