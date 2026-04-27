@@ -58,7 +58,8 @@ var assetsJSON = `{
 		{
 			"uuid": "ae823e89-b0cc-40eb-a711-b8700fe34882",
 			"name": "GPT-4",
-			"type": "openai"
+			"type": "openai",
+			"roles": ["translation", "flows"]
 		}
 	],
 	"optins": [

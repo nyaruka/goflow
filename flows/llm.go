@@ -1,6 +1,10 @@
 package flows
 
-import "github.com/nyaruka/goflow/assets"
+import (
+	"slices"
+
+	"github.com/nyaruka/goflow/assets"
+)
 
 // LLM represents a large language model.
 type LLM struct {
@@ -18,6 +22,11 @@ func (l *LLM) Asset() assets.LLM { return l.LLM }
 // Reference returns a reference to this LLM
 func (l *LLM) Reference() *assets.LLMReference {
 	return assets.NewLLMReference(l.UUID(), l.Name())
+}
+
+// HasRole returns whether this LLM has the given role
+func (l *LLM) HasRole(role assets.LLMRole) bool {
+	return slices.Contains(l.Roles(), role)
 }
 
 // LLMAssets provides access to all LLM assets
