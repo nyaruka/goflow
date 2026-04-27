@@ -1,3 +1,7 @@
+v0.273.10 (2026-04-27)
+-------------------------
+ * Add roles field to LLM assets and enforce flows role for call_llm
+
 v0.273.9 (2026-04-24)
 -------------------------
  * Test LLM translate returns error for value 'error'
