@@ -1,3 +1,7 @@
+v0.274.0 (2026-04-28)
+-------------------------
+ * Rename LLM roles translation/flows to editing/engine
+
 v0.273.10 (2026-04-27)
 -------------------------
  * Add roles field to LLM assets and enforce flows role for call_llm
