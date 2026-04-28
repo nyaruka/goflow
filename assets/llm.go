@@ -14,8 +14,8 @@ type LLMRole string
 
 // different roles that LLMs can perform
 const (
-	LLMRoleTranslation LLMRole = "translation"
-	LLMRoleFlows       LLMRole = "flows"
+	LLMRoleEditing LLMRole = "editing"
+	LLMRoleEngine  LLMRole = "engine"
 )
 
 // LLM is a large language model.
@@ -24,7 +24,7 @@ const (
 //	  "uuid": "00cc7310-4bb9-473f-851e-39b0880aad78",
 //	  "name": "ChatGPT-4",
 //	  "type": "openai",
-//	  "roles": ["translation", "flows"]
+//	  "roles": ["editing", "engine"]
 //	}
 //
 // @asset llm
