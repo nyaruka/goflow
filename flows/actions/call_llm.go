@@ -77,8 +77,8 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 		log(events.NewDependencyError(a.LLM))
 		return nil
 	}
-	if !llm.HasRole(assets.LLMRoleFlows) {
-		log(events.NewError(fmt.Sprintf("LLM %s does not have the flows role", a.LLM.UUID), ""))
+	if !llm.HasRole(assets.LLMRoleEngine) {
+		log(events.NewError(fmt.Sprintf("LLM %s does not have the engine role", a.LLM.UUID), ""))
 		return nil
 	}
 

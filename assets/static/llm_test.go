@@ -14,10 +14,10 @@ func TestLLM(t *testing.T) {
 		assets.LLMUUID("37657cf7-5eab-4286-9cb0-bbf270587bad"),
 		"GPT-4",
 		"openai",
-		[]assets.LLMRole{assets.LLMRoleTranslation, assets.LLMRoleFlows},
+		[]assets.LLMRole{assets.LLMRoleEditing, assets.LLMRoleEngine},
 	)
 	assert.Equal(t, assets.LLMUUID("37657cf7-5eab-4286-9cb0-bbf270587bad"), llm.UUID())
 	assert.Equal(t, "GPT-4", llm.Name())
 	assert.Equal(t, "openai", llm.Type())
-	assert.Equal(t, []assets.LLMRole{assets.LLMRoleTranslation, assets.LLMRoleFlows}, llm.Roles())
+	assert.Equal(t, []assets.LLMRole{assets.LLMRoleEditing, assets.LLMRoleEngine}, llm.Roles())
 }

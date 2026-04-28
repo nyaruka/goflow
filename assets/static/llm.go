@@ -9,7 +9,7 @@ type LLM struct {
 	UUID_  assets.LLMUUID   `json:"uuid"  validate:"required,uuid"`
 	Name_  string           `json:"name"`
 	Type_  string           `json:"type"`
-	Roles_ []assets.LLMRole `json:"roles" validate:"min=1,dive,eq=translation|eq=flows"`
+	Roles_ []assets.LLMRole `json:"roles" validate:"min=1,dive,eq=editing|eq=engine"`
 }
 
 // NewLLM creates a new LLM
