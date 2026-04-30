@@ -260,7 +260,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4,
 					"Categorize the following text as Positive or Negative",
 					"Please stop messaging me",
-					&flows.LLMResponse{Output: "Positive", TokensUsed: 567},
+					&flows.LLMResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
 					123*time.Millisecond,
 				)
 			},

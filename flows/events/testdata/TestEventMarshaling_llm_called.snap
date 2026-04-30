@@ -9,6 +9,7 @@
     "instructions": "Categorize the following text as Positive or Negative",
     "input": "Please stop messaging me",
     "output": "Positive",
-    "tokens_used": 567,
+    "tokens_input": 234,
+    "tokens_output": 333,
     "elapsed_ms": 123
 }

@@ -77,7 +77,7 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}
 
-	return &flows.LLMResponse{Output: output, TokensUsed: 123}, nil
+	return &flows.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

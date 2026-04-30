@@ -27,7 +27,8 @@ const TypeLLMCalled string = "llm_called"
 //	  "instructions": "Categorize the following text as Positive or Negative",
 //	  "input": "Please stop messaging me",
 //	  "output": "Positive",
-//	  "tokens_used": 567,
+//	  "tokens_input": 234,
+//	  "tokens_output": 333,
 //	  "elapsed_ms": 123
 //	}
 //
@@ -39,7 +40,8 @@ type LLMCalled struct {
 	Instructions string               `json:"instructions"`
 	Input        string               `json:"input"`
 	Output       string               `json:"output"`
-	TokensUsed   int64                `json:"tokens_used"`
+	TokensInput  int64                `json:"tokens_input"`
+	TokensOutput int64                `json:"tokens_output"`
 	ElapsedMS    int64                `json:"elapsed_ms"`
 }
 
@@ -51,7 +53,8 @@ func NewLLMCalled(llm *flows.LLM, instructions, input string, resp *flows.LLMRes
 		Instructions: instructions,
 		Input:        input,
 		Output:       resp.Output,
-		TokensUsed:   resp.TokensUsed,
+		TokensInput:  resp.TokensInput,
+		TokensOutput: resp.TokensOutput,
 		ElapsedMS:    elapsed.Milliseconds(),
 	}
 }
