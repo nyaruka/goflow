@@ -1,3 +1,7 @@
+v0.274.1 (2026-04-30)
+-------------------------
+ * Split LLM token usage into input and output
+
 v0.274.0 (2026-04-28)
 -------------------------
  * Rename LLM roles translation/flows to editing/engine
