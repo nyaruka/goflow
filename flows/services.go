@@ -73,8 +73,9 @@ type ClassificationService interface {
 }
 
 type LLMResponse struct {
-	Output     string
-	TokensUsed int64
+	Output       string
+	TokensInput  int64
+	TokensOutput int64
 }
 
 // LLMService provides LLM functionality to the engine

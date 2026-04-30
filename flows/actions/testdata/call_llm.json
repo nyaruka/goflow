@@ -86,7 +86,10 @@
                 "instructions": "Categorize the following text as positive or negative",
                 "input": "Hi everybody",
                 "output": "negative",
-                "tokens_used": 123,
+                "tokens": {
+                    "input": 45,
+                    "output": 78
+                },
                 "elapsed_ms": 1000
             }
         ],
