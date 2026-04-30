@@ -115,8 +115,10 @@
                         "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
                     },
                     "output": "Hotels",
-                    "tokens_input": 45,
-                    "tokens_output": 78,
+                    "tokens": {
+                        "input": 45,
+                        "output": 78
+                    },
                     "type": "llm_called",
                     "uuid": "01969b47-672b-76f8-8dbf-00ecf5d03034"
                 },
