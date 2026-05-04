@@ -1,1 +1,0 @@
-Don't warn about breaking changes in this library as it's only used internally.
