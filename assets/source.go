@@ -4,7 +4,6 @@ package assets
 type Source interface {
 	Campaigns() ([]Campaign, error)
 	Channels() ([]Channel, error)
-	Classifiers() ([]Classifier, error)
 	Fields() ([]Field, error)
 	FlowByUUID(FlowUUID) (Flow, error)
 	FlowByName(string) (Flow, error)

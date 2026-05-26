@@ -98,10 +98,6 @@ func TestSource(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, channels, 1)
 
-	classifiers, err := src.Classifiers()
-	assert.NoError(t, err)
-	assert.Len(t, classifiers, 0)
-
 	fields, err := src.Fields()
 	assert.NoError(t, err)
 	assert.Len(t, fields, 2)

@@ -15,10 +15,6 @@ func TestEmptyServices(t *testing.T) {
 	assert.EqualError(t, err, "no webhook service factory configured")
 	assert.Nil(t, webhookSvc)
 
-	classificationSvc, err := eng.Services().Classification(nil)
-	assert.EqualError(t, err, "no classification service factory configured")
-	assert.Nil(t, classificationSvc)
-
 	llmSvc, err := eng.Services().LLM(nil)
 	assert.EqualError(t, err, "no LLM service factory configured")
 	assert.Nil(t, llmSvc)

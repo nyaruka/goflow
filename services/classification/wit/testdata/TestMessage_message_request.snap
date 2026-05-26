@@ -1,6 +1,0 @@
-GET /message?v=20200513&q=Hello HTTP/1.1
-Host: api.wit.ai
-User-Agent: Go-http-client/1.1
-Authorization: Bearer 3246231
-Accept-Encoding: gzip
-

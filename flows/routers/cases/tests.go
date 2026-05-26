@@ -902,36 +902,3 @@ func resultFromXObject(object *types.XObject) (*flows.Result, error) {
 	return result, err
 }
 
-func hasIntent(resultObj *types.XObject, name *types.XText, confidence *types.XNumber, topOnly bool) types.XValue {
-	result, err := resultFromXObject(resultObj)
-	if err != nil {
-		return types.NewXErrorf("first argument must be a result")
-	}
-
-	// extra should contain the NLU classification
-	classification := &flows.Classification{}
-	jsonx.Unmarshal(result.Extra, classification)
-
-	// which intents will be considered
-	intents := classification.Intents
-	if topOnly && len(intents) > 0 {
-		intents = []flows.ExtractedIntent{classification.Intents[0]}
-	}
-
-	for _, intent := range intents {
-		intentName := types.NewXText(intent.Name)
-		if intentName.Equals(name) && intent.Confidence.GreaterThanOrEqual(confidence.Native()) {
-			// build extra as a mapping of entity names to most likely values
-			extra := make(map[string]types.XValue, len(classification.Entities))
-			for entitiyName, possibilities := range classification.Entities {
-				if len(possibilities) > 0 {
-					extra[entitiyName] = types.NewXText(possibilities[0].Value)
-				}
-			}
-
-			return NewTrueResultWithExtra(intentName, types.NewXObject(extra))
-		}
-	}
-
-	return FalseResult
-}

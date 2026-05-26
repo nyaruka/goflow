@@ -157,7 +157,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 	_, err = sa.Flows().FindByName("Catch All")
 	assert.EqualError(t, err, "unable to load flow assets")
 
-	for _, errType := range []string{"channels", "classifiers", "fields", "globals", "groups", "labels", "llms", "locations", "optins", "resthooks", "templates", "users"} {
+	for _, errType := range []string{"channels", "fields", "globals", "groups", "labels", "llms", "locations", "optins", "resthooks", "templates", "users"} {
 		source.currentErrType = errType
 		_, err = engine.NewSessionAssets(env, source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
@@ -182,10 +182,6 @@ func (s *testSource) Campaigns() ([]assets.Campaign, error) {
 
 func (s *testSource) Channels() ([]assets.Channel, error) {
 	return nil, s.err("channels")
-}
-
-func (s *testSource) Classifiers() ([]assets.Classifier, error) {
-	return nil, s.err("classifiers")
 }
 
 func (s *testSource) Fields() ([]assets.Field, error) {
