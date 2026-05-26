@@ -28,9 +28,6 @@ func NewEngine() flows.Engine {
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil
 		}).
-		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
-			return services.NewClassification(c), nil
-		}).
 		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).

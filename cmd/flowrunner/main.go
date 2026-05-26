@@ -25,7 +25,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -49,12 +48,11 @@ const contactJSON = `{
 const usage = `usage: flowrunner [flags] <assets.json> [flow_uuid]`
 
 func main() {
-	var initialMsg, contactLang, witToken, contactPath string
+	var initialMsg, contactLang, contactPath string
 	var printRepro bool
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
 	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
-	flags.StringVar(&witToken, "wit.token", "", "access token for wit.ai")
 	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
 	flags.StringVar(&contactPath, "contact", "", "path to optional contact JSON file")
 	flags.Parse(os.Args[1:])
@@ -72,7 +70,7 @@ func main() {
 		flowUUID = assets.FlowUUID(args[1])
 	}
 
-	engine := createEngine(witToken)
+	engine := createEngine()
 
 	repro, err := RunFlow(engine, assetsPath, flowUUID, initialMsg, i18n.Language(contactLang), contactPath, os.Stdin, os.Stdout)
 
@@ -88,20 +86,10 @@ func main() {
 	}
 }
 
-func createEngine(witToken string) flows.Engine {
-	builder := engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000))
-
-	if witToken != "" {
-		builder.WithClassificationServiceFactory(func(classifier *flows.Classifier) (flows.ClassificationService, error) {
-			if classifier.Type() == "wit" {
-				return wit.NewService(http.DefaultClient, nil, classifier, witToken), nil
-			}
-			return nil, errors.New("only classifiers of type wit supported")
-		})
-	}
-
-	return builder.Build()
+func createEngine() flows.Engine {
+	return engine.NewBuilder().
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000)).
+		Build()
 }
 
 // RunFlow steps through a flow
@@ -306,11 +294,6 @@ func PrintEvent(event flows.Event, out io.Writer) {
 		msg = fmt.Sprintf("📈 run result '%s' changed to '%s' with category '%s'", typed.Name, typed.Value, typed.Category)
 	case *events.RunStarted:
 		msg = fmt.Sprintf("↪️ entered flow '%s'", typed.Flow.Name)
-	case *events.ServiceCalled:
-		switch typed.Service {
-		case "classifier":
-			msg = fmt.Sprintf("👁️‍🗨️ NLU classifier '%s' called", typed.Classifier.Name)
-		}
 	case *events.SessionTriggered:
 		msg = fmt.Sprintf("🏁 session triggered for '%s'", typed.Flow.Name)
 	case *events.TicketOpened:

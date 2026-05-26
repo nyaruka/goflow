@@ -14,21 +14,20 @@ import (
 // StaticSource is an asset source which loads assets from a static JSON file
 type StaticSource struct {
 	s struct {
-		Campaigns   []*Campaign               `json:"campaigns" validate:"omitempty,dive"`
-		Channels    []*Channel                `json:"channels" validate:"omitempty,dive"`
-		Classifiers []*Classifier             `json:"classifiers" validate:"omitempty,dive"`
-		Fields      []*Field                  `json:"fields" validate:"omitempty,dive"`
-		Flows       []*Flow                   `json:"flows" validate:"omitempty,dive"`
-		Globals     []*Global                 `json:"globals" validate:"omitempty,dive"`
-		Groups      []*Group                  `json:"groups" validate:"omitempty,dive"`
-		Labels      []*Label                  `json:"labels" validate:"omitempty,dive"`
-		LLMs        []*LLM                    `json:"llms" validate:"omitempty,dive"`
-		Locations   []*envs.LocationHierarchy `json:"locations"`
-		OptIns      []*OptIn                  `json:"optins" validate:"omitempty,dive"`
-		Resthooks   []*Resthook               `json:"resthooks" validate:"omitempty,dive"`
-		Templates   []*Template               `json:"templates" validate:"omitempty,dive"`
-		Topics      []*Topic                  `json:"topics" validate:"omitempty,dive"`
-		Users       []*User                   `json:"users" validate:"omitempty,dive"`
+		Campaigns []*Campaign               `json:"campaigns" validate:"omitempty,dive"`
+		Channels  []*Channel                `json:"channels" validate:"omitempty,dive"`
+		Fields    []*Field                  `json:"fields" validate:"omitempty,dive"`
+		Flows     []*Flow                   `json:"flows" validate:"omitempty,dive"`
+		Globals   []*Global                 `json:"globals" validate:"omitempty,dive"`
+		Groups    []*Group                  `json:"groups" validate:"omitempty,dive"`
+		Labels    []*Label                  `json:"labels" validate:"omitempty,dive"`
+		LLMs      []*LLM                    `json:"llms" validate:"omitempty,dive"`
+		Locations []*envs.LocationHierarchy `json:"locations"`
+		OptIns    []*OptIn                  `json:"optins" validate:"omitempty,dive"`
+		Resthooks []*Resthook               `json:"resthooks" validate:"omitempty,dive"`
+		Templates []*Template               `json:"templates" validate:"omitempty,dive"`
+		Topics    []*Topic                  `json:"topics" validate:"omitempty,dive"`
+		Users     []*User                   `json:"users" validate:"omitempty,dive"`
 	}
 }
 
@@ -69,15 +68,6 @@ func (s *StaticSource) Channels() ([]assets.Channel, error) {
 	set := make([]assets.Channel, len(s.s.Channels))
 	for i := range s.s.Channels {
 		set[i] = s.s.Channels[i]
-	}
-	return set, nil
-}
-
-// Classifiers returns all classifier assets
-func (s *StaticSource) Classifiers() ([]assets.Classifier, error) {
-	set := make([]assets.Classifier, len(s.s.Classifiers))
-	for i := range s.s.Classifiers {
-		set[i] = s.s.Classifiers[i]
 	}
 	return set, nil
 }

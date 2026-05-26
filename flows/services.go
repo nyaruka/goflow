@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/envs"
 
 	"github.com/shopspring/decimal"
 )
@@ -17,7 +16,6 @@ import (
 type Services interface {
 	Email(SessionAssets) (EmailService, error)
 	Webhook(SessionAssets) (WebhookService, error)
-	Classification(*Classifier) (ClassificationService, error)
 	LLM(*LLM) (LLMService, error)
 	Airtime(SessionAssets) (AirtimeService, error)
 }
@@ -47,29 +45,6 @@ const (
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
 	Call(request *http.Request) (*httpx.Trace, error)
-}
-
-// ExtractedIntent models an intent match
-type ExtractedIntent struct {
-	Name       string          `json:"name"`
-	Confidence decimal.Decimal `json:"confidence"`
-}
-
-// ExtractedEntity models an entity match
-type ExtractedEntity struct {
-	Value      string          `json:"value"`
-	Confidence decimal.Decimal `json:"confidence"`
-}
-
-// Classification is the result of an NLU classification
-type Classification struct {
-	Intents  []ExtractedIntent            `json:"intents,omitempty"`
-	Entities map[string][]ExtractedEntity `json:"entities,omitempty"`
-}
-
-// ClassificationService provides NLU functionality to the engine
-type ClassificationService interface {
-	Classify(ctx context.Context, env envs.Environment, input string, logHTTP HTTPLogCallback) (*Classification, error)
 }
 
 type LLMResponse struct {

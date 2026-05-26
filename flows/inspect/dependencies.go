@@ -66,8 +66,6 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 	switch typed := ref.(type) {
 	case *assets.ChannelReference:
 		return sa.Channels().Get(typed.UUID) != nil
-	case *assets.ClassifierReference:
-		return sa.Classifiers().Get(typed.UUID) != nil
 	case *flows.ContactReference:
 		return true // have to assume contacts exist
 	case *assets.FieldReference:

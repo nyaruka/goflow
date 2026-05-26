@@ -58,7 +58,6 @@ type SessionAssets interface {
 
 	Campaigns() *CampaignAssets
 	Channels() *ChannelAssets
-	Classifiers() *ClassifierAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
 	Globals() *GlobalAssets

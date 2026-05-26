@@ -37,7 +37,6 @@ func TestDependencies(t *testing.T) {
 
 	refs := []flows.ExtractedReference{
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android")),
-		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewClassifierReference("2138cddc-118a-49ae-b290-98e03ad0573b", "Booking")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFieldReference("gender", "Gender")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration")),
@@ -74,12 +73,6 @@ func TestDependencies(t *testing.T) {
 			"name": "Android",
 			"type": "channel",
 			"uuid": "8286545d-d1a1-4eff-a3ad-a11ddf4bb20a"
-		},
-		{
-			"missing": true,
-			"name": "Booking",
-			"type": "classifier",
-			"uuid": "2138cddc-118a-49ae-b290-98e03ad0573b"
 		},
 		{
 			"name": "Bob",

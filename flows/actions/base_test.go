@@ -25,7 +25,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/services/classification/wit"
 	"github.com/nyaruka/goflow/services/email/smtp"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
@@ -225,12 +224,6 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
-			WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
-				if c.Type() == "wit" {
-					return wit.NewService(http.DefaultClient, nil, c, "123456789"), nil
-				}
-				return nil, fmt.Errorf("no classification service available for %s", c.Reference())
-			}).
 			WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
 				return services.NewLLM(), nil
 			}).
@@ -382,17 +375,12 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewCallClassifier(
 				actionUUID,
-				assets.NewClassifierReference("0baee364-07a7-4c93-9778-9f55a35903bb", "Booking"),
 				"@input.text",
 				"Intent",
 			),
 			`{
 			"type": "call_classifier",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"classifier": {
-				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
-				"name": "Booking"
-			},
 			"input": "@input.text",
 			"result_name": "Intent"
 		}`,

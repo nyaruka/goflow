@@ -46,7 +46,3 @@ func NewChannel(name string, address string, schemes []string, roles []assets.Ch
 func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country i18n.Country, matchPrefixes []string, allowInternational bool) *flows.Channel {
 	return flows.NewChannel(static.NewTelChannel(assets.ChannelUUID(uuids.NewV4()), name, address, roles, parent, country, matchPrefixes, allowInternational))
 }
-
-func NewClassifier(name, type_ string, intents []string) *flows.Classifier {
-	return flows.NewClassifier(static.NewClassifier(assets.ClassifierUUID(uuids.NewV4()), name, type_, intents))
-}

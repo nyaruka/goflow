@@ -135,9 +135,6 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
-		WithClassificationServiceFactory(func(c *flows.Classifier) (flows.ClassificationService, error) {
-			return services.NewClassification(c), nil
-		}).
 		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).

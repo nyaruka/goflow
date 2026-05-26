@@ -61,10 +61,10 @@
             "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
         },
         {
-            "arrived_on": "2025-05-04T12:31:44.123456Z",
+            "arrived_on": "2025-05-04T12:31:38.123456Z",
             "exit_uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c",
             "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-            "uuid": "457e423f-85de-46f3-97a3-ae27459a6be4"
+            "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
         }
     ],
     "results": {
@@ -85,15 +85,6 @@
             "name": "Favorite Color",
             "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
             "value": "red"
-        },
-        "intent": {
-            "category": "Success",
-            "category_localized": "Success",
-            "created_on": "2025-05-04T12:31:39.123456Z",
-            "input": "Hi there",
-            "name": "Intent",
-            "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-            "value": "book_flight"
         },
         "phone_number": {
             "category": "",

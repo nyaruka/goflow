@@ -415,29 +415,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() flows.Event {
-				return events.NewClassifierCalled(
-					assets.NewClassifierReference(assets.ClassifierUUID("4b937f49-7fb7-43a5-8e57-14e2f028a471"), "Booking"),
-					[]*flows.HTTPLog{
-						{
-							HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
-								LogWithoutTime: &httpx.LogWithoutTime{
-									URL:        "https://api.wit.ai/message?v=20200513&q=hello",
-									StatusCode: 200,
-									Request:    "GET /message?v=20200513&q=hello HTTP/1.1\r\nHost: api.wit.ai\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"intents\":[]}",
-									ElapsedMS:  12,
-								},
-								Status: flows.CallStatusSuccess,
-							},
-							CreatedOn: dates.Now(),
-						},
-					},
-				)
-			},
-			`service_called`,
-		},
-		{
-			func() flows.Event {
 				return events.NewSessionTriggered(
 					assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
 					[]*assets.GroupReference{

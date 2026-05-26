@@ -53,14 +53,6 @@ var sessionAssets = `{
             "features": ["optins"]
         }
     ],
-    "classifiers": [
-        {
-            "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-            "name": "Booking",
-            "type": "wit",
-            "intents": ["book_flight", "book_hotel"]
-        }
-    ],
     "optins": [
         {
             "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
@@ -157,16 +149,6 @@ var sessionAssets = `{
                             "method": "GET",
                             "url": "http://localhost/?content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
                             "result_name": "webhook"
-                        },
-                        {
-                            "uuid": "bd821625-5254-40ca-be17-e9a4dc5bde99",
-                            "type": "call_classifier",
-                            "classifier": {
-                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
-                                "name": "Booking"
-                            },
-                            "input": "@input.text",
-                            "result_name": "Intent"
                         }
                     ],
                     "exits": [
