@@ -12,6 +12,8 @@ func init() {
 	registerType(TypeCallClassifier, func() flows.Action { return &CallClassifier{} })
 }
 
+// Execute only ever saves a Failure result now, but all three categories are still advertised
+// from Inspect so existing flows with router cases wired to Success or Skipped continue to validate.
 var classificationCategories = []string{CategorySuccess, CategorySkipped, CategoryFailure}
 
 // TypeCallClassifier is the type for the call classifier action
