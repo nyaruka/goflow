@@ -23,12 +23,12 @@ func HasCategory(env envs.Environment, resultObj *types.XObject, categories ...*
 	return FalseResult
 }
 
-// HasIntent tests whether any intent in a classification result has `name` and minimum `confidence`
+// HasIntent is a deprecated NLU classification test that always returns a false result.
 func HasIntent(env envs.Environment, result *types.XObject, name *types.XText, confidence *types.XNumber) types.XValue {
-	return hasIntent(result, name, confidence, false)
+	return FalseResult
 }
 
-// HasTopIntent tests whether the top intent in a classification result has `name` and minimum `confidence`
+// HasTopIntent is a deprecated NLU classification test that always returns a false result.
 func HasTopIntent(env envs.Environment, result *types.XObject, name *types.XText, confidence *types.XNumber) types.XValue {
-	return hasIntent(result, name, confidence, true)
+	return FalseResult
 }
