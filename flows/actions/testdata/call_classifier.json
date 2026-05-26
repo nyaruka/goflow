@@ -1,6 +1,6 @@
 [
     {
-        "description": "Error event and failure result regardless of input",
+        "description": "Warning event and failure result regardless of input",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -10,7 +10,7 @@
         "events": [
             {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
-                "type": "error",
+                "type": "warning",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "NLU classifiers are no longer supported"
             },

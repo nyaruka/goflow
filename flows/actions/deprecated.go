@@ -41,13 +41,11 @@ func NewCallClassifier(uuid flows.ActionUUID, input string, resultName string) *
 func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
 	input, _ := run.EvaluateTemplate(a.Input, log)
 
-	log(events.NewError("NLU classifiers are no longer supported", ""))
+	log(events.NewWarning("NLU classifiers are no longer supported"))
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, log)
 	return nil
 }
 
 func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
-	if a.ResultName != "" {
-		result(flows.NewResultInfo(a.ResultName, classificationCategories))
-	}
+	result(flows.NewResultInfo(a.ResultName, classificationCategories))
 }

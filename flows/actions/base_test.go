@@ -758,6 +758,18 @@ func TestReadAction(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = actions.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+
+	// legacy call_classifier action with a classifier asset reference parses fine -
+	// the now-removed classifier field is silently ignored
+	action, err := actions.Read([]byte(`{
+		"type": "call_classifier",
+		"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
+		"input": "@input.text",
+		"result_name": "Intent"
+	}`))
+	require.NoError(t, err)
+	assert.Equal(t, actions.TypeCallClassifier, action.Type())
 }
 
 func TestResthookPayload(t *testing.T) {
