@@ -1,3 +1,7 @@
+v0.275.0 (2026-05-26)
+-------------------------
+ * Remove classifier assets
+
 v0.274.1 (2026-04-30)
 -------------------------
  * Split LLM token usage into input and output
