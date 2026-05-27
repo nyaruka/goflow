@@ -44,12 +44,11 @@ const TypeAirtimeCreated string = "airtime_created"
 type AirtimeCreated struct {
 	BaseEvent
 
-	ExternalID string           `json:"external_id"`
-	Sender     urns.URN         `json:"sender"`
-	Recipient  urns.URN         `json:"recipient"`
-	Currency   string           `json:"currency"`
-	Amount     decimal.Decimal  `json:"amount"`
-	HTTPLogs   []*flows.HTTPLog `json:"http_logs"`
+	Sender    urns.URN         `json:"sender"`
+	Recipient urns.URN         `json:"recipient"`
+	Currency  string           `json:"currency"`
+	Amount    decimal.Decimal  `json:"amount"`
+	HTTPLogs  []*flows.HTTPLog `json:"http_logs"`
 }
 
 // NewAirtimeCreated creates a new airtime created event
@@ -60,12 +59,11 @@ func NewAirtimeCreated(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *Air
 	}
 
 	return &AirtimeCreated{
-		BaseEvent:  NewBaseEvent(TypeAirtimeCreated),
-		ExternalID: t.ExternalID,
-		Sender:     sender,
-		Recipient:  t.Recipient.Identity(),
-		Currency:   t.Currency,
-		Amount:     t.Amount,
-		HTTPLogs:   httpLogs,
+		BaseEvent: NewBaseEvent(TypeAirtimeCreated),
+		Sender:    sender,
+		Recipient: t.Recipient.Identity(),
+		Currency:  t.Currency,
+		Amount:    t.Amount,
+		HTTPLogs:  httpLogs,
 	}
 }

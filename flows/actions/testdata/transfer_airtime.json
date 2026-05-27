@@ -59,7 +59,6 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "airtime_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "external_id": "5OKA5LEG5N",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212",
                 "currency": "RWF",
@@ -79,7 +78,7 @@
             }
         ],
         "locals_after": {
-            "_new_transfer": "5OKA5LEG5N"
+            "_new_transfer": "01969b47-307b-76f8-a17e-f85e49829fb9"
         },
         "inspection": {
             "counts": {
@@ -121,19 +120,8 @@
         "events": [
             {
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
-                "type": "airtime_created",
-                "created_on": "2025-05-04T12:30:57.123456789Z",
-                "external_id": "",
-                "sender": "tel:+17036975131",
-                "recipient": "tel:+17036000666",
-                "currency": "",
-                "amount": 0,
-                "http_logs": null
-            },
-            {
-                "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "invalid recipient number"
             }
         ],

@@ -50,13 +50,13 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 
 // Execute executes the transfer action
 func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
-	transfer, err := a.transfer(ctx, run, log)
+	airtime, err := a.transfer(ctx, run, log)
 	if err != nil {
 		log(events.NewRawError(err))
 	}
 
-	if transfer != nil {
-		run.Locals().Set(TransferAirtimeOutputLocal, transfer.ExternalID)
+	if airtime != nil {
+		run.Locals().Set(TransferAirtimeOutputLocal, string(airtime.UUID()))
 	} else {
 		run.Locals().Set(TransferAirtimeOutputLocal, "")
 	}
@@ -64,7 +64,7 @@ func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows
 	return nil
 }
 
-func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows.EventLogger) (*flows.AirtimeTransfer, error) {
+func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows.EventLogger) (*events.AirtimeCreated, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
 
@@ -91,14 +91,14 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 	httpLogger := &flows.HTTPLogger{}
 
 	transfer, err := svc.Create(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
-	if transfer != nil { // also non-nil when setup failed before reaching the provider
-		log(events.NewAirtimeCreated(transfer, httpLogger.Logs))
-	}
 	if err != nil {
 		return nil, err
 	}
 
-	return transfer, nil
+	evt := events.NewAirtimeCreated(transfer, httpLogger.Logs)
+	log(evt)
+
+	return evt, nil
 }
 
 func (a *TransferAirtime) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

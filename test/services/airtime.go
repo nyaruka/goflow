@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
-	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/shopspring/decimal"
@@ -54,7 +53,6 @@ func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.UR
 		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
-	transfer.ExternalID = random.String(10, []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
 	transfer.Currency = s.fixedCurrency
 	transfer.Amount = amount
 
