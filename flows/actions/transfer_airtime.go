@@ -25,6 +25,8 @@ const (
 // TransferAirtime attempts to make an airtime transfer to the contact.
 //
 // An [event:airtime_created] event will be created if the airtime transfer could be initiated.
+// The action sets a `_new_transfer` local to the UUID of the airtime_created event when the
+// transfer is initiated, and to an empty string otherwise.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

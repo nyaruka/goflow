@@ -58,15 +58,6 @@ type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
-// TransferStatus is a status of a airtime transfer
-type TransferStatus string
-
-// possible values for airtime transfer statuses
-const (
-	TransferStatusSuccess TransferStatus = "success"
-	TransferStatusFailed  TransferStatus = "failed"
-)
-
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
 	Sender    urns.URN
