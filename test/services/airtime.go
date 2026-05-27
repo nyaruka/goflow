@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/shopspring/decimal"
@@ -47,10 +48,11 @@ func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.UR
 	}
 
 	return &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  s.fixedCurrency,
-		Amount:    amount,
+		ExternalID: random.String(10, []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")),
+		Sender:     sender,
+		Recipient:  recipient,
+		Currency:   s.fixedCurrency,
+		Amount:     amount,
 	}, nil
 }
 

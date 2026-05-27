@@ -59,6 +59,7 @@
                 "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
                 "type": "airtime_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
+                "external_id": "5OKA5LEG5N",
                 "sender": "tel:+17036975131",
                 "recipient": "tel:+12065551212",
                 "currency": "RWF",

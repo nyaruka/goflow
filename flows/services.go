@@ -60,10 +60,11 @@ type LLMService interface {
 
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	Sender    urns.URN
-	Recipient urns.URN
-	Currency  string
-	Amount    decimal.Decimal
+	ExternalID string // provider transaction id, when known after initiation
+	Sender     urns.URN
+	Recipient  urns.URN
+	Currency   string
+	Amount     decimal.Decimal
 }
 
 // AirtimeService provides airtime functionality to the engine
