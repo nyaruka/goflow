@@ -79,6 +79,16 @@ type AirtimeService interface {
 	// Confirm after the session commits, so the airtime is only actually sent once the surrounding work
 	// is durably recorded. Implementations whose Create already triggers the send should make Confirm a
 	// no-op.
+	//
+	// The transfer argument is the value Create returned. Implementations are expected to use whichever
+	// fields they need (typically ExternalID) to address the provider transaction. Confirm should only be
+	// invoked for transfers that Create returned without error; hosts should not call Confirm on a
+	// partially-populated transfer left over from a failed Create.
+	//
+	// Confirm is not required to be idempotent — implementations may return an error on a duplicate
+	// confirmation. Hosts that need at-most-once delivery semantics should ensure Confirm is called at
+	// most once per transfer. On error, the airtime was not sent; hosts are responsible for surfacing
+	// that to their users.
 	Confirm(ctx context.Context, transfer *AirtimeTransfer, logHTTP HTTPLogCallback) error
 }
 
