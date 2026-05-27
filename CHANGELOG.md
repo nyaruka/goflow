@@ -1,3 +1,7 @@
+v0.276.2 (2026-05-27)
+-------------------------
+ * Replace airtime_transferred event with airtime_created
+
 v0.276.1 (2026-05-27)
 -------------------------
  * Downgrade webhook router fix to 14.4.1 and simplify localization cleanup
