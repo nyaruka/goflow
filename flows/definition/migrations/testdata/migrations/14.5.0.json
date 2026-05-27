@@ -355,6 +355,147 @@
         }
     },
     {
+        "description": "flow with localized case arguments has stale translations dropped",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.4.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {
+                    "ff810df6-23c2-4dff-9be1-eebffae2bb9d": {
+                        "arguments": [
+                            "exito"
+                        ]
+                    },
+                    "0c3e8410-2316-4bcd-acf6-c5a8a37c5ad0": {
+                        "arguments": [
+                            "fracaso"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "headers": {},
+                            "type": "call_webhook",
+                            "url": "http://temba.io/",
+                            "method": "GET"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@webhook.json.status",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "success"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            },
+                            {
+                                "uuid": "0c3e8410-2316-4bcd-acf6-c5a8a37c5ad0",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "failure"
+                                ],
+                                "category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {
+                "spa": {}
+            },
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "headers": {},
+                            "type": "call_webhook",
+                            "url": "http://temba.io/",
+                            "method": "GET"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "operand": "@webhook.status",
+                        "cases": [
+                            {
+                                "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
+                                "type": "has_number_between",
+                                "arguments": [
+                                    "200",
+                                    "299"
+                                ],
+                                "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c",
+                                "name": "Success",
+                                "exit_uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                            },
+                            {
+                                "uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551",
+                                "name": "Failure",
+                                "exit_uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                            }
+                        ],
+                        "default_category_uuid": "501fc0c1-28a8-45b2-84f1-b6f9ea17d551"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "24493dc0-687e-4d16-98e5-6e422624729b"
+                        },
+                        {
+                            "uuid": "09f2e979-e6d2-4d0c-b28d-88a836a41d2e"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
         "description": "non-webhook switch router is not touched",
         "original": {
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",

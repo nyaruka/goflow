@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver"
+	"github.com/nyaruka/gocommon/uuids"
 )
 
 func init() {
@@ -25,9 +26,15 @@ func init() {
 // rename) and an early version of temba-components left some flows splitting on @webhook.json.status with a has_text
 // case, which routes 2xx responses to Failure whenever the response body lacks a top-level "status" field.
 //
+// We assume that the first case's category_uuid already points to a "Success" category and that any extra cases'
+// categories are otherwise reachable (e.g. by being the default_category_uuid); this matches every router shape any
+// editor has ever produced for these node types.
+//
 // @version 14_5_0 "14.5.0"
 func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
 	webhookActions := []string{"call_webhook", "call_resthook"}
+
+	localization := f.Localization()
 
 	for _, node := range f.Nodes() {
 		actions := node.Actions()
@@ -53,6 +60,24 @@ func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
 
 		router["operand"] = "@webhook.status"
 		router["cases"] = []any{case0}
+
+		// drop any localized arguments for the rewritten case or for cases we just dropped - the old translations
+		// referred to text/category values that no longer apply to the numeric HTTP-status check
+		if localization != nil {
+			caseUUIDs := []uuids.UUID{GetObjectUUID(case0)}
+			for _, c := range cases[1:] {
+				caseUUIDs = append(caseUUIDs, GetObjectUUID(c))
+			}
+
+			for _, lang := range localization.Languages() {
+				lt := localization.GetLanguageTranslation(lang)
+				for _, caseUUID := range caseUUIDs {
+					if caseUUID != "" {
+						lt.DeleteTranslation(caseUUID, "arguments")
+					}
+				}
+			}
+		}
 	}
 
 	return f, nil
