@@ -22,15 +22,8 @@ func NewAirtime(currency string) *Airtime {
 }
 
 func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
-	transfer := &flows.AirtimeTransfer{
-		Sender:    sender,
-		Recipient: recipient,
-		Currency:  "",
-		Amount:    decimal.Zero,
-	}
-
 	if strings.Contains(string(recipient), "666") {
-		return transfer, fmt.Errorf("invalid recipient number")
+		return nil, fmt.Errorf("invalid recipient number")
 	}
 
 	logHTTP(&flows.HTTPLog{
@@ -53,10 +46,12 @@ func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.UR
 		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
-	transfer.Currency = s.fixedCurrency
-	transfer.Amount = amount
-
-	return transfer, nil
+	return &flows.AirtimeTransfer{
+		Sender:    sender,
+		Recipient: recipient,
+		Currency:  s.fixedCurrency,
+		Amount:    amount,
+	}, nil
 }
 
 var _ flows.AirtimeService = (*Airtime)(nil)
