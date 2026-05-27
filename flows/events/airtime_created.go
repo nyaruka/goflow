@@ -13,9 +13,11 @@ func init() {
 // TypeAirtimeCreated is the type of our airtime created event
 const TypeAirtimeCreated string = "airtime_created"
 
-// AirtimeCreated events are created when an airtime transfer to the contact has been initiated. The transfer's
-// final outcome is determined out of band by the host, so the event represents the request, not the delivery.
-// `external_id` may be empty when the provider's transaction id isn't known at the time of event creation.
+// AirtimeCreated events are created when the transfer_airtime action is executed, representing the attempt rather
+// than a completed transfer — the final outcome is determined out of band by the host. The event also fires for
+// attempts that never reached the provider (e.g. number lookup failure), in which case `currency` is empty and
+// `amount` is zero; hosts can use those fields to distinguish initiated transfers from failed setups. `external_id`
+// may be empty when the provider's transaction id isn't known synchronously.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

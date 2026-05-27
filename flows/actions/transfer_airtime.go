@@ -91,7 +91,7 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 	httpLogger := &flows.HTTPLogger{}
 
 	transfer, err := svc.Create(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
-	if transfer != nil { // can be non-nil for failed transfer
+	if transfer != nil { // also non-nil when setup failed before reaching the provider
 		log(events.NewAirtimeCreated(transfer, httpLogger.Logs))
 	}
 	if err != nil {

@@ -78,9 +78,10 @@ type AirtimeTransfer struct {
 
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
-	// Create initiates a new airtime transfer to the given URN. Implementations should populate Sender,
-	// Recipient, Currency and Amount on the returned transfer; ExternalID is optional and may be left
-	// empty when the underlying provider's transaction id isn't known until later.
+	// Create attempts to initiate a new airtime transfer to the given URN. A non-nil transfer may be
+	// returned even when err is non-nil — e.g. if the provider lookup failed before an amount could
+	// be resolved — in which case Currency/Amount will be unset. ExternalID is optional and may be
+	// left empty when the provider's transaction id isn't known at the time of the call.
 	Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
