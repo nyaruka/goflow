@@ -1,3 +1,7 @@
+v0.276.0 (2026-05-27)
+-------------------------
+ * Normalise webhook and resthook split routers to canonical shape
+
 v0.275.0 (2026-05-26)
 -------------------------
  * Remove classifier assets
