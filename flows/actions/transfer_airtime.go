@@ -24,7 +24,7 @@ const (
 
 // TransferAirtime attempts to make an airtime transfer to the contact.
 //
-// An [event:airtime_transferred] event will be created if the airtime could be sent.
+// An [event:airtime_created] event will be created if the airtime transfer could be initiated.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -90,9 +90,9 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Transfer(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
+	transfer, err := svc.Create(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
 	if transfer != nil { // can be non-nil for failed transfer
-		log(events.NewAirtimeTransferred(transfer, httpLogger.Logs))
+		log(events.NewAirtimeCreated(transfer, httpLogger.Logs))
 	}
 	if err != nil {
 		return nil, err

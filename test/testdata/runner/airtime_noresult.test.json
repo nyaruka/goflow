@@ -45,7 +45,7 @@
                     ],
                     "recipient": "tel:+12065551212",
                     "sender": "",
-                    "type": "airtime_transferred",
+                    "type": "airtime_created",
                     "uuid": "01969b47-20db-76f8-8f41-6b2d9f33d623"
                 },
                 {

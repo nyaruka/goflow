@@ -78,8 +78,10 @@ type AirtimeTransfer struct {
 
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
-	// Transfer transfers airtime to the given URN
-	Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	// Create initiates a new airtime transfer to the given URN. Implementations should populate Sender,
+	// Recipient, Currency and Amount on the returned transfer; ExternalID is optional and may be left
+	// empty when the underlying provider's transaction id isn't known until later.
+	Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
 // HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
