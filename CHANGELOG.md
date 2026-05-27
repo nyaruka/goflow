@@ -1,3 +1,7 @@
+v0.276.5 (2026-05-27)
+-------------------------
+ * Let AirtimeService.Create receive the pre-allocated event UUID
+
 v0.276.4 (2026-05-27)
 -------------------------
  * Add Confirm to AirtimeService interface
