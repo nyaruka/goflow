@@ -73,7 +73,12 @@ type AirtimeService interface {
 	// this submits the transaction in an unconfirmed state and returns its identifier in ExternalID; the
 	// host then calls Confirm to actually trigger the send. For providers that initiate immediately, this
 	// method does the send and Confirm is a no-op.
-	Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	//
+	// transferUUID is pre-allocated by the caller and is the UUID that will be assigned to the resulting
+	// airtime_created event; implementations may pass it to the provider as their own reference (e.g.
+	// DT One's external_id field) so that subsequent provider callbacks can be correlated back to the
+	// event/transfer by the host without needing the provider's transaction id.
+	Create(ctx context.Context, transferUUID EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 
 	// Confirm completes initiation of a transfer previously surfaced by Create. Hosts typically call
 	// Confirm after the session commits, so the airtime is only actually sent once the surrounding work

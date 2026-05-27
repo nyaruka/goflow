@@ -54,6 +54,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() flows.Event {
 				return events.NewAirtimeCreated(
+					flows.NewEventUUID(),
 					&flows.AirtimeTransfer{
 						ExternalID: "98765432",
 						Sender:     urns.URN("tel:+593979099111"),

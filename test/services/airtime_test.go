@@ -15,7 +15,8 @@ func TestAirtimeService(t *testing.T) {
 	ctx := context.Background()
 	svc := services.NewAirtime("USD")
 
-	transfer, err := svc.Create(ctx, urns.URN("tel:+12025550100"), urns.URN("tel:+12025550101"), map[string]decimal.Decimal{
+	uuid := flows.NewEventUUID()
+	transfer, err := svc.Create(ctx, uuid, urns.URN("tel:+12025550100"), urns.URN("tel:+12025550101"), map[string]decimal.Decimal{
 		"USD": decimal.RequireFromString("3"),
 	}, func(*flows.HTTPLog) {})
 	assert.NoError(t, err)
@@ -27,6 +28,6 @@ func TestAirtimeService(t *testing.T) {
 	assert.NoError(t, err)
 
 	// recipients containing "666" cause Create to fail (used by other tests)
-	_, err = svc.Create(ctx, urns.NilURN, urns.URN("tel:+1666"), map[string]decimal.Decimal{"USD": decimal.RequireFromString("3")}, func(*flows.HTTPLog) {})
+	_, err = svc.Create(ctx, uuid, urns.NilURN, urns.URN("tel:+1666"), map[string]decimal.Decimal{"USD": decimal.RequireFromString("3")}, func(*flows.HTTPLog) {})
 	assert.EqualError(t, err, "invalid recipient number")
 }

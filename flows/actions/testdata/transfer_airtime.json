@@ -120,9 +120,9 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-3463-76f8-ba00-bd7f0d08e671",
                 "type": "error",
-                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "created_on": "2025-05-04T12:30:58.123456789Z",
                 "text": "invalid recipient number"
             }
         ],

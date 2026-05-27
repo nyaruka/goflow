@@ -22,7 +22,7 @@ func NewAirtime(currency string) *Airtime {
 	return &Airtime{fixedCurrency: currency}
 }
 
-func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *Airtime) Create(ctx context.Context, transferUUID flows.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
 	if strings.Contains(string(recipient), "666") {
 		return nil, fmt.Errorf("invalid recipient number")
 	}

@@ -50,15 +50,15 @@ type AirtimeCreated struct {
 	HTTPLogs   []*flows.HTTPLog `json:"http_logs"`
 }
 
-// NewAirtimeCreated creates a new airtime created event
-func NewAirtimeCreated(t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeCreated {
+// NewAirtimeCreated creates a new airtime created event with the given pre-allocated UUID
+func NewAirtimeCreated(uuid flows.EventUUID, t *flows.AirtimeTransfer, httpLogs []*flows.HTTPLog) *AirtimeCreated {
 	sender := t.Sender
 	if sender != "" {
 		sender = sender.Identity()
 	}
 
 	return &AirtimeCreated{
-		BaseEvent:  NewBaseEvent(TypeAirtimeCreated),
+		BaseEvent:  NewBaseEventWithUUID(uuid, TypeAirtimeCreated),
 		ExternalID: t.ExternalID,
 		Sender:     sender,
 		Recipient:  t.Recipient.Identity(),

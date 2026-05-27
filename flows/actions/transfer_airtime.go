@@ -92,12 +92,15 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 
 	httpLogger := &flows.HTTPLogger{}
 
-	transfer, err := svc.Create(ctx, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
+	// pre-allocate the event UUID so the service can pass it through to the provider as a stable reference
+	transferUUID := flows.NewEventUUID()
+
+	transfer, err := svc.Create(ctx, transferUUID, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
 	if err != nil {
 		return nil, err
 	}
 
-	evt := events.NewAirtimeCreated(transfer, httpLogger.Logs)
+	evt := events.NewAirtimeCreated(transferUUID, transfer, httpLogger.Logs)
 	log(evt)
 
 	return evt, nil
