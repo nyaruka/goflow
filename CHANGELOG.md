@@ -1,3 +1,7 @@
+v0.276.3 (2026-05-27)
+-------------------------
+ * Re-add ExternalID to airtime transfer for the provider transaction id
+
 v0.276.2 (2026-05-27)
 -------------------------
  * Replace airtime_transferred event with airtime_created
