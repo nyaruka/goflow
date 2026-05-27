@@ -1,3 +1,7 @@
+v0.276.1 (2026-05-27)
+-------------------------
+ * Downgrade webhook router fix to 14.4.1 and simplify localization cleanup
+
 v0.276.0 (2026-05-27)
 -------------------------
  * Normalise webhook and resthook split routers to canonical shape
