@@ -33,7 +33,14 @@ type BaseEvent struct {
 
 // NewBaseEvent creates a new base event
 func NewBaseEvent(typ string) BaseEvent {
-	return BaseEvent{UUID_: flows.NewEventUUID(), Type_: typ, CreatedOn_: dates.Now()}
+	return NewBaseEventWithUUID(flows.NewEventUUID(), typ)
+}
+
+// NewBaseEventWithUUID creates a new base event with the given pre-allocated UUID. Used when the caller
+// needs to know the event's UUID before constructing the event (e.g. to pass it to an outbound provider
+// call so that callbacks can be correlated back to the event).
+func NewBaseEventWithUUID(uuid flows.EventUUID, typ string) BaseEvent {
+	return BaseEvent{UUID_: uuid, Type_: typ, CreatedOn_: dates.Now()}
 }
 
 // UUID returns the UUID of this event
