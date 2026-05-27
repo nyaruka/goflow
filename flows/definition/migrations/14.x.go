@@ -10,12 +10,52 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.5.0"), Migrate14_5_0)
 	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
 	registerMigration(semver.MustParse("14.3.1"), Migrate14_3_1)
 	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_5_0 normalises webhook and resthook split routers to the canonical shape: operand @webhook.status with a
+// single has_number_between [200, 299] case targeting the Success category. Editors don't expose the operand or case
+// configuration for these node types, but historical migrations (notably 13.3.0's blind @webhook → @webhook.json
+// rename) and an early version of temba-components left some flows splitting on @webhook.json.status with a has_text
+// case, which routes 2xx responses to Failure whenever the response body lacks a top-level "status" field.
+//
+// @version 14_5_0 "14.5.0"
+func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
+	webhookActions := []string{"call_webhook", "call_resthook"}
+
+	for _, node := range f.Nodes() {
+		actions := node.Actions()
+		router := node.Router()
+
+		if len(actions) != 1 || !slices.Contains(webhookActions, actions[0].Type()) || router == nil || router.Type() != "switch" {
+			continue
+		}
+
+		cases, _ := router["cases"].([]any)
+		if len(cases) == 0 {
+			continue
+		}
+		case0, _ := cases[0].(map[string]any)
+		if case0 == nil {
+			continue
+		}
+
+		// rewrite the first case to the canonical HTTP-status check (preserving its UUID and target category) and
+		// drop any further cases - the editor only ever emits a single Success case
+		case0["type"] = "has_number_between"
+		case0["arguments"] = []any{"200", "299"}
+
+		router["operand"] = "@webhook.status"
+		router["cases"] = []any{case0}
+	}
+
+	return f, nil
 }
 
 // Migrate14_4_0 removes the all_urns field from send_msg actions.
