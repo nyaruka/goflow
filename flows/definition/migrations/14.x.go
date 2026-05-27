@@ -7,11 +7,10 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver"
-	"github.com/nyaruka/gocommon/uuids"
 )
 
 func init() {
-	registerMigration(semver.MustParse("14.5.0"), Migrate14_5_0)
+	registerMigration(semver.MustParse("14.4.1"), Migrate14_4_1)
 	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
 	registerMigration(semver.MustParse("14.3.1"), Migrate14_3_1)
 	registerMigration(semver.MustParse("14.3.0"), Migrate14_3_0)
@@ -20,7 +19,7 @@ func init() {
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
 }
 
-// Migrate14_5_0 normalises webhook and resthook split routers to the canonical shape: operand @webhook.status with a
+// Migrate14_4_1 normalises webhook and resthook split routers to the canonical shape: operand @webhook.status with a
 // single has_number_between [200, 299] case targeting the Success category. Editors don't expose the operand or case
 // configuration for these node types, but historical migrations (notably 13.3.0's blind @webhook → @webhook.json
 // rename) and an early version of temba-components left some flows splitting on @webhook.json.status with a has_text
@@ -30,8 +29,8 @@ func init() {
 // categories are otherwise reachable (e.g. by being the default_category_uuid); this matches every router shape any
 // editor has ever produced for these node types.
 //
-// @version 14_5_0 "14.5.0"
-func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
+// @version 14_4_1 "14.4.1"
+func Migrate14_4_1(f Flow, cfg *Config) (Flow, error) {
 	webhookActions := []string{"call_webhook", "call_resthook"}
 
 	localization := f.Localization()
@@ -61,18 +60,17 @@ func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
 		router["operand"] = "@webhook.status"
 		router["cases"] = []any{case0}
 
-		// drop any localized arguments for the rewritten case or for cases we just dropped - the old translations
-		// referred to text/category values that no longer apply to the numeric HTTP-status check
+		// webhook router case arguments should never be localized (operand is the numeric @webhook.status), so drop
+		// any existing localized arguments for every original case
 		if localization != nil {
-			caseUUIDs := []uuids.UUID{GetObjectUUID(case0)}
-			for _, c := range cases[1:] {
-				caseUUIDs = append(caseUUIDs, GetObjectUUID(c))
-			}
-
 			for _, lang := range localization.Languages() {
 				lt := localization.GetLanguageTranslation(lang)
-				for _, caseUUID := range caseUUIDs {
-					if caseUUID != "" {
+				for _, c := range cases {
+					cm, _ := c.(map[string]any)
+					if cm == nil {
+						continue
+					}
+					if caseUUID := GetObjectUUID(cm); caseUUID != "" {
 						lt.DeleteTranslation(caseUUID, "arguments")
 					}
 				}
