@@ -58,28 +58,18 @@ type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
 }
 
-// TransferStatus is a status of a airtime transfer
-type TransferStatus string
-
-// possible values for airtime transfer statuses
-const (
-	TransferStatusSuccess TransferStatus = "success"
-	TransferStatusFailed  TransferStatus = "failed"
-)
-
 // AirtimeTransfer is the result of an attempted airtime transfer
 type AirtimeTransfer struct {
-	ExternalID string
-	Sender     urns.URN
-	Recipient  urns.URN
-	Currency   string
-	Amount     decimal.Decimal
+	Sender    urns.URN
+	Recipient urns.URN
+	Currency  string
+	Amount    decimal.Decimal
 }
 
 // AirtimeService provides airtime functionality to the engine
 type AirtimeService interface {
-	// Transfer transfers airtime to the given URN
-	Transfer(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	// Create initiates a new airtime transfer to the given URN.
+	Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 }
 
 // HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time

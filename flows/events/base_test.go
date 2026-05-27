@@ -53,13 +53,12 @@ func TestEventMarshaling(t *testing.T) {
 	}{
 		{
 			func() flows.Event {
-				return events.NewAirtimeTransferred(
+				return events.NewAirtimeCreated(
 					&flows.AirtimeTransfer{
-						ExternalID: "98765432",
-						Sender:     urns.URN("tel:+593979099111"),
-						Recipient:  urns.URN("tel:+593979099222"),
-						Currency:   "USD",
-						Amount:     decimal.RequireFromString("1.00"),
+						Sender:    urns.URN("tel:+593979099111"),
+						Recipient: urns.URN("tel:+593979099222"),
+						Currency:  "USD",
+						Amount:    decimal.RequireFromString("1.00"),
 					},
 					[]*flows.HTTPLog{
 						{
@@ -78,7 +77,7 @@ func TestEventMarshaling(t *testing.T) {
 					},
 				)
 			},
-			`airtime_transferred`,
+			`airtime_created`,
 		},
 		{
 			func() flows.Event {
