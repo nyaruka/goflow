@@ -30,6 +30,7 @@
                     "amount": 5000,
                     "created_on": "2025-05-04T12:30:53.123456789Z",
                     "currency": "RWF",
+                    "external_id": "5OKA5LEG5N",
                     "http_logs": [
                         {
                             "created_on": "2019-10-16T13:59:30.123456789Z",
