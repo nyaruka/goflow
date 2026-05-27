@@ -57,7 +57,7 @@ func (s *Airtime) Create(ctx context.Context, sender urns.URN, recipient urns.UR
 }
 
 // Confirm is a no-op for the test service — Create returned the transfer ready to go.
-func (s *Airtime) Confirm(ctx context.Context, externalID string, logHTTP flows.HTTPLogCallback) error {
+func (s *Airtime) Confirm(ctx context.Context, transfer *flows.AirtimeTransfer, logHTTP flows.HTTPLogCallback) error {
 	return nil
 }
 

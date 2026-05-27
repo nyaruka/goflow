@@ -75,12 +75,11 @@ type AirtimeService interface {
 	// method does the send and Confirm is a no-op.
 	Create(ctx context.Context, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
 
-	// Confirm completes initiation of a transfer previously surfaced by Create. The externalID is the
-	// provider's transaction id (the same value Create returned on AirtimeTransfer.ExternalID). Hosts
-	// typically call Confirm after the session commits, so the airtime is only actually sent once the
-	// surrounding work is durably recorded. Implementations whose Create method already triggers the
-	// send should make Confirm a no-op.
-	Confirm(ctx context.Context, externalID string, logHTTP HTTPLogCallback) error
+	// Confirm completes initiation of a transfer previously surfaced by Create. Hosts typically call
+	// Confirm after the session commits, so the airtime is only actually sent once the surrounding work
+	// is durably recorded. Implementations whose Create already triggers the send should make Confirm a
+	// no-op.
+	Confirm(ctx context.Context, transfer *AirtimeTransfer, logHTTP HTTPLogCallback) error
 }
 
 // HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
