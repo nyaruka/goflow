@@ -8,7 +8,16 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strconv"
+
+	"github.com/nyaruka/gocommon/httpx"
 )
+
+// MockedHTTP creates an HTTP client whose requests are answered from the given mocks rather than being sent. It also
+// returns the mocking transport so tests can assert against it, e.g. that all mocks were used (mocks.HasUnused()).
+func MockedHTTP(mocks map[string][]*httpx.MockResponse) (*http.Client, *httpx.MockTransport) {
+	transport := httpx.WithMocking(http.DefaultTransport, mocks)
+	return &http.Client{Transport: transport}, transport
+}
 
 // NewHTTPServer sets up a mock server
 func NewHTTPServer(port int, handler http.HandlerFunc) *httptest.Server {

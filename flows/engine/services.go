@@ -2,6 +2,7 @@ package engine
 
 import (
 	"errors"
+	"net/http"
 
 	"github.com/nyaruka/goflow/flows"
 )
@@ -9,8 +10,8 @@ import (
 // EmailServiceFactory resolves a session to a email service
 type EmailServiceFactory func(flows.SessionAssets) (flows.EmailService, error)
 
-// WebhookServiceFactory resolves a session to a webhook service
-type WebhookServiceFactory func(flows.SessionAssets) (flows.WebhookService, error)
+// WebhookServiceFactory resolves a session to a webhook service, using the engine's HTTP client
+type WebhookServiceFactory func(*http.Client, flows.SessionAssets) (flows.WebhookService, error)
 
 // LLMServiceFactory resolves an LLM asset to to an LLM service
 type LLMServiceFactory func(*flows.LLM) (flows.LLMService, error)
@@ -19,10 +20,11 @@ type LLMServiceFactory func(*flows.LLM) (flows.LLMService, error)
 type AirtimeServiceFactory func(flows.SessionAssets) (flows.AirtimeService, error)
 
 type services struct {
-	email   EmailServiceFactory
-	webhook WebhookServiceFactory
-	llm     LLMServiceFactory
-	airtime AirtimeServiceFactory
+	httpClient *http.Client
+	email      EmailServiceFactory
+	webhook    WebhookServiceFactory
+	llm        LLMServiceFactory
+	airtime    AirtimeServiceFactory
 }
 
 func newEmptyServices() *services {
@@ -30,7 +32,7 @@ func newEmptyServices() *services {
 		email: func(flows.SessionAssets) (flows.EmailService, error) {
 			return nil, errors.New("no email service factory configured")
 		},
-		webhook: func(flows.SessionAssets) (flows.WebhookService, error) {
+		webhook: func(*http.Client, flows.SessionAssets) (flows.WebhookService, error) {
 			return nil, errors.New("no webhook service factory configured")
 		},
 		llm: func(*flows.LLM) (flows.LLMService, error) {
@@ -47,7 +49,7 @@ func (s *services) Email(sa flows.SessionAssets) (flows.EmailService, error) {
 }
 
 func (s *services) Webhook(sa flows.SessionAssets) (flows.WebhookService, error) {
-	return s.webhook(sa)
+	return s.webhook(s.httpClient, sa)
 }
 
 func (s *services) LLM(llm *flows.LLM) (flows.LLMService, error) {

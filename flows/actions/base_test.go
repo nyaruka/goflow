@@ -79,17 +79,17 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description  string               `json:"description"`
-		HTTPMocks    *httpx.MockRequestor `json:"http_mocks,omitempty"`
-		SMTPError    string               `json:"smtp_error,omitempty"`
-		Contact      json.RawMessage      `json:"contact,omitempty"`
-		HasTicket    bool                 `json:"has_ticket,omitempty"`
-		NoInput      bool                 `json:"no_input,omitempty"`
-		RedactURNs   bool                 `json:"redact_urns,omitempty"`
-		AsBatch      bool                 `json:"as_batch,omitempty"`
-		Action       json.RawMessage      `json:"action"`
-		Localization json.RawMessage      `json:"localization,omitempty"`
-		InFlowType   flows.FlowType       `json:"in_flow_type,omitempty"`
+		Description  string                           `json:"description"`
+		HTTPMocks    map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
+		SMTPError    string                           `json:"smtp_error,omitempty"`
+		Contact      json.RawMessage                  `json:"contact,omitempty"`
+		HasTicket    bool                             `json:"has_ticket,omitempty"`
+		NoInput      bool                             `json:"no_input,omitempty"`
+		RedactURNs   bool                             `json:"redact_urns,omitempty"`
+		AsBatch      bool                             `json:"as_batch,omitempty"`
+		Action       json.RawMessage                  `json:"action"`
+		Localization json.RawMessage                  `json:"localization,omitempty"`
+		InFlowType   flows.FlowType                   `json:"in_flow_type,omitempty"`
 
 		ReadError         string          `json:"read_error,omitempty"`
 		DependenciesError string          `json:"dependencies_error,omitempty"`
@@ -105,18 +105,16 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for i, tc := range tests {
 		test.MockUniverse()
 
-		var clonedMocks *httpx.MockRequestor
+		// build an HTTP client whose webhook calls are answered from this test case's mocks
+		httpClient := http.DefaultClient
+		var mocks *httpx.MockTransport
 		if tc.HTTPMocks != nil {
-			httpx.SetRequestor(tc.HTTPMocks)
-			clonedMocks = tc.HTTPMocks.Clone()
-		} else {
-			httpx.SetRequestor(httpx.DefaultRequestor)
+			httpClient, mocks = test.MockedHTTP(tc.HTTPMocks)
 		}
 		if tc.SMTPError != "" {
 			smtpx.SetSender(smtpx.NewMockSender(errors.New(tc.SMTPError)))
@@ -217,13 +215,14 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// create an engine instance
 		eng := engine.NewBuilder().
+			WithHTTPClient(httpClient).
 			WithLLMPrompts(map[string]*template.Template{
 				"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg1 }}")),
 			}).
 			WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 			WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
 				return services.NewLLM(), nil
 			}).
@@ -243,16 +242,16 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		require.NoError(t, err)
 
 		// check all http mocks were used
-		if tc.HTTPMocks != nil {
-			require.False(t, tc.HTTPMocks.HasUnused(), "unused HTTP mocks in %s", testName)
+		if mocks != nil {
+			require.False(t, mocks.HasUnused(), "unused HTTP mocks in %s", testName)
 		}
 
 		tc.Templates = utils.EnsureNonNil(tc.Templates)
 		tc.LocalizedText = utils.EnsureNonNil(tc.LocalizedText)
 
-		// clone test case and populate with actual values
+		// clone test case and populate with actual values (mocks are left intact by WithMocking, so they
+		// re-serialize unchanged on snapshot updates)
 		actual := tc
-		actual.HTTPMocks = clonedMocks
 
 		// re-marshal the action
 		actual.Action, err = jsonx.Marshal(flow.Nodes()[0].Actions()[0])

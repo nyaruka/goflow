@@ -161,38 +161,12 @@ func TestWebhookService(t *testing.T) {
 	}
 }
 
-func TestRetries(t *testing.T) {
-	_, session, _ := test.NewSessionBuilder().MustBuild()
-
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
-
-	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"http://temba.io/": {
-			httpx.NewMockResponse(502, nil, []byte("a")),
-			httpx.NewMockResponse(200, nil, []byte("b")),
-		},
-	})
-	httpx.SetRequestor(mocks)
-
-	request, err := http.NewRequest("GET", "http://temba.io/", strings.NewReader("BODY"))
-	require.NoError(t, err)
-
-	svc, _ := session.Engine().Services().Webhook(session.Assets())
-	c, err := svc.Call(request)
-	require.NoError(t, err)
-
-	assert.Equal(t, 200, c.Response.StatusCode)
-	assert.Equal(t, "GET / HTTP/1.1\r\nHost: temba.io\r\nUser-Agent: goflow-testing\r\nContent-Length: 4\r\nAccept-Encoding: gzip\r\n\r\nBODY", string(c.RequestTrace))
-	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 1\r\n\r\n", string(c.ResponseTrace))
-	assert.Equal(t, "b", string(c.ResponseBody))
-}
-
 func TestAccessRestrictions(t *testing.T) {
-	retries := httpx.NewFixedRetries(5, 10)
 	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)}, nil)
+	client := &http.Client{Transport: httpx.WithAccessControl(http.DefaultTransport, access)}
 
-	factory := webhooks.NewServiceFactory(http.DefaultClient, retries, access, map[string]string{"User-Agent": "Foo"}, 12345)
-	svc, err := factory(nil)
+	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"}, 12345)
+	svc, err := factory(client, nil)
 	assert.NoError(t, err)
 
 	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)
@@ -234,16 +208,12 @@ func TestGzipEncoding(t *testing.T) {
 }
 
 func TestWebhookResponseWithEscapes(t *testing.T) {
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
-
-	mocks := httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
-		"http://cheapcontactlookups.com": {
-			httpx.NewMockResponse(200, nil, []byte(`{"name": "01\\02\\03", "joined": "04\\05\\06"}`)),
-		},
-	})
-	httpx.SetRequestor(mocks)
-
 	_, session, _ := test.NewSessionBuilder().
+		WithMocks(map[string][]*httpx.MockResponse{
+			"http://cheapcontactlookups.com": {
+				httpx.NewMockResponse(200, nil, []byte(`{"name": "01\\02\\03", "joined": "04\\05\\06"}`)),
+			},
+		}).
 		WithAssetsPath("testdata/webhook_flow.json").
 		WithFlow("bb38eefb-3cd9-4f80-9867-9c84ae276f7a").MustBuild()
 

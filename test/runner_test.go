@@ -89,13 +89,13 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Environment json.RawMessage        `json:"environment"`
-	Contact     *flows.ContactEnvelope `json:"contact"`
-	Trigger     json.RawMessage        `json:"trigger"`
-	Call        *flows.CallEnvelope    `json:"call,omitempty"`
-	Resumes     []json.RawMessage      `json:"resumes"`
-	Outputs     []json.RawMessage      `json:"outputs"`
-	HTTPMocks   *httpx.MockRequestor   `json:"http_mocks,omitempty"`
+	Environment json.RawMessage                  `json:"environment"`
+	Contact     *flows.ContactEnvelope           `json:"contact"`
+	Trigger     json.RawMessage                  `json:"trigger"`
+	Call        *flows.CallEnvelope              `json:"call,omitempty"`
+	Resumes     []json.RawMessage                `json:"resumes"`
+	Outputs     []json.RawMessage                `json:"outputs"`
+	HTTPMocks   map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
 }
 
 type runResult struct {
@@ -103,7 +103,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -128,13 +128,14 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 	}
 
 	eng := engine.NewBuilder().
+		WithHTTPClient(httpClient).
 		WithLLMPrompts(map[string]*template.Template{
 			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg1 }}")),
 		}).
 		WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-testing"}, 100000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 100000)).
 		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).
@@ -208,13 +209,10 @@ func TestFlows(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, len(testCases) > 0)
 
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
 	defer smtpx.SetSender(smtpx.DefaultSender)
 
 	for _, tc := range testCases {
 		MockUniverse()
-
-		var httpMocksCopy *httpx.MockRequestor
 
 		smtpx.SetSender(smtpx.NewMockSender(nil, nil, nil, nil, nil, nil))
 
@@ -225,24 +223,23 @@ func TestFlows(t *testing.T) {
 		err = utils.UnmarshalAndValidate([]byte(testJSON), flowTest)
 		require.NoError(t, err, "error unmarshalling output file %s", tc.outputFile)
 
+		// build an HTTP client whose webhook calls are answered from the test's mocks
+		httpClient := http.DefaultClient
+		var mocks *httpx.MockTransport
 		if flowTest.HTTPMocks != nil {
-			httpx.SetRequestor(flowTest.HTTPMocks)
-			httpMocksCopy = flowTest.HTTPMocks.Clone()
-		} else {
-			httpx.SetRequestor(httpx.DefaultRequestor)
-			httpMocksCopy = nil
+			httpClient, mocks = MockedHTTP(flowTest.HTTPMocks)
 		}
 
 		// run our flow
-		runResult, err := runFlow(tc.assetsFile, flowTest.Environment, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes)
+		runResult, err := runFlow(tc.assetsFile, flowTest.Environment, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes, httpClient)
 		if err != nil {
 			t.Errorf("error running flow for flow '%s' and output '%s': %s", tc.assetsFile, tc.outputFile, err)
 			continue
 		}
 
 		// check all http mocks were used
-		if flowTest.HTTPMocks != nil {
-			require.False(t, flowTest.HTTPMocks.HasUnused(), "unused HTTP mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
+		if mocks != nil {
+			require.False(t, mocks.HasUnused(), "unused HTTP mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
 		}
 
 		if UpdateSnapshots {
@@ -252,7 +249,7 @@ func TestFlows(t *testing.T) {
 				rawOutputs[i], err = jsonx.Marshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
-			flowTest := &FlowTest{Contact: flowTest.Contact, Trigger: flowTest.Trigger, Call: flowTest.Call, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: httpMocksCopy}
+			flowTest := &FlowTest{Contact: flowTest.Contact, Trigger: flowTest.Trigger, Call: flowTest.Call, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: flowTest.HTTPMocks}
 			testJSON, err := jsonx.MarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 

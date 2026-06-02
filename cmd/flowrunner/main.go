@@ -88,7 +88,8 @@ func main() {
 
 func createEngine() flows.Engine {
 	return engine.NewBuilder().
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, nil, nil, map[string]string{"User-Agent": "goflow-runner"}, 10000)).
+		WithHTTPClient(http.DefaultClient).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-runner"}, 10000)).
 		Build()
 }
 

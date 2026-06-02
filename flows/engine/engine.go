@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"text/template"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -16,9 +17,10 @@ import (
 
 // an instance of the engine
 type engine struct {
-	evaluator *excellent.Evaluator
-	services  *services
-	options   *flows.EngineOptions
+	evaluator  *excellent.Evaluator
+	services   *services
+	httpClient *http.Client
+	options    *flows.EngineOptions
 }
 
 // NewSession creates a new session
@@ -87,8 +89,9 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			evaluator: excellent.NewEvaluator(),
-			services:  newEmptyServices(),
+			evaluator:  excellent.NewEvaluator(),
+			services:   newEmptyServices(),
+			httpClient: http.DefaultClient,
 			options: &flows.EngineOptions{
 				MaxStepsPerSprint:    100,
 				MaxSprintsPerSession: 500,
@@ -101,6 +104,13 @@ func NewBuilder() *Builder {
 			},
 		},
 	}
+}
+
+// WithHTTPClient sets the HTTP client made available to services such as webhooks. The client's transport can be
+// configured with tracing, mocking or access control as needed (see github.com/nyaruka/gocommon/httpx).
+func (b *Builder) WithHTTPClient(client *http.Client) *Builder {
+	b.eng.httpClient = client
+	return b
 }
 
 // WithEmailServiceFactory sets the email service factory
@@ -176,4 +186,8 @@ func (b *Builder) WithClaimURN(fn flows.ClaimURNCallback) *Builder {
 }
 
 // Build returns the final engine
-func (b *Builder) Build() flows.Engine { return b.eng }
+func (b *Builder) Build() flows.Engine {
+	// make the engine's HTTP client available to services that need it (e.g. webhooks)
+	b.eng.services.httpClient = b.eng.httpClient
+	return b.eng
+}
