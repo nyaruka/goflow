@@ -62,7 +62,6 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Envir
 
 func (e *engine) Evaluator() *excellent.Evaluator { return e.evaluator }
 func (e *engine) Services() flows.Services        { return e.services }
-func (e *engine) HTTPClient() *http.Client        { return e.httpClient }
 func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
