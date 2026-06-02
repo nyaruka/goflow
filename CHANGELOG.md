@@ -1,3 +1,7 @@
+v0.277.0 (2026-06-02)
+-------------------------
+ * Pass an HTTP client to the engine instead of using global httpx tracing/mocking
+
 v0.276.5 (2026-05-27)
 -------------------------
  * Let AirtimeService.Create receive the pre-allocated event UUID
