@@ -114,8 +114,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		httpClient := http.DefaultClient
 		var mocks *httpx.MockTransport
 		if tc.HTTPMocks != nil {
-			mocks = httpx.WithMocking(http.DefaultTransport, tc.HTTPMocks)
-			httpClient = &http.Client{Transport: mocks}
+			httpClient, mocks = test.MockedHTTP(tc.HTTPMocks)
 		}
 		if tc.SMTPError != "" {
 			smtpx.SetSender(smtpx.NewMockSender(errors.New(tc.SMTPError)))

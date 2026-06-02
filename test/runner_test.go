@@ -227,8 +227,7 @@ func TestFlows(t *testing.T) {
 		httpClient := http.DefaultClient
 		var mocks *httpx.MockTransport
 		if flowTest.HTTPMocks != nil {
-			mocks = httpx.WithMocking(http.DefaultTransport, flowTest.HTTPMocks)
-			httpClient = &http.Client{Transport: mocks}
+			httpClient, mocks = MockedHTTP(flowTest.HTTPMocks)
 		}
 
 		// run our flow

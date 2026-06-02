@@ -528,11 +528,11 @@ func TestReadEvent(t *testing.T) {
 }
 
 func TestWebhookCalledEventTrimming(t *testing.T) {
-	client := &http.Client{Transport: httpx.WithMocking(http.DefaultTransport, map[string][]*httpx.MockResponse{
+	client, _ := test.MockedHTTP(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, bytes.Repeat([]byte("Y"), 20000)),
 		},
-	})}
+	})
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
 
@@ -553,11 +553,11 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 }
 
 func TestWebhookCalledEventValid(t *testing.T) {
-	client := &http.Client{Transport: httpx.WithMocking(http.DefaultTransport, map[string][]*httpx.MockResponse{
+	client, _ := test.MockedHTTP(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, map[string]string{"Header": "hello"}, []byte(`{"foo": "bar"}`)),
 		},
-	})}
+	})
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
@@ -573,11 +573,11 @@ func TestWebhookCalledEventValid(t *testing.T) {
 }
 
 func TestWebhookCalledEventNullChar(t *testing.T) {
-	client := &http.Client{Transport: httpx.WithMocking(http.DefaultTransport, map[string][]*httpx.MockResponse{
+	client, _ := test.MockedHTTP(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, []byte("abc \x00 \\u0000 \\\u0000 \\\\u0000")),
 		},
-	})}
+	})
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
@@ -594,11 +594,11 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 }
 
 func TestWebhookCalledEventBadUTF8(t *testing.T) {
-	client := &http.Client{Transport: httpx.WithMocking(http.DefaultTransport, map[string][]*httpx.MockResponse{
+	client, _ := test.MockedHTTP(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, map[string]string{"Bad-Header": "\xa0\xa1"}, []byte("{\"foo\": \"\xa0\xa1\"}")),
 		},
-	})}
+	})
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 

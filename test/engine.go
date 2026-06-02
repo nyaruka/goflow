@@ -21,7 +21,8 @@ func NewEngine() flows.Engine {
 
 // NewMockedEngine creates an engine instance for testing whose webhook calls are answered from the given mocks
 func NewMockedEngine(mocks map[string][]*httpx.MockResponse) flows.Engine {
-	return newEngine(&http.Client{Transport: httpx.WithMocking(http.DefaultTransport, mocks)})
+	client, _ := MockedHTTP(mocks)
+	return newEngine(client)
 }
 
 func newEngine(httpClient *http.Client) flows.Engine {
