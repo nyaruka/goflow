@@ -1079,8 +1079,8 @@ func Mod(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.X
 
 // Rand returns a single random number between [0.0-1.0).
 //
+//	@(rand()) -> 0.3849275689214193
 //	@(rand()) -> 0.6075520156746239
-//	@(rand()) -> 0.48467757094734026
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {
@@ -1089,8 +1089,8 @@ func Rand(env envs.Environment) types.XValue {
 
 // RandBetween a single random integer in the given inclusive range.
 //
+//	@(rand_between(1, 10)) -> 5
 //	@(rand_between(1, 10)) -> 10
-//	@(rand_between(1, 10)) -> 2
 //
 // @function rand_between()
 func RandBetween(env envs.Environment, min *types.XNumber, max *types.XNumber) types.XValue {

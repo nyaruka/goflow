@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"text/template"
 	"time"
 
@@ -279,6 +280,7 @@ type Engine interface {
 
 	Evaluator() *excellent.Evaluator
 	Services() Services
+	HTTPClient() *http.Client
 	Options() *EngineOptions
 }
 

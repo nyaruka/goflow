@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -642,6 +643,12 @@ func (b *SessionBuilder) WithAssetsJSON(assetsJSON []byte) *SessionBuilder {
 
 func (b *SessionBuilder) WithFlow(flowUUID assets.FlowUUID) *SessionBuilder {
 	b.flowUUID = flowUUID
+	return b
+}
+
+// WithMocks builds the session's engine with an HTTP client that answers webhook calls from the given mocks
+func (b *SessionBuilder) WithMocks(mocks map[string][]*httpx.MockResponse) *SessionBuilder {
+	b.engine = NewMockedEngine(mocks)
 	return b
 }
 

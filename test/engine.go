@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strings"
 	"text/template"
-	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
@@ -17,14 +16,22 @@ import (
 
 // NewEngine creates an engine instance for testing
 func NewEngine() flows.Engine {
-	retries := httpx.NewFixedRetries(1*time.Millisecond, 2*time.Millisecond)
+	return newEngine(http.DefaultClient)
+}
 
+// NewMockedEngine creates an engine instance for testing whose webhook calls are answered from the given mocks
+func NewMockedEngine(mocks map[string][]*httpx.MockResponse) flows.Engine {
+	return newEngine(&http.Client{Transport: httpx.WithMocking(http.DefaultTransport, mocks)})
+}
+
+func newEngine(httpClient *http.Client) flows.Engine {
 	return engine.NewBuilder().
+		WithHTTPClient(httpClient).
 		WithMaxFieldChars(256).
 		WithLLMPrompts(map[string]*template.Template{
 			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg1 }}")),
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(http.DefaultClient, retries, nil, map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 10000)).
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil
 		}).

@@ -17,9 +17,7 @@ import (
 func TestWebhookCall(t *testing.T) {
 	ctx := context.Background()
 
-	defer httpx.SetRequestor(httpx.DefaultRequestor)
-
-	httpx.SetRequestor(httpx.NewMockRequestor(map[string][]*httpx.MockResponse{
+	eng := test.NewMockedEngine(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, map[string]string{"Content-Type": "application/json"}, []byte(`{"foo":123}`)),
 			httpx.NewMockResponse(400, nil, []byte("is error")),
@@ -27,9 +25,7 @@ func TestWebhookCall(t *testing.T) {
 			httpx.MockConnectionError,
 			httpx.MockConnectionError,
 		},
-	}))
-
-	eng := test.NewEngine()
+	})
 	env := envs.NewBuilder().Build()
 	svc, err := eng.Services().Webhook(nil)
 	require.NoError(t, err)
