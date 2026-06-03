@@ -1,3 +1,7 @@
+v0.277.1 (2026-06-03)
+-------------------------
+ * Update to gocommon v1.81.3
+
 v0.277.0 (2026-06-02)
 -------------------------
  * Pass an HTTP client to the engine instead of using global httpx tracing/mocking
