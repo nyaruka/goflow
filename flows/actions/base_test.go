@@ -112,7 +112,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		// build an HTTP client whose webhook calls are answered from this test case's mocks
 		httpClient := http.DefaultClient
-		var mocks *httpx.MockTransport
+		var mocks *httpx.MocksTransport
 		if tc.HTTPMocks != nil {
 			httpClient, mocks = test.MockedHTTP(tc.HTTPMocks)
 		}
@@ -249,7 +249,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		tc.Templates = utils.EnsureNonNil(tc.Templates)
 		tc.LocalizedText = utils.EnsureNonNil(tc.LocalizedText)
 
-		// clone test case and populate with actual values (mocks are left intact by WithMocking, so they
+		// clone test case and populate with actual values (mocks are left intact by WithMocks, so they
 		// re-serialize unchanged on snapshot updates)
 		actual := tc
 

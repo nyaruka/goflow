@@ -14,8 +14,8 @@ import (
 
 // MockedHTTP creates an HTTP client whose requests are answered from the given mocks rather than being sent. It also
 // returns the mocking transport so tests can assert against it, e.g. that all mocks were used (mocks.HasUnused()).
-func MockedHTTP(mocks map[string][]*httpx.MockResponse) (*http.Client, *httpx.MockTransport) {
-	transport := httpx.WithMocking(http.DefaultTransport, mocks)
+func MockedHTTP(mocks map[string][]*httpx.MockResponse) (*http.Client, *httpx.MocksTransport) {
+	transport := httpx.WithMocks(http.DefaultTransport, mocks)
 	return &http.Client{Transport: transport}, transport
 }
 

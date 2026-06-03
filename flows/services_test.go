@@ -16,7 +16,7 @@ import (
 func TestHTTPLogs(t *testing.T) {
 	ctx := context.Background()
 
-	tracing := httpx.WithTracing(httpx.WithMocking(http.DefaultTransport, map[string][]*httpx.MockResponse{
+	tracing := httpx.WithTraces(httpx.WithMocks(http.DefaultTransport, map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, []byte("hello \\u0000")),
 			httpx.NewMockResponse(400, nil, []byte("is error")),
@@ -25,7 +25,7 @@ func TestHTTPLogs(t *testing.T) {
 		"http://temba.io/?x=" + strings.Repeat("x", 3000): {
 			httpx.NewMockResponse(200, nil, []byte("hello")),
 		},
-	}), -1)
+	}))
 	client := &http.Client{Transport: tracing}
 
 	req1, err := httpx.NewRequest(ctx, "GET", "http://temba.io/", nil, nil)

@@ -225,7 +225,7 @@ func TestFlows(t *testing.T) {
 
 		// build an HTTP client whose webhook calls are answered from the test's mocks
 		httpClient := http.DefaultClient
-		var mocks *httpx.MockTransport
+		var mocks *httpx.MocksTransport
 		if flowTest.HTTPMocks != nil {
 			httpClient, mocks = MockedHTTP(flowTest.HTTPMocks)
 		}
