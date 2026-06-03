@@ -1,6 +1,8 @@
 package webhooks
 
 import (
+	"errors"
+	"io"
 	"net/http"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -45,17 +47,30 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 		request.Header.Del("Accept-Encoding")
 	}
 
+	// bound how many bytes we'll read from an untrusted endpoint, wrapped inside tracing so the limit applies before
+	// the body is buffered into the trace
+	inner := s.httpClient.Transport
+	if s.maxBodyBytes > 0 {
+		inner = httpx.WithReadLimit(inner, s.maxBodyBytes)
+	}
+
 	// wrap the configured transport with a per-call tracer so we capture this request's trace. Tracing is the
 	// outermost wrapper so that a request denied by access control is still captured as a trace.
-	captureBytes := -1 // a non-positive limit means capture the entire body
-	if s.maxBodyBytes > 0 {
-		captureBytes = s.maxBodyBytes + 1 // capture one byte beyond our limit so we can detect responses that exceed it
-	}
-	tracing := httpx.WithTracing(s.httpClient.Transport, captureBytes)
+	tracing := httpx.WithTraces(inner)
 	client := *s.httpClient
 	client.Transport = tracing
 
-	_, err := client.Do(request)
+	resp, err := client.Do(request)
+
+	// tracing has already buffered the body into the trace; draining the handed-back body surfaces ErrResponseSize
+	// if the response exceeded our limit
+	var sizeErr error
+	if resp != nil {
+		if s.maxBodyBytes > 0 {
+			_, sizeErr = io.ReadAll(resp.Body)
+		}
+		resp.Body.Close()
+	}
 
 	traces := tracing.Traces()
 	if len(traces) == 0 {
@@ -64,7 +79,7 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 	}
 	trace := traces[len(traces)-1]
 
-	if s.maxBodyBytes > 0 && len(trace.ResponseBody) > s.maxBodyBytes {
+	if errors.Is(sizeErr, httpx.ErrResponseSize) {
 		// response body exceeded our limit
 		trace.ResponseBody = nil
 		return trace, httpx.ErrResponseSize
