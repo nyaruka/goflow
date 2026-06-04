@@ -9,7 +9,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.1.2
 	github.com/go-playground/validator/v10 v10.30.1
-	github.com/nyaruka/gocommon v1.81.3
+	github.com/nyaruka/gocommon v1.82.0
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
@@ -32,7 +32,7 @@ require (
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/nyaruka/null/v3 v3.0.0 // indirect
-	github.com/nyaruka/phonenumbers v1.7.0 // indirect
+	github.com/nyaruka/phonenumbers/v2 v2.0.0-rc1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
