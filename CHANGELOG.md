@@ -1,3 +1,7 @@
+v0.277.2 (2026-06-04)
+-------------------------
+ * Update to gocommon v1.82.0 and phonenumbers v2
+
 v0.277.1 (2026-06-03)
 -------------------------
  * Update to gocommon v1.81.3
