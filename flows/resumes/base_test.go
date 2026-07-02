@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"os"
 	"sort"
 	"testing"
@@ -54,7 +55,7 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		ReadError     string              `json:"read_error,omitempty"`
 		ResumeError   string              `json:"resume_error,omitempty"`
 		Events        json.RawMessage     `json:"events,omitempty"`
-		RunStatus     events.RunStatus    `json:"run_status,omitempty"`
+		RunStatus     core.RunStatus      `json:"run_status,omitempty"`
 		SessionStatus flows.SessionStatus `json:"session_status,omitempty"`
 	}{}
 
@@ -166,7 +167,7 @@ func TestResumeContext(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	var resume flows.Resume = resumes.NewMsg(
-		events.NewMsgReceived(events.NewMsgIn(urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234"), ""),
+		events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234"), ""),
 	)
 
 	assert.Equal(t, map[string]types.XValue{
@@ -174,7 +175,7 @@ func TestResumeContext(t *testing.T) {
 		"dial": nil,
 	}, resume.Context(env))
 
-	resume = resumes.NewDial(events.NewDialEnded(events.NewDial(events.DialStatusNoAnswer, 5)))
+	resume = resumes.NewDial(events.NewDialEnded(core.NewDial(core.DialStatusNoAnswer, 5)))
 	context := resume.Context(env)
 
 	assert.Equal(t, types.NewXText("dial"), context["type"])

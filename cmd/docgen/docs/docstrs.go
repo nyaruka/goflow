@@ -14,6 +14,7 @@ import (
 
 var searchDirs = []string{
 	"assets",
+	"core",
 	"events",
 	"excellent/functions",
 	"excellent/operators",

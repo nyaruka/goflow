@@ -3,7 +3,7 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"maps"
 	"slices"
 	"time"
@@ -51,7 +51,7 @@ type flow struct {
 	asset assets.Flow
 
 	// internal state
-	nodeMap map[events.NodeUUID]flows.Node
+	nodeMap map[core.NodeUUID]flows.Node
 }
 
 // NewFlow creates a new flow
@@ -66,7 +66,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType
 		expireAfter:  expireAfter,
 		localization: localization,
 		nodes:        nodes,
-		nodeMap:      make(map[events.NodeUUID]flows.Node, len(nodes)),
+		nodeMap:      make(map[core.NodeUUID]flows.Node, len(nodes)),
 		ui:           ui,
 		asset:        a,
 	}
@@ -82,16 +82,16 @@ func NewFlow(uuid assets.FlowUUID, name string, language i18n.Language, flowType
 	return f, nil
 }
 
-func (f *flow) UUID() assets.FlowUUID                   { return f.uuid }
-func (f *flow) Name() string                            { return f.name }
-func (f *flow) SpecVersion() *semver.Version            { return f.specVersion }
-func (f *flow) Revision() int                           { return f.revision }
-func (f *flow) Language() i18n.Language                 { return f.language }
-func (f *flow) Type() flows.FlowType                    { return f.flowType }
-func (f *flow) Nodes() []flows.Node                     { return f.nodes }
-func (f *flow) Localization() flows.Localization        { return f.localization }
-func (f *flow) UI() json.RawMessage                     { return f.ui }
-func (f *flow) GetNode(uuid events.NodeUUID) flows.Node { return f.nodeMap[uuid] }
+func (f *flow) UUID() assets.FlowUUID                 { return f.uuid }
+func (f *flow) Name() string                          { return f.name }
+func (f *flow) SpecVersion() *semver.Version          { return f.specVersion }
+func (f *flow) Revision() int                         { return f.revision }
+func (f *flow) Language() i18n.Language               { return f.language }
+func (f *flow) Type() flows.FlowType                  { return f.flowType }
+func (f *flow) Nodes() []flows.Node                   { return f.nodes }
+func (f *flow) Localization() flows.Localization      { return f.localization }
+func (f *flow) UI() json.RawMessage                   { return f.ui }
+func (f *flow) GetNode(uuid core.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
 func (f *flow) ExpireAfter() time.Duration {
 	if f.expireAfter == 0 {

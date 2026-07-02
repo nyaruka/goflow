@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
@@ -70,7 +71,7 @@ func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	return nil
 }
 
-func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *events.LLMResponse {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.LLMResponse {
 	llms := run.Session().Assets().LLMs()
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {

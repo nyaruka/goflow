@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"strconv"
 	"strings"
@@ -30,11 +31,11 @@ const (
 )
 
 var webhookCategories = []string{CategorySuccess, CategoryFailure}
-var webhookStatusCategories = map[events.CallStatus]string{
-	events.CallStatusSuccess:         CategorySuccess,
-	events.CallStatusResponseError:   CategoryFailure,
-	events.CallStatusConnectionError: CategoryFailure,
-	events.CallStatusSubscriberGone:  CategoryFailure,
+var webhookStatusCategories = map[core.CallStatus]string{
+	core.CallStatusSuccess:         CategorySuccess,
+	core.CallStatusResponseError:   CategoryFailure,
+	core.CallStatusConnectionError: CategoryFailure,
+	core.CallStatusSubscriberGone:  CategoryFailure,
 }
 
 var registeredTypes = map[string](func() flows.Action){}
@@ -79,7 +80,7 @@ func (a *baseAction) Inspect(dependency func(assets.Reference), local func(strin
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, log events.EventLogger) (*events.MsgContent, i18n.Language) {
+func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, log events.EventLogger) (*core.MsgContent, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], log)
@@ -94,8 +95,8 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 			log(events.NewError("Attachment evaluated to invalid value and will be ignored", ""))
 			continue
 		}
-		if len(evaluatedAttachment) > events.MaxAttachmentLength {
-			log(events.NewError(fmt.Sprintf("Evaluated attachment is longer than the %d limit and will be ignored", events.MaxAttachmentLength), ""))
+		if len(evaluatedAttachment) > core.MaxAttachmentLength {
+			log(events.NewError(fmt.Sprintf("Evaluated attachment is longer than the %d limit and will be ignored", core.MaxAttachmentLength), ""))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, utils.Attachment(evaluatedAttachment))
@@ -103,7 +104,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 
 	// localize and evaluate the quick replies
 	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
-	evaluatedQuickReplies := make([]events.QuickReply, 0, len(translatedQuickReplies))
+	evaluatedQuickReplies := make([]core.QuickReply, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
 		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, log)
 		if evaluatedQuickReply == "" {
@@ -111,10 +112,10 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 			continue
 		}
 
-		var quickReply events.QuickReply
+		var quickReply core.QuickReply
 		_ = quickReply.UnmarshalText([]byte(evaluatedQuickReply))
-		quickReply.Text = stringsx.TruncateEllipsis(quickReply.Text, events.MaxQuickReplyTextLength)
-		quickReply.Extra = stringsx.TruncateEllipsis(quickReply.Extra, events.MaxQuickReplyExtraLength)
+		quickReply.Text = stringsx.TruncateEllipsis(quickReply.Text, core.MaxQuickReplyTextLength)
+		quickReply.Extra = stringsx.TruncateEllipsis(quickReply.Extra, core.MaxQuickReplyExtraLength)
 
 		evaluatedQuickReplies = append(evaluatedQuickReplies, quickReply)
 	}
@@ -130,12 +131,12 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 		lang = qrsLang
 	}
 
-	return &events.MsgContent{Text: evaluatedText, Attachments: evaluatedAttachments, QuickReplies: evaluatedQuickReplies}, lang
+	return &core.MsgContent{Text: evaluatedText, Attachments: evaluatedAttachments, QuickReplies: evaluatedQuickReplies}, lang
 }
 
 // helper to save a run result and log it as an event
 func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, category, categoryLocalized string, input string, extra []byte, log events.EventLogger) {
-	result := events.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
+	result := core.NewResult(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, dates.Now())
 	prev, changed := run.SetResult(result)
 	if changed {
 		log(events.NewRunResultChanged(result, prev))
@@ -143,7 +144,7 @@ func (a *baseAction) saveResult(run flows.Run, step flows.Step, name, value, cat
 }
 
 // helper to save a run result based on a webhook call and log it as an event.. new webhook nodes don't use this
-func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status events.CallStatus, log events.EventLogger) {
+func (a *baseAction) saveLegacyWebhookResult(run flows.Run, step flows.Step, name string, call *flows.WebhookCall, status core.CallStatus, log events.EventLogger) {
 	input := fmt.Sprintf("%s %s", call.Method, call.URL)
 	value := strconv.Itoa(call.ResponseStatus)
 	category := webhookStatusCategories[status]
@@ -164,9 +165,9 @@ func (a *baseAction) applyModifier(ctx context.Context, run flows.Run, mod flows
 
 // helper to log a failure
 func (a *baseAction) fail(run flows.Run, err string, log events.EventLogger) {
-	run.Exit(events.RunStatusFailed)
+	run.Exit(core.RunStatusFailed)
 	log(events.NewFailure(err))
-	log(events.NewRunEnded(run.UUID(), run.FlowReference(), events.RunStatusFailed))
+	log(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusFailed))
 }
 
 // utility struct which sets the allowed flow types to any
@@ -203,11 +204,11 @@ func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
 
 // utility struct for actions which operate on other contacts
 type otherContactsAction struct {
-	Groups       []*assets.GroupReference   `json:"groups,omitempty" validate:"dive"`
-	Contacts     []*events.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	ContactQuery string                     `json:"contact_query,omitempty" engine:"evaluated"`
-	URNs         []urns.URN                 `json:"urns,omitempty"`
-	LegacyVars   []string                   `json:"legacy_vars,omitempty" engine:"evaluated"`
+	Groups       []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
+	Contacts     []*core.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery string                   `json:"contact_query,omitempty" engine:"evaluated"`
+	URNs         []urns.URN               `json:"urns,omitempty"`
+	LegacyVars   []string                 `json:"legacy_vars,omitempty" engine:"evaluated"`
 }
 
 func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
@@ -219,7 +220,7 @@ func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local f
 	}
 }
 
-func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventLogger) ([]*assets.GroupReference, []*events.ContactReference, string, []urns.URN, error) {
+func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventLogger) ([]*assets.GroupReference, []*core.ContactReference, string, []urns.URN, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -227,7 +228,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 	urnList = append(urnList, a.URNs...)
 
 	// copy contact references
-	contactRefs := make([]*events.ContactReference, 0, len(a.Contacts))
+	contactRefs := make([]*core.ContactReference, 0, len(a.Contacts))
 	contactRefs = append(contactRefs, a.Contacts...)
 
 	// resolve group references
@@ -245,7 +246,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 
 		if uuidRegex.MatchString(evaluatedLegacyVar) {
 			// if variable evaluates to a UUID, we assume it's a contact UUID
-			contactRefs = append(contactRefs, events.NewContactReference(events.ContactUUID(evaluatedLegacyVar), ""))
+			contactRefs = append(contactRefs, core.NewContactReference(core.ContactUUID(evaluatedLegacyVar), ""))
 
 		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
 			// next up we look for a group with a matching name

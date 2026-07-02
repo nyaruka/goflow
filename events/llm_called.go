@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -48,7 +49,7 @@ type LLMTokens struct {
 }
 
 // NewLLMCalled returns a new LLM called event
-func NewLLMCalled(llm *assets.LLMReference, instructions, input string, resp *LLMResponse, elapsed time.Duration) *LLMCalled {
+func NewLLMCalled(llm *assets.LLMReference, instructions, input string, resp *core.LLMResponse, elapsed time.Duration) *LLMCalled {
 	return &LLMCalled{
 		BaseEvent:    NewBaseEvent(TypeLLMCalled),
 		LLM:          llm,

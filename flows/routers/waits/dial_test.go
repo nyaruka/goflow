@@ -1,6 +1,7 @@
 package waits_test
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"testing"
 	"time"
 
@@ -55,7 +56,7 @@ func TestDialWait(t *testing.T) {
 	assert.False(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))
 
 	// try to end with dial resume type
-	assert.True(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(events.NewDial(events.DialStatusAnswered, 5)))))
+	assert.True(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(core.NewDial(core.DialStatusAnswered, 5)))))
 
 	// try when wait has expression error but still generates valid tel URN
 	wait, err = waits.ReadWait([]byte(`{"type": "dial", "phone": "+593979123456@(1 / 0)", "dial_limit_seconds": 10, "call_limit_seconds": 120}`))

@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"encoding/json"
+	"github.com/nyaruka/goflow/core"
 	"text/template"
 	"time"
 
@@ -84,7 +85,7 @@ type Flow interface {
 	Localization() Localization
 	UI() json.RawMessage
 	Nodes() []Node
-	GetNode(uuid events.NodeUUID) Node
+	GetNode(uuid core.NodeUUID) Node
 
 	Asset() assets.Flow
 	Reference(bool) *assets.FlowReference
@@ -97,7 +98,7 @@ type Flow interface {
 
 // Node is a single node in a flow
 type Node interface {
-	UUID() events.NodeUUID
+	UUID() core.NodeUUID
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
@@ -126,7 +127,7 @@ type Category interface {
 
 	UUID() CategoryUUID
 	Name() string
-	ExitUUID() events.ExitUUID
+	ExitUUID() core.ExitUUID
 }
 
 // Router is a router on a note which can pick an exit
@@ -138,8 +139,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, events.EventLogger) (events.ExitUUID, string, error)
-	RouteTimeout(Run, Step, events.EventLogger) (events.ExitUUID, error)
+	Route(Run, Step, events.EventLogger) (core.ExitUUID, string, error)
+	RouteTimeout(Run, Step, events.EventLogger) (core.ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -149,8 +150,8 @@ type Router interface {
 
 // Exit is a route out of a node and optionally to another node
 type Exit interface {
-	UUID() events.ExitUUID
-	DestinationUUID() events.NodeUUID
+	UUID() core.ExitUUID
+	DestinationUUID() core.NodeUUID
 }
 
 // Timeout is a way to skip a wait after X amount of time
@@ -187,7 +188,7 @@ type Trigger interface {
 	Flow() *assets.FlowReference
 	Batch() bool
 	Params() *types.XObject
-	History() *events.SessionHistory
+	History() *core.SessionHistory
 	TriggeredOn() time.Time
 
 	Input(SessionAssets) Input
@@ -223,7 +224,7 @@ type Input interface {
 	utils.Typed
 	Contextable
 
-	UUID() events.InputUUID
+	UUID() core.InputUUID
 	CreatedOn() time.Time
 	Channel() *Channel
 }
@@ -233,11 +234,11 @@ type Step interface {
 	Contextable
 	events.Step
 
-	Leave(events.ExitUUID)
+	Leave(core.ExitUUID)
 	Run() Run
 }
 
-type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *events.MsgContent) (events.UnsendableReason, error)
+type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *core.MsgContent) (core.UnsendableReason, error)
 
 type ClaimURNCallback func(context.Context, SessionAssets, *Contact, urns.URN) (bool, error)
 
@@ -277,7 +278,7 @@ type Dependency interface {
 type Issue interface {
 	utils.Typed
 
-	NodeUUID() events.NodeUUID
+	NodeUUID() core.NodeUUID
 	ActionUUID() ActionUUID
 	Language() i18n.Language
 	Description() string

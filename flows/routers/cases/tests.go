@@ -2,7 +2,7 @@ package cases
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"strconv"
 	"strings"
@@ -896,9 +896,9 @@ func isDateGTTest(value dates.Date, test dates.Date) bool {
 //------------------------------------------------------------------------------------------
 
 // loads a result from an object
-func resultFromXObject(object *types.XObject) (*events.Result, error) {
+func resultFromXObject(object *types.XObject) (*core.Result, error) {
 	marshaled, _ := jsonx.Marshal(object)
-	result := &events.Result{}
+	result := &core.Result{}
 	err := utils.UnmarshalAndValidate(marshaled, result)
 	return result, err
 }

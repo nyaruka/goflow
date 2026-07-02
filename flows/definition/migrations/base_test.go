@@ -3,7 +3,7 @@ package migrations_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"os"
 	"sort"
 	"testing"
@@ -205,7 +205,7 @@ func TestClone(t *testing.T) {
 			nodeMap := clonedUI.(map[string]any)["nodes"].(map[string]any)
 
 			for nodeUUID := range nodeMap {
-				assert.NotNil(t, clone.GetNode(events.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)
+				assert.NotNil(t, clone.GetNode(core.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)
 			}
 		}
 	}

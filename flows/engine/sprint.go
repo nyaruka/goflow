@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 	"time"
 
@@ -29,10 +30,10 @@ func (s *segment) Time() time.Time         { return s.time }
 
 type segmentEnvelope struct {
 	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
-	NodeUUID        events.NodeUUID `json:"node_uuid"`
-	ExitUUID        events.ExitUUID `json:"exit_uuid"`
+	NodeUUID        core.NodeUUID   `json:"node_uuid"`
+	ExitUUID        core.ExitUUID   `json:"exit_uuid"`
 	Operand         string          `json:"operand,omitempty"`
-	DestinationUUID events.NodeUUID `json:"destination_uuid,omitempty"`
+	DestinationUUID core.NodeUUID   `json:"destination_uuid,omitempty"`
 	Time            time.Time       `json:"time"`
 }
 

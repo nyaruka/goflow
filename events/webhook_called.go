@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -32,16 +33,16 @@ const TypeWebhookCalled string = "webhook_called"
 type WebhookCalled struct {
 	BaseEvent
 
-	*HTTPLogWithoutTime
+	*core.HTTPLogWithoutTime
 
 	Resthook string `json:"resthook,omitempty"`
 }
 
 // NewWebhookCalled returns a new webhook called event
-func NewWebhookCalled(trace *httpx.Trace, status CallStatus, resthook string) *WebhookCalled {
+func NewWebhookCalled(trace *httpx.Trace, status core.CallStatus, resthook string) *WebhookCalled {
 	return &WebhookCalled{
 		BaseEvent:          NewBaseEvent(TypeWebhookCalled),
-		HTTPLogWithoutTime: NewHTTPLogWithoutTime(trace, status, nil),
+		HTTPLogWithoutTime: core.NewHTTPLogWithoutTime(trace, status, nil),
 		Resthook:           resthook,
 	}
 }

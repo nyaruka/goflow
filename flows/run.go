@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 	"time"
 
@@ -15,10 +16,10 @@ import (
 // RunSummary represents the minimum information available about all runs (current or related) and is the
 // representation of runs made accessible to router tests.
 type RunSummary interface {
-	UUID() events.RunUUID
+	UUID() core.RunUUID
 	Contact() *Contact
 	Flow() Flow
-	Status() events.RunStatus
+	Status() core.RunStatus
 	Results() Results
 }
 
@@ -31,7 +32,7 @@ type Run interface {
 
 	Session() Session
 	Locals() *Locals
-	SetResult(*events.Result) (*events.Result, bool)
+	SetResult(*core.Result) (*core.Result, bool)
 	Webhook() *WebhookCall
 	SetWebhook(*WebhookCall)
 
@@ -55,5 +56,5 @@ type Run interface {
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
 	ExitedOn() *time.Time
-	Exit(events.RunStatus)
+	Exit(core.RunStatus)
 }

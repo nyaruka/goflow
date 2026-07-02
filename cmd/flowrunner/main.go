@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"io"
 	"net/http"
 	"os"
@@ -190,8 +191,8 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		if text == "/timeout" {
 			resume = resumes.NewWaitTimeout(events.NewWaitTimedOut())
 		} else if strings.HasPrefix(text, "/dial") {
-			status := events.DialStatus(strings.TrimSpace(text[5:]))
-			resume = resumes.NewDial(events.NewDialEnded(events.NewDial(status, 10)))
+			status := core.DialStatus(strings.TrimSpace(text[5:]))
+			resume = resumes.NewDial(events.NewDialEnded(core.NewDial(status, 10)))
 		} else {
 			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()), "")
 			resume = resumes.NewMsg(msg)
@@ -212,8 +213,8 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	return repro, nil
 }
 
-func createMessage(contact *flows.Contact, text string) *events.MsgIn {
-	return events.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
+func createMessage(contact *flows.Contact, text string) *core.MsgIn {
+	return core.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
 }
 
 func printEvents(log []events.Event, out io.Writer) {

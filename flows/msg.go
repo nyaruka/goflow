@@ -1,15 +1,15 @@
 package flows
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"slices"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/events"
 )
 
 // TranslationsForContact is a utility to help callers get the message content for a contact
-func TranslationsForContact(e envs.Environment, b events.BroadcastTranslations, c *Contact, baseLanguage i18n.Language) (*events.MsgContent, i18n.Locale) {
+func TranslationsForContact(e envs.Environment, b core.BroadcastTranslations, c *Contact, baseLanguage i18n.Language) (*core.MsgContent, i18n.Locale) {
 	// get the set of languages to merge translations from
 	languages := make([]i18n.Language, 0, 3)
 
@@ -21,7 +21,7 @@ func TranslationsForContact(e envs.Environment, b events.BroadcastTranslations, 
 	// then the default workspace language, then the base language
 	languages = append(languages, e.DefaultLanguage(), baseLanguage)
 
-	content := &events.MsgContent{}
+	content := &core.MsgContent{}
 	language := i18n.NilLanguage
 	country := e.DefaultCountry()
 	if c.Country() != i18n.NilCountry {

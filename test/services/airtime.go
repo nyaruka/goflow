@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 	"strings"
 	"time"
@@ -23,13 +24,13 @@ func NewAirtime(currency string) *Airtime {
 	return &Airtime{fixedCurrency: currency}
 }
 
-func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP events.HTTPLogCallback) (*events.AirtimeTransfer, error) {
+func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP core.HTTPLogCallback) (*core.AirtimeTransfer, error) {
 	if strings.Contains(string(recipient), "666") {
 		return nil, fmt.Errorf("invalid recipient number")
 	}
 
-	logHTTP(&events.HTTPLog{
-		HTTPLogWithoutTime: &events.HTTPLogWithoutTime{
+	logHTTP(&core.HTTPLog{
+		HTTPLogWithoutTime: &core.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
 				URL:        "http://send.airtime.com",
 				StatusCode: 200,
@@ -38,7 +39,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sen
 				ElapsedMS:  0,
 				Retries:    0,
 			},
-			Status: events.CallStatusSuccess,
+			Status: core.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -48,7 +49,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sen
 		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
-	return &events.AirtimeTransfer{
+	return &core.AirtimeTransfer{
 		ExternalID: random.String(10, []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")),
 		Sender:     sender,
 		Recipient:  recipient,
@@ -58,7 +59,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sen
 }
 
 // Confirm is a no-op for the test service — Create returned the transfer ready to go.
-func (s *Airtime) Confirm(ctx context.Context, transfer *events.AirtimeTransfer, logHTTP events.HTTPLogCallback) error {
+func (s *Airtime) Confirm(ctx context.Context, transfer *core.AirtimeTransfer, logHTTP core.HTTPLogCallback) error {
 	return nil
 }
 

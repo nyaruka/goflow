@@ -2,7 +2,7 @@ package test
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"strings"
 	"text/template"
@@ -43,7 +43,7 @@ func newEngine(httpClient *http.Client) flows.Engine {
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
 		}).
-		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *events.MsgContent) (events.UnsendableReason, error) {
+		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *core.MsgContent) (core.UnsendableReason, error) {
 			return "", nil
 		}).
 		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {

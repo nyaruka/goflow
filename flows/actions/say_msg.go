@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -66,7 +67,7 @@ func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, lo
 	// an IVR flow must have been started with a call
 	call := run.Session().Call()
 
-	msg := events.NewIVRMsgOut(call.URN(), call.Channel().Reference(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
+	msg := core.NewIVRMsgOut(call.URN(), call.Channel().Reference(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
 	log(events.NewIVRCreated(msg))
 
 	return nil

@@ -1,7 +1,7 @@
 package engine_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -52,7 +52,7 @@ func TestLegacyExtra(t *testing.T) {
 	}
 
 	// can also add something which is an array
-	result := events.NewResult("webhook", "200", "Success", "", events.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), dates.Now())
+	result := core.NewResult("webhook", "200", "Success", "", core.NodeUUID(""), "", []byte(`[{"foo": 123}, {"foo": 345}]`), dates.Now())
 	run.SetResult(result)
 
 	log := test.NewEventLog()

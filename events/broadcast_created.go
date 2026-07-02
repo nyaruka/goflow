@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -42,18 +43,18 @@ const TypeBroadcastCreated string = "broadcast_created"
 type BroadcastCreated struct {
 	BaseEvent
 
-	Translations      BroadcastTranslations     `json:"translations" validate:"min=1,dive"`
-	BaseLanguage      i18n.Language             `json:"base_language" validate:"required"`
-	Groups            []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
-	Contacts          []*ContactReference       `json:"contacts,omitempty" validate:"dive"`
-	ContactQuery      string                    `json:"contact_query,omitempty"`
-	URNs              []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
-	Template          *assets.TemplateReference `json:"template,omitempty"`
-	TemplateVariables []string                  `json:"template_variables,omitempty"`
+	Translations      core.BroadcastTranslations `json:"translations" validate:"min=1,dive"`
+	BaseLanguage      i18n.Language              `json:"base_language" validate:"required"`
+	Groups            []*assets.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Contacts          []*core.ContactReference   `json:"contacts,omitempty" validate:"dive"`
+	ContactQuery      string                     `json:"contact_query,omitempty"`
+	URNs              []urns.URN                 `json:"urns,omitempty" validate:"dive,urn"`
+	Template          *assets.TemplateReference  `json:"template,omitempty"`
+	TemplateVariables []string                   `json:"template_variables,omitempty"`
 }
 
 // NewBroadcastCreated creates a new outgoing msg event for the given recipients
-func NewBroadcastCreated(translations BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*ContactReference, contactQuery string, urns []urns.URN, template *assets.TemplateReference, templateVariables []string) *BroadcastCreated {
+func NewBroadcastCreated(translations core.BroadcastTranslations, baseLanguage i18n.Language, groups []*assets.GroupReference, contacts []*core.ContactReference, contactQuery string, urns []urns.URN, template *assets.TemplateReference, templateVariables []string) *BroadcastCreated {
 	return &BroadcastCreated{
 		BaseEvent:         NewBaseEvent(TypeBroadcastCreated),
 		Translations:      translations,

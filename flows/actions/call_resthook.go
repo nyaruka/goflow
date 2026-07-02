@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"strings"
 
@@ -152,9 +153,9 @@ func (a *CallResthook) pickResultCall(calls []*httpx.Trace) *httpx.Trace {
 	for _, call := range calls {
 		status := callStatus(call, nil, true)
 
-		if status == events.CallStatusSuccess {
+		if status == core.CallStatusSuccess {
 			lastSuccess = call
-		} else if status == events.CallStatusSubscriberGone {
+		} else if status == core.CallStatusSubscriberGone {
 			last410 = call
 		} else {
 			lastFailure = call

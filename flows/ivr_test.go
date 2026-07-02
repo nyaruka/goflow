@@ -1,7 +1,7 @@
 package flows_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -12,7 +12,7 @@ import (
 )
 
 func TestDial(t *testing.T) {
-	d := events.NewDial(events.DialStatusNoAnswer, 5)
+	d := core.NewDial(core.DialStatusNoAnswer, 5)
 
 	// test marshalling
 	marshalled, err := jsonx.Marshal(d)
@@ -20,10 +20,10 @@ func TestDial(t *testing.T) {
 	assert.Equal(t, `{"status":"no_answer","duration":5}`, string(marshalled))
 
 	// and unmarsalling
-	d2 := &events.Dial{}
+	d2 := &core.Dial{}
 	err = jsonx.Unmarshal(marshalled, d2)
 	assert.NoError(t, err)
-	assert.Equal(t, events.DialStatusNoAnswer, d2.Status)
+	assert.Equal(t, core.DialStatusNoAnswer, d2.Status)
 	assert.Equal(t, 5, d2.Duration)
 
 	// test status validation

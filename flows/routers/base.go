@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
@@ -117,7 +118,7 @@ func (r *baseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
 	return false
 }
 
-func (r *baseRouter) isValidExit(uuid events.ExitUUID, exits []flows.Exit) bool {
+func (r *baseRouter) isValidExit(uuid core.ExitUUID, exits []flows.Exit) bool {
 	for _, e := range exits {
 		if e.UUID() == uuid {
 			return true
@@ -127,7 +128,7 @@ func (r *baseRouter) isValidExit(uuid events.ExitUUID, exits []flows.Exit) bool 
 }
 
 // RouteTimeout routes in the case that this router's wait timed out
-func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent events.EventLogger) (events.ExitUUID, error) {
+func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent events.EventLogger) (core.ExitUUID, error) {
 	if !r.AllowTimeout() {
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}
@@ -135,7 +136,7 @@ func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent event
 	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), "", "", nil, logEvent)
 }
 
-func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent events.EventLogger) (events.ExitUUID, error) {
+func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent events.EventLogger) (core.ExitUUID, error) {
 	// router failed to pick a category
 	if categoryUUID == "" {
 		return "", nil
@@ -163,7 +164,7 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 		if extra != nil {
 			extraJSON, _ = jsonx.Marshal(extra)
 		}
-		result := events.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), operand, extraJSON, dates.Now())
+		result := core.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), operand, extraJSON, dates.Now())
 		prev, changed := run.SetResult(result)
 		if changed {
 			logEvent(events.NewRunResultChanged(result, prev))

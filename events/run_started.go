@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -28,13 +29,13 @@ type RunStarted struct {
 	BaseEvent
 
 	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
-	RunUUID    RunUUID               `json:"run_uuid"              validate:"required,uuid"`
-	ParentUUID RunUUID               `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
+	RunUUID    core.RunUUID          `json:"run_uuid"              validate:"required,uuid"`
+	ParentUUID core.RunUUID          `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 	Terminal   bool                  `json:"terminal,omitempty"`
 }
 
 // NewRunStarted returns a new run started event
-func NewRunStarted(flow *assets.FlowReference, runUUID, parentUUID RunUUID, terminal bool) *RunStarted {
+func NewRunStarted(flow *assets.FlowReference, runUUID, parentUUID core.RunUUID, terminal bool) *RunStarted {
 	return &RunStarted{
 		BaseEvent:  NewBaseEvent(TypeRunStarted),
 		Flow:       flow,

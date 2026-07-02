@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"os"
 	"strings"
 	"time"
@@ -592,7 +593,7 @@ type SessionBuilder struct {
 
 	flowUUID    assets.FlowUUID
 	engine      flows.Engine
-	contactUUID events.ContactUUID
+	contactUUID core.ContactUUID
 	contactID   flows.ContactID
 	contactName string
 	contactLang i18n.Language
@@ -613,7 +614,7 @@ func NewSessionBuilder() *SessionBuilder {
 		assetsJSON:  []byte(sessionAssets),
 		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		engine:      NewEngine(),
-		contactUUID: events.NewContactUUID(),
+		contactUUID: core.NewContactUUID(),
 		contactID:   flows.ContactID(123),
 		contactName: "Bob",
 		contactLang: "eng",
@@ -652,7 +653,7 @@ func (b *SessionBuilder) WithMocks(mocks map[string][]*httpx.MockResponse) *Sess
 	return b
 }
 
-func (b *SessionBuilder) WithContact(uuid events.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
+func (b *SessionBuilder) WithContact(uuid core.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
 	b.contactUUID = uuid
 	b.contactID = id
 	b.contactName = name
@@ -700,7 +701,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		b.contactID,
 		b.contactName,
 		b.contactLang,
-		events.ContactStatusActive,
+		core.ContactStatusActive,
 		nil,
 		time.Date(2020, 1, 1, 12, 45, 30, 123456, time.UTC),
 		nil,
@@ -716,7 +717,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
-		msg := events.NewMsgIn(urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
+		msg := core.NewMsgIn(urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
 		trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg, "")).Build()
 	} else {
 		trigger = triggers.NewBuilder(flow.Reference(false)).Manual().Build()
@@ -752,7 +753,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 		return nil, nil, err
 	}
 
-	msg := events.NewMsgIn(urns.NilURN, nil, msgText, nil, "")
+	msg := core.NewMsgIn(urns.NilURN, nil, msgText, nil, "")
 
 	sprint, err := session.Resume(ctx, resumes.NewMsg(events.NewMsgReceived(msg, "")))
 

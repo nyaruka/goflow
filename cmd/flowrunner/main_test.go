@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"strings"
 	"testing"
 	"time"
@@ -65,15 +66,15 @@ func TestPrintEvent(t *testing.T) {
 		event    events.Event
 		expected string
 	}{
-		{events.NewBroadcastCreated(events.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
-		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), events.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
+		{events.NewBroadcastCreated(core.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
+		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), core.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), nil), `✏️ field 'gender' cleared`},
 		{events.NewContactGroupsChanged(flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
 		{events.NewContactGroupsChanged(nil, flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
 		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
-		{events.NewDialEnded(events.NewDial(events.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
+		{events.NewDialEnded(core.NewDial(core.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
 		{events.NewDialWait(urns.URN(`tel:+1234567890`), 20, 120, expiresOn), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewError("this didn't work", ""), `⚠️ this didn't work`},

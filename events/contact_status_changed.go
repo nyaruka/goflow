@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeContactStatusChanged, func() Event { return &ContactStatusChanged{} })
 }
@@ -20,11 +22,11 @@ const TypeContactStatusChanged string = "contact_status_changed"
 type ContactStatusChanged struct {
 	BaseEvent
 
-	Status ContactStatus `json:"status"`
+	Status core.ContactStatus `json:"status"`
 }
 
 // NewContactStatusChanged returns a new contact_status_changed event
-func NewContactStatusChanged(status ContactStatus) *ContactStatusChanged {
+func NewContactStatusChanged(status core.ContactStatus) *ContactStatusChanged {
 	return &ContactStatusChanged{
 		BaseEvent: NewBaseEvent(TypeContactStatusChanged),
 		Status:    status,

@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -22,12 +23,12 @@ const TypeTicketTopic string = "ticket_topic"
 type TicketTopic struct {
 	baseModifier
 
-	ticketUUID events.TicketUUID
+	ticketUUID core.TicketUUID
 	topic      *flows.Topic
 }
 
 // NewTicketTopic creates a new topic modifier
-func NewTicketTopic(ticketUUID events.TicketUUID, topic *flows.Topic) *TicketTopic {
+func NewTicketTopic(ticketUUID core.TicketUUID, topic *flows.Topic) *TicketTopic {
 	return &TicketTopic{
 		baseModifier: newBaseModifier(TypeTicketTopic),
 		ticketUUID:   ticketUUID,
@@ -56,7 +57,7 @@ var _ flows.Modifier = (*TicketTopic)(nil)
 type ticketTopicEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID events.TicketUUID      `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID        `json:"ticket_uuid" validate:"required,uuid"`
 	Topic      *assets.TopicReference `json:"topic"`
 }
 

@@ -1,7 +1,7 @@
 package engine_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"testing"
 	"time"
 
@@ -21,15 +21,15 @@ func TestStep(t *testing.T) {
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
-	node := definition.NewNode(events.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)
+	node := definition.NewNode(core.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), nil, nil, nil)
 
 	d := time.Date(2018, 10, 26, 14, 50, 30, 1234567890, time.UTC)
 	step := engine.NewStep(nil, node, d)
 
-	assert.Equal(t, events.StepUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.UUID())
-	assert.Equal(t, events.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), step.NodeUUID())
+	assert.Equal(t, core.StepUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.UUID())
+	assert.Equal(t, core.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), step.NodeUUID())
 	assert.Equal(t, d, step.ArrivedOn())
-	assert.Equal(t, events.ExitUUID(""), step.ExitUUID())
+	assert.Equal(t, core.ExitUUID(""), step.ExitUUID())
 
 	// test use in expressions
 	env := envs.NewBuilder().Build()

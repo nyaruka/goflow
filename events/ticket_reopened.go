@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeTicketReopened, func() Event { return &TicketReopened{} })
 }
@@ -20,11 +22,11 @@ const TypeTicketReopened string = "ticket_reopened"
 type TicketReopened struct {
 	BaseEvent
 
-	TicketUUID TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 // NewTicketReopened returns a new ticket reopened event
-func NewTicketReopened(ticketUUID TicketUUID) *TicketReopened {
+func NewTicketReopened(ticketUUID core.TicketUUID) *TicketReopened {
 	return &TicketReopened{
 		BaseEvent:  NewBaseEvent(TypeTicketReopened),
 		TicketUUID: ticketUUID,

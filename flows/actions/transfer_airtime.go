@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"errors"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -90,7 +91,7 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log event
 		return nil, err
 	}
 
-	httpLogger := &events.HTTPLogger{}
+	httpLogger := &core.HTTPLogger{}
 
 	// pre-allocate the event UUID so the service can pass it through to the provider as a stable reference
 	transferUUID := events.NewEventUUID()

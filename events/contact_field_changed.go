@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -27,11 +28,11 @@ type ContactFieldChanged struct {
 	BaseEvent
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
-	Value *Value                 `json:"value"`
+	Value *core.Value            `json:"value"`
 }
 
 // NewContactFieldChanged returns a new save to contact event
-func NewContactFieldChanged(field *assets.FieldReference, value *Value) *ContactFieldChanged {
+func NewContactFieldChanged(field *assets.FieldReference, value *core.Value) *ContactFieldChanged {
 	return &ContactFieldChanged{
 		BaseEvent: NewBaseEvent(TypeContactFieldChanged),
 		Field:     field,

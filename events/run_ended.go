@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -26,13 +27,13 @@ const TypeRunEnded string = "run_ended"
 type RunEnded struct {
 	BaseEvent
 
-	RunUUID RunUUID               `json:"run_uuid"    validate:"required,uuid"`
+	RunUUID core.RunUUID          `json:"run_uuid"    validate:"required,uuid"`
 	Flow    *assets.FlowReference `json:"flow"        validate:"required"`
-	Status  RunStatus             `json:"status"      validate:"required"`
+	Status  core.RunStatus        `json:"status"      validate:"required"`
 }
 
 // NewRunEnded returns a new run ended event
-func NewRunEnded(runUUID RunUUID, flow *assets.FlowReference, status RunStatus) *RunEnded {
+func NewRunEnded(runUUID core.RunUUID, flow *assets.FlowReference, status core.RunStatus) *RunEnded {
 	return &RunEnded{
 		BaseEvent: NewBaseEvent(TypeRunEnded),
 		RunUUID:   runUUID,

@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -28,13 +29,13 @@ const TypeTicketAssigneeChanged string = "ticket_assignee_changed"
 type TicketAssigneeChanged struct {
 	BaseEvent
 
-	TicketUUID TicketUUID            `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID       `json:"ticket_uuid" validate:"required,uuid"`
 	Assignee   *assets.UserReference `json:"assignee"`
 	Previous   *assets.UserReference `json:"previous,omitempty"`
 }
 
 // NewTicketAssigneeChanged returns a new ticket assignee changed event
-func NewTicketAssigneeChanged(ticketUUID TicketUUID, assignee, previous *assets.UserReference) *TicketAssigneeChanged {
+func NewTicketAssigneeChanged(ticketUUID core.TicketUUID, assignee, previous *assets.UserReference) *TicketAssigneeChanged {
 	return &TicketAssigneeChanged{
 		BaseEvent:  NewBaseEvent(TypeTicketAssigneeChanged),
 		TicketUUID: ticketUUID,

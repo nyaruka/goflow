@@ -1,6 +1,7 @@
 package inputs
 
 import (
+	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -39,7 +40,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 	}
 
 	return &Msg{
-		baseInput:   newBaseInput(TypeMsg, events.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
+		baseInput:   newBaseInput(TypeMsg, core.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
 		urn:         flows.NewURN(evt.Msg.URN().Scheme(), evt.Msg.URN().Path(), "", nil),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),

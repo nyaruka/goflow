@@ -2,7 +2,7 @@ package issues
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"regexp"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -26,7 +26,7 @@ type InvalidRegex struct {
 	Regex string `json:"regex"`
 }
 
-func newInvalidRegex(nodeUUID events.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, regex string) *InvalidRegex {
+func newInvalidRegex(nodeUUID core.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, regex string) *InvalidRegex {
 	return &InvalidRegex{
 		baseIssue: newBaseIssue(
 			TypeInvalidRegex,

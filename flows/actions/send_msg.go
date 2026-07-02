@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
@@ -60,14 +61,14 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, log)
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake
-	var unsendableReason events.UnsendableReason
+	var unsendableReason core.UnsendableReason
 	contactStatus := run.Contact().Status()
-	if contactStatus == events.ContactStatusBlocked {
-		unsendableReason = events.UnsendableReasonContactBlocked
-	} else if contactStatus == events.ContactStatusStopped {
-		unsendableReason = events.UnsendableReasonContactStopped
-	} else if contactStatus == events.ContactStatusArchived {
-		unsendableReason = events.UnsendableReasonContactArchived
+	if contactStatus == core.ContactStatusBlocked {
+		unsendableReason = core.UnsendableReasonContactBlocked
+	} else if contactStatus == core.ContactStatusStopped {
+		unsendableReason = core.UnsendableReasonContactStopped
+	} else if contactStatus == core.ContactStatusArchived {
+		unsendableReason = core.UnsendableReasonContactArchived
 	} else {
 		var err error
 		unsendableReason, err = run.Session().Engine().Options().CheckSendable(ctx, run.Session().Assets(), run.Contact(), content)
@@ -98,7 +99,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	// create a new message for each URN+channel route
 	for _, route := range routes {
 		channelRef := assets.NewChannelReference(route.Channel.UUID(), route.Channel.Name())
-		var msg *events.MsgOut
+		var msg *core.MsgOut
 
 		if template != nil {
 			locales := []i18n.Locale{run.Session().MergedEnvironment().DefaultLocale(), run.Session().Environment().DefaultLocale()}
@@ -110,12 +111,12 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 				preview := translation.Preview(templating.Variables)
 				locale := translation.Locale()
 
-				msg = events.NewMsgOut(route.URN, channelRef, preview, templating, locale, unsendableReason)
+				msg = core.NewMsgOut(route.URN, channelRef, preview, templating, locale, unsendableReason)
 			}
 		}
 
 		if msg == nil {
-			msg = events.NewMsgOut(route.URN, channelRef, content, nil, locale, unsendableReason)
+			msg = core.NewMsgOut(route.URN, channelRef, content, nil, locale, unsendableReason)
 		}
 
 		log(events.NewMsgCreated(msg, "", ""))
@@ -124,7 +125,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	// if we couldn't find a route, create a msg without a URN or channel and it's up to the caller
 	// to handle that as they want
 	if len(routes) == 0 {
-		msg := events.NewMsgOut(urns.NilURN, nil, content, nil, locale, events.UnsendableReasonNoRoute)
+		msg := core.NewMsgOut(urns.NilURN, nil, content, nil, locale, core.UnsendableReasonNoRoute)
 		log(events.NewMsgCreated(msg, "", ""))
 	}
 

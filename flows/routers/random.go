@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -35,7 +36,7 @@ func (r *Random) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *Random) Route(run flows.Run, step flows.Step, logEvent events.EventLogger) (events.ExitUUID, string, error) {
+func (r *Random) Route(run flows.Run, step flows.Step, logEvent events.EventLogger) (core.ExitUUID, string, error) {
 	// pick a random category
 	rand := random.Decimal()
 	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()

@@ -2,21 +2,21 @@ package flows
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid     events.TicketUUID
-	status   events.TicketStatus
+	uuid     core.TicketUUID
+	status   core.TicketStatus
 	topic    *Topic
 	assignee *User
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid events.TicketUUID, status events.TicketStatus, topic *Topic, assignee *User) *Ticket {
+func NewTicket(uuid core.TicketUUID, status core.TicketStatus, topic *Topic, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		status:   status,
@@ -27,13 +27,13 @@ func NewTicket(uuid events.TicketUUID, status events.TicketStatus, topic *Topic,
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(events.NewTicketUUID(), events.TicketStatusOpen, topic, assignee)
+	return NewTicket(core.NewTicketUUID(), core.TicketStatusOpen, topic, assignee)
 }
 
-func (t *Ticket) UUID() events.TicketUUID { return t.uuid }
+func (t *Ticket) UUID() core.TicketUUID { return t.uuid }
 
-func (t *Ticket) Status() events.TicketStatus          { return t.status }
-func (t *Ticket) SetStatus(status events.TicketStatus) { t.status = status }
+func (t *Ticket) Status() core.TicketStatus          { return t.status }
+func (t *Ticket) SetStatus(status core.TicketStatus) { t.status = status }
 
 func (t *Ticket) Topic() *Topic         { return t.topic }
 func (t *Ticket) SetTopic(topic *Topic) { t.topic = topic }
@@ -72,7 +72,7 @@ func (l *TicketList) Add(t *Ticket) {
 	l.all = append(l.all, t)
 }
 
-func (l *TicketList) Find(uuid events.TicketUUID) *Ticket {
+func (l *TicketList) Find(uuid core.TicketUUID) *Ticket {
 	for _, t := range l.all {
 		if t.uuid == uuid {
 			return t
@@ -83,7 +83,7 @@ func (l *TicketList) Find(uuid events.TicketUUID) *Ticket {
 
 func (l *TicketList) LastOpen() *Ticket {
 	for i := len(l.all) - 1; i >= 0; i-- {
-		if l.all[i].status == events.TicketStatusOpen {
+		if l.all[i].status == core.TicketStatusOpen {
 			return l.all[i]
 		}
 	}
@@ -93,7 +93,7 @@ func (l *TicketList) LastOpen() *Ticket {
 func (l *TicketList) Open() *TicketList {
 	open := make([]*Ticket, 0, len(l.all))
 	for _, t := range l.all {
-		if t.status == events.TicketStatusOpen {
+		if t.status == core.TicketStatusOpen {
 			open = append(open, t)
 		}
 	}
@@ -113,8 +113,8 @@ func (l *TicketList) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXArray(array...)
 }
 
-func (l *TicketList) Marshal() []*events.TicketEnvelope {
-	envelopes := make([]*events.TicketEnvelope, len(l.all))
+func (l *TicketList) Marshal() []*core.TicketEnvelope {
+	envelopes := make([]*core.TicketEnvelope, len(l.all))
 	for i, t := range l.all {
 		envelopes[i] = t.Marshal()
 	}
@@ -127,9 +127,9 @@ func (l *TicketList) Marshal() []*events.TicketEnvelope {
 
 // ReadTicket reads a ticket from the passed in envelope. If the topic or assigned user can't
 // be found in the assets, we report the missing asset and return ticket without those.
-func ReadTicket(sa SessionAssets, e *events.TicketEnvelope, missing assets.MissingCallback) *Ticket {
+func ReadTicket(sa SessionAssets, e *core.TicketEnvelope, missing assets.MissingCallback) *Ticket {
 	if e.Status == "" {
-		e.Status = events.TicketStatusOpen
+		e.Status = core.TicketStatusOpen
 	}
 
 	var topic *Topic
@@ -152,7 +152,7 @@ func ReadTicket(sa SessionAssets, e *events.TicketEnvelope, missing assets.Missi
 }
 
 // Marshal marshals a ticket into an envelope.
-func (t *Ticket) Marshal() *events.TicketEnvelope {
+func (t *Ticket) Marshal() *core.TicketEnvelope {
 	var topicRef *assets.TopicReference
 	if t.topic != nil {
 		topicRef = t.topic.Reference()
@@ -163,7 +163,7 @@ func (t *Ticket) Marshal() *events.TicketEnvelope {
 		assigneeRef = t.assignee.Reference()
 	}
 
-	return &events.TicketEnvelope{
+	return &core.TicketEnvelope{
 		UUID:     t.uuid,
 		Status:   t.status,
 		Topic:    topicRef,

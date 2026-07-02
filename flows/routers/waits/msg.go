@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/events"
-	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"

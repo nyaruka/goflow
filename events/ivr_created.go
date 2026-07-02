@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeIVRCreated, func() Event { return &IVRCreated{} })
 }
@@ -27,11 +29,11 @@ const TypeIVRCreated string = "ivr_created"
 type IVRCreated struct {
 	BaseEvent
 
-	Msg *MsgOut `json:"msg" validate:"required"`
+	Msg *core.MsgOut `json:"msg" validate:"required"`
 }
 
 // NewIVRCreated creates a new IVR created event
-func NewIVRCreated(msg *MsgOut) *IVRCreated {
+func NewIVRCreated(msg *core.MsgOut) *IVRCreated {
 	return &IVRCreated{
 		BaseEvent: NewBaseEvent(TypeIVRCreated),
 		Msg:       msg,

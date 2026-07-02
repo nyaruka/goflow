@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -29,7 +30,7 @@ type session struct {
 	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
-	uuid          events.SessionUUID
+	uuid          core.SessionUUID
 	type_         flows.FlowType
 	createdOn     time.Time
 	env           envs.Environment
@@ -45,7 +46,7 @@ type session struct {
 
 	// state which is temporary to each call
 	batchStart bool
-	runsByUUID map[events.RunUUID]*run
+	runsByUUID map[core.RunUUID]*run
 	pushedFlow *pushedFlow
 	parentRun  flows.RunSummary
 
@@ -56,7 +57,7 @@ func (s *session) Assets() flows.SessionAssets { return s.assets }
 func (s *session) Trigger() flows.Trigger      { return s.trigger }
 func (s *session) CurrentResume() flows.Resume { return s.currentResume }
 
-func (s *session) UUID() events.SessionUUID            { return s.uuid }
+func (s *session) UUID() core.SessionUUID              { return s.uuid }
 func (s *session) Type() flows.FlowType                { return s.type_ }
 func (s *session) CreatedOn() time.Time                { return s.createdOn }
 func (s *session) Environment() envs.Environment       { return s.env }
@@ -82,7 +83,7 @@ func (s *session) PushFlow(flow flows.Flow, parentRun flows.Run, terminal bool) 
 }
 
 func (s *session) Runs() []flows.Run { return s.runs }
-func (s *session) getRun(uuid events.RunUUID) (*run, error) {
+func (s *session) getRun(uuid core.RunUUID) (*run, error) {
 	r, exists := s.runsByUUID[uuid]
 	if exists {
 		return r, nil
@@ -139,19 +140,19 @@ func (s *session) currentRun() *run {
 // looks through this session's run for the one that is waiting
 func (s *session) waitingRun() *run {
 	for _, r := range s.runs {
-		if r.Status() == events.RunStatusWaiting {
+		if r.Status() == core.RunStatusWaiting {
 			return r.(*run)
 		}
 	}
 	return nil
 }
 
-func (s *session) History() *events.SessionHistory {
+func (s *session) History() *core.SessionHistory {
 	history := s.trigger.History()
 	if history != nil {
 		return history
 	}
-	return events.EmptyHistory
+	return core.EmptyHistory
 }
 
 func (s *session) Engine() flows.Engine { return s.engine }
@@ -236,9 +237,9 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 
 		// but also fail any other non-exited runs
 		for _, r := range s.runs {
-			if r.Status() == events.RunStatusActive || r.Status() == events.RunStatusWaiting {
-				r.Exit(events.RunStatusFailed)
-				sprint.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), events.RunStatusFailed))
+			if r.Status() == core.RunStatusActive || r.Status() == core.RunStatusWaiting {
+				r.Exit(core.RunStatusFailed)
+				sprint.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), core.RunStatusFailed))
 			}
 		}
 
@@ -294,13 +295,13 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 
 	switch resume.Type() {
 	case resumes.TypeWaitExpiration:
-		waitingRun.Exit(events.RunStatusExpired)
-		sprint.logEvent(events.NewRunEnded(waitingRun.UUID(), waitingRun.FlowReference(), events.RunStatusExpired))
+		waitingRun.Exit(core.RunStatusExpired)
+		sprint.logEvent(events.NewRunEnded(waitingRun.UUID(), waitingRun.FlowReference(), core.RunStatusExpired))
 	case resumes.TypeWaitTimeout:
 		isTimeout = true
 		fallthrough
 	default:
-		waitingRun.setStatus(events.RunStatusActive)
+		waitingRun.setStatus(core.RunStatusActive)
 	}
 
 	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
@@ -319,7 +320,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow
 func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flows.Exit, string, error) {
 	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
-	if run.Status() != events.RunStatusActive {
+	if run.Status() != core.RunStatusActive {
 		return nil, "", nil
 	}
 
@@ -338,7 +339,7 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 
 // the main flow execution loop
 func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, currentRun *run, node flows.Node, exit flows.Exit, operand string, step flows.Step, trigger flows.Trigger) (err error) {
-	var destination events.NodeUUID
+	var destination core.NodeUUID
 	var numNewSteps int
 
 	for {
@@ -349,8 +350,8 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
 			if s.pushedFlow.terminal {
 				for _, run := range s.runs {
-					run.Exit(events.RunStatusCompleted)
-					sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), events.RunStatusCompleted))
+					run.Exit(core.RunStatusCompleted)
+					sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
 				}
 			}
 
@@ -391,19 +392,19 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 		// if we have no destination then we're done with the current run which may have completed, expired or errored
 		if destination == "" {
 			if currentRun.ExitedOn() == nil {
-				currentRun.Exit(events.RunStatusCompleted)
-				sprint.logEvent(events.NewRunEnded(currentRun.UUID(), currentRun.FlowReference(), events.RunStatusCompleted))
+				currentRun.Exit(core.RunStatusCompleted)
+				sprint.logEvent(events.NewRunEnded(currentRun.UUID(), currentRun.FlowReference(), core.RunStatusCompleted))
 			}
 
 			parentRun := currentRun.parent
 
 			// switch back our parent run if it's still active
-			if parentRun != nil && parentRun.Status() == events.RunStatusActive {
+			if parentRun != nil && parentRun.Status() == core.RunStatusActive {
 				childRun := currentRun
 				currentRun = parentRun
 
 				// as long as we didn't fail, we can try to resume it
-				if childRun.Status() != events.RunStatusFailed {
+				if childRun.Status() != core.RunStatusFailed {
 					// if flow for this run is a missing asset, we have a problem
 					if currentRun.Flow() == nil {
 						failRun(sprint, currentRun, nil, "Can't resume run with missing flow asset")
@@ -420,7 +421,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 
 			} else {
 				// If we have no destination and no parent, then the whole session is done. A run error bubbles up the session status.
-				if currentRun.Status() == events.RunStatusFailed {
+				if currentRun.Status() == core.RunStatusFailed {
 					s.status = flows.SessionStatusFailed
 				} else {
 					s.status = flows.SessionStatusCompleted
@@ -482,7 +483,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 			}
 
 			// check if this action has errored the run
-			if r.Status() == events.RunStatusFailed {
+			if r.Status() == core.RunStatusFailed {
 				return step, nil, "", nil
 			}
 		}
@@ -504,7 +505,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 		// waits have the option to skip themselves
 		if wait.Begin(r, logEvent) {
 			// mark ouselves as waiting and hand back to
-			r.setStatus(events.RunStatusWaiting)
+			r.setStatus(core.RunStatusWaiting)
 			s.status = flows.SessionStatusWaiting
 
 			return step, nil, "", nil
@@ -518,7 +519,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 
 // picks the exit to use on the given node
 func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent events.EventLogger) (flows.Exit, string, error) {
-	var exitUUID events.ExitUUID
+	var exitUUID core.ExitUUID
 	var operand string
 	var err error
 
@@ -579,9 +580,9 @@ func failRun(sp *sprint, r *run, step flows.Step, text string) {
 		sp.logEvent(evt)
 	}
 
-	r.Exit(events.RunStatusFailed)
+	r.Exit(core.RunStatusFailed)
 
-	sp.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), events.RunStatusFailed))
+	sp.logEvent(events.NewRunEnded(r.UUID(), r.FlowReference(), core.RunStatusFailed))
 }
 
 //------------------------------------------------------------------------------------------
@@ -589,12 +590,12 @@ func failRun(sp *sprint, r *run, step flows.Step, text string) {
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	UUID        events.SessionUUID  `json:"uuid"                validate:"required"`
+	UUID        core.SessionUUID    `json:"uuid"                validate:"required"`
 	Type        flows.FlowType      `json:"type"                validate:"required"`
 	CreatedOn   time.Time           `json:"created_on"          validate:"required"`
 	Trigger     json.RawMessage     `json:"trigger"             validate:"required"`
-	ContactUUID events.ContactUUID  `json:"contact_uuid"        validate:"required,uuid"`
-	CallUUID    events.CallUUID     `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
+	ContactUUID core.ContactUUID    `json:"contact_uuid"        validate:"required,uuid"`
+	CallUUID    core.CallUUID       `json:"call_uuid,omitempty" validate:"omitempty,uuid"`
 	Runs        []json.RawMessage   `json:"runs"`
 	Status      flows.SessionStatus `json:"status"              validate:"required"`
 	Wait        json.RawMessage     `json:"wait,omitempty"`
@@ -623,7 +624,7 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		env:        env,
 		contact:    contact,
 		call:       call,
-		runsByUUID: make(map[events.RunUUID]*run),
+		runsByUUID: make(map[core.RunUUID]*run),
 	}
 
 	if e.Trigger != nil {
@@ -707,7 +708,7 @@ func (s *session) MarshalJSON() ([]byte, error) {
 }
 
 // helper to get the parent run UUID of a run if it has a parent
-func parentRunUUID(r flows.Run) events.RunUUID {
+func parentRunUUID(r flows.Run) core.RunUUID {
 	if r.Parent() != nil {
 		return r.Parent().UUID()
 	}

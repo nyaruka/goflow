@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/goflow/flows"
@@ -29,11 +30,11 @@ type SetContactStatus struct {
 	baseAction
 	universalAction
 
-	Status events.ContactStatus `json:"status" validate:"contact_status"`
+	Status core.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 // NewSetContactStatus creates a new set status action
-func NewSetContactStatus(uuid flows.ActionUUID, status events.ContactStatus) *SetContactStatus {
+func NewSetContactStatus(uuid flows.ActionUUID, status core.ContactStatus) *SetContactStatus {
 	return &SetContactStatus{
 		baseAction: newBaseAction(TypeSetContactStatus, uuid),
 		Status:     status,

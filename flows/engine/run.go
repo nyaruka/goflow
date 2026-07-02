@@ -3,6 +3,7 @@ package engine
 import (
 	"errors"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -24,7 +25,7 @@ const (
 )
 
 type run struct {
-	uuid    events.RunUUID
+	uuid    core.RunUUID
 	session *session
 
 	flow    flows.Flow
@@ -35,7 +36,7 @@ type run struct {
 	results  flows.Results
 	path     Path
 	hadInput bool
-	status   events.RunStatus
+	status   core.RunStatus
 	webhook  *flows.WebhookCall
 
 	createdOn  time.Time
@@ -49,14 +50,14 @@ type run struct {
 func newRun(session *session, flow flows.Flow, parent *run) *run {
 	now := dates.Now()
 	r := &run{
-		uuid:       events.NewRunUUID(),
+		uuid:       core.NewRunUUID(),
 		session:    session,
 		flow:       flow,
 		flowRef:    flow.Reference(true),
 		parent:     parent,
 		locals:     flows.NewLocals(),
 		results:    flows.NewResults(),
-		status:     events.RunStatusActive,
+		status:     core.RunStatusActive,
 		createdOn:  now,
 		modifiedOn: now,
 	}
@@ -66,7 +67,7 @@ func newRun(session *session, flow flows.Flow, parent *run) *run {
 	return r
 }
 
-func (r *run) UUID() events.RunUUID   { return r.uuid }
+func (r *run) UUID() core.RunUUID     { return r.uuid }
 func (r *run) Session() flows.Session { return r.session }
 
 func (r *run) Flow() flows.Flow                     { return r.flow }
@@ -76,7 +77,7 @@ func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }
 func (r *run) Results() flows.Results { return r.results }
-func (r *run) SetResult(result *events.Result) (*events.Result, bool) {
+func (r *run) SetResult(result *core.Result) (*core.Result, bool) {
 	// truncate value if necessary
 	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 
@@ -86,15 +87,15 @@ func (r *run) SetResult(result *events.Result) (*events.Result, bool) {
 	return r.results.Save(result)
 }
 
-func (r *run) Exit(status events.RunStatus) {
+func (r *run) Exit(status core.RunStatus) {
 	now := dates.Now()
 
 	r.status = status
 	r.exitedOn = &now
 	r.modifiedOn = now
 }
-func (r *run) Status() events.RunStatus { return r.status }
-func (r *run) setStatus(status events.RunStatus) {
+func (r *run) Status() core.RunStatus { return r.status }
+func (r *run) setStatus(status core.RunStatus) {
 	r.status = status
 	r.modifiedOn = dates.Now()
 }
@@ -417,14 +418,14 @@ var _ flows.RunSummary = (*run)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID       events.RunUUID        `json:"uuid"                  validate:"required,uuid"`
+	UUID       core.RunUUID          `json:"uuid"                  validate:"required,uuid"`
 	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
 	Path       []*step               `json:"path"                  validate:"dive"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
-	Status     events.RunStatus      `json:"status"                validate:"required"`
+	Status     core.RunStatus        `json:"status"                validate:"required"`
 	HadInput   bool                  `json:"had_input,omitzero"`
-	ParentUUID events.RunUUID        `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
+	ParentUUID core.RunUUID          `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 	Webhook    *flows.WebhookCall    `json:"webhook,omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on"  validate:"required"`

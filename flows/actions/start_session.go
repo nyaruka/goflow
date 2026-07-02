@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -45,7 +46,7 @@ type StartSession struct {
 }
 
 // NewStartSession creates a new start session action
-func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*events.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*core.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
 	return &StartSession{
 		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{

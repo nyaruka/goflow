@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -40,7 +40,7 @@ func translate(s string) (string, error) {
 	return leetify(s), nil
 }
 
-func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*events.LLMResponse, error) {
+func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error) {
 	var output string
 	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
 		return nil, errors.New(input[7:])
@@ -78,7 +78,7 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}
 
-	return &events.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+	return &core.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"net/url"
 	"strings"
@@ -165,16 +166,16 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 }
 
 // determines the webhook status from the HTTP status code
-func callStatus(t *httpx.Trace, err error, isResthook bool) events.CallStatus {
+func callStatus(t *httpx.Trace, err error, isResthook bool) core.CallStatus {
 	if t.Response == nil || err != nil {
-		return events.CallStatusConnectionError
+		return core.CallStatusConnectionError
 	}
 	if isResthook && t.Response.StatusCode == http.StatusGone {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
-		return events.CallStatusSubscriberGone
+		return core.CallStatusSubscriberGone
 	}
 	if t.Response.StatusCode/100 == 2 {
-		return events.CallStatusSuccess
+		return core.CallStatusSuccess
 	}
-	return events.CallStatusResponseError
+	return core.CallStatusResponseError
 }

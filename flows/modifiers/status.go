@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -22,11 +23,11 @@ const TypeStatus string = "status"
 type Status struct {
 	baseModifier
 
-	status events.ContactStatus
+	status core.ContactStatus
 }
 
 // NewStatus creates a new status modifier
-func NewStatus(status events.ContactStatus) *Status {
+func NewStatus(status core.ContactStatus) *Status {
 	return &Status{
 		baseModifier: newBaseModifier(TypeStatus),
 		status:       status,
@@ -52,7 +53,7 @@ var _ flows.Modifier = (*Status)(nil)
 type statusEnvelope struct {
 	utils.TypedEnvelope
 
-	Status events.ContactStatus `json:"status" validate:"contact_status"`
+	Status core.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 func readStatus(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

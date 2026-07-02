@@ -2,6 +2,7 @@ package flows
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/events"
 	"time"
 
@@ -59,7 +60,7 @@ type Sprint interface {
 type Session interface {
 	Assets() SessionAssets
 
-	UUID() events.SessionUUID
+	UUID() core.SessionUUID
 	Type() FlowType
 	CreatedOn() time.Time
 
@@ -79,13 +80,13 @@ type Session interface {
 	Runs() []Run
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
-	History() *events.SessionHistory
+	History() *core.SessionHistory
 
 	Engine() Engine
 }
 
 // NewChildHistory creates a new history for a child of the given session
-func NewChildHistory(parent Session) *events.SessionHistory {
+func NewChildHistory(parent Session) *core.SessionHistory {
 	parentHadInput := false
 	for _, r := range parent.Runs() {
 		if r.HadInput() {

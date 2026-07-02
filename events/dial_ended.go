@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeDialEnded, func() Event { return &DialEnded{} })
 }
@@ -23,11 +25,11 @@ const TypeDialEnded string = "dial_ended"
 type DialEnded struct {
 	BaseEvent
 
-	Dial *Dial `json:"dial" validate:"required"`
+	Dial *core.Dial `json:"dial" validate:"required"`
 }
 
 // NewDialEnded returns a new dial ended event
-func NewDialEnded(dial *Dial) *DialEnded {
+func NewDialEnded(dial *core.Dial) *DialEnded {
 	return &DialEnded{
 		BaseEvent: NewBaseEvent(TypeDialEnded),
 		Dial:      dial,

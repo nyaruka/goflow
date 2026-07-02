@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -22,12 +23,12 @@ const TypeTicketNote string = "ticket_note"
 type TicketNote struct {
 	baseModifier
 
-	ticketUUID events.TicketUUID
+	ticketUUID core.TicketUUID
 	note       string
 }
 
 // NewTicketNote creates a new note modifier
-func NewTicketNote(ticketUUID events.TicketUUID, note string) *TicketNote {
+func NewTicketNote(ticketUUID core.TicketUUID, note string) *TicketNote {
 	return &TicketNote{
 		baseModifier: newBaseModifier(TypeTicketNote),
 		ticketUUID:   ticketUUID,
@@ -55,8 +56,8 @@ var _ flows.Modifier = (*TicketNote)(nil)
 type ticketNoteEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID events.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
-	Note       string            `json:"note"`
+	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	Note       string          `json:"note"`
 }
 
 func readTicketNote(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

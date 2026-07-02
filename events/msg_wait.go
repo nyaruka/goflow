@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nyaruka/goflow/events/hints"
+	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/utils"
 )
 

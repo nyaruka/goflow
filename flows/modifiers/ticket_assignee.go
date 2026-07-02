@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -22,12 +23,12 @@ const TypeTicketAssignee string = "ticket_assignee"
 type TicketAssignee struct {
 	baseModifier
 
-	ticketUUID events.TicketUUID
+	ticketUUID core.TicketUUID
 	assignee   *flows.User
 }
 
 // NewTicketAssignee creates a new assignee modifier
-func NewTicketAssignee(ticketUUID events.TicketUUID, assignee *flows.User) *TicketAssignee {
+func NewTicketAssignee(ticketUUID core.TicketUUID, assignee *flows.User) *TicketAssignee {
 	return &TicketAssignee{
 		baseModifier: newBaseModifier(TypeTicketAssignee),
 		ticketUUID:   ticketUUID,
@@ -59,7 +60,7 @@ var _ flows.Modifier = (*TicketAssignee)(nil)
 type ticketAssigneeEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID events.TicketUUID     `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID       `json:"ticket_uuid" validate:"required,uuid"`
 	Assignee   *assets.UserReference `json:"assignee"`
 }
 

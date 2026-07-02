@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
@@ -61,7 +62,7 @@ func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	call := run.Session().Call()
 
 	// if we have an audio URL, turn it into a message
-	msg := events.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
+	msg := core.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
 	log(events.NewIVRCreated(msg))
 
 	return nil

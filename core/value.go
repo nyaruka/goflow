@@ -1,4 +1,4 @@
-package events
+package core
 
 import (
 	"github.com/nyaruka/goflow/envs"

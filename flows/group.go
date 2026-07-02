@@ -1,7 +1,7 @@
 package flows
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -44,7 +44,7 @@ func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact
 		panic("can't check membership on a non-query based group")
 	}
 
-	if contact.Status() != events.ContactStatusActive {
+	if contact.Status() != core.ContactStatusActive {
 		return false
 	}
 

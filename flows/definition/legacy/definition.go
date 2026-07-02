@@ -3,7 +3,7 @@ package legacy
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"sort"
 	"strconv"
@@ -347,9 +347,9 @@ func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLo
 	case "trigger-flow":
 		flowRef := assets.NewFlowReference(assets.FlowUUID(a.Flow.UUID), a.Flow.Name)
 
-		contacts := make([]*events.ContactReference, len(a.Contacts))
+		contacts := make([]*core.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
-			contacts[i] = events.NewContactReference(events.ContactUUID(contact.UUID), contact.Name)
+			contacts[i] = core.NewContactReference(core.ContactUUID(contact.UUID), contact.Name)
 		}
 		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
@@ -422,9 +422,9 @@ func migrateAction(baseLanguage i18n.Language, a Action, localization migratedLo
 			return newSendMsgAction(a.UUID, migratedText, attachments, migratedQuickReplies, a.SendAll), nil
 		}
 
-		contacts := make([]*events.ContactReference, len(a.Contacts))
+		contacts := make([]*core.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
-			contacts[i] = events.NewContactReference(events.ContactUUID(contact.UUID), contact.Name)
+			contacts[i] = core.NewContactReference(core.ContactUUID(contact.UUID), contact.Name)
 		}
 		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {

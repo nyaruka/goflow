@@ -1,7 +1,7 @@
 package flows_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -63,13 +63,13 @@ func TestTickets(t *testing.T) {
 		missingRefs = append(missingRefs, ref)
 	}
 
-	ticket1 := flows.ReadTicket(sa, &events.TicketEnvelope{
-		UUID:     events.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"),
+	ticket1 := flows.ReadTicket(sa, &core.TicketEnvelope{
+		UUID:     core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"),
 		Topic:    assets.NewTopicReference("fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "Missing Topic"),
 		Assignee: assets.NewUserReference("b8cfc330-4634-45d1-90bc-7b4658221834", "Dave"),
 	}, missing)
 
-	assert.Equal(t, events.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
+	assert.Equal(t, core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
 	assert.Nil(t, ticket1.Assignee())
 
@@ -80,8 +80,8 @@ func TestTickets(t *testing.T) {
 
 	missingRefs = make([]assets.Reference, 0)
 
-	ticket2 := flows.ReadTicket(sa, &events.TicketEnvelope{
-		UUID:     events.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"),
+	ticket2 := flows.ReadTicket(sa, &core.TicketEnvelope{
+		UUID:     core.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"),
 		Topic:    weather.Reference(),
 		Assignee: bob.Reference(),
 	}, missing)
@@ -91,15 +91,15 @@ func TestTickets(t *testing.T) {
 
 	ticket3 := flows.OpenTicket(weather, bob)
 
-	assert.Equal(t, events.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
+	assert.Equal(t, core.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
-	ticket3.SetStatus(events.TicketStatusClosed)
+	ticket3.SetStatus(core.TicketStatusClosed)
 	ticket3.SetTopic(computers)
 	ticket3.SetAssignee(nil)
 
-	assert.Equal(t, events.TicketStatusClosed, ticket3.Status())
+	assert.Equal(t, core.TicketStatusClosed, ticket3.Status())
 	assert.Equal(t, computers, ticket3.Topic())
 	assert.Nil(t, ticket3.Assignee())
 }

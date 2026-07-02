@@ -3,6 +3,7 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -81,7 +82,7 @@ func (b *TicketBuilder) Build() *Ticket {
 type ticketEnvelope struct {
 	baseEnvelope
 
-	Ticket *events.TicketEnvelope `json:"ticket" validate:"required"`
+	Ticket *core.TicketEnvelope `json:"ticket" validate:"required"`
 }
 
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {

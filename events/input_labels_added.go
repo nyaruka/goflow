@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -25,12 +26,12 @@ const TypeInputLabelsAdded string = "input_labels_added"
 type InputLabelsAdded struct {
 	BaseEvent
 
-	InputUUID InputUUID                `json:"input_uuid" validate:"required,uuid"`
+	InputUUID core.InputUUID           `json:"input_uuid" validate:"required,uuid"`
 	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
 // NewInputLabelsAdded returns a new labels added event
-func NewInputLabelsAdded(inputUUID InputUUID, labels []*assets.LabelReference) *InputLabelsAdded {
+func NewInputLabelsAdded(inputUUID core.InputUUID, labels []*assets.LabelReference) *InputLabelsAdded {
 	return &InputLabelsAdded{
 		BaseEvent: NewBaseEvent(TypeInputLabelsAdded),
 		InputUUID: inputUUID,

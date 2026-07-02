@@ -1,7 +1,7 @@
 package flows_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -24,12 +24,12 @@ func TestFieldValues(t *testing.T) {
 	age := fields.Get("age")
 
 	// can have no values for any fields
-	flows.NewFieldValues(session.Assets(), map[string]*events.Value{}, assets.PanicOnMissing)
+	flows.NewFieldValues(session.Assets(), map[string]*core.Value{}, assets.PanicOnMissing)
 
 	// can have a value but not in the right type for that field (age below)
-	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*events.Value{
-		"gender": events.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
-		"age":    events.NewValue(types.NewXText("nan"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
+	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*core.Value{
+		"gender": core.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
+		"age":    core.NewValue(types.NewXText("nan"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 	}, assets.PanicOnMissing)
 
 	assert.Equal(t, types.NewXText("Male"), fieldVals.Get(gender).Text)
@@ -69,17 +69,17 @@ func TestFieldValueParse(t *testing.T) {
 	tcs := []struct {
 		field    *flows.Field
 		value    string
-		expected *events.Value
+		expected *core.Value
 	}{
 		{gender, "", nil},
-		{gender, "M", events.NewValue(xt("M"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
-		{gender, " M ", events.NewValue(xt(" M "), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
-		{gender, " 12 ", events.NewValue(xt(" 12 "), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
+		{gender, "M", core.NewValue(xt("M"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{gender, " M ", core.NewValue(xt(" M "), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{gender, " 12 ", core.NewValue(xt(" 12 "), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
 		{age, "", nil},
-		{age, "12", events.NewValue(xt("12"), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
+		{age, "12", core.NewValue(xt("12"), nil, xn("12"), nilLocPath, nilLocPath, nilLocPath)},
 		{state, "", nil},
-		{state, "kigali city", events.NewValue(xt("kigali city"), nil, nil, envs.LocationPath("Rwanda > Kigali City"), nilLocPath, nilLocPath)},
-		{state, "x", events.NewValue(xt("x"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{state, "kigali city", core.NewValue(xt("kigali city"), nil, nil, envs.LocationPath("Rwanda > Kigali City"), nilLocPath, nilLocPath)},
+		{state, "x", core.NewValue(xt("x"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
 	}
 
 	for _, tc := range tcs {
@@ -94,12 +94,12 @@ func TestValues(t *testing.T) {
 	num2 := types.RequireXNumberFromString("23")
 	num3 := types.RequireXNumberFromString("45")
 
-	v1 := events.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
-	v2 := events.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
-	v3 := events.NewValue(types.NewXText("23"), nil, num1, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
-	v4 := events.NewValue(types.NewXText("23x"), nil, num2, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
-	v5 := events.NewValue(types.NewXText("23x"), nil, num3, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
-	v6 := (*events.Value)(nil)
+	v1 := core.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v2 := core.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v3 := core.NewValue(types.NewXText("23"), nil, num1, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v4 := core.NewValue(types.NewXText("23x"), nil, num2, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v5 := core.NewValue(types.NewXText("23x"), nil, num3, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath(""))
+	v6 := (*core.Value)(nil)
 
 	assert.True(t, v1.Equals(v1))
 	assert.True(t, v1.Equals(v2))

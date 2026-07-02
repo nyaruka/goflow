@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeMsgReceived, func() Event { return &MsgReceived{} })
 }
@@ -27,12 +29,12 @@ const TypeMsgReceived string = "msg_received"
 type MsgReceived struct {
 	BaseEvent
 
-	Msg        *MsgIn     `json:"msg" validate:"required"`
-	TicketUUID TicketUUID `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
+	Msg        *core.MsgIn     `json:"msg" validate:"required"`
+	TicketUUID core.TicketUUID `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
 }
 
 // NewMsgReceived creates a new incoming msg event for the passed in channel, URN and text
-func NewMsgReceived(msg *MsgIn, ticketUUID TicketUUID) *MsgReceived {
+func NewMsgReceived(msg *core.MsgIn, ticketUUID core.TicketUUID) *MsgReceived {
 	return &MsgReceived{
 		BaseEvent:  NewBaseEvent(TypeMsgReceived),
 		Msg:        msg,

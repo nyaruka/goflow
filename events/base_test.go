@@ -3,6 +3,7 @@ package events_test
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"strings"
 	"testing"
@@ -15,9 +16,9 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/events"
-	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -43,7 +44,7 @@ func TestEventMarshaling(t *testing.T) {
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
-	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", events.TicketStatusOpen, weather, user)
+	ticket := flows.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", core.TicketStatusOpen, weather, user)
 	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
 	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", facebook, "tel:+12065551212")
 
@@ -55,16 +56,16 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewAirtimeCreated(
 					events.NewEventUUID(),
-					&events.AirtimeTransfer{
+					&core.AirtimeTransfer{
 						ExternalID: "98765432",
 						Sender:     urns.URN("tel:+593979099111"),
 						Recipient:  urns.URN("tel:+593979099222"),
 						Currency:   "USD",
 						Amount:     decimal.RequireFromString("1.00"),
 					},
-					[]*events.HTTPLog{
+					[]*core.HTTPLog{
 						{
-							HTTPLogWithoutTime: &events.HTTPLogWithoutTime{
+							HTTPLogWithoutTime: &core.HTTPLogWithoutTime{
 								LogWithoutTime: &httpx.LogWithoutTime{
 									URL:        "https://send.money.com/topup",
 									StatusCode: 200,
@@ -72,7 +73,7 @@ func TestEventMarshaling(t *testing.T) {
 									Response:   "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
 									ElapsedMS:  12,
 								},
-								Status: events.CallStatusSuccess,
+								Status: core.CallStatusSuccess,
 							},
 							CreatedOn: dates.Now(),
 						},
@@ -84,7 +85,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewBroadcastCreated(
-					events.BroadcastTranslations{
+					core.BroadcastTranslations{
 						"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
 						"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
 					},
@@ -92,8 +93,8 @@ func TestEventMarshaling(t *testing.T) {
 					[]*assets.GroupReference{
 						assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
 					},
-					[]*events.ContactReference{
-						events.NewContactReference(events.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+					[]*core.ContactReference{
+						core.NewContactReference(core.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
 					},
 					"name = \"Bob\"",
 					[]urns.URN{urns.URN("tel:+12345678900")},
@@ -131,7 +132,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewContactFieldChanged(
 					gender.Reference(),
-					events.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
+					core.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
 				)
 			},
 			`contact_field_changed`,
@@ -174,19 +175,19 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewContactStatusChanged(events.ContactStatusActive)
+				return events.NewContactStatusChanged(core.ContactStatusActive)
 			},
 			`contact_status_changed_active`,
 		},
 		{
 			func() events.Event {
-				return events.NewContactStatusChanged(events.ContactStatusBlocked)
+				return events.NewContactStatusChanged(core.ContactStatusBlocked)
 			},
 			`contact_status_changed_blocked`,
 		},
 		{
 			func() events.Event {
-				return events.NewContactStatusChanged(events.ContactStatusStopped)
+				return events.NewContactStatusChanged(core.ContactStatusStopped)
 			},
 			`contact_status_changed_stopped`,
 		},
@@ -207,7 +208,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewDialEnded(events.NewDial(events.DialStatusBusy, 0))
+				return events.NewDialEnded(core.NewDial(core.DialStatusBusy, 0))
 			},
 			`dial_ended`,
 		},
@@ -244,7 +245,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewIVRCreated(
-					events.NewIVRMsgOut(
+					core.NewIVRMsgOut(
 						urns.URN("tel:+12345678900"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 						"Hi there",
@@ -261,7 +262,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"Categorize the following text as Positive or Negative",
 					"Please stop messaging me",
-					&events.LLMResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
+					&core.LLMResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
 					123*time.Millisecond,
 				)
 			},
@@ -270,7 +271,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewMsgReceived(
-					events.NewMsgIn(
+					core.NewMsgIn(
 						urns.URN("tel:+12065551212"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 						"hi there",
@@ -285,7 +286,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewMsgReceived(
-					events.NewMsgIn(
+					core.NewMsgIn(
 						urns.URN("tel:+12065551212"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
 						"hi there",
@@ -300,10 +301,10 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewMsgCreated(
-					events.NewMsgOut(
+					core.NewMsgOut(
 						urns.URN("tel:+12345678900"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-						&events.MsgContent{Text: "Hi there"},
+						&core.MsgContent{Text: "Hi there"},
 						nil,
 						i18n.NilLocale,
 						"",
@@ -317,17 +318,17 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewMsgCreated(
-					events.NewMsgOut(
+					core.NewMsgOut(
 						urns.URN("tel:+12345678900"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
-						&events.MsgContent{
+						&core.MsgContent{
 							Text:         "Hi there",
 							Attachments:  []utils.Attachment{"image/jpeg:http://s3.amazon.com/bucket/test.jpg"},
-							QuickReplies: []events.QuickReply{{Text: "yes"}, {Text: "no"}},
+							QuickReplies: []core.QuickReply{{Text: "yes"}, {Text: "no"}},
 						},
 						nil,
 						"eng-US",
-						events.UnsendableReasonContactBlocked,
+						core.UnsendableReasonContactBlocked,
 					),
 					"",
 					"01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
@@ -385,15 +386,15 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewRunResultChanged(events.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)), nil)
+				return events.NewRunResultChanged(core.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)), nil)
 			},
 			`run_result_changed`,
 		},
 		{
 			func() events.Event {
 				return events.NewRunResultChanged(
-					events.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)),
-					events.NewResult("Age", "43", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2024, 9, 1, 13, 45, 30, 0, time.UTC)),
+					core.NewResult("Age", "44", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2025, 9, 1, 13, 45, 30, 0, time.UTC)),
+					core.NewResult("Age", "43", "", "", "78c4513d-61a1-428b-80d7-3bffd39b74f2", "", nil, time.Date(2024, 9, 1, 13, 45, 30, 0, time.UTC)),
 				)
 			},
 			`run_result_changed_with_previous`,
@@ -410,7 +411,7 @@ func TestEventMarshaling(t *testing.T) {
 				return events.NewRunEnded(
 					"01990b6d-de7e-7d28-8e40-806ac2c2f3f2",
 					assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
-					events.RunStatusCompleted,
+					core.RunStatusCompleted,
 				)
 			},
 			`run_ended`,
@@ -422,15 +423,15 @@ func TestEventMarshaling(t *testing.T) {
 					[]*assets.GroupReference{
 						assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
 					},
-					[]*events.ContactReference{
-						events.NewContactReference(events.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+					[]*core.ContactReference{
+						core.NewContactReference(core.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
 					},
 					"age > 20",
 					events.Exclusions{InAFlow: true},
 					false,
 					[]urns.URN{urns.URN("tel:+12345678900")},
 					json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
-					&events.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
+					&core.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 				)
 			},
 			`session_triggered`,
@@ -544,7 +545,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 	assert.Equal(t, 42, len(call.ResponseTrace))
 	assert.Equal(t, 20000, len(call.ResponseBody))
 
-	event := events.NewWebhookCalled(call, events.CallStatusSuccess, "")
+	event := events.NewWebhookCalled(call, core.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, 10000, len(event.Request))
@@ -566,7 +567,7 @@ func TestWebhookCalledEventValid(t *testing.T) {
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
-	event := events.NewWebhookCalled(call, events.CallStatusSuccess, "")
+	event := events.NewWebhookCalled(call, core.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 14\r\nHeader: hello\r\n\r\n{\"foo\": \"bar\"}", event.Response)
@@ -586,7 +587,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
-	event := events.NewWebhookCalled(call, events.CallStatusSuccess, "")
+	event := events.NewWebhookCalled(call, core.CallStatusSuccess, "")
 
 	// actual null will have been stripped, escaped null will remain
 	assert.Equal(t, "http://temba.io/", event.URL)
@@ -607,7 +608,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
-	event := events.NewWebhookCalled(call, events.CallStatusSuccess, "")
+	event := events.NewWebhookCalled(call, core.CallStatusSuccess, "")
 
 	assert.Equal(t, "http://temba.io/", event.URL)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 13\r\nBad-Header: �\r\n\r\n...", event.Response)

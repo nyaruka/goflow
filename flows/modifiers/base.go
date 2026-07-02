@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
@@ -55,7 +56,7 @@ func ReevaluateGroups(env envs.Environment, contact *flows.Contact, log events.E
 	added, removed := contact.ReevaluateQueryBasedGroups(env)
 
 	// make sure from all static groups are removed for non-active contacts
-	if contact.Status() != events.ContactStatusActive {
+	if contact.Status() != core.ContactStatusActive {
 		for _, g := range contact.Groups().All() {
 			if !g.UsesQuery() {
 				removed = append(removed, g)

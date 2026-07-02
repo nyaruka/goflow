@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeCallCreated, func() Event { return &CallCreated{} })
 }
@@ -24,11 +26,11 @@ const TypeCallCreated string = "call_created"
 type CallCreated struct {
 	BaseEvent
 
-	Call *CallEnvelope `json:"call" validate:"required"`
+	Call *core.CallEnvelope `json:"call" validate:"required"`
 }
 
 // NewCallCreated returns a new call created event
-func NewCallCreated(call *CallEnvelope) *CallCreated {
+func NewCallCreated(call *core.CallEnvelope) *CallCreated {
 	return &CallCreated{
 		BaseEvent: NewBaseEvent(TypeCallCreated),
 		Call:      call,

@@ -2,7 +2,7 @@ package issues
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
@@ -24,7 +24,7 @@ type MissingDependency struct {
 	Dependency assets.TypedReference `json:"dependency"`
 }
 
-func newMissingDependency(nodeUUID events.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, ref assets.Reference) *MissingDependency {
+func newMissingDependency(nodeUUID core.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, ref assets.Reference) *MissingDependency {
 	return &MissingDependency{
 		baseIssue: newBaseIssue(
 			TypeMissingDependency,

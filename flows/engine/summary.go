@@ -2,7 +2,7 @@ package engine
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -14,11 +14,11 @@ import (
 
 // concrete run summary which might be stored on a trigger or event
 type runSummary struct {
-	uuid    events.RunUUID
+	uuid    core.RunUUID
 	flow    flows.Flow
 	flowRef *assets.FlowReference
 	contact *flows.Contact
-	status  events.RunStatus
+	status  core.RunStatus
 	results flows.Results
 }
 
@@ -34,11 +34,11 @@ func newRunSummaryFromRun(run flows.Run) flows.RunSummary {
 	}
 }
 
-func (r *runSummary) UUID() events.RunUUID     { return r.uuid }
-func (r *runSummary) Flow() flows.Flow         { return r.flow }
-func (r *runSummary) Contact() *flows.Contact  { return r.contact }
-func (r *runSummary) Status() events.RunStatus { return r.status }
-func (r *runSummary) Results() flows.Results   { return r.results }
+func (r *runSummary) UUID() core.RunUUID      { return r.uuid }
+func (r *runSummary) Flow() flows.Flow        { return r.flow }
+func (r *runSummary) Contact() *flows.Contact { return r.contact }
+func (r *runSummary) Status() core.RunStatus  { return r.status }
+func (r *runSummary) Results() flows.Results  { return r.results }
 
 var _ flows.RunSummary = (*runSummary)(nil)
 
@@ -113,10 +113,10 @@ func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID    events.RunUUID         `json:"uuid" validate:"uuid"`
+	UUID    core.RunUUID           `json:"uuid" validate:"uuid"`
 	Flow    *assets.FlowReference  `json:"flow" validate:"required"`
 	Contact *flows.ContactEnvelope `json:"contact"`
-	Status  events.RunStatus       `json:"status" validate:"required"`
+	Status  core.RunStatus         `json:"status" validate:"required"`
 	Results flows.Results          `json:"results"`
 }
 

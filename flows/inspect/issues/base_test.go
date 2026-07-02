@@ -3,7 +3,7 @@ package issues_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"os"
 	"testing"
 
@@ -116,7 +116,7 @@ func TestIssues(t *testing.T) {
 
 	assert.Equal(t, 1, len(info.Issues))
 	assert.Equal(t, issues.TypeMissingDependency, info.Issues[0].Type())
-	assert.Equal(t, events.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"), info.Issues[0].NodeUUID())
+	assert.Equal(t, core.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"), info.Issues[0].NodeUUID())
 	assert.Equal(t, flows.ActionUUID("f01d693b-2af2-49fb-9e38-146eb00937e9"), info.Issues[0].ActionUUID())
 	assert.Equal(t, i18n.NilLanguage, info.Issues[0].Language())
 	assert.Equal(t, "missing field dependency 'county'", info.Issues[0].Description())

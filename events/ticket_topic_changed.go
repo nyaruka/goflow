@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -28,12 +29,12 @@ const TypeTicketTopicChanged string = "ticket_topic_changed"
 type TicketTopicChanged struct {
 	BaseEvent
 
-	TicketUUID TicketUUID             `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID        `json:"ticket_uuid" validate:"required,uuid"`
 	Topic      *assets.TopicReference `json:"topic"       validate:"required"`
 }
 
 // NewTicketTopicChanged returns a new ticket topic changed event
-func NewTicketTopicChanged(ticketUUID TicketUUID, topic *assets.TopicReference) *TicketTopicChanged {
+func NewTicketTopicChanged(ticketUUID core.TicketUUID, topic *assets.TopicReference) *TicketTopicChanged {
 	return &TicketTopicChanged{
 		BaseEvent:  NewBaseEvent(TypeTicketTopicChanged),
 		TicketUUID: ticketUUID,

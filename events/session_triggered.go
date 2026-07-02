@@ -2,6 +2,7 @@ package events
 
 import (
 	"encoding/json"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -58,17 +59,17 @@ type SessionTriggered struct {
 
 	Flow          *assets.FlowReference    `json:"flow" validate:"required"`
 	Groups        []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
-	Contacts      []*ContactReference      `json:"contacts,omitempty" validate:"dive"`
+	Contacts      []*core.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	ContactQuery  string                   `json:"contact_query,omitempty"`
 	Exclusions    Exclusions               `json:"exclusions"`
 	CreateContact bool                     `json:"create_contact,omitempty"`
 	URNs          []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
 	RunSummary    json.RawMessage          `json:"run_summary"`
-	History       *SessionHistory          `json:"history"`
+	History       *core.SessionHistory     `json:"history"`
 }
 
 // NewSessionTriggered returns a new session triggered event
-func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*ContactReference, contactQuery string, exclusions Exclusions, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *SessionHistory) *SessionTriggered {
+func NewSessionTriggered(flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*core.ContactReference, contactQuery string, exclusions Exclusions, createContact bool, urns []urns.URN, runSummary json.RawMessage, history *core.SessionHistory) *SessionTriggered {
 	return &SessionTriggered{
 		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,

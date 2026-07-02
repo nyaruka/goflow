@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/goflow/events/hints"
+	"github.com/nyaruka/goflow/core/hints"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -2,7 +2,7 @@ package inputs
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -22,13 +22,13 @@ func registerType(name string, f readFunc) {
 // base of all input types
 type baseInput struct {
 	type_     string
-	uuid      events.InputUUID
+	uuid      core.InputUUID
 	channel   *flows.Channel
 	createdOn time.Time
 }
 
 // creates a new base input
-func newBaseInput(typeName string, uuid events.InputUUID, channel *flows.Channel, createdOn time.Time) baseInput {
+func newBaseInput(typeName string, uuid core.InputUUID, channel *flows.Channel, createdOn time.Time) baseInput {
 	return baseInput{
 		type_:     typeName,
 		uuid:      uuid,
@@ -40,7 +40,7 @@ func newBaseInput(typeName string, uuid events.InputUUID, channel *flows.Channel
 // Type returns the type of this input
 func (i *baseInput) Type() string { return i.type_ }
 
-func (i *baseInput) UUID() events.InputUUID  { return i.uuid }
+func (i *baseInput) UUID() core.InputUUID    { return i.uuid }
 func (i *baseInput) Channel() *flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 
@@ -50,7 +50,7 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 
 type baseEnvelope struct {
 	Type      string                   `json:"type" validate:"required"`
-	UUID      events.InputUUID         `json:"uuid"`
+	UUID      core.InputUUID           `json:"uuid"`
 	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 }

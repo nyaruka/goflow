@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -15,6 +16,6 @@ type FlowEntered struct {
 	BaseEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
-	ParentRunUUID RunUUID               `json:"parent_run_uuid" validate:"omitempty,uuid"`
+	ParentRunUUID core.RunUUID          `json:"parent_run_uuid" validate:"omitempty,uuid"`
 	Terminal      bool                  `json:"terminal"`
 }

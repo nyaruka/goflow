@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -22,11 +23,11 @@ const TypeTicketReopen string = "ticket_reopen"
 type TicketReopen struct {
 	baseModifier
 
-	ticketUUID events.TicketUUID
+	ticketUUID core.TicketUUID
 }
 
 // NewTicketReopen creates a new reopen modifier
-func NewTicketReopen(ticketUUID events.TicketUUID) *TicketReopen {
+func NewTicketReopen(ticketUUID core.TicketUUID) *TicketReopen {
 	return &TicketReopen{
 		baseModifier: newBaseModifier(TypeTicketReopen),
 		ticketUUID:   ticketUUID,
@@ -42,8 +43,8 @@ func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Env
 
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	if ticket != nil && ticket.Status() != events.TicketStatusOpen {
-		ticket.SetStatus(events.TicketStatusOpen)
+	if ticket != nil && ticket.Status() != core.TicketStatusOpen {
+		ticket.SetStatus(core.TicketStatusOpen)
 		log(events.NewTicketReopened(ticket.UUID()))
 		return true, nil
 	}
@@ -59,7 +60,7 @@ var _ flows.Modifier = (*TicketReopen)(nil)
 type ticketReopenEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID events.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 func readTicketReopen(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

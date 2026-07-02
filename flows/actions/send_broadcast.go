@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
@@ -44,7 +45,7 @@ type SendBroadcast struct {
 }
 
 // NewSendBroadcast creates a new send broadcast action
-func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*events.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, template *assets.TemplateReference, templateVariables []string) *SendBroadcast {
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*core.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, template *assets.TemplateReference, templateVariables []string) *SendBroadcast {
 	return &SendBroadcast{
 		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
@@ -77,7 +78,7 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 		return nil
 	}
 
-	translations := make(events.BroadcastTranslations)
+	translations := make(core.BroadcastTranslations)
 	languages := append([]i18n.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for

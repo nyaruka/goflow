@@ -3,7 +3,7 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"sort"
 	"strings"
 
@@ -16,7 +16,7 @@ import (
 )
 
 // Results is our wrapper around a map of snakified result names to result objects
-type Results map[string]*events.Result
+type Results map[string]*core.Result
 
 // NewResults creates a new empty set of results
 func NewResults() Results {
@@ -31,7 +31,7 @@ func (r Results) Clone() Results {
 }
 
 // Save saves a new result in our map using the snakified name as the key. Returns the old result if it existed.
-func (r Results) Save(result *events.Result) (*events.Result, bool) {
+func (r Results) Save(result *core.Result) (*core.Result, bool) {
 	key := utils.Snakify(result.Name)
 	old := r[key]
 	r[key] = result
@@ -43,7 +43,7 @@ func (r Results) Save(result *events.Result) (*events.Result, bool) {
 }
 
 // Get returns the result with the given key
-func (r Results) Get(key string) *events.Result {
+func (r Results) Get(key string) *core.Result {
 	return r[key]
 }
 
@@ -69,7 +69,7 @@ func (r Results) format() string {
 }
 
 func (r *Results) UnmarshalJSON(data []byte) error {
-	var m map[string]*events.Result
+	var m map[string]*core.Result
 	if err := json.Unmarshal(data, &m); err != nil {
 		return err
 	}

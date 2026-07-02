@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
 	"github.com/shopspring/decimal"
 )
 
@@ -46,11 +47,11 @@ type AirtimeCreated struct {
 	Recipient  urns.URN        `json:"recipient"`
 	Currency   string          `json:"currency"`
 	Amount     decimal.Decimal `json:"amount"`
-	HTTPLogs   []*HTTPLog      `json:"http_logs"`
+	HTTPLogs   []*core.HTTPLog `json:"http_logs"`
 }
 
 // NewAirtimeCreated creates a new airtime created event with the given pre-allocated UUID
-func NewAirtimeCreated(uuid EventUUID, t *AirtimeTransfer, httpLogs []*HTTPLog) *AirtimeCreated {
+func NewAirtimeCreated(uuid EventUUID, t *core.AirtimeTransfer, httpLogs []*core.HTTPLog) *AirtimeCreated {
 	sender := t.Sender
 	if sender != "" {
 		sender = sender.Identity()

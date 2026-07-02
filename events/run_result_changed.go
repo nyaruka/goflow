@@ -2,6 +2,7 @@ package events
 
 import (
 	"encoding/json"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {
@@ -39,7 +40,7 @@ type RunResultChanged struct {
 }
 
 // NewRunResultChanged returns a new save result event for the passed in values
-func NewRunResultChanged(result, prev *Result) *RunResultChanged {
+func NewRunResultChanged(result, prev *core.Result) *RunResultChanged {
 	var p *PreviousResult
 	if prev != nil {
 		p = &PreviousResult{

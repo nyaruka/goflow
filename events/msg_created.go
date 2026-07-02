@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/core"
+
 func init() {
 	registerType(TypeMsgCreated, func() Event { return &MsgCreated{} })
 }
@@ -26,13 +28,13 @@ const TypeMsgCreated string = "msg_created"
 type MsgCreated struct {
 	BaseEvent
 
-	Msg           *MsgOut       `json:"msg"                      validate:"required"`
-	BroadcastUUID BroadcastUUID `json:"broadcast_uuid,omitempty" validate:"omitempty,uuid"`
-	TicketUUID    TicketUUID    `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
+	Msg           *core.MsgOut       `json:"msg"                      validate:"required"`
+	BroadcastUUID core.BroadcastUUID `json:"broadcast_uuid,omitempty" validate:"omitempty,uuid"`
+	TicketUUID    core.TicketUUID    `json:"ticket_uuid,omitempty"    validate:"omitempty,uuid"`
 }
 
 // NewMsgCreated creates a new outgoing msg event to a single contact
-func NewMsgCreated(msg *MsgOut, bcastUUID BroadcastUUID, ticketUUID TicketUUID) *MsgCreated {
+func NewMsgCreated(msg *core.MsgOut, bcastUUID core.BroadcastUUID, ticketUUID core.TicketUUID) *MsgCreated {
 	return &MsgCreated{
 		BaseEvent:     NewBaseEvent(TypeMsgCreated),
 		Msg:           msg,

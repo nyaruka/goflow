@@ -1,7 +1,7 @@
 package flows_test
 
 import (
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -47,7 +47,7 @@ func TestCall(t *testing.T) {
 	)
 
 	// test marshaling our call
-	ce := &events.CallEnvelope{
+	ce := &core.CallEnvelope{
 		UUID:    "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
 		Channel: assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo"),
 		URN:     urns.URN("tel:+1234567890"),
