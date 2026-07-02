@@ -3,7 +3,7 @@ package engine
 import (
 	"encoding/json"
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"

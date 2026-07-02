@@ -3,7 +3,7 @@ package services_test
 import (
 	"context"
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"

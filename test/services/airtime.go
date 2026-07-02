@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"strings"
 	"time"
 

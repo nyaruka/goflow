@@ -2,7 +2,7 @@ package flows
 
 import (
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"

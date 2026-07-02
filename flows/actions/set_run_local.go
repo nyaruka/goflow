@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 )
 

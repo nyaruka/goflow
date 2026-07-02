@@ -2,7 +2,7 @@ package actions
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"

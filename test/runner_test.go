@@ -6,7 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"net/http"
 	"os"
 	"regexp"

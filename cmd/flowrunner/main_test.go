@@ -10,7 +10,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	main "github.com/nyaruka/goflow/cmd/flowrunner"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
