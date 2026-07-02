@@ -11,10 +11,10 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/cmd/docgen/completion"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -438,8 +438,8 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	run := session.Runs()[0]
 	step := run.Path()[len(run.Path())-1]
 
-	eventList := make([]flows.Event, 0)
-	eventLog := func(e flows.Event) {
+	eventList := make([]events.Event, 0)
+	eventLog := func(e events.Event) {
 		e.SetStep(step)
 		eventList = append(eventList, e)
 	}

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
@@ -31,51 +32,14 @@ func (f *Field) Reference() *assets.FieldReference {
 	return assets.NewFieldReference(f.Key(), f.Name())
 }
 
-// Value represents a value in each of the field types
-type Value struct {
-	Text     *types.XText      `json:"text" validate:"required"`
-	Datetime *types.XDateTime  `json:"datetime,omitempty"`
-	Number   *types.XNumber    `json:"number,omitempty"`
-	State    envs.LocationPath `json:"state,omitempty"`
-	District envs.LocationPath `json:"district,omitempty"`
-	Ward     envs.LocationPath `json:"ward,omitempty"`
-}
-
-// NewValue creates an empty value
-func NewValue(text *types.XText, datetime *types.XDateTime, number *types.XNumber, state envs.LocationPath, district envs.LocationPath, ward envs.LocationPath) *Value {
-	return &Value{
-		Text:     text,
-		Datetime: datetime,
-		Number:   number,
-		State:    state,
-		District: district,
-		Ward:     ward,
-	}
-}
-
-// Equals determines whether two values are equal
-func (v *Value) Equals(o *Value) bool {
-	if v == nil && o == nil {
-		return true
-	}
-	if (v == nil && o != nil) || (v != nil && o == nil) {
-		return false
-	}
-
-	dateEqual := (v.Datetime == nil && o.Datetime == nil) || (v.Datetime != nil && o.Datetime != nil && v.Datetime.Equals(o.Datetime))
-	numEqual := (v.Number == nil && o.Number == nil) || (v.Number != nil && o.Number != nil && v.Number.Equals(o.Number))
-
-	return v.Text.Equals(o.Text) && dateEqual && numEqual && v.State == o.State && v.District == o.District && v.Ward == o.Ward
-}
-
 // FieldValue represents a field and a set of values for that field
 type FieldValue struct {
 	field *Field
-	*Value
+	*core.Value
 }
 
 // NewFieldValue creates a new field value
-func NewFieldValue(field *Field, value *Value) *FieldValue {
+func NewFieldValue(field *Field, value *core.Value) *FieldValue {
 	return &FieldValue{field: field, Value: value}
 }
 
@@ -153,7 +117,7 @@ func (v *FieldValue) QueryValue() any {
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.MissingCallback) FieldValues {
+func NewFieldValues(a SessionAssets, values map[string]*core.Value, missing assets.MissingCallback) FieldValues {
 	allFields := a.Fields().All()
 	fieldValues := make(FieldValues, len(allFields))
 	for _, field := range allFields {
@@ -182,7 +146,7 @@ func (f FieldValues) clone() FieldValues {
 }
 
 // Get gets the value set for the given field
-func (f FieldValues) Get(field *Field) *Value {
+func (f FieldValues) Get(field *Field) *core.Value {
 	fieldVal := f[field.Key()]
 	if fieldVal != nil {
 		return fieldVal.Value
@@ -191,7 +155,7 @@ func (f FieldValues) Get(field *Field) *Value {
 }
 
 // Set sets the value for the given field (can be null to clear it)
-func (f FieldValues) Set(field *Field, value *Value) {
+func (f FieldValues) Set(field *Field, value *core.Value) {
 	var fv *FieldValue
 	if value != nil && !value.Text.Empty() {
 		fv = NewFieldValue(field, value)
@@ -200,7 +164,7 @@ func (f FieldValues) Set(field *Field, value *Value) {
 }
 
 // Parse parses a raw string field value into the different possible types
-func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
+func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *core.Value {
 	if rawValue == "" {
 		return nil
 	}
@@ -264,7 +228,7 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		}
 	}
 
-	return &Value{
+	return &core.Value{
 		Text:     asText,
 		Datetime: asDateTime,
 		Number:   asNumber,

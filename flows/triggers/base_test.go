@@ -16,11 +16,12 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
@@ -205,7 +206,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
-	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", flows.TicketStatusOpen, weather, user)
+	ticket := flows.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", core.TicketStatusOpen, weather, user)
 	call := flows.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065551212")
 
 	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
@@ -230,7 +231,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		snapshot string
 	}{
 		{
-			triggers.NewBuilder(flow).CallReceived(events.NewCallReceived(call)).Build(),
+			triggers.NewBuilder(flow).CallReceived(events.NewCallReceived(call.Marshal())).Build(),
 			"call",
 		},
 		{
@@ -239,7 +240,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				CampaignFired(events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8"), reminders).
+				CampaignFired(events.NewCampaignFired(reminders.Reference(), "8d339613-f0be-48b7-92ee-155f4c7576f8"), reminders).
 				Build(),
 			"campaign",
 		},
@@ -286,7 +287,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				MsgReceived(events.NewMsgReceived(flows.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"), "")).
+				MsgReceived(events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"), "")).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",

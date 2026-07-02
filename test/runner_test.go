@@ -15,6 +15,8 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -73,7 +75,7 @@ func loadTestCases() ([]runnerTest, error) {
 	return tests, nil
 }
 
-func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
+func marshalEventLog(eventLog []events.Event) []json.RawMessage {
 	marshaled := make([]json.RawMessage, len(eventLog))
 
 	for i := range eventLog {
@@ -92,7 +94,7 @@ type FlowTest struct {
 	Environment json.RawMessage                  `json:"environment"`
 	Contact     *flows.ContactEnvelope           `json:"contact"`
 	Trigger     json.RawMessage                  `json:"trigger"`
-	Call        *flows.CallEnvelope              `json:"call,omitempty"`
+	Call        *core.CallEnvelope               `json:"call,omitempty"`
 	Resumes     []json.RawMessage                `json:"resumes"`
 	Outputs     []json.RawMessage                `json:"outputs"`
 	HTTPMocks   map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
@@ -103,7 +105,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *core.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -146,7 +148,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 
 	var call *flows.Call
 	if rawCall != nil {
-		call = rawCall.Unmarshal(sa, assets.PanicOnMissing)
+		call = flows.ReadCall(sa, rawCall, assets.PanicOnMissing)
 	}
 
 	session, sprint, err := eng.NewSession(ctx, sa, env, contact, trigger, call)

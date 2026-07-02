@@ -4,15 +4,15 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDial(t *testing.T) {
-	d := flows.NewDial(flows.DialStatusNoAnswer, 5)
+	d := core.NewDial(core.DialStatusNoAnswer, 5)
 
 	// test marshalling
 	marshalled, err := jsonx.Marshal(d)
@@ -20,10 +20,10 @@ func TestDial(t *testing.T) {
 	assert.Equal(t, `{"status":"no_answer","duration":5}`, string(marshalled))
 
 	// and unmarsalling
-	d2 := &flows.Dial{}
+	d2 := &core.Dial{}
 	err = jsonx.Unmarshal(marshalled, d2)
 	assert.NoError(t, err)
-	assert.Equal(t, flows.DialStatusNoAnswer, d2.Status)
+	assert.Equal(t, core.DialStatusNoAnswer, d2.Status)
 	assert.Equal(t, 5, d2.Duration)
 
 	// test status validation

@@ -6,10 +6,11 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -39,7 +40,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 	}
 
 	return &Msg{
-		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
+		baseInput:   newBaseInput(TypeMsg, core.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
 		urn:         flows.NewURN(evt.Msg.URN().Scheme(), evt.Msg.URN().Path(), "", nil),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),

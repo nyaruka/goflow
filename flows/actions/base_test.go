@@ -18,11 +18,12 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/email/smtp"
@@ -178,7 +179,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		if tc.HasTicket {
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-			contact.Tickets().Add(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", flows.TicketStatusOpen, topic, nil))
+			contact.Tickets().Add(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", core.TicketStatusOpen, topic, nil))
 			contact.ReevaluateQueryBasedGroups(env)
 		}
 
@@ -200,7 +201,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 			trigger = tb.Build()
 		} else {
-			msg := flows.NewMsgIn(
+			msg := core.NewMsgIn(
 				urns.URN("tel:+12065551212"),
 				nil,
 				"Hi everybody",
@@ -229,9 +230,9 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return services.NewAirtime("RWF"), nil
 			}).
-			WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, contact *flows.Contact, content *flows.MsgContent) (flows.UnsendableReason, error) {
+			WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, contact *flows.Contact, content *core.MsgContent) (core.UnsendableReason, error) {
 				if strings.Contains(content.Text, "FORBIDDEN") {
-					return flows.UnsendableReason("forbidden_content"), nil
+					return core.UnsendableReason("forbidden_content"), nil
 				}
 				return "", nil
 			}).
@@ -517,8 +518,8 @@ func TestConstructors(t *testing.T) {
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
 				},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
+				[]*core.ContactReference{
+					core.NewContactReference(core.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
 				},
 				"fields.age > 20",
 				[]urns.URN{"twitter:nyaruka"},
@@ -647,7 +648,7 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewSetContactStatus(
 				actionUUID,
-				flows.ContactStatusBlocked,
+				core.ContactStatusBlocked,
 			),
 			`{
 				"type": "set_contact_status",
@@ -705,8 +706,8 @@ func TestConstructors(t *testing.T) {
 				[]*assets.GroupReference{
 					assets.NewGroupReference(assets.GroupUUID("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"), "Testers"),
 				},
-				[]*flows.ContactReference{
-					flows.NewContactReference(flows.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
+				[]*core.ContactReference{
+					core.NewContactReference(core.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
 				},
 				"fields.age > 20",
 				[]urns.URN{"twitter:nyaruka"},
@@ -981,7 +982,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			resume := resumes.NewMsg(events.NewMsgReceived(flows.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234"), ""))
+			resume := resumes.NewMsg(events.NewMsgReceived(core.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234"), ""))
 			sprint, err = session.Resume(ctx, resume)
 			require.NoError(t, err)
 		}

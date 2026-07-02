@@ -5,15 +5,16 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 )
 
 type step struct {
-	uuid      flows.StepUUID
-	nodeUUID  flows.NodeUUID
-	exitUUID  flows.ExitUUID
+	uuid      core.StepUUID
+	nodeUUID  core.NodeUUID
+	exitUUID  core.ExitUUID
 	arrivedOn time.Time
 
 	run flows.Run // transient
@@ -22,7 +23,7 @@ type step struct {
 // NewStep creates a new step
 func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		uuid:      flows.StepUUID(uuids.NewV4()),
+		uuid:      core.StepUUID(uuids.NewV4()),
 		nodeUUID:  n.UUID(),
 		arrivedOn: arrivedOn,
 
@@ -30,13 +31,13 @@ func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	}
 }
 
-func (s *step) UUID() flows.StepUUID     { return s.uuid }
-func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
-func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
-func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
-func (s *step) Run() flows.Run           { return s.run }
+func (s *step) UUID() core.StepUUID     { return s.uuid }
+func (s *step) NodeUUID() core.NodeUUID { return s.nodeUUID }
+func (s *step) ExitUUID() core.ExitUUID { return s.exitUUID }
+func (s *step) ArrivedOn() time.Time    { return s.arrivedOn }
+func (s *step) Run() flows.Run          { return s.run }
 
-func (s *step) Leave(exit flows.ExitUUID) {
+func (s *step) Leave(exit core.ExitUUID) {
 	s.exitUUID = exit
 }
 
@@ -69,10 +70,10 @@ func (p Path) ToXValue(env envs.Environment) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
-	UUID      flows.StepUUID `json:"uuid" validate:"required,uuid"`
-	NodeUUID  flows.NodeUUID `json:"node_uuid" validate:"required,uuid"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
-	ArrivedOn time.Time      `json:"arrived_on"`
+	UUID      core.StepUUID `json:"uuid" validate:"required,uuid"`
+	NodeUUID  core.NodeUUID `json:"node_uuid" validate:"required,uuid"`
+	ExitUUID  core.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
+	ArrivedOn time.Time     `json:"arrived_on"`
 }
 
 // UnmarshalJSON unmarshals a run step from the given JSON

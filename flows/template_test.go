@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -65,8 +66,8 @@ func TestTemplating(t *testing.T) {
 	tcs := []struct {
 		template           []byte
 		variables          []string
-		expectedTemplating *flows.MsgTemplating
-		expectedPreview    *flows.MsgContent
+		expectedTemplating *core.MsgTemplating
+		expectedPreview    *core.MsgContent
 	}{
 		{ // 0: empty translation
 			template: []byte(`{
@@ -82,12 +83,12 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template:   assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{},
-				Variables:  []*flows.TemplatingVariable{},
+				Components: []*core.TemplatingComponent{},
+				Variables:  []*core.TemplatingVariable{},
 			},
-			expectedPreview: &flows.MsgContent{},
+			expectedPreview: &core.MsgContent{},
 		},
 		{ // 1: body only
 			template: []byte(`{
@@ -113,21 +114,21 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"Chef", "boy"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "body",
 						Type:      "body/text",
 						Variables: map[string]int{"1": 0, "2": 1},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "text", Value: "Chef"},
 					{Type: "text", Value: "boy"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good boy?"},
+			expectedPreview: &core.MsgContent{Text: "Hi Chef, who's a good boy?"},
 		},
 		{ // 2: multiple text component types
 			template: []byte(`{
@@ -166,9 +167,9 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"A", "B", "C"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "header",
 						Type:      "header/text",
@@ -185,13 +186,13 @@ func TestTemplating(t *testing.T) {
 						Variables: map[string]int{"1": 2},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "text", Value: "A"},
 					{Type: "text", Value: "B"},
 					{Type: "text", Value: "C"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{Text: "Header A\n\nBody B\n\nFooter C"},
+			expectedPreview: &core.MsgContent{Text: "Header A\n\nBody B\n\nFooter C"},
 		},
 		{ // 3: buttons become quick replies
 			template: []byte(`{
@@ -223,9 +224,9 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"Yes", "No"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "button.1",
 						Type:      "button/quick_reply",
@@ -237,12 +238,12 @@ func TestTemplating(t *testing.T) {
 						Variables: map[string]int{"1": 1},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "text", Value: "Yes"},
 					{Type: "text", Value: "No"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
+			expectedPreview: &core.MsgContent{QuickReplies: []core.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 		},
 		{ // 4: header image becomes an attachment
 			template: []byte(`{
@@ -267,20 +268,20 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"image/jpeg:http://example.com/test.jpg"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "header",
 						Type:      "header/image",
 						Variables: map[string]int{"1": 0},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "image", Value: "image/jpeg:http://example.com/test.jpg"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:http://example.com/test.jpg"}},
+			expectedPreview: &core.MsgContent{Attachments: []utils.Attachment{"image/jpeg:http://example.com/test.jpg"}},
 		},
 		{ // 5: missing variables padded with empty
 			template: []byte(`{
@@ -306,21 +307,21 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"Chef"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "body",
 						Type:      "body/text",
 						Variables: map[string]int{"1": 0, "2": 1},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "text", Value: "Chef"},
 					{Type: "text", Value: ""},
 				},
 			},
-			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good ?"},
+			expectedPreview: &core.MsgContent{Text: "Hi Chef, who's a good ?"},
 		},
 		{ // 6: excess variables ignored
 			template: []byte(`{
@@ -346,21 +347,21 @@ func TestTemplating(t *testing.T) {
 				]
 			}`),
 			variables: []string{"Chef", "boy", "dog"},
-			expectedTemplating: &flows.MsgTemplating{
+			expectedTemplating: &core.MsgTemplating{
 				Template: assets.NewTemplateReference("4c01c732-e644-421c-af15-f5606c3e05f0", "greeting"),
-				Components: []*flows.TemplatingComponent{
+				Components: []*core.TemplatingComponent{
 					{
 						Name:      "body",
 						Type:      "body/text",
 						Variables: map[string]int{"1": 0, "2": 1},
 					},
 				},
-				Variables: []*flows.TemplatingVariable{
+				Variables: []*core.TemplatingVariable{
 					{Type: "text", Value: "Chef"},
 					{Type: "text", Value: "boy"},
 				},
 			},
-			expectedPreview: &flows.MsgContent{Text: "Hi Chef, who's a good boy?"},
+			expectedPreview: &core.MsgContent{Text: "Hi Chef, who's a good boy?"},
 		},
 	}
 

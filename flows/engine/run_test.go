@@ -11,10 +11,11 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -117,16 +118,16 @@ func TestRuns(t *testing.T) {
 	checkRuns := func(s flows.Session) {
 		r1, r2 := s.Runs()[0], s.Runs()[1]
 
-		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r1.UUID())
-		assert.Equal(t, flows.RunStatusCompleted, r1.Status())
+		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r1.UUID())
+		assert.Equal(t, core.RunStatusCompleted, r1.Status())
 		assert.Equal(t, flow, r1.Flow())
 		assert.Equal(t, flow.Reference(true), r1.FlowReference())
 		assert.Equal(t, "Parent", r1.Parent().Flow().Name())
 		assert.Equal(t, 0, len(r1.Ancestors())) // no parent runs within this session
 		assert.True(t, r1.HadInput())
 
-		assert.Equal(t, flows.RunUUID("01969b47-24c3-76f8-8f41-6b2d9f33d623"), r2.UUID())
-		assert.Equal(t, flows.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r2.Parent().UUID())
+		assert.Equal(t, core.RunUUID("01969b47-24c3-76f8-8f41-6b2d9f33d623"), r2.UUID())
+		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r2.Parent().UUID())
 	}
 
 	checkRuns(session)
@@ -295,7 +296,7 @@ func TestSetResult(t *testing.T) {
 	// no results means empty object with default of empty string
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"__default__": types.XTextEmpty}), flows.Context(session.Environment(), run.Results()))
 
-	prev, changed := run.SetResult(flows.NewResult("Response 1", "red", "Red", "Rojo", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like red", nil, dates.Now()))
+	prev, changed := run.SetResult(core.NewResult("Response 1", "red", "Red", "Rojo", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like red", nil, dates.Now()))
 	assert.Nil(t, prev)
 	assert.True(t, changed)
 
@@ -304,7 +305,7 @@ func TestSetResult(t *testing.T) {
 	assert.Equal(t, "Red", run.Results().Get("response_1").Category)
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
-	prev, changed = run.SetResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
+	prev, changed = run.SetResult(core.NewResult("Response 1", "blue", "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
 	if assert.NotNil(t, prev) {
 		assert.Equal(t, "Red", prev.Category)
 	}
@@ -316,12 +317,12 @@ func TestSetResult(t *testing.T) {
 	assert.Equal(t, time.Date(2020, 4, 20, 12, 39, 30, 123456789, time.UTC), run.ModifiedOn())
 
 	// try saving new result with same value and category again
-	prev, changed = run.SetResult(flows.NewResult("Response 1", "blue", "Blue", "Azul", "6f53c6ae-b66e-44dc-af9e-638e26ad05e9", "blue", nil, dates.Now()))
+	prev, changed = run.SetResult(core.NewResult("Response 1", "blue", "Blue", "Azul", "6f53c6ae-b66e-44dc-af9e-638e26ad05e9", "blue", nil, dates.Now()))
 	assert.Nil(t, prev)
 	assert.False(t, changed)
 
 	// long values should truncated
-	prev, changed = run.SetResult(flows.NewResult("Response 1", strings.Repeat("創", 700), "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
+	prev, changed = run.SetResult(core.NewResult("Response 1", strings.Repeat("創", 700), "Blue", "Azul", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like blue", nil, dates.Now()))
 	assert.NotNil(t, prev)
 	assert.True(t, changed)
 
@@ -355,7 +356,7 @@ func TestTranslation(t *testing.T) {
 		msgAction            []byte
 		expectedText         string
 		expectedAttachments  []utils.Attachment
-		expectedQuickReplies []flows.QuickReply
+		expectedQuickReplies []core.QuickReply
 	}{
 		{
 			description:  "contact language is valid and is flow base language, msg action has all fields",
@@ -367,7 +368,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action has all fields",
@@ -378,7 +379,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "si"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "si"}},
 		},
 		{
 			description:  "contact language is allowed but no translations exist, msg action has all fields",
@@ -390,7 +391,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:  "contact language is not allowed and translations exist, msg action has all fields",
@@ -402,7 +403,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 		{
 			description:          "contact language is valid and is flow base language, msg action only has text",
@@ -411,7 +412,7 @@ func TestTranslation(t *testing.T) {
 			msgAction:            msgAction2,
 			expectedText:         "Hello",
 			expectedAttachments:  []utils.Attachment{},
-			expectedQuickReplies: []flows.QuickReply{},
+			expectedQuickReplies: []core.QuickReply{},
 		},
 		{
 			description:  "contact language is valid and translations exist, msg action only has text",
@@ -422,7 +423,7 @@ func TestTranslation(t *testing.T) {
 			expectedAttachments: []utils.Attachment{
 				"audio/mp4:http://media.com/hola.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "si"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "si"}},
 		},
 		{
 			description:  "attachments and quick replies translations are single empty strings and should be ignored",
@@ -434,7 +435,7 @@ func TestTranslation(t *testing.T) {
 				"image/jpeg:http://media.com/hello.jpg",
 				"audio/mp4:http://media.com/hello.m4a",
 			},
-			expectedQuickReplies: []flows.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
+			expectedQuickReplies: []core.QuickReply{{Type: "text", Text: "yes"}, {Type: "text", Text: "no"}},
 		},
 	}
 

@@ -7,9 +7,9 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -90,7 +90,7 @@ func TestSprint(t *testing.T) {
 	var seg2 flows.Segment = &segment{flow: flow, node: node2, exit: node2Exit1, destination: node3, time: time.Date(2021, 12, 8, 10, 13, 31, 0, time.UTC)}
 
 	assert.True(t, sprint.IsInitial())
-	assert.Equal(t, []flows.Event{event1, event2}, sprint.Events())
+	assert.Equal(t, []events.Event{event1, event2}, sprint.Events())
 	assert.Equal(t, []flows.Segment{seg1, seg2}, sprint.Segments())
 	assert.Equal(t, []flows.Flow{flow}, sprint.Flows())
 

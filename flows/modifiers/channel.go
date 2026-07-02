@@ -5,9 +5,9 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -34,7 +34,7 @@ func NewChannel(channel *flows.Channel) *Channel {
 }
 
 // Apply applies this modification to the given contact
-func (m *Channel) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Channel) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	if m.channel != nil && !m.channel.HasRole(assets.ChannelRoleSend) {
 		log(events.NewError("Can't set channel that can't send as the preferred channel", ""))
 

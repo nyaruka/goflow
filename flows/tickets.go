@@ -1,37 +1,22 @@
 package flows
 
 import (
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
-// TicketUUID is the UUID of a ticket
-type TicketUUID uuids.UUID
-
-type TicketStatus string
-
-const (
-	// TicketStatusOpen is the status of an open ticket
-	TicketStatusOpen TicketStatus = "open"
-	// TicketStatusClosed is the status of a closed ticket
-	TicketStatusClosed TicketStatus = "closed"
-)
-
-// NewTicketUUID generates a new UUID for a ticket
-func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
-
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid     TicketUUID
-	status   TicketStatus
+	uuid     core.TicketUUID
+	status   core.TicketStatus
 	topic    *Topic
 	assignee *User
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User) *Ticket {
+func NewTicket(uuid core.TicketUUID, status core.TicketStatus, topic *Topic, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		status:   status,
@@ -42,13 +27,13 @@ func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *Use
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee)
+	return NewTicket(core.NewTicketUUID(), core.TicketStatusOpen, topic, assignee)
 }
 
-func (t *Ticket) UUID() TicketUUID { return t.uuid }
+func (t *Ticket) UUID() core.TicketUUID { return t.uuid }
 
-func (t *Ticket) Status() TicketStatus          { return t.status }
-func (t *Ticket) SetStatus(status TicketStatus) { t.status = status }
+func (t *Ticket) Status() core.TicketStatus          { return t.status }
+func (t *Ticket) SetStatus(status core.TicketStatus) { t.status = status }
 
 func (t *Ticket) Topic() *Topic         { return t.topic }
 func (t *Ticket) SetTopic(topic *Topic) { t.topic = topic }
@@ -87,7 +72,7 @@ func (l *TicketList) Add(t *Ticket) {
 	l.all = append(l.all, t)
 }
 
-func (l *TicketList) Find(uuid TicketUUID) *Ticket {
+func (l *TicketList) Find(uuid core.TicketUUID) *Ticket {
 	for _, t := range l.all {
 		if t.uuid == uuid {
 			return t
@@ -98,7 +83,7 @@ func (l *TicketList) Find(uuid TicketUUID) *Ticket {
 
 func (l *TicketList) LastOpen() *Ticket {
 	for i := len(l.all) - 1; i >= 0; i-- {
-		if l.all[i].status == TicketStatusOpen {
+		if l.all[i].status == core.TicketStatusOpen {
 			return l.all[i]
 		}
 	}
@@ -108,7 +93,7 @@ func (l *TicketList) LastOpen() *Ticket {
 func (l *TicketList) Open() *TicketList {
 	open := make([]*Ticket, 0, len(l.all))
 	for _, t := range l.all {
-		if t.status == TicketStatusOpen {
+		if t.status == core.TicketStatusOpen {
 			open = append(open, t)
 		}
 	}
@@ -128,8 +113,8 @@ func (l *TicketList) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXArray(array...)
 }
 
-func (l *TicketList) Marshal() []*TicketEnvelope {
-	envelopes := make([]*TicketEnvelope, len(l.all))
+func (l *TicketList) Marshal() []*core.TicketEnvelope {
+	envelopes := make([]*core.TicketEnvelope, len(l.all))
 	for i, t := range l.all {
 		envelopes[i] = t.Marshal()
 	}
@@ -140,18 +125,11 @@ func (l *TicketList) Marshal() []*TicketEnvelope {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type TicketEnvelope struct {
-	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=open|eq=closed"`
-	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
-}
-
-// Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
+// ReadTicket reads a ticket from the passed in envelope. If the topic or assigned user can't
 // be found in the assets, we report the missing asset and return ticket without those.
-func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) *Ticket {
+func ReadTicket(sa SessionAssets, e *core.TicketEnvelope, missing assets.MissingCallback) *Ticket {
 	if e.Status == "" {
-		e.Status = TicketStatusOpen
+		e.Status = core.TicketStatusOpen
 	}
 
 	var topic *Topic
@@ -174,7 +152,7 @@ func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallb
 }
 
 // Marshal marshals a ticket into an envelope.
-func (t *Ticket) Marshal() *TicketEnvelope {
+func (t *Ticket) Marshal() *core.TicketEnvelope {
 	var topicRef *assets.TopicReference
 	if t.topic != nil {
 		topicRef = t.topic.Reference()
@@ -185,7 +163,7 @@ func (t *Ticket) Marshal() *TicketEnvelope {
 		assigneeRef = t.assignee.Reference()
 	}
 
-	return &TicketEnvelope{
+	return &core.TicketEnvelope{
 		UUID:     t.uuid,
 		Status:   t.status,
 		Topic:    topicRef,

@@ -6,9 +6,10 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -46,8 +47,8 @@ func NewGroups(groups []*flows.Group, modification GroupsModification) *Groups {
 }
 
 // Apply applies this modification to the given contact
-func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
-	if contact.Status() == flows.ContactStatusBlocked || contact.Status() == flows.ContactStatusStopped {
+func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+	if contact.Status() == core.ContactStatusBlocked || contact.Status() == core.ContactStatusStopped {
 		log(events.NewError("Can't add blocked or stopped contacts to groups", ""))
 		return false, nil
 	}
@@ -72,7 +73,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(diff, nil))
+			log(events.NewContactGroupsChanged(flows.GroupReferences(diff), nil))
 			return true, nil
 		}
 
@@ -94,7 +95,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(nil, diff))
+			log(events.NewContactGroupsChanged(nil, flows.GroupReferences(diff)))
 			return true, nil
 		}
 	}

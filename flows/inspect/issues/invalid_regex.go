@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
@@ -25,7 +26,7 @@ type InvalidRegex struct {
 	Regex string `json:"regex"`
 }
 
-func newInvalidRegex(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, regex string) *InvalidRegex {
+func newInvalidRegex(nodeUUID core.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, regex string) *InvalidRegex {
 	return &InvalidRegex{
 		baseIssue: newBaseIssue(
 			TypeInvalidRegex,

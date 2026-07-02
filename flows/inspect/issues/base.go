@@ -4,6 +4,7 @@ import (
 	"sort"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -19,14 +20,14 @@ func registerType(name string, report reportFunc) {
 // base of all issue types
 type baseIssue struct {
 	Type_        string           `json:"type"`
-	NodeUUID_    flows.NodeUUID   `json:"node_uuid"`
+	NodeUUID_    core.NodeUUID    `json:"node_uuid"`
 	ActionUUID_  flows.ActionUUID `json:"action_uuid,omitempty"`
 	Language_    i18n.Language    `json:"language,omitempty"`
 	Description_ string           `json:"description"`
 }
 
 // creates a new base issue
-func newBaseIssue(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, description string) baseIssue {
+func newBaseIssue(typeName string, nodeUUID core.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, description string) baseIssue {
 	return baseIssue{
 		Type_:        typeName,
 		NodeUUID_:    nodeUUID,
@@ -40,7 +41,7 @@ func newBaseIssue(typeName string, nodeUUID flows.NodeUUID, actionUUID flows.Act
 func (p *baseIssue) Type() string { return p.Type_ }
 
 // NodeUUID returns the UUID of the node where issue is found
-func (p *baseIssue) NodeUUID() flows.NodeUUID { return p.NodeUUID_ }
+func (p *baseIssue) NodeUUID() core.NodeUUID { return p.NodeUUID_ }
 
 // ActionUUID returns the UUID of the action where issue is found
 func (p *baseIssue) ActionUUID() flows.ActionUUID { return p.ActionUUID_ }
@@ -63,7 +64,7 @@ func Check(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTempla
 	}
 
 	// sort issues by node order
-	nodeOrder := make(map[flows.NodeUUID]int, len(flow.Nodes()))
+	nodeOrder := make(map[core.NodeUUID]int, len(flow.Nodes()))
 	for i, node := range flow.Nodes() {
 		nodeOrder[node.UUID()] = i
 	}

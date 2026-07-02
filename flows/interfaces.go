@@ -11,6 +11,8 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -26,23 +28,11 @@ const (
 	MaxArgumentsPerCase    = 10   // max number of test arguments a switch router case can have
 )
 
-// NodeUUID is a UUID of a flow node
-type NodeUUID uuids.UUID
-
 // CategoryUUID is the UUID of a node category
 type CategoryUUID uuids.UUID
 
-// ExitUUID is the UUID of a node exit
-type ExitUUID uuids.UUID
-
 // ActionUUID is the UUID of an action
 type ActionUUID uuids.UUID
-
-// StepUUID is the UUID of a run step
-type StepUUID uuids.UUID
-
-// InputUUID is the UUID of an input
-type InputUUID uuids.UUID
 
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
@@ -95,7 +85,7 @@ type Flow interface {
 	Localization() Localization
 	UI() json.RawMessage
 	Nodes() []Node
-	GetNode(uuid NodeUUID) Node
+	GetNode(uuid core.NodeUUID) Node
 
 	Asset() assets.Flow
 	Reference(bool) *assets.FlowReference
@@ -108,7 +98,7 @@ type Flow interface {
 
 // Node is a single node in a flow
 type Node interface {
-	UUID() NodeUUID
+	UUID() core.NodeUUID
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
@@ -126,7 +116,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(context.Context, Run, Step, EventLogger) error
+	Execute(context.Context, Run, Step, events.EventLogger) error
 	Validate() error
 	Inspect(func(assets.Reference), func(string), func(*ResultInfo))
 }
@@ -137,7 +127,7 @@ type Category interface {
 
 	UUID() CategoryUUID
 	Name() string
-	ExitUUID() ExitUUID
+	ExitUUID() core.ExitUUID
 }
 
 // Router is a router on a note which can pick an exit
@@ -149,8 +139,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, EventLogger) (ExitUUID, string, error)
-	RouteTimeout(Run, Step, EventLogger) (ExitUUID, error)
+	Route(Run, Step, events.EventLogger) (core.ExitUUID, string, error)
+	RouteTimeout(Run, Step, events.EventLogger) (core.ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -160,8 +150,8 @@ type Router interface {
 
 // Exit is a route out of a node and optionally to another node
 type Exit interface {
-	UUID() ExitUUID
-	DestinationUUID() NodeUUID
+	UUID() core.ExitUUID
+	DestinationUUID() core.NodeUUID
 }
 
 // Timeout is a way to skip a wait after X amount of time
@@ -177,13 +167,8 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(Run, EventLogger) bool
+	Begin(Run, events.EventLogger) bool
 	Accepts(Resume) bool
-}
-
-// Hint tells the caller what type of input the flow is expecting
-type Hint interface {
-	utils.Typed
 }
 
 // Localization provide a way to get the translations for a specific language
@@ -199,11 +184,11 @@ type Trigger interface {
 	utils.Typed
 	Contextable
 
-	Event() Event
+	Event() events.Event
 	Flow() *assets.FlowReference
 	Batch() bool
 	Params() *types.XObject
-	History() *SessionHistory
+	History() *core.SessionHistory
 	TriggeredOn() time.Time
 
 	Input(SessionAssets) Input
@@ -221,7 +206,7 @@ type Resume interface {
 	utils.Typed
 	Contextable
 
-	Event() Event
+	Event() events.Event
 	ResumedOn() time.Time
 
 	Input(SessionAssets) Input
@@ -231,7 +216,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, EventLogger) (bool, error)
+	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, events.EventLogger) (bool, error)
 }
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
@@ -239,7 +224,7 @@ type Input interface {
 	utils.Typed
 	Contextable
 
-	UUID() InputUUID
+	UUID() core.InputUUID
 	CreatedOn() time.Time
 	Channel() *Channel
 }
@@ -247,17 +232,13 @@ type Input interface {
 // Step is a single step in the path thru a flow
 type Step interface {
 	Contextable
+	events.Step
 
-	UUID() StepUUID
-	NodeUUID() NodeUUID
-	ExitUUID() ExitUUID
-	ArrivedOn() time.Time
-
-	Leave(ExitUUID)
+	Leave(core.ExitUUID)
 	Run() Run
 }
 
-type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
+type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *core.MsgContent) (core.UnsendableReason, error)
 
 type ClaimURNCallback func(context.Context, SessionAssets, *Contact, urns.URN) (bool, error)
 
@@ -297,7 +278,7 @@ type Dependency interface {
 type Issue interface {
 	utils.Typed
 
-	NodeUUID() NodeUUID
+	NodeUUID() core.NodeUUID
 	ActionUUID() ActionUUID
 	Language() i18n.Language
 	Description() string

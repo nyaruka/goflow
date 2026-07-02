@@ -10,9 +10,10 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/routers/waits"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -117,7 +118,7 @@ func (r *baseRouter) isValidCategory(uuid flows.CategoryUUID) bool {
 	return false
 }
 
-func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
+func (r *baseRouter) isValidExit(uuid core.ExitUUID, exits []flows.Exit) bool {
 	for _, e := range exits {
 		if e.UUID() == uuid {
 			return true
@@ -127,7 +128,7 @@ func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 }
 
 // RouteTimeout routes in the case that this router's wait timed out
-func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows.EventLogger) (flows.ExitUUID, error) {
+func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent events.EventLogger) (core.ExitUUID, error) {
 	if !r.AllowTimeout() {
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}
@@ -135,7 +136,7 @@ func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent flows
 	return r.routeToCategory(run, step, r.wait.Timeout().CategoryUUID(), "", "", nil, logEvent)
 }
 
-func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent flows.EventLogger) (flows.ExitUUID, error) {
+func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUID flows.CategoryUUID, match string, operand string, extra *types.XObject, logEvent events.EventLogger) (core.ExitUUID, error) {
 	// router failed to pick a category
 	if categoryUUID == "" {
 		return "", nil
@@ -163,7 +164,7 @@ func (r *baseRouter) routeToCategory(run flows.Run, step flows.Step, categoryUUI
 		if extra != nil {
 			extraJSON, _ = jsonx.Marshal(extra)
 		}
-		result := flows.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), operand, extraJSON, dates.Now())
+		result := core.NewResult(r.resultName, match, category.Name(), localizedCategory, step.NodeUUID(), operand, extraJSON, dates.Now())
 		prev, changed := run.SetResult(result)
 		if changed {
 			logEvent(events.NewRunResultChanged(result, prev))

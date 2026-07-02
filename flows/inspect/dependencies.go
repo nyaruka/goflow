@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -66,7 +67,7 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 	switch typed := ref.(type) {
 	case *assets.ChannelReference:
 		return sa.Channels().Get(typed.UUID) != nil
-	case *flows.ContactReference:
+	case *core.ContactReference:
 		return true // have to assume contacts exist
 	case *assets.FieldReference:
 		return sa.Fields().Get(typed.Key) != nil

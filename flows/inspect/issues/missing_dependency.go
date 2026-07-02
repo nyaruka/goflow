@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inspect"
 )
@@ -23,7 +24,7 @@ type MissingDependency struct {
 	Dependency assets.TypedReference `json:"dependency"`
 }
 
-func newMissingDependency(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, ref assets.Reference) *MissingDependency {
+func newMissingDependency(nodeUUID core.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, ref assets.Reference) *MissingDependency {
 	return &MissingDependency{
 		baseIssue: newBaseIssue(
 			TypeMissingDependency,

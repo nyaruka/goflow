@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -45,7 +45,7 @@ func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
@@ -56,7 +56,7 @@ func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.
 	labels := resolveLabels(run, a.Labels, log)
 
 	if len(labels) > 0 {
-		log(events.NewInputLabelsAdded(input.UUID(), labels))
+		log(events.NewInputLabelsAdded(input.UUID(), flows.LabelReferences(labels)))
 	}
 
 	return nil

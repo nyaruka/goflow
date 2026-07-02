@@ -5,7 +5,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/shopspring/decimal"
 )
@@ -353,7 +353,7 @@ func newSayMsgAction(uuid uuids.UUID, text string, audioURL string) migratedActi
 	return migratedAction(d)
 }
 
-func newSendBroadcastAction(uuid uuids.UUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) migratedAction {
+func newSendBroadcastAction(uuid uuids.UUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*core.ContactReference, groups []*assets.GroupReference, legacyVars []string) migratedAction {
 	d := map[string]any{
 		"uuid": uuid,
 		"type": "send_broadcast",
@@ -443,7 +443,7 @@ func newSetContactNameAction(uuid uuids.UUID, name string) migratedAction {
 	})
 }
 
-func newStartSessionAction(uuid uuids.UUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) migratedAction {
+func newStartSessionAction(uuid uuids.UUID, flow *assets.FlowReference, urns []urns.URN, contacts []*core.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) migratedAction {
 	d := map[string]any{
 		"uuid": uuid,
 		"type": "start_session",

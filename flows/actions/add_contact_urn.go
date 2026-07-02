@@ -7,8 +7,8 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -53,7 +53,7 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 }
 
 // Execute runs the labeling action
-func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	evaluatedPath, _ := run.EvaluateTemplate(a.Path, log)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
