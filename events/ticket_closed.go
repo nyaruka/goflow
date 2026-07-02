@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeTicketClosed, func() Event { return &TicketClosed{} })
 }

@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeCallCreated, func() Event { return &CallCreated{} })
 }

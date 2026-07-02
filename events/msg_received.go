@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeMsgReceived, func() Event { return &MsgReceived{} })
 }

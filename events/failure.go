@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeFailure, func() Event { return &Error{} })
 }

@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeContactNameChanged, func() Event { return &ContactNameChanged{} })
 }

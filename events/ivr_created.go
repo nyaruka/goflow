@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeIVRCreated, func() Event { return &IVRCreated{} })
 }

@@ -1,7 +1,5 @@
 package events
 
-import ()
-
 func init() {
 	registerType(TypeWaitTimedOut, func() Event { return &WaitTimedOut{} })
 }
