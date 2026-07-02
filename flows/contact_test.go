@@ -3,6 +3,7 @@ package flows_test
 import (
 	"context"
 	"encoding/json"
+	"github.com/nyaruka/goflow/events"
 	"os"
 	"sort"
 	"testing"
@@ -60,11 +61,11 @@ func TestContact(t *testing.T) {
 
 	contact, err := flows.NewContact(
 		sa,
-		flows.NewContactUUID(),
+		events.NewContactUUID(),
 		flows.ContactID(12345),
 		"Joe Bloggs",
 		i18n.Language("eng"),
-		flows.ContactStatusActive,
+		events.ContactStatusActive,
 		tz,
 		time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC),
 		nil,
@@ -77,7 +78,7 @@ func TestContact(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
-	assert.Equal(t, flows.ContactStatusActive, contact.Status())
+	assert.Equal(t, events.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.LastSeenOn())
 	assert.Nil(t, contact.PreferredChannel())
 
@@ -96,14 +97,14 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, i18n.Country("US"), contact.Country())
 	assert.Equal(t, i18n.Locale("eng-US"), contact.Locale(env))
 
-	contact.SetStatus(flows.ContactStatusStopped)
-	assert.Equal(t, flows.ContactStatusStopped, contact.Status())
+	contact.SetStatus(events.ContactStatusStopped)
+	assert.Equal(t, events.ContactStatusStopped, contact.Status())
 
-	contact.SetStatus(flows.ContactStatusBlocked)
-	assert.Equal(t, flows.ContactStatusBlocked, contact.Status())
+	contact.SetStatus(events.ContactStatusBlocked)
+	assert.Equal(t, events.ContactStatusBlocked, contact.Status())
 
-	contact.SetStatus(flows.ContactStatusActive)
-	assert.Equal(t, flows.ContactStatusActive, contact.Status())
+	contact.SetStatus(events.ContactStatusActive)
+	assert.Equal(t, events.ContactStatusActive, contact.Status())
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"bsuid":      nil,
@@ -219,8 +220,8 @@ func TestReadContact(t *testing.T) {
 	// read minimal contact
 	contact, err := flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
-	assert.Equal(t, flows.ContactUUID("a20f7948-e497-4a4a-be3c-b17f79f7ab7d"), contact.UUID())
-	assert.Equal(t, flows.ContactStatusActive, contact.Status())
+	assert.Equal(t, events.ContactUUID("a20f7948-e497-4a4a-be3c-b17f79f7ab7d"), contact.UUID())
+	assert.Equal(t, events.ContactStatusActive, contact.Status())
 
 	// read invalid contact
 	_, err = flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
@@ -307,11 +308,11 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact, _ = flows.NewContact(
 		sa,
-		flows.NewContactUUID(),
+		events.NewContactUUID(),
 		flows.ContactID(1234),
 		"",
 		i18n.NilLanguage,
-		flows.ContactStatusActive,
+		events.ContactStatusActive,
 		nil,
 		time.Now(),
 		nil,

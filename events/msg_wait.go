@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -41,11 +42,11 @@ type MsgWait struct {
 	// When this wait expires and the whole run can be expired
 	ExpiresOn time.Time `json:"expires_on,omitempty"`
 
-	Hint Hint `json:"hint,omitempty"`
+	Hint hints.Hint `json:"hint,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeoutSeconds *int, expiresOn time.Time, hint Hint) *MsgWait {
+func NewMsgWait(timeoutSeconds *int, expiresOn time.Time, hint hints.Hint) *MsgWait {
 	return &MsgWait{
 		BaseEvent:      NewBaseEvent(TypeMsgWait),
 		TimeoutSeconds: timeoutSeconds,
@@ -79,7 +80,7 @@ func (e *MsgWait) UnmarshalJSON(data []byte) error {
 
 	var err error
 	if v.Hint != nil {
-		if e.Hint, err = ReadHint(v.Hint); err != nil {
+		if e.Hint, err = hints.Read(v.Hint); err != nil {
 			return fmt.Errorf("unable to read hint: %w", err)
 		}
 	}

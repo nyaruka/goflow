@@ -33,16 +33,16 @@ func RegisteredTypes() map[string]ReadFunc {
 // base of all trigger types
 type baseTrigger struct {
 	type_       string
-	event       flows.Event
+	event       events.Event
 	flow        *assets.FlowReference
 	batch       bool
 	params      *types.XObject
-	history     *flows.SessionHistory
+	history     *events.SessionHistory
 	triggeredOn time.Time
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, event flows.Event, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, event events.Event, flow *assets.FlowReference, batch bool, history *events.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		event:       event,
@@ -53,13 +53,13 @@ func newBaseTrigger(typeName string, event flows.Event, flow *assets.FlowReferen
 	}
 }
 
-func (t *baseTrigger) Type() string                   { return t.type_ }
-func (t *baseTrigger) Event() flows.Event             { return t.event }
-func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
-func (t *baseTrigger) Batch() bool                    { return t.batch }
-func (t *baseTrigger) Params() *types.XObject         { return t.params }
-func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
-func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
+func (t *baseTrigger) Type() string                    { return t.type_ }
+func (t *baseTrigger) Event() events.Event             { return t.event }
+func (t *baseTrigger) Flow() *assets.FlowReference     { return t.flow }
+func (t *baseTrigger) Batch() bool                     { return t.batch }
+func (t *baseTrigger) Params() *types.XObject          { return t.params }
+func (t *baseTrigger) History() *events.SessionHistory { return t.history }
+func (t *baseTrigger) TriggeredOn() time.Time          { return t.triggeredOn }
 
 func (t *baseTrigger) Input(flows.SessionAssets) flows.Input { return nil }
 
@@ -136,13 +136,13 @@ func NewBuilder(flow *assets.FlowReference) *Builder {
 //------------------------------------------------------------------------------------------
 
 type baseEnvelope struct {
-	Type        string                `json:"type"               validate:"required"`
-	Event       json.RawMessage       `json:"event,omitempty"`
-	Flow        *assets.FlowReference `json:"flow"               validate:"required"`
-	Batch       bool                  `json:"batch,omitempty"`
-	Params      json.RawMessage       `json:"params,omitempty"`
-	History     *flows.SessionHistory `json:"history,omitempty"`
-	TriggeredOn time.Time             `json:"triggered_on"       validate:"required"`
+	Type        string                 `json:"type"               validate:"required"`
+	Event       json.RawMessage        `json:"event,omitempty"`
+	Flow        *assets.FlowReference  `json:"flow"               validate:"required"`
+	Batch       bool                   `json:"batch,omitempty"`
+	Params      json.RawMessage        `json:"params,omitempty"`
+	History     *events.SessionHistory `json:"history,omitempty"`
+	TriggeredOn time.Time              `json:"triggered_on"       validate:"required"`
 }
 
 // Read reads a trigger from the given JSON

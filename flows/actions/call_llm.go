@@ -59,7 +59,7 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 }
 
 // Execute runs this action
-func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	resp := a.call(ctx, run, log)
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)
@@ -70,7 +70,7 @@ func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	return nil
 }
 
-func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger) *flows.LLMResponse {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *events.LLMResponse {
 	llms := run.Session().Assets().LLMs()
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {

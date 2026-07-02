@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"os"
 	"testing"
 	"time"
@@ -122,7 +123,7 @@ func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
 	for i := range existing {
 		existing[i] = urns.URN(fmt.Sprintf("tel:+170200%05d", i))
 	}
-	contact, err := flows.NewContact(sa, flows.NewContactUUID(), flows.ContactID(1), "Bob", i18n.NilLanguage, flows.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
+	contact, err := flows.NewContact(sa, events.NewContactUUID(), flows.ContactID(1), "Bob", i18n.NilLanguage, events.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	// try to append three new URNs - only the first should fit
@@ -203,21 +204,21 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewStatus(flows.ContactStatusActive),
+			modifiers.NewStatus(events.ContactStatusActive),
 			`{
 				"type": "status",
 				"status": "active"
 			}`,
 		},
 		{
-			modifiers.NewStatus(flows.ContactStatusBlocked),
+			modifiers.NewStatus(events.ContactStatusBlocked),
 			`{
 				"type": "status",
 				"status": "blocked"
 			}`,
 		},
 		{
-			modifiers.NewStatus(flows.ContactStatusStopped),
+			modifiers.NewStatus(events.ContactStatusStopped),
 			`{
 				"type": "status",
 				"status": "stopped"

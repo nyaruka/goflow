@@ -2,6 +2,7 @@ package definition
 
 import (
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -10,17 +11,17 @@ import (
 )
 
 type exit struct {
-	uuid        flows.ExitUUID
-	destination flows.NodeUUID
+	uuid        events.ExitUUID
+	destination events.NodeUUID
 }
 
 // NewExit creates a new exit
-func NewExit(uuid flows.ExitUUID, destination flows.NodeUUID) flows.Exit {
+func NewExit(uuid events.ExitUUID, destination events.NodeUUID) flows.Exit {
 	return &exit{uuid: uuid, destination: destination}
 }
 
-func (e *exit) UUID() flows.ExitUUID            { return e.uuid }
-func (e *exit) DestinationUUID() flows.NodeUUID { return e.destination }
+func (e *exit) UUID() events.ExitUUID            { return e.uuid }
+func (e *exit) DestinationUUID() events.NodeUUID { return e.destination }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (e *exit) LocalizationUUID() uuids.UUID { return uuids.UUID(e.uuid) }
@@ -30,8 +31,8 @@ func (e *exit) LocalizationUUID() uuids.UUID { return uuids.UUID(e.uuid) }
 //------------------------------------------------------------------------------------------
 
 type exitEnvelope struct {
-	UUID            flows.ExitUUID `json:"uuid"                       validate:"required,uuid"`
-	DestinationUUID flows.NodeUUID `json:"destination_uuid,omitempty" validate:"omitempty,uuid"`
+	UUID            events.ExitUUID `json:"uuid"                       validate:"required,uuid"`
+	DestinationUUID events.NodeUUID `json:"destination_uuid,omitempty" validate:"omitempty,uuid"`
 }
 
 // UnmarshalJSON unmarshals a node exit from the given JSON

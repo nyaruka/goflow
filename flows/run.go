@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"github.com/nyaruka/goflow/events"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -14,10 +15,10 @@ import (
 // RunSummary represents the minimum information available about all runs (current or related) and is the
 // representation of runs made accessible to router tests.
 type RunSummary interface {
-	UUID() RunUUID
+	UUID() events.RunUUID
 	Contact() *Contact
 	Flow() Flow
-	Status() RunStatus
+	Status() events.RunStatus
 	Results() Results
 }
 
@@ -30,7 +31,7 @@ type Run interface {
 
 	Session() Session
 	Locals() *Locals
-	SetResult(*Result) (*Result, bool)
+	SetResult(*events.Result) (*events.Result, bool)
 	Webhook() *WebhookCall
 	SetWebhook(*WebhookCall)
 
@@ -39,9 +40,9 @@ type Run interface {
 	PathLocation() (Step, Node, error)
 	HadInput() bool
 
-	EvaluateTemplateValue(string, EventLogger) (types.XValue, bool)
-	EvaluateTemplateText(string, excellent.Escaping, bool, EventLogger) (string, bool)
-	EvaluateTemplate(string, EventLogger) (string, bool)
+	EvaluateTemplateValue(string, events.EventLogger) (types.XValue, bool)
+	EvaluateTemplateText(string, excellent.Escaping, bool, events.EventLogger) (string, bool)
+	EvaluateTemplate(string, events.EventLogger) (string, bool)
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) (string, i18n.Language)
@@ -54,5 +55,5 @@ type Run interface {
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
 	ExitedOn() *time.Time
-	Exit(RunStatus)
+	Exit(events.RunStatus)
 }

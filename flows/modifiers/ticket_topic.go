@@ -22,12 +22,12 @@ const TypeTicketTopic string = "ticket_topic"
 type TicketTopic struct {
 	baseModifier
 
-	ticketUUID flows.TicketUUID
+	ticketUUID events.TicketUUID
 	topic      *flows.Topic
 }
 
 // NewTicketTopic creates a new topic modifier
-func NewTicketTopic(ticketUUID flows.TicketUUID, topic *flows.Topic) *TicketTopic {
+func NewTicketTopic(ticketUUID events.TicketUUID, topic *flows.Topic) *TicketTopic {
 	return &TicketTopic{
 		baseModifier: newBaseModifier(TypeTicketTopic),
 		ticketUUID:   ticketUUID,
@@ -36,7 +36,7 @@ func NewTicketTopic(ticketUUID flows.TicketUUID, topic *flows.Topic) *TicketTopi
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketTopic) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketTopic) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Topic() != m.topic {
@@ -56,7 +56,7 @@ var _ flows.Modifier = (*TicketTopic)(nil)
 type ticketTopicEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID flows.TicketUUID       `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID events.TicketUUID      `json:"ticket_uuid" validate:"required,uuid"`
 	Topic      *assets.TopicReference `json:"topic"`
 }
 

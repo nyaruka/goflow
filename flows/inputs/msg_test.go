@@ -24,7 +24,7 @@ func TestMsgInput(t *testing.T) {
 
 	channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
-	msgEvt := events.NewMsgReceived(flows.NewMsgIn(
+	msgEvt := events.NewMsgReceived(events.NewMsgIn(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
 		"Hi there!",

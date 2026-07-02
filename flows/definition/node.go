@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
@@ -16,14 +17,14 @@ import (
 )
 
 type node struct {
-	uuid    flows.NodeUUID
+	uuid    events.NodeUUID
 	actions []flows.Action
 	router  flows.Router
 	exits   []flows.Exit
 }
 
 // NewNode creates a new flow node
-func NewNode(uuid flows.NodeUUID, actions []flows.Action, router flows.Router, exits []flows.Exit) flows.Node {
+func NewNode(uuid events.NodeUUID, actions []flows.Action, router flows.Router, exits []flows.Exit) flows.Node {
 	return &node{
 		uuid:    uuid,
 		actions: actions,
@@ -32,7 +33,7 @@ func NewNode(uuid flows.NodeUUID, actions []flows.Action, router flows.Router, e
 	}
 }
 
-func (n *node) UUID() flows.NodeUUID    { return n.uuid }
+func (n *node) UUID() events.NodeUUID   { return n.uuid }
 func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Exits() []flows.Exit     { return n.exits }
@@ -139,7 +140,7 @@ func (n *node) EnumerateLocalizables(include func(uuids.UUID, string, []string, 
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID    `json:"uuid"               validate:"required,uuid"`
+	UUID    events.NodeUUID   `json:"uuid"               validate:"required,uuid"`
 	Actions []json.RawMessage `json:"actions,omitempty"  validate:"dive,required"`
 	Router  json.RawMessage   `json:"router,omitempty"`
 	Exits   []*exit           `json:"exits"              validate:"required,min=1,dive,required"`

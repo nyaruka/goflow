@@ -3,6 +3,7 @@ package triggers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -71,7 +72,7 @@ type FlowActionBuilder struct {
 	t *FlowAction
 }
 
-func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary []byte) *FlowActionBuilder {
+func (b *Builder) FlowAction(history *events.SessionHistory, runSummary []byte) *FlowActionBuilder {
 	if !json.Valid(runSummary) {
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}

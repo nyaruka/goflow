@@ -2,12 +2,12 @@ package flows_test
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/events"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/gocommon/httpx"
-	"github.com/nyaruka/goflow/flows"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -52,16 +52,16 @@ func TestHTTPLogs(t *testing.T) {
 	require.Len(t, traces, 4)
 	trace1, trace2, trace3, trace4 := traces[0], traces[1], traces[2], traces[3]
 
-	log1 := flows.NewHTTPLog(trace1, flows.HTTPStatusFromCode, nil)
-	assert.Equal(t, flows.CallStatusSuccess, log1.Status)
+	log1 := events.NewHTTPLog(trace1, events.HTTPStatusFromCode, nil)
+	assert.Equal(t, events.CallStatusSuccess, log1.Status)
 	assert.Equal(t, "HTTP/1.0 200 OK\r\nContent-Length: 12\r\n\r\nhello �", log1.Response) // escaped null should have been replaced
 
-	log2 := flows.NewHTTPLog(trace2, flows.HTTPStatusFromCode, nil)
-	assert.Equal(t, flows.CallStatusResponseError, log2.Status)
+	log2 := events.NewHTTPLog(trace2, events.HTTPStatusFromCode, nil)
+	assert.Equal(t, events.CallStatusResponseError, log2.Status)
 
-	log3 := flows.NewHTTPLog(trace3, flows.HTTPStatusFromCode, nil)
-	assert.Equal(t, flows.CallStatusConnectionError, log3.Status)
+	log3 := events.NewHTTPLog(trace3, events.HTTPStatusFromCode, nil)
+	assert.Equal(t, events.CallStatusConnectionError, log3.Status)
 
-	log4 := flows.NewHTTPLog(trace4, flows.HTTPStatusFromCode, nil)
+	log4 := events.NewHTTPLog(trace4, events.HTTPStatusFromCode, nil)
 	assert.Equal(t, "http://temba.io/?x="+strings.Repeat("x", 2026)+"...", log4.URL) // trimmed
 }

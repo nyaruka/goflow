@@ -22,12 +22,12 @@ const TypeTicketNote string = "ticket_note"
 type TicketNote struct {
 	baseModifier
 
-	ticketUUID flows.TicketUUID
+	ticketUUID events.TicketUUID
 	note       string
 }
 
 // NewTicketNote creates a new note modifier
-func NewTicketNote(ticketUUID flows.TicketUUID, note string) *TicketNote {
+func NewTicketNote(ticketUUID events.TicketUUID, note string) *TicketNote {
 	return &TicketNote{
 		baseModifier: newBaseModifier(TypeTicketNote),
 		ticketUUID:   ticketUUID,
@@ -36,7 +36,7 @@ func NewTicketNote(ticketUUID flows.TicketUUID, note string) *TicketNote {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketNote) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketNote) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil {
@@ -55,8 +55,8 @@ var _ flows.Modifier = (*TicketNote)(nil)
 type ticketNoteEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
-	Note       string           `json:"note"`
+	TicketUUID events.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	Note       string            `json:"note"`
 }
 
 func readTicketNote(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

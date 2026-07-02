@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
@@ -51,7 +52,7 @@ func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category 
 }
 
 // Execute runs this action
-func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	value, ok := run.EvaluateTemplate(a.Value, log)
 	if !ok {
 		return nil

@@ -475,7 +475,7 @@ var voiceSessionTrigger = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []flows.Event, error) {
+func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows.Session, []events.Event, error) {
 	ctx := context.Background()
 	assetsJSON := []byte(sessionAssets)
 
@@ -521,7 +521,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 }
 
 // CreateTestVoiceSession creates a standard example session for testing voice flows and actions
-func CreateTestVoiceSession(testServerURL string) (flows.Session, []flows.Event, error) {
+func CreateTestVoiceSession(testServerURL string) (flows.Session, []events.Event, error) {
 	sa, err := CreateSessionAssets([]byte(voiceSessionAssets), testServerURL)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating test voice session assets: %w", err)
@@ -592,7 +592,7 @@ type SessionBuilder struct {
 
 	flowUUID    assets.FlowUUID
 	engine      flows.Engine
-	contactUUID flows.ContactUUID
+	contactUUID events.ContactUUID
 	contactID   flows.ContactID
 	contactName string
 	contactLang i18n.Language
@@ -613,7 +613,7 @@ func NewSessionBuilder() *SessionBuilder {
 		assetsJSON:  []byte(sessionAssets),
 		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		engine:      NewEngine(),
-		contactUUID: flows.NewContactUUID(),
+		contactUUID: events.NewContactUUID(),
 		contactID:   flows.ContactID(123),
 		contactName: "Bob",
 		contactLang: "eng",
@@ -652,7 +652,7 @@ func (b *SessionBuilder) WithMocks(mocks map[string][]*httpx.MockResponse) *Sess
 	return b
 }
 
-func (b *SessionBuilder) WithContact(uuid flows.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
+func (b *SessionBuilder) WithContact(uuid events.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
 	b.contactUUID = uuid
 	b.contactID = id
 	b.contactName = name
@@ -700,7 +700,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		b.contactID,
 		b.contactName,
 		b.contactLang,
-		flows.ContactStatusActive,
+		events.ContactStatusActive,
 		nil,
 		time.Date(2020, 1, 1, 12, 45, 30, 123456, time.UTC),
 		nil,
@@ -716,7 +716,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 
 	var trigger flows.Trigger
 	if b.triggerMsg != "" {
-		msg := flows.NewMsgIn(urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
+		msg := events.NewMsgIn(urns.URN("tel:+12065551212"), nil, b.triggerMsg, nil, "SMS1234")
 		trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg, "")).Build()
 	} else {
 		trigger = triggers.NewBuilder(flow.Reference(false)).Manual().Build()
@@ -752,7 +752,7 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 		return nil, nil, err
 	}
 
-	msg := flows.NewMsgIn(urns.NilURN, nil, msgText, nil, "")
+	msg := events.NewMsgIn(urns.NilURN, nil, msgText, nil, "")
 
 	sprint, err := session.Resume(ctx, resumes.NewMsg(events.NewMsgReceived(msg, "")))
 
@@ -761,15 +761,15 @@ func ResumeSession(session flows.Session, sa flows.SessionAssets, msgText string
 
 // EventLog is a utility for testing things which take an event logger function
 type EventLog struct {
-	Events []flows.Event
+	Events []events.Event
 }
 
 // NewEventLog creates a new event log
 func NewEventLog() *EventLog {
-	return &EventLog{make([]flows.Event, 0)}
+	return &EventLog{make([]events.Event, 0)}
 }
 
-func (l *EventLog) Log(e flows.Event) {
+func (l *EventLog) Log(e events.Event) {
 	l.Events = append(l.Events, e)
 }
 

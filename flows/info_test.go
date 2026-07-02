@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"github.com/nyaruka/goflow/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -15,16 +16,16 @@ func TestNewResultSpecs(t *testing.T) {
 	assert.Equal(t, []*flows.ResultSpec{}, flows.NewResultSpecs(nil))
 
 	node1 := definition.NewNode(
-		flows.NodeUUID("1fb823c3-599a-41e9-b59b-658266af3466"),
+		events.NodeUUID("1fb823c3-599a-41e9-b59b-658266af3466"),
 		nil,
 		nil,
-		[]flows.Exit{definition.NewExit(flows.ExitUUID("3c158842-24f3-4a40-bea4-7522952c0131"), "")},
+		[]flows.Exit{definition.NewExit(events.ExitUUID("3c158842-24f3-4a40-bea4-7522952c0131"), "")},
 	)
 	node2 := definition.NewNode(
-		flows.NodeUUID("0ba673a3-63b3-46f9-9246-9c727cf2917f"),
+		events.NodeUUID("0ba673a3-63b3-46f9-9246-9c727cf2917f"),
 		nil,
 		nil,
-		[]flows.Exit{definition.NewExit(flows.ExitUUID("434ac29c-abe6-4bd7-b29b-740d517b6bb5"), "")},
+		[]flows.Exit{definition.NewExit(events.ExitUUID("434ac29c-abe6-4bd7-b29b-740d517b6bb5"), "")},
 	)
 
 	extracted := []flows.ExtractedResult{

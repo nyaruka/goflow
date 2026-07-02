@@ -1,6 +1,7 @@
 package inspect_test
 
 import (
+	"github.com/nyaruka/goflow/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -37,7 +38,7 @@ func TestDependencies(t *testing.T) {
 
 	refs := []flows.ExtractedReference{
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewChannelReference("8286545d-d1a1-4eff-a3ad-a11ddf4bb20a", "Android")),
-		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, flows.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")),
+		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, events.NewContactReference("0b099519-0889-4c74-b744-9122272f346a", "Bob")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFieldReference("gender", "Gender")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewFlowReference("4f932672-7995-47f0-96e6-faf5abd2d81d", "Registration")),
 		flows.NewExtractedReference(node1, action1, nil, i18n.NilLanguage, assets.NewGlobalReference("org_name", "Org Name")),

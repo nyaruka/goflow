@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -56,7 +57,7 @@ func (a *RemoveContactGroups) Validate() error {
 }
 
 // Execute runs the action
-func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	var groups []*flows.Group
 
 	if a.AllGroups {

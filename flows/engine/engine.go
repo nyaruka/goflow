@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"net/http"
 	"text/template"
 
@@ -36,7 +37,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 	}
 
 	s := &session{
-		uuid:       flows.NewSessionUUID(),
+		uuid:       events.NewSessionUUID(),
 		type_:      flow.Type(),
 		createdOn:  dates.Now(),
 		env:        env,
@@ -46,7 +47,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 		trigger:    trigger,
 		status:     flows.SessionStatusActive,
 		batchStart: trigger.Batch(),
-		runsByUUID: make(map[flows.RunUUID]*run),
+		runsByUUID: make(map[events.RunUUID]*run),
 		call:       call,
 	}
 
@@ -67,7 +68,7 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 var _ flows.Engine = (*engine)(nil)
 
 // by default we allow all messages to be sendable
-func defaultCheckSendable(context.Context, flows.SessionAssets, *flows.Contact, *flows.MsgContent) (flows.UnsendableReason, error) {
+func defaultCheckSendable(context.Context, flows.SessionAssets, *flows.Contact, *events.MsgContent) (events.UnsendableReason, error) {
 	return "", nil
 }
 

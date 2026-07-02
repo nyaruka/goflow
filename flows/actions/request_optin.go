@@ -45,7 +45,7 @@ func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *Reque
 }
 
 // Execute creates the optin events
-func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
 	routes := run.Contact().ResolveRoutes(false)
 

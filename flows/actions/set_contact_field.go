@@ -47,7 +47,7 @@ func NewSetContactField(uuid flows.ActionUUID, field *assets.FieldReference, val
 }
 
 // Execute runs this action
-func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetContactField) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	value, ok := run.EvaluateTemplate(a.Value, log)
 	value = strings.TrimSpace(value)
 

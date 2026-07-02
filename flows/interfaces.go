@@ -84,7 +84,7 @@ type Flow interface {
 	Localization() Localization
 	UI() json.RawMessage
 	Nodes() []Node
-	GetNode(uuid NodeUUID) Node
+	GetNode(uuid events.NodeUUID) Node
 
 	Asset() assets.Flow
 	Reference(bool) *assets.FlowReference
@@ -97,7 +97,7 @@ type Flow interface {
 
 // Node is a single node in a flow
 type Node interface {
-	UUID() NodeUUID
+	UUID() events.NodeUUID
 	Actions() []Action
 	Router() Router
 	Exits() []Exit
@@ -115,7 +115,7 @@ type Action interface {
 	FlowTypeRestricted
 
 	UUID() ActionUUID
-	Execute(context.Context, Run, Step, EventLogger) error
+	Execute(context.Context, Run, Step, events.EventLogger) error
 	Validate() error
 	Inspect(func(assets.Reference), func(string), func(*ResultInfo))
 }
@@ -126,7 +126,7 @@ type Category interface {
 
 	UUID() CategoryUUID
 	Name() string
-	ExitUUID() ExitUUID
+	ExitUUID() events.ExitUUID
 }
 
 // Router is a router on a note which can pick an exit
@@ -138,8 +138,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, EventLogger) (ExitUUID, string, error)
-	RouteTimeout(Run, Step, EventLogger) (ExitUUID, error)
+	Route(Run, Step, events.EventLogger) (events.ExitUUID, string, error)
+	RouteTimeout(Run, Step, events.EventLogger) (events.ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -149,8 +149,8 @@ type Router interface {
 
 // Exit is a route out of a node and optionally to another node
 type Exit interface {
-	UUID() ExitUUID
-	DestinationUUID() NodeUUID
+	UUID() events.ExitUUID
+	DestinationUUID() events.NodeUUID
 }
 
 // Timeout is a way to skip a wait after X amount of time
@@ -166,7 +166,7 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(Run, EventLogger) bool
+	Begin(Run, events.EventLogger) bool
 	Accepts(Resume) bool
 }
 
@@ -183,11 +183,11 @@ type Trigger interface {
 	utils.Typed
 	Contextable
 
-	Event() Event
+	Event() events.Event
 	Flow() *assets.FlowReference
 	Batch() bool
 	Params() *types.XObject
-	History() *SessionHistory
+	History() *events.SessionHistory
 	TriggeredOn() time.Time
 
 	Input(SessionAssets) Input
@@ -205,7 +205,7 @@ type Resume interface {
 	utils.Typed
 	Contextable
 
-	Event() Event
+	Event() events.Event
 	ResumedOn() time.Time
 
 	Input(SessionAssets) Input
@@ -215,7 +215,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, EventLogger) (bool, error)
+	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, events.EventLogger) (bool, error)
 }
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
@@ -223,7 +223,7 @@ type Input interface {
 	utils.Typed
 	Contextable
 
-	UUID() InputUUID
+	UUID() events.InputUUID
 	CreatedOn() time.Time
 	Channel() *Channel
 }
@@ -233,11 +233,11 @@ type Step interface {
 	Contextable
 	events.Step
 
-	Leave(ExitUUID)
+	Leave(events.ExitUUID)
 	Run() Run
 }
 
-type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *MsgContent) (UnsendableReason, error)
+type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *events.MsgContent) (events.UnsendableReason, error)
 
 type ClaimURNCallback func(context.Context, SessionAssets, *Contact, urns.URN) (bool, error)
 
@@ -277,7 +277,7 @@ type Dependency interface {
 type Issue interface {
 	utils.Typed
 
-	NodeUUID() NodeUUID
+	NodeUUID() events.NodeUUID
 	ActionUUID() ActionUUID
 	Language() i18n.Language
 	Description() string

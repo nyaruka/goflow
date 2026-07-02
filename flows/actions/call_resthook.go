@@ -83,7 +83,7 @@ func NewCallResthook(uuid flows.ActionUUID, resthook string, resultName string) 
 }
 
 // Execute runs this action
-func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// NOOP if resthook doesn't exist
 	resthook := run.Session().Assets().Resthooks().FindBySlug(a.Resthook)
 	if resthook == nil {
@@ -152,9 +152,9 @@ func (a *CallResthook) pickResultCall(calls []*httpx.Trace) *httpx.Trace {
 	for _, call := range calls {
 		status := callStatus(call, nil, true)
 
-		if status == flows.CallStatusSuccess {
+		if status == events.CallStatusSuccess {
 			lastSuccess = call
-		} else if status == flows.CallStatusSubscriberGone {
+		} else if status == events.CallStatusSubscriberGone {
 			last410 = call
 		} else {
 			lastFailure = call

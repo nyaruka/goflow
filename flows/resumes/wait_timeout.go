@@ -43,7 +43,7 @@ func NewWaitTimeout(event *events.WaitTimedOut) *WaitTimeout {
 }
 
 // Event returns the event this resume is based on
-func (r *WaitTimeout) Event() flows.Event { return r.event }
+func (r *WaitTimeout) Event() events.Event { return r.event }
 
 var _ flows.Resume = (*WaitTimeout)(nil)
 

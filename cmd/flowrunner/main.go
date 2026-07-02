@@ -155,7 +155,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		msg := events.NewMsgReceived(createMessage(contact, initialMsg), "")
 		repro.Trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(msg).Build()
 
-		printEvents([]flows.Event{msg}, out)
+		printEvents([]events.Event{msg}, out)
 	} else {
 		tb := triggers.NewBuilder(flow.Reference(false)).Manual()
 
@@ -190,13 +190,13 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		if text == "/timeout" {
 			resume = resumes.NewWaitTimeout(events.NewWaitTimedOut())
 		} else if strings.HasPrefix(text, "/dial") {
-			status := flows.DialStatus(strings.TrimSpace(text[5:]))
-			resume = resumes.NewDial(events.NewDialEnded(flows.NewDial(status, 10)))
+			status := events.DialStatus(strings.TrimSpace(text[5:]))
+			resume = resumes.NewDial(events.NewDialEnded(events.NewDial(status, 10)))
 		} else {
 			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()), "")
 			resume = resumes.NewMsg(msg)
 
-			printEvents([]flows.Event{msg}, out)
+			printEvents([]events.Event{msg}, out)
 		}
 
 		repro.Resumes = append(repro.Resumes, resume)
@@ -212,11 +212,11 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	return repro, nil
 }
 
-func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
+func createMessage(contact *flows.Contact, text string) *events.MsgIn {
+	return events.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
 }
 
-func printEvents(log []flows.Event, out io.Writer) {
+func printEvents(log []events.Event, out io.Writer) {
 	for _, event := range log {
 		PrintEvent(event, out)
 		fmt.Fprintln(out)
@@ -224,7 +224,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 }
 
 // PrintEvent prints out the given event to the given writer
-func PrintEvent(event flows.Event, out io.Writer) {
+func PrintEvent(event events.Event, out io.Writer) {
 	var msg string
 	switch typed := event.(type) {
 	case *events.BroadcastCreated:

@@ -56,7 +56,7 @@ func NewSetRunLocal(uuid flows.ActionUUID, local, value string) *SetRunLocal {
 }
 
 // Execute runs this action
-func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetRunLocal) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	value, ok := run.EvaluateTemplate(a.Value, log)
 	if !ok {
 		return nil

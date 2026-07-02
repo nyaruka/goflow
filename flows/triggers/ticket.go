@@ -81,7 +81,7 @@ func (b *TicketBuilder) Build() *Ticket {
 type ticketEnvelope struct {
 	baseEnvelope
 
-	Ticket *flows.TicketEnvelope `json:"ticket" validate:"required"`
+	Ticket *events.TicketEnvelope `json:"ticket" validate:"required"`
 }
 
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {

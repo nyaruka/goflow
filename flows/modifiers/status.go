@@ -22,11 +22,11 @@ const TypeStatus string = "status"
 type Status struct {
 	baseModifier
 
-	status flows.ContactStatus
+	status events.ContactStatus
 }
 
 // NewStatus creates a new status modifier
-func NewStatus(status flows.ContactStatus) *Status {
+func NewStatus(status events.ContactStatus) *Status {
 	return &Status{
 		baseModifier: newBaseModifier(TypeStatus),
 		status:       status,
@@ -34,7 +34,7 @@ func NewStatus(status flows.ContactStatus) *Status {
 }
 
 // Apply applies this modification to the given contact
-func (m *Status) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Status) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	if contact.Status() != m.status {
 		contact.SetStatus(m.status)
 		log(events.NewContactStatusChanged(m.status))
@@ -52,7 +52,7 @@ var _ flows.Modifier = (*Status)(nil)
 type statusEnvelope struct {
 	utils.TypedEnvelope
 
-	Status flows.ContactStatus `json:"status" validate:"contact_status"`
+	Status events.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 func readStatus(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

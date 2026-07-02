@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"github.com/nyaruka/goflow/events"
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -11,9 +12,9 @@ import (
 )
 
 type step struct {
-	uuid      flows.StepUUID
-	nodeUUID  flows.NodeUUID
-	exitUUID  flows.ExitUUID
+	uuid      events.StepUUID
+	nodeUUID  events.NodeUUID
+	exitUUID  events.ExitUUID
 	arrivedOn time.Time
 
 	run flows.Run // transient
@@ -22,7 +23,7 @@ type step struct {
 // NewStep creates a new step
 func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		uuid:      flows.StepUUID(uuids.NewV4()),
+		uuid:      events.StepUUID(uuids.NewV4()),
 		nodeUUID:  n.UUID(),
 		arrivedOn: arrivedOn,
 
@@ -30,13 +31,13 @@ func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	}
 }
 
-func (s *step) UUID() flows.StepUUID     { return s.uuid }
-func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
-func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
-func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
-func (s *step) Run() flows.Run           { return s.run }
+func (s *step) UUID() events.StepUUID     { return s.uuid }
+func (s *step) NodeUUID() events.NodeUUID { return s.nodeUUID }
+func (s *step) ExitUUID() events.ExitUUID { return s.exitUUID }
+func (s *step) ArrivedOn() time.Time      { return s.arrivedOn }
+func (s *step) Run() flows.Run            { return s.run }
 
-func (s *step) Leave(exit flows.ExitUUID) {
+func (s *step) Leave(exit events.ExitUUID) {
 	s.exitUUID = exit
 }
 
@@ -69,10 +70,10 @@ func (p Path) ToXValue(env envs.Environment) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
-	UUID      flows.StepUUID `json:"uuid" validate:"required,uuid"`
-	NodeUUID  flows.NodeUUID `json:"node_uuid" validate:"required,uuid"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
-	ArrivedOn time.Time      `json:"arrived_on"`
+	UUID      events.StepUUID `json:"uuid" validate:"required,uuid"`
+	NodeUUID  events.NodeUUID `json:"node_uuid" validate:"required,uuid"`
+	ExitUUID  events.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
+	ArrivedOn time.Time       `json:"arrived_on"`
 }
 
 // UnmarshalJSON unmarshals a run step from the given JSON

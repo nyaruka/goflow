@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -360,7 +361,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), events.NewImageHint())
+				return events.NewMsgWait(&timeout, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC), hints.NewImage())
 			},
 			`msg_wait`,
 		},

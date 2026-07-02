@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"strconv"
 	"time"
 
@@ -29,11 +30,11 @@ var portableURNSchemes = map[string]bool{urns.Phone.Prefix: true, urns.WhatsApp.
 
 // Contact represents a person who is interacting with the flow
 type Contact struct {
-	uuid       ContactUUID
+	uuid       events.ContactUUID
 	id         ContactID
 	name       string
 	language   i18n.Language
-	status     ContactStatus
+	status     events.ContactStatus
 	timezone   *time.Location
 	createdOn  time.Time
 	lastSeenOn *time.Time
@@ -49,17 +50,17 @@ type Contact struct {
 // NewContact creates a new contact with the passed in attributes
 func NewContact(
 	sa SessionAssets,
-	uuid ContactUUID,
+	uuid events.ContactUUID,
 	id ContactID,
 	name string,
 	language i18n.Language,
-	status ContactStatus,
+	status events.ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
 	lastSeenOn *time.Time,
 	urns []urns.URN,
 	groups []*assets.GroupReference,
-	fields map[string]*Value,
+	fields map[string]*events.Value,
 	tickets []*Ticket,
 	missing assets.MissingCallback) (*Contact, error) {
 
@@ -92,10 +93,10 @@ func NewContact(
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:       NewContactUUID(),
+		uuid:       events.NewContactUUID(),
 		name:       name,
 		language:   language,
-		status:     ContactStatusActive,
+		status:     events.ContactStatusActive,
 		timezone:   timezone,
 		createdOn:  dates.Now(),
 		lastSeenOn: nil,
@@ -127,7 +128,7 @@ func (c *Contact) Clone() *Contact {
 }
 
 // UUID returns the UUID of this contact
-func (c *Contact) UUID() ContactUUID { return c.uuid }
+func (c *Contact) UUID() events.ContactUUID { return c.uuid }
 
 // ID returns the numeric ID of this contact
 func (c *Contact) ID() ContactID { return c.id }
@@ -170,10 +171,10 @@ func (c *Contact) Locale(env envs.Environment) i18n.Locale {
 }
 
 // Status returns the contact status
-func (c *Contact) Status() ContactStatus { return c.status }
+func (c *Contact) Status() events.ContactStatus { return c.status }
 
 // SetStatus sets the status of this contact (blocked, stopped or active)
-func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
+func (c *Contact) SetStatus(status events.ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) { c.timezone = tz }
@@ -307,11 +308,11 @@ func (c *Contact) Groups() *GroupList { return c.groups }
 func (c *Contact) Tickets() *TicketList { return c.tickets }
 
 // Reference returns a reference to this contact
-func (c *Contact) Reference() *ContactReference {
+func (c *Contact) Reference() *events.ContactReference {
 	if c == nil {
 		return nil
 	}
-	return NewContactReference(c.uuid, c.name)
+	return events.NewContactReference(c.uuid, c.name)
 }
 
 // Format returns a friendly string version of this contact depending on what fields are set
@@ -572,18 +573,18 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type ContactEnvelope struct {
-	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid"`
+	UUID       events.ContactUUID       `json:"uuid"                validate:"required,uuid"`
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
 	Language   i18n.Language            `json:"language,omitempty"`
-	Status     ContactStatus            `json:"status,omitempty"    validate:"required,contact_status"`
+	Status     events.ContactStatus     `json:"status,omitempty"    validate:"required,contact_status"`
 	Timezone   string                   `json:"timezone,omitempty"`
 	CreatedOn  time.Time                `json:"created_on"          validate:"required"`
 	LastSeenOn *time.Time               `json:"last_seen_on,omitempty"`
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
-	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Tickets    []*TicketEnvelope        `json:"tickets,omitempty"`
+	Fields     map[string]*events.Value `json:"fields,omitempty"`
+	Tickets    []*events.TicketEnvelope `json:"tickets,omitempty"`
 }
 
 func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) (*Contact, error) {
@@ -643,7 +644,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 		e.Timezone = c.timezone.String()
 	}
 
-	e.Fields = make(map[string]*Value)
+	e.Fields = make(map[string]*events.Value)
 	for _, v := range c.fields {
 		if v != nil {
 			e.Fields[v.field.Key()] = v.Value

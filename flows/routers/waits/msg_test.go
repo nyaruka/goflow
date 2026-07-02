@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
@@ -67,7 +68,7 @@ func TestMsgWait(t *testing.T) {
 	// timeout and image hint
 	wait = waits.NewMsg(
 		waits.NewTimeout(5, flows.CategoryUUID("63fca57d-5ef6-4afd-9bcd-7bdcf653cea8")),
-		events.NewImageHint(),
+		hints.NewImage(),
 	)
 
 	// test marsalling definition wait
@@ -84,7 +85,7 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	assert.False(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)))))
+	assert.False(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(events.NewDial(events.DialStatusBusy, 0)))))
 
 	// can end with timeout resume type
 	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))

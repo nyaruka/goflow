@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -42,7 +43,7 @@ func TestHistory(t *testing.T) {
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.SessionUUID(""), session.History().ParentUUID)
+	assert.Equal(t, events.SessionUUID(""), session.History().ParentUUID)
 	assert.Equal(t, 0, session.History().Ancestors)
 	assert.Equal(t, 0, session.History().AncestorsSinceInput)
 

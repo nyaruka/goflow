@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -51,22 +52,22 @@ func (t *Template) FindTranslation(channel *Channel, locales []i18n.Locale) *Tem
 }
 
 // Templating generates a templating object for the passed in translation and variables
-func (t *Template) Templating(tt *TemplateTranslation, vars []string) *MsgTemplating {
+func (t *Template) Templating(tt *TemplateTranslation, vars []string) *events.MsgTemplating {
 	// cross-reference with asset to get variable types and pad out any missing variables
-	variables := make([]*TemplatingVariable, len(tt.Variables()))
+	variables := make([]*events.TemplatingVariable, len(tt.Variables()))
 	for i, v := range tt.Variables() {
 		value := ""
 		if i < len(vars) {
 			value = vars[i]
 		}
-		variables[i] = &TemplatingVariable{Type: v.Type(), Value: value}
+		variables[i] = &events.TemplatingVariable{Type: v.Type(), Value: value}
 	}
 
 	// create a list of components that have variables
-	components := make([]*TemplatingComponent, 0, len(tt.Components()))
+	components := make([]*events.TemplatingComponent, 0, len(tt.Components()))
 	for _, comp := range tt.Components() {
 		if len(comp.Variables()) > 0 {
-			components = append(components, &TemplatingComponent{
+			components = append(components, &events.TemplatingComponent{
 				Type:      comp.Type(),
 				Name:      comp.Name(),
 				Variables: comp.Variables(),
@@ -74,7 +75,7 @@ func (t *Template) Templating(tt *TemplateTranslation, vars []string) *MsgTempla
 		}
 	}
 
-	return NewMsgTemplating(t.Reference(), components, variables)
+	return events.NewMsgTemplating(t.Reference(), components, variables)
 }
 
 // TemplateTranslation represents a single translation for a template
@@ -91,10 +92,10 @@ func NewTemplateTranslation(t assets.TemplateTranslation) *TemplateTranslation {
 func (t *TemplateTranslation) Asset() assets.TemplateTranslation { return t.TemplateTranslation }
 
 // Preview returns message content which will act as a preview of a message sent with this template
-func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
+func (t *TemplateTranslation) Preview(vars []*events.TemplatingVariable) *events.MsgContent {
 	var text []string
 	var attachments []utils.Attachment
-	var quickReplies []QuickReply
+	var quickReplies []events.QuickReply
 
 	for _, comp := range t.Components() {
 		content := comp.Content()
@@ -112,12 +113,12 @@ func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 			if comp.Type() == "header/text" || comp.Type() == "body/text" || comp.Type() == "footer/text" {
 				text = append(text, content)
 			} else if strings.HasPrefix(comp.Type(), "button/") {
-				quickReplies = append(quickReplies, QuickReply{Text: stringsx.TruncateEllipsis(content, MaxQuickReplyTextLength)})
+				quickReplies = append(quickReplies, events.QuickReply{Text: stringsx.TruncateEllipsis(content, events.MaxQuickReplyTextLength)})
 			}
 		}
 	}
 
-	return &MsgContent{Text: strings.Join(text, "\n\n"), Attachments: attachments, QuickReplies: quickReplies}
+	return &events.MsgContent{Text: strings.Join(text, "\n\n"), Attachments: attachments, QuickReplies: quickReplies}
 }
 
 // TemplateAssets is our type for all the templates in an environment

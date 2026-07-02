@@ -45,7 +45,7 @@ type StartSession struct {
 }
 
 // NewStartSession creates a new start session action
-func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*events.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
 	return &StartSession{
 		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{
@@ -61,7 +61,7 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups [
 }
 
 // Execute runs our action
-func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, log)
 	if err != nil {
 		return err

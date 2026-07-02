@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/events"
+	"github.com/nyaruka/goflow/events/hints"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -27,11 +28,11 @@ type Msg struct {
 	// messaging_offline, this should be considered a requirement and the client should only reply with a message containing
 	// an attachment of that type. In the case of other flow types this should be considered only a hint to the channel,
 	// which may or may not support prompting the contact for media of that type.
-	hint flows.Hint
+	hint hints.Hint
 }
 
 // NewMsg creates a new message wait
-func NewMsg(timeout *Timeout, hint flows.Hint) *Msg {
+func NewMsg(timeout *Timeout, hint hints.Hint) *Msg {
 	return &Msg{
 		baseWait: newBaseWait(TypeMsg, timeout),
 		hint:     hint,
@@ -39,7 +40,7 @@ func NewMsg(timeout *Timeout, hint flows.Hint) *Msg {
 }
 
 // Hint returns the hint (optional)
-func (w *Msg) Hint() flows.Hint { return w.hint }
+func (w *Msg) Hint() hints.Hint { return w.hint }
 
 // AllowedFlowTypes returns the flow types which this wait is allowed to occur in
 func (w *Msg) AllowedFlowTypes() []flows.FlowType {
@@ -47,7 +48,7 @@ func (w *Msg) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *Msg) Begin(run flows.Run, log flows.EventLogger) bool {
+func (w *Msg) Begin(run flows.Run, log events.EventLogger) bool {
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 
@@ -99,7 +100,7 @@ func readMsg(data json.RawMessage) (flows.Wait, error) {
 
 	var err error
 	if e.Hint != nil {
-		if w.hint, err = events.ReadHint(e.Hint); err != nil {
+		if w.hint, err = hints.Read(e.Hint); err != nil {
 			return nil, fmt.Errorf("unable to read hint: %w", err)
 		}
 	}

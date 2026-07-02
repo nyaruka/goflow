@@ -44,7 +44,7 @@ type SendBroadcast struct {
 }
 
 // NewSendBroadcast creates a new send broadcast action
-func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, template *assets.TemplateReference, templateVariables []string) *SendBroadcast {
+func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, groups []*assets.GroupReference, contacts []*events.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, template *assets.TemplateReference, templateVariables []string) *SendBroadcast {
 	return &SendBroadcast{
 		baseAction: newBaseAction(TypeSendBroadcast, uuid),
 		otherContactsAction: otherContactsAction{
@@ -65,7 +65,7 @@ func NewSendBroadcast(uuid flows.ActionUUID, text string, attachments []string, 
 }
 
 // Execute runs this action
-func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, log)
 	if err != nil {
 		return err
@@ -77,7 +77,7 @@ func (a *SendBroadcast) Execute(ctx context.Context, run flows.Run, step flows.S
 		return nil
 	}
 
-	translations := make(flows.BroadcastTranslations)
+	translations := make(events.BroadcastTranslations)
 	languages := append([]i18n.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for

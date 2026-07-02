@@ -438,8 +438,8 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 	run := session.Runs()[0]
 	step := run.Path()[len(run.Path())-1]
 
-	eventList := make([]flows.Event, 0)
-	eventLog := func(e flows.Event) {
+	eventList := make([]events.Event, 0)
+	eventLog := func(e events.Event) {
 		e.SetStep(step)
 		eventList = append(eventList, e)
 	}

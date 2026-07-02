@@ -2,6 +2,7 @@ package modifiers
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/events"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
@@ -50,7 +51,7 @@ func NewURNs(urnz []urns.URN, modification URNsModification) *URNs {
 }
 
 // Apply applies this modification to the given contact
-func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	// translate to the equivalent routes modifier - for set, preserve any existing channel affinity for URNs
 	// that are still on the contact. We normalize here so identity comparisons against existing (already
 	// normalized) URNs on the contact match correctly.

@@ -22,11 +22,11 @@ const TypeTicketReopen string = "ticket_reopen"
 type TicketReopen struct {
 	baseModifier
 
-	ticketUUID flows.TicketUUID
+	ticketUUID events.TicketUUID
 }
 
 // NewTicketReopen creates a new reopen modifier
-func NewTicketReopen(ticketUUID flows.TicketUUID) *TicketReopen {
+func NewTicketReopen(ticketUUID events.TicketUUID) *TicketReopen {
 	return &TicketReopen{
 		baseModifier: newBaseModifier(TypeTicketReopen),
 		ticketUUID:   ticketUUID,
@@ -34,7 +34,7 @@ func NewTicketReopen(ticketUUID flows.TicketUUID) *TicketReopen {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().Open().Count() > 0 {
 		return false, nil
@@ -42,8 +42,8 @@ func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Env
 
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	if ticket != nil && ticket.Status() != flows.TicketStatusOpen {
-		ticket.SetStatus(flows.TicketStatusOpen)
+	if ticket != nil && ticket.Status() != events.TicketStatusOpen {
+		ticket.SetStatus(events.TicketStatusOpen)
 		log(events.NewTicketReopened(ticket.UUID()))
 		return true, nil
 	}
@@ -59,7 +59,7 @@ var _ flows.Modifier = (*TicketReopen)(nil)
 type ticketReopenEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID events.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 func readTicketReopen(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

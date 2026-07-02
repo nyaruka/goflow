@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"net/http"
 	"os"
 	"regexp"
@@ -73,7 +74,7 @@ func loadTestCases() ([]runnerTest, error) {
 	return tests, nil
 }
 
-func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
+func marshalEventLog(eventLog []events.Event) []json.RawMessage {
 	marshaled := make([]json.RawMessage, len(eventLog))
 
 	for i := range eventLog {
@@ -92,7 +93,7 @@ type FlowTest struct {
 	Environment json.RawMessage                  `json:"environment"`
 	Contact     *flows.ContactEnvelope           `json:"contact"`
 	Trigger     json.RawMessage                  `json:"trigger"`
-	Call        *flows.CallEnvelope              `json:"call,omitempty"`
+	Call        *events.CallEnvelope             `json:"call,omitempty"`
 	Resumes     []json.RawMessage                `json:"resumes"`
 	Outputs     []json.RawMessage                `json:"outputs"`
 	HTTPMocks   map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
@@ -103,7 +104,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *flows.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *events.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets

@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"github.com/nyaruka/goflow/events"
 	"sort"
 	"strings"
 
@@ -34,11 +35,11 @@ func (f *Field) Reference() *assets.FieldReference {
 // FieldValue represents a field and a set of values for that field
 type FieldValue struct {
 	field *Field
-	*Value
+	*events.Value
 }
 
 // NewFieldValue creates a new field value
-func NewFieldValue(field *Field, value *Value) *FieldValue {
+func NewFieldValue(field *Field, value *events.Value) *FieldValue {
 	return &FieldValue{field: field, Value: value}
 }
 
@@ -116,7 +117,7 @@ func (v *FieldValue) QueryValue() any {
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[string]*Value, missing assets.MissingCallback) FieldValues {
+func NewFieldValues(a SessionAssets, values map[string]*events.Value, missing assets.MissingCallback) FieldValues {
 	allFields := a.Fields().All()
 	fieldValues := make(FieldValues, len(allFields))
 	for _, field := range allFields {
@@ -145,7 +146,7 @@ func (f FieldValues) clone() FieldValues {
 }
 
 // Get gets the value set for the given field
-func (f FieldValues) Get(field *Field) *Value {
+func (f FieldValues) Get(field *Field) *events.Value {
 	fieldVal := f[field.Key()]
 	if fieldVal != nil {
 		return fieldVal.Value
@@ -154,7 +155,7 @@ func (f FieldValues) Get(field *Field) *Value {
 }
 
 // Set sets the value for the given field (can be null to clear it)
-func (f FieldValues) Set(field *Field, value *Value) {
+func (f FieldValues) Set(field *Field, value *events.Value) {
 	var fv *FieldValue
 	if value != nil && !value.Text.Empty() {
 		fv = NewFieldValue(field, value)
@@ -163,7 +164,7 @@ func (f FieldValues) Set(field *Field, value *Value) {
 }
 
 // Parse parses a raw string field value into the different possible types
-func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
+func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *events.Value {
 	if rawValue == "" {
 		return nil
 	}
@@ -227,7 +228,7 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		}
 	}
 
-	return &Value{
+	return &events.Value{
 		Text:     asText,
 		Datetime: asDateTime,
 		Number:   asNumber,

@@ -45,7 +45,7 @@ func NewAddInputLabels(uuid flows.ActionUUID, labels []*assets.LabelReference) *
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {

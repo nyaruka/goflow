@@ -111,7 +111,7 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 
 	jsonx.MustUnmarshal(testFile, &tests)
 
-	logEvent := func(e flows.Event) {}
+	logEvent := func(e events.Event) {}
 
 	for n := 0; n < b.N; n++ {
 		for _, tc := range tests {
@@ -200,9 +200,9 @@ func TestRunResuming(t *testing.T) {
 
 	// each run should be marked as completed
 	assert.Equal(t, 3, len(session.Runs()))
-	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[1].Status())
-	assert.Equal(t, flows.RunStatusCompleted, session.Runs()[2].Status())
+	assert.Equal(t, events.RunStatusCompleted, session.Runs()[0].Status())
+	assert.Equal(t, events.RunStatusCompleted, session.Runs()[1].Status())
+	assert.Equal(t, events.RunStatusCompleted, session.Runs()[2].Status())
 	assert.Len(t, sprint.Flows(), 3)
 
 	// change the UUID of the third flow so the enter_flow in the second flow will error
@@ -212,8 +212,8 @@ func TestRunResuming(t *testing.T) {
 
 	// each run should be marked as failed
 	assert.Equal(t, 2, len(session.Runs()))
-	assert.Equal(t, flows.RunStatusFailed, session.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusFailed, session.Runs()[1].Status())
+	assert.Equal(t, events.RunStatusFailed, session.Runs()[0].Status())
+	assert.Equal(t, events.RunStatusFailed, session.Runs()[1].Status())
 }
 
 func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
@@ -223,8 +223,8 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 	_, session1, _ := test.NewSessionBuilder().WithAssetsJSON(assetsJSON).WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
 	assert.Equal(t, flows.SessionStatusWaiting, session1.Status())
-	assert.Equal(t, flows.RunStatusActive, session1.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusWaiting, session1.Runs()[1].Status())
+	assert.Equal(t, events.RunStatusActive, session1.Runs()[0].Status())
+	assert.Equal(t, events.RunStatusWaiting, session1.Runs()[1].Status())
 
 	// change the UUID of the child flow so it will effectively be missing
 	assetsWithoutChildFlow := test.JSONReplace(assetsJSON, []string{"flows", "[1]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
@@ -237,8 +237,8 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 
 	// should have a failed session (with no runs left was active/waiting)
 	assert.Equal(t, flows.SessionStatusFailed, session2.Status())
-	assert.Equal(t, flows.RunStatusFailed, session2.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusFailed, session2.Runs()[1].Status())
+	assert.Equal(t, events.RunStatusFailed, session2.Runs()[0].Status())
+	assert.Equal(t, events.RunStatusFailed, session2.Runs()[1].Status())
 
 	// change the UUID of the parent flow so it will effectively be missing
 	assetsWithoutParentFlow := test.JSONReplace(assetsJSON, []string{"flows", "[0]", "uuid"}, []byte(`"653a3fa3-ff59-4a89-93c3-a8b9486ec479"`))
@@ -251,8 +251,8 @@ func TestResumeAfterWaitWithMissingFlowAssets(t *testing.T) {
 
 	// should have an failed session
 	assert.Equal(t, flows.SessionStatusFailed, session3.Status())
-	assert.Equal(t, flows.RunStatusFailed, session3.Runs()[0].Status())
-	assert.Equal(t, flows.RunStatusCompleted, session3.Runs()[1].Status())
+	assert.Equal(t, events.RunStatusFailed, session3.Runs()[0].Status())
+	assert.Equal(t, events.RunStatusCompleted, session3.Runs()[1].Status())
 }
 
 func TestWaitTimeout(t *testing.T) {
@@ -349,7 +349,7 @@ func TestSessionHistory(t *testing.T) {
 	session1, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.EmptyHistory, session1.History())
+	assert.Equal(t, events.EmptyHistory, session1.History())
 
 	// trigger another session from that session
 	runSummary := session1.Runs()[0].Snapshot()
@@ -359,7 +359,7 @@ func TestSessionHistory(t *testing.T) {
 	session2, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).FlowAction(history, runSummaryJSON).Build(), nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, &flows.SessionHistory{
+	assert.Equal(t, &events.SessionHistory{
 		ParentUUID:          session1.UUID(),
 		Ancestors:           1,
 		AncestorsSinceInput: 1,
@@ -373,7 +373,7 @@ func TestMaxSprintsPerSession(t *testing.T) {
 
 	numResumes := 0
 	for {
-		msg := flows.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234")
+		msg := events.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234")
 		resume := resumes.NewMsg(events.NewMsgReceived(msg, ""))
 		numResumes++
 
@@ -403,7 +403,7 @@ func TestEngineErrors(t *testing.T) {
 	_, session, _ = test.NewSessionBuilder().MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
-	_, err = session.Resume(ctx, resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusAnswered, 10))))
+	_, err = session.Resume(ctx, resumes.NewDial(events.NewDialEnded(events.NewDial(events.DialStatusAnswered, 10))))
 	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
 	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
 }

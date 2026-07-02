@@ -2,6 +2,7 @@ package flows_test
 
 import (
 	"encoding/json"
+	"github.com/nyaruka/goflow/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -19,7 +20,7 @@ import (
 )
 
 func TestMsgIn(t *testing.T) {
-	msg := flows.NewMsgIn(
+	msg := events.NewMsgIn(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
@@ -45,7 +46,7 @@ func TestMsgIn(t *testing.T) {
 	}`), marshaled, "JSON mismatch")
 
 	// test unmarshaling
-	msg = &flows.MsgIn{}
+	msg = &events.MsgIn{}
 	err = utils.UnmarshalAndValidate(marshaled, msg)
 	require.NoError(t, err)
 	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
@@ -58,10 +59,10 @@ func TestMsgIn(t *testing.T) {
 func TestMsgOut(t *testing.T) {
 	test.MockUniverse()
 
-	msg := flows.NewMsgOut(
+	msg := events.NewMsgOut(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
-		&flows.MsgContent{
+		&events.MsgContent{
 			Text:        "Hi there",
 			Attachments: []utils.Attachment{"image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"},
 		},
@@ -86,7 +87,7 @@ func TestMsgOut(t *testing.T) {
 func TestIVRMsgOut(t *testing.T) {
 	test.MockUniverse()
 
-	msg := flows.NewIVRMsgOut(
+	msg := events.NewIVRMsgOut(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
@@ -108,13 +109,13 @@ func TestIVRMsgOut(t *testing.T) {
 }
 
 func TestMsgContent(t *testing.T) {
-	assert.True(t, (&flows.MsgContent{}).Empty())
-	assert.False(t, (&flows.MsgContent{Text: "hi"}).Empty())
-	assert.False(t, (&flows.MsgContent{Attachments: []utils.Attachment{"image:https://test.jpg"}}).Empty())
-	assert.False(t, (&flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Ok"}}}).Empty())
+	assert.True(t, (&events.MsgContent{}).Empty())
+	assert.False(t, (&events.MsgContent{Text: "hi"}).Empty())
+	assert.False(t, (&events.MsgContent{Attachments: []utils.Attachment{"image:https://test.jpg"}}).Empty())
+	assert.False(t, (&events.MsgContent{QuickReplies: []events.QuickReply{{Text: "Ok"}}}).Empty())
 
 	// can unmarshal from object
-	var c flows.MsgContent
+	var c events.MsgContent
 	err := json.Unmarshal([]byte(`{"text": "test1", "attachments": ["image:https://test.jpg"]}`), &c)
 	assert.NoError(t, err)
 	assert.Equal(t, "test1", c.Text)
@@ -124,76 +125,76 @@ func TestMsgContent(t *testing.T) {
 func TestBroadcastTranslations(t *testing.T) {
 	tcs := []struct {
 		env             envs.Environment
-		translations    flows.BroadcastTranslations
+		translations    events.BroadcastTranslations
 		baseLanguage    i18n.Language
 		contactLanguage i18n.Language
-		expectedContent *flows.MsgContent
+		expectedContent *events.MsgContent
 		expectedLocale  i18n.Locale
 	}{
 		{ // 0: uses contact language
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
-			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{Text: "Hello"},
-				"spa": &flows.MsgContent{Text: "Hola"},
+			translations: events.BroadcastTranslations{
+				"eng": &events.MsgContent{Text: "Hello"},
+				"spa": &events.MsgContent{Text: "Hola"},
 			},
 			baseLanguage:    "eng",
 			contactLanguage: "spa",
-			expectedContent: &flows.MsgContent{Text: "Hola"},
+			expectedContent: &events.MsgContent{Text: "Hola"},
 			expectedLocale:  "spa-US",
 		},
 		{ // 1: ignores contact language because it's not in allowed languages, uses env default
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("RW").Build(),
-			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{Text: "Hello"},
-				"kin": &flows.MsgContent{Text: "Muraho"},
+			translations: events.BroadcastTranslations{
+				"eng": &events.MsgContent{Text: "Hello"},
+				"kin": &events.MsgContent{Text: "Muraho"},
 			},
 			baseLanguage:    "eng",
 			contactLanguage: "kin",
-			expectedContent: &flows.MsgContent{Text: "Hello"},
+			expectedContent: &events.MsgContent{Text: "Hello"},
 			expectedLocale:  "eng-RW",
 		},
 		{ // 2: ignores contact language because it's not translations, uses env default
 			env: envs.NewBuilder().WithAllowedLanguages("spa", "fra", "eng").WithDefaultCountry("US").Build(),
-			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{Text: "Hello"},
-				"spa": &flows.MsgContent{Text: "Hola"},
+			translations: events.BroadcastTranslations{
+				"eng": &events.MsgContent{Text: "Hello"},
+				"spa": &events.MsgContent{Text: "Hola"},
 			},
 			baseLanguage:    "eng",
 			contactLanguage: "kin",
-			expectedContent: &flows.MsgContent{Text: "Hola"},
+			expectedContent: &events.MsgContent{Text: "Hola"},
 			expectedLocale:  "spa-US",
 		},
 		{ // 3: ignores contact language because it's not translations, uses base language
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
-			translations: flows.BroadcastTranslations{
-				"fra": &flows.MsgContent{Text: "Bonjour"},
+			translations: events.BroadcastTranslations{
+				"fra": &events.MsgContent{Text: "Bonjour"},
 			},
 			baseLanguage:    "fra",
 			contactLanguage: "eng",
-			expectedContent: &flows.MsgContent{Text: "Bonjour"},
+			expectedContent: &events.MsgContent{Text: "Bonjour"},
 			expectedLocale:  "fra-US",
 		},
 		{ // 4: merges content from different translations
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
-			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{Text: "Hello", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
-				"spa": &flows.MsgContent{Text: "Hola"},
+			translations: events.BroadcastTranslations{
+				"eng": &events.MsgContent{Text: "Hello", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []events.QuickReply{{Text: "Yes"}, {Text: "No"}}},
+				"spa": &events.MsgContent{Text: "Hola"},
 			},
 			baseLanguage:    "eng",
 			contactLanguage: "spa",
-			expectedContent: &flows.MsgContent{Text: "Hola", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
+			expectedContent: &events.MsgContent{Text: "Hola", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hello.jpg"}, QuickReplies: []events.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 			expectedLocale:  "spa-US",
 		},
 		{ // 5: merges content from different translations
 			env: envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithDefaultCountry("US").Build(),
-			translations: flows.BroadcastTranslations{
-				"eng": &flows.MsgContent{QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
-				"spa": &flows.MsgContent{Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}},
-				"kin": &flows.MsgContent{Text: "Muraho"},
+			translations: events.BroadcastTranslations{
+				"eng": &events.MsgContent{QuickReplies: []events.QuickReply{{Text: "Yes"}, {Text: "No"}}},
+				"spa": &events.MsgContent{Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}},
+				"kin": &events.MsgContent{Text: "Muraho"},
 			},
 			baseLanguage:    "kin",
 			contactLanguage: "spa",
-			expectedContent: &flows.MsgContent{Text: "Muraho", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}, QuickReplies: []flows.QuickReply{{Text: "Yes"}, {Text: "No"}}},
+			expectedContent: &events.MsgContent{Text: "Muraho", Attachments: []utils.Attachment{"image/jpeg:https://example.com/hola.jpg"}, QuickReplies: []events.QuickReply{{Text: "Yes"}, {Text: "No"}}},
 			expectedLocale:  "kin-US",
 		},
 	}
@@ -213,15 +214,15 @@ func TestBroadcastTranslations(t *testing.T) {
 func TestMsgTemplating(t *testing.T) {
 	templateRef := assets.NewTemplateReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Affirmation")
 
-	msgTemplating := flows.NewMsgTemplating(
+	msgTemplating := events.NewMsgTemplating(
 		templateRef,
-		[]*flows.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}},
-		[]*flows.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}},
+		[]*events.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}},
+		[]*events.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}},
 	)
 
 	assert.Equal(t, templateRef, msgTemplating.Template)
-	assert.Equal(t, []*flows.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}}, msgTemplating.Components)
-	assert.Equal(t, []*flows.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}, msgTemplating.Variables)
+	assert.Equal(t, []*events.TemplatingComponent{{Type: "body/text", Name: "body", Variables: map[string]int{"1": 0, "2": 1}}}, msgTemplating.Components)
+	assert.Equal(t, []*events.TemplatingVariable{{Type: "text", Value: "Ryan Lewis"}, {Type: "text", Value: "boy"}}, msgTemplating.Variables)
 
 	// test marshaling our msg
 	marshaled, err := jsonx.Marshal(msgTemplating)
@@ -255,16 +256,16 @@ func TestMsgTemplating(t *testing.T) {
 func TestQuickReplies(t *testing.T) {
 	texts := []struct {
 		text     string
-		expected flows.QuickReply
+		expected events.QuickReply
 	}{
-		{"", flows.QuickReply{Type: "text", Text: ""}},
-		{"Yes", flows.QuickReply{Type: "text", Text: "Yes"}},
-		{"Yes<extra>Really", flows.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
-		{"<location>", flows.QuickReply{Type: "location"}},
-		{"<location>Click", flows.QuickReply{Type: "location", Text: "Click"}},
+		{"", events.QuickReply{Type: "text", Text: ""}},
+		{"Yes", events.QuickReply{Type: "text", Text: "Yes"}},
+		{"Yes<extra>Really", events.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
+		{"<location>", events.QuickReply{Type: "location"}},
+		{"<location>Click", events.QuickReply{Type: "location", Text: "Click"}},
 	}
 	for _, tc := range texts {
-		qr := flows.QuickReply{}
+		qr := events.QuickReply{}
 		err := qr.UnmarshalText([]byte(tc.text))
 		require.NoError(t, err)
 		assert.Equal(t, tc.expected, qr)
@@ -276,25 +277,25 @@ func TestQuickReplies(t *testing.T) {
 
 	jsons := []struct {
 		json     []byte
-		expected flows.QuickReply
+		expected events.QuickReply
 	}{
-		{[]byte(`"Yes"`), flows.QuickReply{Type: "text", Text: "Yes"}},
-		{[]byte(`"Yes<extra>Really"`), flows.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
-		{[]byte(`{"text": "Yes"}`), flows.QuickReply{Text: "Yes"}},
-		{[]byte(`{"text": "Yes", "extra": "Really"}`), flows.QuickReply{Text: "Yes", Extra: "Really"}},
-		{[]byte(`{"type": "location"}`), flows.QuickReply{Type: "location"}},
-		{[]byte(`{"type": "location", "text": "Click"}`), flows.QuickReply{Type: "location", Text: "Click"}},
+		{[]byte(`"Yes"`), events.QuickReply{Type: "text", Text: "Yes"}},
+		{[]byte(`"Yes<extra>Really"`), events.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
+		{[]byte(`{"text": "Yes"}`), events.QuickReply{Text: "Yes"}},
+		{[]byte(`{"text": "Yes", "extra": "Really"}`), events.QuickReply{Text: "Yes", Extra: "Really"}},
+		{[]byte(`{"type": "location"}`), events.QuickReply{Type: "location"}},
+		{[]byte(`{"type": "location", "text": "Click"}`), events.QuickReply{Type: "location", Text: "Click"}},
 	}
 	for _, tc := range jsons {
-		qr := flows.QuickReply{}
+		qr := events.QuickReply{}
 		err := json.Unmarshal(tc.json, &qr)
 		require.NoError(t, err)
 		assert.Equal(t, tc.expected, qr)
 	}
 
 	// marshaling is always as struct
-	assert.Equal(t, []byte(`{"type":"text","text":"Yes"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes"}))
-	assert.Equal(t, []byte(`{"type":"text","text":"Yes","extra":"Really"}`), jsonx.MustMarshal(flows.QuickReply{Text: "Yes", Extra: "Really"}))
-	assert.Equal(t, []byte(`{"type":"location"}`), jsonx.MustMarshal(flows.QuickReply{Type: "location"}))
-	assert.Equal(t, []byte(`[{"type":"text","text":"Yes"},{"type":"text","text":"No"}]`), jsonx.MustMarshal([]flows.QuickReply{{Text: "Yes"}, {Text: "No"}}))
+	assert.Equal(t, []byte(`{"type":"text","text":"Yes"}`), jsonx.MustMarshal(events.QuickReply{Text: "Yes"}))
+	assert.Equal(t, []byte(`{"type":"text","text":"Yes","extra":"Really"}`), jsonx.MustMarshal(events.QuickReply{Text: "Yes", Extra: "Really"}))
+	assert.Equal(t, []byte(`{"type":"location"}`), jsonx.MustMarshal(events.QuickReply{Type: "location"}))
+	assert.Equal(t, []byte(`[{"type":"text","text":"Yes"},{"type":"text","text":"No"}]`), jsonx.MustMarshal([]events.QuickReply{{Text: "Yes"}, {Text: "No"}}))
 }

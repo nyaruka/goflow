@@ -8,19 +8,19 @@ import (
 
 // Call represents a call over a specific channel and URN
 type Call struct {
-	uuid    CallUUID
+	uuid    events.CallUUID
 	channel *Channel
 	urn     urns.URN
 }
 
 // NewCall creates a new call
-func NewCall(uuid CallUUID, channel *Channel, urn urns.URN) *Call {
+func NewCall(uuid events.CallUUID, channel *Channel, urn urns.URN) *Call {
 	return &Call{uuid: uuid, channel: channel, urn: urn}
 }
 
-func (c *Call) UUID() CallUUID    { return c.uuid }
-func (c *Call) Channel() *Channel { return c.channel }
-func (c *Call) URN() urns.URN     { return c.urn }
+func (c *Call) UUID() events.CallUUID { return c.uuid }
+func (c *Call) Channel() *Channel     { return c.channel }
+func (c *Call) URN() urns.URN         { return c.urn }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -40,8 +40,8 @@ func ReadCall(sa SessionAssets, e *events.CallEnvelope, missing assets.MissingCa
 }
 
 // Marshal marshals a call into an envelope.
-func (c *Call) Marshal() *CallEnvelope {
-	return &CallEnvelope{
+func (c *Call) Marshal() *events.CallEnvelope {
+	return &events.CallEnvelope{
 		UUID:    c.uuid,
 		Channel: c.channel.Reference(),
 		URN:     c.urn,

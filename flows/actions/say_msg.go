@@ -48,7 +48,7 @@ func NewSayMsg(uuid flows.ActionUUID, text string, audioURL string) *SayMsg {
 }
 
 // Execute runs this action
-func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// localize and evaluate the message text
 	localizedText, textLang := run.GetText(uuids.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, _ := run.EvaluateTemplate(localizedText, log)
@@ -66,7 +66,7 @@ func (a *SayMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, lo
 	// an IVR flow must have been started with a call
 	call := run.Session().Call()
 
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
+	msg := events.NewIVRMsgOut(call.URN(), call.Channel().Reference(), evaluatedText, localizedAudioURL, currentLocale(run, textLang))
 	log(events.NewIVRCreated(msg))
 
 	return nil

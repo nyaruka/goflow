@@ -22,12 +22,12 @@ const TypeTicketAssignee string = "ticket_assignee"
 type TicketAssignee struct {
 	baseModifier
 
-	ticketUUID flows.TicketUUID
+	ticketUUID events.TicketUUID
 	assignee   *flows.User
 }
 
 // NewTicketAssignee creates a new assignee modifier
-func NewTicketAssignee(ticketUUID flows.TicketUUID, assignee *flows.User) *TicketAssignee {
+func NewTicketAssignee(ticketUUID events.TicketUUID, assignee *flows.User) *TicketAssignee {
 	return &TicketAssignee{
 		baseModifier: newBaseModifier(TypeTicketAssignee),
 		ticketUUID:   ticketUUID,
@@ -36,7 +36,7 @@ func NewTicketAssignee(ticketUUID flows.TicketUUID, assignee *flows.User) *Ticke
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketAssignee) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketAssignee) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Assignee() != m.assignee {
@@ -59,7 +59,7 @@ var _ flows.Modifier = (*TicketAssignee)(nil)
 type ticketAssigneeEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID flows.TicketUUID      `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID events.TicketUUID     `json:"ticket_uuid" validate:"required,uuid"`
 	Assignee   *assets.UserReference `json:"assignee"`
 }
 

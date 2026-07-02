@@ -2,6 +2,7 @@ package issues
 
 import (
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 )
@@ -20,7 +21,7 @@ type LegacyVars struct {
 	Vars []string `json:"vars"`
 }
 
-func newLegacyVars(nodeUUID flows.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, vars []string) *LegacyVars {
+func newLegacyVars(nodeUUID events.NodeUUID, actionUUID flows.ActionUUID, language i18n.Language, vars []string) *LegacyVars {
 	return &LegacyVars{
 		baseIssue: newBaseIssue(
 			TypeLegacyVars,

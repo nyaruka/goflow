@@ -50,7 +50,7 @@ func NewMsg(event *events.MsgReceived) *Msg {
 }
 
 // Event returns the event this resume is based on
-func (r *Msg) Event() flows.Event { return r.event }
+func (r *Msg) Event() events.Event { return r.event }
 
 func (r *Msg) Input(sa flows.SessionAssets) flows.Input {
 	return inputs.NewMsg(sa, r.event)

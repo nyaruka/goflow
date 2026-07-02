@@ -49,7 +49,7 @@ func NewDial(event *events.DialEnded) *Dial {
 }
 
 // Event returns the event this resume is based on
-func (r *Dial) Event() flows.Event { return r.event }
+func (r *Dial) Event() events.Event { return r.event }
 
 // Context for dial resumes additionally exposes the dial object
 func (r *Dial) Context(env envs.Environment) map[string]types.XValue {

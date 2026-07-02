@@ -2,6 +2,7 @@ package flows
 
 import (
 	"context"
+	"github.com/nyaruka/goflow/events"
 	"net/http"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -30,7 +31,7 @@ type WebhookService interface {
 
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
+	Response(ctx context.Context, instructions, input string, maxTokens int) (*events.LLMResponse, error)
 }
 
 // AirtimeService provides airtime functionality to the engine
@@ -44,7 +45,7 @@ type AirtimeService interface {
 	// airtime_created event; implementations may pass it to the provider as their own reference (e.g.
 	// DT One's external_id field) so that subsequent provider callbacks can be correlated back to the
 	// event/transfer by the host without needing the provider's transaction id.
-	Create(ctx context.Context, transferUUID EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Create(ctx context.Context, transferUUID events.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP events.HTTPLogCallback) (*events.AirtimeTransfer, error)
 
 	// Confirm completes initiation of a transfer previously surfaced by Create. Hosts typically call
 	// Confirm after the session commits, so the airtime is only actually sent once the surrounding work
@@ -60,5 +61,5 @@ type AirtimeService interface {
 	// confirmation. Hosts that need at-most-once delivery semantics should ensure Confirm is called at
 	// most once per transfer. On error, the airtime was not sent; hosts are responsible for surfacing
 	// that to their users.
-	Confirm(ctx context.Context, transfer *AirtimeTransfer, logHTTP HTTPLogCallback) error
+	Confirm(ctx context.Context, transfer *events.AirtimeTransfer, logHTTP events.HTTPLogCallback) error
 }

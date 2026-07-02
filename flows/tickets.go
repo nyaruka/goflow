@@ -9,14 +9,14 @@ import (
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
-	uuid     TicketUUID
-	status   TicketStatus
+	uuid     events.TicketUUID
+	status   events.TicketStatus
 	topic    *Topic
 	assignee *User
 }
 
 // NewTicket creates a new ticket
-func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *User) *Ticket {
+func NewTicket(uuid events.TicketUUID, status events.TicketStatus, topic *Topic, assignee *User) *Ticket {
 	return &Ticket{
 		uuid:     uuid,
 		status:   status,
@@ -27,13 +27,13 @@ func NewTicket(uuid TicketUUID, status TicketStatus, topic *Topic, assignee *Use
 
 // OpenTicket creates a new ticket. Used by ticketing services to open a new ticket.
 func OpenTicket(topic *Topic, assignee *User) *Ticket {
-	return NewTicket(NewTicketUUID(), TicketStatusOpen, topic, assignee)
+	return NewTicket(events.NewTicketUUID(), events.TicketStatusOpen, topic, assignee)
 }
 
-func (t *Ticket) UUID() TicketUUID { return t.uuid }
+func (t *Ticket) UUID() events.TicketUUID { return t.uuid }
 
-func (t *Ticket) Status() TicketStatus          { return t.status }
-func (t *Ticket) SetStatus(status TicketStatus) { t.status = status }
+func (t *Ticket) Status() events.TicketStatus          { return t.status }
+func (t *Ticket) SetStatus(status events.TicketStatus) { t.status = status }
 
 func (t *Ticket) Topic() *Topic         { return t.topic }
 func (t *Ticket) SetTopic(topic *Topic) { t.topic = topic }
@@ -72,7 +72,7 @@ func (l *TicketList) Add(t *Ticket) {
 	l.all = append(l.all, t)
 }
 
-func (l *TicketList) Find(uuid TicketUUID) *Ticket {
+func (l *TicketList) Find(uuid events.TicketUUID) *Ticket {
 	for _, t := range l.all {
 		if t.uuid == uuid {
 			return t
@@ -83,7 +83,7 @@ func (l *TicketList) Find(uuid TicketUUID) *Ticket {
 
 func (l *TicketList) LastOpen() *Ticket {
 	for i := len(l.all) - 1; i >= 0; i-- {
-		if l.all[i].status == TicketStatusOpen {
+		if l.all[i].status == events.TicketStatusOpen {
 			return l.all[i]
 		}
 	}
@@ -93,7 +93,7 @@ func (l *TicketList) LastOpen() *Ticket {
 func (l *TicketList) Open() *TicketList {
 	open := make([]*Ticket, 0, len(l.all))
 	for _, t := range l.all {
-		if t.status == TicketStatusOpen {
+		if t.status == events.TicketStatusOpen {
 			open = append(open, t)
 		}
 	}
@@ -113,8 +113,8 @@ func (l *TicketList) ToXValue(env envs.Environment) types.XValue {
 	return types.NewXArray(array...)
 }
 
-func (l *TicketList) Marshal() []*TicketEnvelope {
-	envelopes := make([]*TicketEnvelope, len(l.all))
+func (l *TicketList) Marshal() []*events.TicketEnvelope {
+	envelopes := make([]*events.TicketEnvelope, len(l.all))
 	for i, t := range l.all {
 		envelopes[i] = t.Marshal()
 	}
@@ -129,7 +129,7 @@ func (l *TicketList) Marshal() []*TicketEnvelope {
 // be found in the assets, we report the missing asset and return ticket without those.
 func ReadTicket(sa SessionAssets, e *events.TicketEnvelope, missing assets.MissingCallback) *Ticket {
 	if e.Status == "" {
-		e.Status = TicketStatusOpen
+		e.Status = events.TicketStatusOpen
 	}
 
 	var topic *Topic
@@ -152,7 +152,7 @@ func ReadTicket(sa SessionAssets, e *events.TicketEnvelope, missing assets.Missi
 }
 
 // Marshal marshals a ticket into an envelope.
-func (t *Ticket) Marshal() *TicketEnvelope {
+func (t *Ticket) Marshal() *events.TicketEnvelope {
 	var topicRef *assets.TopicReference
 	if t.topic != nil {
 		topicRef = t.topic.Reference()
@@ -163,7 +163,7 @@ func (t *Ticket) Marshal() *TicketEnvelope {
 		assigneeRef = t.assignee.Reference()
 	}
 
-	return &TicketEnvelope{
+	return &events.TicketEnvelope{
 		UUID:     t.uuid,
 		Status:   t.status,
 		Topic:    topicRef,
