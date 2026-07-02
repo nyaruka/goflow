@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -105,7 +104,7 @@ func (r *Switch) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *Switch) Route(run flows.Run, step flows.Step, log events.EventLogger) (core.ExitUUID, string, error) {
+func (r *Switch) Route(run flows.Run, step flows.Step, log events.EventLogger) (flows.ExitUUID, string, error) {
 	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand

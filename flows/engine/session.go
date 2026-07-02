@@ -279,7 +279,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 	sprint.logFlow(waitingRun.Flow())
 
 	logEvent := func(e events.Event) {
-		e.SetStep(step)
+		e.SetStep(eventStep(step))
 		sprint.logEvent(e)
 	}
 
@@ -329,7 +329,7 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 		return nil, "", err
 	}
 	logEvent := func(e events.Event) {
-		e.SetStep(step)
+		e.SetStep(eventStep(step))
 		sprint.logEvent(e)
 	}
 
@@ -466,7 +466,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node flows.Node, trigger flows.Trigger) (flows.Step, flows.Exit, string, error) {
 	step := r.CreateStep(node)
 	logEvent := func(e events.Event) {
-		e.SetStep(step)
+		e.SetStep(eventStep(step))
 		sprint.logEvent(e)
 	}
 
@@ -519,7 +519,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 
 // picks the exit to use on the given node
 func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent events.EventLogger) (flows.Exit, string, error) {
-	var exitUUID core.ExitUUID
+	var exitUUID flows.ExitUUID
 	var operand string
 	var err error
 
@@ -574,7 +574,7 @@ func failRun(sp *sprint, r *run, step flows.Step, text string) {
 	if text != "" {
 		evt := events.NewFailure(text)
 		if step != nil {
-			evt.SetStep(step)
+			evt.SetStep(eventStep(step))
 		}
 
 		sp.logEvent(evt)

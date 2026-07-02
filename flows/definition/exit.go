@@ -11,16 +11,16 @@ import (
 )
 
 type exit struct {
-	uuid        core.ExitUUID
+	uuid        flows.ExitUUID
 	destination core.NodeUUID
 }
 
 // NewExit creates a new exit
-func NewExit(uuid core.ExitUUID, destination core.NodeUUID) flows.Exit {
+func NewExit(uuid flows.ExitUUID, destination core.NodeUUID) flows.Exit {
 	return &exit{uuid: uuid, destination: destination}
 }
 
-func (e *exit) UUID() core.ExitUUID            { return e.uuid }
+func (e *exit) UUID() flows.ExitUUID           { return e.uuid }
 func (e *exit) DestinationUUID() core.NodeUUID { return e.destination }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
@@ -31,8 +31,8 @@ func (e *exit) LocalizationUUID() uuids.UUID { return uuids.UUID(e.uuid) }
 //------------------------------------------------------------------------------------------
 
 type exitEnvelope struct {
-	UUID            core.ExitUUID `json:"uuid"                       validate:"required,uuid"`
-	DestinationUUID core.NodeUUID `json:"destination_uuid,omitempty" validate:"omitempty,uuid"`
+	UUID            flows.ExitUUID `json:"uuid"                       validate:"required,uuid"`
+	DestinationUUID core.NodeUUID  `json:"destination_uuid,omitempty" validate:"omitempty,uuid"`
 }
 
 // UnmarshalJSON unmarshals a node exit from the given JSON

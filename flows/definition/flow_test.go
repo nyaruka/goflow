@@ -284,12 +284,12 @@ func TestNewFlow(t *testing.T) {
 						routers.NewCategory(
 							flows.CategoryUUID("97b9451c-2856-475b-af38-32af68100897"),
 							"Yes",
-							core.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
+							flows.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
 						),
 						routers.NewCategory(
 							flows.CategoryUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 							"No",
-							core.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
+							flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
 						),
 					},
 					"@input.text",
@@ -300,11 +300,11 @@ func TestNewFlow(t *testing.T) {
 				),
 				[]flows.Exit{
 					definition.NewExit(
-						core.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
+						flows.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
 						core.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 					),
 					definition.NewExit(
-						core.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
+						flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
 						core.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 					),
 				},
@@ -322,7 +322,7 @@ func TestNewFlow(t *testing.T) {
 				},
 				nil, // no router
 				[]flows.Exit{
-					definition.NewExit(core.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), ""),
+					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), ""),
 				},
 			),
 		},

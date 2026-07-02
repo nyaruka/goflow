@@ -31,7 +31,7 @@ func (s *segment) Time() time.Time         { return s.time }
 type segmentEnvelope struct {
 	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
 	NodeUUID        core.NodeUUID   `json:"node_uuid"`
-	ExitUUID        core.ExitUUID   `json:"exit_uuid"`
+	ExitUUID        flows.ExitUUID  `json:"exit_uuid"`
 	Operand         string          `json:"operand,omitempty"`
 	DestinationUUID core.NodeUUID   `json:"destination_uuid,omitempty"`
 	Time            time.Time       `json:"time"`
