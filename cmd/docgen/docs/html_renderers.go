@@ -440,7 +440,7 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 
 	eventList := make([]events.Event, 0)
 	eventLog := func(e events.Event) {
-		e.SetStep(step)
+		e.SetStep(&events.Step{Flow: run.FlowReference(), Node: step.NodeUUID()})
 		eventList = append(eventList, e)
 	}
 

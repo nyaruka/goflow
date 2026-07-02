@@ -15,13 +15,11 @@ type EventUUID uuids.UUID
 // NewEventUUID generates a new UUID for an event
 func NewEventUUID() EventUUID { return EventUUID(uuids.NewV7()) }
 
-// Step is the location in a flow run where an event occurred. It is implemented by the engine's run step type -
-// this narrow interface exists so that events don't have to depend on the engine's run types.
-type Step interface {
-	UUID() core.StepUUID
-	NodeUUID() core.NodeUUID
-	ExitUUID() core.ExitUUID
-	ArrivedOn() time.Time
+// Step describes the step in a flow at which an event occurred. It is set by the engine on the events
+// it generates during a sprint for the benefit of callers, but is not persisted with events.
+type Step struct {
+	Flow *assets.FlowReference
+	Node core.NodeUUID
 }
 
 // Event describes a state change
@@ -30,8 +28,8 @@ type Event interface {
 
 	UUID() EventUUID
 	CreatedOn() time.Time
-	Step() Step
-	SetStep(Step)
+	Step() *Step
+	SetStep(*Step)
 	SetUser(*assets.UserReference, string)
 }
 

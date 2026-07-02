@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -13,17 +12,17 @@ import (
 type Category struct {
 	uuid     flows.CategoryUUID
 	name     string
-	exitUUID core.ExitUUID
+	exitUUID flows.ExitUUID
 }
 
 // NewCategory creates a new category
-func NewCategory(uuid flows.CategoryUUID, name string, exit core.ExitUUID) *Category {
+func NewCategory(uuid flows.CategoryUUID, name string, exit flows.ExitUUID) *Category {
 	return &Category{uuid: uuid, name: name, exitUUID: exit}
 }
 
 func (c *Category) UUID() flows.CategoryUUID { return c.uuid }
 func (c *Category) Name() string             { return c.name }
-func (c *Category) ExitUUID() core.ExitUUID  { return c.exitUUID }
+func (c *Category) ExitUUID() flows.ExitUUID { return c.exitUUID }
 
 // LocalizationUUID gets the UUID which identifies this object for localization
 func (c *Category) LocalizationUUID() uuids.UUID { return uuids.UUID(c.uuid) }
@@ -37,7 +36,7 @@ var _ flows.Category = (*Category)(nil)
 type categoryEnvelope struct {
 	UUID     flows.CategoryUUID `json:"uuid"                validate:"required,uuid"`
 	Name     string             `json:"name,omitempty"      validate:"required,result_category"`
-	ExitUUID core.ExitUUID      `json:"exit_uuid,omitempty" validate:"required,uuid"`
+	ExitUUID flows.ExitUUID     `json:"exit_uuid,omitempty" validate:"required,uuid"`
 }
 
 // ReadCategory unmarshals a router category from the given JSON

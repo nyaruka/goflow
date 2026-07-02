@@ -34,6 +34,12 @@ type CategoryUUID uuids.UUID
 // ActionUUID is the UUID of an action
 type ActionUUID uuids.UUID
 
+// ExitUUID is the UUID of a node exit
+type ExitUUID uuids.UUID
+
+// StepUUID is the UUID of a run step
+type StepUUID uuids.UUID
+
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
 	Get(assets.FlowUUID) (Flow, error)
@@ -127,7 +133,7 @@ type Category interface {
 
 	UUID() CategoryUUID
 	Name() string
-	ExitUUID() core.ExitUUID
+	ExitUUID() ExitUUID
 }
 
 // Router is a router on a note which can pick an exit
@@ -139,8 +145,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, events.EventLogger) (core.ExitUUID, string, error)
-	RouteTimeout(Run, Step, events.EventLogger) (core.ExitUUID, error)
+	Route(Run, Step, events.EventLogger) (ExitUUID, string, error)
+	RouteTimeout(Run, Step, events.EventLogger) (ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -150,7 +156,7 @@ type Router interface {
 
 // Exit is a route out of a node and optionally to another node
 type Exit interface {
-	UUID() core.ExitUUID
+	UUID() ExitUUID
 	DestinationUUID() core.NodeUUID
 }
 
@@ -232,9 +238,13 @@ type Input interface {
 // Step is a single step in the path thru a flow
 type Step interface {
 	Contextable
-	events.Step
 
-	Leave(core.ExitUUID)
+	UUID() StepUUID
+	NodeUUID() core.NodeUUID
+	ExitUUID() ExitUUID
+	ArrivedOn() time.Time
+
+	Leave(ExitUUID)
 	Run() Run
 }
 
