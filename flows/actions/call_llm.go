@@ -6,8 +6,8 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -100,7 +100,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 		return nil
 	}
 
-	log(events.NewLLMCalled(llm, instructions, input, resp, dates.Since(start)))
+	log(events.NewLLMCalled(llm.Reference(), instructions, input, resp, dates.Since(start)))
 
 	return resp
 }

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 

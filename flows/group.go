@@ -206,3 +206,12 @@ func (s *GroupAssets) FindByName(name string) *Group {
 	}
 	return nil
 }
+
+// GroupReferences converts a slice of groups to a slice of references
+func GroupReferences(groups []*Group) []*assets.GroupReference {
+	refs := make([]*assets.GroupReference, len(groups))
+	for i := range groups {
+		refs[i] = groups[i].Reference()
+	}
+	return refs
+}

@@ -8,9 +8,9 @@ import (
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -51,7 +51,7 @@ func (m *Field) Apply(ctx context.Context, eng flows.Engine, env envs.Environmen
 
 	if !newValue.Equals(oldValue) {
 		contact.Fields().Set(m.field, newValue)
-		log(events.NewContactFieldChanged(m.field, newValue))
+		log(events.NewContactFieldChanged(m.field.Reference(), newValue))
 		return true, nil
 	}
 	return false, nil

@@ -5,10 +5,9 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
-	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -100,7 +99,7 @@ func readMsg(data json.RawMessage) (flows.Wait, error) {
 
 	var err error
 	if e.Hint != nil {
-		if w.hint, err = hints.Read(e.Hint); err != nil {
+		if w.hint, err = events.ReadHint(e.Hint); err != nil {
 			return nil, fmt.Errorf("unable to read hint: %w", err)
 		}
 	}

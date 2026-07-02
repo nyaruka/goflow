@@ -54,7 +54,7 @@ func TestCall(t *testing.T) {
 	assert.Equal(t, ce, call.Marshal())
 
 	// test unmarshaling
-	call = ce.Unmarshal(sa, assets.PanicOnMissing)
+	call = flows.ReadCall(sa, ce, assets.PanicOnMissing)
 	assert.Equal(t, assets.ChannelUUID("3a05eaf5-cb1b-4246-bef1-f277419c83a7"), call.Channel().UUID())
 	assert.Equal(t, urns.URN("tel:+1234567890"), call.URN())
 }

@@ -9,8 +9,8 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 // ResthookPayload is the POST payload used by resthooks

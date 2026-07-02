@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -26,23 +27,11 @@ const (
 	MaxArgumentsPerCase    = 10   // max number of test arguments a switch router case can have
 )
 
-// NodeUUID is a UUID of a flow node
-type NodeUUID uuids.UUID
-
 // CategoryUUID is the UUID of a node category
 type CategoryUUID uuids.UUID
 
-// ExitUUID is the UUID of a node exit
-type ExitUUID uuids.UUID
-
 // ActionUUID is the UUID of an action
 type ActionUUID uuids.UUID
-
-// StepUUID is the UUID of a run step
-type StepUUID uuids.UUID
-
-// InputUUID is the UUID of an input
-type InputUUID uuids.UUID
 
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
@@ -181,11 +170,6 @@ type Wait interface {
 	Accepts(Resume) bool
 }
 
-// Hint tells the caller what type of input the flow is expecting
-type Hint interface {
-	utils.Typed
-}
-
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
 	Validate() error
@@ -247,11 +231,7 @@ type Input interface {
 // Step is a single step in the path thru a flow
 type Step interface {
 	Contextable
-
-	UUID() StepUUID
-	NodeUUID() NodeUUID
-	ExitUUID() ExitUUID
-	ArrivedOn() time.Time
+	events.Step
 
 	Leave(ExitUUID)
 	Run() Run

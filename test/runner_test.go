@@ -146,7 +146,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 
 	var call *flows.Call
 	if rawCall != nil {
-		call = rawCall.Unmarshal(sa, assets.PanicOnMissing)
+		call = flows.ReadCall(sa, rawCall, assets.PanicOnMissing)
 	}
 
 	session, sprint, err := eng.NewSession(ctx, sa, env, contact, trigger, call)

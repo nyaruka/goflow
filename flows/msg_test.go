@@ -203,7 +203,7 @@ func TestBroadcastTranslations(t *testing.T) {
 		require.NoError(t, err)
 
 		contact := flows.NewEmptyContact(sa, "Bob", tc.contactLanguage, nil)
-		content, locale := tc.translations.ForContact(tc.env, contact, tc.baseLanguage)
+		content, locale := flows.TranslationsForContact(tc.env, tc.translations, contact, tc.baseLanguage)
 
 		assert.Equal(t, tc.expectedContent, content, "%d: content mismatch", i)
 		assert.Equal(t, tc.expectedLocale, locale, "%d: locale mismatch", i)

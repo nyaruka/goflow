@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -20,7 +21,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
-	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -277,7 +277,7 @@ func TestNewFlow(t *testing.T) {
 					),
 				},
 				routers.NewSwitch(
-					waits.NewMsg(nil, hints.NewImage()),
+					waits.NewMsg(nil, events.NewImageHint()),
 					"Response 1",
 					[]flows.Category{
 						routers.NewCategory(

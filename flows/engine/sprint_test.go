@@ -8,8 +8,8 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -17,10 +17,10 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
@@ -230,7 +230,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		snapshot string
 	}{
 		{
-			triggers.NewBuilder(flow).CallReceived(events.NewCallReceived(call)).Build(),
+			triggers.NewBuilder(flow).CallReceived(events.NewCallReceived(call.Marshal())).Build(),
 			"call",
 		},
 		{
@@ -239,7 +239,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				CampaignFired(events.NewCampaignFired(reminders, "8d339613-f0be-48b7-92ee-155f4c7576f8"), reminders).
+				CampaignFired(events.NewCampaignFired(reminders.Reference(), "8d339613-f0be-48b7-92ee-155f4c7576f8"), reminders).
 				Build(),
 			"campaign",
 		},

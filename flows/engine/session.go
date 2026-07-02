@@ -9,9 +9,9 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -358,7 +358,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			flow := s.pushedFlow.flow
 			currentRun = newRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
-			sprint.logEvent(events.NewRunStarted(currentRun, s.pushedFlow.terminal))
+			sprint.logEvent(events.NewRunStarted(currentRun.FlowReference(), currentRun.UUID(), parentRunUUID(currentRun), s.pushedFlow.terminal))
 			sprint.logFlow(flow)
 
 			// our destination is the first node in that flow... if such a node exists
@@ -564,7 +564,7 @@ func (s *session) ensureQueryBasedGroups(logEvent flows.EventLogger) {
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		logEvent(events.NewContactGroupsChanged(added, removed))
+		logEvent(events.NewContactGroupsChanged(flows.GroupReferences(added), flows.GroupReferences(removed)))
 	}
 }
 
@@ -704,4 +704,12 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	}
 
 	return jsonx.Marshal(e)
+}
+
+// helper to get the parent run UUID of a run if it has a parent
+func parentRunUUID(r flows.Run) flows.RunUUID {
+	if r.Parent() != nil {
+		return r.Parent().UUID()
+	}
+	return ""
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -72,7 +72,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(diff, nil))
+			log(events.NewContactGroupsChanged(flows.GroupReferences(diff), nil))
 			return true, nil
 		}
 
@@ -94,7 +94,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(nil, diff))
+			log(events.NewContactGroupsChanged(nil, flows.GroupReferences(diff)))
 			return true, nil
 		}
 	}

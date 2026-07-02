@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {

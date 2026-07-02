@@ -14,6 +14,7 @@ import (
 
 var searchDirs = []string{
 	"assets",
+	"events",
 	"excellent/functions",
 	"excellent/operators",
 	"excellent/types",
@@ -22,7 +23,6 @@ var searchDirs = []string{
 	"flows/definition",
 	"flows/definition/migrations",
 	"flows/engine",
-	"flows/events",
 	"flows/inputs",
 	"flows/resumes",
 	"flows/routers/cases",

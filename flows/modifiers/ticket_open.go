@@ -7,8 +7,8 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -47,7 +47,7 @@ func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Envir
 	}
 
 	ticket := flows.OpenTicket(m.topic, m.assignee)
-	log(events.NewTicketOpened(ticket))
+	log(events.NewTicketOpened(ticket.Marshal()))
 
 	if note := strings.TrimSpace(m.note); note != "" {
 		log(events.NewTicketNoteAdded(ticket.UUID(), note))

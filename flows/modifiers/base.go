@@ -7,8 +7,8 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -66,7 +66,7 @@ func ReevaluateGroups(env envs.Environment, contact *flows.Contact, log flows.Ev
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		log(events.NewContactGroupsChanged(added, removed))
+		log(events.NewContactGroupsChanged(flows.GroupReferences(added), flows.GroupReferences(removed)))
 	}
 }
 

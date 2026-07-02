@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {

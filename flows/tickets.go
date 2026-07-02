@@ -1,26 +1,11 @@
 package flows
 
 import (
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/events"
 	"github.com/nyaruka/goflow/excellent/types"
 )
-
-// TicketUUID is the UUID of a ticket
-type TicketUUID uuids.UUID
-
-type TicketStatus string
-
-const (
-	// TicketStatusOpen is the status of an open ticket
-	TicketStatusOpen TicketStatus = "open"
-	// TicketStatusClosed is the status of a closed ticket
-	TicketStatusClosed TicketStatus = "closed"
-)
-
-// NewTicketUUID generates a new UUID for a ticket
-func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
 
 // Ticket is a ticket in a ticketing system
 type Ticket struct {
@@ -140,16 +125,9 @@ func (l *TicketList) Marshal() []*TicketEnvelope {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type TicketEnvelope struct {
-	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=open|eq=closed"`
-	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
-	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
-}
-
-// Unmarshal unmarshals a ticket from the passed in envelope. If the topic or assigned user can't
+// ReadTicket reads a ticket from the passed in envelope. If the topic or assigned user can't
 // be found in the assets, we report the missing asset and return ticket without those.
-func (e *TicketEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) *Ticket {
+func ReadTicket(sa SessionAssets, e *events.TicketEnvelope, missing assets.MissingCallback) *Ticket {
 	if e.Status == "" {
 		e.Status = TicketStatusOpen
 	}
