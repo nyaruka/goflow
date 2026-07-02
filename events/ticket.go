@@ -20,7 +20,8 @@ const (
 	TicketStatusClosed TicketStatus = "closed"
 )
 
-// TicketEnvelope is the serialized form of a ticket
+// TicketEnvelope is the serialized form of a ticket. Use flows.ReadTicket to resolve it against
+// session assets into a live ticket.
 type TicketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
 	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=open|eq=closed"`

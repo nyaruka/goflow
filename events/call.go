@@ -12,7 +12,8 @@ type CallUUID uuids.UUID
 // NewCallUUID generates a new UUID for a call
 func NewCallUUID() CallUUID { return CallUUID(uuids.NewV7()) }
 
-// CallEnvelope is the serialized form of a call
+// CallEnvelope is the serialized form of a call. Use flows.ReadCall to resolve it against
+// session assets into a live call.
 type CallEnvelope struct {
 	UUID    CallUUID                 `json:"uuid"    validate:"required,uuid"`
 	Channel *assets.ChannelReference `json:"channel" validate:"required"`
