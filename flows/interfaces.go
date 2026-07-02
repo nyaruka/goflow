@@ -3,7 +3,6 @@ package flows
 import (
 	"context"
 	"encoding/json"
-	"github.com/nyaruka/goflow/core"
 	"text/template"
 	"time"
 
@@ -12,8 +11,9 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"

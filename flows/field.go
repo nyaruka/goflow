@@ -2,11 +2,11 @@ package flows
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"sort"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )

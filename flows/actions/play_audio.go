@@ -2,10 +2,10 @@ package actions
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/core"
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 )

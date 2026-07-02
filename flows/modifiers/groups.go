@@ -3,12 +3,12 @@ package modifiers
 import (
 	"context"
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )

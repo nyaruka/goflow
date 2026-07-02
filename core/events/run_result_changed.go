@@ -2,6 +2,7 @@ package events
 
 import (
 	"encoding/json"
+
 	"github.com/nyaruka/goflow/core"
 )
 

@@ -1,10 +1,10 @@
 package events
 
 import (
-	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {

@@ -2,11 +2,11 @@ package services_test
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/core/events"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/test/services"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"

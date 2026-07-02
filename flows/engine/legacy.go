@@ -1,12 +1,12 @@
 package engine
 
 import (
-	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"

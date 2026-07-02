@@ -1,10 +1,10 @@
 package flows
 
 import (
-	"github.com/nyaruka/goflow/core"
 	"slices"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 )
 

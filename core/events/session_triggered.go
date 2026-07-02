@@ -2,10 +2,10 @@ package events
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 )
 
 func init() {

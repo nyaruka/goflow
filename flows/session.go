@@ -2,11 +2,11 @@ package flows
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/core/events"
 	"time"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )

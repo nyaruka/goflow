@@ -1,10 +1,10 @@
 package issues
 
 import (
-	"github.com/nyaruka/goflow/core"
 	"sort"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
 

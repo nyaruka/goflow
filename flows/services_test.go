@@ -2,12 +2,12 @@ package flows_test
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -3,7 +3,6 @@ package engine_test
 import (
 	"context"
 	"encoding/json"
-	"github.com/nyaruka/goflow/core"
 	"os"
 	"sort"
 	"testing"
@@ -14,8 +13,9 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
-	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"

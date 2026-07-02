@@ -2,12 +2,12 @@ package flows
 
 import (
 	"context"
-	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/core/events"
 	"net/http"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 
 	"github.com/shopspring/decimal"
 )

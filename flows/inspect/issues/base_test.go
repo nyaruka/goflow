@@ -3,12 +3,12 @@ package issues_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"os"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"

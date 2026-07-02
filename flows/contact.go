@@ -2,7 +2,6 @@ package flows
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"strconv"
 	"time"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"

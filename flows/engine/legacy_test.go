@@ -1,12 +1,12 @@
 package engine_test
 
 import (
-	"github.com/nyaruka/goflow/core"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
 

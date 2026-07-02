@@ -3,7 +3,6 @@ package legacy
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"sort"
 	"strconv"
@@ -15,6 +14,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows/definition/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"

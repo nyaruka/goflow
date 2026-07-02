@@ -2,10 +2,10 @@ package inputs
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )

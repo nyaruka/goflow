@@ -2,7 +2,6 @@ package definition_test
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"os"
 	"strings"
 	"testing"
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"

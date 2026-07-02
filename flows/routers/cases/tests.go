@@ -2,7 +2,6 @@ package cases
 
 import (
 	"fmt"
-	"github.com/nyaruka/goflow/core"
 	"regexp"
 	"strconv"
 	"strings"
@@ -10,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
