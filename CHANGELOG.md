@@ -1,3 +1,7 @@
+v0.278.0 (2026-07-02)
+-------------------------
+ * Move events out of flows into their own root-level package
+
 v0.277.4 (2026-07-01)
 -------------------------
  * Update dependencies
