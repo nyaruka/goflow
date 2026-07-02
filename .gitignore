@@ -1,13 +1,21 @@
+# General
+*~
 .DS_Store
+.vscode/
 .devcontainer
+deploy
+fabfile.py
+
+# AI
 .claude/
 CLAUDE.md
 CODEX.md
 AGENTS.md
-coverage.text
-deploy
-fabfile.*
 
+# Go
+coverage.text
+
+# Project specific
 antlr/.antlr
-docs/
+/docs
 docs.tar.gz
