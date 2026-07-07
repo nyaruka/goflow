@@ -11,8 +11,9 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"golang.org/x/net/http/httpguts"
 )
 
@@ -86,7 +87,7 @@ func (a *CallWebhook) Validate() error {
 }
 
 // Execute runs this action
-func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	url, _ := run.EvaluateTemplate(a.URL, log)
 	url = strings.TrimSpace(url)
 
@@ -115,7 +116,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 }
 
 // Execute runs this action
-func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, log flows.EventLogger) *flows.WebhookCall {
+func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, log events.EventLogger) *flows.WebhookCall {
 	// build our request
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
 	if err != nil {
@@ -165,16 +166,16 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 }
 
 // determines the webhook status from the HTTP status code
-func callStatus(t *httpx.Trace, err error, isResthook bool) flows.CallStatus {
+func callStatus(t *httpx.Trace, err error, isResthook bool) core.CallStatus {
 	if t.Response == nil || err != nil {
-		return flows.CallStatusConnectionError
+		return core.CallStatusConnectionError
 	}
 	if isResthook && t.Response.StatusCode == http.StatusGone {
 		// https://zapier.com/developer/documentation/v2/rest-hooks/
-		return flows.CallStatusSubscriberGone
+		return core.CallStatusSubscriberGone
 	}
 	if t.Response.StatusCode/100 == 2 {
-		return flows.CallStatusSuccess
+		return core.CallStatusSuccess
 	}
-	return flows.CallStatusResponseError
+	return core.CallStatusResponseError
 }

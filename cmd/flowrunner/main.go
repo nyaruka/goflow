@@ -19,10 +19,11 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -155,7 +156,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		msg := events.NewMsgReceived(createMessage(contact, initialMsg), "")
 		repro.Trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(msg).Build()
 
-		printEvents([]flows.Event{msg}, out)
+		printEvents([]events.Event{msg}, out)
 	} else {
 		tb := triggers.NewBuilder(flow.Reference(false)).Manual()
 
@@ -190,13 +191,13 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		if text == "/timeout" {
 			resume = resumes.NewWaitTimeout(events.NewWaitTimedOut())
 		} else if strings.HasPrefix(text, "/dial") {
-			status := flows.DialStatus(strings.TrimSpace(text[5:]))
-			resume = resumes.NewDial(events.NewDialEnded(flows.NewDial(status, 10)))
+			status := core.DialStatus(strings.TrimSpace(text[5:]))
+			resume = resumes.NewDial(events.NewDialEnded(core.NewDial(status, 10)))
 		} else {
 			msg := events.NewMsgReceived(createMessage(contact, scanner.Text()), "")
 			resume = resumes.NewMsg(msg)
 
-			printEvents([]flows.Event{msg}, out)
+			printEvents([]events.Event{msg}, out)
 		}
 
 		repro.Resumes = append(repro.Resumes, resume)
@@ -212,11 +213,11 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	return repro, nil
 }
 
-func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
+func createMessage(contact *flows.Contact, text string) *core.MsgIn {
+	return core.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
 }
 
-func printEvents(log []flows.Event, out io.Writer) {
+func printEvents(log []events.Event, out io.Writer) {
 	for _, event := range log {
 		PrintEvent(event, out)
 		fmt.Fprintln(out)
@@ -224,7 +225,7 @@ func printEvents(log []flows.Event, out io.Writer) {
 }
 
 // PrintEvent prints out the given event to the given writer
-func PrintEvent(event flows.Event, out io.Writer) {
+func PrintEvent(event events.Event, out io.Writer) {
 	var msg string
 	switch typed := event.(type) {
 	case *events.BroadcastCreated:

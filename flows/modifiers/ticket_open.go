@@ -6,9 +6,9 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -40,14 +40,14 @@ func NewTicketOpen(topic *flows.Topic, assignee *flows.User, note string) *Ticke
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	// if there's already an open ticket, nothing to do
 	if contact.Tickets().Open().Count() > 0 {
 		return false, nil
 	}
 
 	ticket := flows.OpenTicket(m.topic, m.assignee)
-	log(events.NewTicketOpened(ticket))
+	log(events.NewTicketOpened(ticket.Marshal()))
 
 	if note := strings.TrimSpace(m.note); note != "" {
 		log(events.NewTicketNoteAdded(ticket.UUID(), note))

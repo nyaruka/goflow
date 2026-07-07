@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -42,7 +43,7 @@ func TestHistory(t *testing.T) {
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.SessionUUID(""), session.History().ParentUUID)
+	assert.Equal(t, core.SessionUUID(""), session.History().ParentUUID)
 	assert.Equal(t, 0, session.History().Ancestors)
 	assert.Equal(t, 0, session.History().AncestorsSinceInput)
 

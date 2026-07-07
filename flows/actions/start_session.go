@@ -6,8 +6,9 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 // max number of times a session can trigger another session without there being input from the contact
@@ -45,7 +46,7 @@ type StartSession struct {
 }
 
 // NewStartSession creates a new start session action
-func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*flows.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
+func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups []*assets.GroupReference, contacts []*core.ContactReference, contactQuery string, urns []urns.URN, legacyVars []string, createContact bool) *StartSession {
 	return &StartSession{
 		baseAction: newBaseAction(TypeStartSession, uuid),
 		otherContactsAction: otherContactsAction{
@@ -61,7 +62,7 @@ func NewStartSession(uuid flows.ActionUUID, flow *assets.FlowReference, groups [
 }
 
 // Execute runs our action
-func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *StartSession) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	groupRefs, contactRefs, contactQuery, urnList, err := a.resolveRecipients(run, log)
 	if err != nil {
 		return err

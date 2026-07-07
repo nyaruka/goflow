@@ -6,9 +6,9 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -37,7 +37,7 @@ func NewAffinity(urn urns.URN, channel *flows.Channel) *Affinity {
 }
 
 // Apply applies this modification to the given contact
-func (m *Affinity) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Affinity) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	if contact.SetAffinity(m.urn, m.channel) {
 		// if URNs change in anyway, generate a URNs changed event
 		log(events.NewContactURNsChanged(contact.URNs().Encode()))

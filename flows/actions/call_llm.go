@@ -6,8 +6,9 @@ import (
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -59,7 +60,7 @@ func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, i
 }
 
 // Execute runs this action
-func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	resp := a.call(ctx, run, log)
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)
@@ -70,7 +71,7 @@ func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	return nil
 }
 
-func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger) *flows.LLMResponse {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.LLMResponse {
 	llms := run.Session().Assets().LLMs()
 	llm := llms.Get(a.LLM.UUID)
 	if llm == nil {
@@ -100,7 +101,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log flows.EventLogger
 		return nil
 	}
 
-	log(events.NewLLMCalled(llm, instructions, input, resp, dates.Since(start)))
+	log(events.NewLLMCalled(llm.Reference(), instructions, input, resp, dates.Since(start)))
 
 	return resp
 }

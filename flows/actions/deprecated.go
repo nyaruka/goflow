@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -40,7 +40,7 @@ func NewCallClassifier(uuid flows.ActionUUID, input string, resultName string) *
 }
 
 // Execute runs this action
-func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	input, _ := run.EvaluateTemplate(a.Input, log)
 
 	log(events.NewWarning("NLU classifiers are no longer supported"))

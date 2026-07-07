@@ -8,10 +8,11 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	main "github.com/nyaruka/goflow/cmd/flowrunner"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -62,24 +63,24 @@ func TestPrintEvent(t *testing.T) {
 	expiresOn := time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC)
 
 	tests := []struct {
-		event    flows.Event
+		event    events.Event
 		expected string
 	}{
-		{events.NewBroadcastCreated(flows.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
-		{events.NewContactFieldChanged(sa.Fields().Get("gender"), flows.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
-		{events.NewContactFieldChanged(sa.Fields().Get("gender"), nil), `✏️ field 'gender' cleared`},
-		{events.NewContactGroupsChanged([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}, nil), `👪 added to 'Testers'`},
-		{events.NewContactGroupsChanged(nil, []*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), `👪 removed from 'Testers'`},
+		{events.NewBroadcastCreated(core.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
+		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), core.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
+		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), nil), `✏️ field 'gender' cleared`},
+		{events.NewContactGroupsChanged(flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
+		{events.NewContactGroupsChanged(nil, flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
 		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
-		{events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
+		{events.NewDialEnded(core.NewDial(core.DialStatusBusy, 3)), `☎️ dial ended with 'busy'`},
 		{events.NewDialWait(urns.URN(`tel:+1234567890`), 20, 120, expiresOn), `⏳ waiting for dial (type /dial <answered|no_answer|busy|failed>)...`},
 		{events.NewEmailSent([]string{"code@example.com"}, "Hi", "What up?"), `✉️ email sent with subject 'Hi'`},
 		{events.NewError("this didn't work", ""), `⚠️ this didn't work`},
 		{events.NewFailure("This really didn't work"), `🛑 This really didn't work`},
-		{events.NewRunStarted(session.Runs()[0], false), `↪️ entered flow 'Registration'`},
-		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", []*flows.Label{sa.Labels().FindByName("Spam")}), `🏷️ labeled with 'Spam'`},
+		{events.NewRunStarted(session.Runs()[0].FlowReference(), session.Runs()[0].UUID(), "", false), `↪️ entered flow 'Registration'`},
+		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", flows.LabelReferences([]*flows.Label{sa.Labels().FindByName("Spam")})), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, expiresOn, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
 	}

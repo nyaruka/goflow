@@ -5,8 +5,9 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/uuids"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
@@ -43,7 +44,7 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudio {
 }
 
 // Execute runs this action
-func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
 	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, log)
@@ -61,7 +62,7 @@ func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	call := run.Session().Call()
 
 	// if we have an audio URL, turn it into a message
-	msg := flows.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
+	msg := core.NewIVRMsgOut(call.URN(), call.Channel().Reference(), "", evaluatedAudioURL, currentLocale(run, urlLang))
 	log(events.NewIVRCreated(msg))
 
 	return nil

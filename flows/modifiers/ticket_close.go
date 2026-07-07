@@ -5,9 +5,10 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -22,11 +23,11 @@ const TypeTicketClose string = "ticket_close"
 type TicketClose struct {
 	baseModifier
 
-	ticketUUID flows.TicketUUID
+	ticketUUID core.TicketUUID
 }
 
 // NewTicketClose creates a new close modifier
-func NewTicketClose(ticketUUID flows.TicketUUID) *TicketClose {
+func NewTicketClose(ticketUUID core.TicketUUID) *TicketClose {
 	return &TicketClose{
 		baseModifier: newBaseModifier(TypeTicketClose),
 		ticketUUID:   ticketUUID,
@@ -34,11 +35,11 @@ func NewTicketClose(ticketUUID flows.TicketUUID) *TicketClose {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketClose) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *TicketClose) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	if ticket != nil && ticket.Status() != flows.TicketStatusClosed {
-		ticket.SetStatus(flows.TicketStatusClosed)
+	if ticket != nil && ticket.Status() != core.TicketStatusClosed {
+		ticket.SetStatus(core.TicketStatusClosed)
 		log(events.NewTicketClosed(ticket.UUID()))
 		return true, nil
 	}
@@ -54,7 +55,7 @@ var _ flows.Modifier = (*TicketClose)(nil)
 type ticketCloseEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID flows.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
 }
 
 func readTicketClose(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {

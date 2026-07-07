@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -53,7 +54,7 @@ func (e *legacyExtra) ToXValue(env envs.Environment) types.XValue {
 
 func (e *legacyExtra) addResults(results flows.Results) {
 	// sort by created time
-	sortedResults := make([]*flows.Result, 0)
+	sortedResults := make([]*core.Result, 0)
 	for _, result := range results {
 		sortedResults = append(sortedResults, result)
 
@@ -67,7 +68,7 @@ func (e *legacyExtra) addResults(results flows.Results) {
 }
 
 // adds any extra from the given result
-func (e *legacyExtra) addResult(result *flows.Result) {
+func (e *legacyExtra) addResult(result *core.Result) {
 	if result.Extra == nil {
 		return
 	}

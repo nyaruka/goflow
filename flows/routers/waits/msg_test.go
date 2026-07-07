@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/routers/waits"
-	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -85,7 +86,7 @@ func TestMsgWait(t *testing.T) {
 	assert.Equal(t, "msg_wait", log.Events[0].Type())
 
 	// try to end with incorrect resume type
-	assert.False(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(flows.NewDial(flows.DialStatusBusy, 0)))))
+	assert.False(t, wait.Accepts(resumes.NewDial(events.NewDialEnded(core.NewDial(core.DialStatusBusy, 0)))))
 
 	// can end with timeout resume type
 	assert.True(t, wait.Accepts(resumes.NewWaitTimeout(events.NewWaitTimedOut())))

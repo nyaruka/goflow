@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/i18n"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -44,7 +44,7 @@ func NewSetContactLanguage(uuid flows.ActionUUID, language string) *SetContactLa
 }
 
 // Execute runs this action
-func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetContactLanguage) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	language, ok := run.EvaluateTemplate(a.Language, log)
 	language = strings.TrimSpace(language)
 

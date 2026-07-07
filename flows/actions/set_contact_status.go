@@ -3,6 +3,8 @@ package actions
 import (
 	"context"
 
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
@@ -28,11 +30,11 @@ type SetContactStatus struct {
 	baseAction
 	universalAction
 
-	Status flows.ContactStatus `json:"status" validate:"contact_status"`
+	Status core.ContactStatus `json:"status" validate:"contact_status"`
 }
 
 // NewSetContactStatus creates a new set status action
-func NewSetContactStatus(uuid flows.ActionUUID, status flows.ContactStatus) *SetContactStatus {
+func NewSetContactStatus(uuid flows.ActionUUID, status core.ContactStatus) *SetContactStatus {
 	return &SetContactStatus{
 		baseAction: newBaseAction(TypeSetContactStatus, uuid),
 		Status:     status,
@@ -40,7 +42,7 @@ func NewSetContactStatus(uuid flows.ActionUUID, status flows.ContactStatus) *Set
 }
 
 // Execute runs this action
-func (a *SetContactStatus) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetContactStatus) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	_, err := a.applyModifier(ctx, run, modifiers.NewStatus(a.Status), log)
 	return err
 }

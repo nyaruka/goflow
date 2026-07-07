@@ -9,6 +9,8 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/shopspring/decimal"
 )
@@ -22,13 +24,13 @@ func NewAirtime(currency string) *Airtime {
 	return &Airtime{fixedCurrency: currency}
 }
 
-func (s *Airtime) Create(ctx context.Context, transferUUID flows.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP flows.HTTPLogCallback) (*flows.AirtimeTransfer, error) {
+func (s *Airtime) Create(ctx context.Context, transferUUID events.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP core.HTTPLogCallback) (*core.AirtimeTransfer, error) {
 	if strings.Contains(string(recipient), "666") {
 		return nil, fmt.Errorf("invalid recipient number")
 	}
 
-	logHTTP(&flows.HTTPLog{
-		HTTPLogWithoutTime: &flows.HTTPLogWithoutTime{
+	logHTTP(&core.HTTPLog{
+		HTTPLogWithoutTime: &core.HTTPLogWithoutTime{
 			LogWithoutTime: &httpx.LogWithoutTime{
 				URL:        "http://send.airtime.com",
 				StatusCode: 200,
@@ -37,7 +39,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID flows.EventUUID, send
 				ElapsedMS:  0,
 				Retries:    0,
 			},
-			Status: flows.CallStatusSuccess,
+			Status: core.CallStatusSuccess,
 		},
 		CreatedOn: time.Date(2019, 10, 16, 13, 59, 30, 123456789, time.UTC),
 	})
@@ -47,7 +49,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID flows.EventUUID, send
 		return nil, fmt.Errorf("no amount configured for transfers in %s", s.fixedCurrency)
 	}
 
-	return &flows.AirtimeTransfer{
+	return &core.AirtimeTransfer{
 		ExternalID: random.String(10, []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")),
 		Sender:     sender,
 		Recipient:  recipient,
@@ -57,7 +59,7 @@ func (s *Airtime) Create(ctx context.Context, transferUUID flows.EventUUID, send
 }
 
 // Confirm is a no-op for the test service — Create returned the transfer ready to go.
-func (s *Airtime) Confirm(ctx context.Context, transfer *flows.AirtimeTransfer, logHTTP flows.HTTPLogCallback) error {
+func (s *Airtime) Confirm(ctx context.Context, transfer *core.AirtimeTransfer, logHTTP core.HTTPLogCallback) error {
 	return nil
 }
 

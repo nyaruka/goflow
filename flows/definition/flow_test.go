@@ -12,6 +12,8 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -20,7 +22,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition/migrations"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/routers/waits"
-	"github.com/nyaruka/goflow/flows/routers/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -267,7 +268,7 @@ func TestNewFlow(t *testing.T) {
 		definition.NewLocalization(),
 		[]flows.Node{
 			definition.NewNode(
-				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
+				core.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
 				[]flows.Action{
 					actions.NewSendMsg(
 						flows.ActionUUID("76112ef2-790e-4b5b-84cb-e910f191a335"),
@@ -300,16 +301,16 @@ func TestNewFlow(t *testing.T) {
 				[]flows.Exit{
 					definition.NewExit(
 						flows.ExitUUID("023a5c10-d74a-4fad-9560-990caead8170"),
-						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
+						core.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 					),
 					definition.NewExit(
 						flows.ExitUUID("8943c032-2a91-456c-8080-2a249f1b420c"),
-						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
+						core.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 					),
 				},
 			),
 			definition.NewNode(
-				flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
+				core.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 				[]flows.Action{
 					actions.NewAddInputLabels(
 						flows.ActionUUID("ad154980-7bf7-4ab8-8728-545fd6378912"),

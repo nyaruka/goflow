@@ -7,6 +7,8 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -28,10 +30,10 @@ func (s *segment) Time() time.Time         { return s.time }
 
 type segmentEnvelope struct {
 	FlowUUID        assets.FlowUUID `json:"flow_uuid"`
-	NodeUUID        flows.NodeUUID  `json:"node_uuid"`
+	NodeUUID        core.NodeUUID   `json:"node_uuid"`
 	ExitUUID        flows.ExitUUID  `json:"exit_uuid"`
 	Operand         string          `json:"operand,omitempty"`
-	DestinationUUID flows.NodeUUID  `json:"destination_uuid,omitempty"`
+	DestinationUUID core.NodeUUID   `json:"destination_uuid,omitempty"`
 	Time            time.Time       `json:"time"`
 }
 
@@ -51,7 +53,7 @@ var _ flows.Segment = (*segment)(nil)
 type sprint struct {
 	uuid      flows.SprintUUID
 	isInitial bool
-	events    []flows.Event
+	events    []events.Event
 	segments  []flows.Segment
 	flows     []flows.Flow
 }
@@ -61,7 +63,7 @@ func newEmptySprint(isInitial bool) *sprint {
 	return &sprint{
 		uuid:      flows.SprintUUID(uuids.NewV4()),
 		isInitial: isInitial,
-		events:    make([]flows.Event, 0, 10),
+		events:    make([]events.Event, 0, 10),
 		segments:  make([]flows.Segment, 0, 10),
 		flows:     make([]flows.Flow, 0, 1),
 	}
@@ -69,11 +71,11 @@ func newEmptySprint(isInitial bool) *sprint {
 
 func (s *sprint) UUID() flows.SprintUUID    { return s.uuid }
 func (s *sprint) IsInitial() bool           { return s.isInitial }
-func (s *sprint) Events() []flows.Event     { return s.events }
+func (s *sprint) Events() []events.Event    { return s.events }
 func (s *sprint) Segments() []flows.Segment { return s.segments }
 func (s *sprint) Flows() []flows.Flow       { return s.flows }
 
-func (s *sprint) logEvent(e flows.Event) {
+func (s *sprint) logEvent(e events.Event) {
 	s.events = append(s.events, e)
 }
 

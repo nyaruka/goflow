@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -71,7 +72,7 @@ type FlowActionBuilder struct {
 	t *FlowAction
 }
 
-func (b *Builder) FlowAction(history *flows.SessionHistory, runSummary []byte) *FlowActionBuilder {
+func (b *Builder) FlowAction(history *core.SessionHistory, runSummary []byte) *FlowActionBuilder {
 	if !json.Valid(runSummary) {
 		panic(fmt.Sprintf("invalid run summary JSON: %s", string(runSummary)))
 	}

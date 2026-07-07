@@ -7,10 +7,10 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -39,7 +39,7 @@ func NewField(field *flows.Field, value string) *Field {
 }
 
 // Apply applies this modification to the given contact
-func (m *Field) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log flows.EventLogger) (bool, error) {
+func (m *Field) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
 	oldValue := contact.Fields().Get(m.field)
 
 	newValue := contact.Fields().Parse(env, sa.Fields(), m.field, m.value)
@@ -51,7 +51,7 @@ func (m *Field) Apply(ctx context.Context, eng flows.Engine, env envs.Environmen
 
 	if !newValue.Equals(oldValue) {
 		contact.Fields().Set(m.field, newValue)
-		log(events.NewContactFieldChanged(m.field, newValue))
+		log(events.NewContactFieldChanged(m.field.Reference(), newValue))
 		return true, nil
 	}
 	return false, nil

@@ -7,8 +7,8 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -60,7 +60,7 @@ func (w *Dial) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *Dial) Begin(run flows.Run, log flows.EventLogger) bool {
+func (w *Dial) Begin(run flows.Run, log events.EventLogger) bool {
 	phone, _ := run.EvaluateTemplate(w.phone, log)
 	country := run.Session().MergedEnvironment().DefaultCountry()
 

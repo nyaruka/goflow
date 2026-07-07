@@ -11,11 +11,12 @@ import (
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -24,7 +25,7 @@ const (
 )
 
 type run struct {
-	uuid    flows.RunUUID
+	uuid    core.RunUUID
 	session *session
 
 	flow    flows.Flow
@@ -35,7 +36,7 @@ type run struct {
 	results  flows.Results
 	path     Path
 	hadInput bool
-	status   flows.RunStatus
+	status   core.RunStatus
 	webhook  *flows.WebhookCall
 
 	createdOn  time.Time
@@ -49,14 +50,14 @@ type run struct {
 func newRun(session *session, flow flows.Flow, parent *run) *run {
 	now := dates.Now()
 	r := &run{
-		uuid:       flows.NewRunUUID(),
+		uuid:       core.NewRunUUID(),
 		session:    session,
 		flow:       flow,
 		flowRef:    flow.Reference(true),
 		parent:     parent,
 		locals:     flows.NewLocals(),
 		results:    flows.NewResults(),
-		status:     flows.RunStatusActive,
+		status:     core.RunStatusActive,
 		createdOn:  now,
 		modifiedOn: now,
 	}
@@ -66,7 +67,7 @@ func newRun(session *session, flow flows.Flow, parent *run) *run {
 	return r
 }
 
-func (r *run) UUID() flows.RunUUID    { return r.uuid }
+func (r *run) UUID() core.RunUUID     { return r.uuid }
 func (r *run) Session() flows.Session { return r.session }
 
 func (r *run) Flow() flows.Flow                     { return r.flow }
@@ -76,7 +77,7 @@ func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }
 func (r *run) Results() flows.Results { return r.results }
-func (r *run) SetResult(result *flows.Result) (*flows.Result, bool) {
+func (r *run) SetResult(result *core.Result) (*core.Result, bool) {
 	// truncate value if necessary
 	result.Value = stringsx.Truncate(result.Value, r.session.Engine().Options().MaxResultChars)
 
@@ -86,15 +87,15 @@ func (r *run) SetResult(result *flows.Result) (*flows.Result, bool) {
 	return r.results.Save(result)
 }
 
-func (r *run) Exit(status flows.RunStatus) {
+func (r *run) Exit(status core.RunStatus) {
 	now := dates.Now()
 
 	r.status = status
 	r.exitedOn = &now
 	r.modifiedOn = now
 }
-func (r *run) Status() flows.RunStatus { return r.status }
-func (r *run) setStatus(status flows.RunStatus) {
+func (r *run) Status() core.RunStatus { return r.status }
+func (r *run) setStatus(status core.RunStatus) {
 	r.status = status
 	r.modifiedOn = dates.Now()
 }
@@ -304,7 +305,7 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *run) EvaluateTemplateValue(template string, log flows.EventLogger) (types.XValue, bool) {
+func (r *run) EvaluateTemplateValue(template string, log events.EventLogger) (types.XValue, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
 	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
@@ -318,7 +319,7 @@ func (r *run) EvaluateTemplateValue(template string, log flows.EventLogger) (typ
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
-func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log flows.EventLogger) (string, bool) {
+func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log events.EventLogger) (string, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
 	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
@@ -334,7 +335,7 @@ func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping,
 	return value, err == nil
 }
 
-func (r *run) errorToEvents(err error, log flows.EventLogger) {
+func (r *run) errorToEvents(err error, log events.EventLogger) {
 	var tplErrs *excellent.TemplateErrors
 	if errors.As(err, &tplErrs) {
 		for _, terr := range tplErrs.Errors {
@@ -346,7 +347,7 @@ func (r *run) errorToEvents(err error, log flows.EventLogger) {
 }
 
 // EvaluateTemplate is a convenience function for evaluating as text with truncating but no escaping
-func (r *run) EvaluateTemplate(template string, log flows.EventLogger) (string, bool) {
+func (r *run) EvaluateTemplate(template string, log events.EventLogger) (string, bool) {
 	return r.EvaluateTemplateText(template, nil, true, log)
 }
 
@@ -417,14 +418,14 @@ var _ flows.RunSummary = (*run)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID       flows.RunUUID         `json:"uuid"                  validate:"required,uuid"`
+	UUID       core.RunUUID          `json:"uuid"                  validate:"required,uuid"`
 	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
 	Path       []*step               `json:"path"                  validate:"dive"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
-	Status     flows.RunStatus       `json:"status"                validate:"required"`
+	Status     core.RunStatus        `json:"status"                validate:"required"`
 	HadInput   bool                  `json:"had_input,omitzero"`
-	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
+	ParentUUID core.RunUUID          `json:"parent_uuid,omitempty" validate:"omitempty,uuid"`
 	Webhook    *flows.WebhookCall    `json:"webhook,omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on"  validate:"required"`

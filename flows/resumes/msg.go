@@ -3,8 +3,8 @@ package resumes
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -50,7 +50,7 @@ func NewMsg(event *events.MsgReceived) *Msg {
 }
 
 // Event returns the event this resume is based on
-func (r *Msg) Event() flows.Event { return r.event }
+func (r *Msg) Event() events.Event { return r.event }
 
 func (r *Msg) Input(sa flows.SessionAssets) flows.Input {
 	return inputs.NewMsg(sa, r.event)

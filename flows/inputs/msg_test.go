@@ -6,9 +6,10 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -24,7 +25,7 @@ func TestMsgInput(t *testing.T) {
 
 	channel := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
-	msgEvt := events.NewMsgReceived(flows.NewMsgIn(
+	msgEvt := events.NewMsgReceived(core.NewMsgIn(
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
 		"Hi there!",

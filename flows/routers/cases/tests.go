@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -895,10 +896,9 @@ func isDateGTTest(value dates.Date, test dates.Date) bool {
 //------------------------------------------------------------------------------------------
 
 // loads a result from an object
-func resultFromXObject(object *types.XObject) (*flows.Result, error) {
+func resultFromXObject(object *types.XObject) (*core.Result, error) {
 	marshaled, _ := jsonx.Marshal(object)
-	result := &flows.Result{}
+	result := &core.Result{}
 	err := utils.UnmarshalAndValidate(marshaled, result)
 	return result, err
 }
-

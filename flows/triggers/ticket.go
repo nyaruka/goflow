@@ -3,10 +3,11 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -81,7 +82,7 @@ func (b *TicketBuilder) Build() *Ticket {
 type ticketEnvelope struct {
 	baseEnvelope
 
-	Ticket *flows.TicketEnvelope `json:"ticket" validate:"required"`
+	Ticket *core.TicketEnvelope `json:"ticket" validate:"required"`
 }
 
 func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Trigger, error) {
@@ -93,7 +94,7 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 	t := &Ticket{}
 
 	if e.Ticket != nil {
-		t.ticket = e.Ticket.Unmarshal(sa, missing)
+		t.ticket = flows.ReadTicket(sa, e.Ticket, missing)
 	}
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {

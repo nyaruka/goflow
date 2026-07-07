@@ -3,11 +3,11 @@ package flows
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"github.com/nyaruka/gocommon/httpx"
-	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 
 	"github.com/shopspring/decimal"
 )
@@ -25,46 +25,14 @@ type EmailService interface {
 	Send(addresses []string, subject, body string) error
 }
 
-// CallStatus represents the status of a call to an external service
-type CallStatus string
-
-const (
-	// CallStatusSuccess represents that the webhook was successful
-	CallStatusSuccess CallStatus = "success"
-
-	// CallStatusConnectionError represents that the webhook had a connection error
-	CallStatusConnectionError CallStatus = "connection_error"
-
-	// CallStatusResponseError represents that the webhook response had a non 2xx status code
-	CallStatusResponseError CallStatus = "response_error"
-
-	// CallStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
-	CallStatusSubscriberGone CallStatus = "subscriber_gone"
-)
-
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
 	Call(request *http.Request) (*httpx.Trace, error)
 }
 
-type LLMResponse struct {
-	Output       string
-	TokensInput  int64
-	TokensOutput int64
-}
-
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
-	Response(ctx context.Context, instructions, input string, maxTokens int) (*LLMResponse, error)
-}
-
-// AirtimeTransfer is the result of an attempted airtime transfer
-type AirtimeTransfer struct {
-	ExternalID string // provider transaction id, when known after initiation
-	Sender     urns.URN
-	Recipient  urns.URN
-	Currency   string
-	Amount     decimal.Decimal
+	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error)
 }
 
 // AirtimeService provides airtime functionality to the engine
@@ -78,7 +46,7 @@ type AirtimeService interface {
 	// airtime_created event; implementations may pass it to the provider as their own reference (e.g.
 	// DT One's external_id field) so that subsequent provider callbacks can be correlated back to the
 	// event/transfer by the host without needing the provider's transaction id.
-	Create(ctx context.Context, transferUUID EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP HTTPLogCallback) (*AirtimeTransfer, error)
+	Create(ctx context.Context, transferUUID events.EventUUID, sender urns.URN, recipient urns.URN, amounts map[string]decimal.Decimal, logHTTP core.HTTPLogCallback) (*core.AirtimeTransfer, error)
 
 	// Confirm completes initiation of a transfer previously surfaced by Create. Hosts typically call
 	// Confirm after the session commits, so the airtime is only actually sent once the surrounding work
@@ -94,67 +62,5 @@ type AirtimeService interface {
 	// confirmation. Hosts that need at-most-once delivery semantics should ensure Confirm is called at
 	// most once per transfer. On error, the airtime was not sent; hosts are responsible for surfacing
 	// that to their users.
-	Confirm(ctx context.Context, transfer *AirtimeTransfer, logHTTP HTTPLogCallback) error
-}
-
-// HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
-type HTTPLogWithoutTime struct {
-	*httpx.LogWithoutTime
-
-	Status CallStatus `json:"status" validate:"required"`
-}
-
-// trim request and response traces to 10K chars to avoid bloating serialized sessions
-const trimTracesTo = 10000
-const trimURLsTo = 2048
-
-// NewHTTPLogWithoutTime creates a new HTTP log from a trace
-func NewHTTPLogWithoutTime(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPLogWithoutTime {
-	return &HTTPLogWithoutTime{
-		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
-		Status:         status,
-	}
-}
-
-// HTTPLog describes an HTTP request/response
-type HTTPLog struct {
-	*HTTPLogWithoutTime
-	CreatedOn time.Time `json:"created_on" validate:"required"`
-}
-
-// HTTPLogCallback is a function that handles an HTTP log
-type HTTPLogCallback func(*HTTPLog)
-
-// HTTPLogger logs HTTP logs
-type HTTPLogger struct {
-	Logs []*HTTPLog
-}
-
-// Log logs the given HTTP log
-func (l *HTTPLogger) Log(h *HTTPLog) {
-	l.Logs = append(l.Logs, h)
-}
-
-// HTTPLogStatusResolver is a function that determines the status of an HTTP log from the response
-type HTTPLogStatusResolver func(t *httpx.Trace) CallStatus
-
-// HTTPStatusFromCode uses the status code to determine status of an HTTP log
-func HTTPStatusFromCode(t *httpx.Trace) CallStatus {
-	if t.Response == nil {
-		return CallStatusConnectionError
-	} else if t.Response.StatusCode >= 400 {
-		return CallStatusResponseError
-	}
-	return CallStatusSuccess
-}
-
-// RedactionMask is the redaction mask for HTTP service logs
-const RedactionMask = "****************"
-
-// NewHTTPLog creates a new HTTP log from a trace
-func NewHTTPLog(trace *httpx.Trace, statusFn HTTPLogStatusResolver, redact stringsx.Redactor) *HTTPLog {
-	return &HTTPLog{
-		HTTPLogWithoutTime: NewHTTPLogWithoutTime(trace, statusFn(trace), redact),
-		CreatedOn:          trace.StartTime,
-	}
+	Confirm(ctx context.Context, transfer *core.AirtimeTransfer, logHTTP core.HTTPLogCallback) error
 }

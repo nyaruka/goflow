@@ -3,8 +3,8 @@ package resumes
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -43,7 +43,7 @@ func NewWaitExpiration(event *events.WaitExpired) *WaitExpiration {
 }
 
 // Event returns the event this resume is based on
-func (r *WaitExpiration) Event() flows.Event { return r.event }
+func (r *WaitExpiration) Event() events.Event { return r.event }
 
 var _ flows.Resume = (*WaitExpiration)(nil)
 

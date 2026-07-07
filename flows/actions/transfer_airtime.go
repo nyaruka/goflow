@@ -6,8 +6,9 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/shopspring/decimal"
 )
 
@@ -51,7 +52,7 @@ func NewTransferAirtime(uuid flows.ActionUUID, amounts map[string]decimal.Decima
 }
 
 // Execute executes the transfer action
-func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	airtime, err := a.transfer(ctx, run, log)
 	if err != nil {
 		log(events.NewRawError(err))
@@ -66,7 +67,7 @@ func (a *TransferAirtime) Execute(ctx context.Context, run flows.Run, step flows
 	return nil
 }
 
-func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows.EventLogger) (*events.AirtimeCreated, error) {
+func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log events.EventLogger) (*events.AirtimeCreated, error) {
 	// fail if we don't have a contact
 	contact := run.Contact()
 
@@ -90,10 +91,10 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log flows
 		return nil, err
 	}
 
-	httpLogger := &flows.HTTPLogger{}
+	httpLogger := &core.HTTPLogger{}
 
 	// pre-allocate the event UUID so the service can pass it through to the provider as a stable reference
-	transferUUID := flows.NewEventUUID()
+	transferUUID := events.NewEventUUID()
 
 	transfer, err := svc.Create(ctx, transferUUID, sender, recipient.Identity(), a.Amounts, httpLogger.Log)
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
@@ -42,7 +43,7 @@ func newEngine(httpClient *http.Client) flows.Engine {
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
 		}).
-		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *flows.MsgContent) (flows.UnsendableReason, error) {
+		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *core.MsgContent) (core.UnsendableReason, error) {
 			return "", nil
 		}).
 		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {

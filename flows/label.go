@@ -69,3 +69,12 @@ func (s *LabelAssets) FindByName(name string) *Label {
 	}
 	return nil
 }
+
+// LabelReferences converts a slice of labels to a slice of references
+func LabelReferences(labels []*Label) []*assets.LabelReference {
+	refs := make([]*assets.LabelReference, len(labels))
+	for i := range labels {
+		refs[i] = labels[i].Reference()
+	}
+	return refs
+}

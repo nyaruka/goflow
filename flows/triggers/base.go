@@ -8,10 +8,11 @@ import (
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -33,16 +34,16 @@ func RegisteredTypes() map[string]ReadFunc {
 // base of all trigger types
 type baseTrigger struct {
 	type_       string
-	event       flows.Event
+	event       events.Event
 	flow        *assets.FlowReference
 	batch       bool
 	params      *types.XObject
-	history     *flows.SessionHistory
+	history     *core.SessionHistory
 	triggeredOn time.Time
 }
 
 // create a new base trigger
-func newBaseTrigger(typeName string, event flows.Event, flow *assets.FlowReference, batch bool, history *flows.SessionHistory) baseTrigger {
+func newBaseTrigger(typeName string, event events.Event, flow *assets.FlowReference, batch bool, history *core.SessionHistory) baseTrigger {
 	return baseTrigger{
 		type_:       typeName,
 		event:       event,
@@ -53,13 +54,13 @@ func newBaseTrigger(typeName string, event flows.Event, flow *assets.FlowReferen
 	}
 }
 
-func (t *baseTrigger) Type() string                   { return t.type_ }
-func (t *baseTrigger) Event() flows.Event             { return t.event }
-func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
-func (t *baseTrigger) Batch() bool                    { return t.batch }
-func (t *baseTrigger) Params() *types.XObject         { return t.params }
-func (t *baseTrigger) History() *flows.SessionHistory { return t.history }
-func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
+func (t *baseTrigger) Type() string                  { return t.type_ }
+func (t *baseTrigger) Event() events.Event           { return t.event }
+func (t *baseTrigger) Flow() *assets.FlowReference   { return t.flow }
+func (t *baseTrigger) Batch() bool                   { return t.batch }
+func (t *baseTrigger) Params() *types.XObject        { return t.params }
+func (t *baseTrigger) History() *core.SessionHistory { return t.history }
+func (t *baseTrigger) TriggeredOn() time.Time        { return t.triggeredOn }
 
 func (t *baseTrigger) Input(flows.SessionAssets) flows.Input { return nil }
 
@@ -141,7 +142,7 @@ type baseEnvelope struct {
 	Flow        *assets.FlowReference `json:"flow"               validate:"required"`
 	Batch       bool                  `json:"batch,omitempty"`
 	Params      json.RawMessage       `json:"params,omitempty"`
-	History     *flows.SessionHistory `json:"history,omitempty"`
+	History     *core.SessionHistory  `json:"history,omitempty"`
 	TriggeredOn time.Time             `json:"triggered_on"       validate:"required"`
 }
 

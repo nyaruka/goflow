@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -55,7 +55,7 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, assignee
 }
 
 // Execute runs this action
-func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default
@@ -86,7 +86,7 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log flows.EventLogger) (*flows.Ticket, error) {
+func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log events.EventLogger) (*flows.Ticket, error) {
 	if run.Session().BatchStart() {
 		log(events.NewError("Can't open tickets during batch starts", ""))
 		return nil, nil

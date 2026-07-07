@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/modifiers"
 )
 
@@ -45,7 +45,7 @@ func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTi
 }
 
 // Execute runs this action
-func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step flows.Step, log flows.EventLogger) error {
+func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	timezone, ok := run.EvaluateTemplate(a.Timezone, log)
 	timezone = strings.TrimSpace(timezone)
 

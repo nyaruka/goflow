@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
@@ -43,7 +44,7 @@ func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact
 		panic("can't check membership on a non-query based group")
 	}
 
-	if contact.Status() != ContactStatusActive {
+	if contact.Status() != core.ContactStatusActive {
 		return false
 	}
 
@@ -205,4 +206,13 @@ func (s *GroupAssets) FindByName(name string) *Group {
 		}
 	}
 	return nil
+}
+
+// GroupReferences converts a slice of groups to a slice of references
+func GroupReferences(groups []*Group) []*assets.GroupReference {
+	refs := make([]*assets.GroupReference, len(groups))
+	for i := range groups {
+		refs[i] = groups[i].Reference()
+	}
+	return refs
 }

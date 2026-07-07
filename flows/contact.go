@@ -5,14 +5,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -20,51 +19,22 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func init() {
-	utils.RegisterValidatorAlias("contact_status", "eq=active|eq=blocked|eq=stopped|eq=archived", func(validator.FieldError) string {
-		return "is not a valid contact status"
-	})
-}
-
 // ContactID is the ID of a contact
 type ContactID int64
 
-// ContactUUID is the UUID of a contact
-type ContactUUID uuids.UUID
-
-// NewContactUUID generates a new UUID for a contact
-func NewContactUUID() ContactUUID { return ContactUUID(uuids.NewV4()) }
-
-// ContactStatus is status in which a contact is in
-type ContactStatus string
-
-const (
-	// ContactStatusActive is the contact status of active
-	ContactStatusActive ContactStatus = "active"
-
-	// ContactStatusBlocked is the contact status of blocked
-	ContactStatusBlocked ContactStatus = "blocked"
-
-	// ContactStatusStopped is the contact status of stopped
-	ContactStatusStopped ContactStatus = "stopped"
-
-	// ContactStatusArchived is the contact status of archived
-	ContactStatusArchived ContactStatus = "archived"
-
-	// MaxContactURNs is maximum number of URNs a contact can have
-	MaxContactURNs = 50
-)
+// MaxContactURNs is maximum number of URNs a contact can have
+const MaxContactURNs = 50
 
 // schemes of URNs that aren't tied to a specific channel
 var portableURNSchemes = map[string]bool{urns.Phone.Prefix: true, urns.WhatsApp.Prefix: true}
 
 // Contact represents a person who is interacting with the flow
 type Contact struct {
-	uuid       ContactUUID
+	uuid       core.ContactUUID
 	id         ContactID
 	name       string
 	language   i18n.Language
-	status     ContactStatus
+	status     core.ContactStatus
 	timezone   *time.Location
 	createdOn  time.Time
 	lastSeenOn *time.Time
@@ -80,17 +50,17 @@ type Contact struct {
 // NewContact creates a new contact with the passed in attributes
 func NewContact(
 	sa SessionAssets,
-	uuid ContactUUID,
+	uuid core.ContactUUID,
 	id ContactID,
 	name string,
 	language i18n.Language,
-	status ContactStatus,
+	status core.ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
 	lastSeenOn *time.Time,
 	urns []urns.URN,
 	groups []*assets.GroupReference,
-	fields map[string]*Value,
+	fields map[string]*core.Value,
 	tickets []*Ticket,
 	missing assets.MissingCallback) (*Contact, error) {
 
@@ -123,10 +93,10 @@ func NewContact(
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:       NewContactUUID(),
+		uuid:       core.NewContactUUID(),
 		name:       name,
 		language:   language,
-		status:     ContactStatusActive,
+		status:     core.ContactStatusActive,
 		timezone:   timezone,
 		createdOn:  dates.Now(),
 		lastSeenOn: nil,
@@ -158,7 +128,7 @@ func (c *Contact) Clone() *Contact {
 }
 
 // UUID returns the UUID of this contact
-func (c *Contact) UUID() ContactUUID { return c.uuid }
+func (c *Contact) UUID() core.ContactUUID { return c.uuid }
 
 // ID returns the numeric ID of this contact
 func (c *Contact) ID() ContactID { return c.id }
@@ -201,10 +171,10 @@ func (c *Contact) Locale(env envs.Environment) i18n.Locale {
 }
 
 // Status returns the contact status
-func (c *Contact) Status() ContactStatus { return c.status }
+func (c *Contact) Status() core.ContactStatus { return c.status }
 
 // SetStatus sets the status of this contact (blocked, stopped or active)
-func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
+func (c *Contact) SetStatus(status core.ContactStatus) { c.status = status }
 
 // SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) { c.timezone = tz }
@@ -338,11 +308,11 @@ func (c *Contact) Groups() *GroupList { return c.groups }
 func (c *Contact) Tickets() *TicketList { return c.tickets }
 
 // Reference returns a reference to this contact
-func (c *Contact) Reference() *ContactReference {
+func (c *Contact) Reference() *core.ContactReference {
 	if c == nil {
 		return nil
 	}
-	return NewContactReference(c.uuid, c.name)
+	return core.NewContactReference(c.uuid, c.name)
 }
 
 // Format returns a friendly string version of this contact depending on what fields are set
@@ -598,55 +568,23 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 
 var _ contactql.Queryable = (*Contact)(nil)
 
-// ContactReference is used to reference a contact
-type ContactReference struct {
-	UUID ContactUUID `json:"uuid" validate:"required,uuid"`
-	Name string      `json:"name"`
-}
-
-// NewContactReference creates a new contact reference with the given UUID and name
-func NewContactReference(uuid ContactUUID, name string) *ContactReference {
-	return &ContactReference{UUID: uuid, Name: name}
-}
-
-// Type returns the name of the asset type
-func (r *ContactReference) Type() string {
-	return "contact"
-}
-
-// Identity returns the unique identity of the asset
-func (r *ContactReference) Identity() string {
-	return string(r.UUID)
-}
-
-// Variable returns whether this a variable (vs concrete) reference
-func (r *ContactReference) Variable() bool {
-	return r.Identity() == ""
-}
-
-func (r *ContactReference) String() string {
-	return fmt.Sprintf("%s[uuid=%s,name=%s]", r.Type(), r.Identity(), r.Name)
-}
-
-var _ assets.Reference = (*ContactReference)(nil)
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type ContactEnvelope struct {
-	UUID       ContactUUID              `json:"uuid"                validate:"required,uuid"`
+	UUID       core.ContactUUID         `json:"uuid"                validate:"required,uuid"`
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
 	Language   i18n.Language            `json:"language,omitempty"`
-	Status     ContactStatus            `json:"status,omitempty"    validate:"required,contact_status"`
+	Status     core.ContactStatus       `json:"status,omitempty"    validate:"required,contact_status"`
 	Timezone   string                   `json:"timezone,omitempty"`
 	CreatedOn  time.Time                `json:"created_on"          validate:"required"`
 	LastSeenOn *time.Time               `json:"last_seen_on,omitempty"`
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
-	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Tickets    []*TicketEnvelope        `json:"tickets,omitempty"`
+	Fields     map[string]*core.Value   `json:"fields,omitempty"`
+	Tickets    []*core.TicketEnvelope   `json:"tickets,omitempty"`
 }
 
 func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCallback) (*Contact, error) {
@@ -682,7 +620,7 @@ func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCall
 
 	tickets := make([]*Ticket, len(e.Tickets))
 	for i, t := range e.Tickets {
-		tickets[i] = t.Unmarshal(sa, missing)
+		tickets[i] = ReadTicket(sa, t, missing)
 	}
 	c.tickets = NewTicketList(tickets)
 
@@ -706,7 +644,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 		e.Timezone = c.timezone.String()
 	}
 
-	e.Fields = make(map[string]*Value)
+	e.Fields = make(map[string]*core.Value)
 	for _, v := range c.fields {
 		if v != nil {
 			e.Fields[v.field.Key()] = v.Value

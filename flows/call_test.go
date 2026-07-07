@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -46,7 +47,7 @@ func TestCall(t *testing.T) {
 	)
 
 	// test marshaling our call
-	ce := &flows.CallEnvelope{
+	ce := &core.CallEnvelope{
 		UUID:    "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
 		Channel: assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo"),
 		URN:     urns.URN("tel:+1234567890"),
@@ -54,7 +55,7 @@ func TestCall(t *testing.T) {
 	assert.Equal(t, ce, call.Marshal())
 
 	// test unmarshaling
-	call = ce.Unmarshal(sa, assets.PanicOnMissing)
+	call = flows.ReadCall(sa, ce, assets.PanicOnMissing)
 	assert.Equal(t, assets.ChannelUUID("3a05eaf5-cb1b-4246-bef1-f277419c83a7"), call.Channel().UUID())
 	assert.Equal(t, urns.URN("tel:+1234567890"), call.URN())
 }
