@@ -71,13 +71,18 @@ func (a *TransferAirtime) transfer(ctx context.Context, run flows.Run, log event
 	// fail if we don't have a contact
 	contact := run.Contact()
 
-	// fail if the contact doesn't have a phone URN or whatsap URN
-	telURNs := contact.URNs().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix)
-	if len(telURNs) == 0 {
+	// fail if the contact doesn't have a phone URN or whatsapp URN we can send airtime to; business-scoped
+	// WhatsApp URNs (BSUIDs) aren't phone numbers so they're not eligible recipients
+	var recipient *flows.URN
+	for _, u := range contact.URNs().WithScheme(urns.Phone.Prefix, urns.WhatsApp.Prefix) {
+		if !urns.IsWhatsAppBSUID(u.Identity()) {
+			recipient = u
+			break
+		}
+	}
+	if recipient == nil {
 		return nil, errors.New("can't transfer airtime to contact without a phone number")
 	}
-
-	recipient := telURNs[0]
 
 	// if contact's preferred channel is a phone number, use that as the sender
 	var sender urns.URN
