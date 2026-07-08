@@ -1,3 +1,7 @@
+v0.278.3 (2026-07-08)
+-------------------------
+ * Remove WhatsApp URN support from airtime transfers, keep tel only
+
 v0.278.2 (2026-07-08)
 -------------------------
  * Guard WhatsApp BSUID URNs against phone-number assumptions
