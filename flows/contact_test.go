@@ -390,6 +390,19 @@ func TestContactSetPreferredChannel(t *testing.T) {
 		assert.NotEqual(t, android2, urn.Channel)
 	}
 
+	// a business-scoped WhatsApp URN (BSUID) is scoped to a single business/channel pair, so it isn't
+	// portable - it keeps its original channel even when the preferred WhatsApp channel changes
+	contact.AddRoute(urns.URN("whatsapp:US.ABC123"), whatsapp1)
+	contact.UpdatePreferredChannel(whatsapp2)
+
+	found := false
+	for _, urn := range contact.URNs() {
+		if urn.Path == "US.ABC123" {
+			assert.Equal(t, whatsapp1, urn.Channel, "BSUID whatsapp URN should not be re-assigned")
+			found = true
+		}
+	}
+	assert.True(t, found)
 }
 
 func TestContactSetAffinity(t *testing.T) {

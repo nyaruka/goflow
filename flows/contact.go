@@ -460,8 +460,9 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
 		otherURNs := make([]*URN, 0)
 
 		for _, urn := range c.urns {
-			// portable URNs can be re-assigned when supported by channel
-			if portableURNSchemes[urn.Scheme] && channel.SupportsScheme(urn.Scheme) {
+			// portable URNs can be re-assigned when supported by channel; a business-scoped WhatsApp URN
+			// (BSUID) is scoped to a single business/channel pair though, so it isn't portable
+			if portableURNSchemes[urn.Scheme] && !urns.IsWhatsAppBSUID(urn.Identity()) && channel.SupportsScheme(urn.Scheme) {
 				urn.Channel = channel
 			}
 

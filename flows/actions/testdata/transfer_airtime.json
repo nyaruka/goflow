@@ -142,5 +142,52 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Error and failed transfer if contact only has a business-scoped WhatsApp URN (BSUID)",
+        "contact": {
+            "uuid": "8f5e4c2a-1b3d-4e6f-9a8b-7c6d5e4f3a2b",
+            "name": "Ryan Lewis",
+            "status": "active",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "whatsapp:US.ABC123"
+            ],
+            "groups": [],
+            "fields": {},
+            "created_on": "2018-06-20T11:40:30.123456789-00:00"
+        },
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": 0.5
+            }
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "can't transfer airtime to contact without a phone number"
+            }
+        ],
+        "locals_after": {
+            "_new_transfer": ""
+        },
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_new_transfer"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]
