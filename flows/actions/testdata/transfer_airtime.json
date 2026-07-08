@@ -144,7 +144,7 @@
         }
     },
     {
-        "description": "Error and failed transfer if contact only has a business-scoped WhatsApp URN (BSUID)",
+        "description": "Error and failed transfer if contact only has a WhatsApp URN",
         "contact": {
             "uuid": "8f5e4c2a-1b3d-4e6f-9a8b-7c6d5e4f3a2b",
             "name": "Ryan Lewis",
@@ -152,7 +152,7 @@
             "language": "eng",
             "timezone": "America/Guayaquil",
             "urns": [
-                "whatsapp:US.ABC123"
+                "whatsapp:12065551212"
             ],
             "groups": [],
             "fields": {},
