@@ -1,3 +1,8 @@
+v0.278.2 (2026-07-08)
+-------------------------
+ * Guard WhatsApp BSUID URNs against phone-number assumptions
+ * Update latest gocommon
+
 v0.278.1 (2026-07-02)
 -------------------------
  * Replace transient event step attachments with a step description struct
