@@ -1,3 +1,7 @@
+v0.278.4 (2026-07-09)
+-------------------------
+ * Update to latest gocommon
+
 v0.278.3 (2026-07-08)
 -------------------------
  * Remove WhatsApp URN support from airtime transfers, keep tel only
