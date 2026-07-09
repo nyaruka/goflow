@@ -1,3 +1,8 @@
+v0.279.0 (2026-07-09)
+-------------------------
+ * Move thin live objects (Ticket, Call, URN) and asset wrappers (Channel, Topic, User, LLM, OptIn, Campaign) from flows into core
+ * Replace flows.ReadTicket and flows.ReadCall with Unmarshal methods on the envelope types
+
 v0.278.4 (2026-07-09)
 -------------------------
  * Update to latest gocommon
