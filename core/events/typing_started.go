@@ -7,15 +7,6 @@ func init() {
 // TypeTypingStarted is the type of our typing started event
 const TypeTypingStarted string = "typing_started"
 
-// TypingDirection is the direction of a typing indicator
-type TypingDirection string
-
-// possible values for typing directions
-const (
-	TypingDirectionIncoming TypingDirection = "incoming" // the contact is typing
-	TypingDirectionOutgoing TypingDirection = "outgoing" // a user is typing
-)
-
 // TypingStarted events are created when the contact (direction of incoming) or a user (direction of outgoing)
 // starts typing.
 //
@@ -30,11 +21,11 @@ const (
 type TypingStarted struct {
 	BaseEvent
 
-	Direction TypingDirection `json:"direction" validate:"required,eq=incoming|eq=outgoing"`
+	Direction Direction `json:"direction" validate:"required,direction"`
 }
 
 // NewTypingStarted returns a new typing started event
-func NewTypingStarted(direction TypingDirection) *TypingStarted {
+func NewTypingStarted(direction Direction) *TypingStarted {
 	return &TypingStarted{
 		BaseEvent: NewBaseEvent(TypeTypingStarted),
 		Direction: direction,

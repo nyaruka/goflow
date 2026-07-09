@@ -21,11 +21,11 @@ const TypeTypingStopped string = "typing_stopped"
 type TypingStopped struct {
 	BaseEvent
 
-	Direction TypingDirection `json:"direction" validate:"required,eq=incoming|eq=outgoing"`
+	Direction Direction `json:"direction" validate:"required,direction"`
 }
 
 // NewTypingStopped returns a new typing stopped event
-func NewTypingStopped(direction TypingDirection) *TypingStopped {
+func NewTypingStopped(direction Direction) *TypingStopped {
 	return &TypingStopped{
 		BaseEvent: NewBaseEvent(TypeTypingStopped),
 		Direction: direction,

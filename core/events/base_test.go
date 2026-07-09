@@ -478,25 +478,25 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStarted(events.TypingDirectionIncoming)
+				return events.NewTypingStarted(events.DirectionIncoming)
 			},
 			`typing_started_incoming`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStarted(events.TypingDirectionOutgoing)
+				return events.NewTypingStarted(events.DirectionOutgoing)
 			},
 			`typing_started_outgoing`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStopped(events.TypingDirectionIncoming)
+				return events.NewTypingStopped(events.DirectionIncoming)
 			},
 			`typing_stopped_incoming`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStopped(events.TypingDirectionOutgoing)
+				return events.NewTypingStopped(events.DirectionOutgoing)
 			},
 			`typing_stopped_outgoing`,
 		},
