@@ -1,3 +1,7 @@
+v0.279.1 (2026-07-09)
+-------------------------
+ * Add typing_started and typing_stopped event types
+
 v0.279.0 (2026-07-09)
 -------------------------
  * Move thin live objects (Ticket, Call, URN) and asset wrappers (Channel, Topic, User, LLM, OptIn, Campaign) from flows into core
