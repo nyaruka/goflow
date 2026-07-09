@@ -3,14 +3,12 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"sort"
 	"strings"
 
-	"maps"
-
-	"github.com/nyaruka/goflow/core"
-
 	"github.com/nyaruka/gocommon/stringsx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
