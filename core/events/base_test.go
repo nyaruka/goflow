@@ -490,6 +490,18 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
+				return events.NewTypingStopped(events.TypingDirectionIncoming)
+			},
+			`typing_stopped_incoming`,
+		},
+		{
+			func() events.Event {
+				return events.NewTypingStopped(events.TypingDirectionOutgoing)
+			},
+			`typing_stopped_outgoing`,
+		},
+		{
+			func() events.Event {
 				return events.NewWaitTimedOut()
 			},
 			`wait_timed_out`,
