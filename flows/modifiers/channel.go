@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -22,11 +23,11 @@ const TypeChannel string = "channel"
 type Channel struct {
 	baseModifier
 
-	channel *flows.Channel
+	channel *core.Channel
 }
 
 // NewChannel creates a new channel modifier
-func NewChannel(channel *flows.Channel) *Channel {
+func NewChannel(channel *core.Channel) *Channel {
 	return &Channel{
 		baseModifier: newBaseModifier(TypeChannel),
 		channel:      channel,
@@ -64,7 +65,7 @@ func readChannel(sa flows.SessionAssets, data []byte, missing assets.MissingCall
 		return nil, err
 	}
 
-	var channel *flows.Channel
+	var channel *core.Channel
 	if e.Channel != nil {
 		channel = sa.Channels().Get(e.Channel.UUID)
 		if channel == nil {

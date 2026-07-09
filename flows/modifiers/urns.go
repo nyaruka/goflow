@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -58,7 +59,7 @@ func (m *URNs) Apply(ctx context.Context, eng flows.Engine, env envs.Environment
 	routes := make([]flows.Route, len(m.urnz))
 	for i, u := range m.urnz {
 		u = u.Normalize()
-		var ch *flows.Channel
+		var ch *core.Channel
 		if m.modification == URNsSet {
 			for _, existing := range contact.URNs() {
 				if existing.Identity() == u.Identity() {

@@ -33,7 +33,7 @@ func (t *Template) Reference() *assets.TemplateReference {
 }
 
 // FindTranslation finds the matching translation for the passed in channel and languages (in priority order)
-func (t *Template) FindTranslation(channel *Channel, locales []i18n.Locale) *TemplateTranslation {
+func (t *Template) FindTranslation(channel *core.Channel, locales []i18n.Locale) *TemplateTranslation {
 	// find all translations for this channel
 	candidates := make(map[string]*TemplateTranslation)
 	candidateLocales := make([]string, 0, 5)

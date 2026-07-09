@@ -50,7 +50,7 @@ func TestFieldValues(t *testing.T) {
 		"state":            nil,
 		"not_set":          nil,
 		"language":         nil,
-	}), flows.Context(env, fieldVals))
+	}), core.Context(env, fieldVals))
 }
 
 func TestFieldValueParse(t *testing.T) {

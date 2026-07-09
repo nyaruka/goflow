@@ -25,7 +25,7 @@ type engine struct {
 }
 
 // NewSession creates a new session
-func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env envs.Environment, contact *flows.Contact, trigger flows.Trigger, call *flows.Call) (flows.Session, flows.Sprint, error) {
+func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env envs.Environment, contact *flows.Contact, trigger flows.Trigger, call *core.Call) (flows.Session, flows.Sprint, error) {
 	// try to load the flow
 	flow, err := sa.Flows().Get(trigger.Flow().UUID)
 	if err != nil {
@@ -57,7 +57,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 }
 
 // ReadSession reads an existing session
-func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
+func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *core.Call, missing assets.MissingCallback) (flows.Session, error) {
 	return readSession(e, sa, data, env, contact, call, missing)
 }
 

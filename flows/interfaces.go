@@ -52,20 +52,20 @@ type SessionAssets interface {
 
 	Source() assets.Source
 
-	Campaigns() *CampaignAssets
-	Channels() *ChannelAssets
+	Campaigns() *core.CampaignAssets
+	Channels() *core.ChannelAssets
 	Fields() *FieldAssets
 	Flows() FlowAssets
 	Globals() *GlobalAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
-	LLMs() *LLMAssets
+	LLMs() *core.LLMAssets
 	Locations() *LocationAssets
-	OptIns() *OptInAssets
+	OptIns() *core.OptInAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
-	Topics() *TopicAssets
-	Users() *UserAssets
+	Topics() *core.TopicAssets
+	Users() *core.UserAssets
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID
@@ -79,7 +79,7 @@ type TemplateEnumerator interface {
 
 // Flow describes the ordered logic of actions and routers
 type Flow interface {
-	Contextable
+	core.Contextable
 
 	// spec properties
 	UUID() assets.FlowUUID
@@ -188,7 +188,7 @@ type Localization interface {
 // Trigger represents something which can initiate a session with the flow engine
 type Trigger interface {
 	utils.Typed
-	Contextable
+	core.Contextable
 
 	Event() events.Event
 	Flow() *assets.FlowReference
@@ -210,7 +210,7 @@ type TriggerWithRun interface {
 // Resume represents something which can resume a session with the flow engine
 type Resume interface {
 	utils.Typed
-	Contextable
+	core.Contextable
 
 	Event() events.Event
 	ResumedOn() time.Time
@@ -228,16 +228,16 @@ type Modifier interface {
 // Input describes input from the contact and currently we only support one type of input: `msg`
 type Input interface {
 	utils.Typed
-	Contextable
+	core.Contextable
 
 	UUID() core.InputUUID
 	CreatedOn() time.Time
-	Channel() *Channel
+	Channel() *core.Channel
 }
 
 // Step is a single step in the path thru a flow
 type Step interface {
-	Contextable
+	core.Contextable
 
 	UUID() StepUUID
 	NodeUUID() core.NodeUUID
@@ -265,8 +265,8 @@ type EngineOptions struct {
 
 // Engine provides callers with session starting and resuming
 type Engine interface {
-	NewSession(context.Context, SessionAssets, envs.Environment, *Contact, Trigger, *Call) (Session, Sprint, error)
-	ReadSession(SessionAssets, []byte, envs.Environment, *Contact, *Call, assets.MissingCallback) (Session, error)
+	NewSession(context.Context, SessionAssets, envs.Environment, *Contact, Trigger, *core.Call) (Session, Sprint, error)
+	ReadSession(SessionAssets, []byte, envs.Environment, *Contact, *core.Call, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
 	Services() Services

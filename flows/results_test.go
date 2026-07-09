@@ -29,7 +29,7 @@ func TestResults(t *testing.T) {
 	assert.Equal(t, result2, results.Get("empty"))
 	assert.Nil(t, results.Get("xxx"))
 
-	resultsAsContext := flows.Context(env, results)
+	resultsAsContext := core.Context(env, results)
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"__default__": types.NewXText("Beer: skol!\nEmpty: "),

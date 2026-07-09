@@ -150,7 +150,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	env := envs.NewBuilder().WithTimezone(la).WithAllowedLanguages(flow.Language(), contact.Language()).Build()
 
 	repro := &Repro{}
-	var call *flows.Call
+	var call *core.Call
 
 	if initialMsg != "" {
 		msg := events.NewMsgReceived(createMessage(contact, initialMsg), "")
@@ -163,7 +163,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		// if we're starting a voice flow we need a call
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().GetForURN(contact.URNs()[0], assets.ChannelRoleCall)
-			call = flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
+			call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
 		}
 
 		repro.Trigger = tb.Build()

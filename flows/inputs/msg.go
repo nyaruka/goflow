@@ -25,7 +25,7 @@ const TypeMsg string = "msg"
 type Msg struct {
 	baseInput
 
-	urn         *flows.URN
+	urn         *core.URN
 	text        string
 	attachments []utils.Attachment
 	externalID  string
@@ -34,14 +34,14 @@ type Msg struct {
 // NewMsg creates a new user input based on a message event
 func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 	// load the channel
-	var channel *flows.Channel
+	var channel *core.Channel
 	if evt.Msg.Channel() != nil {
 		channel = sa.Channels().Get(evt.Msg.Channel().UUID)
 	}
 
 	return &Msg{
 		baseInput:   newBaseInput(TypeMsg, core.InputUUID(evt.UUID()), channel, evt.CreatedOn()),
-		urn:         flows.NewURN(evt.Msg.URN().Scheme(), evt.Msg.URN().Path(), "", nil),
+		urn:         core.NewURN(evt.Msg.URN().Scheme(), evt.Msg.URN().Path(), "", nil),
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),
 		externalID:  evt.Msg.ExternalID(),
@@ -77,7 +77,7 @@ func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 		"type":        types.NewXText(i.type_),
 		"uuid":        types.NewXText(string(i.uuid)),
 		"created_on":  types.NewXDateTime(i.createdOn),
-		"channel":     flows.Context(env, i.channel),
+		"channel":     core.Context(env, i.channel),
 		"urn":         urn,
 		"text":        types.NewXText(i.text),
 		"attachments": types.NewXArray(attachments...),
@@ -118,7 +118,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 	}
 
 	i := &Msg{
-		urn:         flows.NewURN(e.URN.Scheme(), e.URN.Path(), "", nil),
+		urn:         core.NewURN(e.URN.Scheme(), e.URN.Path(), "", nil),
 		text:        e.Text,
 		attachments: e.Attachments,
 		externalID:  e.ExternalID,

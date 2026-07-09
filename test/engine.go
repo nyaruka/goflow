@@ -37,7 +37,7 @@ func newEngine(httpClient *http.Client) flows.Engine {
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil
 		}).
-		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
+		WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {

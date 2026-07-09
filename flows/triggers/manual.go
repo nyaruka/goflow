@@ -3,6 +3,7 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -30,14 +31,14 @@ const TypeManual string = "manual"
 type Manual struct {
 	baseTrigger
 
-	user   *flows.User
+	user   *core.User
 	origin string
 }
 
 // Context for manual triggers always has non-nil params
 func (t *Manual) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.user = flows.Context(env, t.user)
+	c.user = core.Context(env, t.user)
 	c.origin = t.origin
 	return c.asMap()
 }
@@ -67,7 +68,7 @@ func (b *ManualBuilder) WithParams(params *types.XObject) *ManualBuilder {
 }
 
 // WithUser sets the user (e.g. an email address, login) for the trigger
-func (b *ManualBuilder) WithUser(user *flows.User) *ManualBuilder {
+func (b *ManualBuilder) WithUser(user *core.User) *ManualBuilder {
 	b.t.user = user
 	return b
 }
@@ -106,7 +107,7 @@ func readManual(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 		return nil, err
 	}
 
-	var user *flows.User
+	var user *core.User
 	if e.User != nil {
 		user = sa.Users().Get(e.User.UUID)
 		if user == nil {

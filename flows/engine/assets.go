@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -12,20 +13,20 @@ import (
 type sessionAssets struct {
 	source assets.Source
 
-	campaigns *flows.CampaignAssets
-	channels  *flows.ChannelAssets
+	campaigns *core.CampaignAssets
+	channels  *core.ChannelAssets
 	fields    *flows.FieldAssets
 	flows     flows.FlowAssets
 	globals   *flows.GlobalAssets
 	groups    *flows.GroupAssets
 	labels    *flows.LabelAssets
-	llms      *flows.LLMAssets
+	llms      *core.LLMAssets
 	locations *flows.LocationAssets
-	optIns    *flows.OptInAssets
+	optIns    *core.OptInAssets
 	resthooks *flows.ResthookAssets
 	templates *flows.TemplateAssets
-	topics    *flows.TopicAssets
-	users     *flows.UserAssets
+	topics    *core.TopicAssets
+	users     *core.UserAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
@@ -90,38 +91,38 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 
 	return &sessionAssets{
 		source:    source,
-		campaigns: flows.NewCampaignAssets(campaigns),
-		channels:  flows.NewChannelAssets(channels),
+		campaigns: core.NewCampaignAssets(campaigns),
+		channels:  core.NewChannelAssets(channels),
 		fields:    fieldAssets,
 		flows:     definition.NewFlowAssets(source, migrationConfig),
 		globals:   flows.NewGlobalAssets(globals),
 		groups:    groupAssets,
 		labels:    flows.NewLabelAssets(labels),
-		llms:      flows.NewLLMAssets(llms),
+		llms:      core.NewLLMAssets(llms),
 		locations: flows.NewLocationAssets(locations),
-		optIns:    flows.NewOptInAssets(optIns),
+		optIns:    core.NewOptInAssets(optIns),
 		resthooks: flows.NewResthookAssets(resthooks),
 		templates: flows.NewTemplateAssets(templates),
-		topics:    flows.NewTopicAssets(topics),
-		users:     flows.NewUserAssets(users),
+		topics:    core.NewTopicAssets(topics),
+		users:     core.NewUserAssets(users),
 	}, nil
 }
 
 func (s *sessionAssets) Source() assets.Source            { return s.source }
-func (s *sessionAssets) Campaigns() *flows.CampaignAssets { return s.campaigns }
-func (s *sessionAssets) Channels() *flows.ChannelAssets   { return s.channels }
+func (s *sessionAssets) Campaigns() *core.CampaignAssets  { return s.campaigns }
+func (s *sessionAssets) Channels() *core.ChannelAssets    { return s.channels }
 func (s *sessionAssets) Fields() *flows.FieldAssets       { return s.fields }
 func (s *sessionAssets) Flows() flows.FlowAssets          { return s.flows }
 func (s *sessionAssets) Globals() *flows.GlobalAssets     { return s.globals }
 func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
-func (s *sessionAssets) LLMs() *flows.LLMAssets           { return s.llms }
+func (s *sessionAssets) LLMs() *core.LLMAssets            { return s.llms }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
-func (s *sessionAssets) OptIns() *flows.OptInAssets       { return s.optIns }
+func (s *sessionAssets) OptIns() *core.OptInAssets        { return s.optIns }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
 func (s *sessionAssets) Templates() *flows.TemplateAssets { return s.templates }
-func (s *sessionAssets) Topics() *flows.TopicAssets       { return s.topics }
-func (s *sessionAssets) Users() *flows.UserAssets         { return s.users }
+func (s *sessionAssets) Topics() *core.TopicAssets        { return s.topics }
+func (s *sessionAssets) Users() *core.UserAssets          { return s.users }
 
 // Resolver methods used by contactql
 

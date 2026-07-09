@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
@@ -56,18 +55,19 @@ func TestTickets(t *testing.T) {
 	bob := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 
 	// nil object returns nil reference
-	assert.Nil(t, (*flows.Topic)(nil).Reference())
+	assert.Nil(t, (*core.Topic)(nil).Reference())
 
 	missingRefs := make([]assets.Reference, 0)
 	missing := func(ref assets.Reference, err error) {
 		missingRefs = append(missingRefs, ref)
 	}
 
-	ticket1 := flows.ReadTicket(sa, &core.TicketEnvelope{
+	envelope1 := &core.TicketEnvelope{
 		UUID:     core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"),
 		Topic:    assets.NewTopicReference("fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "Missing Topic"),
 		Assignee: assets.NewUserReference("b8cfc330-4634-45d1-90bc-7b4658221834", "Dave"),
-	}, missing)
+	}
+	ticket1 := envelope1.Unmarshal(sa.Topics(), sa.Users(), missing)
 
 	assert.Equal(t, core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
@@ -80,16 +80,17 @@ func TestTickets(t *testing.T) {
 
 	missingRefs = make([]assets.Reference, 0)
 
-	ticket2 := flows.ReadTicket(sa, &core.TicketEnvelope{
+	envelope2 := &core.TicketEnvelope{
 		UUID:     core.TicketUUID("5a4af021-d2c2-47fc-9abc-abbb8635d8c0"),
 		Topic:    weather.Reference(),
 		Assignee: bob.Reference(),
-	}, missing)
+	}
+	ticket2 := envelope2.Unmarshal(sa.Topics(), sa.Users(), missing)
 
 	assert.Equal(t, 0, len(missingRefs))
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 
-	ticket3 := flows.OpenTicket(weather, bob)
+	ticket3 := core.OpenTicket(weather, bob)
 
 	assert.Equal(t, core.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())

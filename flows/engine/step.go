@@ -61,7 +61,7 @@ type Path []flows.Step
 func (p Path) ToXValue(env envs.Environment) types.XValue {
 	array := make([]types.XValue, len(p))
 	for i, step := range p {
-		array[i] = flows.Context(env, step)
+		array[i] = core.Context(env, step)
 	}
 	return types.NewXArray(array...)
 }

@@ -194,11 +194,11 @@ func (r *run) ExitedOn() *time.Time  { return r.exitedOn }
 func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 	var urns, fields, ticket, node types.XValue
 	if r.Contact() != nil {
-		urns = flows.ContextFunc(env, r.Contact().URNs().MapContext)
-		fields = flows.Context(env, r.Contact().Fields())
+		urns = core.ContextFunc(env, r.Contact().URNs().MapContext)
+		fields = core.Context(env, r.Contact().Fields())
 
 		if t := r.Contact().Tickets().LastOpen(); t != nil {
-			ticket = flows.Context(env, t)
+			ticket = core.Context(env, t)
 		}
 	}
 
@@ -212,29 +212,29 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 
 	_, n, _ := r.PathLocation()
 	if n != nil {
-		node = flows.ContextFunc(env, r.nodeContext)
+		node = core.ContextFunc(env, r.nodeContext)
 	}
 
 	return map[string]types.XValue{
 		// the available runs
-		"run":    flows.Context(env, r),
-		"child":  flows.Context(env, child),
-		"parent": flows.Context(env, parent),
+		"run":    core.Context(env, r),
+		"child":  core.Context(env, child),
+		"parent": core.Context(env, parent),
 
 		// shortcuts to things on the current run or contact
-		"contact": flows.Context(env, r.Contact()),
-		"locals":  flows.Context(env, r.Locals()),
-		"results": flows.Context(env, r.Results()),
+		"contact": core.Context(env, r.Contact()),
+		"locals":  core.Context(env, r.Locals()),
+		"results": core.Context(env, r.Results()),
 		"urns":    urns,
 		"fields":  fields,
 		"ticket":  ticket,
 
 		// other
-		"trigger":      flows.Context(env, r.Session().Trigger()),
-		"resume":       flows.Context(env, r.Session().CurrentResume()),
-		"input":        flows.Context(env, r.Session().Input()),
-		"globals":      flows.Context(env, r.Session().Assets().Globals()),
-		"webhook":      flows.Context(env, r.webhook),
+		"trigger":      core.Context(env, r.Session().Trigger()),
+		"resume":       core.Context(env, r.Session().CurrentResume()),
+		"input":        core.Context(env, r.Session().Input()),
+		"globals":      core.Context(env, r.Session().Assets().Globals()),
+		"webhook":      core.Context(env, r.webhook),
 		"node":         node,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}
@@ -262,11 +262,11 @@ func (r *run) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"__default__": types.NewXText(FormatRunSummary(env, r)),
 		"uuid":        types.NewXText(string(r.UUID())),
-		"contact":     flows.Context(env, r.Contact()),
-		"flow":        flows.Context(env, r.Flow()),
+		"contact":     core.Context(env, r.Contact()),
+		"flow":        core.Context(env, r.Flow()),
 		"status":      types.NewXText(string(r.Status())),
-		"locals":      flows.Context(env, r.Locals()),
-		"results":     flows.Context(env, r.Results()),
+		"locals":      core.Context(env, r.Locals()),
+		"results":     core.Context(env, r.Results()),
 		"path":        r.path.ToXValue(env),
 		"created_on":  types.NewXDateTime(r.CreatedOn()),
 		"exited_on":   exitedOn,

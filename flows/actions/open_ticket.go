@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -59,14 +60,14 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	sa := run.Session().Assets()
 
 	// get topic or fallback to default
-	var topic *flows.Topic
+	var topic *core.Topic
 	if a.Topic != nil {
 		topic = sa.Topics().Get(a.Topic.UUID)
 	} else {
 		topic = sa.Topics().FindByName("General")
 	}
 
-	var assignee *flows.User
+	var assignee *core.User
 	if a.Assignee != nil {
 		assignee = resolveUser(run, a.Assignee, log)
 	}
@@ -86,7 +87,7 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 	return nil
 }
 
-func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *flows.Topic, assignee *flows.User, note string, log events.EventLogger) (*flows.Ticket, error) {
+func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *core.Topic, assignee *core.User, note string, log events.EventLogger) (*core.Ticket, error) {
 	if run.Session().BatchStart() {
 		log(events.NewError("Can't open tickets during batch starts", ""))
 		return nil, nil

@@ -23,12 +23,12 @@ func registerType(name string, f readFunc) {
 type baseInput struct {
 	type_     string
 	uuid      core.InputUUID
-	channel   *flows.Channel
+	channel   *core.Channel
 	createdOn time.Time
 }
 
 // creates a new base input
-func newBaseInput(typeName string, uuid core.InputUUID, channel *flows.Channel, createdOn time.Time) baseInput {
+func newBaseInput(typeName string, uuid core.InputUUID, channel *core.Channel, createdOn time.Time) baseInput {
 	return baseInput{
 		type_:     typeName,
 		uuid:      uuid,
@@ -40,9 +40,9 @@ func newBaseInput(typeName string, uuid core.InputUUID, channel *flows.Channel, 
 // Type returns the type of this input
 func (i *baseInput) Type() string { return i.type_ }
 
-func (i *baseInput) UUID() core.InputUUID    { return i.uuid }
-func (i *baseInput) Channel() *flows.Channel { return i.channel }
-func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
+func (i *baseInput) UUID() core.InputUUID   { return i.uuid }
+func (i *baseInput) Channel() *core.Channel { return i.channel }
+func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

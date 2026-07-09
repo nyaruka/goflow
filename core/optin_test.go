@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
@@ -7,9 +7,9 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
@@ -45,7 +45,7 @@ func TestOptIns(t *testing.T) {
 		"__default__": types.NewXText("Joke Of The Day"),
 		"uuid":        types.NewXText("248be71d-78e9-4d71-a6c4-9981d369e5cb"),
 		"name":        types.NewXText("Joke Of The Day"),
-	}), flows.Context(env, jotd))
+	}), core.Context(env, jotd))
 
-	assert.Nil(t, (*flows.OptIn)(nil).Reference())
+	assert.Nil(t, (*core.OptIn)(nil).Reference())
 }

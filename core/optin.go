@@ -1,4 +1,4 @@
-package flows
+package core
 
 import (
 	"github.com/nyaruka/goflow/assets"

@@ -16,7 +16,7 @@ import (
 type Services interface {
 	Email(SessionAssets) (EmailService, error)
 	Webhook(SessionAssets) (WebhookService, error)
-	LLM(*LLM) (LLMService, error)
+	LLM(*core.LLM) (LLMService, error)
 	Airtime(SessionAssets) (AirtimeService, error)
 }
 

@@ -38,7 +38,7 @@ func TestStep(t *testing.T) {
 		"exit_uuid":  types.XTextEmpty,
 		"node_uuid":  types.NewXText("5fb4f555-7662-4c4c-8387-226e359526e4"),
 		"uuid":       types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"),
-	}), flows.Context(env, step))
+	}), core.Context(env, step))
 
 	// test marshaling
 	marshaled, err := jsonx.Marshal(step)

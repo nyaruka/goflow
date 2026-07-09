@@ -66,8 +66,8 @@ func newRelatedRunContext(r flows.RunSummary) *relatedRunContext {
 func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValue {
 	var urns, fields types.XValue
 	if c.run.Contact() != nil {
-		urns = flows.ContextFunc(env, c.run.Contact().URNs().MapContext)
-		fields = flows.Context(env, c.run.Contact().Fields())
+		urns = core.ContextFunc(env, c.run.Contact().URNs().MapContext)
+		fields = core.Context(env, c.run.Contact().Fields())
 	}
 
 	legacyStatus := types.NewXText(string(c.run.Status()))
@@ -76,11 +76,11 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 	return map[string]types.XValue{
 		"__default__": types.NewXText(FormatRunSummary(env, c.run)),
 		"uuid":        types.NewXText(string(c.run.UUID())),
-		"contact":     flows.Context(env, c.run.Contact()),
-		"flow":        flows.Context(env, c.run.Flow()),
+		"contact":     core.Context(env, c.run.Contact()),
+		"flow":        core.Context(env, c.run.Flow()),
 		"urns":        urns,
 		"fields":      fields,
-		"results":     flows.Context(env, c.run.Results()),
+		"results":     core.Context(env, c.run.Results()),
 		"status":      types.NewXText(string(c.run.Status())),
 
 		// deprecated but used by a lot of flows for @child.run.status as that is what editor has
