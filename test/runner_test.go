@@ -138,7 +138,7 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 100000)).
-		WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
+		WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
@@ -146,9 +146,9 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope
 		}).
 		Build()
 
-	var call *flows.Call
+	var call *core.Call
 	if rawCall != nil {
-		call = flows.ReadCall(sa, rawCall, assets.PanicOnMissing)
+		call = rawCall.Unmarshal(sa.Channels(), assets.PanicOnMissing)
 	}
 
 	session, sprint, err := eng.NewSession(ctx, sa, env, contact, trigger, call)

@@ -77,7 +77,7 @@ func TestContact(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	assert.Equal(t, flows.URNList{}, contact.URNs())
+	assert.Equal(t, core.URNList{}, contact.URNs())
 	assert.Equal(t, core.ContactStatusActive, contact.Status())
 	assert.Nil(t, contact.LastSeenOn())
 	assert.Nil(t, contact.PreferredChannel())
@@ -118,21 +118,21 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
-		"tel":        flows.NewURN("tel", "+12024561111", "", android).ToXValue(env),
+		"tel":        core.NewURN("tel", "+12024561111", "", android).ToXValue(env),
 		"telegram":   nil,
-		"twitter":    flows.NewURN("twitter", "joey", "", nil).ToXValue(env),
+		"twitter":    core.NewURN("twitter", "joey", "", nil).ToXValue(env),
 		"twitterid":  nil,
 		"viber":      nil,
 		"vk":         nil,
 		"webchat":    nil,
 		"wechat":     nil,
-		"whatsapp":   flows.NewURN("whatsapp", "235423721788", "", nil).ToXValue(env),
-	}), flows.ContextFunc(env, contact.URNs().MapContext))
+		"whatsapp":   core.NewURN("whatsapp", "235423721788", "", nil).ToXValue(env),
+	}), core.ContextFunc(env, contact.URNs().MapContext))
 
 	assert.Equal(t, 0, contact.Tickets().Open().Count())
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
-	ticket := flows.OpenTicket(weather, nil)
+	ticket := core.OpenTicket(weather, nil)
 	contact.Tickets().Add(ticket)
 
 	assert.Equal(t, 1, contact.Tickets().Open().Count())
@@ -152,10 +152,10 @@ func TestContact(t *testing.T) {
 
 	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
 		"__default__":  types.NewXText("Joe Bloggs"),
-		"channel":      flows.Context(env, android),
+		"channel":      core.Context(env, android),
 		"created_on":   types.NewXDateTime(contact.CreatedOn()),
 		"last_seen_on": types.NewXDateTime(*contact.LastSeenOn()),
-		"fields":       flows.Context(env, contact.Fields()),
+		"fields":       core.Context(env, contact.Fields()),
 		"first_name":   types.NewXText("Joe"),
 		"groups":       contact.Groups().ToXValue(env),
 		"id":           types.NewXText("12345"),
@@ -168,7 +168,7 @@ func TestContact(t *testing.T) {
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
 		"uuid":         types.NewXText(string(contact.UUID())),
-	}), flows.Context(env, contact))
+	}), core.Context(env, contact))
 
 	marshaled, err := jsonx.Marshal(contact)
 	require.NoError(t, err)
@@ -194,18 +194,18 @@ func TestContactURNs(t *testing.T) {
 	assert.True(t, contact.AddRoute("tel:+12024561111", nil))  // didn't have URN so returns true
 	assert.False(t, contact.AddRoute("tel:+12024561111", nil)) // did have
 
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.AddRoute("tel:+12024562222", nil))
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
 	assert.False(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024561111"}, {URN: "tel:+12024562222"}})) // no change
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
 	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}})) // order changed
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}, {URN: "tel:+12024563333"}}))
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024561111", "", nil), flows.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 	assert.True(t, contact.RemoveURN("tel:+12024561111"))
 	assert.False(t, contact.RemoveURN("tel:+12024566666"))
-	assert.Equal(t, flows.URNList{flows.NewURN("tel", "+12024562222", "", nil), flows.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 }
 
 func TestReadContact(t *testing.T) {

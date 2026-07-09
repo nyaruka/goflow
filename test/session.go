@@ -540,7 +540,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []events.Event
 	}
 
 	channel := sa.Channels().Get("fd47a886-451b-46fb-bcb6-242a4046c0c0")
-	call := flows.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
+	call := core.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
 
 	tz, _ := time.LoadLocation("America/Guayaquil")
 	env := envs.NewBuilder().

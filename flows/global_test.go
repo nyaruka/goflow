@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -32,5 +33,5 @@ func TestGlobals(t *testing.T) {
 		"__default__":  types.NewXText("Org Name: U-Report\nAccess Token: 674372272"),
 		"access_token": types.NewXText("674372272"),
 		"org_name":     types.NewXText("U-Report"),
-	}), flows.Context(env, ga))
+	}), core.Context(env, ga))
 }

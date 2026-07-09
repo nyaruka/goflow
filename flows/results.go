@@ -6,8 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nyaruka/goflow/core"
 	"maps"
+
+	"github.com/nyaruka/goflow/core"
 
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/envs"
@@ -53,7 +54,7 @@ func (r Results) Context(env envs.Environment) map[string]types.XValue {
 	entries["__default__"] = types.NewXText(r.format())
 
 	for k, v := range r {
-		entries[k] = Context(env, v)
+		entries[k] = core.Context(env, v)
 	}
 	return entries
 }

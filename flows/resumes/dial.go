@@ -3,6 +3,7 @@ package resumes
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -54,7 +55,7 @@ func (r *Dial) Event() events.Event { return r.event }
 // Context for dial resumes additionally exposes the dial object
 func (r *Dial) Context(env envs.Environment) map[string]types.XValue {
 	c := r.context()
-	c.dial = flows.Context(env, r.event.Dial)
+	c.dial = core.Context(env, r.event.Dial)
 	return c.asMap()
 }
 

@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
@@ -6,9 +6,9 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -64,7 +64,7 @@ func TestURN(t *testing.T) {
 	channel := channels.Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
 	// check that parsing a URN properly extracts its channel affinity
-	urn, err := flows.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
+	urn, err := core.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
 	assert.NoError(t, err)
 	assert.Equal(t, "tel", urn.Scheme)
 	assert.Equal(t, "+250781234567", urn.Path)
@@ -74,8 +74,8 @@ func TestURN(t *testing.T) {
 	assert.Equal(t, urns.URN("tel:+250781234567"), urn.Identity())
 
 	// check equality
-	urn2, _ := flows.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
-	urn3, _ := flows.ParseURN(channels, "tel:+250781234567", assets.PanicOnMissing)
+	urn2, _ := core.ParseURN(channels, "tel:+250781234567?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", assets.PanicOnMissing)
+	urn3, _ := core.ParseURN(channels, "tel:+250781234567", assets.PanicOnMissing)
 	assert.True(t, urn.Equal(urn2))
 	assert.False(t, urn.Equal(urn3))
 
@@ -98,17 +98,17 @@ func TestURN(t *testing.T) {
 }
 
 func TestURNList(t *testing.T) {
-	urn1 := flows.NewURN("tel", "+250781234567", "", nil)
-	urn2 := flows.NewURN("twitter", "134252511151", "billy_bob", nil)
-	urn3 := flows.NewURN("tel", "+250781111222", "", nil)
-	urnList := flows.URNList{urn1, urn2, urn3}
+	urn1 := core.NewURN("tel", "+250781234567", "", nil)
+	urn2 := core.NewURN("twitter", "134252511151", "billy_bob", nil)
+	urn3 := core.NewURN("tel", "+250781111222", "", nil)
+	urnList := core.URNList{urn1, urn2, urn3}
 
 	env := envs.NewBuilder().Build()
 
 	// check equality
-	assert.True(t, urnList.Equal(flows.URNList{urn1, urn2, urn3}))
-	assert.False(t, urnList.Equal(flows.URNList{urn3, urn2, urn1}))
-	assert.False(t, urnList.Equal(flows.URNList{urn1, urn2}))
+	assert.True(t, urnList.Equal(core.URNList{urn1, urn2, urn3}))
+	assert.False(t, urnList.Equal(core.URNList{urn3, urn2, urn1}))
+	assert.False(t, urnList.Equal(core.URNList{urn1, urn2}))
 
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(

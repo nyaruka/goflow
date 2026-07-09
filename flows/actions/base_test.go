@@ -179,7 +179,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 		if tc.HasTicket {
 			topic := sa.Topics().Get("0d9a2c56-6fc2-4f27-93c5-a6322e26b740")
-			contact.Tickets().Add(flows.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", core.TicketStatusOpen, topic, nil))
+			contact.Tickets().Add(core.NewTicket("7f44b065-ec28-4d7a-bbb4-0bda3b75b19d", core.TicketStatusOpen, topic, nil))
 			contact.ReevaluateQueryBasedGroups(env)
 		}
 
@@ -189,14 +189,14 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		}
 
 		var trigger flows.Trigger
-		var call *flows.Call
+		var call *core.Call
 
 		if tc.NoInput || tc.AsBatch {
 			tb := triggers.NewBuilder(flow.Reference(false)).Manual().AsBatch()
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				call = flows.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
+				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
 			}
 
 			trigger = tb.Build()
@@ -224,7 +224,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 100000)).
-			WithLLMServiceFactory(func(l *flows.LLM) (flows.LLMService, error) {
+			WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
 				return services.NewLLM(), nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {

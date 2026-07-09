@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -24,11 +25,11 @@ type Affinity struct {
 	baseModifier
 
 	urn     urns.URN
-	channel *flows.Channel
+	channel *core.Channel
 }
 
 // NewAffinity creates a new affinity modifier
-func NewAffinity(urn urns.URN, channel *flows.Channel) *Affinity {
+func NewAffinity(urn urns.URN, channel *core.Channel) *Affinity {
 	return &Affinity{
 		baseModifier: newBaseModifier(TypeAffinity),
 		urn:          urn,
@@ -65,7 +66,7 @@ func readAffinity(sa flows.SessionAssets, data []byte, missing assets.MissingCal
 		return nil, err
 	}
 
-	var channel *flows.Channel
+	var channel *core.Channel
 	if e.Channel != nil {
 		channel = sa.Channels().Get(e.Channel.UUID)
 		if channel == nil {

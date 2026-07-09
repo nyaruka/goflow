@@ -40,13 +40,13 @@ const TypeTicket string = "ticket"
 type Ticket struct {
 	baseTrigger
 
-	ticket *flows.Ticket
+	ticket *core.Ticket
 }
 
 // Context for ticket triggers includes the ticket
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.ticket = flows.Context(env, t.ticket)
+	c.ticket = core.Context(env, t.ticket)
 	return c.asMap()
 }
 
@@ -61,7 +61,7 @@ type TicketBuilder struct {
 	t *Ticket
 }
 
-func (b *Builder) TicketClosed(event *events.TicketClosed, ticket *flows.Ticket) *TicketBuilder {
+func (b *Builder) TicketClosed(event *events.TicketClosed, ticket *core.Ticket) *TicketBuilder {
 	return &TicketBuilder{
 		t: &Ticket{
 			baseTrigger: newBaseTrigger(TypeTicket, event, b.flow, false, nil),
@@ -94,7 +94,7 @@ func readTicket(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 	t := &Ticket{}
 
 	if e.Ticket != nil {
-		t.ticket = flows.ReadTicket(sa, e.Ticket, missing)
+		t.ticket = e.Ticket.Unmarshal(sa.Topics(), sa.Users(), missing)
 	}
 
 	if err := t.unmarshal(sa, &e.baseEnvelope, missing); err != nil {

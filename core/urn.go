@@ -1,4 +1,4 @@
-package flows
+package core
 
 import (
 	"fmt"
@@ -113,10 +113,10 @@ func (u *URN) ToXValue(env envs.Environment) types.XValue {
 // URNList is the list of a contact's URNs
 type URNList []*URN
 
-func NewURNList(sa SessionAssets, encoded []urns.URN, missing assets.MissingCallback) (URNList, error) {
+func NewURNList(channels *ChannelAssets, encoded []urns.URN, missing assets.MissingCallback) (URNList, error) {
 	urns := make(URNList, len(encoded))
 	for i, e := range encoded {
-		parsed, err := ParseURN(sa.Channels(), e, missing)
+		parsed, err := ParseURN(channels, e, missing)
 		if err != nil {
 			return nil, fmt.Errorf("unable to parse URN %s: %w", e, err)
 		}
@@ -149,7 +149,7 @@ func (l URNList) Equal(other URNList) bool {
 }
 
 // Clone returns a clone of this URN list
-func (l URNList) clone() URNList {
+func (l URNList) Clone() URNList {
 	urns := make(URNList, len(l))
 	for i, u := range l {
 		urns[i] = u.clone()

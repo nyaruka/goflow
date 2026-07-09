@@ -24,11 +24,11 @@ type TicketAssignee struct {
 	baseModifier
 
 	ticketUUID core.TicketUUID
-	assignee   *flows.User
+	assignee   *core.User
 }
 
 // NewTicketAssignee creates a new assignee modifier
-func NewTicketAssignee(ticketUUID core.TicketUUID, assignee *flows.User) *TicketAssignee {
+func NewTicketAssignee(ticketUUID core.TicketUUID, assignee *core.User) *TicketAssignee {
 	return &TicketAssignee{
 		baseModifier: newBaseModifier(TypeTicketAssignee),
 		ticketUUID:   ticketUUID,
@@ -70,7 +70,7 @@ func readTicketAssignee(sa flows.SessionAssets, data []byte, missing assets.Miss
 		return nil, err
 	}
 
-	var assignee *flows.User
+	var assignee *core.User
 	if e.Assignee != nil {
 		assignee = sa.Users().Get(e.Assignee.UUID)
 		if assignee == nil {

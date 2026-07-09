@@ -294,7 +294,7 @@ func TestSetResult(t *testing.T) {
 	defer dates.SetNowFunc(time.Now)
 
 	// no results means empty object with default of empty string
-	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"__default__": types.XTextEmpty}), flows.Context(session.Environment(), run.Results()))
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{"__default__": types.XTextEmpty}), core.Context(session.Environment(), run.Results()))
 
 	prev, changed := run.SetResult(core.NewResult("Response 1", "red", "Red", "Rojo", "6d35528e-cae3-4e30-b842-8fe6ed7d5c02", "I like red", nil, dates.Now()))
 	assert.Nil(t, prev)

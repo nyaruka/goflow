@@ -67,7 +67,7 @@ type Session interface {
 	Environment() envs.Environment
 	MergedEnvironment() envs.Environment
 	Contact() *Contact
-	Call() *Call
+	Call() *core.Call
 	Input() Input
 	Sprints() int
 	Status() SessionStatus

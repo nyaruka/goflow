@@ -37,7 +37,7 @@ type session struct {
 	trigger       flows.Trigger
 	currentResume flows.Resume
 	contact       *flows.Contact
-	call          *flows.Call
+	call          *core.Call
 
 	runs    []flows.Run
 	status  flows.SessionStatus
@@ -63,7 +63,7 @@ func (s *session) CreatedOn() time.Time                { return s.createdOn }
 func (s *session) Environment() envs.Environment       { return s.env }
 func (s *session) MergedEnvironment() envs.Environment { return flows.NewSessionEnvironment(s) }
 func (s *session) Contact() *flows.Contact             { return s.contact }
-func (s *session) Call() *flows.Call                   { return s.call }
+func (s *session) Call() *core.Call                    { return s.call }
 func (s *session) Sprints() int                        { return s.sprints }
 
 func (s *session) Input() flows.Input { return s.input }
@@ -604,7 +604,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *flows.Call, missing assets.MissingCallback) (flows.Session, error) {
+func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *core.Call, missing assets.MissingCallback) (flows.Session, error) {
 	e := &sessionEnvelope{}
 	var err error
 

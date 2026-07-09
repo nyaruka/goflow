@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -24,13 +25,13 @@ const TypeTicketOpen string = "ticket_open"
 type TicketOpen struct {
 	baseModifier
 
-	topic    *flows.Topic
-	assignee *flows.User
+	topic    *core.Topic
+	assignee *core.User
 	note     string
 }
 
 // NewTicketOpen creates a new ticket open modifier
-func NewTicketOpen(topic *flows.Topic, assignee *flows.User, note string) *TicketOpen {
+func NewTicketOpen(topic *core.Topic, assignee *core.User, note string) *TicketOpen {
 	return &TicketOpen{
 		baseModifier: newBaseModifier(TypeTicketOpen),
 		topic:        topic,
@@ -46,7 +47,7 @@ func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Envir
 		return false, nil
 	}
 
-	ticket := flows.OpenTicket(m.topic, m.assignee)
+	ticket := core.OpenTicket(m.topic, m.assignee)
 	log(events.NewTicketOpened(ticket.Marshal()))
 
 	if note := strings.TrimSpace(m.note); note != "" {
@@ -83,7 +84,7 @@ func readTicketOpen(sa flows.SessionAssets, data []byte, missing assets.MissingC
 		return nil, ErrNoModifier // can't proceed without a topic
 	}
 
-	var assignee *flows.User
+	var assignee *core.User
 	if e.Assignee != nil {
 		assignee = sa.Users().Get(e.Assignee.UUID)
 		if assignee == nil {

@@ -342,7 +342,7 @@ func TestNewFlow(t *testing.T) {
 		"name":        types.NewXText("Test Flow"),
 		"revision":    types.NewXNumberFromInt(123),
 		"uuid":        types.NewXText("8ca44c09-791d-453a-9799-a70dd3303306"),
-	}), flows.Context(session.Environment(), flow))
+	}), core.Context(session.Environment(), flow))
 
 	// check inspection
 	info := flow.Inspect(session.Assets())

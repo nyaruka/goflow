@@ -3,6 +3,7 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -36,13 +37,13 @@ const TypeCampaign string = "campaign"
 type Campaign struct {
 	baseTrigger
 
-	campaign *flows.Campaign
+	campaign *core.Campaign
 }
 
 // Context for manual triggers always has non-nil params
 func (t *Campaign) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.campaign = flows.Context(env, t.campaign)
+	c.campaign = core.Context(env, t.campaign)
 	return c.asMap()
 }
 
@@ -57,7 +58,7 @@ type CampaignBuilder struct {
 	t *Campaign
 }
 
-func (b *Builder) CampaignFired(event *events.CampaignFired, campaign *flows.Campaign) *CampaignBuilder {
+func (b *Builder) CampaignFired(event *events.CampaignFired, campaign *core.Campaign) *CampaignBuilder {
 	return &CampaignBuilder{
 		t: &Campaign{
 			baseTrigger: newBaseTrigger(TypeCampaign, event, b.flow, false, nil),

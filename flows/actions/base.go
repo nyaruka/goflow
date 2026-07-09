@@ -361,9 +361,9 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, log event
 }
 
 // helper function to resolve a user reference to a user
-func resolveUser(run flows.Run, ref *assets.UserReference, log events.EventLogger) *flows.User {
+func resolveUser(run flows.Run, ref *assets.UserReference, log events.EventLogger) *core.User {
 	userAssets := run.Session().Assets().Users()
-	var user *flows.User
+	var user *core.User
 
 	if ref.Variable() {
 		// is an expression that evaluates to an existing user's email

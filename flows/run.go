@@ -26,7 +26,7 @@ type RunSummary interface {
 // Run is a single contact's journey through a flow. It records the path they have taken,
 // and the results that have been collected.
 type Run interface {
-	Contextable
+	core.Contextable
 	RunSummary
 	FlowReference() *assets.FlowReference
 

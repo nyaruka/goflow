@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -47,13 +46,13 @@ func TestMsgInput(t *testing.T) {
 		"__default__": types.NewXText("Hi there!\nhttp://example.com/test.jpg\nhttp://example.com/test.mp4"),
 		"type":        types.NewXText("msg"),
 		"uuid":        types.NewXText(string(msgEvt.UUID())),
-		"channel":     flows.Context(env, channel),
+		"channel":     core.Context(env, channel),
 		"created_on":  types.NewXDateTime(input.CreatedOn()),
 		"urn":         types.NewXText("tel:+1234567890"),
 		"text":        types.NewXText("Hi there!"),
 		"attachments": types.NewXArray(types.NewXText("image/jpg:http://example.com/test.jpg"), types.NewXText("video/mp4:http://example.com/test.mp4")),
 		"external_id": types.NewXText("ext12345"),
-	}), flows.Context(env, input))
+	}), core.Context(env, input))
 
 	// check marshaling to JSON
 	marshaled, err := jsonx.Marshal(input)

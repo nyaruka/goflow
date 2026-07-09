@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -14,7 +15,7 @@ type EmailServiceFactory func(flows.SessionAssets) (flows.EmailService, error)
 type WebhookServiceFactory func(*http.Client, flows.SessionAssets) (flows.WebhookService, error)
 
 // LLMServiceFactory resolves an LLM asset to to an LLM service
-type LLMServiceFactory func(*flows.LLM) (flows.LLMService, error)
+type LLMServiceFactory func(*core.LLM) (flows.LLMService, error)
 
 // AirtimeServiceFactory resolves a session to an airtime service
 type AirtimeServiceFactory func(flows.SessionAssets) (flows.AirtimeService, error)
@@ -35,7 +36,7 @@ func newEmptyServices() *services {
 		webhook: func(*http.Client, flows.SessionAssets) (flows.WebhookService, error) {
 			return nil, errors.New("no webhook service factory configured")
 		},
-		llm: func(*flows.LLM) (flows.LLMService, error) {
+		llm: func(*core.LLM) (flows.LLMService, error) {
 			return nil, errors.New("no LLM service factory configured")
 		},
 		airtime: func(flows.SessionAssets) (flows.AirtimeService, error) {
@@ -52,7 +53,7 @@ func (s *services) Webhook(sa flows.SessionAssets) (flows.WebhookService, error)
 	return s.webhook(s.httpClient, sa)
 }
 
-func (s *services) LLM(llm *flows.LLM) (flows.LLMService, error) {
+func (s *services) LLM(llm *core.LLM) (flows.LLMService, error) {
 	return s.llm(llm)
 }
 

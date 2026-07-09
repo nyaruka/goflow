@@ -24,11 +24,11 @@ type TicketTopic struct {
 	baseModifier
 
 	ticketUUID core.TicketUUID
-	topic      *flows.Topic
+	topic      *core.Topic
 }
 
 // NewTicketTopic creates a new topic modifier
-func NewTicketTopic(ticketUUID core.TicketUUID, topic *flows.Topic) *TicketTopic {
+func NewTicketTopic(ticketUUID core.TicketUUID, topic *core.Topic) *TicketTopic {
 	return &TicketTopic{
 		baseModifier: newBaseModifier(TypeTicketTopic),
 		ticketUUID:   ticketUUID,

@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -48,7 +49,7 @@ func TestWebhookCall(t *testing.T) {
 		"status":      types.NewXNumberFromInt(200),
 		"headers":     types.NewXObject(map[string]types.XValue{"Content-Type": types.NewXText("application/json")}),
 		"json":        types.NewXObject(map[string]types.XValue{"foo": types.NewXNumberFromInt(123)}),
-	}), flows.Context(env, call1))
+	}), core.Context(env, call1))
 
 	call2 := request("POST")
 
@@ -57,7 +58,7 @@ func TestWebhookCall(t *testing.T) {
 		"status":      types.NewXNumberFromInt(400),
 		"headers":     types.XObjectEmpty,
 		"json":        nil,
-	}), flows.Context(env, call2))
+	}), core.Context(env, call2))
 
 	call3 := request("GET")
 
@@ -66,7 +67,7 @@ func TestWebhookCall(t *testing.T) {
 		"status":      types.NewXNumberFromInt(0),
 		"headers":     types.XObjectEmpty,
 		"json":        nil,
-	}), flows.Context(env, call3))
+	}), core.Context(env, call3))
 }
 
 func TestExtractJSON(t *testing.T) {

@@ -3,6 +3,7 @@ package triggers
 import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -42,13 +43,13 @@ const TypeOptIn string = "optin"
 type OptIn struct {
 	baseTrigger
 
-	optIn *flows.OptIn
+	optIn *core.OptIn
 }
 
 // Context for optin triggers includes the optin
 func (t *OptIn) Context(env envs.Environment) map[string]types.XValue {
 	c := t.context()
-	c.optIn = flows.Context(env, t.optIn)
+	c.optIn = core.Context(env, t.optIn)
 	return c.asMap()
 }
 
@@ -63,7 +64,7 @@ type OptInBuilder struct {
 	t *OptIn
 }
 
-func (b *Builder) OptInStarted(event *events.OptInStarted, optIn *flows.OptIn) *OptInBuilder {
+func (b *Builder) OptInStarted(event *events.OptInStarted, optIn *core.OptIn) *OptInBuilder {
 	return &OptInBuilder{
 		t: &OptIn{
 			baseTrigger: newBaseTrigger(TypeOptIn, event, b.flow, false, nil),
@@ -72,7 +73,7 @@ func (b *Builder) OptInStarted(event *events.OptInStarted, optIn *flows.OptIn) *
 	}
 }
 
-func (b *Builder) OptInStopped(event *events.OptInStopped, optIn *flows.OptIn) *OptInBuilder {
+func (b *Builder) OptInStopped(event *events.OptInStopped, optIn *core.OptIn) *OptInBuilder {
 	return &OptInBuilder{
 		t: &OptIn{
 			baseTrigger: newBaseTrigger(TypeOptIn, event, b.flow, false, nil),

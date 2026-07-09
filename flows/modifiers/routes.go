@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -165,7 +166,7 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 
 	routes := make([]flows.Route, 0, len(e.Routes))
 	for _, re := range e.Routes {
-		var channel *flows.Channel
+		var channel *core.Channel
 		if re.Channel != nil {
 			channel = sa.Channels().Get(re.Channel.UUID)
 			if channel == nil {

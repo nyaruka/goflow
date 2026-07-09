@@ -31,7 +31,7 @@ func TestFindTranslation(t *testing.T) {
 	tas := flows.NewTemplateAssets([]assets.Template{template})
 
 	tcs := []struct {
-		channel  *flows.Channel
+		channel  *core.Channel
 		locales  []i18n.Locale
 		expected i18n.Locale
 	}{
@@ -61,7 +61,7 @@ func TestFindTranslation(t *testing.T) {
 }
 
 func TestTemplating(t *testing.T) {
-	channel := flows.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
+	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
 
 	tcs := []struct {
 		template           []byte
