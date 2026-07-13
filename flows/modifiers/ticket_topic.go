@@ -37,7 +37,7 @@ func NewTicketTopic(ticketUUID core.TicketUUID, topic *core.Topic) *TicketTopic 
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketTopic) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *TicketTopic) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil && ticket.Topic() != m.topic {

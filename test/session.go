@@ -486,7 +486,7 @@ func CreateTestSession(testServerURL string, redact envs.RedactionPolicy) (flows
 	}
 
 	// read out contact
-	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
+	contact, err := core.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading contact: %w", err)
 	}
@@ -528,7 +528,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []events.Event
 		return nil, nil, fmt.Errorf("error creating test voice session assets: %w", err)
 	}
 
-	contact, err := flows.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
+	contact, err := core.ReadContact(sa, []byte(sessionContact), assets.PanicOnMissing)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading contact: %w", err)
 	}
@@ -594,7 +594,7 @@ type SessionBuilder struct {
 	flowUUID    assets.FlowUUID
 	engine      flows.Engine
 	contactUUID core.ContactUUID
-	contactID   flows.ContactID
+	contactID   core.ContactID
 	contactName string
 	contactLang i18n.Language
 	contactURN  urns.URN
@@ -615,7 +615,7 @@ func NewSessionBuilder() *SessionBuilder {
 		flowUUID:    "50c3706e-fedb-42c0-8eab-dda3335714b7",
 		engine:      NewEngine(),
 		contactUUID: core.NewContactUUID(),
-		contactID:   flows.ContactID(123),
+		contactID:   core.ContactID(123),
 		contactName: "Bob",
 		contactLang: "eng",
 		contactURN:  "tel:+12065551212",
@@ -653,7 +653,7 @@ func (b *SessionBuilder) WithMocks(mocks map[string][]*httpx.MockResponse) *Sess
 	return b
 }
 
-func (b *SessionBuilder) WithContact(uuid core.ContactUUID, id flows.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
+func (b *SessionBuilder) WithContact(uuid core.ContactUUID, id core.ContactID, name string, lang i18n.Language, urn urns.URN) *SessionBuilder {
 	b.contactUUID = uuid
 	b.contactID = id
 	b.contactName = name
@@ -696,7 +696,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		urnz = []urns.URN{b.contactURN}
 	}
 
-	contact, err := flows.NewContact(sa,
+	contact, err := core.NewContact(sa,
 		b.contactUUID,
 		b.contactID,
 		b.contactName,

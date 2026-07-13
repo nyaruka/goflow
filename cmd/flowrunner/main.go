@@ -139,7 +139,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		contactJSONBytes = []byte(contactJSON)
 	}
 
-	contact, err := flows.ReadContact(sa, contactJSONBytes, assets.PanicOnMissing)
+	contact, err := core.ReadContact(sa, contactJSONBytes, assets.PanicOnMissing)
 	if err != nil {
 		return nil, fmt.Errorf("error reading contact: %w", err)
 	}
@@ -213,7 +213,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 	return repro, nil
 }
 
-func createMessage(contact *flows.Contact, text string) *core.MsgIn {
+func createMessage(contact *core.Contact, text string) *core.MsgIn {
 	return core.NewMsgIn(contact.URNs()[0].Identity(), nil, text, []utils.Attachment{}, "")
 }
 

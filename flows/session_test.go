@@ -37,7 +37,7 @@ func TestHistory(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
 	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)

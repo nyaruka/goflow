@@ -72,7 +72,7 @@ func (r *run) Session() flows.Session { return r.session }
 
 func (r *run) Flow() flows.Flow                     { return r.flow }
 func (r *run) FlowReference() *assets.FlowReference { return r.flowRef }
-func (r *run) Contact() *flows.Contact              { return r.session.Contact() }
+func (r *run) Contact() *core.Contact               { return r.session.Contact() }
 func (r *run) HadInput() bool                       { return r.hadInput }
 
 func (r *run) Locals() *flows.Locals  { return r.locals }

@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -35,7 +36,7 @@ func NewName(name string) *Name {
 }
 
 // Apply applies this modification to the given contact
-func (m *Name) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *Name) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	if contact.Name() != m.name {
 		// truncate value if necessary
 		name := stringsx.Truncate(m.name, eng.Options().MaxFieldChars)

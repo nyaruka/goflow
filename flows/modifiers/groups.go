@@ -47,7 +47,7 @@ func NewGroups(groups []*core.Group, modification GroupsModification) *Groups {
 }
 
 // Apply applies this modification to the given contact
-func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	if contact.Status() == core.ContactStatusBlocked || contact.Status() == core.ContactStatusStopped {
 		log(events.NewError("Can't add blocked or stopped contacts to groups", ""))
 		return false, nil

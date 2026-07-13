@@ -92,7 +92,7 @@ type Output struct {
 
 type FlowTest struct {
 	Environment json.RawMessage                  `json:"environment"`
-	Contact     *flows.ContactEnvelope           `json:"contact"`
+	Contact     *core.ContactEnvelope            `json:"contact"`
 	Trigger     json.RawMessage                  `json:"trigger"`
 	Call        *core.CallEnvelope               `json:"call,omitempty"`
 	Resumes     []json.RawMessage                `json:"resumes"`
@@ -105,7 +105,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact *flows.ContactEnvelope, rawTrigger []byte, rawCall *core.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope, rawTrigger []byte, rawCall *core.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets

@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -65,7 +66,7 @@ func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.S
 	urn := urns.URN(fmt.Sprintf("%s:%s", a.Scheme, evaluatedPath))
 	urn = urn.Normalize()
 
-	_, err := a.applyModifier(ctx, run, modifiers.NewRoutes([]flows.Route{{URN: urn}}, modifiers.RoutesAppend), log)
+	_, err := a.applyModifier(ctx, run, modifiers.NewRoutes([]core.Route{{URN: urn}}, modifiers.RoutesAppend), log)
 	if run.Contact().HasURN(urn) {
 		run.Locals().Set(AddURNOutputLocal, string(urn))
 	} else {

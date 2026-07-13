@@ -35,7 +35,7 @@ func NewChannel(channel *core.Channel) *Channel {
 }
 
 // Apply applies this modification to the given contact
-func (m *Channel) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *Channel) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	if m.channel != nil && !m.channel.HasRole(assets.ChannelRoleSend) {
 		log(events.NewError("Can't set channel that can't send as the preferred channel", ""))
 

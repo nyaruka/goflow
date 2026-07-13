@@ -37,7 +37,7 @@ func NewTicketNote(ticketUUID core.TicketUUID, note string) *TicketNote {
 }
 
 // Apply applies this modification to the given contact
-func (m *TicketNote) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *TicketNote) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
 	if ticket != nil {

@@ -163,7 +163,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	require.NoError(t, err)
 
 	// contact is in wrong groups
-	contact, err := flows.ReadContact(sa, []byte(`{
+	contact, err := core.ReadContact(sa, []byte(`{
 		"uuid": "6d116680-eab9-460a-9c6e-1f05d3c5b5d6",
 		"status": "active",
 		"created_on": "2018-06-20T11:40:30.123456789-00:00",
@@ -343,7 +343,7 @@ func TestSessionHistory(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()

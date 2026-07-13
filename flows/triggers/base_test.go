@@ -71,7 +71,7 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 		sa, err := test.CreateSessionAssets(assetsJSON, "")
 		require.NoError(t, err, "unable to create session assets in %s", testName)
 
-		contact, err := flows.ReadContact(sa, []byte(`{
+		contact, err := core.ReadContact(sa, []byte(`{
                 "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
                 "name": "Bob",
                 "status": "active",
@@ -209,7 +209,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	ticket := core.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", core.TicketStatusOpen, weather, user)
 	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065551212")
 
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 	contact.AddRoute("tel:+12065551212", nil)
 
 	eng := engine.NewBuilder().Build()
@@ -370,7 +370,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 	contact.AddRoute(urns.URN("tel:+12065551212"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})

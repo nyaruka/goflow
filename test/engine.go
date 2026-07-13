@@ -43,10 +43,10 @@ func newEngine(httpClient *http.Client) flows.Engine {
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
 		}).
-		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, mc *core.MsgContent) (core.UnsendableReason, error) {
+		WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, c *core.Contact, mc *core.MsgContent) (core.UnsendableReason, error) {
 			return "", nil
 		}).
-		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
+		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *core.Contact, u urns.URN) (bool, error) {
 			return !strings.Contains(u.Path(), "taken"), nil
 		}).
 		Build()

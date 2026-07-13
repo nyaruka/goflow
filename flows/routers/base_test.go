@@ -9,8 +9,8 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -86,7 +86,7 @@ func testRouterType(t *testing.T, assetsJSON []byte, typeName string) {
 		}
 
 		// load our contact
-		contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.PanicOnMissing)
+		contact, err := core.ReadContact(sa, []byte(contactJSON), assets.PanicOnMissing)
 		require.NoError(t, err)
 
 		trigger := triggers.NewBuilder(flow.Reference(false)).Manual().Build()
