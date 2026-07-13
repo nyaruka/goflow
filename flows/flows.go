@@ -3,7 +3,6 @@ package flows
 import (
 	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -12,9 +11,6 @@ func init() {
 		return "is not a valid flow type"
 	})
 }
-
-// NewNodeUUID generates a new UUID for a node
-func NewNodeUUID() core.NodeUUID { return core.NodeUUID(uuids.NewV4()) }
 
 // NewActionUUID generates a new UUID for an action
 func NewActionUUID() ActionUUID { return ActionUUID(uuids.NewV4()) }

@@ -13,6 +13,26 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
+// RunContextTopLevels are the allowed top-level variables for expression evaluations
+var RunContextTopLevels = []string{
+	"child",
+	"contact",
+	"fields",
+	"globals",
+	"input",
+	"legacy_extra",
+	"node",
+	"parent",
+	"locals",
+	"results",
+	"resume",
+	"run",
+	"ticket",
+	"trigger",
+	"urns",
+	"webhook",
+}
+
 // RunSummary represents the minimum information available about all runs (current or related) and is the
 // representation of runs made accessible to router tests.
 type RunSummary interface {
