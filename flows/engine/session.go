@@ -565,7 +565,7 @@ func (s *session) ensureQueryBasedGroups(logEvent events.EventLogger) {
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		logEvent(events.NewContactGroupsChanged(flows.GroupReferences(added), flows.GroupReferences(removed)))
+		logEvent(events.NewContactGroupsChanged(core.GroupReferences(added), core.GroupReferences(removed)))
 	}
 }
 

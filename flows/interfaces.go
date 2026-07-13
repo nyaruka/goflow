@@ -54,16 +54,16 @@ type SessionAssets interface {
 
 	Campaigns() *core.CampaignAssets
 	Channels() *core.ChannelAssets
-	Fields() *FieldAssets
+	Fields() *core.FieldAssets
 	Flows() FlowAssets
-	Globals() *GlobalAssets
-	Groups() *GroupAssets
-	Labels() *LabelAssets
+	Globals() *core.GlobalAssets
+	Groups() *core.GroupAssets
+	Labels() *core.LabelAssets
 	LLMs() *core.LLMAssets
-	Locations() *LocationAssets
+	Locations() *core.LocationAssets
 	OptIns() *core.OptInAssets
-	Resthooks() *ResthookAssets
-	Templates() *TemplateAssets
+	Resthooks() *core.ResthookAssets
+	Templates() *core.TemplateAssets
 	Topics() *core.TopicAssets
 	Users() *core.UserAssets
 }

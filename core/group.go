@@ -1,12 +1,10 @@
-package flows
+package core
 
 import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
-	"github.com/nyaruka/goflow/contactql/parse"
-	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
@@ -16,21 +14,12 @@ type Group struct {
 	assets.Group
 
 	parsedQuery *contactql.ContactQuery
-	resolver    contactql.Resolver
 }
 
-// NewGroup returns a new group object from the given group asset
-func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*Group, error) {
-	if asset.Query() != "" {
-		query, err := parse.Query(env, asset.Query(), fields)
-		if err != nil {
-			return nil, err
-		}
-
-		return &Group{Group: asset, parsedQuery: query, resolver: fields}, nil
-	}
-
-	return &Group{Group: asset}, nil
+// NewGroup returns a new group object from the given group asset and - if it's query based - its parsed
+// query. Parsing is the caller's responsibility so that this package doesn't depend on query parsing.
+func NewGroup(asset assets.Group, query *contactql.ContactQuery) *Group {
+	return &Group{Group: asset, parsedQuery: query}
 }
 
 // Asset returns the underlying asset
@@ -40,12 +29,12 @@ func (g *Group) Asset() assets.Group { return g.Group }
 func (g *Group) UsesQuery() bool { return g.Query() != "" }
 
 // CheckQueryBasedMembership returns whether the given contact belongs in a query based group
-func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact) bool {
+func (g *Group) CheckQueryBasedMembership(env envs.Environment, status ContactStatus, contact contactql.Queryable) bool {
 	if !g.UsesQuery() {
 		panic("can't check membership on a non-query based group")
 	}
 
-	if contact.Status() != core.ContactStatusActive {
+	if status != ContactStatusActive {
 		return false
 	}
 
@@ -79,11 +68,11 @@ type GroupList struct {
 }
 
 // NewGroupList creates a new group list
-func NewGroupList(a SessionAssets, refs []*assets.GroupReference, missing assets.MissingCallback) *GroupList {
+func NewGroupList(groupAssets *GroupAssets, refs []*assets.GroupReference, missing assets.MissingCallback) *GroupList {
 	groups := make([]*Group, 0, len(refs))
 
 	for _, ref := range refs {
-		group := a.Groups().Get(ref.UUID)
+		group := groupAssets.Get(ref.UUID)
 		if group == nil {
 			missing(ref, nil)
 		} else {
@@ -93,15 +82,15 @@ func NewGroupList(a SessionAssets, refs []*assets.GroupReference, missing assets
 	return &GroupList{groups: groups}
 }
 
-// returns a clone of this group list
-func (l *GroupList) clone() *GroupList {
+// Clone returns a clone of this group list
+func (l *GroupList) Clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
 	return &GroupList{groups: groups}
 }
 
-// returns this group list as a slice of group references
-func (l *GroupList) references() []*assets.GroupReference {
+// References returns this group list as a slice of group references
+func (l *GroupList) References() []*assets.GroupReference {
 	refs := make([]*assets.GroupReference, len(l.groups))
 	for i, group := range l.groups {
 		refs[i] = group.Reference()
@@ -170,22 +159,15 @@ type GroupAssets struct {
 }
 
 // NewGroupAssets creates a new set of group assets
-func NewGroupAssets(env envs.Environment, fields *FieldAssets, groups []assets.Group) (*GroupAssets, []assets.Group) {
-	broken := make([]assets.Group, 0)
+func NewGroupAssets(groups []*Group) *GroupAssets {
 	s := &GroupAssets{
-		all:    make([]*Group, 0, len(groups)),
+		all:    groups,
 		byUUID: make(map[assets.GroupUUID]*Group, len(groups)),
 	}
-	for _, asset := range groups {
-		group, err := NewGroup(env, fields, asset)
-		if err != nil {
-			broken = append(broken, asset)
-		} else {
-			s.all = append(s.all, group)
-			s.byUUID[group.UUID()] = group
-		}
+	for _, group := range groups {
+		s.byUUID[group.UUID()] = group
 	}
-	return s, broken
+	return s
 }
 
 // All returns all the groups

@@ -1,13 +1,13 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 
@@ -64,13 +64,13 @@ func TestGroupList(t *testing.T) {
 	}
 
 	// create empty
-	groups := flows.NewGroupList(sa, nil, missing)
+	groups := core.NewGroupList(sa.Groups(), nil, missing)
 
 	assert.Equal(t, 0, groups.Count())
 	assert.Equal(t, 0, len(missingRefs))
 
 	// create with some references
-	groups = flows.NewGroupList(sa, []*assets.GroupReference{
+	groups = core.NewGroupList(sa.Groups(), []*assets.GroupReference{
 		assets.NewGroupReference("990e1392-1f49-40c5-9662-f39609324bf9", "Testers"),
 		assets.NewGroupReference("f4f4b78e-f072-42e2-987d-f5c13da3166d", "Males"),
 		assets.NewGroupReference("7cb12d0e-e163-492c-95b1-28549cd04fe4", "I don't exist"),

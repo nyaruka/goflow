@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -566,7 +565,7 @@ func HasState(env envs.Environment, text *types.XText) types.XValue {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
 	}
 
-	states := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, text.Native(), core.LocationLevelState, nil)
 	if len(states) > 0 {
 		return NewTrueResult(types.NewXText(string(states[0].Path())))
 	}
@@ -603,9 +602,9 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 		stateText = types.XTextEmpty
 	}
 
-	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, stateText.Native(), core.LocationLevelState, nil)
 	if len(states) > 0 {
-		districts := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelDistrict, states[0])
+		districts := locations.FindLocationsFuzzy(env, text.Native(), core.LocationLevelDistrict, states[0])
 		if len(districts) > 0 {
 			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
@@ -613,7 +612,7 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText.Empty() {
-		districts := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelDistrict, nil)
+		districts := locations.FindLocationsFuzzy(env, text.Native(), core.LocationLevelDistrict, nil)
 		if len(districts) == 1 {
 			return NewTrueResult(types.NewXText(string(districts[0].Path())))
 		}
@@ -663,11 +662,11 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 		districtText = types.XTextEmpty
 	}
 
-	states := locations.FindLocationsFuzzy(env, stateText.Native(), flows.LocationLevelState, nil)
+	states := locations.FindLocationsFuzzy(env, stateText.Native(), core.LocationLevelState, nil)
 	if len(states) > 0 {
-		districts := locations.FindLocationsFuzzy(env, districtText.Native(), flows.LocationLevelDistrict, states[0])
+		districts := locations.FindLocationsFuzzy(env, districtText.Native(), core.LocationLevelDistrict, states[0])
 		if len(districts) > 0 {
-			wards := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelWard, districts[0])
+			wards := locations.FindLocationsFuzzy(env, text.Native(), core.LocationLevelWard, districts[0])
 			if len(wards) > 0 {
 				return NewTrueResult(types.NewXText(string(wards[0].Path())))
 			}
@@ -676,7 +675,7 @@ func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText.Empty() {
-		wards := locations.FindLocationsFuzzy(env, text.Native(), flows.LocationLevelWard, nil)
+		wards := locations.FindLocationsFuzzy(env, text.Native(), core.LocationLevelWard, nil)
 		if len(wards) == 1 {
 			return NewTrueResult(types.NewXText(string(wards[0].Path())))
 		}

@@ -67,7 +67,7 @@ func ReevaluateGroups(env envs.Environment, contact *flows.Contact, log events.E
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		log(events.NewContactGroupsChanged(flows.GroupReferences(added), flows.GroupReferences(removed)))
+		log(events.NewContactGroupsChanged(core.GroupReferences(added), core.GroupReferences(removed)))
 	}
 }
 

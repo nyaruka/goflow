@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/core"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
@@ -27,8 +26,8 @@ func TestFindTranslation(t *testing.T) {
 	tt3 := static.NewTemplateTranslation(channel1Ref, i18n.Locale("spa-ES"), []*static.TemplateComponent{}, []*static.TemplateVariable{})
 	tt4 := static.NewTemplateTranslation(channel2Ref, i18n.Locale("kin"), []*static.TemplateComponent{}, []*static.TemplateVariable{})
 
-	template := flows.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
-	tas := flows.NewTemplateAssets([]assets.Template{template})
+	template := core.NewTemplate(static.NewTemplate("c520cbda-e118-440f-aaf6-c0485088384f", "greeting", []*static.TemplateTranslation{tt1, tt2, tt3, tt4}))
+	tas := core.NewTemplateAssets([]assets.Template{template})
 
 	tcs := []struct {
 		channel  *core.Channel
@@ -57,7 +56,7 @@ func TestFindTranslation(t *testing.T) {
 	template = tas.Get(assets.TemplateUUID("c520cbda-e118-440f-aaf6-c0485088384f"))
 	assert.NotNil(t, template)
 	assert.Equal(t, assets.NewTemplateReference("c520cbda-e118-440f-aaf6-c0485088384f", "greeting"), template.Reference())
-	assert.Equal(t, (*assets.TemplateReference)(nil), (*flows.Template)(nil).Reference())
+	assert.Equal(t, (*assets.TemplateReference)(nil), (*core.Template)(nil).Reference())
 }
 
 func TestTemplating(t *testing.T) {
@@ -369,14 +368,14 @@ func TestTemplating(t *testing.T) {
 		tplAsset := &static.Template{}
 		jsonx.MustUnmarshal(tc.template, tplAsset)
 
-		tpl := flows.NewTemplate(tplAsset)
+		tpl := core.NewTemplate(tplAsset)
 		trans := tpl.FindTranslation(channel, []i18n.Locale{"eng"})
 		if assert.NotNil(t, trans, "%d: translation not found", i) {
 			// check templating
 			templating := tpl.Templating(trans, tc.variables)
 
 			if assert.Equal(t, tc.expectedTemplating, templating, "%d: preview mismatch", i) {
-				actualPreview := flows.NewTemplateTranslation(trans).Preview(templating.Variables)
+				actualPreview := core.NewTemplateTranslation(trans).Preview(templating.Variables)
 				assert.Equal(t, tc.expectedPreview, actualPreview, "%d: preview mismatch", i)
 			}
 		}

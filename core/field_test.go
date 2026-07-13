@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -24,10 +23,10 @@ func TestFieldValues(t *testing.T) {
 	age := fields.Get("age")
 
 	// can have no values for any fields
-	flows.NewFieldValues(session.Assets(), map[string]*core.Value{}, assets.PanicOnMissing)
+	core.NewFieldValues(session.Assets().Fields(), map[string]*core.Value{}, assets.PanicOnMissing)
 
 	// can have a value but not in the right type for that field (age below)
-	fieldVals := flows.NewFieldValues(session.Assets(), map[string]*core.Value{
+	fieldVals := core.NewFieldValues(session.Assets().Fields(), map[string]*core.Value{
 		"gender": core.NewValue(types.NewXText("Male"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 		"age":    core.NewValue(types.NewXText("nan"), nil, nil, envs.LocationPath(""), envs.LocationPath(""), envs.LocationPath("")),
 	}, assets.PanicOnMissing)
@@ -67,7 +66,7 @@ func TestFieldValueParse(t *testing.T) {
 	nilLocPath := envs.LocationPath("")
 
 	tcs := []struct {
-		field    *flows.Field
+		field    *core.Field
 		value    string
 		expected *core.Value
 	}{

@@ -33,12 +33,12 @@ const (
 type Groups struct {
 	baseModifier
 
-	groups       []*flows.Group
+	groups       []*core.Group
 	modification GroupsModification
 }
 
 // NewGroups creates a new groups modifier
-func NewGroups(groups []*flows.Group, modification GroupsModification) *Groups {
+func NewGroups(groups []*core.Group, modification GroupsModification) *Groups {
 	return &Groups{
 		baseModifier: newBaseModifier(TypeGroups),
 		groups:       groups,
@@ -53,7 +53,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 		return false, nil
 	}
 
-	diff := make([]*flows.Group, 0, len(m.groups))
+	diff := make([]*core.Group, 0, len(m.groups))
 
 	if m.modification == GroupsAdd {
 		for _, group := range m.groups {
@@ -73,7 +73,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(flows.GroupReferences(diff), nil))
+			log(events.NewContactGroupsChanged(core.GroupReferences(diff), nil))
 			return true, nil
 		}
 
@@ -95,7 +95,7 @@ func (m *Groups) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 
 		// only generate event if contact's groups change
 		if len(diff) > 0 {
-			log(events.NewContactGroupsChanged(nil, flows.GroupReferences(diff)))
+			log(events.NewContactGroupsChanged(nil, core.GroupReferences(diff)))
 			return true, nil
 		}
 	}
@@ -122,7 +122,7 @@ func readGroups(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 		return nil, err
 	}
 
-	groups := make([]*flows.Group, 0, len(e.Groups))
+	groups := make([]*core.Group, 0, len(e.Groups))
 	for _, groupRef := range e.Groups {
 		group := sa.Groups().Get(groupRef.UUID)
 		if group == nil {

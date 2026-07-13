@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -56,7 +57,7 @@ func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.
 	labels := resolveLabels(run, a.Labels, log)
 
 	if len(labels) > 0 {
-		log(events.NewInputLabelsAdded(input.UUID(), flows.LabelReferences(labels)))
+		log(events.NewInputLabelsAdded(input.UUID(), core.LabelReferences(labels)))
 	}
 
 	return nil

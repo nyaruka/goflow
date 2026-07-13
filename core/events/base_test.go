@@ -20,7 +20,6 @@ import (
 	"github.com/nyaruka/goflow/core/hints"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -147,7 +146,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewContactGroupsChanged(
-					flows.GroupReferences([]*flows.Group{session.Assets().Groups().FindByName("Customers")}),
+					core.GroupReferences([]*core.Group{session.Assets().Groups().FindByName("Customers")}),
 					nil,
 				)
 			},

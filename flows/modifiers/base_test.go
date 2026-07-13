@@ -184,7 +184,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewGroups([]*flows.Group{testers}, modifiers.GroupsAdd),
+			modifiers.NewGroups([]*core.Group{testers}, modifiers.GroupsAdd),
 			`{
 				"type": "groups",
 				"groups": [

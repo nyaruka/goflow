@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -89,7 +90,7 @@ func TestLocationResolver(t *testing.T) {
 	kigali := resolver.LookupLocation("Rwanda > Kigali City")
 	assert.Equal(t, "Kigali City", kigali.Name())
 
-	matches := resolver.FindLocationsFuzzy(env, "gisozi town", flows.LocationLevelWard, nil)
+	matches := resolver.FindLocationsFuzzy(env, "gisozi town", core.LocationLevelWard, nil)
 	assert.Equal(t, 1, len(matches))
 	assert.Equal(t, "Gisozi", matches[0].Name())
 }

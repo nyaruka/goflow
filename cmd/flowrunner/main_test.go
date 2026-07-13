@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -69,8 +68,8 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewBroadcastCreated(core.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), core.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), nil), `✏️ field 'gender' cleared`},
-		{events.NewContactGroupsChanged(flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
-		{events.NewContactGroupsChanged(nil, flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
+		{events.NewContactGroupsChanged(core.GroupReferences([]*core.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
+		{events.NewContactGroupsChanged(nil, core.GroupReferences([]*core.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
 		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},
@@ -80,7 +79,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewError("this didn't work", ""), `⚠️ this didn't work`},
 		{events.NewFailure("This really didn't work"), `🛑 This really didn't work`},
 		{events.NewRunStarted(session.Runs()[0].FlowReference(), session.Runs()[0].UUID(), "", false), `↪️ entered flow 'Registration'`},
-		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", flows.LabelReferences([]*flows.Label{sa.Labels().FindByName("Spam")})), `🏷️ labeled with 'Spam'`},
+		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", core.LabelReferences([]*core.Label{sa.Labels().FindByName("Spam")})), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, expiresOn, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
 	}
