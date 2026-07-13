@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -664,7 +665,7 @@ func TestContactQuery(t *testing.T) {
 			env = session.Environment()
 		}
 
-		parsed, err := contactql.ParseQuery(env, q, session.Assets())
+		parsed, err := parse.Query(env, q, session.Assets())
 		if err != nil {
 			return false, err
 		}

@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
@@ -167,7 +168,7 @@ func TestEvaluateQuery(t *testing.T) {
 	)
 
 	for _, test := range tests {
-		parsed, err := contactql.ParseQuery(env, test.query, resolver)
+		parsed, err := parse.Query(env, test.query, resolver)
 		assert.NoError(t, err, "unexpected error parsing '%s'", test.query)
 
 		actualResult := contactql.EvaluateQuery(env, parsed, testObj)

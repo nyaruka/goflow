@@ -1,4 +1,4 @@
-package contactql_test
+package parse_test
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/stretchr/testify/assert"
 )
@@ -263,7 +264,7 @@ func TestParseQuery(t *testing.T) {
 
 		env := envs.NewBuilder().WithDateFormat(envs.DateFormatDayMonthYear).WithDefaultCountry("US").WithRedactionPolicy(redact).Build()
 
-		parsed, err := contactql.ParseQuery(env, tc.text, tc.resolver)
+		parsed, err := parse.Query(env, tc.text, tc.resolver)
 
 		if tc.err != "" {
 			assert.EqualError(t, err, tc.err, "error mismatch for '%s'", tc.text)
@@ -409,7 +410,7 @@ func TestParsingErrors(t *testing.T) {
 	)
 
 	for _, tc := range tests {
-		_, err := contactql.ParseQuery(env, tc.query, resolver)
+		_, err := parse.Query(env, tc.query, resolver)
 
 		assert.EqualError(t, err, tc.errMsg, "error mismatch for '%s'", tc.query)
 
@@ -460,7 +461,7 @@ func TestSimplify(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		parsed, err := contactql.ParseQuery(env, tc.text, resolver)
+		parsed, err := parse.Query(env, tc.text, resolver)
 		assert.NoError(t, err)
 		assert.Equal(t, tc.parsed, parsed.String(), "parsed mismatch for input '%s'", tc.text)
 	}

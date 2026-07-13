@@ -35,7 +35,8 @@ func NewQueryError(code, msg string) *QueryError {
 	return &QueryError{code: code, msg: msg}
 }
 
-func (e *QueryError) withExtra(k string, v any) *QueryError {
+// WithExtra adds a key/value pair to the extra data of this error
+func (e *QueryError) WithExtra(k string, v any) *QueryError {
 	if e.extra == nil {
 		e.extra = make(map[string]any)
 	}
