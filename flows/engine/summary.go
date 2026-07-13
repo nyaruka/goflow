@@ -17,7 +17,7 @@ type runSummary struct {
 	uuid    core.RunUUID
 	flow    flows.Flow
 	flowRef *assets.FlowReference
-	contact *flows.Contact
+	contact *core.Contact
 	status  core.RunStatus
 	results flows.Results
 }
@@ -34,11 +34,11 @@ func newRunSummaryFromRun(run flows.Run) flows.RunSummary {
 	}
 }
 
-func (r *runSummary) UUID() core.RunUUID      { return r.uuid }
-func (r *runSummary) Flow() flows.Flow        { return r.flow }
-func (r *runSummary) Contact() *flows.Contact { return r.contact }
-func (r *runSummary) Status() core.RunStatus  { return r.status }
-func (r *runSummary) Results() flows.Results  { return r.results }
+func (r *runSummary) UUID() core.RunUUID     { return r.uuid }
+func (r *runSummary) Flow() flows.Flow       { return r.flow }
+func (r *runSummary) Contact() *core.Contact { return r.contact }
+func (r *runSummary) Status() core.RunStatus { return r.status }
+func (r *runSummary) Results() flows.Results { return r.results }
 
 var _ flows.RunSummary = (*runSummary)(nil)
 
@@ -113,11 +113,11 @@ func FormatRunSummary(env envs.Environment, run flows.RunSummary) string {
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID    core.RunUUID           `json:"uuid" validate:"uuid"`
-	Flow    *assets.FlowReference  `json:"flow" validate:"required"`
-	Contact *flows.ContactEnvelope `json:"contact"`
-	Status  core.RunStatus         `json:"status" validate:"required"`
-	Results flows.Results          `json:"results"`
+	UUID    core.RunUUID          `json:"uuid" validate:"uuid"`
+	Flow    *assets.FlowReference `json:"flow" validate:"required"`
+	Contact *core.ContactEnvelope `json:"contact"`
+	Status  core.RunStatus        `json:"status" validate:"required"`
+	Results flows.Results         `json:"results"`
 }
 
 // ReadRunSummary reads a run summary from the given JSON

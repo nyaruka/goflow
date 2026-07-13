@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"encoding/json"
@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -203,8 +202,8 @@ func TestBroadcastTranslations(t *testing.T) {
 		sa, err := engine.NewSessionAssets(tc.env, static.NewEmptySource(), nil)
 		require.NoError(t, err)
 
-		contact := flows.NewEmptyContact(sa, "Bob", tc.contactLanguage, nil)
-		content, locale := flows.TranslationsForContact(tc.env, tc.translations, contact, tc.baseLanguage)
+		contact := core.NewEmptyContact(sa, "Bob", tc.contactLanguage, nil)
+		content, locale := tc.translations.ForContact(tc.env, contact, tc.baseLanguage)
 
 		assert.Equal(t, tc.expectedContent, content, "%d: content mismatch", i)
 		assert.Equal(t, tc.expectedLocale, locale, "%d: locale mismatch", i)

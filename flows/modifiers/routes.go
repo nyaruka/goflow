@@ -35,12 +35,12 @@ const (
 type Routes struct {
 	baseModifier
 
-	routes       []flows.Route
+	routes       []core.Route
 	modification RoutesModification
 }
 
 // NewRoutes creates a new routes modifier
-func NewRoutes(routes []flows.Route, modification RoutesModification) *Routes {
+func NewRoutes(routes []core.Route, modification RoutesModification) *Routes {
 	return &Routes{
 		baseModifier: newBaseModifier(TypeRoutes),
 		routes:       routes,
@@ -49,12 +49,12 @@ func NewRoutes(routes []flows.Route, modification RoutesModification) *Routes {
 }
 
 // Apply applies this modification to the given contact
-func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *flows.Contact, log events.EventLogger) (bool, error) {
+func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
 	modified := false
 
 	// first pass: normalize and validate URNs - claiming is deferred until we know a URN will actually be added,
 	// so that a claim side-effect isn't incurred for URNs that we later skip (e.g. due to MaxContactURNs)
-	valid := make([]flows.Route, 0, len(m.routes))
+	valid := make([]core.Route, 0, len(m.routes))
 	for _, r := range m.routes {
 		urn := r.URN.Normalize()
 
@@ -63,7 +63,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			continue
 		}
 
-		valid = append(valid, flows.Route{URN: urn, Channel: r.Channel})
+		valid = append(valid, core.Route{URN: urn, Channel: r.Channel})
 	}
 
 	// claims a URN if it isn't already on the contact - returns whether the URN can be added
@@ -86,8 +86,8 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 	case RoutesAppend:
 		for _, r := range valid {
 			// only count budget against new URNs - existing URNs are no-ops and shouldn't trigger the limit error
-			if !contact.HasURN(r.URN) && len(contact.URNs()) >= flows.MaxContactURNs {
-				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", flows.MaxContactURNs), ""))
+			if !contact.HasURN(r.URN) && len(contact.URNs()) >= core.MaxContactURNs {
+				log(events.NewError(fmt.Sprintf("Contact has too many URNs, limit is %d", core.MaxContactURNs), ""))
 				break
 			}
 			ok, err := claim(r.URN)
@@ -109,7 +109,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 			}
 		}
 	case RoutesSet:
-		routes := make([]flows.Route, 0, len(valid))
+		routes := make([]core.Route, 0, len(valid))
 		for _, r := range valid {
 			ok, err := claim(r.URN)
 			if err != nil {
@@ -164,7 +164,7 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 		return nil, err
 	}
 
-	routes := make([]flows.Route, 0, len(e.Routes))
+	routes := make([]core.Route, 0, len(e.Routes))
 	for _, re := range e.Routes {
 		var channel *core.Channel
 		if re.Channel != nil {
@@ -174,7 +174,7 @@ func readRoutes(sa flows.SessionAssets, data []byte, missing assets.MissingCallb
 				continue
 			}
 		}
-		routes = append(routes, flows.Route{URN: re.URN, Channel: channel})
+		routes = append(routes, core.Route{URN: re.URN, Channel: channel})
 	}
 
 	// if we had routes in the envelope but all of their (specified) channels are missing, nothing to modify

@@ -174,7 +174,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			contactJSON = tc.Contact
 		}
 
-		contact, err := flows.ReadContact(sa, contactJSON, assets.PanicOnMissing)
+		contact, err := core.ReadContact(sa, contactJSON, assets.PanicOnMissing)
 		require.NoError(t, err)
 
 		if tc.HasTicket {
@@ -230,7 +230,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return services.NewAirtime("RWF"), nil
 			}).
-			WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, contact *flows.Contact, content *core.MsgContent) (core.UnsendableReason, error) {
+			WithCheckSendable(func(ctx context.Context, sa flows.SessionAssets, contact *core.Contact, content *core.MsgContent) (core.UnsendableReason, error) {
 				if strings.Contains(content.Text, "FORBIDDEN") {
 					return core.UnsendableReason("forbidden_content"), nil
 				}
@@ -838,7 +838,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
 	_, sprint, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
@@ -968,7 +968,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")
-	contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
 	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)

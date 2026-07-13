@@ -29,12 +29,12 @@ func (g *Group) Asset() assets.Group { return g.Group }
 func (g *Group) UsesQuery() bool { return g.Query() != "" }
 
 // CheckQueryBasedMembership returns whether the given contact belongs in a query based group
-func (g *Group) CheckQueryBasedMembership(env envs.Environment, status ContactStatus, contact contactql.Queryable) bool {
+func (g *Group) CheckQueryBasedMembership(env envs.Environment, contact *Contact) bool {
 	if !g.UsesQuery() {
 		panic("can't check membership on a non-query based group")
 	}
 
-	if status != ContactStatusActive {
+	if contact.Status() != ContactStatusActive {
 		return false
 	}
 

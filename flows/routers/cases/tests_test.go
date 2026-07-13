@@ -10,10 +10,10 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers/cases"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -428,7 +428,7 @@ func TestTests(t *testing.T) {
 	sa, err := engine.NewSessionAssets(dmy, source, nil)
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	for _, tc := range testTests {
 		trigger := triggers.NewBuilder(assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()

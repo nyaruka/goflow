@@ -17,7 +17,7 @@ import (
 // representation of runs made accessible to router tests.
 type RunSummary interface {
 	UUID() core.RunUUID
-	Contact() *Contact
+	Contact() *core.Contact
 	Flow() Flow
 	Status() core.RunStatus
 	Results() Results

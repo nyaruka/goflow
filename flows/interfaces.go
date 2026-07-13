@@ -48,24 +48,11 @@ type FlowAssets interface {
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
+	core.Assets
 	contactql.Resolver
 
 	Source() assets.Source
-
-	Campaigns() *core.CampaignAssets
-	Channels() *core.ChannelAssets
-	Fields() *core.FieldAssets
 	Flows() FlowAssets
-	Globals() *core.GlobalAssets
-	Groups() *core.GroupAssets
-	Labels() *core.LabelAssets
-	LLMs() *core.LLMAssets
-	Locations() *core.LocationAssets
-	OptIns() *core.OptInAssets
-	Resthooks() *core.ResthookAssets
-	Templates() *core.TemplateAssets
-	Topics() *core.TopicAssets
-	Users() *core.UserAssets
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID
@@ -222,7 +209,7 @@ type Resume interface {
 type Modifier interface {
 	utils.Typed
 
-	Apply(context.Context, Engine, envs.Environment, SessionAssets, *Contact, events.EventLogger) (bool, error)
+	Apply(context.Context, Engine, envs.Environment, SessionAssets, *core.Contact, events.EventLogger) (bool, error)
 }
 
 // Input describes input from the contact and currently we only support one type of input: `msg`
@@ -248,9 +235,9 @@ type Step interface {
 	Run() Run
 }
 
-type CheckSendableCallback func(context.Context, SessionAssets, *Contact, *core.MsgContent) (core.UnsendableReason, error)
+type CheckSendableCallback func(context.Context, SessionAssets, *core.Contact, *core.MsgContent) (core.UnsendableReason, error)
 
-type ClaimURNCallback func(context.Context, SessionAssets, *Contact, urns.URN) (bool, error)
+type ClaimURNCallback func(context.Context, SessionAssets, *core.Contact, urns.URN) (bool, error)
 
 type EngineOptions struct {
 	MaxStepsPerSprint    int
@@ -265,8 +252,8 @@ type EngineOptions struct {
 
 // Engine provides callers with session starting and resuming
 type Engine interface {
-	NewSession(context.Context, SessionAssets, envs.Environment, *Contact, Trigger, *core.Call) (Session, Sprint, error)
-	ReadSession(SessionAssets, []byte, envs.Environment, *Contact, *core.Call, assets.MissingCallback) (Session, error)
+	NewSession(context.Context, SessionAssets, envs.Environment, *core.Contact, Trigger, *core.Call) (Session, Sprint, error)
+	ReadSession(SessionAssets, []byte, envs.Environment, *core.Contact, *core.Call, assets.MissingCallback) (Session, error)
 
 	Evaluator() *excellent.Evaluator
 	Services() Services

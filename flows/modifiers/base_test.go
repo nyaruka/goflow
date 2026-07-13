@@ -42,11 +42,11 @@ func testModifierType(t *testing.T, eng flows.Engine, env envs.Environment, sa f
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description   string                 `json:"description"`
-		ContactBefore *flows.ContactEnvelope `json:"contact_before"`
-		Modifier      json.RawMessage        `json:"modifier"`
-		ContactAfter  *flows.ContactEnvelope `json:"contact_after"`
-		Events        json.RawMessage        `json:"events"`
+		Description   string                `json:"description"`
+		ContactBefore *core.ContactEnvelope `json:"contact_before"`
+		Modifier      json.RawMessage       `json:"modifier"`
+		ContactAfter  *core.ContactEnvelope `json:"contact_after"`
+		Events        json.RawMessage       `json:"events"`
 	}{}
 
 	jsonx.MustUnmarshal(testFile, &tests)
@@ -112,18 +112,18 @@ func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
 	// track which URNs are claimed so we can assert we don't claim URNs we'll never add
 	claimed := make([]urns.URN, 0)
 	eng := engine.NewBuilder().
-		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *flows.Contact, u urns.URN) (bool, error) {
+		WithClaimURN(func(ctx context.Context, sa flows.SessionAssets, c *core.Contact, u urns.URN) (bool, error) {
 			claimed = append(claimed, u)
 			return true, nil
 		}).
 		Build()
 
 	// start the contact with MaxContactURNs-1 URNs so there's budget for exactly one more
-	existing := make([]urns.URN, flows.MaxContactURNs-1)
+	existing := make([]urns.URN, core.MaxContactURNs-1)
 	for i := range existing {
 		existing[i] = urns.URN(fmt.Sprintf("tel:+170200%05d", i))
 	}
-	contact, err := flows.NewContact(sa, core.NewContactUUID(), flows.ContactID(1), "Bob", i18n.NilLanguage, core.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
+	contact, err := core.NewContact(sa, core.NewContactUUID(), core.ContactID(1), "Bob", i18n.NilLanguage, core.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	// try to append three new URNs - only the first should fit
@@ -131,7 +131,7 @@ func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
 	overflow1 := urns.URN("tel:+17030000002")
 	overflow2 := urns.URN("tel:+17030000003")
 
-	mod := modifiers.NewRoutes([]flows.Route{
+	mod := modifiers.NewRoutes([]core.Route{
 		{URN: fit, Channel: nil},
 		{URN: overflow1, Channel: nil},
 		{URN: overflow2, Channel: nil},
@@ -142,7 +142,7 @@ func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
 
 	// only the URN that actually fit should have been claimed
 	assert.Equal(t, []urns.URN{fit}, claimed, "ClaimURN should only be called for URNs that actually get added")
-	assert.Equal(t, flows.MaxContactURNs, len(contact.URNs()))
+	assert.Equal(t, core.MaxContactURNs, len(contact.URNs()))
 	assert.True(t, contact.HasURN(fit))
 	assert.False(t, contact.HasURN(overflow1))
 	assert.False(t, contact.HasURN(overflow2))
@@ -247,7 +247,7 @@ func TestConstructors(t *testing.T) {
 			}`,
 		},
 		{
-			modifiers.NewRoutes([]flows.Route{
+			modifiers.NewRoutes([]core.Route{
 				{URN: urns.URN("tel:+1234567890"), Channel: nexmo},
 			}, modifiers.RoutesSet),
 			`{

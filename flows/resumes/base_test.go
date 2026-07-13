@@ -91,7 +91,7 @@ func testResumeType(t *testing.T, assetsJSON []byte, typeName string) {
 		// start a waiting session
 		env := envs.NewBuilder().Build()
 		eng := engine.NewBuilder().Build()
-		contact := flows.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+		contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 		tb := triggers.NewBuilder(flow.Reference(false)).Manual()
 		var call *core.Call
 		if flow.Type() == flows.FlowTypeVoice {

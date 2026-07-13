@@ -25,7 +25,7 @@ type engine struct {
 }
 
 // NewSession creates a new session
-func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env envs.Environment, contact *flows.Contact, trigger flows.Trigger, call *core.Call) (flows.Session, flows.Sprint, error) {
+func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env envs.Environment, contact *core.Contact, trigger flows.Trigger, call *core.Call) (flows.Session, flows.Sprint, error) {
 	// try to load the flow
 	flow, err := sa.Flows().Get(trigger.Flow().UUID)
 	if err != nil {
@@ -57,7 +57,7 @@ func (e *engine) NewSession(ctx context.Context, sa flows.SessionAssets, env env
 }
 
 // ReadSession reads an existing session
-func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Environment, contact *flows.Contact, call *core.Call, missing assets.MissingCallback) (flows.Session, error) {
+func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Environment, contact *core.Contact, call *core.Call, missing assets.MissingCallback) (flows.Session, error) {
 	return readSession(e, sa, data, env, contact, call, missing)
 }
 
@@ -68,12 +68,12 @@ func (e *engine) Options() *flows.EngineOptions   { return e.options }
 var _ flows.Engine = (*engine)(nil)
 
 // by default we allow all messages to be sendable
-func defaultCheckSendable(context.Context, flows.SessionAssets, *flows.Contact, *core.MsgContent) (core.UnsendableReason, error) {
+func defaultCheckSendable(context.Context, flows.SessionAssets, *core.Contact, *core.MsgContent) (core.UnsendableReason, error) {
 	return "", nil
 }
 
 // by default we allow claiming of any URN
-func defaultClaimURN(context.Context, flows.SessionAssets, *flows.Contact, urns.URN) (bool, error) {
+func defaultClaimURN(context.Context, flows.SessionAssets, *core.Contact, urns.URN) (bool, error) {
 	return true, nil
 }
 

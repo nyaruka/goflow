@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/stretchr/testify/assert"
@@ -77,7 +76,7 @@ func TestLocationResolver(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	trigger := triggers.NewBuilder(assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()
 	eng := engine.NewBuilder().Build()
@@ -125,7 +124,7 @@ func TestSessionEnvironment(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	contact, err := flows.ReadContact(sa, []byte(contactJSON), assets.IgnoreMissing)
+	contact, err := core.ReadContact(sa, []byte(contactJSON), assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	trigger := triggers.NewBuilder(assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()

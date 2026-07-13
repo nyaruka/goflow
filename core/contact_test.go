@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"context"
@@ -19,7 +19,6 @@ import (
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -60,10 +59,10 @@ func TestContact(t *testing.T) {
 
 	tz, _ := time.LoadLocation("America/Bogota")
 
-	contact, err := flows.NewContact(
+	contact, err := core.NewContact(
 		sa,
 		core.NewContactUUID(),
-		flows.ContactID(12345),
+		core.ContactID(12345),
 		"Joe Bloggs",
 		i18n.Language("eng"),
 		core.ContactStatusActive,
@@ -91,7 +90,7 @@ func TestContact(t *testing.T) {
 	contact.AddRoute(urns.URN("whatsapp:235423721788"), nil)
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
-	assert.Equal(t, flows.ContactID(12345), contact.ID())
+	assert.Equal(t, core.ContactID(12345), contact.ID())
 	assert.Equal(t, tz, contact.Timezone())
 	assert.Equal(t, i18n.Language("eng"), contact.Language())
 	assert.Equal(t, android, contact.PreferredChannel())
@@ -140,7 +139,7 @@ func TestContact(t *testing.T) {
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
-	assert.Equal(t, flows.ContactID(12345), clone.ID())
+	assert.Equal(t, core.ContactID(12345), clone.ID())
 	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
@@ -174,7 +173,7 @@ func TestContact(t *testing.T) {
 	marshaled, err := jsonx.Marshal(contact)
 	require.NoError(t, err)
 
-	unmarshaled, err := flows.ReadContact(sa, marshaled, assets.PanicOnMissing)
+	unmarshaled, err := core.ReadContact(sa, marshaled, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	assert.Equal(t, contact.UUID(), unmarshaled.UUID())
@@ -189,7 +188,7 @@ func TestContactURNs(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	contact := flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	assert.Len(t, contact.URNs(), 0)
 	assert.True(t, contact.AddRoute("tel:+12024561111", nil))  // didn't have URN so returns true
@@ -198,11 +197,11 @@ func TestContactURNs(t *testing.T) {
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
 	assert.True(t, contact.AddRoute("tel:+12024562222", nil))
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.False(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024561111"}, {URN: "tel:+12024562222"}})) // no change
+	assert.False(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024561111"}, {URN: "tel:+12024562222"}})) // no change
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}})) // order changed
+	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}})) // order changed
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetRoutes([]flows.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}, {URN: "tel:+12024563333"}}))
+	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}, {URN: "tel:+12024563333"}}))
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
 	assert.True(t, contact.RemoveURN("tel:+12024561111"))
 	assert.False(t, contact.RemoveURN("tel:+12024566666"))
@@ -219,13 +218,13 @@ func TestReadContact(t *testing.T) {
 	require.NoError(t, err)
 
 	// read minimal contact
-	contact, err := flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
+	contact, err := core.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.NoError(t, err)
 	assert.Equal(t, core.ContactUUID("a20f7948-e497-4a4a-be3c-b17f79f7ab7d"), contact.UUID())
 	assert.Equal(t, core.ContactStatusActive, contact.Status())
 
 	// read invalid contact
-	_, err = flows.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
+	_, err = core.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.EqualError(t, err, "unable to read contact: field 'status' is not a valid contact status")
 }
 
@@ -236,7 +235,7 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	flows.ReadContact(sessionAssets, []byte(`{
+	core.ReadContact(sessionAssets, []byte(`{
 		"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 		"id": 1234567,
 		"name": "Ryan Lewis",
@@ -302,15 +301,15 @@ func TestContactFormat(t *testing.T) {
 	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
 
 	// name takes precedence if set
-	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddRoute(urns.URN("twitter:joey"), nil)
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
-	contact, _ = flows.NewContact(
+	contact, _ = core.NewContact(
 		sa,
 		core.NewContactUUID(),
-		flows.ContactID(1234),
+		core.ContactID(1234),
 		"",
 		i18n.NilLanguage,
 		core.ContactStatusActive,
@@ -332,7 +331,7 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "1234", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
-	contact = flows.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
+	contact = core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 	assert.Equal(t, "", contact.Format(env))
 }
 
@@ -349,7 +348,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
-	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddRoute(urns.URN("twitter:joey"), nil)
 	contact.AddRoute(urns.URN("tel:+12345678999"), nil)
 	contact.AddRoute(urns.URN("tel:+18005555777"), nil)
@@ -416,7 +415,7 @@ func TestContactSetAffinity(t *testing.T) {
 	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
 
-	contact := flows.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
+	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddRoute(urns.URN("twitter:joey"), nil)
 	contact.AddRoute(urns.URN("tel:+12345678999"), nil)
 	contact.AddRoute(urns.URN("tel:+18005555777"), nil)
@@ -504,7 +503,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		sa, err := engine.NewSessionAssets(env, source, nil)
 		require.NoError(t, err)
 
-		contact, err := flows.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)
+		contact, err := core.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)
 		require.NoError(t, err)
 
 		trigger := triggers.NewBuilder(
@@ -556,7 +555,7 @@ func TestContactQuery(t *testing.T) {
 		"last_seen_on": "2020-08-06T15:41:30Z"
 	}`)
 
-	contact, err := flows.ReadContact(session.Assets(), contactJSON, assets.PanicOnMissing)
+	contact, err := core.ReadContact(session.Assets(), contactJSON, assets.PanicOnMissing)
 	require.NoError(t, err)
 
 	testCases := []struct {
