@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/modifiers"
@@ -58,7 +59,7 @@ func (a *RemoveContactGroups) Validate() error {
 
 // Execute runs the action
 func (a *RemoveContactGroups) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	var groups []*flows.Group
+	var groups []*core.Group
 
 	if a.AllGroups {
 		for _, group := range run.Session().Assets().Groups().All() {

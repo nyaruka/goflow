@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -69,8 +68,8 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewBroadcastCreated(core.BroadcastTranslations{"eng": {Text: "hello"}}, "eng", nil, nil, "", nil, nil, nil), `🔉 broadcasted 'hello' to ...`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), core.NewValue(types.NewXText("M"), nil, nil, "", "", "")), `✏️ field 'gender' changed to 'M'`},
 		{events.NewContactFieldChanged(sa.Fields().Get("gender").Reference(), nil), `✏️ field 'gender' cleared`},
-		{events.NewContactGroupsChanged(flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
-		{events.NewContactGroupsChanged(nil, flows.GroupReferences([]*flows.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
+		{events.NewContactGroupsChanged(core.GroupReferences([]*core.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")}), nil), `👪 added to 'Testers'`},
+		{events.NewContactGroupsChanged(nil, core.GroupReferences([]*core.Group{sa.Groups().Get("b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")})), `👪 removed from 'Testers'`},
 		{events.NewContactLanguageChanged("eng"), `🌐 language changed to 'eng'`},
 		{events.NewContactNameChanged("Jim"), `📛 name changed to 'Jim'`},
 		{events.NewContactTimezoneChanged(session.Environment().Timezone()), `🕑 timezone changed to 'America/Guayaquil'`},

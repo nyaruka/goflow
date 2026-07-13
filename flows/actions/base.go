@@ -292,12 +292,12 @@ func (a *createMsgAction) Inspect(dependency func(assets.Reference), local func(
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.Run, references []*assets.GroupReference, log events.EventLogger) []*flows.Group {
+func resolveGroups(run flows.Run, references []*assets.GroupReference, log events.EventLogger) []*core.Group {
 	groupAssets := run.Session().Assets().Groups()
-	groups := make([]*flows.Group, 0, len(references))
+	groups := make([]*core.Group, 0, len(references))
 
 	for _, ref := range references {
-		var group *flows.Group
+		var group *core.Group
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing group's name

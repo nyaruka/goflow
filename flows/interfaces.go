@@ -57,7 +57,7 @@ type SessionAssets interface {
 	Fields() *core.FieldAssets
 	Flows() FlowAssets
 	Globals() *core.GlobalAssets
-	Groups() *GroupAssets
+	Groups() *core.GroupAssets
 	Labels() *core.LabelAssets
 	LLMs() *core.LLMAssets
 	Locations() *core.LocationAssets

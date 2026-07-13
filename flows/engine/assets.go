@@ -2,6 +2,8 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/flows"
@@ -18,7 +20,7 @@ type sessionAssets struct {
 	fields    *core.FieldAssets
 	flows     flows.FlowAssets
 	globals   *core.GlobalAssets
-	groups    *flows.GroupAssets
+	groups    *core.GroupAssets
 	labels    *core.LabelAssets
 	llms      *core.LLMAssets
 	locations *core.LocationAssets
@@ -87,7 +89,20 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 	}
 
 	fieldAssets := core.NewFieldAssets(fields)
-	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
+
+	// parse queries of any query based groups, skipping those which fail to parse
+	parsedGroups := make([]*core.Group, 0, len(groups))
+	for _, asset := range groups {
+		var query *contactql.ContactQuery
+		if asset.Query() != "" {
+			var err error
+			if query, err = parse.Query(env, asset.Query(), fieldAssets); err != nil {
+				continue
+			}
+		}
+		parsedGroups = append(parsedGroups, core.NewGroup(asset, query))
+	}
+	groupAssets := core.NewGroupAssets(parsedGroups)
 
 	return &sessionAssets{
 		source:    source,
@@ -114,7 +129,7 @@ func (s *sessionAssets) Channels() *core.ChannelAssets   { return s.channels }
 func (s *sessionAssets) Fields() *core.FieldAssets       { return s.fields }
 func (s *sessionAssets) Flows() flows.FlowAssets         { return s.flows }
 func (s *sessionAssets) Globals() *core.GlobalAssets     { return s.globals }
-func (s *sessionAssets) Groups() *flows.GroupAssets      { return s.groups }
+func (s *sessionAssets) Groups() *core.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *core.LabelAssets       { return s.labels }
 func (s *sessionAssets) LLMs() *core.LLMAssets           { return s.llms }
 func (s *sessionAssets) Locations() *core.LocationAssets { return s.locations }

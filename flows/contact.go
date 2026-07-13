@@ -39,7 +39,7 @@ type Contact struct {
 	createdOn  time.Time
 	lastSeenOn *time.Time
 	urns       core.URNList
-	groups     *GroupList
+	groups     *core.GroupList
 	fields     core.FieldValues
 	tickets    *core.TicketList
 
@@ -69,7 +69,7 @@ func NewContact(
 		return nil, err
 	}
 
-	groupList := NewGroupList(sa, groups, missing)
+	groupList := core.NewGroupList(sa.Groups(), groups, missing)
 	fieldValues := core.NewFieldValues(sa.Fields(), fields, missing)
 	ticketsList := core.NewTicketList(tickets)
 
@@ -101,7 +101,7 @@ func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, time
 		createdOn:  dates.Now(),
 		lastSeenOn: nil,
 		urns:       core.URNList{},
-		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
+		groups:     core.NewGroupList(sa.Groups(), nil, assets.IgnoreMissing),
 		fields:     make(core.FieldValues),
 		tickets:    core.NewTicketList(nil),
 		assets:     sa,
@@ -120,7 +120,7 @@ func (c *Contact) Clone() *Contact {
 		createdOn:  c.createdOn,
 		lastSeenOn: c.lastSeenOn,
 		urns:       c.urns.Clone(),
-		groups:     c.groups.clone(),
+		groups:     c.groups.Clone(),
 		fields:     c.fields.Clone(),
 		tickets:    core.NewTicketList(nil), // tickets not included
 		assets:     c.assets,
@@ -302,7 +302,7 @@ func (c *Contact) SetAffinity(urn urns.URN, ch *core.Channel) bool {
 func (c *Contact) Fields() core.FieldValues { return c.fields }
 
 // Groups returns the groups that this contact belongs to
-func (c *Contact) Groups() *GroupList { return c.groups }
+func (c *Contact) Groups() *core.GroupList { return c.groups }
 
 // Tickets returns the tickets for this contact
 func (c *Contact) Tickets() *core.TicketList { return c.tickets }
@@ -487,16 +487,16 @@ func (c *Contact) UpdatePreferredChannel(channel *core.Channel) bool {
 }
 
 // ReevaluateQueryBasedGroups reevaluates membership of all query based groups for this contact
-func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*Group, []*Group) {
-	added := make([]*Group, 0)
-	removed := make([]*Group, 0)
+func (c *Contact) ReevaluateQueryBasedGroups(env envs.Environment) ([]*core.Group, []*core.Group) {
+	added := make([]*core.Group, 0)
+	removed := make([]*core.Group, 0)
 
 	for _, group := range c.assets.Groups().All() {
 		if !group.UsesQuery() {
 			continue
 		}
 
-		qualifies := group.CheckQueryBasedMembership(env, c)
+		qualifies := group.CheckQueryBasedMembership(env, c.Status(), c)
 
 		if qualifies {
 			if c.groups.Add(group) {
@@ -616,7 +616,7 @@ func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCall
 		}
 	}
 
-	c.groups = NewGroupList(sa, e.Groups, missing)
+	c.groups = core.NewGroupList(sa.Groups(), e.Groups, missing)
 	c.fields = core.NewFieldValues(sa.Fields(), e.Fields, missing)
 
 	tickets := make([]*core.Ticket, len(e.Tickets))
@@ -638,7 +638,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 		CreatedOn:  c.createdOn,
 		LastSeenOn: c.lastSeenOn,
 		URNs:       c.urns.Encode(),
-		Groups:     c.groups.references(),
+		Groups:     c.groups.References(),
 	}
 
 	if c.timezone != nil {
