@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/flows"
@@ -270,7 +271,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 	}
 
 	// evaluate contact query
-	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, flows.ContactQueryEscaping, true, log)
+	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, contactql.EscapeValue, true, log)
 	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil

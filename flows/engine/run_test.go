@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
@@ -224,7 +225,7 @@ func TestRunContext(t *testing.T) {
 
 	// test with escaping
 	log := test.NewEventLog()
-	evaluated, _ := run.EvaluateTemplateText(`gender = @("M\" OR")`, flows.ContactQueryEscaping, true, log.Log)
+	evaluated, _ := run.EvaluateTemplateText(`gender = @("M\" OR")`, contactql.EscapeValue, true, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, `gender = "M\" OR"`, evaluated)
 }

@@ -1,13 +1,13 @@
 package flows
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // WebhookCall holds the details of a webhook call
@@ -41,7 +41,7 @@ func NewWebhookCall(t *httpx.Trace) *WebhookCall {
 	}
 
 	if len(t.ResponseBody) > 0 {
-		c.ResponseJSON = ExtractJSON(t.ResponseBody)
+		c.ResponseJSON = utils.ExtractJSON(t.ResponseBody)
 	}
 
 	return c
@@ -75,19 +75,4 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 		"headers":     headers,
 		"json":        json,
 	}
-}
-
-func ExtractJSON(body []byte) []byte {
-	// we make a best effort to turn the body into JSON, so we strip out:
-	//  1. any invalid UTF-8 sequences
-	//  2. null chars
-	//  3. escaped null chars (\u0000)
-	cleaned := bytes.ToValidUTF8(body, nil)
-	cleaned = bytes.ReplaceAll(cleaned, []byte{0}, nil)
-	cleaned = []byte(httpx.ReplaceEscapedNulls(string(cleaned), ""))
-
-	if json.Valid(cleaned) {
-		return cleaned
-	}
-	return nil
 }

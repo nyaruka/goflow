@@ -379,6 +379,11 @@ func NewContactQuery(env envs.Environment, root QueryNode, resolver Resolver) (*
 	return &ContactQuery{root: root.Simplify(), resolver: resolver}, nil
 }
 
+// EscapeValue escapes a value for inclusion in a query, e.g. as the output of an evaluated expression
+func EscapeValue(s string) string {
+	return strconv.Quote(s)
+}
+
 // Stringify converts a query node to a string
 func Stringify(n QueryNode) string {
 	// since simplfying can remove nodes and potentially generate a nil query

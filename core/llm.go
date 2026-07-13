@@ -49,3 +49,10 @@ func NewLLMAssets(llms []assets.LLM) *LLMAssets {
 func (s *LLMAssets) Get(uuid assets.LLMUUID) *LLM {
 	return s.byUUID[uuid]
 }
+
+// LLMResponse is the response from an LLM service call
+type LLMResponse struct {
+	Output       string
+	TokensInput  int64
+	TokensOutput int64
+}
