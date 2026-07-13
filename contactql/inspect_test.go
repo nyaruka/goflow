@@ -6,6 +6,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -116,7 +117,7 @@ func TestInspect(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		query, err := contactql.ParseQuery(env, tc.query, tc.resolver)
+		query, err := parse.Query(env, tc.query, tc.resolver)
 		require.NoError(t, err, "error parsing %s", tc.query)
 
 		assert.Equal(t, tc.inspection, contactql.Inspect(query), "inspect mismatch for query %s", tc.query)

@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/antlr4-go/antlr/v4"
 	"github.com/nyaruka/gocommon/i18n"
-	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils/obfuscate"
 	"github.com/shopspring/decimal"
 )
 
@@ -87,6 +87,40 @@ func NewCondition(propType PropertyType, propKey string, operator Operator, valu
 	}
 }
 
+// an implicit condition like +123-124-6546 or 1234 will be interpreted as a tel ~ condition
+var implicitIsPhoneNumberRegex = regexp.MustCompile(`^\+?[\-\d]{4,}$`)
+
+// used to strip formatting from phone number values
+var cleanPhoneNumberRegex = regexp.MustCompile(`[^+\d]+`)
+
+// NewImplicitCondition interprets a bare literal as a condition, e.g. as a URN, phone number or name.
+func NewImplicitCondition(env envs.Environment, value string) *Condition {
+	asURN, _ := urns.Parse(value)
+
+	if env.RedactionPolicy() == envs.RedactionPolicyURNs {
+		if obfuscate.WasID(value) {
+			return NewCondition(PropertyTypeAttribute, AttributeRef, OpEqual, value)
+		}
+	} else if asURN != urns.NilURN {
+		scheme, path, _, _ := asURN.ToParts()
+
+		return NewCondition(PropertyTypeURN, scheme, OpEqual, path)
+
+	} else if implicitIsPhoneNumberRegex.MatchString(value) {
+		value = cleanPhoneNumberRegex.ReplaceAllLiteralString(value, "")
+
+		return NewCondition(PropertyTypeURN, urns.Phone.Prefix, OpContains, value)
+	}
+
+	// convert to contains condition only if we have the right tokens, otherwise make equals check
+	operator := OpContains
+	if len(tokenizeNameValue(value)) == 0 {
+		operator = OpEqual
+	}
+
+	return NewCondition(PropertyTypeAttribute, AttributeName, operator, value)
+}
+
 // PropertyType returns the type (attribute, scheme, field)
 func (c *Condition) PropertyType() PropertyType { return c.propType }
 
@@ -136,6 +170,11 @@ func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
 
 // Validate checks that this condition is valid (and thus can be evaluated)
 func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
+	// if URNs are redacted, block any conditions on them
+	if (c.propType == PropertyTypeURN || c.propKey == AttributeURN) && env.RedactionPolicy() == envs.RedactionPolicyURNs && c.value != "" {
+		return NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs")
+	}
+
 	// if our property is a field and we don't have a resolver, we can't validate because we don't know the value type
 	if c.propType == PropertyTypeField && resolver == nil {
 		return nil
@@ -143,27 +182,27 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 
 	valueType := c.resolveValueType(resolver)
 	if valueType == "" {
-		return NewQueryError(ErrUnknownProperty, fmt.Sprintf("can't resolve '%s' to attribute, scheme or field", c.propKey)).withExtra("property", c.propKey)
+		return NewQueryError(ErrUnknownProperty, fmt.Sprintf("can't resolve '%s' to attribute, scheme or field", c.propKey)).WithExtra("property", c.propKey)
 	}
 
 	switch c.operator {
 	case OpContains:
 		if c.propKey == AttributeName {
 			if len(tokenizeNameValue(c.value)) == 0 {
-				return NewQueryError(ErrInvalidPartialName, fmt.Sprintf("contains operator on name requires token of minimum length %d", minNameTokenContainsLength)).withExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
+				return NewQueryError(ErrInvalidPartialName, fmt.Sprintf("contains operator on name requires token of minimum length %d", minNameTokenContainsLength)).WithExtra("min_token_length", strconv.Itoa(minNameTokenContainsLength))
 			}
 		} else if c.propKey == AttributeURN || c.propType == PropertyTypeURN {
 			if len(c.value) < minURNContainsLength {
-				return NewQueryError(ErrInvalidPartialURN, fmt.Sprintf("contains operator on URN requires value of minimum length %d", minURNContainsLength)).withExtra("min_value_length", strconv.Itoa(minURNContainsLength))
+				return NewQueryError(ErrInvalidPartialURN, fmt.Sprintf("contains operator on URN requires value of minimum length %d", minURNContainsLength)).WithExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
 		} else {
 			// ~ can only be used with the name/urn attributes or actual URNs
-			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").withExtra("property", c.propKey)
+			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").WithExtra("property", c.propKey)
 		}
 
 	case OpGreaterThan, OpGreaterThanOrEqual, OpLessThan, OpLessThanOrEqual:
 		if valueType != assets.FieldTypeNumber && valueType != assets.FieldTypeDatetime {
-			return NewQueryError(ErrUnsupportedComparison, fmt.Sprintf("comparisons with %s can only be used with date and number fields", c.operator)).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
+			return NewQueryError(ErrUnsupportedComparison, fmt.Sprintf("comparisons with %s can only be used with date and number fields", c.operator)).WithExtra("property", c.propKey).WithExtra("operator", string(c.operator))
 		}
 	}
 
@@ -171,19 +210,19 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 	if (c.operator == OpEqual || c.operator == OpNotEqual) && c.value == "" {
 		switch c.propKey {
 		case AttributeUUID, AttributeID, AttributeRef, AttributeStatus, AttributeCreatedOn, AttributeTickets:
-			return NewQueryError(ErrUnsupportedSetCheck, fmt.Sprintf("can't check whether '%s' is set or not set", c.propKey)).withExtra("property", c.propKey).withExtra("operator", string(c.operator))
+			return NewQueryError(ErrUnsupportedSetCheck, fmt.Sprintf("can't check whether '%s' is set or not set", c.propKey)).WithExtra("property", c.propKey).WithExtra("operator", string(c.operator))
 		}
 	} else {
 		// check values are valid for the value type
 		if valueType == assets.FieldTypeNumber {
 			_, err := c.ValueAsNumber()
 			if err != nil {
-				return NewQueryError(ErrInvalidNumber, fmt.Sprintf("can't convert '%s' to a number", c.value)).withExtra("value", c.value)
+				return NewQueryError(ErrInvalidNumber, fmt.Sprintf("can't convert '%s' to a number", c.value)).WithExtra("value", c.value)
 			}
 		} else if valueType == assets.FieldTypeDatetime {
 			_, err := c.ValueAsDate(env)
 			if err != nil {
-				return NewQueryError(ErrInvalidDate, fmt.Sprintf("can't convert '%s' to a date", c.value)).withExtra("value", c.value)
+				return NewQueryError(ErrInvalidDate, fmt.Sprintf("can't convert '%s' to a date", c.value)).WithExtra("value", c.value)
 			}
 		}
 
@@ -192,23 +231,23 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if c.propKey == AttributeGroup && resolver != nil {
 				group := c.ValueAsGroup(resolver)
 				if group == nil {
-					return NewQueryError(ErrInvalidGroup, fmt.Sprintf("'%s' is not a valid group name", c.value)).withExtra("value", c.value)
+					return NewQueryError(ErrInvalidGroup, fmt.Sprintf("'%s' is not a valid group name", c.value)).WithExtra("value", c.value)
 				}
 			} else if (c.propKey == AttributeFlow || c.propKey == AttributeHistory) && resolver != nil {
 				flow := c.ValueAsFlow(resolver)
 				if flow == nil {
-					return NewQueryError(ErrInvalidFlow, fmt.Sprintf("'%s' is not a valid flow name", c.value)).withExtra("value", c.value)
+					return NewQueryError(ErrInvalidFlow, fmt.Sprintf("'%s' is not a valid flow name", c.value)).WithExtra("value", c.value)
 				}
 			} else if c.propKey == AttributeStatus {
 				val := strings.ToLower(c.value)
 				if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
-					return NewQueryError(ErrInvalidStatus, fmt.Sprintf("'%s' is not a valid contact status", c.value)).withExtra("value", c.value)
+					return NewQueryError(ErrInvalidStatus, fmt.Sprintf("'%s' is not a valid contact status", c.value)).WithExtra("value", c.value)
 				}
 			} else if c.propKey == AttributeLanguage {
 				if c.value != "" {
 					_, err := i18n.ParseLanguage(c.value)
 					if err != nil {
-						return NewQueryError(ErrInvalidLanguage, fmt.Sprintf("'%s' is not a valid language code", c.value)).withExtra("value", c.value)
+						return NewQueryError(ErrInvalidLanguage, fmt.Sprintf("'%s' is not a valid language code", c.value)).WithExtra("value", c.value)
 					}
 				}
 			}
@@ -330,6 +369,16 @@ func (q *ContactQuery) String() string {
 	return Stringify(q.root)
 }
 
+// NewContactQuery creates a new query from the given root node, validating it against the given resolver
+// (or as much as possible if none is provided) and simplifying it.
+func NewContactQuery(env envs.Environment, root QueryNode, resolver Resolver) (*ContactQuery, error) {
+	if err := root.validate(env, resolver); err != nil {
+		return nil, err
+	}
+
+	return &ContactQuery{root: root.Simplify(), resolver: resolver}, nil
+}
+
 // Stringify converts a query node to a string
 func Stringify(n QueryNode) string {
 	// since simplfying can remove nodes and potentially generate a nil query
@@ -344,66 +393,6 @@ func Stringify(n QueryNode) string {
 		s = s[1 : len(s)-1]
 	}
 	return s
-}
-
-// ParseQuery parses a ContactQL query from the given input. If resolver is provided then we validate against it
-// to ensure that fields and groups exist. If not provided then still validate what we can.
-func ParseQuery(env envs.Environment, text string, resolver Resolver) (*ContactQuery, error) {
-	// preprocess text before parsing
-	text = strings.TrimSpace(text)
-
-	// if query is a valid number, rewrite as a tel = query
-	if env.RedactionPolicy() != envs.RedactionPolicyURNs {
-		if number := utils.ParsePhoneNumber(text, env.DefaultCountry()); number != "" {
-			text = fmt.Sprintf(`tel = %s`, number)
-		}
-	}
-
-	errListener := &errorListener{}
-	input := antlr.NewInputStream(text)
-	lexer := gen.NewContactQLLexer(input)
-	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewContactQLParser(stream)
-	p.RemoveErrorListeners()
-	p.AddErrorListener(errListener)
-	tree := p.Parse()
-
-	// if we ran into errors parsing, bail
-	if err := errListener.Error(); err != nil {
-		return nil, err
-	}
-
-	visitor := newVisitor(env)
-	rootNode := visitor.Visit(tree).(QueryNode)
-
-	if len(visitor.errors) > 0 {
-		return nil, visitor.errors[0]
-	}
-
-	if err := rootNode.validate(env, resolver); err != nil {
-		return nil, err
-	}
-
-	rootNode = rootNode.Simplify()
-
-	return &ContactQuery{root: rootNode, resolver: resolver}, nil
-}
-
-type errorListener struct {
-	*antlr.DefaultErrorListener
-
-	errs []*QueryError
-}
-
-func (l *errorListener) Error() error {
-	if len(l.errs) > 0 {
-		return l.errs[0]
-	}
-	return nil
-}
-
-func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol any, line, column int, msg string, e antlr.RecognitionException) {
-	l.errs = append(l.errs, NewQueryError(ErrSyntax, msg))
 }
 
 func tokenizeNameValue(value string) []string {

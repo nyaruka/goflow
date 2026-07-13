@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/es"
+	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/test"
 
@@ -90,7 +91,7 @@ func TestElasticQuery(t *testing.T) {
 		}
 		env := envs.NewBuilder().WithTimezone(ny).WithRedactionPolicy(redactionPolicy).Build()
 
-		parsed, err := contactql.ParseQuery(env, tc.Query, resolver)
+		parsed, err := parse.Query(env, tc.Query, resolver)
 		require.NoError(t, err)
 
 		conv := es.NewConverter(env, mapper, false)
@@ -132,25 +133,25 @@ func TestElasticQueryUUIDAsDocID(t *testing.T) {
 	conv := es.NewConverter(env, mapper, true)
 
 	// uuid = X should query _id
-	parsed, err := contactql.ParseQuery(env, `uuid = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
+	parsed, err := parse.Query(env, `uuid = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
 	require.NoError(t, err)
 	asJSON := jsonx.MustMarshal(conv.Query(parsed))
 	test.AssertEqualJSON(t, []byte(`{"ids":{"values":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"]}}`), asJSON, "uuid query mismatch")
 
 	// uuid != X should query _id with NOT
-	parsed, err = contactql.ParseQuery(env, `uuid != "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
+	parsed, err = parse.Query(env, `uuid != "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"`, resolver)
 	require.NoError(t, err)
 	asJSON = jsonx.MustMarshal(conv.Query(parsed))
 	test.AssertEqualJSON(t, []byte(`{"bool":{"must_not":{"ids":{"values":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"]}}}}`), asJSON, "uuid != query mismatch")
 
 	// id = X should query id field
-	parsed, err = contactql.ParseQuery(env, `id = 123`, resolver)
+	parsed, err = parse.Query(env, `id = 123`, resolver)
 	require.NoError(t, err)
 	asJSON = jsonx.MustMarshal(conv.Query(parsed))
 	test.AssertEqualJSON(t, []byte(`{"term":{"id":{"value":"123"}}}`), asJSON, "id query mismatch")
 
 	// id != X should query id field with NOT
-	parsed, err = contactql.ParseQuery(env, `id != 123`, resolver)
+	parsed, err = parse.Query(env, `id != 123`, resolver)
 	require.NoError(t, err)
 	asJSON = jsonx.MustMarshal(conv.Query(parsed))
 	test.AssertEqualJSON(t, []byte(`{"bool":{"must_not":{"term":{"id":{"value":"123"}}}}}`), asJSON, "id != query mismatch")
