@@ -40,7 +40,7 @@ type Contact struct {
 	lastSeenOn *time.Time
 	urns       core.URNList
 	groups     *GroupList
-	fields     FieldValues
+	fields     core.FieldValues
 	tickets    *core.TicketList
 
 	// transient fields
@@ -70,7 +70,7 @@ func NewContact(
 	}
 
 	groupList := NewGroupList(sa, groups, missing)
-	fieldValues := NewFieldValues(sa, fields, missing)
+	fieldValues := core.NewFieldValues(sa.Fields(), fields, missing)
 	ticketsList := core.NewTicketList(tickets)
 
 	return &Contact{
@@ -102,7 +102,7 @@ func NewEmptyContact(sa SessionAssets, name string, language i18n.Language, time
 		lastSeenOn: nil,
 		urns:       core.URNList{},
 		groups:     NewGroupList(sa, nil, assets.IgnoreMissing),
-		fields:     make(FieldValues),
+		fields:     make(core.FieldValues),
 		tickets:    core.NewTicketList(nil),
 		assets:     sa,
 	}
@@ -121,7 +121,7 @@ func (c *Contact) Clone() *Contact {
 		lastSeenOn: c.lastSeenOn,
 		urns:       c.urns.Clone(),
 		groups:     c.groups.clone(),
-		fields:     c.fields.clone(),
+		fields:     c.fields.Clone(),
 		tickets:    core.NewTicketList(nil), // tickets not included
 		assets:     c.assets,
 	}
@@ -299,7 +299,7 @@ func (c *Contact) SetAffinity(urn urns.URN, ch *core.Channel) bool {
 }
 
 // Fields returns this contact's field values
-func (c *Contact) Fields() FieldValues { return c.fields }
+func (c *Contact) Fields() core.FieldValues { return c.fields }
 
 // Groups returns the groups that this contact belongs to
 func (c *Contact) Groups() *GroupList { return c.groups }
@@ -617,7 +617,7 @@ func (e *ContactEnvelope) Unmarshal(sa SessionAssets, missing assets.MissingCall
 	}
 
 	c.groups = NewGroupList(sa, e.Groups, missing)
-	c.fields = NewFieldValues(sa, e.Fields, missing)
+	c.fields = core.NewFieldValues(sa.Fields(), e.Fields, missing)
 
 	tickets := make([]*core.Ticket, len(e.Tickets))
 	for i, t := range e.Tickets {
@@ -648,7 +648,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 	e.Fields = make(map[string]*core.Value)
 	for _, v := range c.fields {
 		if v != nil {
-			e.Fields[v.field.Key()] = v.Value
+			e.Fields[v.Field().Key()] = v.Value
 		}
 	}
 

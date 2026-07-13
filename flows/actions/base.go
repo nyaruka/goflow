@@ -327,12 +327,12 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, log event
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func resolveLabels(run flows.Run, references []*assets.LabelReference, log events.EventLogger) []*flows.Label {
+func resolveLabels(run flows.Run, references []*assets.LabelReference, log events.EventLogger) []*core.Label {
 	labelAssets := run.Session().Assets().Labels()
-	labels := make([]*flows.Label, 0, len(references))
+	labels := make([]*core.Label, 0, len(references))
 
 	for _, ref := range references {
-		var label *flows.Label
+		var label *core.Label
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing label's name

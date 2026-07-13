@@ -1,4 +1,4 @@
-package flows_test
+package core_test
 
 import (
 	"testing"
@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -18,7 +17,7 @@ func TestGlobals(t *testing.T) {
 	ga1 := static.NewGlobal("org_name", "Org Name", "U-Report")
 	ga2 := static.NewGlobal("access_token", "Access Token", "674372272")
 
-	ga := flows.NewGlobalAssets([]assets.Global{ga1, ga2})
+	ga := core.NewGlobalAssets([]assets.Global{ga1, ga2})
 
 	g1 := ga.Get("org_name")
 

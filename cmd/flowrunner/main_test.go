@@ -80,7 +80,7 @@ func TestPrintEvent(t *testing.T) {
 		{events.NewError("this didn't work", ""), `⚠️ this didn't work`},
 		{events.NewFailure("This really didn't work"), `🛑 This really didn't work`},
 		{events.NewRunStarted(session.Runs()[0].FlowReference(), session.Runs()[0].UUID(), "", false), `↪️ entered flow 'Registration'`},
-		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", flows.LabelReferences([]*flows.Label{sa.Labels().FindByName("Spam")})), `🏷️ labeled with 'Spam'`},
+		{events.NewInputLabelsAdded("2a786bbc-2314-4d57-a0c9-b66e1642e5e2", core.LabelReferences([]*core.Label{sa.Labels().FindByName("Spam")})), `🏷️ labeled with 'Spam'`},
 		{events.NewMsgWait(nil, expiresOn, nil), `⏳ waiting for message...`},
 		{events.NewMsgWait(&timeout, expiresOn, nil), `⏳ waiting for message (3 sec timeout, type /timeout to simulate)...`},
 	}

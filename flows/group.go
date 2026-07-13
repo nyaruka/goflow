@@ -20,7 +20,7 @@ type Group struct {
 }
 
 // NewGroup returns a new group object from the given group asset
-func NewGroup(env envs.Environment, fields *FieldAssets, asset assets.Group) (*Group, error) {
+func NewGroup(env envs.Environment, fields *core.FieldAssets, asset assets.Group) (*Group, error) {
 	if asset.Query() != "" {
 		query, err := parse.Query(env, asset.Query(), fields)
 		if err != nil {
@@ -170,7 +170,7 @@ type GroupAssets struct {
 }
 
 // NewGroupAssets creates a new set of group assets
-func NewGroupAssets(env envs.Environment, fields *FieldAssets, groups []assets.Group) (*GroupAssets, []assets.Group) {
+func NewGroupAssets(env envs.Environment, fields *core.FieldAssets, groups []assets.Group) (*GroupAssets, []assets.Group) {
 	broken := make([]assets.Group, 0)
 	s := &GroupAssets{
 		all:    make([]*Group, 0, len(groups)),

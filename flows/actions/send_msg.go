@@ -79,7 +79,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 
 	sa := run.Session().Assets()
 
-	var template *flows.Template
+	var template *core.Template
 	var templateVariables []string
 	if a.Template != nil {
 		template = sa.Templates().Get(a.Template.UUID)

@@ -1,4 +1,4 @@
-package flows
+package core
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 )
@@ -35,13 +34,16 @@ func (f *Field) Reference() *assets.FieldReference {
 // FieldValue represents a field and a set of values for that field
 type FieldValue struct {
 	field *Field
-	*core.Value
+	*Value
 }
 
 // NewFieldValue creates a new field value
-func NewFieldValue(field *Field, value *core.Value) *FieldValue {
+func NewFieldValue(field *Field, value *Value) *FieldValue {
 	return &FieldValue{field: field, Value: value}
 }
+
+// Field returns the field this value is for
+func (v *FieldValue) Field() *Field { return v.field }
 
 // ToXValue returns a representation of this object for use in expressions
 func (v *FieldValue) ToXValue(env envs.Environment) types.XValue {
@@ -117,8 +119,8 @@ func (v *FieldValue) QueryValue() any {
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[string]*core.Value, missing assets.MissingCallback) FieldValues {
-	allFields := a.Fields().All()
+func NewFieldValues(fields *FieldAssets, values map[string]*Value, missing assets.MissingCallback) FieldValues {
+	allFields := fields.All()
 	fieldValues := make(FieldValues, len(allFields))
 	for _, field := range allFields {
 		value := values[field.Key()]
@@ -137,7 +139,7 @@ func NewFieldValues(a SessionAssets, values map[string]*core.Value, missing asse
 }
 
 // Clone returns a clone of this set of field values
-func (f FieldValues) clone() FieldValues {
+func (f FieldValues) Clone() FieldValues {
 	clone := make(FieldValues, len(f))
 	for k, v := range f {
 		clone[k] = v
@@ -146,7 +148,7 @@ func (f FieldValues) clone() FieldValues {
 }
 
 // Get gets the value set for the given field
-func (f FieldValues) Get(field *Field) *core.Value {
+func (f FieldValues) Get(field *Field) *Value {
 	fieldVal := f[field.Key()]
 	if fieldVal != nil {
 		return fieldVal.Value
@@ -155,7 +157,7 @@ func (f FieldValues) Get(field *Field) *core.Value {
 }
 
 // Set sets the value for the given field (can be null to clear it)
-func (f FieldValues) Set(field *Field, value *core.Value) {
+func (f FieldValues) Set(field *Field, value *Value) {
 	var fv *FieldValue
 	if value != nil && !value.Text.Empty() {
 		fv = NewFieldValue(field, value)
@@ -164,7 +166,7 @@ func (f FieldValues) Set(field *Field, value *core.Value) {
 }
 
 // Parse parses a raw string field value into the different possible types
-func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *core.Value {
+func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	if rawValue == "" {
 		return nil
 	}
@@ -228,7 +230,7 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		}
 	}
 
-	return &core.Value{
+	return &Value{
 		Text:     asText,
 		Datetime: asDateTime,
 		Number:   asNumber,

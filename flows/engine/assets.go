@@ -15,16 +15,16 @@ type sessionAssets struct {
 
 	campaigns *core.CampaignAssets
 	channels  *core.ChannelAssets
-	fields    *flows.FieldAssets
+	fields    *core.FieldAssets
 	flows     flows.FlowAssets
-	globals   *flows.GlobalAssets
+	globals   *core.GlobalAssets
 	groups    *flows.GroupAssets
-	labels    *flows.LabelAssets
+	labels    *core.LabelAssets
 	llms      *core.LLMAssets
-	locations *flows.LocationAssets
+	locations *core.LocationAssets
 	optIns    *core.OptInAssets
-	resthooks *flows.ResthookAssets
-	templates *flows.TemplateAssets
+	resthooks *core.ResthookAssets
+	templates *core.TemplateAssets
 	topics    *core.TopicAssets
 	users     *core.UserAssets
 }
@@ -86,7 +86,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		return nil, err
 	}
 
-	fieldAssets := flows.NewFieldAssets(fields)
+	fieldAssets := core.NewFieldAssets(fields)
 	groupAssets, _ := flows.NewGroupAssets(env, fieldAssets, groups)
 
 	return &sessionAssets{
@@ -95,34 +95,34 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		channels:  core.NewChannelAssets(channels),
 		fields:    fieldAssets,
 		flows:     definition.NewFlowAssets(source, migrationConfig),
-		globals:   flows.NewGlobalAssets(globals),
+		globals:   core.NewGlobalAssets(globals),
 		groups:    groupAssets,
-		labels:    flows.NewLabelAssets(labels),
+		labels:    core.NewLabelAssets(labels),
 		llms:      core.NewLLMAssets(llms),
-		locations: flows.NewLocationAssets(locations),
+		locations: core.NewLocationAssets(locations),
 		optIns:    core.NewOptInAssets(optIns),
-		resthooks: flows.NewResthookAssets(resthooks),
-		templates: flows.NewTemplateAssets(templates),
+		resthooks: core.NewResthookAssets(resthooks),
+		templates: core.NewTemplateAssets(templates),
 		topics:    core.NewTopicAssets(topics),
 		users:     core.NewUserAssets(users),
 	}, nil
 }
 
-func (s *sessionAssets) Source() assets.Source            { return s.source }
-func (s *sessionAssets) Campaigns() *core.CampaignAssets  { return s.campaigns }
-func (s *sessionAssets) Channels() *core.ChannelAssets    { return s.channels }
-func (s *sessionAssets) Fields() *flows.FieldAssets       { return s.fields }
-func (s *sessionAssets) Flows() flows.FlowAssets          { return s.flows }
-func (s *sessionAssets) Globals() *flows.GlobalAssets     { return s.globals }
-func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
-func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
-func (s *sessionAssets) LLMs() *core.LLMAssets            { return s.llms }
-func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
-func (s *sessionAssets) OptIns() *core.OptInAssets        { return s.optIns }
-func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
-func (s *sessionAssets) Templates() *flows.TemplateAssets { return s.templates }
-func (s *sessionAssets) Topics() *core.TopicAssets        { return s.topics }
-func (s *sessionAssets) Users() *core.UserAssets          { return s.users }
+func (s *sessionAssets) Source() assets.Source           { return s.source }
+func (s *sessionAssets) Campaigns() *core.CampaignAssets { return s.campaigns }
+func (s *sessionAssets) Channels() *core.ChannelAssets   { return s.channels }
+func (s *sessionAssets) Fields() *core.FieldAssets       { return s.fields }
+func (s *sessionAssets) Flows() flows.FlowAssets         { return s.flows }
+func (s *sessionAssets) Globals() *core.GlobalAssets     { return s.globals }
+func (s *sessionAssets) Groups() *flows.GroupAssets      { return s.groups }
+func (s *sessionAssets) Labels() *core.LabelAssets       { return s.labels }
+func (s *sessionAssets) LLMs() *core.LLMAssets           { return s.llms }
+func (s *sessionAssets) Locations() *core.LocationAssets { return s.locations }
+func (s *sessionAssets) OptIns() *core.OptInAssets       { return s.optIns }
+func (s *sessionAssets) Resthooks() *core.ResthookAssets { return s.resthooks }
+func (s *sessionAssets) Templates() *core.TemplateAssets { return s.templates }
+func (s *sessionAssets) Topics() *core.TopicAssets       { return s.topics }
+func (s *sessionAssets) Users() *core.UserAssets         { return s.users }
 
 // Resolver methods used by contactql
 

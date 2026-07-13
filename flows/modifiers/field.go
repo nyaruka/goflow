@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -25,12 +26,12 @@ const TypeField string = "field"
 type Field struct {
 	baseModifier
 
-	field *flows.Field
+	field *core.Field
 	value string
 }
 
 // NewField creates a new field modifier
-func NewField(field *flows.Field, value string) *Field {
+func NewField(field *core.Field, value string) *Field {
 	return &Field{
 		baseModifier: newBaseModifier(TypeField),
 		field:        field,
@@ -80,7 +81,7 @@ func readField(sa flows.SessionAssets, data []byte, missing assets.MissingCallba
 		return nil, err
 	}
 
-	var field *flows.Field
+	var field *core.Field
 	if e.Field != nil {
 		field = sa.Fields().Get(e.Field.Key)
 		if field == nil {
