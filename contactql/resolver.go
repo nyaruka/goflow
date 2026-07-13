@@ -21,8 +21,7 @@ const (
 	AttributeLastSeenOn = "last_seen_on"
 )
 
-// Attributes are the fixed attributes and their value types
-var Attributes = map[string]assets.FieldType{
+var attributes = map[string]assets.FieldType{
 	AttributeUUID:       assets.FieldTypeText,
 	AttributeID:         assets.FieldTypeText,
 	AttributeRef:        assets.FieldTypeText,
@@ -36,6 +35,12 @@ var Attributes = map[string]assets.FieldType{
 	AttributeTickets:    assets.FieldTypeNumber,
 	AttributeCreatedOn:  assets.FieldTypeDatetime,
 	AttributeLastSeenOn: assets.FieldTypeDatetime,
+}
+
+// AttributeType returns the value type of the given fixed attribute, or false if it's not a fixed attribute
+func AttributeType(key string) (assets.FieldType, bool) {
+	t, ok := attributes[key]
+	return t, ok
 }
 
 // Resolver provides functions for resolving assets referenced in queries

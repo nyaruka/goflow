@@ -156,7 +156,7 @@ func (c *Condition) ValueAsFlow(resolver Resolver) assets.Flow {
 func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
 	switch c.propType {
 	case PropertyTypeAttribute:
-		return Attributes[c.propKey]
+		return attributes[c.propKey]
 	case PropertyTypeURN:
 		return assets.FieldTypeText
 	case PropertyTypeField:
@@ -170,6 +170,11 @@ func (c *Condition) resolveValueType(resolver Resolver) assets.FieldType {
 
 // Validate checks that this condition is valid (and thus can be evaluated)
 func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
+	// if URNs are redacted, block any conditions on them
+	if (c.propType == PropertyTypeURN || c.propKey == AttributeURN) && env.RedactionPolicy() == envs.RedactionPolicyURNs && c.value != "" {
+		return NewQueryError(ErrRedactedURNs, "cannot query on redacted URNs")
+	}
+
 	// if our property is a field and we don't have a resolver, we can't validate because we don't know the value type
 	if c.propType == PropertyTypeField && resolver == nil {
 		return nil

@@ -77,21 +77,12 @@ func (v *visitor) VisitCondition(ctx *gen.ConditionContext) any {
 		propKey = propText
 
 		// first try to match a fixed attribute
-		_, isAttribute := contactql.Attributes[propKey]
+		_, isAttribute := contactql.AttributeType(propKey)
 		if isAttribute {
 			propType = contactql.PropertyTypeAttribute
-
-			if propKey == contactql.AttributeURN && v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-				v.addError(contactql.NewQueryError(contactql.ErrRedactedURNs, "cannot query on redacted URNs"))
-			}
-
 		} else if urns.IsValidScheme(propKey) {
 			// second try to match a URN scheme
 			propType = contactql.PropertyTypeURN
-
-			if v.env.RedactionPolicy() == envs.RedactionPolicyURNs && value != "" {
-				v.addError(contactql.NewQueryError(contactql.ErrRedactedURNs, "cannot query on redacted URNs"))
-			}
 		} else {
 			propType = contactql.PropertyTypeField
 		}
