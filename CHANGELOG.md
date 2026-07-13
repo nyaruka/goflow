@@ -1,3 +1,11 @@
+v0.280.0 (2026-07-13)
+-------------------------
+ * Split contactql into a light AST/evaluation package and a new contactql/parse package which holds the ANTLR parsing
+ * Move remaining asset wrappers (Field, Global, Label, Location, Resthook, Template) from flows into core
+ * Move Group into core with query parsing hoisted to the engine
+ * Move Contact into core and add core.Assets
+ * Move ExtractJSON to utils, NewNodeUUID to core, and rename flows.ContactQueryEscaping to contactql.EscapeValue
+
 v0.279.1 (2026-07-09)
 -------------------------
  * Add typing_started and typing_stopped event types
