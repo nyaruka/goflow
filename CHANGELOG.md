@@ -1,3 +1,7 @@
+v0.280.1 (2026-07-14)
+-------------------------
+ * Add excellent.Template - a parsed, immutable representation of a template
+
 v0.280.0 (2026-07-13)
 -------------------------
  * Split contactql into a light AST/evaluation package and a new contactql/parse package which holds the ANTLR parsing
