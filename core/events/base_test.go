@@ -477,25 +477,25 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStarted(events.DirectionIncoming)
+				return events.NewTypingStarted(events.DirectionIncoming, facebook.Reference(), urns.URN("facebook:1234567890"), "EX12345")
 			},
 			`typing_started_incoming`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStarted(events.DirectionOutgoing)
+				return events.NewTypingStarted(events.DirectionOutgoing, nil, urns.NilURN, "")
 			},
 			`typing_started_outgoing`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStopped(events.DirectionIncoming)
+				return events.NewTypingStopped(events.DirectionIncoming, facebook.Reference(), urns.URN("facebook:1234567890"), "EX12345")
 			},
 			`typing_stopped_incoming`,
 		},
 		{
 			func() events.Event {
-				return events.NewTypingStopped(events.DirectionOutgoing)
+				return events.NewTypingStopped(events.DirectionOutgoing, nil, urns.NilURN, "")
 			},
 			`typing_stopped_outgoing`,
 		},
