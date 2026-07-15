@@ -1,3 +1,8 @@
+v0.281.0 (2026-07-15)
+-------------------------
+ * Add optional channel, urn and msg_external_id fields to typing events
+ * Update to latest gocommon
+
 v0.280.1 (2026-07-14)
 -------------------------
  * Add excellent.Template - a parsed, immutable representation of a template
