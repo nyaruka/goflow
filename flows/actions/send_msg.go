@@ -93,11 +93,10 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		}
 	}
 
-	routes := run.Contact().ResolveRoutes(false)
+	route := run.Contact().ResolveRoute()
 	locale := currentLocale(run, lang)
 
-	// create a new message for each URN+channel route
-	for _, route := range routes {
+	if route != nil {
 		channelRef := assets.NewChannelReference(route.Channel.UUID(), route.Channel.Name())
 		var msg *core.MsgOut
 
@@ -120,11 +119,9 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		}
 
 		log(events.NewMsgCreated(msg, "", ""))
-	}
-
-	// if we couldn't find a route, create a msg without a URN or channel and it's up to the caller
-	// to handle that as they want
-	if len(routes) == 0 {
+	} else {
+		// if we couldn't find a route, create a msg without a URN or channel and it's up to the caller
+		// to handle that as they want
 		msg := core.NewMsgOut(urns.NilURN, nil, content, nil, locale, core.UnsendableReasonNoRoute)
 		log(events.NewMsgCreated(msg, "", ""))
 	}

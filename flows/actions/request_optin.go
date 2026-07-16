@@ -47,15 +47,10 @@ func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *Reque
 // Execute creates the optin events
 func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
-	routes := run.Contact().ResolveRoutes(false)
+	route := run.Contact().ResolveRoute()
 
-	if len(routes) > 0 {
-		ch := routes[0].Channel
-		urn := routes[0].URN
-
-		if ch.HasFeature(assets.ChannelFeatureOptIns) {
-			log(events.NewOptInRequested(optIn.Reference(), ch.Reference(), urn))
-		}
+	if route != nil && route.Channel.HasFeature(assets.ChannelFeatureOptIns) {
+		log(events.NewOptInRequested(optIn.Reference(), route.Channel.Reference(), route.URN))
 	}
 
 	return nil
