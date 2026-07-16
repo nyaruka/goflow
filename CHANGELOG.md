@@ -1,3 +1,7 @@
+v0.282.1 (2026-07-16)
+-------------------------
+ * Add contact_flow_changed event type
+
 v0.282.0 (2026-07-16)
 -------------------------
  * Replace Contact.ResolveRoutes with singular ResolveRoute
