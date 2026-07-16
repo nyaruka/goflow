@@ -469,20 +469,15 @@ type Route struct {
 	Channel *Channel
 }
 
-// ResolveRoutes resolves possible URN/channel routes for sending
-func (c *Contact) ResolveRoutes(all bool) []Route {
-	routes := []Route{}
-
+// ResolveRoute resolves the first sendable URN/channel route for this contact, or nil if there is none
+func (c *Contact) ResolveRoute() *Route {
 	for _, u := range c.urns {
 		channel := c.assets.Channels().GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
-			routes = append(routes, Route{URN: u.Identity(), Channel: channel})
-			if !all {
-				break
-			}
+			return &Route{URN: u.Identity(), Channel: channel}
 		}
 	}
-	return routes
+	return nil
 }
 
 // PreferredURN gets the preferred URN for this contact, i.e. the URN we would use for sending
@@ -497,9 +492,9 @@ func (c *Contact) PreferredURN() *URN {
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the channel we would use for sending
 func (c *Contact) PreferredChannel() *Channel {
-	routes := c.ResolveRoutes(false)
-	if len(routes) > 0 {
-		return routes[0].Channel
+	route := c.ResolveRoute()
+	if route != nil {
+		return route.Channel
 	}
 	return nil
 }
