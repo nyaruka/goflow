@@ -145,6 +145,18 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
+				return events.NewContactFlowChanged(assets.NewFlowReference("50c3706e-fedb-42c0-8eab-dda3335714b7", "Registration"))
+			},
+			`contact_flow_changed`,
+		},
+		{
+			func() events.Event {
+				return events.NewContactFlowChanged(nil) // flow being cleared
+			},
+			`contact_flow_changed_clear`,
+		},
+		{
+			func() events.Event {
 				return events.NewContactGroupsChanged(
 					core.GroupReferences([]*core.Group{session.Assets().Groups().FindByName("Customers")}),
 					nil,
