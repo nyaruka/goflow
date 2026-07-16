@@ -1,3 +1,7 @@
+v0.282.0 (2026-07-16)
+-------------------------
+ * Replace Contact.ResolveRoutes with singular ResolveRoute
+
 v0.281.0 (2026-07-15)
 -------------------------
  * Add optional channel, urn and msg_external_id fields to typing events
