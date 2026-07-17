@@ -12,7 +12,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -22,7 +22,7 @@
                 }
             },
             {
-                "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -32,7 +32,7 @@
                 }
             },
             {
-                "uuid": "01969b47-401b-76f8-b86e-4b881f09a186",
+                "uuid": "01969b47-401b-76f8-9729-57745fb13b06",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -42,7 +42,7 @@
                 }
             },
             {
-                "uuid": "01969b47-47eb-76f8-a691-235cbe720980",
+                "uuid": "01969b47-47eb-76f8-9d79-c694bc69dcd1",
                 "type": "email_sent",
                 "created_on": "2025-05-04T12:31:03.123456789Z",
                 "to": [
@@ -87,7 +87,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email subject evaluated to empty string, skipping"
@@ -128,7 +128,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "email_sent",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "to": [
@@ -173,7 +173,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email body evaluated to empty string, skipping"
@@ -214,7 +214,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Email address evaluated to empty string, skipping"
@@ -255,7 +255,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "email_sent",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "to": [
@@ -312,7 +312,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "email_sent",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "to": [
@@ -360,7 +360,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Unable to send email: oops can't send"

@@ -1,7 +1,7 @@
 {
     "type": "optin",
     "event": {
-        "uuid": "01969b47-9223-76f8-afcb-91a2073e5459",
+        "uuid": "01969b47-9223-76f8-a943-ec055bbeb3b4",
         "type": "optin_stopped",
         "created_on": "2025-05-04T12:31:22.123456789Z",
         "optin": {

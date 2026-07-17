@@ -26,7 +26,7 @@ func TestStep(t *testing.T) {
 	d := time.Date(2018, 10, 26, 14, 50, 30, 1234567890, time.UTC)
 	step := engine.NewStep(nil, node, d)
 
-	assert.Equal(t, flows.StepUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), step.UUID())
+	assert.Equal(t, flows.StepUUID("15a2ee5e-5e45-4711-8e0f-6b2abe4360d8"), step.UUID())
 	assert.Equal(t, core.NodeUUID("5fb4f555-7662-4c4c-8387-226e359526e4"), step.NodeUUID())
 	assert.Equal(t, d, step.ArrivedOn())
 	assert.Equal(t, flows.ExitUUID(""), step.ExitUUID())
@@ -37,11 +37,11 @@ func TestStep(t *testing.T) {
 		"arrived_on": types.NewXDateTime(d),
 		"exit_uuid":  types.XTextEmpty,
 		"node_uuid":  types.NewXText("5fb4f555-7662-4c4c-8387-226e359526e4"),
-		"uuid":       types.NewXText("c00e5d67-c275-4389-aded-7d8b151cbd5b"),
+		"uuid":       types.NewXText("15a2ee5e-5e45-4711-8e0f-6b2abe4360d8"),
 	}), core.Context(env, step))
 
 	// test marshaling
 	marshaled, err := jsonx.Marshal(step)
 	require.NoError(t, err)
-	test.AssertEqualJSON(t, []byte(`{"arrived_on":"2018-10-26T14:50:31.23456789Z","node_uuid":"5fb4f555-7662-4c4c-8387-226e359526e4","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), marshaled, "JSON mismatch")
+	test.AssertEqualJSON(t, []byte(`{"arrived_on":"2018-10-26T14:50:31.23456789Z","node_uuid":"5fb4f555-7662-4c4c-8387-226e359526e4","uuid":"15a2ee5e-5e45-4711-8e0f-6b2abe4360d8"}`), marshaled, "JSON mismatch")
 }

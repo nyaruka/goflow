@@ -119,7 +119,7 @@ func TestRuns(t *testing.T) {
 	checkRuns := func(s flows.Session) {
 		r1, r2 := s.Runs()[0], s.Runs()[1]
 
-		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r1.UUID())
+		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-95cf-9fca95f1c30a"), r1.UUID())
 		assert.Equal(t, core.RunStatusCompleted, r1.Status())
 		assert.Equal(t, flow, r1.Flow())
 		assert.Equal(t, flow.Reference(true), r1.FlowReference())
@@ -127,8 +127,8 @@ func TestRuns(t *testing.T) {
 		assert.Equal(t, 0, len(r1.Ancestors())) // no parent runs within this session
 		assert.True(t, r1.HadInput())
 
-		assert.Equal(t, core.RunUUID("01969b47-24c3-76f8-8f41-6b2d9f33d623"), r2.UUID())
-		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-9c0b-2014ddc77094"), r2.Parent().UUID())
+		assert.Equal(t, core.RunUUID("01969b47-24c3-76f8-b774-0a98171a0712"), r2.UUID())
+		assert.Equal(t, core.RunUUID("01969b47-113b-76f8-95cf-9fca95f1c30a"), r2.Parent().UUID())
 	}
 
 	checkRuns(session)
@@ -161,7 +161,7 @@ func TestRunContext(t *testing.T) {
 	}{
 		{`@run`, `Ryan Lewis@Registration`},
 		{`@child`, `Ryan Lewis@Collect Age`},
-		{`@child.uuid`, `01969b47-24c3-76f8-8f41-6b2d9f33d623`},
+		{`@child.uuid`, `01969b47-24c3-76f8-b774-0a98171a0712`},
 		{`@child.run`, `{status: completed}`}, // to be removed in 13.2
 		{`@child.contact.name`, `Ryan Lewis`},
 		{`@child.flow.name`, "Collect Age"},

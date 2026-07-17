@@ -68,12 +68,12 @@
                 "result_name": "Beer",
                 "categories": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "name": "Yes",
                         "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "name": "Other",
                         "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
                     }
@@ -81,23 +81,23 @@
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a",
                         "type": "has_any_word",
                         "arguments": [
                             "yeah yes"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd",
                         "type": "has_any_word",
                         "arguments": [
                             "affirmative"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -112,17 +112,17 @@
         },
         "expected_localization": {
             "fra": {
-                "692926ea-09d6-4942-bd38-d266ec8d3716": {
+                "ad9bdcfa-5604-4542-98c7-1f0d5859f77e": {
                     "name": [
                         "Autre"
                     ]
                 },
-                "8720f157-ca1c-432f-9c0b-2014ddc77094": {
+                "b26fcae1-abb6-49f8-95cf-9fca95f1c30a": {
                     "arguments": [
                         "oui"
                     ]
                 },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "1b2083ab-a0cb-48da-924e-9de1a11831b3": {
                     "name": [
                         "Oui"
                     ]
@@ -202,12 +202,12 @@
                 "result_name": "Beer",
                 "categories": [
                     {
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "name": "Yes",
                         "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
                     },
                     {
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "name": "Other",
                         "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8"
                     }
@@ -215,23 +215,23 @@
                 "operand": "@input",
                 "cases": [
                     {
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a",
                         "type": "has_any_word",
                         "arguments": [
                             "yeah yes"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd",
                         "type": "has_any_word",
                         "arguments": [
                             "affirmative"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -321,17 +321,17 @@
                     {
                         "exit_uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075",
                         "name": "Male",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "f966c0ac-1c17-4876-8c88-32495490a987",
                         "name": "Female",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
                         "name": "Other",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@(if(is_error(fields.gender), \"@contact.gender\", fields.gender))",
@@ -340,20 +340,20 @@
                         "arguments": [
                             "male"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     },
                     {
                         "arguments": [
                             "female"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_any_word",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
                     }
                 ],
-                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                "default_category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
             },
             "exits": [
                 {
@@ -372,27 +372,27 @@
         },
         "expected_localization": {
             "fra": {
-                "5802813d-6c58-4292-8228-9728778b6c98": {
+                "59ad8481-1332-4457-b20c-e3cb6203e029": {
                     "arguments": [
                         "femme"
                     ]
                 },
-                "692926ea-09d6-4942-bd38-d266ec8d3716": {
+                "ad9bdcfa-5604-4542-98c7-1f0d5859f77e": {
                     "name": [
                         "Femme"
                     ]
                 },
-                "8720f157-ca1c-432f-9c0b-2014ddc77094": {
+                "b26fcae1-abb6-49f8-95cf-9fca95f1c30a": {
                     "name": [
                         "Autre"
                     ]
                 },
-                "c34b6c7d-fa06-4563-92a3-d648ab64bccb": {
+                "5a66dd9c-356e-4287-92ed-42cbd11a03fd": {
                     "arguments": [
                         "homme"
                     ]
                 },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "1b2083ab-a0cb-48da-924e-9de1a11831b3": {
                     "name": [
                         "Homme"
                     ]
@@ -473,17 +473,17 @@
                     {
                         "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
                         "name": "This",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "633dfe67-988e-4190-a95f-70f477494032",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
                         "name": "Other",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@input",
@@ -492,20 +492,20 @@
                         "arguments": [
                             "this"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     },
                     {
                         "arguments": [
                             "other"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_any_word",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
                     }
                 ],
-                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                "default_category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
             },
             "exits": [
                 {
@@ -583,12 +583,12 @@
                     {
                         "exit_uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
                         "name": "Too Young",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
                         "name": "Permitted",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@input",
@@ -597,17 +597,17 @@
                         "arguments": [
                             "10"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_number_lt",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     },
                     {
                         "arguments": [
                             "10"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_number_gte",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
                 "default_category_uuid": ""
@@ -673,12 +673,12 @@
                     {
                         "exit_uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
                         "name": "All Responses",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     }
                 ],
                 "operand": "@input",
                 "cases": [],
-                "default_category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                "default_category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
             },
             "exits": [
                 {
@@ -742,7 +742,7 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029",
                     "method": "GET",
                     "url": "http://example.com?name=@(url_encode(contact.name))",
                     "result_name": "Response 1"
@@ -754,12 +754,12 @@
                     {
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
                         "name": "Success",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                         "name": "Failure",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@results.response_1.category",
@@ -768,20 +768,20 @@
                         "arguments": [
                             "Success"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_only_text",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     },
                     {
                         "arguments": [
                             "Failure"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_only_text",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -859,7 +859,7 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029",
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
@@ -877,12 +877,12 @@
                     {
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
                         "name": "Success",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                         "name": "Failure",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@results.response_1.category",
@@ -891,20 +891,20 @@
                         "arguments": [
                             "Success"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_only_text",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     },
                     {
                         "arguments": [
                             "Failure"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_only_text",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -971,7 +971,7 @@
             "actions": [
                 {
                     "type": "call_resthook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029",
                     "resthook": "new-registration",
                     "result_name": "Response 1"
                 }
@@ -982,12 +982,12 @@
                     {
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
                         "name": "Success",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                         "name": "Failure",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@results.response_1.category",
@@ -996,20 +996,20 @@
                         "arguments": [
                             "Success"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_only_text",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     },
                     {
                         "arguments": [
                             "Failure"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_only_text",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1081,7 +1081,7 @@
             "actions": [
                 {
                     "type": "enter_flow",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029",
                     "flow": {
                         "uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",
                         "name": "My Subflow"
@@ -1095,12 +1095,12 @@
                     {
                         "exit_uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2",
                         "name": "Completed",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42",
                         "name": "Expired",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@child.status",
@@ -1109,17 +1109,17 @@
                         "arguments": [
                             "completed"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_only_text",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     },
                     {
                         "arguments": [
                             "expired"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_only_text",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
                 "default_category_uuid": ""
@@ -1137,12 +1137,12 @@
         },
         "expected_localization": {
             "fra": {
-                "692926ea-09d6-4942-bd38-d266ec8d3716": {
+                "ad9bdcfa-5604-4542-98c7-1f0d5859f77e": {
                     "name": [
                         "Expiré"
                     ]
                 },
-                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                "1b2083ab-a0cb-48da-924e-9de1a11831b3": {
                     "name": [
                         "Terminé"
                     ]
@@ -1204,23 +1204,23 @@
                     {
                         "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
                         "name": "Telegram",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@(default(urn_parts(urns.telegram).path, \"\"))",
                 "cases": [
                     {
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_text",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1309,17 +1309,17 @@
                     {
                         "exit_uuid": "4d627be9-0305-44f5-9949-5c7668216ef8",
                         "name": "Yesterday",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "ec378307-e1da-4488-8c9b-825e81a8dbcf",
                         "name": "Today",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "15ad3a13-251f-46c5-a040-ddfcf07aee03",
                         "name": "Other",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@fields.reporting_date",
@@ -1328,20 +1328,20 @@
                         "arguments": [
                             "@(datetime_add(today(), -1, \"D\"))"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_date_eq",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     },
                     {
                         "arguments": [
                             "@(datetime_add(today(), 0, \"D\"))"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_date_eq",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
                     }
                 ],
-                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                "default_category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
             },
             "exits": [
                 {
@@ -1362,12 +1362,12 @@
         "expected_ui": {
             "config": {
                 "cases": {
-                    "5802813d-6c58-4292-8228-9728778b6c98": {
+                    "59ad8481-1332-4457-b20c-e3cb6203e029": {
                         "arguments": [
                             "0"
                         ]
                     },
-                    "c34b6c7d-fa06-4563-92a3-d648ab64bccb": {
+                    "5a66dd9c-356e-4287-92ed-42cbd11a03fd": {
                         "arguments": [
                             "-1"
                         ]
@@ -1435,12 +1435,12 @@
                     {
                         "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
                         "name": "Tester",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@(join(contact.groups, \",\"))",
@@ -1449,12 +1449,12 @@
                         "arguments": [
                             "testers"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1527,12 +1527,12 @@
                     {
                         "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
                         "name": "Testers",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@contact.groups",
@@ -1542,12 +1542,12 @@
                             "ade39253-0371-4dde-9df4-95245fe6a3a8",
                             "Testers"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_group",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1631,7 +1631,7 @@
                     "type": "msg",
                     "timeout": {
                         "seconds": 300,
-                        "category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 },
                 "result_name": "Name",
@@ -1639,17 +1639,17 @@
                     {
                         "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
                         "name": "Yes",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "9e463745-ed5b-4140-bbf0-bca0daedffbe",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
                         "name": "No Response",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@input",
@@ -1658,12 +1658,12 @@
                         "arguments": [
                             "yeah yes"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1749,7 +1749,7 @@
             "actions": [
                 {
                     "type": "transfer_airtime",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029",
                     "amounts": {
                         "BRL": 2.5,
                         "USD": 3
@@ -1763,12 +1763,12 @@
                     {
                         "exit_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
                         "name": "Success",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
                         "name": "Failure",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@results.transfer",
@@ -1777,12 +1777,12 @@
                         "arguments": [
                             "Success"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_category",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {
@@ -1872,17 +1872,17 @@
                     {
                         "exit_uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660",
                         "name": "Fish",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36",
                         "name": "Chicken",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
                         "name": "Other",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@(field(results.response_1, 1, \" \"))",
@@ -1891,20 +1891,20 @@
                         "arguments": [
                             "fish"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     },
                     {
                         "arguments": [
                             "chicken"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_any_word",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
                     }
                 ],
-                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                "default_category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
             },
             "exits": [
                 {
@@ -2002,17 +2002,17 @@
                     {
                         "exit_uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a",
                         "name": "Fish",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed",
                         "name": "Chicken",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     },
                     {
                         "exit_uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
                         "name": "Other",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "operand": "@results.response_1",
@@ -2021,20 +2021,20 @@
                         "arguments": [
                             "fish"
                         ],
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_any_word",
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                        "uuid": "5a66dd9c-356e-4287-92ed-42cbd11a03fd"
                     },
                     {
                         "arguments": [
                             "chicken"
                         ],
-                        "category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e",
                         "type": "has_any_word",
-                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
                     }
                 ],
-                "default_category_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                "default_category_uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
             },
             "exits": [
                 {
@@ -2113,12 +2113,12 @@
                     {
                         "exit_uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268",
                         "name": "Bucket 1",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb",
                         "name": "Bucket 2",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ]
             },
@@ -2194,23 +2194,23 @@
                     {
                         "exit_uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e",
                         "name": "Numeric",
-                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                        "uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3"
                     },
                     {
                         "exit_uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3",
                         "name": "Other",
-                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                        "uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
                     }
                 ],
                 "operand": "@input.text",
                 "cases": [
                     {
-                        "category_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "category_uuid": "1b2083ab-a0cb-48da-924e-9de1a11831b3",
                         "type": "has_number",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        "uuid": "b26fcae1-abb6-49f8-95cf-9fca95f1c30a"
                     }
                 ],
-                "default_category_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                "default_category_uuid": "ad9bdcfa-5604-4542-98c7-1f0d5859f77e"
             },
             "exits": [
                 {

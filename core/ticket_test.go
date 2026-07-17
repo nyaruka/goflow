@@ -63,13 +63,13 @@ func TestTickets(t *testing.T) {
 	}
 
 	envelope1 := &core.TicketEnvelope{
-		UUID:     core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"),
+		UUID:     core.TicketUUID("0196a645-3f8d-7452-bb48-4710e784acb8"),
 		Topic:    assets.NewTopicReference("fd3ffcf3-c609-423e-b40f-f7f291a91cc6", "Missing Topic"),
 		Assignee: assets.NewUserReference("b8cfc330-4634-45d1-90bc-7b4658221834", "Dave"),
 	}
 	ticket1 := envelope1.Unmarshal(sa.Topics(), sa.Users(), missing)
 
-	assert.Equal(t, core.TicketUUID("0196a645-3f8d-7452-8d1a-f05fe6923d6d"), ticket1.UUID())
+	assert.Equal(t, core.TicketUUID("0196a645-3f8d-7452-bb48-4710e784acb8"), ticket1.UUID())
 	assert.Nil(t, ticket1.Topic())
 	assert.Nil(t, ticket1.Assignee())
 
@@ -92,7 +92,7 @@ func TestTickets(t *testing.T) {
 
 	ticket3 := core.OpenTicket(weather, bob)
 
-	assert.Equal(t, core.TicketUUID("01969b47-0583-76f8-ae7f-f8b243c49ff5"), ticket3.UUID())
+	assert.Equal(t, core.TicketUUID("01969b47-0583-76f8-924e-9de1a11831b3"), ticket3.UUID())
 	assert.Equal(t, weather, ticket3.Topic())
 	assert.Equal(t, "Bob", ticket2.Assignee().Name())
 

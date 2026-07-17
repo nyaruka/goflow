@@ -9,13 +9,13 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "warning",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "NLU classifiers are no longer supported"
             },
             {
-                "uuid": "01969b47-401b-76f8-ba00-bd7f0d08e671",
+                "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",
                 "type": "run_result_changed",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
                 "name": "Intent",
