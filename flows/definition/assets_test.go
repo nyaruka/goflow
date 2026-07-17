@@ -1,11 +1,14 @@
 package definition_test
 
 import (
+	"sync"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -73,4 +76,35 @@ func TestFlowAssets(t *testing.T) {
 	flow, err = sa.Flows().FindByName("zog")
 	assert.EqualError(t, err, "no such flow with name 'zog'")
 	assert.Nil(t, flow)
+}
+
+// tests that concurrent access is safe and that all callers get the same instance of a flow (run with -race)
+func TestFlowAssetsConcurrent(t *testing.T) {
+	source, err := static.NewSource([]byte(assetsJSON))
+	require.NoError(t, err)
+
+	flowAssets := definition.NewFlowAssets(source, nil)
+
+	got := make([]flows.Flow, 20)
+	var wg sync.WaitGroup
+	for i := range got {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			var f flows.Flow
+			var err error
+			if i%2 == 0 {
+				f, err = flowAssets.Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+			} else {
+				f, err = flowAssets.FindByName("Zig")
+			}
+			assert.NoError(t, err)
+			got[i] = f
+		}()
+	}
+	wg.Wait()
+
+	for _, f := range got {
+		assert.Same(t, got[0], f)
+	}
 }

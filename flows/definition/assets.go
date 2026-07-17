@@ -11,18 +11,15 @@ import (
 
 // implemention of FlowAssets which provides lazy loading and validation of flows
 type flowAssets struct {
-	cache map[assets.FlowUUID]flows.Flow
+	cache sync.Map // assets.FlowUUID -> flows.Flow
 
-	mutex  sync.Mutex
-	source assets.Source
-
+	source          assets.Source
 	migrationConfig *migrations.Config
 }
 
 // NewFlowAssets creates a new flow assets
 func NewFlowAssets(source assets.Source, migrationConfig *migrations.Config) flows.FlowAssets {
 	return &flowAssets{
-		cache:           make(map[assets.FlowUUID]flows.Flow),
 		source:          source,
 		migrationConfig: migrationConfig,
 	}
@@ -30,12 +27,8 @@ func NewFlowAssets(source assets.Source, migrationConfig *migrations.Config) flo
 
 // Get returns the flow with the given UUID
 func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
-
-	flow := a.cache[uuid]
-	if flow != nil {
-		return flow, nil
+	if flow, ok := a.cache.Load(uuid); ok {
+		return flow.(flows.Flow), nil
 	}
 
 	asset, err := a.source.FlowByUUID(uuid)
@@ -43,24 +36,26 @@ func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
 		return nil, err
 	}
 
-	flow, err = ReadAsset(asset, a.migrationConfig)
+	flow, err := ReadAsset(asset, a.migrationConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	a.cache[flow.UUID()] = flow
-	return flow, nil
+	return a.cached(flow), nil
 }
 
 // FindByName tries to find a flow with the given name
 func (a *flowAssets) FindByName(name string) (flows.Flow, error) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
-
-	for _, flow := range a.cache {
-		if strings.EqualFold(flow.Name(), name) {
-			return flow, nil
+	var found flows.Flow
+	a.cache.Range(func(_, v any) bool {
+		if flow := v.(flows.Flow); strings.EqualFold(flow.Name(), name) {
+			found = flow
+			return false
 		}
+		return true
+	})
+	if found != nil {
+		return found, nil
 	}
 
 	asset, err := a.source.FlowByName(name)
@@ -73,6 +68,11 @@ func (a *flowAssets) FindByName(name string) (flows.Flow, error) {
 		return nil, err
 	}
 
-	a.cache[flow.UUID()] = flow
-	return flow, nil
+	return a.cached(flow), nil
+}
+
+// concurrent misses may both read a flow but this ensures all callers get the same instance
+func (a *flowAssets) cached(flow flows.Flow) flows.Flow {
+	actual, _ := a.cache.LoadOrStore(flow.UUID(), flow)
+	return actual.(flows.Flow)
 }
