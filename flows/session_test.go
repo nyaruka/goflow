@@ -33,7 +33,7 @@ func TestHistory(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")

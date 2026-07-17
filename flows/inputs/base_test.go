@@ -19,7 +19,7 @@ func TestReadInput(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 	require.NoError(t, err)
 
 	// error if no type field

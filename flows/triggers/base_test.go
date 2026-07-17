@@ -196,7 +196,7 @@ func TestTriggerMarshaling(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
@@ -328,7 +328,7 @@ func TestReadTrigger(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 	require.NoError(t, err)
 
 	// error if no type field
@@ -365,7 +365,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
@@ -407,7 +407,7 @@ func TestTriggerContext(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")

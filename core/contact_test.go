@@ -49,7 +49,7 @@ func TestContact(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
@@ -185,7 +185,7 @@ func TestContactURNs(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
@@ -214,7 +214,7 @@ func TestReadContact(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	// read minimal contact
@@ -229,7 +229,7 @@ func TestReadContact(t *testing.T) {
 }
 
 func TestReadContactWithMissingAssets(t *testing.T) {
-	sessionAssets, err := engine.NewSessionAssets(envs.NewBuilder().Build(), static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(envs.NewBuilder().Build(), static.NewEmptySource(), nil, nil)
 	require.NoError(t, err)
 
 	missingAssets := make([]assets.Reference, 0)
@@ -298,7 +298,7 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 
 func TestContactFormat(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 
 	// name takes precedence if set
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
@@ -337,7 +337,7 @@ func TestContactFormat(t *testing.T) {
 
 func TestContactSetPreferredChannel(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 	receive_roles := []assets.ChannelRole{assets.ChannelRoleReceive}
 
@@ -407,7 +407,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 func TestContactSetAffinity(t *testing.T) {
 	env := envs.NewBuilder().Build()
-	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sa, _ := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
@@ -500,7 +500,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		}
 		env := envBuilder.Build()
 
-		sa, err := engine.NewSessionAssets(env, source, nil)
+		sa, err := engine.NewSessionAssets(env, source, nil, nil)
 		require.NoError(t, err)
 
 		contact, err := core.ReadContact(sa, tc.ContactBefore, assets.IgnoreMissing)

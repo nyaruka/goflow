@@ -57,7 +57,7 @@ func TestURN(t *testing.T) {
     }`))
 	require.NoError(t, err)
 
-	sessionAssets, err := engine.NewSessionAssets(env, source, nil)
+	sessionAssets, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	channels := sessionAssets.Channels()

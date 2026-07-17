@@ -3,6 +3,7 @@ package engine
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -308,7 +309,8 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 func (r *run) EvaluateTemplateValue(template string, log events.EventLogger) (types.XValue, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
+	parsed := r.session.Assets().Cache().Templates().Get(strings.TrimSpace(template))
+	value, warnings, err := parsed.EvaluateValue(r.session.MergedEnvironment(), ctx)
 	if err != nil {
 		r.errorToEvents(err, log)
 	}
@@ -322,7 +324,8 @@ func (r *run) EvaluateTemplateValue(template string, log events.EventLogger) (ty
 func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log events.EventLogger) (string, bool) {
 	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
+	parsed := r.session.Assets().Cache().Templates().Get(template)
+	value, warnings, err := parsed.Evaluate(r.session.MergedEnvironment(), ctx, escaping)
 	if err != nil {
 		r.errorToEvents(err, log)
 	}

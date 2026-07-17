@@ -53,6 +53,7 @@ type SessionAssets interface {
 
 	Source() assets.Source
 	Flows() FlowAssets
+	Cache() *Cache
 }
 
 // Localizable is anything in the flow definition which can be localized and therefore needs a UUID

@@ -130,7 +130,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	require.NoError(t, err)
 
 	// try to read it back but with no assets
-	sessionAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil, nil)
 	require.NoError(t, err)
 
 	missingAssets := make([]assets.Reference, 0)
@@ -339,7 +339,7 @@ func TestSessionHistory(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Inception")

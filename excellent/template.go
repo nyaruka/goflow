@@ -112,6 +112,25 @@ func (t *Template) Evaluate(env envs.Environment, ctx *types.XObject, escaping E
 	return buf.String(), warnings, nil
 }
 
+// EvaluateValue evaluates this template and returns a typed value, producing the same output, warnings and error
+// as passing the original source to Evaluator.TemplateValue - except that it doesn't trim the source, so callers
+// wanting that behavior should parse the trimmed source.
+func (t *Template) EvaluateValue(env envs.Environment, ctx *types.XObject) (types.XValue, []string, error) {
+	// if the template is a single expression, return the typed value it evaluates to
+	if len(t.segments) == 1 {
+		if s, ok := t.segments[0].(*expressionSegment); ok {
+			if s.topLevel == "" || slices.Contains(ctx.Properties(), s.topLevel) {
+				value, warnings := s.evaluate(env, ctx)
+				return value, warnings, nil
+			}
+		}
+	}
+
+	// otherwise fallback to full template evaluation
+	asStr, warnings, err := t.Evaluate(env, ctx, nil)
+	return types.NewXText(asStr), warnings, err
+}
+
 // a segment of a parsed template - either literal text or an expression
 type templateSegment interface {
 	source() string

@@ -278,7 +278,7 @@ func TestReadModifier(t *testing.T) {
 	missingAssets := make([]assets.Reference, 0)
 	missing := func(a assets.Reference, err error) { missingAssets = append(missingAssets, a) }
 
-	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil)
+	sessionAssets, err := engine.NewSessionAssets(env, static.NewEmptySource(), nil, nil)
 	require.NoError(t, err)
 
 	// error if no type field
@@ -313,7 +313,7 @@ func TestReadModifier(t *testing.T) {
 			{"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}
 		]
 	}`))
-	sessionAssets, err = engine.NewSessionAssets(env, source, nil)
+	sessionAssets, err = engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "groups", "modification": "add", "groups": [{"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Losers"}, {"uuid": "4349cdd6-5385-46f3-8e55-5750dd4f35fb", "name": "Winners"}]}`), missing)
@@ -334,7 +334,7 @@ func TestReadModifier(t *testing.T) {
 			{"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7", "name": "Nexmo", "address": "+", "schemes": ["tel"], "roles": ["send", "receive"]}
 		]
 	}`))
-	sessionAssets, err = engine.NewSessionAssets(env, source, nil)
+	sessionAssets, err = engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	mod, err = modifiers.Read(sessionAssets, []byte(`{"type": "routes", "modification": "append", "routes": [{"urn": "tel:+1234567890", "channel": {"uuid": "cd1a2aa6-0d9d-4a8c-b32d-ca5de9c43bdb", "name": "Missing"}}, {"urn": "tel:+1234567891", "channel": {"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7", "name": "Nexmo"}}]}`), missing)
@@ -353,7 +353,7 @@ func TestFieldValueTypes(t *testing.T) {
 	require.NoError(t, err)
 
 	env := envs.NewBuilder().Build()
-	sessionAssets, err := engine.NewSessionAssets(env, source, nil)
+	sessionAssets, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	// value can be omitted

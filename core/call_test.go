@@ -34,7 +34,7 @@ func TestCall(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	vonage := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")

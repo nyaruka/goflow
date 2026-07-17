@@ -41,7 +41,7 @@ func TestFlowAssets(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, source, sa.Source())

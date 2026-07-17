@@ -57,7 +57,7 @@ func TestRunSummary(t *testing.T) {
 	assert.Equal(t, "Ryan Lewis@Registration", engine.FormatRunSummary(session.Environment(), summary))
 
 	// try reading with missing assets
-	emptyAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil)
+	emptyAssets, err := engine.NewSessionAssets(session.Environment(), static.NewEmptySource(), nil, nil)
 	assert.NoError(t, err)
 
 	summary, err = engine.ReadRunSummary(emptyAssets, marshaled, assets.IgnoreMissing)

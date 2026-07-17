@@ -61,7 +61,7 @@ func TestSprint(t *testing.T) {
 	}`))
 	require.NoError(t, err)
 
-	sa, err := NewSessionAssets(env, source, nil)
+	sa, err := NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, source, sa.Source())

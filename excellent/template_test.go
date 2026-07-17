@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -69,6 +70,10 @@ var templateTestCases = []string{
 	`@(err)`,
 	`1 + 2`,
 	"line1\nline2 @string1\n@@line3",
+	`  @(1 + 2)  `,
+	" @string1 ",
+	"\t@string1.xxx\n",
+	` @dec1 and @dec1 `,
 }
 
 func makeTemplateContext() *types.XObject {
@@ -116,6 +121,25 @@ func assertTemplateEquivalent(t *testing.T, env envs.Environment, ctx *types.XOb
 	}
 }
 
+// asserts that evaluating the parse of the trimmed source as a value produces the same result as the existing
+// evaluator's TemplateValue (which trims the source itself)
+func assertTemplateValueEquivalent(t *testing.T, env envs.Environment, ctx *types.XObject, src string) {
+	t.Helper()
+
+	expectedVal, expectedWarns, expectedErr := excellent.NewEvaluator().TemplateValue(env, ctx, src)
+	actualVal, actualWarns, actualErr := excellent.ParseTemplate(strings.TrimSpace(src)).EvaluateValue(env, ctx)
+
+	test.AssertXEqual(t, expectedVal, actualVal, "value mismatch for template %q", src)
+	assert.Equal(t, expectedWarns, actualWarns, "warnings mismatch for template %q", src)
+
+	if expectedErr != nil {
+		require.Error(t, actualErr, "expected error for template %q", src)
+		assert.Equal(t, expectedErr.Error(), actualErr.Error(), "error mismatch for template %q", src)
+	} else {
+		assert.NoError(t, actualErr, "unexpected error for template %q", src)
+	}
+}
+
 func TestParseTemplate(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	ctx := makeTemplateContext()
@@ -125,11 +149,13 @@ func TestParseTemplate(t *testing.T) {
 	for _, src := range templateTestCases {
 		assertTemplateEquivalent(t, env, ctx, src, nil)
 		assertTemplateEquivalent(t, env, ctx, src, escaping)
+		assertTemplateValueEquivalent(t, env, ctx, src)
 	}
 
 	// context with no matching properties means identifiers are treated as literal text
 	empty := types.NewXObject(map[string]types.XValue{})
 	assertTemplateEquivalent(t, env, empty, `Hello @string1 and @(string2)`, nil)
+	assertTemplateValueEquivalent(t, env, empty, `@string1`)
 }
 
 // tests that a template parsed once can be safely evaluated concurrently (run with -race).. note that contexts
@@ -204,6 +230,7 @@ func TestParseTemplateWithFixtures(t *testing.T) {
 
 	for _, src := range templates {
 		assertTemplateEquivalent(t, env, ctx, src, nil)
+		assertTemplateValueEquivalent(t, env, ctx, src)
 	}
 }
 
@@ -242,6 +269,19 @@ func FuzzParseTemplate(f *testing.F) {
 		}
 		if (actualErr != nil) != (expectedErr != nil) || (actualErr != nil && actualErr.Error() != expectedErr.Error()) {
 			t.Fatalf("error mismatch for %q: %v != %v", src, actualErr, expectedErr)
+		}
+
+		expectedTV, expectedTVWarns, expectedTVErr := excellent.NewEvaluator().TemplateValue(env, ctx, src)
+		actualTV, actualTVWarns, actualTVErr := excellent.ParseTemplate(strings.TrimSpace(src)).EvaluateValue(env, ctx)
+
+		if !types.Equals(expectedTV, actualTV) {
+			t.Fatalf("value mismatch for %q: %v != %v", src, actualTV, expectedTV)
+		}
+		if !slices.Equal(actualTVWarns, expectedTVWarns) {
+			t.Fatalf("value warnings mismatch for %q: %v != %v", src, actualTVWarns, expectedTVWarns)
+		}
+		if (actualTVErr != nil) != (expectedTVErr != nil) || (actualTVErr != nil && actualTVErr.Error() != expectedTVErr.Error()) {
+			t.Fatalf("value error mismatch for %q: %v != %v", src, actualTVErr, expectedTVErr)
 		}
 	})
 }

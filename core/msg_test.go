@@ -199,7 +199,7 @@ func TestBroadcastTranslations(t *testing.T) {
 	}
 
 	for i, tc := range tcs {
-		sa, err := engine.NewSessionAssets(tc.env, static.NewEmptySource(), nil)
+		sa, err := engine.NewSessionAssets(tc.env, static.NewEmptySource(), nil, nil)
 		require.NoError(t, err)
 
 		contact := core.NewEmptyContact(sa, "Bob", tc.contactLanguage, nil)

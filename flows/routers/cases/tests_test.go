@@ -425,7 +425,7 @@ func TestTests(t *testing.T) {
 	source, err := static.NewSource([]byte(assetsJSON))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(dmy, source, nil)
+	sa, err := engine.NewSessionAssets(dmy, source, nil, nil)
 	require.NoError(t, err)
 
 	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)

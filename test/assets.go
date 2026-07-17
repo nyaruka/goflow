@@ -28,7 +28,7 @@ func LoadSessionAssets(env envs.Environment, path string) (flows.SessionAssets, 
 
 	mconfig := &migrations.Config{BaseMediaURL: "http://temba.io/"}
 
-	return engine.NewSessionAssets(env, source, mconfig)
+	return engine.NewSessionAssets(env, source, mconfig, nil)
 }
 
 func LoadFlowFromAssets(env envs.Environment, path string, uuid assets.FlowUUID) (flows.Flow, error) {

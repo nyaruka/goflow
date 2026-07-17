@@ -63,7 +63,7 @@ func TestDependencies(t *testing.T) {
 		}`))
 	require.NoError(t, err)
 
-	sa, err := engine.NewSessionAssets(env, source, nil)
+	sa, err := engine.NewSessionAssets(env, source, nil, nil)
 	require.NoError(t, err)
 
 	deps := inspect.NewDependencies(refs, sa)

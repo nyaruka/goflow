@@ -14,6 +14,7 @@ import (
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.Source
+	cache  *flows.Cache
 
 	campaigns *core.CampaignAssets
 	channels  *core.ChannelAssets
@@ -33,8 +34,13 @@ type sessionAssets struct {
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
-// NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfig *migrations.Config) (flows.SessionAssets, error) {
+// NewSessionAssets creates a new session assets instance from the given source. The cache is optional - passing nil
+// creates a private one - but callers reusing sources across assets instances should pass a shared cache.
+func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfig *migrations.Config, cache *flows.Cache) (flows.SessionAssets, error) {
+	if cache == nil {
+		cache = flows.NewCache()
+	}
+
 	campaigns, err := source.Campaigns()
 	if err != nil {
 		return nil, err
@@ -106,6 +112,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 
 	return &sessionAssets{
 		source:    source,
+		cache:     cache,
 		campaigns: core.NewCampaignAssets(campaigns),
 		channels:  core.NewChannelAssets(channels),
 		fields:    fieldAssets,
@@ -124,6 +131,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 }
 
 func (s *sessionAssets) Source() assets.Source           { return s.source }
+func (s *sessionAssets) Cache() *flows.Cache             { return s.cache }
 func (s *sessionAssets) Campaigns() *core.CampaignAssets { return s.campaigns }
 func (s *sessionAssets) Channels() *core.ChannelAssets   { return s.channels }
 func (s *sessionAssets) Fields() *core.FieldAssets       { return s.fields }
