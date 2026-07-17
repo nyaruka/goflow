@@ -27,7 +27,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
@@ -80,7 +80,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't add contacts to the query based group 'Females'"
@@ -118,7 +118,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -157,7 +157,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "No such group with name 'Climbers'"
@@ -225,7 +225,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "groups_added": [

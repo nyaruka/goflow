@@ -14,7 +14,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-8f41-6b2d9f33d623",
+                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "No input to add labels to"
@@ -52,7 +52,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -91,7 +91,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "No such label with name 'Crazy Deals'"
@@ -127,10 +127,10 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "input_labels_added",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "input_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "input_uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "labels": [
                     {
                         "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -172,7 +172,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]",

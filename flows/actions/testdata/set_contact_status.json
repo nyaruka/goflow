@@ -38,13 +38,13 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_status_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "status": "blocked"
             },
             {
-                "uuid": "01969b47-384b-76f8-ba00-bd7f0d08e671",
+                "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "groups_removed": [

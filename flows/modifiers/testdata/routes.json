@@ -43,7 +43,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -168,7 +168,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -257,7 +257,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -302,7 +302,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -347,7 +347,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -437,7 +437,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -482,7 +482,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
@@ -527,7 +527,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "'xyz:12345' is not valid URN"
@@ -569,7 +569,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "URN is taken by another contact",
@@ -605,7 +605,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": []

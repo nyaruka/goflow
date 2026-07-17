@@ -41,7 +41,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "urns": [
@@ -81,7 +81,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "urns": [
@@ -118,7 +118,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "urns": [
@@ -152,7 +152,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: channel[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=My Phone]",
@@ -203,7 +203,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a17e-f85e49829fb9",
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't set channel that can't send as the preferred channel"

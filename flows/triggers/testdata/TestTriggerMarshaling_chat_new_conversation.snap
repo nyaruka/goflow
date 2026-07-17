@@ -1,7 +1,7 @@
 {
     "type": "chat",
     "event": {
-        "uuid": "01969b47-53a3-76f8-a691-235cbe720980",
+        "uuid": "01969b47-53a3-76f8-9d79-c694bc69dcd1",
         "type": "chat_started",
         "created_on": "2025-05-04T12:31:06.123456789Z",
         "channel": {

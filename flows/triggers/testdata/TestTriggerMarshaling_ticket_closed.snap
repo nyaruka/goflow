@@ -1,7 +1,7 @@
 {
     "type": "ticket",
     "event": {
-        "uuid": "01969b47-9ddb-76f8-9654-8a7258fbaae4",
+        "uuid": "01969b47-9ddb-76f8-b384-a4094c3d60be",
         "type": "ticket_closed",
         "created_on": "2025-05-04T12:31:25.123456789Z",
         "ticket_uuid": "276c2e43-d6f9-4c36-8e54-b5af5039acf6"

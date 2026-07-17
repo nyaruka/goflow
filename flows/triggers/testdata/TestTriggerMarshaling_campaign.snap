@@ -1,7 +1,7 @@
 {
     "type": "campaign",
     "event": {
-        "uuid": "01969b47-47eb-76f8-b86e-4b881f09a186",
+        "uuid": "01969b47-47eb-76f8-9729-57745fb13b06",
         "type": "campaign_fired",
         "created_on": "2025-05-04T12:31:03.123456789Z",
         "campaign": {

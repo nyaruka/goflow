@@ -229,7 +229,7 @@ func TestCloneOlderVersion(t *testing.T) {
 
 	// cloned flow should have same spec version but different UUID
 	test.AssertEqualJSON(t, []byte(`{
-		"uuid": "1ae96956-4b34-433e-8d1a-f05fe6923d6d",
+		"uuid": "72b553cc-c00b-44e6-bb48-4710e784acb8",
 		"name": "Older Flow",
 		"spec_version": "13.0.0",
 		"language": "base",

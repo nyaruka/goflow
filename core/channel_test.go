@@ -22,7 +22,7 @@ func TestChannel(t *testing.T) {
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}
 	ch := test.NewChannel("Android", "+250961111111", []string{"tel"}, rolesDefault, nil)
 
-	assert.Equal(t, assets.ChannelUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), ch.UUID())
+	assert.Equal(t, assets.ChannelUUID("15a2ee5e-5e45-4711-8e0f-6b2abe4360d8"), ch.UUID())
 	assert.Equal(t, "Android", ch.Name())
 	assert.Equal(t, []string{"tel"}, ch.Schemes())
 	assert.Equal(t, "+250961111111", ch.Address())

@@ -1,7 +1,7 @@
 {
     "type": "msg",
     "event": {
-        "uuid": "01969b47-7ab3-76f8-8dbf-00ecf5d03034",
+        "uuid": "01969b47-7ab3-76f8-89aa-1577771fa183",
         "type": "msg_received",
         "created_on": "2025-05-04T12:31:16.123456789Z",
         "msg": {

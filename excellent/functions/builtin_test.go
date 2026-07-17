@@ -503,11 +503,11 @@ func TestFunctions(t *testing.T) {
 		{"prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"prompt", dmy, []types.XValue{}, ERROR},
 
-		{"rand", dmy, []types.XValue{}, xn("0.3849275689214193")},
-		{"rand", dmy, []types.XValue{}, xn("0.6075520156746239")},
+		{"rand", dmy, []types.XValue{}, xn("0.774856886849196")},
+		{"rand", dmy, []types.XValue{}, xn("0.5342568785221806")},
 
-		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("5")},
-		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("10")},
+		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("7")},
+		{"rand_between", dmy, []types.XValue{xn("1"), xn("10")}, xn("8")},
 
 		{"read_chars", dmy, []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6")},
 		{"read_chars", dmy, []types.XValue{xs("abcd")}, xs("a b c d")},
