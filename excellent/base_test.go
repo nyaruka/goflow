@@ -33,6 +33,13 @@ func TestParse(t *testing.T) {
 	// if errors occur during parsing, first is returned
 	_, err = excellent.Parse(`(foo +)`, nil)
 	assert.EqualError(t, err, "syntax error at )")
+
+	// deeply nested expressions are rejected before parsing rather than overflowing the stack
+	deep := strings.Repeat("(", 100000) + "1" + strings.Repeat(")", 100000)
+	assert.NotPanics(t, func() {
+		_, err = excellent.Parse(deep, nil)
+	})
+	assert.EqualError(t, err, "expression nesting too deep")
 }
 
 func TestEvaluateTemplateValue(t *testing.T) {

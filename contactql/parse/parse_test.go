@@ -1,6 +1,7 @@
 package parse_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
@@ -517,4 +518,19 @@ func TestQueryBuilding(t *testing.T) {
 	for _, tc := range tests {
 		assert.Equal(t, tc.query, contactql.Stringify(tc.node.Simplify()))
 	}
+}
+
+func TestParseQueryTooComplex(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	resolver := contactql.NewMockResolver(nil, nil, nil)
+
+	// a deeply nested query is rejected before parsing rather than overflowing the stack
+	deep := strings.Repeat("(", 100000) + "name = x" + strings.Repeat(")", 100000)
+
+	var err error
+	assert.NotPanics(t, func() {
+		_, err = parse.Query(env, deep, resolver)
+	})
+	assert.EqualError(t, err, "query is too complex")
+	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
 }

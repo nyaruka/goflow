@@ -148,3 +148,15 @@ func TestIndent(t *testing.T) {
 	assert.Equal(t, "  x\n\n  y", utils.Indent("x\n\ny", "  "))
 	assert.Equal(t, ">>>x", utils.Indent("x", ">>>"))
 }
+
+func TestNestingDepthExceeds(t *testing.T) {
+	assert.False(t, utils.NestingDepthExceeds("", 5))
+	assert.False(t, utils.NestingDepthExceeds("no brackets here", 5))
+	assert.False(t, utils.NestingDepthExceeds("(((((", 5))     // depth 5, not > 5
+	assert.False(t, utils.NestingDepthExceeds("()()()()()()", 1)) // flat, max depth 1
+	assert.False(t, utils.NestingDepthExceeds("a[b].c{d}(e)", 1)) // mixed but shallow
+	assert.True(t, utils.NestingDepthExceeds("((((((", 5))     // depth 6
+	assert.True(t, utils.NestingDepthExceeds("([{([{", 5))     // mixed opening brackets, depth 6
+	// unbalanced closers don't push depth negative
+	assert.False(t, utils.NestingDepthExceeds("))))))((", 5))
+}
