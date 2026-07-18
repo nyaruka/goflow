@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFindTranslation(t *testing.T) {
@@ -380,4 +381,37 @@ func TestTemplating(t *testing.T) {
 			}
 		}
 	}
+}
+
+// TestPreviewMalformed checks that generating a preview from a malformed template asset - one whose
+// component references a variable index beyond the declared variable list - doesn't panic.
+func TestPreviewMalformed(t *testing.T) {
+	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
+
+	// component maps its placeholder to index 5 but only one variable is declared
+	tplAsset := &static.Template{}
+	jsonx.MustUnmarshal([]byte(`{
+		"uuid": "4c01c732-e644-421c-af15-f5606c3e05f0",
+		"name": "greeting",
+		"translations": [
+			{
+				"channel": {"uuid": "79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "name": "WhatsApp"},
+				"locale": "eng",
+				"components": [
+					{"name": "body", "type": "body/text", "content": "Hi {{1}}", "variables": {"1": 5}}
+				],
+				"variables": [{"type": "text"}]
+			}
+		]
+	}`), tplAsset)
+
+	tpl := core.NewTemplate(tplAsset)
+	trans := tpl.FindTranslation(channel, []i18n.Locale{"eng"})
+	require.NotNil(t, trans)
+
+	templating := tpl.Templating(trans, []string{"Chef"})
+
+	assert.NotPanics(t, func() {
+		core.NewTemplateTranslation(trans).Preview(templating.Variables)
+	})
 }

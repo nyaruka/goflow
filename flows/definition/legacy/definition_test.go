@@ -328,3 +328,31 @@ func TestMigrateDefinition(t *testing.T) {
 		}
 	}`), migrated, "migrated flow mismatch")
 }
+
+// TestMigrateDefinitionMalformed checks that migrating deliberately malformed legacy definitions doesn't
+// panic. A form_field ruleset with an empty operand previously caused a slice-bounds panic when the
+// migrated operand was stripped of its leading @.
+func TestMigrateDefinitionMalformed(t *testing.T) {
+	defer uuids.SetGenerator(uuids.DefaultGenerator)
+	uuids.SetGenerator(uuids.NewSeededGenerator(123456, time.Now))
+
+	def := `{
+		"base_language": "eng",
+		"flow_type": "M",
+		"version": "11.12",
+		"metadata": {"uuid": "50a9c0c0-0000-0000-0000-000000000001", "name": "L"},
+		"action_sets": [],
+		"rule_sets": [{
+			"uuid": "413868c6-f35b-4a1c-b80e-df0091568b59",
+			"label": "Delimited Split",
+			"ruleset_type": "form_field",
+			"operand": "",
+			"config": {"field_index": 1, "field_delimiter": " "},
+			"rules": [{"uuid": "22b5ef86-afad-41aa-8863-c167996083a6", "category": {"eng": "Other"}, "destination": null, "destination_type": null, "test": {"type": "true"}, "label": null}]
+		}]
+	}`
+
+	assert.NotPanics(t, func() {
+		legacy.MigrateDefinition([]byte(def), "")
+	})
+}
