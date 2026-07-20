@@ -18,8 +18,9 @@ import (
 
 // MaxConditions is the maximum number of conditions a query can contain. Every condition becomes a clause
 // when the query is translated for a search backend, so this bounds how much work an untrusted query can
-// create both here and downstream. It's far more than any hand written query needs.
-const MaxConditions = 1000
+// create both here and downstream. Hand written queries use a handful of conditions, but generated ones
+// that OR together a list of values are legitimate and much larger, so this leaves room for those.
+const MaxConditions = 250
 
 // Operator is a comparison operation between two values in a condition
 type Operator string
