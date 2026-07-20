@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/budget"
 )
 
 type XFunc func(ctx context.Context, env envs.Environment, args ...XValue) XValue
@@ -35,6 +36,11 @@ func (x *XFunction) Call(ctx context.Context, env envs.Environment, params []XVa
 	// if function returned an error, wrap the error with the function name
 	if IsXError(val) {
 		return NewXErrorf("error calling %s: %s", x.Describe(), val.(*XError).Error())
+	}
+
+	// charge the cost of the produced value against the evaluation budget
+	if b := budget.From(ctx); b != nil && !b.Charge(CostOf(val)) {
+		return NewXErrorf("expression is too complex to evaluate")
 	}
 
 	return val

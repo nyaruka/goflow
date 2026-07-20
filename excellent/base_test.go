@@ -469,6 +469,46 @@ func TestEvaluationErrors(t *testing.T) {
 	}
 }
 
+func TestEvaluationBudget(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	ctx := types.NewXObject(map[string]types.XValue{"name": types.NewXText("bob jones")})
+	eval := excellent.NewEvaluator()
+
+	// expressions that stay within budget evaluate normally
+	allowed := []string{
+		`@(upper(name) & " (" & title(name) & ")")`,
+		`@(join(foreach(split(name, " "), (w) => upper(w)), "-"))`,
+		`@(repeat("=", 80))`,
+	}
+	for _, tpl := range allowed {
+		_, _, err := eval.Template(env, ctx, tpl, nil)
+		assert.NoError(t, err, "expected %s to be within budget", tpl)
+	}
+
+	// per-function limits can be composed to produce a value far larger than any single call, but the
+	// per-evaluation cost budget bounds the whole evaluation regardless of how the limits are composed
+	blocked := []struct {
+		template string
+		desc     string
+	}{
+		{`@(join(foreach(split(repeat("a ",500)," "), (v) => join(foreach(split(repeat("a ",500)," "), repeat, 1000), "")), ""))`, "nested text manufacturing"},
+		{`@(join(foreach(split(repeat("a ",500)," "), (v) => foreach(split(repeat("a ",500)," "), repeat, 1000)), ""))`, "nested array manufacturing"},
+		{`@(foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => 1))))`, "pure iteration over tiny values"},
+	}
+	for _, tc := range blocked {
+		_, _, err := eval.Template(env, ctx, tc.template, nil)
+		if assert.Error(t, err, "expected %s to exceed budget", tc.desc) {
+			assert.Contains(t, err.Error(), "expression is too complex to evaluate", "for %s", tc.desc)
+		}
+	}
+
+	// the budget is also wired for the Expression() entry point, and empty text can't be produced for free
+	// (which would otherwise bypass the per-value floor and allow unbounded iteration)
+	val, _ := eval.Expression(env, ctx, `foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => "")))`)
+	assert.True(t, types.IsXError(val))
+	assert.Contains(t, val.(*types.XError).Error(), "expression is too complex to evaluate")
+}
+
 func TestHasExpressions(t *testing.T) {
 	topLevels := []string{"foo"}
 

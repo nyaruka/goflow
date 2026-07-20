@@ -8,6 +8,7 @@ import (
 	"github.com/antlr4-go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/budget"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -16,6 +17,13 @@ import (
 // are recursive, so without a limit a deeply nested expression can overflow the stack and crash the process.
 // Real expressions are written by humans and nest a handful of levels deep at most.
 const maxExpressionDepth = 100
+
+// maxEvaluationCost is the cost budget for a single expression evaluation. Cost accrues as values are
+// produced - text costs its length in bytes, everything else costs 1 - so this bounds both the memory and
+// the number of operations a single evaluation can consume, no matter how per-function limits are composed.
+// It's set generously: real expressions cost a few hundred units at most, so this is many orders of magnitude
+// of headroom whilst still bounding an attack to a few MB. It can be tightened later based on real-world usage.
+const maxEvaluationCost = 10_000_000
 
 // Evaluator evaluates templates and expressions.
 type Evaluator struct{}
@@ -104,7 +112,7 @@ func (e *Evaluator) Expression(env envs.Environment, root *types.XObject, expres
 
 	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
 	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
-	ctx := context.Background()
+	ctx := budget.With(context.Background(), budget.New(maxEvaluationCost))
 
 	return parsed.Evaluate(ctx, env, scope, warnings), warnings.all
 }

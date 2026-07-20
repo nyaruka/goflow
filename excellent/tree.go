@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/budget"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -190,7 +191,14 @@ type BinaryOperation struct {
 }
 
 func (x *BinaryOperation) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.Op.Evaluate(env, x.Exp1.Evaluate(ctx, env, scope, warnings), x.Exp2.Evaluate(ctx, env, scope, warnings))
+	result := x.Op.Evaluate(env, x.Exp1.Evaluate(ctx, env, scope, warnings), x.Exp2.Evaluate(ctx, env, scope, warnings))
+
+	// charge the cost of the produced value against the evaluation budget
+	if b := budget.From(ctx); b != nil && !b.Charge(types.CostOf(result)) {
+		return types.NewXErrorf("expression is too complex to evaluate")
+	}
+
+	return result
 }
 
 func (x *BinaryOperation) Visit(v func(Expression)) {
