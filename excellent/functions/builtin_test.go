@@ -3,6 +3,7 @@ package functions_test
 import (
 	"fmt"
 	"math"
+	"strings"
 	"testing"
 	"text/template"
 	"time"
@@ -545,8 +546,12 @@ func TestFunctions(t *testing.T) {
 		{"repeat", dmy, []types.XValue{xs("hi"), xs("-1")}, ERROR},
 		{"repeat", dmy, []types.XValue{xs("hello"), nil}, ERROR},
 		{"repeat", dmy, []types.XValue{}, ERROR},
-		{"repeat", dmy, []types.XValue{xs("x"), xi(2000000000)}, ERROR}, // would exceed max output size
-		{"repeat", dmy, []types.XValue{xs("abcdefghij"), xi(200000)}, ERROR},
+		{"repeat", dmy, []types.XValue{xs("x"), xi(10000)}, xs(strings.Repeat("x", 10000))}, // exactly at the limit
+		{"repeat", dmy, []types.XValue{xs("x"), xi(10001)}, ERROR},                          // one over
+		{"repeat", dmy, []types.XValue{xs("é"), xi(10000)}, xs(strings.Repeat("é", 10000))}, // limit is characters, not bytes
+		{"repeat", dmy, []types.XValue{xs("é"), xi(10001)}, ERROR},
+		{"repeat", dmy, []types.XValue{xs("abcdefghij"), xi(1001)}, ERROR}, // 10010 chars
+		{"repeat", dmy, []types.XValue{xs("x"), xi(2000000000)}, ERROR},
 
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("hi"), xs("bye")}, xs("bye ho")},
 		{"replace", dmy, []types.XValue{xs("hi ho hi"), xs("hi"), xs("bye"), xi(1)}, xs("bye ho hi")},
