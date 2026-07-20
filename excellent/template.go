@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"context"
 	"slices"
 	"strings"
 
@@ -135,12 +136,17 @@ type expressionSegment struct {
 
 func (s *expressionSegment) source() string { return s.src }
 
-func (s *expressionSegment) evaluate(env envs.Environment, ctx *types.XObject) (types.XValue, []string) {
+func (s *expressionSegment) evaluate(env envs.Environment, root *types.XObject) (types.XValue, []string) {
 	if s.err != nil {
 		return types.NewXError(s.err), nil
 	}
 
 	warnings := &Warnings{}
-	value := s.expression.Evaluate(env, NewScope(ctx, nil), warnings)
+
+	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
+	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
+	ctx := context.Background()
+
+	value := s.expression.Evaluate(ctx, env, NewScope(root, nil), warnings)
 	return value, warnings.all
 }

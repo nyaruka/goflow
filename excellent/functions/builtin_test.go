@@ -1,6 +1,7 @@
 package functions_test
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"strings"
@@ -637,7 +638,7 @@ func TestFunctions(t *testing.T) {
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, xa(xs("1,2,3"))},
 		{"split", dmy, []types.XValue{xs(strings.Repeat("x ", 10_000)), nil}, xa(xitems(10_000)...)}, // exactly at the limit
-		{"split", dmy, []types.XValue{xs(strings.Repeat("x ", 10_001)), nil}, ERROR},                // one over
+		{"split", dmy, []types.XValue{xs(strings.Repeat("x ", 10_001)), nil}, ERROR},                 // one over
 		{"split", dmy, []types.XValue{xs("1,2,3"), ERROR}, ERROR},
 		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},
@@ -835,7 +836,7 @@ func TestFunctions(t *testing.T) {
 		xFunc := functions.Lookup(tc.name)
 		require.NotNil(t, "no such registered function: %s", tc.name)
 
-		result := xFunc.Call(tc.env, tc.args)
+		result := xFunc.Call(context.Background(), tc.env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {

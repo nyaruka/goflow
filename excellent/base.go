@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -91,17 +92,21 @@ func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, temp
 
 // Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, expression string) (types.XValue, []string) {
+func (e *Evaluator) Expression(env envs.Environment, root *types.XObject, expression string) (types.XValue, []string) {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
 		return types.NewXError(err), nil
 	}
 
-	scope := NewScope(ctx, nil)
+	scope := NewScope(root, nil)
 
 	warnings := &Warnings{}
 
-	return parsed.Evaluate(env, scope, warnings), warnings.all
+	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
+	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
+	ctx := context.Background()
+
+	return parsed.Evaluate(ctx, env, scope, warnings), warnings.all
 }
 
 // Parse parses an expression

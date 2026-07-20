@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -164,8 +165,8 @@ func (r *Switch) matchCase(run flows.Run, operand types.XValue, log events.Event
 			args = append(args, arg)
 		}
 
-		// call our function
-		result := xtest.Call(run.Session().MergedEnvironment(), args)
+		// call our function - context.TODO until the session threads its context through routing
+		result := xtest.Call(context.TODO(), run.Session().MergedEnvironment(), args)
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {

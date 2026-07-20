@@ -1,13 +1,14 @@
 package types
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/envs"
 )
 
-type XFunc func(env envs.Environment, args ...XValue) XValue
+type XFunc func(ctx context.Context, env envs.Environment, args ...XValue) XValue
 
 // XFunction is a callable function.
 //
@@ -28,8 +29,8 @@ func NewXFunction(name string, fn XFunc) *XFunction {
 	return &XFunction{name: name, fn: fn}
 }
 
-func (x *XFunction) Call(env envs.Environment, params []XValue) XValue {
-	val := x.fn(env, params...)
+func (x *XFunction) Call(ctx context.Context, env envs.Environment, params []XValue) XValue {
+	val := x.fn(ctx, env, params...)
 
 	// if function returned an error, wrap the error with the function name
 	if IsXError(val) {

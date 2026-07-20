@@ -444,7 +444,7 @@ func TestTests(t *testing.T) {
 		testFunc, exists := cases.XTESTS[tc.name]
 		require.True(t, exists, "no such registered function: %s", tc.name)
 
-		result := testFunc.Call(env, tc.args)
+		result := testFunc.Call(context.Background(), env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
