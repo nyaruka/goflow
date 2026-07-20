@@ -22,12 +22,12 @@ func TestParse(t *testing.T) {
 	// context callback is optional
 	exp, err := excellent.Parse(`foo + 1`, nil)
 	assert.NoError(t, err)
-	assert.IsType(t, &excellent.Addition{}, exp)
+	assert.IsType(t, &excellent.BinaryOperation{}, exp)
 
 	var paths [][]string
 	exp, err = excellent.Parse(`foo.bar + 1`, func(p []string) { paths = append(paths, p) })
 	assert.NoError(t, err)
-	assert.IsType(t, &excellent.Addition{}, exp)
+	assert.IsType(t, &excellent.BinaryOperation{}, exp)
 	assert.Equal(t, [][]string{{"foo"}, {"foo", "bar"}}, paths)
 
 	// if errors occur during parsing, first is returned

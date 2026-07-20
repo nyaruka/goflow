@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	. "github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,7 +24,8 @@ func TestParseTrees(t *testing.T) {
 		},
 		{
 			expression: `"abc" & "cde"`,
-			parsed: &Concatenation{
+			parsed: &BinaryOperation{
+				Op:   operators.Concatenate,
 				Exp1: &TextLiteral{Value: types.NewXText("abc")},
 				Exp2: &TextLiteral{Value: types.NewXText("cde")},
 			},
@@ -103,21 +105,21 @@ func TestExpressionVisitAndString(t *testing.T) {
 
 		{&AnonFunction{Args: []string{"x", "y"}, Body: abc}, []string{`"abc"`, `(x, y) => "abc"`}},
 
-		{&Concatenation{Exp1: abc, Exp2: cde}, []string{`"abc"`, `"cde"`, `"abc" & "cde"`}},
+		{&BinaryOperation{Op: operators.Concatenate, Exp1: abc, Exp2: cde}, []string{`"abc"`, `"cde"`, `"abc" & "cde"`}},
 
-		{&Addition{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 + 2`}},
-		{&Subtraction{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 - 2`}},
-		{&Multiplication{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 * 2`}},
-		{&Division{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 / 2`}},
-		{&Exponent{Expression: one, Exponent: two}, []string{`1`, `2`, `1 ^ 2`}},
+		{&BinaryOperation{Op: operators.Add, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 + 2`}},
+		{&BinaryOperation{Op: operators.Subtract, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 - 2`}},
+		{&BinaryOperation{Op: operators.Multiply, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 * 2`}},
+		{&BinaryOperation{Op: operators.Divide, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 / 2`}},
+		{&BinaryOperation{Op: operators.Exponent, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 ^ 2`}},
 		{&Negation{Exp: one}, []string{`1`, `-1`}},
 
-		{&Equality{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 = 2`}},
-		{&InEquality{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 != 2`}},
-		{&LessThan{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 < 2`}},
-		{&LessThanOrEqual{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 <= 2`}},
-		{&GreaterThan{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 > 2`}},
-		{&GreaterThanOrEqual{Exp1: one, Exp2: two}, []string{`1`, `2`, `1 >= 2`}},
+		{&BinaryOperation{Op: operators.Equal, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 = 2`}},
+		{&BinaryOperation{Op: operators.NotEqual, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 != 2`}},
+		{&BinaryOperation{Op: operators.LessThan, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 < 2`}},
+		{&BinaryOperation{Op: operators.LessThanOrEqual, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 <= 2`}},
+		{&BinaryOperation{Op: operators.GreaterThan, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 > 2`}},
+		{&BinaryOperation{Op: operators.GreaterThanOrEqual, Exp1: one, Exp2: two}, []string{`1`, `2`, `1 >= 2`}},
 
 		{&Parentheses{Exp: abc}, []string{`"abc"`, `("abc")`}},
 
