@@ -8,6 +8,7 @@ import (
 	"github.com/antlr4-go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/budget"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -111,7 +112,7 @@ func (e *Evaluator) Expression(env envs.Environment, root *types.XObject, expres
 
 	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
 	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
-	ctx := types.WithBudget(context.Background(), types.NewBudget(maxEvaluationCost))
+	ctx := budget.With(context.Background(), budget.New(maxEvaluationCost))
 
 	return parsed.Evaluate(ctx, env, scope, warnings), warnings.all
 }

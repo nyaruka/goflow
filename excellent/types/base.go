@@ -142,6 +142,16 @@ func IsNil(x XValue) bool {
 	return x == nil || reflect.ValueOf(x).IsNil()
 }
 
+// CostOf returns the cost of producing a value, for the purposes of the per-evaluation budget. Text costs
+// its length in bytes so that memory is bounded; everything else costs 1 so that producing many tiny values
+// is bounded too.
+func CostOf(x XValue) int {
+	if t, ok := x.(*XText); ok {
+		return len(t.Native())
+	}
+	return 1
+}
+
 // baseValue is shared by all X types
 type baseValue struct {
 	deprecated string

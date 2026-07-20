@@ -256,6 +256,19 @@ func TestTruthy(t *testing.T) {
 	assert.True(t, types.Truthy(types.NewXText("x")))
 }
 
+func TestCostOf(t *testing.T) {
+	// text costs its length in bytes
+	assert.Equal(t, 0, types.CostOf(types.NewXText("")))
+	assert.Equal(t, 5, types.CostOf(types.NewXText("hello")))
+	assert.Equal(t, 3, types.CostOf(types.NewXText("é!"))) // bytes (é is 2), not runes (which would be 2)
+
+	// everything else costs 1
+	assert.Equal(t, 1, types.CostOf(types.NewXNumberFromInt(1234567890)))
+	assert.Equal(t, 1, types.CostOf(types.XBooleanTrue))
+	assert.Equal(t, 1, types.CostOf(types.NewXArray(types.NewXText("a"), types.NewXText("b"))))
+	assert.Equal(t, 1, types.CostOf(nil))
+}
+
 type XBogusType struct {
 	types.XText
 }
