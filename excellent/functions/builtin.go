@@ -26,10 +26,10 @@ import (
 var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
-// maxRepeatOutput caps the number of characters that repeat() will build, to avoid unbounded allocation
-// from an attacker-controlled count. Real usage repeats short strings a handful of times, so this is
-// generous headroom whilst still bounding a single call.
-const maxRepeatOutput = 1_000
+// maxRepeatOutput caps the number of characters that repeat() will build in a single call, to avoid a large
+// transient allocation from an attacker-controlled count (the per-evaluation budget bounds cost across calls,
+// but only after each value is built). Matches the default limit on an evaluated template.
+const maxRepeatOutput = 10_000
 
 // maxArrayLength caps the number of items in an array built by a function such as split(), to avoid
 // unbounded allocation from attacker-controlled input. Matches the default limit on an evaluated template,
