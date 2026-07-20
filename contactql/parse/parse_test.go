@@ -3,6 +3,7 @@ package parse_test
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -10,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseQuery(t *testing.T) {
@@ -533,4 +535,31 @@ func TestParseQueryTooComplex(t *testing.T) {
 	})
 	assert.EqualError(t, err, "query is too complex")
 	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
+}
+
+// TestSimplifyLongChain checks that a long chain of same-op conditions is flattened correctly and, more
+// importantly, in linear time. Parsing `a or b or c ...` produces a left leaning tree and flattening it
+// used to copy the promoted children at every level, which is quadratic - a ~1.7MB query of this shape
+// took ~35s of CPU. The time bound here is very generous compared to the ~0.2s this now takes; it exists
+// only to catch a return of the quadratic behaviour.
+func TestSimplifyLongChain(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	resolver := contactql.NewMockResolver(nil, nil, nil)
+
+	const n = 100000
+	query := "name=x" + strings.Repeat(" OR name=x", n)
+
+	start := time.Now()
+	parsed, err := parse.Query(env, query, resolver)
+	elapsed := time.Since(start)
+
+	require.NoError(t, err)
+
+	// all the conditions should have been promoted into a single OR node
+	root, ok := parsed.Root().(*contactql.BoolCombination)
+	require.True(t, ok, "root should be a bool combination")
+	assert.Equal(t, contactql.BoolOperatorOr, root.Operator())
+	assert.Len(t, root.Children(), n+1)
+
+	assert.Less(t, elapsed, 10*time.Second, "flattening a chain of %d conditions took %s - has it become quadratic again?", n, elapsed)
 }

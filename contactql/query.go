@@ -308,24 +308,28 @@ func (b *BoolCombination) validate(env envs.Environment, resolver Resolver) erro
 }
 
 func (b *BoolCombination) Simplify() QueryNode {
-	simplifiedChildren := make([]QueryNode, 0, len(b.children))
+	var newChildren []QueryNode
 
+	// simplify by promoting grand children to children if they're combined with same op
 	for _, child := range b.children {
 		// let children remove themselves by simplifying to nil
 		sc := child.Simplify()
-		if sc != nil {
-			simplifiedChildren = append(simplifiedChildren, sc)
+		if sc == nil {
+			continue
 		}
-	}
 
-	newChildren := make([]QueryNode, 0, 2*len(simplifiedChildren))
-
-	// simplify by promoting grand children to children if they're combined with same op
-	for _, child := range simplifiedChildren {
-		switch typed := child.(type) {
+		switch typed := sc.(type) {
 		case *BoolCombination:
 			if typed.op == b.op {
-				newChildren = append(newChildren, typed.children...)
+				// adopt the grand children slice the first time we promote rather than copying into a new
+				// one. Parsing a chain like a AND b AND c gives a left leaning tree, so copying at every
+				// level would make flattening it quadratic in the length of the chain. The slice we adopt
+				// was freshly built by the child's own Simplify and isn't referenced anywhere else.
+				if newChildren == nil {
+					newChildren = typed.children
+				} else {
+					newChildren = append(newChildren, typed.children...)
+				}
 			} else {
 				newChildren = append(newChildren, typed)
 			}
