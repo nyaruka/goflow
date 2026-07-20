@@ -46,6 +46,15 @@ func TestFunctions(t *testing.T) {
 		WithTimezone(la).
 		Build()
 
+	// inputs for testing array size limits
+	xitems := func(n int) []types.XValue {
+		items := make([]types.XValue, n)
+		for i := range items {
+			items[i] = xs("x")
+		}
+		return items
+	}
+
 	var funcTests = []struct {
 		name     string
 		env      envs.Environment
@@ -69,6 +78,8 @@ func TestFunctions(t *testing.T) {
 		{"array", dmy, []types.XValue{}, xa()},
 		{"array", dmy, []types.XValue{xi(123), xs("abc")}, xa(xi(123), xs("abc"))},
 		{"array", dmy, []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
+		{"array", dmy, xitems(10_000), xa(xitems(10_000)...)}, // exactly at the limit
+		{"array", dmy, xitems(10_001), ERROR},                 // one over
 
 		{"attachment_parts", dmy, []types.XValue{xs("image/jpeg:http://s3.com/test.jpg")}, types.NewXObject(map[string]types.XValue{
 			"content_type": xs("image/jpeg"),
@@ -109,6 +120,8 @@ func TestFunctions(t *testing.T) {
 
 		{"concat", dmy, []types.XValue{xa(xi(1), xi(2)), xa(xi(3), xi(4))}, xa(xi(1), xi(2), xi(3), xi(4))},
 		{"concat", dmy, []types.XValue{xa(), xa()}, xa()},
+		{"concat", dmy, []types.XValue{xa(xitems(5_000)...), xa(xitems(5_000)...)}, xa(xitems(10_000)...)}, // exactly at the limit
+		{"concat", dmy, []types.XValue{xa(xitems(5_000)...), xa(xitems(5_001)...)}, ERROR},                 // one over
 		{"concat", dmy, []types.XValue{xa()}, ERROR},
 		{"concat", dmy, []types.XValue{xa(), ERROR}, ERROR},
 		{"concat", dmy, []types.XValue{ERROR, xa()}, ERROR},
@@ -546,11 +559,11 @@ func TestFunctions(t *testing.T) {
 		{"repeat", dmy, []types.XValue{xs("hi"), xs("-1")}, ERROR},
 		{"repeat", dmy, []types.XValue{xs("hello"), nil}, ERROR},
 		{"repeat", dmy, []types.XValue{}, ERROR},
-		{"repeat", dmy, []types.XValue{xs("x"), xi(10000)}, xs(strings.Repeat("x", 10000))}, // exactly at the limit
-		{"repeat", dmy, []types.XValue{xs("x"), xi(10001)}, ERROR},                          // one over
-		{"repeat", dmy, []types.XValue{xs("é"), xi(10000)}, xs(strings.Repeat("é", 10000))}, // limit is characters, not bytes
-		{"repeat", dmy, []types.XValue{xs("é"), xi(10001)}, ERROR},
-		{"repeat", dmy, []types.XValue{xs("abcdefghij"), xi(1001)}, ERROR}, // 10010 chars
+		{"repeat", dmy, []types.XValue{xs("x"), xi(1000)}, xs(strings.Repeat("x", 1000))}, // exactly at the limit
+		{"repeat", dmy, []types.XValue{xs("x"), xi(1001)}, ERROR},                         // one over
+		{"repeat", dmy, []types.XValue{xs("é"), xi(1000)}, xs(strings.Repeat("é", 1000))}, // limit is characters, not bytes
+		{"repeat", dmy, []types.XValue{xs("é"), xi(1001)}, ERROR},
+		{"repeat", dmy, []types.XValue{xs("abcdefghij"), xi(101)}, ERROR}, // 1010 chars
 		{"repeat", dmy, []types.XValue{xs("x"), xi(2000000000)}, ERROR},
 
 		{"replace", dmy, []types.XValue{xs("hi ho"), xs("hi"), xs("bye")}, xs("bye ho")},
@@ -623,6 +636,8 @@ func TestFunctions(t *testing.T) {
 		{"split", dmy, []types.XValue{xs("1 2,3"), nil}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(",")}, xa(xs("1"), xs("2"), xs("3"))},
 		{"split", dmy, []types.XValue{xs("1,2,3"), xs(".")}, xa(xs("1,2,3"))},
+		{"split", dmy, []types.XValue{xs(strings.Repeat("x ", 10_000)), nil}, xa(xitems(10_000)...)}, // exactly at the limit
+		{"split", dmy, []types.XValue{xs(strings.Repeat("x ", 10_001)), nil}, ERROR},                // one over
 		{"split", dmy, []types.XValue{xs("1,2,3"), ERROR}, ERROR},
 		{"split", dmy, []types.XValue{ERROR, xs(",")}, ERROR},
 		{"split", dmy, []types.XValue{}, ERROR},

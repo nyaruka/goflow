@@ -26,9 +26,14 @@ var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 // maxRepeatOutput caps the number of characters that repeat() will build, to avoid unbounded allocation
-// from an attacker-controlled count. Matches the default limit on an evaluated template, beyond which the
-// output would be truncated anyway.
-const maxRepeatOutput = 10_000
+// from an attacker-controlled count. Real usage repeats short strings a handful of times, so this is
+// generous headroom whilst still bounding a single call.
+const maxRepeatOutput = 1_000
+
+// maxArrayLength caps the number of items in an array built by a function such as split(), to avoid
+// unbounded allocation from attacker-controlled input. Matches the default limit on an evaluated template,
+// since splitting a maximum size text can produce at most that many items.
+const maxArrayLength = 10_000
 
 func init() {
 	builtin := map[string]types.XFunc{
@@ -277,6 +282,10 @@ func Time(env envs.Environment, value types.XValue) types.XValue {
 //
 // @function array(values...)
 func Array(env envs.Environment, values ...types.XValue) types.XValue {
+	if len(values) > maxArrayLength {
+		return types.NewXErrorf("cannot build an array with more than %d items", maxArrayLength)
+	}
+
 	// check none of our args are errors
 	for _, arg := range values {
 		if types.IsXError(arg) {
@@ -424,6 +433,9 @@ func Code(env envs.Environment, text *types.XText) types.XValue {
 // @function split(text, [,delimiters])
 func Split(env envs.Environment, text *types.XText, delimiters *types.XText) types.XValue {
 	splits := extractWords(text.Native(), delimiters.Native())
+	if len(splits) > maxArrayLength {
+		return types.NewXErrorf("cannot build an array with more than %d items", maxArrayLength)
+	}
 
 	nonEmpty := make([]types.XValue, 0)
 	for _, split := range splits {
@@ -1692,6 +1704,10 @@ func Unique(env envs.Environment, array *types.XArray) types.XValue {
 //
 // @function concat(array1, array2)
 func Concat(env envs.Environment, array1 *types.XArray, array2 *types.XArray) types.XValue {
+	if array1.Count()+array2.Count() > maxArrayLength {
+		return types.NewXErrorf("cannot build an array with more than %d items", maxArrayLength)
+	}
+
 	both := make([]types.XValue, 0, array1.Count()+array2.Count())
 
 	for i := 0; i < array1.Count(); i++ {
