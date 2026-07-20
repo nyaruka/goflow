@@ -1,7 +1,6 @@
 package services_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -13,7 +12,7 @@ import (
 )
 
 func TestAirtimeService(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	svc := services.NewAirtime("USD")
 
 	uuid := events.NewEventUUID()

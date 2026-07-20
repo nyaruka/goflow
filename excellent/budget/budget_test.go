@@ -1,7 +1,6 @@
 package budget_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/budget"
@@ -22,10 +21,10 @@ func TestBudget(t *testing.T) {
 
 func TestContext(t *testing.T) {
 	// no budget on a bare context
-	assert.Nil(t, budget.From(context.Background()))
+	assert.Nil(t, budget.From(t.Context()))
 
 	// round-trips through the context
 	b := budget.New(10)
-	ctx := budget.With(context.Background(), b)
+	ctx := budget.With(t.Context(), b)
 	assert.Same(t, b, budget.From(ctx))
 }

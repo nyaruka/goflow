@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nyaruka/gocommon/httpx"
@@ -14,7 +13,7 @@ import (
 )
 
 func TestWebhookCall(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	eng := test.NewMockedEngine(map[string][]*httpx.MockResponse{
 		"http://temba.io/": {

@@ -1,7 +1,6 @@
 package core_test
 
 import (
-	"context"
 	"encoding/json"
 	"os"
 	"sort"
@@ -511,7 +510,7 @@ func TestReevaluateQueryBasedGroups(t *testing.T) {
 		).Manual().Build()
 
 		eng := engine.NewBuilder().Build()
-		session, _, _ := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
+		session, _, _ := eng.NewSession(t.Context(), sa, env, contact, trigger, nil)
 		afterJSON := jsonx.MustMarshal(session.Contact())
 
 		test.AssertEqualJSON(t, tc.ContactAfter, afterJSON, "contact JSON mismatch in '%s'", tc.Description)

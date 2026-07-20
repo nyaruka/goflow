@@ -1,7 +1,6 @@
 package engine_test
 
 import (
-	"context"
 	"encoding/json"
 	"os"
 	"sort"
@@ -182,7 +181,7 @@ func TestQueryBasedGroupReevaluationOnTrigger(t *testing.T) {
 	trigger := triggers.NewBuilder(assets.NewFlowReference("1b462ce8-983a-4393-b133-e15a0efdb70c", "")).Manual().Build()
 	eng := engine.NewBuilder().Build()
 
-	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
+	session, sprint, err := eng.NewSession(t.Context(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, 3, len(sprint.Events()))
@@ -276,7 +275,7 @@ func TestWaitTimeout(t *testing.T) {
 	waitEvent := sprint.Events()[2].(*events.MsgWait)
 	require.Equal(t, 600, *waitEvent.TimeoutSeconds)
 
-	sprint, err := session.Resume(context.Background(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
+	sprint, err := session.Resume(t.Context(), resumes.NewWaitTimeout(events.NewWaitTimedOut()))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -290,7 +289,7 @@ func TestWaitTimeout(t *testing.T) {
 }
 
 func TestCurrentContext(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/subflow_loop_with_wait.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()
 
@@ -347,7 +346,7 @@ func TestSessionHistory(t *testing.T) {
 
 	// trigger session manually which will have no history
 	eng := engine.NewBuilder().Build()
-	session1, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
+	session1, _, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, core.EmptyHistory, session1.History())
@@ -357,7 +356,7 @@ func TestSessionHistory(t *testing.T) {
 	runSummaryJSON := jsonx.MustMarshal(runSummary)
 	history := flows.NewChildHistory(session1)
 
-	session2, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).FlowAction(history, runSummaryJSON).Build(), nil)
+	session2, _, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).FlowAction(history, runSummaryJSON).Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, &core.SessionHistory{
@@ -368,7 +367,7 @@ func TestSessionHistory(t *testing.T) {
 }
 
 func TestMaxSprintsPerSession(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/two_questions.json").WithFlow("615b8a0f-588c-4d20-a05f-363b0b4ce6f4").MustBuild()
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 
@@ -390,7 +389,7 @@ func TestMaxSprintsPerSession(t *testing.T) {
 }
 
 func TestEngineErrors(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	// create a completed session and try to resume it
 	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/empty.json").WithFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02").MustBuild()

@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"context"
 	"net/http"
 	"strings"
 	"testing"
@@ -14,7 +13,7 @@ import (
 )
 
 func TestHTTPLogs(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	tracing := httpx.WithTraces(httpx.WithMocks(http.DefaultTransport, map[string][]*httpx.MockResponse{
 		"http://temba.io/": {

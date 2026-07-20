@@ -1,7 +1,6 @@
 package flows_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -40,7 +39,7 @@ func TestHistory(t *testing.T) {
 	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, _, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
+	session, _, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, core.SessionUUID(""), session.History().ParentUUID)

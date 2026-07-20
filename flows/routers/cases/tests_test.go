@@ -1,7 +1,6 @@
 package cases_test
 
 import (
-	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -434,7 +433,7 @@ func TestTests(t *testing.T) {
 		trigger := triggers.NewBuilder(assets.NewFlowReference("76f0a02f-3b75-4b86-9064-e9195e1b3a02", "Test")).Manual().Build()
 		eng := engine.NewBuilder().Build()
 
-		session, _, err := eng.NewSession(context.Background(), sa, tc.env, contact, trigger, nil)
+		session, _, err := eng.NewSession(t.Context(), sa, tc.env, contact, trigger, nil)
 		require.NoError(t, err)
 
 		env := session.MergedEnvironment()
@@ -444,7 +443,7 @@ func TestTests(t *testing.T) {
 		testFunc, exists := cases.XTESTS[tc.name]
 		require.True(t, exists, "no such registered function: %s", tc.name)
 
-		result := testFunc.Call(context.Background(), env, tc.args)
+		result := testFunc.Call(t.Context(), env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
