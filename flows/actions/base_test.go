@@ -239,7 +239,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			Build()
 
 		// create session
-		session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, trigger, call)
+		session, sprint, err := eng.NewSession(t.Context(), sa, env, contact, trigger, call)
 		require.NoError(t, err)
 
 		// check all http mocks were used
@@ -841,7 +841,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	_, sprint, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
+	_, sprint, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)
@@ -860,7 +860,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 		if event != nil {
 			trigger := triggers.NewBuilder(flow).FlowAction(event.History, event.RunSummary).Build()
 
-			session, sprint, err = eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
+			session, sprint, err = eng.NewSession(t.Context(), sa, env, contact, trigger, nil)
 			require.NoError(t, err)
 
 			sessions = append(sessions, session)
@@ -880,7 +880,7 @@ func TestStartSessionLoopProtection(t *testing.T) {
 }
 
 func TestStartSessionLoopProtectionWithInput(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	env := envs.NewBuilder().Build()
 
 	source, err := static.NewSource([]byte(`{
@@ -971,7 +971,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
 
 	eng := engine.NewBuilder().Build()
-	session, sprint, err := eng.NewSession(context.Background(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
+	session, sprint, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
 	require.NoError(t, err)
 
 	sessions := make([]flows.Session, 0)

@@ -1,7 +1,6 @@
 package services_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/nyaruka/goflow/test/services"
@@ -10,7 +9,7 @@ import (
 
 func TestLLMService(t *testing.T) {
 	svc := services.NewLLM()
-	ctx := context.Background()
+	ctx := t.Context()
 
 	// plain input is echoed with instructions
 	resp, err := svc.Response(ctx, "Summarize", "Hello", 100)

@@ -1,7 +1,6 @@
 package engine_test
 
 import (
-	"context"
 	"os"
 	"strings"
 	"testing"
@@ -245,7 +244,7 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	env := envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithTimezone(tz).Build()
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
+	session, _, err := eng.NewSession(t.Context(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -286,7 +285,7 @@ func TestSetResult(t *testing.T) {
 	env := envs.NewBuilder().WithAllowedLanguages("eng", "spa").WithTimezone(tz).Build()
 
 	eng := test.NewEngine()
-	session, _, err := eng.NewSession(context.Background(), sa, env, contact, trigger, nil)
+	session, _, err := eng.NewSession(t.Context(), sa, env, contact, trigger, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]

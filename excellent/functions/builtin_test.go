@@ -1,7 +1,6 @@
 package functions_test
 
 import (
-	"context"
 	"fmt"
 	"math"
 	"strings"
@@ -836,7 +835,7 @@ func TestFunctions(t *testing.T) {
 		xFunc := functions.Lookup(tc.name)
 		require.NotNil(t, "no such registered function: %s", tc.name)
 
-		result := xFunc.Call(context.Background(), tc.env, tc.args)
+		result := xFunc.Call(t.Context(), tc.env, tc.args)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
