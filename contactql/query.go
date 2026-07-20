@@ -387,7 +387,7 @@ func NewContactQuery(env envs.Environment, root QueryNode, resolver Resolver) (*
 	numConditions := 0
 	walk(root, func(*Condition) { numConditions++ })
 	if numConditions > MaxConditions {
-		return nil, NewQueryError(ErrTooComplex, fmt.Sprintf("query contains more than %d conditions", MaxConditions))
+		return nil, NewQueryError(ErrTooComplex, "query is too complex")
 	}
 
 	if err := root.validate(env, resolver); err != nil {
