@@ -25,8 +25,8 @@ import (
 var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
-// maxRepeatOutput caps the size of the string that repeat() will build, to avoid unbounded allocation from
-// an attacker-controlled count.
+// maxRepeatOutput caps the size in bytes of the string that repeat() will build, to avoid unbounded
+// allocation from an attacker-controlled count.
 const maxRepeatOutput = 1_000_000
 
 func init() {
@@ -823,7 +823,7 @@ func Repeat(env envs.Environment, text *types.XText, count int) types.XValue {
 		return types.NewXErrorf("must be called with a positive integer, got %d", count)
 	}
 	if n := len(text.Native()); n > 0 && count > maxRepeatOutput/n {
-		return types.NewXErrorf("cannot build a string longer than %d characters", maxRepeatOutput)
+		return types.NewXErrorf("cannot build a string longer than %d bytes", maxRepeatOutput)
 	}
 
 	var output bytes.Buffer

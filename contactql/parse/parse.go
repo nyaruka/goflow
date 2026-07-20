@@ -16,8 +16,8 @@ import (
 
 // maxQueryDepth is the maximum bracket nesting depth allowed in a query. Parsing and walking the query
 // tree are recursive, so without a limit a deeply nested query can overflow the stack and crash the
-// process. The limit is far above anything a real query needs but well below what overflows the stack.
-const maxQueryDepth = 250
+// process. Real queries are written by humans and nest a handful of levels deep at most.
+const maxQueryDepth = 100
 
 // Query parses a ContactQL query from the given input. If resolver is provided then we validate against it
 // to ensure that fields and groups exist. If not provided then still validate what we can.

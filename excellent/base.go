@@ -13,8 +13,8 @@ import (
 
 // maxExpressionDepth is the maximum bracket nesting depth allowed in an expression. Parsing and evaluating
 // are recursive, so without a limit a deeply nested expression can overflow the stack and crash the process.
-// The limit is far above anything a real expression needs but well below the depth that overflows the stack.
-const maxExpressionDepth = 250
+// Real expressions are written by humans and nest a handful of levels deep at most.
+const maxExpressionDepth = 100
 
 // Evaluator evaluates templates and expressions.
 type Evaluator struct{}
