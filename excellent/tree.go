@@ -181,118 +181,41 @@ func (x *AnonFunction) String() string {
 	return fmt.Sprintf("(%s) => %s", strings.Join(x.Args, ", "), x.Body)
 }
 
-type Concatenation struct {
+// binaryOperators maps the symbol of each binary operator to its implementation
+var binaryOperators = map[string]operators.BinaryOperator{
+	"&":  operators.Concatenate,
+	"+":  operators.Add,
+	"-":  operators.Subtract,
+	"*":  operators.Multiply,
+	"/":  operators.Divide,
+	"^":  operators.Exponent,
+	"=":  operators.Equal,
+	"!=": operators.NotEqual,
+	"<":  operators.LessThan,
+	"<=": operators.LessThanOrEqual,
+	">":  operators.GreaterThan,
+	">=": operators.GreaterThanOrEqual,
+}
+
+// BinaryOperation is a binary operator applied to two operands, e.g. 1 + 2
+type BinaryOperation struct {
+	Op   string
 	Exp1 Expression
 	Exp2 Expression
 }
 
-func (x *Concatenation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Concatenate(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+func (x *BinaryOperation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return binaryOperators[x.Op](env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
 }
 
-func (x *Concatenation) Visit(v func(Expression)) {
+func (x *BinaryOperation) Visit(v func(Expression)) {
 	x.Exp1.Visit(v)
 	x.Exp2.Visit(v)
 	v(x)
 }
 
-func (x *Concatenation) String() string {
-	return fmt.Sprintf("%s & %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type Addition struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *Addition) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Add(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *Addition) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *Addition) String() string {
-	return fmt.Sprintf("%s + %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type Subtraction struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *Subtraction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Subtract(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *Subtraction) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *Subtraction) String() string {
-	return fmt.Sprintf("%s - %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type Multiplication struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *Multiplication) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Multiply(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *Multiplication) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *Multiplication) String() string {
-	return fmt.Sprintf("%s * %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type Division struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *Division) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Divide(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *Division) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *Division) String() string {
-	return fmt.Sprintf("%s / %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type Exponent struct {
-	Expression Expression
-	Exponent   Expression
-}
-
-func (x *Exponent) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Exponent(env, x.Expression.Evaluate(env, scope, warnings), x.Exponent.Evaluate(env, scope, warnings))
-}
-
-func (x *Exponent) Visit(v func(Expression)) {
-	x.Expression.Visit(v)
-	x.Exponent.Visit(v)
-	v(x)
-}
-
-func (x *Exponent) String() string {
-	return fmt.Sprintf("%s ^ %s", x.Expression.String(), x.Exponent.String())
+func (x *BinaryOperation) String() string {
+	return fmt.Sprintf("%s %s %s", x.Exp1.String(), x.Op, x.Exp2.String())
 }
 
 type Negation struct {
@@ -310,120 +233,6 @@ func (x *Negation) Visit(v func(Expression)) {
 
 func (x *Negation) String() string {
 	return fmt.Sprintf("-%s", x.Exp.String())
-}
-
-type Equality struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *Equality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Equal(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *Equality) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *Equality) String() string {
-	return fmt.Sprintf("%s = %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type InEquality struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *InEquality) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.NotEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *InEquality) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *InEquality) String() string {
-	return fmt.Sprintf("%s != %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type LessThan struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *LessThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.LessThan(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *LessThan) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *LessThan) String() string {
-	return fmt.Sprintf("%s < %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type LessThanOrEqual struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *LessThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.LessThanOrEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *LessThanOrEqual) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *LessThanOrEqual) String() string {
-	return fmt.Sprintf("%s <= %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type GreaterThan struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *GreaterThan) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.GreaterThan(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *GreaterThan) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *GreaterThan) String() string {
-	return fmt.Sprintf("%s > %s", x.Exp1.String(), x.Exp2.String())
-}
-
-type GreaterThanOrEqual struct {
-	Exp1 Expression
-	Exp2 Expression
-}
-
-func (x *GreaterThanOrEqual) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.GreaterThanOrEqual(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
-}
-
-func (x *GreaterThanOrEqual) Visit(v func(Expression)) {
-	x.Exp1.Visit(v)
-	x.Exp2.Visit(v)
-	v(x)
-}
-
-func (x *GreaterThanOrEqual) String() string {
-	return fmt.Sprintf("%s >= %s", x.Exp1.String(), x.Exp2.String())
 }
 
 type Parentheses struct {
