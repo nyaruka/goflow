@@ -8,9 +8,11 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
@@ -155,4 +157,27 @@ func TestReadRouter(t *testing.T) {
 	// error if we don't recognize action type
 	_, err = routers.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
+}
+
+// a category implementation other than routers.Category, which an external caller could construct
+type customCategory struct {
+	flows.Category
+}
+
+func TestEnumerateLocalizables(t *testing.T) {
+	cat := routers.NewCategory("dbd6c2ce-1c2a-4b1d-8a3f-b9df1a1f1cbb", "Red", "0f5bd0d3-a1c5-4b5d-b0b9-a1b4c5d6e7f8")
+	router := routers.NewRandom(nil, "Color", []flows.Category{cat, &customCategory{cat}})
+
+	// writing an empty slice leaves the name as is rather than panicking, and non-*Category categories are skipped
+	router.EnumerateLocalizables(func(uuid uuids.UUID, property string, vals []string, write func([]string)) {
+		write(nil)
+	})
+
+	assert.Equal(t, "Red", cat.Name())
+
+	router.EnumerateLocalizables(func(uuid uuids.UUID, property string, vals []string, write func([]string)) {
+		write([]string{"Rouge"})
+	})
+
+	assert.Equal(t, "Rouge", cat.Name())
 }

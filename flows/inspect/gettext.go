@@ -40,7 +40,11 @@ func extractLocalizableText(v reflect.Value) (func() []string, func([]string)) {
 			return []string{typed}
 		}
 		w := func(n []string) {
-			v.SetString(n[0])
+			// callers of the write function are expected to pass a non-empty slice but be defensive as this
+			// is driven by localization assets
+			if len(n) > 0 {
+				v.SetString(n[0])
+			}
 		}
 		return r, w
 	}

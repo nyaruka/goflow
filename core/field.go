@@ -221,11 +221,20 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		case LocationLevelState:
 			asState = envs.LocationPath(asLocation.Path())
 		case LocationLevelDistrict:
-			asState = envs.LocationPath(asLocation.Parent().Path())
+			// hierarchies read from assets always have complete parent chains, but hierarchies can also be
+			// constructed programmatically so we can't assume that here
+			if state := asLocation.Parent(); state != nil {
+				asState = envs.LocationPath(state.Path())
+			}
 			asDistrict = envs.LocationPath(asLocation.Path())
 		case LocationLevelWard:
-			asState = envs.LocationPath(asLocation.Parent().Parent().Path())
-			asDistrict = envs.LocationPath(asLocation.Parent().Path())
+			if district := asLocation.Parent(); district != nil {
+				asDistrict = envs.LocationPath(district.Path())
+
+				if state := district.Parent(); state != nil {
+					asState = envs.LocationPath(state.Path())
+				}
+			}
 			asWard = envs.LocationPath(asLocation.Path())
 		}
 	}

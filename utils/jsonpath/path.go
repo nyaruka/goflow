@@ -60,6 +60,10 @@ func parsePath(path string) ([]string, error) {
 		}
 	}
 
+	if len(steps) == 0 {
+		return nil, errors.New("path must contain at least one step")
+	}
+
 	return steps, nil
 }
 

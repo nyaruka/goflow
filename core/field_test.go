@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -125,4 +126,42 @@ func TestFieldAssets(t *testing.T) {
 	// but groups don't support query conditions on groups or flows so those aren't included
 	assert.Nil(t, fields.ResolveGroup(`b7cf0d83-f1c9-411c-96fd-c511a4cfa86d`))
 	assert.Nil(t, fields.ResolveFlow(`50c3706e-fedb-42c0-8eab-dda3335714b7`))
+}
+
+// a location hierarchy can be constructed programmatically with an incomplete parent chain, which parsing a field
+// value against must tolerate rather than panic on
+type orphanHierarchy struct{ *envs.LocationHierarchy }
+
+func TestFieldValueParseWithIncompleteLocationHierarchy(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	tcs := []struct {
+		level    envs.LocationLevel
+		state    envs.LocationPath
+		district envs.LocationPath
+		ward     envs.LocationPath
+	}{
+		{core.LocationLevelState, "Rwanda > Kigali", "", ""},
+		{core.LocationLevelDistrict, "", "Rwanda > Kigali", ""},
+		{core.LocationLevelWard, "", "", "Rwanda > Kigali"},
+	}
+
+	for _, tc := range tcs {
+		// a hierarchy rooted at this level, so its locations have no parents at all
+		root := envs.NewLocation(tc.level, "Rwanda > Kigali")
+		locations := core.NewLocationAssets([]assets.LocationHierarchy{
+			&orphanHierarchy{envs.NewLocationHierarchy(env, root, 4)},
+		})
+
+		env := envs.NewBuilder().WithLocationResolver(locations).Build()
+		fields := core.NewFieldAssets([]assets.Field{
+			static.NewField("f4a0d0c1-4d0e-4e9c-9b2b-1a3e6f1b2c3d", "place", "Place", assets.FieldTypeWard),
+		})
+		field := fields.All()[0]
+
+		actual := core.FieldValues{}.Parse(env, fields, field, "Rwanda > Kigali")
+
+		assert.Equal(t, core.NewValue(types.NewXText("Rwanda > Kigali"), nil, nil, tc.state, tc.district, tc.ward), actual,
+			"parse mismatch at location level %d", tc.level)
+	}
 }
