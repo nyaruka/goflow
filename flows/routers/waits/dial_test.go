@@ -1,7 +1,6 @@
 package waits_test
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -47,7 +46,7 @@ func TestDialWait(t *testing.T) {
 
 	// try activating the wait
 	log := test.NewEventLog()
-	begun := wait.Begin(context.Background(), run, log.Log)
+	begun := wait.Begin(t.Context(), run, log.Log)
 
 	assert.True(t, begun)
 	assert.Equal(t, 1, len(log.Events))
@@ -64,7 +63,7 @@ func TestDialWait(t *testing.T) {
 	assert.NoError(t, err)
 
 	log = test.NewEventLog()
-	begun = wait.Begin(context.Background(), run, log.Log)
+	begun = wait.Begin(t.Context(), run, log.Log)
 
 	assert.True(t, begun)
 	assert.Equal(t, 2, len(log.Events))
@@ -79,7 +78,7 @@ func TestDialWait(t *testing.T) {
 	assert.NoError(t, err)
 
 	log = test.NewEventLog()
-	begun = wait.Begin(context.Background(), run, log.Log)
+	begun = wait.Begin(t.Context(), run, log.Log)
 
 	assert.False(t, begun)
 	assert.Equal(t, 1, len(log.Events))

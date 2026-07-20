@@ -218,14 +218,14 @@ func TestRunContext(t *testing.T) {
 
 	for _, tc := range testCases {
 		log := test.NewEventLog()
-		actual, _ := run.EvaluateTemplate(context.Background(), tc.template, log.Log)
+		actual, _ := run.EvaluateTemplate(t.Context(), tc.template, log.Log)
 		assert.NoError(t, log.Error())
 		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
 	}
 
 	// test with escaping
 	log := test.NewEventLog()
-	evaluated, _ := run.EvaluateTemplateText(context.Background(), `gender = @("M\" OR")`, contactql.EscapeValue, true, log.Log)
+	evaluated, _ := run.EvaluateTemplateText(t.Context(), `gender = @("M\" OR")`, contactql.EscapeValue, true, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, `gender = "M\" OR"`, evaluated)
 }
@@ -252,22 +252,22 @@ func TestMissingRelatedRunContext(t *testing.T) {
 	log := test.NewEventLog()
 
 	// since we have no parent, check that it resolves to nil
-	val, _ := run.EvaluateTemplateValue(context.Background(), `@parent`, log.Log)
+	val, _ := run.EvaluateTemplateValue(t.Context(), `@parent`, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Nil(t, val)
 
 	// check that trying to resolve a property of parent is an error
-	val, _ = run.EvaluateTemplateValue(context.Background(), `@parent.contact`, log.Log)
+	val, _ = run.EvaluateTemplateValue(t.Context(), `@parent.contact`, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 
 	// we also have no child, check that it resolves to nil
-	val, _ = run.EvaluateTemplateValue(context.Background(), `@child`, log.Log)
+	val, _ = run.EvaluateTemplateValue(t.Context(), `@child`, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Nil(t, val)
 
 	// check that trying to resolve a property of child is an error
-	val, _ = run.EvaluateTemplateValue(context.Background(), `@child.contact`, log.Log)
+	val, _ = run.EvaluateTemplateValue(t.Context(), `@child.contact`, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, types.NewXErrorf("null doesn't support lookups"), val)
 }

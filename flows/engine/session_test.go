@@ -60,7 +60,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		}
 
 		log := test.NewEventLog()
-		eval, _ := run.EvaluateTemplate(context.Background(), tc.Template, log.Log)
+		eval, _ := run.EvaluateTemplate(t.Context(), tc.Template, log.Log)
 
 		// clone test case and populate with actual values
 		actual := tc
@@ -116,7 +116,7 @@ func BenchmarkEvaluateTemplate(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		for _, tc := range tests {
-			run.EvaluateTemplate(context.Background(), tc.Template, logEvent)
+			run.EvaluateTemplate(b.Context(), tc.Template, logEvent)
 		}
 	}
 }

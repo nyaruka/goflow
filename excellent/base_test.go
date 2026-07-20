@@ -1,7 +1,6 @@
 package excellent_test
 
 import (
-	"context"
 	"fmt"
 	"strings"
 	"testing"
@@ -207,7 +206,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 
 	for _, tc := range evaluateTests {
 		eval := excellent.NewEvaluator()
-		result, _, err := eval.TemplateValue(context.Background(), env, ctx, tc.template)
+		result, _, err := eval.TemplateValue(t.Context(), env, ctx, tc.template)
 		assert.NoError(t, err)
 
 		// don't check error equality - just check that we got an error if we expected one
@@ -347,7 +346,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		}()
 
 		eval := excellent.NewEvaluator()
-		val, _, err := eval.Template(context.Background(), env, ctx, tc.template, nil)
+		val, _, err := eval.Template(t.Context(), env, ctx, tc.template, nil)
 
 		if tc.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", tc.template)
@@ -369,7 +368,7 @@ func TestEvaluateTemplateWithEscaping(t *testing.T) {
 
 	eval := excellent.NewEvaluator()
 	env := envs.NewBuilder().Build()
-	val, _, err := eval.Template(context.Background(), env, ctx, `Hi @string1`, escaping)
+	val, _, err := eval.Template(t.Context(), env, ctx, `Hi @string1`, escaping)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi \"\"; DROP`, val)
 }
@@ -392,17 +391,17 @@ func TestEvaluateTemplateWithDeprecatedValues(t *testing.T) {
 	eval := excellent.NewEvaluator()
 	env := envs.NewBuilder().Build()
 
-	val, warnings, err := eval.Template(context.Background(), env, ctx, `Hi @foo.bar`, nil)
+	val, warnings, err := eval.Template(t.Context(), env, ctx, `Hi @foo.bar`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi 123`, val)
 	assert.Len(t, warnings, 0)
 
-	val, warnings, err = eval.Template(context.Background(), env, ctx, `Hi @foo.zzz`, nil)
+	val, warnings, err = eval.Template(t.Context(), env, ctx, `Hi @foo.zzz`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi abc`, val)
 	assert.Equal(t, []string{"deprecated context value accessed: foooo"}, warnings)
 
-	val, warnings, err = eval.Template(context.Background(), env, ctx, `Hi @yyy @foo.zzz`, nil)
+	val, warnings, err = eval.Template(t.Context(), env, ctx, `Hi @yyy @foo.zzz`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi xyz abc`, val)
 	assert.Equal(t, []string{"deprecated context value accessed: noooo", "deprecated context value accessed: foooo"}, warnings)
@@ -460,7 +459,7 @@ func TestEvaluationErrors(t *testing.T) {
 
 	for _, tc := range tcs {
 		eval := excellent.NewEvaluator()
-		result, _, err := eval.Template(context.Background(), env, ctx, tc.template, nil)
+		result, _, err := eval.Template(t.Context(), env, ctx, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -482,7 +481,7 @@ func TestEvaluationBudget(t *testing.T) {
 		`@(repeat("=", 80))`,
 	}
 	for _, tpl := range allowed {
-		_, _, err := eval.Template(context.Background(), env, ctx, tpl, nil)
+		_, _, err := eval.Template(t.Context(), env, ctx, tpl, nil)
 		assert.NoError(t, err, "expected %s to be within budget", tpl)
 	}
 
@@ -497,7 +496,7 @@ func TestEvaluationBudget(t *testing.T) {
 		{`@(foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => 1))))`, "pure iteration over tiny values"},
 	}
 	for _, tc := range blocked {
-		_, _, err := eval.Template(context.Background(), env, ctx, tc.template, nil)
+		_, _, err := eval.Template(t.Context(), env, ctx, tc.template, nil)
 		if assert.Error(t, err, "expected %s to exceed budget", tc.desc) {
 			assert.Contains(t, err.Error(), "expression is too complex to evaluate", "for %s", tc.desc)
 		}
@@ -505,7 +504,7 @@ func TestEvaluationBudget(t *testing.T) {
 
 	// the budget is also wired for the Expression() entry point, and empty text can't be produced for free
 	// (which would otherwise bypass the per-value floor and allow unbounded iteration)
-	val, _ := eval.Expression(context.Background(), env, ctx, `foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => "")))`)
+	val, _ := eval.Expression(t.Context(), env, ctx, `foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => "")))`)
 	assert.True(t, types.IsXError(val))
 	assert.Contains(t, val.(*types.XError).Error(), "expression is too complex to evaluate")
 }
