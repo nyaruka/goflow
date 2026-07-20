@@ -257,8 +257,8 @@ func TestTruthy(t *testing.T) {
 }
 
 func TestCostOf(t *testing.T) {
-	// text costs its length in bytes
-	assert.Equal(t, 0, types.CostOf(types.NewXText("")))
+	// text costs its length in bytes, but at least 1 so empty text isn't free
+	assert.Equal(t, 1, types.CostOf(types.NewXText("")))
 	assert.Equal(t, 5, types.CostOf(types.NewXText("hello")))
 	assert.Equal(t, 3, types.CostOf(types.NewXText("é!"))) // bytes (é is 2), not runes (which would be 2)
 

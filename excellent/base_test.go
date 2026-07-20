@@ -501,6 +501,12 @@ func TestEvaluationBudget(t *testing.T) {
 			assert.Contains(t, err.Error(), "expression is too complex to evaluate", "for %s", tc.desc)
 		}
 	}
+
+	// the budget is also wired for the Expression() entry point, and empty text can't be produced for free
+	// (which would otherwise bypass the per-value floor and allow unbounded iteration)
+	val, _ := eval.Expression(env, ctx, `foreach(split(repeat("x ",500)," "), (a) => foreach(split(repeat("x ",500)," "), (b) => foreach(split(repeat("x ",500)," "), (c) => "")))`)
+	assert.True(t, types.IsXError(val))
+	assert.Contains(t, val.(*types.XError).Error(), "expression is too complex to evaluate")
 }
 
 func TestHasExpressions(t *testing.T) {

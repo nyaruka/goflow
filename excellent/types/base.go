@@ -143,11 +143,11 @@ func IsNil(x XValue) bool {
 }
 
 // CostOf returns the cost of producing a value, for the purposes of the per-evaluation budget. Text costs
-// its length in bytes so that memory is bounded; everything else costs 1 so that producing many tiny values
-// is bounded too.
+// its length in bytes so that memory is bounded; every value costs at least 1 so that producing many tiny
+// values - including empty text - is bounded too.
 func CostOf(x XValue) int {
 	if t, ok := x.(*XText); ok {
-		return len(t.Native())
+		return max(1, len(t.Native()))
 	}
 	return 1
 }
