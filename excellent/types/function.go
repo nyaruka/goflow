@@ -37,6 +37,13 @@ func (x *XFunction) Call(ctx context.Context, env envs.Environment, params []XVa
 		return NewXErrorf("error calling %s: %s", x.Describe(), val.(*XError).Error())
 	}
 
+	// charge the cost of the produced value against the evaluation budget
+	if b := BudgetFrom(ctx); b != nil {
+		if xerr := b.Charge(val); xerr != nil {
+			return xerr
+		}
+	}
+
 	return val
 }
 

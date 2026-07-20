@@ -190,7 +190,16 @@ type BinaryOperation struct {
 }
 
 func (x *BinaryOperation) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.Op.Evaluate(env, x.Exp1.Evaluate(ctx, env, scope, warnings), x.Exp2.Evaluate(ctx, env, scope, warnings))
+	result := x.Op.Evaluate(env, x.Exp1.Evaluate(ctx, env, scope, warnings), x.Exp2.Evaluate(ctx, env, scope, warnings))
+
+	// charge the cost of the produced value against the evaluation budget
+	if b := types.BudgetFrom(ctx); b != nil {
+		if xerr := b.Charge(result); xerr != nil {
+			return xerr
+		}
+	}
+
+	return result
 }
 
 func (x *BinaryOperation) Visit(v func(Expression)) {
