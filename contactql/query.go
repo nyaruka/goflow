@@ -16,6 +16,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// MaxConditions is the maximum number of conditions a query can contain. Every condition becomes a clause
+// when the query is translated for a search backend, so this bounds how much work an untrusted query can
+// create both here and downstream. It's far more than any hand written query needs.
+const MaxConditions = 1000
+
 // Operator is a comparison operation between two values in a condition
 type Operator string
 
@@ -376,6 +381,15 @@ func (q *ContactQuery) String() string {
 // NewContactQuery creates a new query from the given root node, validating it against the given resolver
 // (or as much as possible if none is provided) and simplifying it.
 func NewContactQuery(env envs.Environment, root QueryNode, resolver Resolver) (*ContactQuery, error) {
+	// bound overall complexity before doing any per-condition work. Each condition becomes a clause when
+	// the query is translated for a search backend, so an oversized query is expensive for every consumer
+	// and not just for us.
+	numConditions := 0
+	walk(root, func(*Condition) { numConditions++ })
+	if numConditions > MaxConditions {
+		return nil, NewQueryError(ErrTooComplex, fmt.Sprintf("query contains more than %d conditions", MaxConditions))
+	}
+
 	if err := root.validate(env, resolver); err != nil {
 		return nil, err
 	}
