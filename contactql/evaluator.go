@@ -13,6 +13,10 @@ import (
 )
 
 // Queryable is the interface objects must implement queried
+//
+// Returned values must match the type the queried property is declared as - decimal.Decimal for number
+// properties, time.Time for datetime ones and string for everything else - as evaluation asserts them to
+// that type. Return no values rather than a value of a different type.
 type Queryable interface {
 	QueryProperty(envs.Environment, string, PropertyType) []any
 }
