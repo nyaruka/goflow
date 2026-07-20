@@ -1,6 +1,7 @@
 package excellent
 
 import (
+	"context"
 	"fmt"
 	"slices"
 	"strings"
@@ -27,7 +28,7 @@ func (w *Warnings) deprecatedContext(v types.XValue) {
 
 // Expression is the base interface of all syntax elements
 type Expression interface {
-	Evaluate(envs.Environment, *Scope, *Warnings) types.XValue
+	Evaluate(context.Context, envs.Environment, *Scope, *Warnings) types.XValue
 	Visit(func(Expression))
 	String() string
 }
@@ -37,7 +38,7 @@ type ContextReference struct {
 	Name string
 }
 
-func (x *ContextReference) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *ContextReference) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	value, exists := scope.Get(x.Name)
 	if !exists {
 		return types.NewXErrorf("context has no property '%s'", x.Name)
@@ -63,8 +64,8 @@ type DotLookup struct {
 	Lookup    string
 }
 
-func (x *DotLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	containerVal := x.Container.Evaluate(env, scope, warnings)
+func (x *DotLookup) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	containerVal := x.Container.Evaluate(ctx, env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
@@ -86,13 +87,13 @@ type ArrayLookup struct {
 	Lookup    Expression
 }
 
-func (x *ArrayLookup) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	containerVal := x.Container.Evaluate(env, scope, warnings)
+func (x *ArrayLookup) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	containerVal := x.Container.Evaluate(ctx, env, scope, warnings)
 	if types.IsXError(containerVal) {
 		return containerVal
 	}
 
-	lookupVal := x.Lookup.Evaluate(env, scope, warnings)
+	lookupVal := x.Lookup.Evaluate(ctx, env, scope, warnings)
 	if types.IsXError(lookupVal) {
 		return lookupVal
 	}
@@ -115,8 +116,8 @@ type FunctionCall struct {
 	Params []Expression
 }
 
-func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	funcVal := x.Func.Evaluate(env, scope, warnings)
+func (x *FunctionCall) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	funcVal := x.Func.Evaluate(ctx, env, scope, warnings)
 	if types.IsXError(funcVal) {
 		return funcVal
 	}
@@ -128,10 +129,10 @@ func (x *FunctionCall) Evaluate(env envs.Environment, scope *Scope, warnings *Wa
 
 	params := make([]types.XValue, len(x.Params))
 	for i := range x.Params {
-		params[i] = x.Params[i].Evaluate(env, scope, warnings)
+		params[i] = x.Params[i].Evaluate(ctx, env, scope, warnings)
 	}
 
-	return asFunction.Call(env, params)
+	return asFunction.Call(ctx, env, params)
 }
 
 func (x *FunctionCall) Visit(v func(Expression)) {
@@ -156,9 +157,9 @@ type AnonFunction struct {
 	Body Expression
 }
 
-func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *AnonFunction) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	// create an XFunction which wraps our body expression
-	fn := func(env envs.Environment, args ...types.XValue) types.XValue {
+	fn := func(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
 		// create new context that includes the args
 		argsMap := make(map[string]types.XValue, len(x.Args))
 		for i := range x.Args {
@@ -166,7 +167,7 @@ func (x *AnonFunction) Evaluate(env envs.Environment, scope *Scope, warnings *Wa
 		}
 		childScope := NewScope(types.NewXObject(argsMap), scope)
 
-		return x.Body.Evaluate(env, childScope, warnings)
+		return x.Body.Evaluate(ctx, env, childScope, warnings)
 	}
 
 	return types.NewXFunction("", functions.NumArgsCheck(len(x.Args), fn))
@@ -188,8 +189,8 @@ type BinaryOperation struct {
 	Exp2 Expression
 }
 
-func (x *BinaryOperation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.Op.Evaluate(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+func (x *BinaryOperation) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return x.Op.Evaluate(env, x.Exp1.Evaluate(ctx, env, scope, warnings), x.Exp2.Evaluate(ctx, env, scope, warnings))
 }
 
 func (x *BinaryOperation) Visit(v func(Expression)) {
@@ -206,8 +207,8 @@ type Negation struct {
 	Exp Expression
 }
 
-func (x *Negation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Negate.Evaluate(env, x.Exp.Evaluate(env, scope, warnings))
+func (x *Negation) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return operators.Negate.Evaluate(env, x.Exp.Evaluate(ctx, env, scope, warnings))
 }
 
 func (x *Negation) Visit(v func(Expression)) {
@@ -223,8 +224,8 @@ type Parentheses struct {
 	Exp Expression
 }
 
-func (x *Parentheses) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return x.Exp.Evaluate(env, scope, warnings)
+func (x *Parentheses) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+	return x.Exp.Evaluate(ctx, env, scope, warnings)
 }
 
 func (x *Parentheses) Visit(v func(Expression)) {
@@ -240,7 +241,7 @@ type TextLiteral struct {
 	Value *types.XText
 }
 
-func (x *TextLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *TextLiteral) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.Value
 }
 
@@ -257,7 +258,7 @@ type NumberLiteral struct {
 	Value *types.XNumber
 }
 
-func (x *NumberLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *NumberLiteral) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.Value
 }
 
@@ -274,7 +275,7 @@ type ErrorLiteral struct {
 	Err *types.XError
 }
 
-func (x *ErrorLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *ErrorLiteral) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.Err
 }
 
@@ -291,7 +292,7 @@ type BooleanLiteral struct {
 	Value *types.XBoolean
 }
 
-func (x *BooleanLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *BooleanLiteral) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return x.Value
 }
 
@@ -305,7 +306,7 @@ func (x *BooleanLiteral) String() string {
 
 type NullLiteral struct{}
 
-func (x *NullLiteral) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
+func (x *NullLiteral) Evaluate(ctx context.Context, env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
 	return nil
 }
 

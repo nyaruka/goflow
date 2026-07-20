@@ -1,6 +1,7 @@
 package cases
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -157,7 +158,7 @@ func HasError(env envs.Environment, value types.XValue) types.XValue {
 //	@(has_group(array(), "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact, group_uuid)
-func HasGroup(env envs.Environment, args ...types.XValue) types.XValue {
+func HasGroup(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
 	// is the first argument an array
 	array, xerr := types.ToXArray(env, args[0])
 	if xerr != nil {
@@ -582,7 +583,7 @@ func HasState(env envs.Environment, text *types.XText) types.XValue {
 //	@(has_district("Gasabo").match) -> Rwanda > Kigali City > Gasabo
 //
 // @test has_district(text, state)
-func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
+func HasDistrict(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
 	locations := env.LocationResolver()
 	if locations == nil {
 		return types.NewXErrorf("can't find locations in environment which is not location enabled")
@@ -633,7 +634,7 @@ func HasDistrict(env envs.Environment, args ...types.XValue) types.XValue {
 //	@(has_ward("Gisozi").match) -> Rwanda > Kigali City > Gasabo > Gisozi
 //
 // @test has_ward(text, district, state)
-func HasWard(env envs.Environment, args ...types.XValue) types.XValue {
+func HasWard(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 && len(args) != 3 {
 		return types.NewXErrorf("takes one or three arguments, got %d", len(args))
 	}
