@@ -132,8 +132,8 @@ type Router interface {
 	ResultName() string
 
 	AllowTimeout() bool
-	Route(Run, Step, events.EventLogger) (ExitUUID, string, error)
-	RouteTimeout(Run, Step, events.EventLogger) (ExitUUID, error)
+	Route(context.Context, Run, Step, events.EventLogger) (ExitUUID, string, error)
+	RouteTimeout(context.Context, Run, Step, events.EventLogger) (ExitUUID, error)
 
 	Validate(Flow, []Exit) error
 	Inspect(func(*ResultInfo), func(assets.Reference))
@@ -160,7 +160,7 @@ type Wait interface {
 
 	Timeout() Timeout
 
-	Begin(Run, events.EventLogger) bool
+	Begin(context.Context, Run, events.EventLogger) bool
 	Accepts(Resume) bool
 }
 

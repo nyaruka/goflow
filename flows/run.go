@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"context"
 	"time"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -61,9 +62,9 @@ type Run interface {
 	PathLocation() (Step, Node, error)
 	HadInput() bool
 
-	EvaluateTemplateValue(string, events.EventLogger) (types.XValue, bool)
-	EvaluateTemplateText(string, excellent.Escaping, bool, events.EventLogger) (string, bool)
-	EvaluateTemplate(string, events.EventLogger) (string, bool)
+	EvaluateTemplateValue(context.Context, string, events.EventLogger) (types.XValue, bool)
+	EvaluateTemplateText(context.Context, string, excellent.Escaping, bool, events.EventLogger) (string, bool)
+	EvaluateTemplate(context.Context, string, events.EventLogger) (string, bool)
 	RootContext(envs.Environment) map[string]types.XValue
 
 	GetText(uuids.UUID, string, string) (string, i18n.Language)

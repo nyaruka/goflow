@@ -53,7 +53,7 @@ func NewSetRunResult(uuid flows.ActionUUID, name string, value string, category 
 
 // Execute runs this action
 func (a *SetRunResult) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	value, ok := run.EvaluateTemplate(a.Value, log)
+	value, ok := run.EvaluateTemplate(ctx, a.Value, log)
 	if !ok {
 		return nil
 	}

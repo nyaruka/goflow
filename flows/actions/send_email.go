@@ -54,7 +54,7 @@ func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, bod
 // Execute creates the email events
 func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	localizedSubject, _ := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
-	evaluatedSubject, _ := run.EvaluateTemplate(localizedSubject, log)
+	evaluatedSubject, _ := run.EvaluateTemplate(ctx, localizedSubject, log)
 
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
 	evaluatedSubject = regexp.MustCompile(`\s+`).ReplaceAllString(evaluatedSubject, " ")
@@ -66,7 +66,7 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	}
 
 	localizedBody, _ := run.GetText(uuids.UUID(a.UUID()), "body", a.Body)
-	evaluatedBody, _ := run.EvaluateTemplate(localizedBody, log)
+	evaluatedBody, _ := run.EvaluateTemplate(ctx, localizedBody, log)
 	if evaluatedBody == "" {
 		log(events.NewError("Email body evaluated to empty string, skipping", ""))
 		return nil
@@ -75,7 +75,7 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 	evaluatedAddresses := make([]string, 0)
 
 	for _, address := range a.Addresses {
-		evaluatedAddress, _ := run.EvaluateTemplate(address, log)
+		evaluatedAddress, _ := run.EvaluateTemplate(ctx, address, log)
 		if evaluatedAddress == "" {
 			log(events.NewError("Email address evaluated to empty string, skipping", ""))
 			continue

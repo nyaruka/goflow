@@ -304,7 +304,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 		waitingRun.setStatus(core.RunStatusActive)
 	}
 
-	exit, operand, err := s.findResumeExit(sprint, waitingRun, isTimeout)
+	exit, operand, err := s.findResumeExit(ctx, sprint, waitingRun, isTimeout)
 	if err != nil {
 		failSession(fmt.Sprintf("Unable to resolve router exit: %s", err.Error()))
 		return nil
@@ -318,7 +318,7 @@ func (s *session) tryToResume(ctx context.Context, sprint *sprint, waitingRun *r
 }
 
 // finds the exit from a the current node in a run that may have been waiting or a parent paused for a child subflow
-func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flows.Exit, string, error) {
+func (s *session) findResumeExit(ctx context.Context, sprint *sprint, run *run, isTimeout bool) (flows.Exit, string, error) {
 	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
 	if run.Status() != core.RunStatusActive {
 		return nil, "", nil
@@ -334,7 +334,7 @@ func (s *session) findResumeExit(sprint *sprint, run *run, isTimeout bool) (flow
 	}
 
 	// see if this node can now pick a destination
-	return s.pickNodeExit(sprint, run, node, step, isTimeout, logEvent)
+	return s.pickNodeExit(ctx, sprint, run, node, step, isTimeout, logEvent)
 }
 
 // the main flow execution loop
@@ -409,7 +409,7 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 					if currentRun.Flow() == nil {
 						failRun(sprint, currentRun, nil, "Can't resume run with missing flow asset")
 					} else {
-						if exit, operand, err = s.findResumeExit(sprint, currentRun, false); err != nil {
+						if exit, operand, err = s.findResumeExit(ctx, sprint, currentRun, false); err != nil {
 							failRun(sprint, currentRun, nil, "Can't resume run as node no longer exists")
 						}
 					}
@@ -503,7 +503,7 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 
 	if wait != nil {
 		// waits have the option to skip themselves
-		if wait.Begin(r, logEvent) {
+		if wait.Begin(ctx, r, logEvent) {
 			// mark ouselves as waiting and hand back to
 			r.setStatus(core.RunStatusWaiting)
 			s.status = flows.SessionStatusWaiting
@@ -513,21 +513,21 @@ func (s *session) visitNode(ctx context.Context, sprint *sprint, r *run, node fl
 	}
 
 	// use our node's router to determine where to go next
-	exit, operand, err := s.pickNodeExit(sprint, r, node, step, false, logEvent)
+	exit, operand, err := s.pickNodeExit(ctx, sprint, r, node, step, false, logEvent)
 	return step, exit, operand, err
 }
 
 // picks the exit to use on the given node
-func (s *session) pickNodeExit(sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent events.EventLogger) (flows.Exit, string, error) {
+func (s *session) pickNodeExit(ctx context.Context, sprint *sprint, r *run, node flows.Node, step flows.Step, isTimeout bool, logEvent events.EventLogger) (flows.Exit, string, error) {
 	var exitUUID flows.ExitUUID
 	var operand string
 	var err error
 
 	if node.Router() != nil {
 		if isTimeout {
-			exitUUID, err = node.Router().RouteTimeout(r, step, logEvent)
+			exitUUID, err = node.Router().RouteTimeout(ctx, r, step, logEvent)
 		} else {
-			exitUUID, operand, err = node.Router().Route(r, step, logEvent)
+			exitUUID, operand, err = node.Router().Route(ctx, r, step, logEvent)
 		}
 
 		if err != nil {

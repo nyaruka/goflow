@@ -47,7 +47,7 @@ func NewPlayAudio(uuid flows.ActionUUID, audioURL string) *PlayAudio {
 func (a *PlayAudio) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	// localize and evaluate audio URL
 	localizedAudioURL, urlLang := run.GetText(uuids.UUID(a.UUID()), "audio_url", a.AudioURL)
-	evaluatedAudioURL, ok := run.EvaluateTemplate(localizedAudioURL, log)
+	evaluatedAudioURL, ok := run.EvaluateTemplate(ctx, localizedAudioURL, log)
 	if !ok {
 		return nil
 	}

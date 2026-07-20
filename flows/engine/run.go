@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -305,10 +306,10 @@ func (r *run) nodeContext(env envs.Environment) map[string]types.XValue {
 }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *run) EvaluateTemplateValue(template string, log events.EventLogger) (types.XValue, bool) {
-	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
+func (r *run) EvaluateTemplateValue(ctx context.Context, template string, log events.EventLogger) (types.XValue, bool) {
+	root := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(r.session.MergedEnvironment(), ctx, template)
+	value, warnings, err := r.session.Engine().Evaluator().TemplateValue(ctx, r.session.MergedEnvironment(), root, template)
 	if err != nil {
 		r.errorToEvents(err, log)
 	}
@@ -319,10 +320,10 @@ func (r *run) EvaluateTemplateValue(template string, log events.EventLogger) (ty
 }
 
 // EvaluateTemplateText evaluates the given template as text in the context of this run
-func (r *run) EvaluateTemplateText(template string, escaping excellent.Escaping, truncate bool, log events.EventLogger) (string, bool) {
-	ctx := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
+func (r *run) EvaluateTemplateText(ctx context.Context, template string, escaping excellent.Escaping, truncate bool, log events.EventLogger) (string, bool) {
+	root := types.NewXObject(r.RootContext(r.session.MergedEnvironment()))
 
-	value, warnings, err := r.session.Engine().Evaluator().Template(r.session.MergedEnvironment(), ctx, template, escaping)
+	value, warnings, err := r.session.Engine().Evaluator().Template(ctx, r.session.MergedEnvironment(), root, template, escaping)
 	if err != nil {
 		r.errorToEvents(err, log)
 	}
@@ -347,8 +348,8 @@ func (r *run) errorToEvents(err error, log events.EventLogger) {
 }
 
 // EvaluateTemplate is a convenience function for evaluating as text with truncating but no escaping
-func (r *run) EvaluateTemplate(template string, log events.EventLogger) (string, bool) {
-	return r.EvaluateTemplateText(template, nil, true, log)
+func (r *run) EvaluateTemplate(ctx context.Context, template string, log events.EventLogger) (string, bool) {
+	return r.EvaluateTemplateText(ctx, template, nil, true, log)
 }
 
 // get the ordered list of languages to be used for localization in this run

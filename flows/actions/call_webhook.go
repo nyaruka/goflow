@@ -88,7 +88,7 @@ func (a *CallWebhook) Validate() error {
 
 // Execute runs this action
 func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	url, _ := run.EvaluateTemplate(a.URL, log)
+	url, _ := run.EvaluateTemplate(ctx, a.URL, log)
 	url = strings.TrimSpace(url)
 
 	if url == "" {
@@ -106,7 +106,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	// substitute any body variables
 	if body != "" {
 		// webhook bodies aren't truncated like other templates
-		body, _ = run.EvaluateTemplateText(body, nil, false, log)
+		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
 	}
 
 	call := a.call(ctx, run, step, url, method, body, log)
@@ -127,7 +127,7 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, _ := run.EvaluateTemplate(value, log)
+		headerValue, _ := run.EvaluateTemplate(ctx, value, log)
 
 		req.Header.Add(key, headerValue)
 	}

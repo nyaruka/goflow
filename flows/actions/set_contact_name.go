@@ -44,7 +44,7 @@ func NewSetContactName(uuid flows.ActionUUID, name string) *SetContactName {
 
 // Execute runs this action
 func (a *SetContactName) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	name, ok := run.EvaluateTemplate(a.Name, log)
+	name, ok := run.EvaluateTemplate(ctx, a.Name, log)
 	name = strings.TrimSpace(name)
 
 	if !ok {

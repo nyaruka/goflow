@@ -58,7 +58,7 @@ func NewSendMsg(uuid flows.ActionUUID, text string, attachments []string, quickR
 
 // Execute runs this action
 func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	content, lang := a.evaluateMessage(run, nil, a.Text, a.Attachments, a.QuickReplies, log)
+	content, lang := a.evaluateMessage(ctx, run, nil, a.Text, a.Attachments, a.QuickReplies, log)
 
 	// determine if this message can be sent - unsendable messages are still created for history's sake
 	var unsendableReason core.UnsendableReason
@@ -87,7 +87,7 @@ func (a *SendMsg) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 		if template != nil {
 			templateVariables = make([]string, len(a.TemplateVariables))
 			for i, varExp := range a.TemplateVariables {
-				v, _ := run.EvaluateTemplate(varExp, log)
+				v, _ := run.EvaluateTemplate(ctx, varExp, log)
 				templateVariables[i] = v
 			}
 		}

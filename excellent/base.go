@@ -37,16 +37,16 @@ func NewEvaluator() *Evaluator {
 type Escaping func(string) string
 
 // Template evaluates the passed in template
-func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template string, escaping Escaping) (string, []string, error) {
+func (e *Evaluator) Template(ctx context.Context, env envs.Environment, root *types.XObject, template string, escaping Escaping) (string, []string, error) {
 	var buf strings.Builder
 	var allWarnings []string
 
-	err := VisitTemplate(template, ctx.Properties(), true, func(tokenType XTokenType, token string) error {
+	err := VisitTemplate(template, root.Properties(), true, func(tokenType XTokenType, token string) error {
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER, EXPRESSION:
-			value, warnings := e.Expression(env, ctx, token)
+			value, warnings := e.Expression(ctx, env, root, token)
 
 			allWarnings = append(allWarnings, warnings...)
 
@@ -74,9 +74,9 @@ func (e *Evaluator) Template(env envs.Environment, ctx *types.XObject, template 
 // TemplateValue is equivalent to Template except in the case where the template contains
 // a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
-func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, template string) (types.XValue, []string, error) {
+func (e *Evaluator) TemplateValue(ctx context.Context, env envs.Environment, root *types.XObject, template string) (types.XValue, []string, error) {
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template), ctx.Properties())
+	scanner := NewXScanner(strings.NewReader(template), root.Properties())
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -88,19 +88,19 @@ func (e *Evaluator) TemplateValue(env envs.Environment, ctx *types.XObject, temp
 	if nextTT == EOF {
 		switch tokenType {
 		case IDENTIFIER, EXPRESSION:
-			val, warnings := e.Expression(env, ctx, token)
+			val, warnings := e.Expression(ctx, env, root, token)
 			return val, warnings, nil
 		}
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, warnings, err := e.Template(env, ctx, template, nil)
+	asStr, warnings, err := e.Template(ctx, env, root, template, nil)
 	return types.NewXText(asStr), warnings, err
 }
 
 // Expression evalutes the passed in Excellent expression, returning the typed value it evaluates to,
 // which might be an error, e.g. "2 / 3" or "contact.fields.age"
-func (e *Evaluator) Expression(env envs.Environment, root *types.XObject, expression string) (types.XValue, []string) {
+func (e *Evaluator) Expression(ctx context.Context, env envs.Environment, root *types.XObject, expression string) (types.XValue, []string) {
 	parsed, err := Parse(expression, nil)
 	if err != nil {
 		return types.NewXError(err), nil
@@ -110,9 +110,9 @@ func (e *Evaluator) Expression(env envs.Environment, root *types.XObject, expres
 
 	warnings := &Warnings{}
 
-	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
-	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
-	ctx := budget.With(context.Background(), budget.New(maxEvaluationCost))
+	// a per-evaluation cost budget is added to the caller's context so that its deadline (if any) is honoured
+	// alongside the budget
+	ctx = budget.With(ctx, budget.New(maxEvaluationCost))
 
 	return parsed.Evaluate(ctx, env, scope, warnings), warnings.all
 }

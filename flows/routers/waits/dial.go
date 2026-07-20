@@ -1,6 +1,7 @@
 package waits
 
 import (
+	"context"
 	"encoding/json"
 	"time"
 
@@ -60,8 +61,8 @@ func (w *Dial) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *Dial) Begin(run flows.Run, log events.EventLogger) bool {
-	phone, _ := run.EvaluateTemplate(w.phone, log)
+func (w *Dial) Begin(ctx context.Context, run flows.Run, log events.EventLogger) bool {
+	phone, _ := run.EvaluateTemplate(ctx, w.phone, log)
 	country := run.Session().MergedEnvironment().DefaultCountry()
 
 	urn, err := urns.ParsePhone(phone, country, false, false)

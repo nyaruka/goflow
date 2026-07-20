@@ -69,10 +69,10 @@ func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step
 
 	var assignee *core.User
 	if a.Assignee != nil {
-		assignee = resolveUser(run, a.Assignee, log)
+		assignee = resolveUser(ctx, run, a.Assignee, log)
 	}
 
-	evaluatedNote, _ := run.EvaluateTemplate(a.Note, log)
+	evaluatedNote, _ := run.EvaluateTemplate(ctx, a.Note, log)
 	evaluatedNote = strings.TrimSpace(evaluatedNote)
 
 	ticket, err := a.open(ctx, run, topic, assignee, evaluatedNote, log)

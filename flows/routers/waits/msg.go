@@ -1,6 +1,7 @@
 package waits
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -48,7 +49,7 @@ func (w *Msg) AllowedFlowTypes() []flows.FlowType {
 }
 
 // Begin beings waiting at this wait
-func (w *Msg) Begin(run flows.Run, log events.EventLogger) bool {
+func (w *Msg) Begin(ctx context.Context, run flows.Run, log events.EventLogger) bool {
 	// if we have a msg trigger and we're the first thing to happen... then we skip ourselves
 	triggerHasMsg := run.Session().Trigger().Type() == triggers.TypeMsg
 

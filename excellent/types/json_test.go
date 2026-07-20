@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -79,7 +80,7 @@ func TestXJSONResolve(t *testing.T) {
 		ctx := types.NewXObject(map[string]types.XValue{"j": fragment})
 
 		eval := excellent.NewEvaluator()
-		value, _ := eval.Expression(env, ctx, tc.expression)
+		value, _ := eval.Expression(context.Background(), env, ctx, tc.expression)
 		err, _ := value.(error)
 
 		if tc.hasError {

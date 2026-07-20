@@ -105,11 +105,11 @@ func (r *Switch) Validate(flow flows.Flow, exits []flows.Exit) error {
 }
 
 // Route determines which exit to take from a node
-func (r *Switch) Route(run flows.Run, step flows.Step, log events.EventLogger) (flows.ExitUUID, string, error) {
+func (r *Switch) Route(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) (flows.ExitUUID, string, error) {
 	env := run.Session().MergedEnvironment()
 
 	// first evaluate our operand
-	operand, _ := run.EvaluateTemplateValue(r.operand, log)
+	operand, _ := run.EvaluateTemplateValue(ctx, r.operand, log)
 
 	var operandAsStr string
 
@@ -119,7 +119,7 @@ func (r *Switch) Route(run flows.Run, step flows.Step, log events.EventLogger) (
 	}
 
 	// find first matching case
-	match, categoryUUID, extra, err := r.matchCase(run, operand, log)
+	match, categoryUUID, extra, err := r.matchCase(ctx, run, operand, log)
 	if err != nil {
 		return "", "", err
 	}
@@ -140,7 +140,7 @@ func (r *Switch) Route(run flows.Run, step flows.Step, log events.EventLogger) (
 	return exit, operandAsStr, err
 }
 
-func (r *Switch) matchCase(run flows.Run, operand types.XValue, log events.EventLogger) (string, flows.CategoryUUID, *types.XObject, error) {
+func (r *Switch) matchCase(ctx context.Context, run flows.Run, operand types.XValue, log events.EventLogger) (string, flows.CategoryUUID, *types.XObject, error) {
 	for _, c := range r.cases {
 		test := strings.ToLower(c.Type)
 
@@ -161,12 +161,12 @@ func (r *Switch) matchCase(run flows.Run, operand types.XValue, log events.Event
 		}
 
 		for _, localizedArg := range localizedArgs {
-			arg, _ := run.EvaluateTemplateValue(localizedArg, log)
+			arg, _ := run.EvaluateTemplateValue(ctx, localizedArg, log)
 			args = append(args, arg)
 		}
 
-		// call our function - context.TODO until the session threads its context through routing
-		result := xtest.Call(context.TODO(), run.Session().MergedEnvironment(), args)
+		// call our function
+		result := xtest.Call(ctx, run.Session().MergedEnvironment(), args)
 
 		// tests have to return either errors or test results
 		switch typed := result.(type) {

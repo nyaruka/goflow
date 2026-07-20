@@ -92,7 +92,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	}
 
 	// build our payload (not truncated)
-	payload, _ := run.EvaluateTemplateText(ResthookPayload, nil, false, log)
+	payload, _ := run.EvaluateTemplateText(ctx, ResthookPayload, nil, false, log)
 
 	// check the payload is valid JSON - it ends up in the session so needs to be valid
 	if !json.Valid([]byte(payload)) {

@@ -54,7 +54,7 @@ func (a *AddInputLabels) Execute(ctx context.Context, run flows.Run, step flows.
 		return nil
 	}
 
-	labels := resolveLabels(run, a.Labels, log)
+	labels := resolveLabels(ctx, run, a.Labels, log)
 
 	if len(labels) > 0 {
 		log(events.NewInputLabelsAdded(input.UUID(), core.LabelReferences(labels)))

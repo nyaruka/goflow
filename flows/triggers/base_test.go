@@ -102,7 +102,7 @@ func testTriggerType(t *testing.T, assetsJSON []byte, typeName string) {
 		actual := tc
 
 		log := test.NewEventLog()
-		actualContextJSON, _ := session.Runs()[0].EvaluateTemplate(`@(json(trigger))`, log.Log)
+		actualContextJSON, _ := session.Runs()[0].EvaluateTemplate(context.Background(), `@(json(trigger))`, log.Log)
 		assert.NoError(t, err)
 		actual.Context = []byte(actualContextJSON)
 

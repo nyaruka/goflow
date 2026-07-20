@@ -1,6 +1,7 @@
 package refactor_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -56,8 +57,8 @@ func TestRefactorTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error for template: %s, err: %s", tc.template, err)
 
 			// test that the original and the refactored template evaluate equally
-			originalValue, _, _ := eval.Template(env, ctx, tc.template, nil)
-			refactoredValue, _, _ := eval.Template(env, ctx, actual, nil)
+			originalValue, _, _ := eval.Template(context.Background(), env, ctx, tc.template, nil)
+			refactoredValue, _, _ := eval.Template(context.Background(), env, ctx, actual, nil)
 
 			assert.Equal(t, originalValue, refactoredValue, "refactoring of template %s gives different value: %s", tc.template, refactoredValue)
 		}

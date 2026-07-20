@@ -1,6 +1,7 @@
 package expressions_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -164,7 +165,7 @@ func TestMigrateFunctionCall(t *testing.T) {
 		if migratedTemplate == tc.new {
 			// check that the migrated template can be evaluated
 			log := test.NewEventLog()
-			val, _ := session.Runs()[0].EvaluateTemplate(migratedTemplate, log.Log)
+			val, _ := session.Runs()[0].EvaluateTemplate(context.Background(), migratedTemplate, log.Log)
 			require.NoError(t, log.Error(), "unable to evaluate migrated function call '%s'", migratedTemplate)
 
 			if tc.val != "" {

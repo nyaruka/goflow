@@ -400,7 +400,7 @@ func checkExample(session flows.Session, line string) error {
 
 	// evaluate our expression
 	log := test.NewEventLog()
-	val, ok := session.Runs()[0].EvaluateTemplate(example, log.Log)
+	val, ok := session.Runs()[0].EvaluateTemplate(context.Background(), example, log.Log)
 
 	if expected == "ERROR" {
 		if ok {
