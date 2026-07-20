@@ -99,6 +99,10 @@ func (t *TemplateTranslation) Preview(vars []*TemplatingVariable) *MsgContent {
 	for _, comp := range t.Components() {
 		content := comp.Content()
 		for key, index := range comp.Variables() {
+			// component variable indexes come from an asset and may be out of range for a malformed template
+			if index < 0 || index >= len(vars) {
+				continue
+			}
 			variable := vars[index]
 
 			if variable.Type == "text" {

@@ -588,7 +588,9 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, nil)
-		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
+		// migrated operand is expected to be an @-prefixed expression; strip the @ to nest it inside field(...)
+		operand = strings.TrimPrefix(operand, "@")
+		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand, config.FieldIndex, config.FieldDelimiter)
 		router = newSwitchRouter(nil, resultName, categories, operand, cases, defaultCategory)
 
 		lastDot := strings.LastIndex(r.Operand, ".")

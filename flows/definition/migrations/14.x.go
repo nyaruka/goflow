@@ -205,6 +205,9 @@ func Migrate14_3_0(f Flow, cfg *Config) (Flow, error) {
 		}
 
 		case0, _ := cases[0].(map[string]any)
+		if case0 == nil {
+			continue
+		}
 		case0["type"] = "has_text"
 		case0["arguments"] = []any{}
 
@@ -272,6 +275,9 @@ func Migrate14_1_0(f Flow, cfg *Config) (Flow, error) {
 		}
 
 		case0, _ := cases[0].(map[string]any)
+		if case0 == nil {
+			continue
+		}
 		case0["type"] = "has_number_between"
 		case0["arguments"] = []any{"200", "299"}
 

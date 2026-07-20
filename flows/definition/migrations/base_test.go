@@ -358,3 +358,45 @@ func TestMultiVersionMigration(t *testing.T) {
     }`, definition.CurrentSpecVersion)
 	test.AssertEqualJSON(t, []byte(expected), migrated, "flow migration mismatch")
 }
+
+// TestMigrateMalformed checks that migrating deliberately malformed definitions doesn't panic. These
+// craft the specific conditions (a switch router on a webhook/local result with a non-object first case)
+// that previously caused a nil-map write in the 14.1.0 and 14.3.0 migrations.
+func TestMigrateMalformed(t *testing.T) {
+	tcs := []struct {
+		name string
+		flow string
+	}{
+		{
+			"14.1.0 non-object case", `{
+				"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", "name": "T", "spec_version": "14.0.0",
+				"language": "eng", "type": "messaging",
+				"nodes": [{
+					"uuid": "a58be63b-907d-4a1a-856b-0bf9edf634db",
+					"actions": [{"type": "call_webhook", "uuid": "5405def7-e2e3-4c85-b74f-8695eeb85f56", "method": "GET", "url": "http://x"}],
+					"router": {"type": "switch", "operand": "@results.x", "cases": ["notanobject"], "categories": [{"uuid": "c854e63b-907d-4a1a-856b-0bf9edf634db", "name": "All", "exit_uuid": "e5f27d75-7f9a-4a35-a9a2-2f2f2a2e6f2b"}], "default_category_uuid": "c854e63b-907d-4a1a-856b-0bf9edf634db"},
+					"exits": [{"uuid": "e5f27d75-7f9a-4a35-a9a2-2f2f2a2e6f2b"}]
+				}]
+			}`,
+		},
+		{
+			"14.3.0 non-object case", `{
+				"uuid": "8ca44c09-791d-453a-9799-a70dd3303306", "name": "T", "spec_version": "14.2.0",
+				"language": "eng", "type": "messaging",
+				"nodes": [{
+					"uuid": "a58be63b-907d-4a1a-856b-0bf9edf634db",
+					"actions": [{"type": "open_ticket", "uuid": "5405def7-e2e3-4c85-b74f-8695eeb85f56", "result_name": "Ticket"}],
+					"router": {"type": "switch", "operand": "@results.x", "cases": [123], "categories": [{"uuid": "c854e63b-907d-4a1a-856b-0bf9edf634db", "name": "All", "exit_uuid": "e5f27d75-7f9a-4a35-a9a2-2f2f2a2e6f2b"}], "default_category_uuid": "c854e63b-907d-4a1a-856b-0bf9edf634db"},
+					"exits": [{"uuid": "e5f27d75-7f9a-4a35-a9a2-2f2f2a2e6f2b"}]
+				}]
+			}`,
+		},
+	}
+
+	for _, tc := range tcs {
+		// must not panic - a malformed case is left untouched rather than crashing
+		assert.NotPanics(t, func() {
+			migrations.MigrateToVersion([]byte(tc.flow), definition.CurrentSpecVersion, &migrations.Config{})
+		}, tc.name)
+	}
+}
