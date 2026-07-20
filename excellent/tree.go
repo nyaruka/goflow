@@ -195,7 +195,7 @@ func (x *BinaryOperation) Evaluate(ctx context.Context, env envs.Environment, sc
 
 	// charge the cost of the produced value against the evaluation budget
 	if b := budget.From(ctx); b != nil && !b.Charge(types.CostOf(result)) {
-		return types.NewXErrorf("expression is too complex to evaluate")
+		return types.ErrTooComplex
 	}
 
 	return result

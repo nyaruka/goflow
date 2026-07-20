@@ -1,6 +1,7 @@
 package types
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -12,7 +13,12 @@ type XError struct {
 	baseValue
 
 	native error
+	fatal  bool // fatal errors abort evaluation as a whole and so aren't wrapped with location context
 }
+
+// ErrTooComplex is returned when an evaluation exceeds its cost budget. It refers to the evaluation as a
+// whole rather than any specific part of it, so it's fatal.
+var ErrTooComplex = &XError{native: errors.New("expression is too complex to evaluate"), fatal: true}
 
 // NewXError creates a new XError
 func NewXError(err error) *XError {
