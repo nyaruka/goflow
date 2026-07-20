@@ -101,6 +101,9 @@ func Indent(s string, prefix string) string {
 // as opening brackets and ), ] and } as closing. String literals are not interpreted, so brackets inside
 // quoted text are counted too - a conservative over-estimate that's safe against input crafted to trigger
 // deep recursion in the expression and query parsers. Scanning stops as soon as the limit is exceeded.
+//
+// It's shared by grammars that use different subsets of these brackets, so for any given grammar it may
+// count brackets that aren't nesting tokens there at all - again an over-estimate and never an under one.
 func NestingDepthExceeds(s string, max int) bool {
 	depth := 0
 	for _, r := range s {
