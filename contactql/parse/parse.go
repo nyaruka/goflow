@@ -6,6 +6,7 @@ package parse
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/antlr4-go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/contactql"
@@ -19,11 +20,23 @@ import (
 // process. Real queries are written by humans and nest a handful of levels deep at most.
 const maxQueryDepth = 100
 
+// maxQueryLength is the maximum length of query text we'll attempt to parse. The cost of parsing is
+// proportional to the length of the input, and the bracket depth limit doesn't bound a query that's simply
+// long rather than nested, so without this a huge query is fully parsed before being rejected for having
+// too many conditions. Matches the limit applied by callers.
+const maxQueryLength = 10_000
+
 // Query parses a ContactQL query from the given input. If resolver is provided then we validate against it
 // to ensure that fields and groups exist. If not provided then still validate what we can.
 func Query(env envs.Environment, text string, resolver contactql.Resolver) (*contactql.ContactQuery, error) {
 	// preprocess text before parsing
 	text = strings.TrimSpace(text)
+
+	// reject overly long queries before parsing. Length is counted in characters to match how callers count
+	// it, and the byte length is checked first to short circuit as it's never less than the character count.
+	if len(text) > maxQueryLength && utf8.RuneCountInString(text) > maxQueryLength {
+		return nil, contactql.NewQueryError(contactql.ErrTooComplex, "query is too complex")
+	}
 
 	// reject overly nested queries before parsing to avoid a stack overflow
 	if utils.NestingDepthExceeds(text, maxQueryDepth) {

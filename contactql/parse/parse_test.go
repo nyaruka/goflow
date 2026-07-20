@@ -1,6 +1,7 @@
 package parse_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -534,6 +535,29 @@ func TestParseQueryTooComplex(t *testing.T) {
 	})
 	assert.EqualError(t, err, "query is too complex")
 	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
+}
+
+func TestParseQueryTooLong(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	resolver := contactql.NewMockResolver(nil, nil, nil)
+
+	// a query can be too long without being nested or having many conditions, so neither of the other
+	// limits sees this one
+	long := fmt.Sprintf(`name = "%s"`, strings.Repeat("x", 10000))
+	_, err := parse.Query(env, long, resolver)
+	assert.EqualError(t, err, "query is too complex")
+	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
+
+	// a query right on the limit is fine
+	ok := fmt.Sprintf(`name = "%s"`, strings.Repeat("x", 10000-len(`name = ""`)))
+	_, err = parse.Query(env, ok, resolver)
+	assert.NoError(t, err)
+
+	// length is counted in characters and not bytes, so a query of multi-byte characters isn't rejected
+	// for being long when a caller counting characters would have let it through
+	multiByte := fmt.Sprintf(`name = "%s"`, strings.Repeat("é", 5000))
+	_, err = parse.Query(env, multiByte, resolver)
+	assert.NoError(t, err)
 }
 
 func TestParseQueryTooManyConditions(t *testing.T) {
