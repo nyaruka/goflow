@@ -55,7 +55,7 @@ func NewAddContactURN(uuid flows.ActionUUID, scheme string, path string) *AddCon
 
 // Execute runs the labeling action
 func (a *AddContactURN) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	evaluatedPath, _ := run.EvaluateTemplate(a.Path, log)
+	evaluatedPath, _ := run.EvaluateTemplate(ctx, a.Path, log)
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
 		log(events.NewError("Can't add URN with empty path", ""))

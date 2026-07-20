@@ -46,7 +46,7 @@ func NewSetContactTimezone(uuid flows.ActionUUID, timezone string) *SetContactTi
 
 // Execute runs this action
 func (a *SetContactTimezone) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	timezone, ok := run.EvaluateTemplate(a.Timezone, log)
+	timezone, ok := run.EvaluateTemplate(ctx, a.Timezone, log)
 	timezone = strings.TrimSpace(timezone)
 
 	if !ok {

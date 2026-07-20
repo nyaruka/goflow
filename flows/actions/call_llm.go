@@ -84,8 +84,8 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogge
 	}
 
 	// substitute any variables in our instructions and input
-	instructions, _ := run.EvaluateTemplate(a.Instructions, log)
-	input, _ := run.EvaluateTemplate(a.Input, log)
+	instructions, _ := run.EvaluateTemplate(ctx, a.Instructions, log)
+	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
 
 	svc, err := run.Session().Engine().Services().LLM(llm)
 	if err != nil {

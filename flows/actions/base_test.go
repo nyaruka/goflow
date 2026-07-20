@@ -783,7 +783,7 @@ func TestResthookPayload(t *testing.T) {
 	run := session.Runs()[0]
 
 	log := test.NewEventLog()
-	payload, _ := run.EvaluateTemplate(actions.ResthookPayload, log.Log)
+	payload, _ := run.EvaluateTemplate(t.Context(), actions.ResthookPayload, log.Log)
 	require.NoError(t, log.Error())
 
 	pretty, err := jsonx.MarshalPretty(json.RawMessage(payload))

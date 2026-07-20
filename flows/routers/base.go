@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -138,7 +139,7 @@ func (r *baseRouter) isValidExit(uuid flows.ExitUUID, exits []flows.Exit) bool {
 }
 
 // RouteTimeout routes in the case that this router's wait timed out
-func (r *baseRouter) RouteTimeout(run flows.Run, step flows.Step, logEvent events.EventLogger) (flows.ExitUUID, error) {
+func (r *baseRouter) RouteTimeout(ctx context.Context, run flows.Run, step flows.Step, logEvent events.EventLogger) (flows.ExitUUID, error) {
 	if !r.AllowTimeout() {
 		return "", errors.New("can't call route timeout on router with no timeout")
 	}

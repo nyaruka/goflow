@@ -79,7 +79,7 @@ func TestMsgWait(t *testing.T) {
 
 	// try activating the wait
 	log := test.NewEventLog()
-	begun := wait.Begin(run, log.Log)
+	begun := wait.Begin(t.Context(), run, log.Log)
 
 	assert.True(t, begun)
 	assert.Equal(t, 1, len(log.Events))

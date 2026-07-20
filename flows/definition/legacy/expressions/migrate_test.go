@@ -249,7 +249,7 @@ func TestMigrateTemplate(t *testing.T) {
 		if migratedTemplate == tc.new && !tc.dontEval {
 			// check that the migrated template can be evaluated
 			log := test.NewEventLog()
-			session.Runs()[0].EvaluateTemplate(migratedTemplate, log.Log)
+			session.Runs()[0].EvaluateTemplate(t.Context(), migratedTemplate, log.Log)
 			require.NoError(t, log.Error(), "unable to evaluate migrated template '%s'", migratedTemplate)
 		}
 	}
@@ -382,7 +382,7 @@ func TestLegacyTests(t *testing.T) {
 			migratedVarsJSON := jsonx.MustMarshal(migratedVars)
 
 			eval := excellent.NewEvaluator()
-			_, _, err = eval.Template(env, migratedVars, migratedTemplate, nil)
+			_, _, err = eval.Template(t.Context(), env, migratedVars, migratedTemplate, nil)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

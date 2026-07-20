@@ -46,7 +46,7 @@ func TestLegacyExtra(t *testing.T) {
 	}
 	for _, tc := range tests {
 		log := test.NewEventLog()
-		output, _ := run.EvaluateTemplate(tc.template, log.Log)
+		output, _ := run.EvaluateTemplate(t.Context(), tc.template, log.Log)
 		assert.NoError(t, log.Error())
 		assert.Equal(t, tc.output, output, "evaluate failed for %s", tc.template)
 	}
@@ -56,7 +56,7 @@ func TestLegacyExtra(t *testing.T) {
 	run.SetResult(result)
 
 	log := test.NewEventLog()
-	output, _ := run.EvaluateTemplate(`@(legacy_extra[0])`, log.Log)
+	output, _ := run.EvaluateTemplate(t.Context(), `@(legacy_extra[0])`, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, `{foo: 123}`, output)
 }

@@ -81,16 +81,16 @@ func (a *baseAction) Inspect(dependency func(assets.Reference), local func(strin
 func (a *baseAction) LocalizationUUID() uuids.UUID { return uuids.UUID(a.UUID_) }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, log events.EventLogger) (*core.MsgContent, i18n.Language) {
+func (a *baseAction) evaluateMessage(ctx context.Context, run flows.Run, languages []i18n.Language, actionText string, actionAttachments []string, actionQuickReplies []string, log events.EventLogger) (*core.MsgContent, i18n.Language) {
 	// localize and evaluate the message text
 	localizedText, txtLang := run.GetTextArray(uuids.UUID(a.UUID()), "text", []string{actionText}, languages)
-	evaluatedText, _ := run.EvaluateTemplate(localizedText[0], log)
+	evaluatedText, _ := run.EvaluateTemplate(ctx, localizedText[0], log)
 
 	// localize and evaluate the message attachments
 	translatedAttachments, attLang := run.GetTextArray(uuids.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]utils.Attachment, 0, len(translatedAttachments))
 	for _, a := range translatedAttachments {
-		evaluatedAttachment, _ := run.EvaluateTemplate(a, log)
+		evaluatedAttachment, _ := run.EvaluateTemplate(ctx, a, log)
 		evaluatedAttachment = strings.TrimSpace(evaluatedAttachment)
 		if !utils.IsValidAttachment(evaluatedAttachment) {
 			log(events.NewError("Attachment evaluated to invalid value and will be ignored", ""))
@@ -107,7 +107,7 @@ func (a *baseAction) evaluateMessage(run flows.Run, languages []i18n.Language, a
 	translatedQuickReplies, qrsLang := run.GetTextArray(uuids.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]core.QuickReply, 0, len(translatedQuickReplies))
 	for _, qr := range translatedQuickReplies {
-		evaluatedQuickReply, _ := run.EvaluateTemplate(qr, log)
+		evaluatedQuickReply, _ := run.EvaluateTemplate(ctx, qr, log)
 		if evaluatedQuickReply == "" {
 			log(events.NewError("Quick reply evaluated to empty string and will be ignored", ""))
 			continue
@@ -221,7 +221,7 @@ func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local f
 	}
 }
 
-func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventLogger) ([]*assets.GroupReference, []*core.ContactReference, string, []urns.URN, error) {
+func (a *otherContactsAction) resolveRecipients(ctx context.Context, run flows.Run, log events.EventLogger) ([]*assets.GroupReference, []*core.ContactReference, string, []urns.URN, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -233,7 +233,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 	contactRefs = append(contactRefs, a.Contacts...)
 
 	// resolve group references
-	groups := resolveGroups(run, a.Groups, log)
+	groups := resolveGroups(ctx, run, a.Groups, log)
 	groupRefs := make([]*assets.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		groupRefs = append(groupRefs, group.Reference())
@@ -241,7 +241,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 
 	// evaluate the legacy variables
 	for _, legacyVar := range a.LegacyVars {
-		evaluatedLegacyVar, _ := run.EvaluateTemplate(legacyVar, log)
+		evaluatedLegacyVar, _ := run.EvaluateTemplate(ctx, legacyVar, log)
 
 		evaluatedLegacyVar = strings.TrimSpace(evaluatedLegacyVar)
 
@@ -271,7 +271,7 @@ func (a *otherContactsAction) resolveRecipients(run flows.Run, log events.EventL
 	}
 
 	// evaluate contact query
-	contactQuery, _ := run.EvaluateTemplateText(a.ContactQuery, contactql.EscapeValue, true, log)
+	contactQuery, _ := run.EvaluateTemplateText(ctx, a.ContactQuery, contactql.EscapeValue, true, log)
 	contactQuery = strings.TrimSpace(contactQuery)
 
 	return groupRefs, contactRefs, contactQuery, urnList, nil
@@ -293,7 +293,7 @@ func (a *createMsgAction) Inspect(dependency func(assets.Reference), local func(
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func resolveGroups(run flows.Run, references []*assets.GroupReference, log events.EventLogger) []*core.Group {
+func resolveGroups(ctx context.Context, run flows.Run, references []*assets.GroupReference, log events.EventLogger) []*core.Group {
 	groupAssets := run.Session().Assets().Groups()
 	groups := make([]*core.Group, 0, len(references))
 
@@ -302,7 +302,7 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, log event
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing group's name
-			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, log)
+			evaluatedName, ok := run.EvaluateTemplate(ctx, ref.NameMatch, log)
 			if ok {
 
 				// look up the set of all groups to see if such a group exists
@@ -328,7 +328,7 @@ func resolveGroups(run flows.Run, references []*assets.GroupReference, log event
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func resolveLabels(run flows.Run, references []*assets.LabelReference, log events.EventLogger) []*core.Label {
+func resolveLabels(ctx context.Context, run flows.Run, references []*assets.LabelReference, log events.EventLogger) []*core.Label {
 	labelAssets := run.Session().Assets().Labels()
 	labels := make([]*core.Label, 0, len(references))
 
@@ -337,7 +337,7 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, log event
 
 		if ref.Variable() {
 			// is an expression that evaluates to an existing label's name
-			evaluatedName, ok := run.EvaluateTemplate(ref.NameMatch, log)
+			evaluatedName, ok := run.EvaluateTemplate(ctx, ref.NameMatch, log)
 			if ok {
 				// look up the set of all labels to see if such a label exists
 				label = labelAssets.FindByName(evaluatedName)
@@ -362,13 +362,13 @@ func resolveLabels(run flows.Run, references []*assets.LabelReference, log event
 }
 
 // helper function to resolve a user reference to a user
-func resolveUser(run flows.Run, ref *assets.UserReference, log events.EventLogger) *core.User {
+func resolveUser(ctx context.Context, run flows.Run, ref *assets.UserReference, log events.EventLogger) *core.User {
 	userAssets := run.Session().Assets().Users()
 	var user *core.User
 
 	if ref.Variable() {
 		// is an expression that evaluates to an existing user's email
-		evaluatedEmail, ok := run.EvaluateTemplate(ref.EmailMatch, log)
+		evaluatedEmail, ok := run.EvaluateTemplate(ctx, ref.EmailMatch, log)
 		if ok {
 			// look up to see if such a user exists
 			user = userAssets.FindByEmail(evaluatedEmail)
