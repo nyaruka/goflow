@@ -13,6 +13,7 @@ func TestParsePath(t *testing.T) {
 		err      string
 	}{
 		{"", []string{}, "path must begin with $"},
+		{"$", []string{}, "path must contain at least one step"},
 		{"$.foo", []string{"foo"}, ""},
 		{"$[*]", []string{"*"}, ""},
 		{"$[2]", []string{"2"}, ""},
@@ -63,6 +64,9 @@ func TestVisit(t *testing.T) {
 
 		assert.Equal(t, tc.expected, matches)
 	}
+
+	// a path with no steps is an error rather than a panic
+	assert.EqualError(t, Visit(data, "$", func(m any) {}), "path must contain at least one step")
 }
 
 func TestTransform(t *testing.T) {
@@ -82,4 +86,8 @@ func TestTransform(t *testing.T) {
 
 		assert.Equal(t, tc.expected, tc.data)
 	}
+
+	// a path with no steps is an error rather than a panic
+	err := Transform(map[string]any{"foo": "bar"}, "$", func(c, k, m any) any { return "baz" })
+	assert.EqualError(t, err, "path must contain at least one step")
 }

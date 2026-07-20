@@ -541,3 +541,38 @@ func TestHasPhone(t *testing.T) {
 		test.AssertXEqual(t, expected, actual, "has_phone mismatch for input=%s country=%s", tc.input, tc.country)
 	}
 }
+
+func TestHasNumberWithNumberFormats(t *testing.T) {
+	tests := []struct {
+		decimalSymbol       string
+		digitGroupingSymbol string
+		input               string
+		expected            string
+	}{
+		{".", ",", "i have 1,234.5 apples", "1234.5"},
+		{",", ".", "i have 1.234,5 apples", "1234.5"},
+
+		// symbols which are regex meta characters are matched literally rather than breaking the pattern
+		{".", "]", "i have 1]234.5 apples", "1234.5"},
+		{"^", "$", "i have 1$234^5 apples", "1234.5"},
+
+		// empty symbols are tolerated - they can make numbers unparseable but must never panic
+		{".", "", "i have 234.5 apples", "234.5"},
+		{"", ",", "i have 1,234 apples", ""},
+	}
+
+	for _, tc := range tests {
+		env := envs.NewBuilder().WithNumberFormat(&envs.NumberFormat{
+			DecimalSymbol: tc.decimalSymbol, DigitGroupingSymbol: tc.digitGroupingSymbol,
+		}).Build()
+
+		actual := cases.HasNumber(env, xs(tc.input))
+
+		var expected types.XValue = falseResult
+		if tc.expected != "" {
+			expected = cases.NewTrueResult(types.RequireXNumberFromString(tc.expected))
+		}
+
+		test.AssertXEqual(t, expected, actual, "has_number mismatch for input=%s decimal=%s grouping=%s", tc.input, tc.decimalSymbol, tc.digitGroupingSymbol)
+	}
+}

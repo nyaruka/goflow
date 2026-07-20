@@ -49,4 +49,11 @@ func TestLocalizableText(t *testing.T) {
 			"bar"
 		]
 	}`), data, "JSON mismatch")
+
+	// writing an empty slice leaves the text as is rather than panicking
+	inspect.LocalizableText(sendMsg, func(uuid uuids.UUID, property string, vals []string, write func([]string)) {
+		write(nil)
+	})
+
+	assert.Equal(t, "foo", sendMsg.Text)
 }

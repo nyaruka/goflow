@@ -49,6 +49,11 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Equal(t, envs.RedactionPolicyNone, env.RedactionPolicy())
 	assert.Equal(t, [4]uint32{0xA3B1C, 0xD2E3F, 0x1A2B3, 0xC0FFEE}, env.ObfuscationKey())
 
+	// an explicit null number format doesn't clear the default
+	env, err = envs.ReadEnvironment([]byte(`{"number_format": null}`))
+	assert.NoError(t, err)
+	assert.Equal(t, envs.DefaultNumberFormat, env.NumberFormat())
+
 	// can create with valid values
 	env, err = envs.ReadEnvironment([]byte(`{
 		"date_format": "DD-MM-YYYY", 

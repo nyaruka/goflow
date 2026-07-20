@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/gocommon/i18n"
@@ -804,9 +805,32 @@ func hasOnlyPhraseTest(env envs.Environment, hays []string, pins []string) types
 
 type decimalTest func(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool
 
+// compiled number finding regexes, cached by number format so that we don't recompile on every evaluation
+var numberPatterns sync.Map
+
+// creates a regex which finds number like things in text, based on the given number format
+func numberPattern(nf *envs.NumberFormat) (*regexp.Regexp, error) {
+	if cached, ok := numberPatterns.Load(*nf); ok {
+		return cached.(*regexp.Regexp), nil
+	}
+
+	// the symbols come from environment configuration so they have to be quoted to be safely interpolated
+	pattern, err := regexp.Compile(fmt.Sprintf(`[-+]?([\pN%[1]s]+(%[2]s[\pN]+)?|(\W|^)%[2]s[\pN]+)`,
+		regexp.QuoteMeta(nf.DigitGroupingSymbol), regexp.QuoteMeta(nf.DecimalSymbol)))
+	if err != nil {
+		return nil, err
+	}
+
+	numberPatterns.Store(*nf, pattern)
+	return pattern, nil
+}
+
 func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber, testNum2 *types.XNumber, testFunc decimalTest) types.XValue {
-	// create a number finding regex based on current environment
-	pattern := regexp.MustCompile(fmt.Sprintf(`[-+]?([\pN\%[1]s]+(\%[2]s[\pN]+)?|(\W|^)\%[2]s[\pN]+)`, env.NumberFormat().DigitGroupingSymbol, env.NumberFormat().DecimalSymbol))
+	// get a number finding regex based on current environment
+	pattern, err := numberPattern(env.NumberFormat())
+	if err != nil {
+		return types.NewXErrorf("environment has a number format which can't be used to find numbers")
+	}
 
 	// look for number like things in the input and use the first one that we can actually parse
 	for _, value := range pattern.FindAllString(str.Native(), -1) {

@@ -78,8 +78,18 @@ func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include
 // EnumerateLocalizables enumerates all the localizable text on this object
 func (r *baseRouter) EnumerateLocalizables(include func(uuids.UUID, string, []string, func([]string))) {
 	for _, cat := range r.categories {
+		// categories read from a flow definition are always *Category, but the interface is exported so an
+		// externally constructed router could contain something else, which we simply can't rewrite
+		typed, ok := cat.(*Category)
+		if !ok {
+			continue
+		}
 		w := func(v []string) {
-			cat.(*Category).name = v[0]
+			// callers of the write function are expected to pass a non-empty slice but be defensive as this
+			// is driven by localization assets
+			if len(v) > 0 {
+				typed.name = v[0]
+			}
 		}
 		include(cat.LocalizationUUID(), "name", []string{cat.Name()}, w)
 	}

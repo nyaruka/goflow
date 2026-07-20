@@ -138,7 +138,10 @@ func ReadEnvironment(data []byte) (Environment, error) {
 	env.timeFormat = envelope.TimeFormat
 	env.allowedLanguages = envelope.AllowedLanguages
 	env.defaultCountry = envelope.DefaultCountry
-	env.numberFormat = envelope.NumberFormat
+	// an explicit null in the JSON would otherwise clear the default we started with
+	if envelope.NumberFormat != nil {
+		env.numberFormat = envelope.NumberFormat
+	}
 	env.inputCollation = envelope.InputCollation
 	env.redactionPolicy = envelope.RedactionPolicy
 	env.obfuscationKey = envelope.ObfuscationKey
