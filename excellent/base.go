@@ -1,13 +1,20 @@
 package excellent
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
+
+// maxExpressionDepth is the maximum bracket nesting depth allowed in an expression. Parsing and evaluating
+// are recursive, so without a limit a deeply nested expression can overflow the stack and crash the process.
+// Real expressions are written by humans and nest a handful of levels deep at most.
+const maxExpressionDepth = 100
 
 // Evaluator evaluates templates and expressions.
 type Evaluator struct{}
@@ -99,6 +106,11 @@ func (e *Evaluator) Expression(env envs.Environment, ctx *types.XObject, express
 
 // Parse parses an expression
 func Parse(expression string, contextCallback func([]string)) (Expression, error) {
+	// reject overly nested expressions before parsing to avoid a stack overflow
+	if utils.NestingDepthExceeds(expression, maxExpressionDepth) {
+		return nil, fmt.Errorf("expression nesting too deep")
+	}
+
 	errListener := NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)

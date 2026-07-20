@@ -21,6 +21,7 @@ const (
 	ErrUnknownPropertyType   = "unknown_property_type"  // `type` the property type
 	ErrUnknownProperty       = "unknown_property"       // `property` the property key
 	ErrRedactedURNs          = "redacted_urns"
+	ErrTooComplex            = "too_complex"
 )
 
 // QueryError is used when an error is a result of an invalid query

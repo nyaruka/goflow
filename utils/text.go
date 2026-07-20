@@ -96,3 +96,25 @@ func Indent(s string, prefix string) string {
 	}
 	return output.String()
 }
+
+// NestingDepthExceeds reports whether the bracket nesting depth of s exceeds max. It counts (, [ and {
+// as opening brackets and ), ] and } as closing. String literals are not interpreted, so brackets inside
+// quoted text are counted too - a conservative over-estimate that's safe against input crafted to trigger
+// deep recursion in the expression and query parsers. Scanning stops as soon as the limit is exceeded.
+func NestingDepthExceeds(s string, max int) bool {
+	depth := 0
+	for _, r := range s {
+		switch r {
+		case '(', '[', '{':
+			depth++
+			if depth > max {
+				return true
+			}
+		case ')', ']', '}':
+			if depth > 0 {
+				depth--
+			}
+		}
+	}
+	return false
+}
