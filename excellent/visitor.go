@@ -7,6 +7,7 @@ import (
 
 	"github.com/antlr4-go/antlr/v4"
 	gen "github.com/nyaruka/goflow/antlr/gen/excellent3"
+	"github.com/nyaruka/goflow/excellent/operators"
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
@@ -125,7 +126,9 @@ func (v *visitor) VisitNameList(ctx *gen.NameListContext) any {
 }
 
 // binaryOperation is a convenience for visiting a binary operation with the given operator symbol
-func (v *visitor) binaryOperation(op string, ctx interface{ Expression(int) gen.IExpressionContext }) any {
+func (v *visitor) binaryOperation(op *operators.Binary, ctx interface {
+	Expression(int) gen.IExpressionContext
+}) any {
 	return &BinaryOperation{
 		Op:   op,
 		Exp1: toExpression(v.Visit(ctx.Expression(0))),
@@ -135,28 +138,28 @@ func (v *visitor) binaryOperation(op string, ctx interface{ Expression(int) gen.
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
 func (v *visitor) VisitConcatenation(ctx *gen.ConcatenationContext) any {
-	return v.binaryOperation("&", ctx)
+	return v.binaryOperation(operators.Concatenate, ctx)
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
 func (v *visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) any {
 	if ctx.PLUS() != nil {
-		return v.binaryOperation("+", ctx)
+		return v.binaryOperation(operators.Add, ctx)
 	}
-	return v.binaryOperation("-", ctx)
+	return v.binaryOperation(operators.Subtract, ctx)
 }
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
 func (v *visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) any {
 	if ctx.TIMES() != nil {
-		return v.binaryOperation("*", ctx)
+		return v.binaryOperation(operators.Multiply, ctx)
 	}
-	return v.binaryOperation("/", ctx)
+	return v.binaryOperation(operators.Divide, ctx)
 }
 
 // VisitExponent deals with exponenets such as 5^5
 func (v *visitor) VisitExponent(ctx *gen.ExponentContext) any {
-	return v.binaryOperation("^", ctx)
+	return v.binaryOperation(operators.Exponent, ctx)
 }
 
 // VisitNegation deals with negations such as -5
@@ -167,22 +170,22 @@ func (v *visitor) VisitNegation(ctx *gen.NegationContext) any {
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
 func (v *visitor) VisitEquality(ctx *gen.EqualityContext) any {
 	if ctx.EQ() != nil {
-		return v.binaryOperation("=", ctx)
+		return v.binaryOperation(operators.Equal, ctx)
 	}
-	return v.binaryOperation("!=", ctx)
+	return v.binaryOperation(operators.NotEqual, ctx)
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
 func (v *visitor) VisitComparison(ctx *gen.ComparisonContext) any {
 	switch {
 	case ctx.LT() != nil:
-		return v.binaryOperation("<", ctx)
+		return v.binaryOperation(operators.LessThan, ctx)
 	case ctx.LTE() != nil:
-		return v.binaryOperation("<=", ctx)
+		return v.binaryOperation(operators.LessThanOrEqual, ctx)
 	case ctx.GTE() != nil:
-		return v.binaryOperation(">=", ctx)
+		return v.binaryOperation(operators.GreaterThanOrEqual, ctx)
 	default:
-		return v.binaryOperation(">", ctx)
+		return v.binaryOperation(operators.GreaterThan, ctx)
 	}
 }
 

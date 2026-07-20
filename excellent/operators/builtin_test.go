@@ -20,7 +20,7 @@ func TestBinaryOperators(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	testCases := []struct {
-		operator operators.BinaryOperator
+		operator *operators.Binary
 		arg1     types.XValue
 		arg2     types.XValue
 		expected types.XValue
@@ -78,7 +78,7 @@ func TestBinaryOperators(t *testing.T) {
 		{operators.Exponent, xi(1), ERROR, ERROR},
 
 		// overflow cases
-		{operators.Multiply, xn("9999999999999999999"), xn("9999999999999999999"), ERROR}, // product > 36 digits
+		{operators.Multiply, xn("9999999999999999999"), xn("9999999999999999999"), ERROR},                              // product > 36 digits
 		{operators.Add, xn("999999999999999999999999999999999999"), xn("999999999999999999999999999999999999"), ERROR}, // sum > 36 significant digits
 
 		{operators.LessThan, xi(2), xi(3), types.XBooleanTrue},
@@ -107,9 +107,9 @@ func TestBinaryOperators(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testID := fmt.Sprintf("%v(%s, %s)", tc.operator, tc.arg1, tc.arg2)
+		testID := fmt.Sprintf("%s(%s, %s)", tc.operator.Symbol(), tc.arg1, tc.arg2)
 
-		result := tc.operator(env, tc.arg1, tc.arg2)
+		result := tc.operator.Evaluate(env, tc.arg1, tc.arg2)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {
@@ -124,7 +124,7 @@ func TestUnaryOperators(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	testCases := []struct {
-		operator operators.UnaryOperator
+		operator *operators.Unary
 		arg      types.XValue
 		expected types.XValue
 	}{
@@ -135,9 +135,9 @@ func TestUnaryOperators(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testID := fmt.Sprintf("%v(%s)", tc.operator, tc.arg)
+		testID := fmt.Sprintf("%s(%s)", tc.operator.Symbol(), tc.arg)
 
-		result := tc.operator(env, tc.arg)
+		result := tc.operator.Evaluate(env, tc.arg)
 
 		// don't check error equality - just check that we got an error if we expected one
 		if tc.expected == ERROR {

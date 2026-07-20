@@ -181,31 +181,15 @@ func (x *AnonFunction) String() string {
 	return fmt.Sprintf("(%s) => %s", strings.Join(x.Args, ", "), x.Body)
 }
 
-// binaryOperators maps the symbol of each binary operator to its implementation
-var binaryOperators = map[string]operators.BinaryOperator{
-	"&":  operators.Concatenate,
-	"+":  operators.Add,
-	"-":  operators.Subtract,
-	"*":  operators.Multiply,
-	"/":  operators.Divide,
-	"^":  operators.Exponent,
-	"=":  operators.Equal,
-	"!=": operators.NotEqual,
-	"<":  operators.LessThan,
-	"<=": operators.LessThanOrEqual,
-	">":  operators.GreaterThan,
-	">=": operators.GreaterThanOrEqual,
-}
-
 // BinaryOperation is a binary operator applied to two operands, e.g. 1 + 2
 type BinaryOperation struct {
-	Op   string
+	Op   *operators.Binary
 	Exp1 Expression
 	Exp2 Expression
 }
 
 func (x *BinaryOperation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return binaryOperators[x.Op](env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
+	return x.Op.Evaluate(env, x.Exp1.Evaluate(env, scope, warnings), x.Exp2.Evaluate(env, scope, warnings))
 }
 
 func (x *BinaryOperation) Visit(v func(Expression)) {
@@ -215,7 +199,7 @@ func (x *BinaryOperation) Visit(v func(Expression)) {
 }
 
 func (x *BinaryOperation) String() string {
-	return fmt.Sprintf("%s %s %s", x.Exp1.String(), x.Op, x.Exp2.String())
+	return fmt.Sprintf("%s %s %s", x.Exp1.String(), x.Op.Symbol(), x.Exp2.String())
 }
 
 type Negation struct {
@@ -223,7 +207,7 @@ type Negation struct {
 }
 
 func (x *Negation) Evaluate(env envs.Environment, scope *Scope, warnings *Warnings) types.XValue {
-	return operators.Negate(env, x.Exp.Evaluate(env, scope, warnings))
+	return operators.Negate.Evaluate(env, x.Exp.Evaluate(env, scope, warnings))
 }
 
 func (x *Negation) Visit(v func(Expression)) {
