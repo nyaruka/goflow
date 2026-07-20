@@ -1,6 +1,7 @@
 package parse_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseQuery(t *testing.T) {
@@ -532,5 +534,22 @@ func TestParseQueryTooComplex(t *testing.T) {
 		_, err = parse.Query(env, deep, resolver)
 	})
 	assert.EqualError(t, err, "query is too complex")
+	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
+}
+
+func TestParseQueryTooManyConditions(t *testing.T) {
+	env := envs.NewBuilder().Build()
+	resolver := contactql.NewMockResolver(nil, nil, nil)
+
+	// a query right on the limit is fine
+	ok := "name=x" + strings.Repeat(" OR name=x", contactql.MaxConditions-1)
+	parsed, err := parse.Query(env, ok, resolver)
+	require.NoError(t, err)
+	assert.Len(t, parsed.Root().(*contactql.BoolCombination).Children(), contactql.MaxConditions)
+
+	// one more is rejected
+	tooMany := "name=x" + strings.Repeat(" OR name=x", contactql.MaxConditions)
+	_, err = parse.Query(env, tooMany, resolver)
+	assert.EqualError(t, err, fmt.Sprintf("query contains more than %d conditions", contactql.MaxConditions))
 	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
 }
