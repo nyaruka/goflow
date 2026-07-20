@@ -1,7 +1,6 @@
 package parse_test
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -550,6 +549,8 @@ func TestParseQueryTooManyConditions(t *testing.T) {
 	// one more is rejected
 	tooMany := "name=x" + strings.Repeat(" OR name=x", contactql.MaxConditions)
 	_, err = parse.Query(env, tooMany, resolver)
-	assert.EqualError(t, err, fmt.Sprintf("query contains more than %d conditions", contactql.MaxConditions))
+	// deliberately the same generic message as any other too-complex query, so we don't tell a bad actor
+	// which limit they hit or where it is
+	assert.EqualError(t, err, "query is too complex")
 	assert.Equal(t, contactql.ErrTooComplex, err.(*contactql.QueryError).Code())
 }
