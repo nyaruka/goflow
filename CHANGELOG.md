@@ -1,3 +1,14 @@
+v0.283.0 (2026-07-21)
+-------------------------
+ * Add a per-evaluation cost budget which bounds the total work of evaluating an expression
+ * Limit the output size of expression functions split, concat, array and repeat
+ * Add context.Context parameter to the Run.EvaluateTemplate methods
+ * Namespace event error codes (e.g. urn_taken -> urn:taken) and add expression:too_complex
+ * Tighten limits on contact queries such as nesting depth and number of conditions
+ * Guard against panics and bound resource use when parsing malformed flow definitions and untrusted input
+ * Don't hold flow assets lock while loading and reading flows
+ * Update to latest gocommon
+
 v0.282.1 (2026-07-16)
 -------------------------
  * Add contact_flow_changed event type
