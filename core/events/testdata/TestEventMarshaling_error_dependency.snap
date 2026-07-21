@@ -3,5 +3,5 @@
     "type": "error",
     "created_on": "2025-05-04T12:30:46.123456789Z",
     "text": "Missing dependency: field[key=age,name=Age]",
-    "code": "dependency_missing"
+    "code": "dependency:missing"
 }

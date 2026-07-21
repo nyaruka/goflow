@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -27,4 +28,17 @@ func TestXError(t *testing.T) {
 	marshaled, err := jsonx.Marshal(err1)
 	assert.NoError(t, err)
 	assert.Equal(t, `null`, string(marshaled))
+}
+
+func TestErrTooComplex(t *testing.T) {
+	// the sentinel matches itself
+	assert.True(t, errors.Is(types.ErrTooComplex, types.ErrTooComplex))
+
+	// and still matches when re-wrapped in a new XError (identity would miss this)
+	rewrapped := types.NewXError(types.ErrTooComplex.Native())
+	assert.NotSame(t, types.ErrTooComplex, rewrapped)
+	assert.True(t, errors.Is(rewrapped, types.ErrTooComplex))
+
+	// an unrelated error doesn't match
+	assert.False(t, errors.Is(types.NewXErrorf("boom"), types.ErrTooComplex))
 }

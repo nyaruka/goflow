@@ -92,7 +92,7 @@ func (t *Template) Evaluate(env envs.Environment, ctx *types.XObject, escaping E
 
 			// if we got an error, add it to our list and move on
 			if types.IsXError(value) {
-				errors.Add(s.src, value.(error).Error())
+				errors.Add(s.src, value.(error))
 				continue
 			}
 

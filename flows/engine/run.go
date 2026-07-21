@@ -340,7 +340,11 @@ func (r *run) errorToEvents(err error, log events.EventLogger) {
 	var tplErrs *excellent.TemplateErrors
 	if errors.As(err, &tplErrs) {
 		for _, terr := range tplErrs.Errors {
-			log(events.NewError(fmt.Sprintf("Error evaluating expression: %s", terr.Message), events.ErrorCodeExpression, "expression", terr.Expression))
+			code := events.ErrorCodeExpression
+			if errors.Is(terr.Err, types.ErrTooComplex) {
+				code = events.ErrorCodeExpressionTooComplex
+			}
+			log(events.NewError(fmt.Sprintf("Error evaluating expression: %s", terr.Err), code, "expression", terr.Expression))
 		}
 	} else {
 		log(events.NewRawError(err))

@@ -87,7 +87,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 
 			value, err := migrateExpression(nil, token, options)
 			if err != nil {
-				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
+				errors.Add(fmt.Sprintf("@(%s)", token), err)
 				buf.WriteString("@(")
 				buf.WriteString(token)
 				buf.WriteString(")")
