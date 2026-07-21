@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver"
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -370,22 +371,19 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
 }
 
-// checkFlowSize does a shallow parse of a flow definition (current or legacy format) and returns an error
-// if it contains more nodes than are allowed. It counts array elements without decoding their contents, so
-// it's cheap relative to the full parse and migration that follow.
+// checkFlowSize counts the nodes in a flow definition (current or legacy format) and returns an error if
+// there are more than are allowed. It walks only the relevant arrays without decoding their contents or the
+// rest of the definition, so it's cheap relative to the full parse and migration that follow. Malformed or
+// duplicated input can only make it under-count, so it never rejects a flow that would otherwise be valid -
+// the authoritative check remains the post-migration validation.
 func checkFlowSize(data []byte) error {
-	shallow := &struct {
-		Nodes      []json.RawMessage `json:"nodes"`
-		ActionSets []json.RawMessage `json:"action_sets"` // legacy definitions
-		RuleSets   []json.RawMessage `json:"rule_sets"`   // legacy definitions
-	}{}
+	numNodes := 0
+	countElement := func([]byte, jsonparser.ValueType, int, error) { numNodes++ }
 
-	// ignore errors - a malformed definition will be rejected with a better error further down
-	if err := jsonx.Unmarshal(data, shallow); err != nil {
-		return nil
-	}
+	jsonparser.ArrayEach(data, countElement, "nodes")       // current format
+	jsonparser.ArrayEach(data, countElement, "action_sets") // legacy format
+	jsonparser.ArrayEach(data, countElement, "rule_sets")   // legacy format
 
-	numNodes := len(shallow.Nodes) + len(shallow.ActionSets) + len(shallow.RuleSets)
 	if numNodes > flows.MaxNodesPerFlow {
 		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, numNodes)
 	}
