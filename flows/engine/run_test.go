@@ -227,6 +227,20 @@ func TestRunContext(t *testing.T) {
 	evaluated, _ := run.EvaluateTemplateText(t.Context(), `gender = @("M\" OR")`, contactql.EscapeValue, true, log.Log)
 	assert.NoError(t, log.Error())
 	assert.Equal(t, `gender = "M\" OR"`, evaluated)
+
+	// an ordinary expression error is logged with the general expression code
+	log = test.NewEventLog()
+	run.EvaluateTemplate(t.Context(), `@(1 / 0)`, log.Log)
+	require.Len(t, log.Events, 1)
+	assert.Equal(t, events.ErrorCodeExpression, log.Events[0].(*events.Error).Code)
+
+	// exceeding the cost budget is logged with a distinct code so it can be alerted on
+	log = test.NewEventLog()
+	run.EvaluateTemplate(t.Context(), `@(join(foreach(split(repeat("a ",500)," "), (v) => join(foreach(split(repeat("a ",500)," "), repeat, 1000), "")), ""))`, log.Log)
+	require.Len(t, log.Events, 1)
+	errEvent := log.Events[0].(*events.Error)
+	assert.Equal(t, events.ErrorCodeExpressionTooComplex, errEvent.Code)
+	assert.Equal(t, "Error evaluating expression: expression is too complex to evaluate", errEvent.Text)
 }
 
 func TestMissingRelatedRunContext(t *testing.T) {

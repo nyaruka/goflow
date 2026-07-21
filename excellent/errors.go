@@ -10,11 +10,16 @@ import (
 // TemplateError is an error which occurs during evaluation of an expression
 type TemplateError struct {
 	Expression string
-	Message    string
+	Err        error
 }
 
 func (e TemplateError) Error() string {
-	return fmt.Sprintf("error evaluating %s: %s", e.Expression, e.Message)
+	return fmt.Sprintf("error evaluating %s: %s", e.Expression, e.Err)
+}
+
+// Unwrap allows the underlying evaluation error to be inspected, e.g. with errors.Is
+func (e TemplateError) Unwrap() error {
+	return e.Err
 }
 
 // TemplateErrors represents the list of all errors encountered during evaluation of a template
@@ -28,8 +33,8 @@ func NewTemplateErrors() *TemplateErrors {
 }
 
 // Add adds an error for the given expression
-func (e *TemplateErrors) Add(expression, message string) {
-	e.Errors = append(e.Errors, &TemplateError{Expression: expression, Message: message})
+func (e *TemplateErrors) Add(expression string, err error) {
+	e.Errors = append(e.Errors, &TemplateError{Expression: expression, Err: err})
 }
 
 // HasErrors returns whether there are errors

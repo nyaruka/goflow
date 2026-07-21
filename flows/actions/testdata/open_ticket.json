@@ -16,7 +16,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]",
-                "code": "dependency_missing"
+                "code": "dependency:missing"
             }
         ],
         "locals_after": {

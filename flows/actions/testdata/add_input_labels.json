@@ -176,7 +176,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: label[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbing]",
-                "code": "dependency_missing"
+                "code": "dependency:missing"
             }
         ],
         "locals_after": {},

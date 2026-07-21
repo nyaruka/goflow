@@ -14,9 +14,10 @@ func init() {
 const TypeError string = "error"
 
 const (
-	ErrorCodeDependencyMissing = "dependency_missing"
-	ErrorCodeURNTaken          = "urn_taken"
-	ErrorCodeExpression        = "expression"
+	ErrorCodeDependencyMissing    = "dependency:missing"
+	ErrorCodeURNTaken             = "urn:taken"
+	ErrorCodeExpression           = "expression"
+	ErrorCodeExpressionTooComplex = "expression:too_complex"
 )
 
 // Error events are created when an error occurs during flow execution.

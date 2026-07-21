@@ -53,7 +53,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: flow[uuid=dede1e50-db55-4b50-8929-2116bfc56148,name=Missing]",
-                "code": "dependency_missing"
+                "code": "dependency:missing"
             }
         ],
         "locals_after": {},
@@ -116,7 +116,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
-                "code": "dependency_missing"
+                "code": "dependency:missing"
             }
         ],
         "locals_after": {},

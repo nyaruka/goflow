@@ -395,7 +395,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "text": "URN is taken by another contact",
-                "code": "urn_taken",
+                "code": "urn:taken",
                 "extra": {
                     "urn": "twitter:taken123"
                 }

@@ -164,7 +164,7 @@ func VisitTemplate(template string, allowedTopLevels []string, unescapeBody bool
 				repr = "@(" + token + ")"
 			}
 
-			errors.Add(repr, err.Error())
+			errors.Add(repr, err)
 		}
 	}
 
