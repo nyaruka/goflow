@@ -107,6 +107,16 @@ func TestXNumberArithmetic(t *testing.T) {
 	_, err = num("2").Pow(num("400"))
 	assert.EqualError(t, err, "number value out of range")
 
+	maxMagnitude := num("1" + strings.Repeat("0", 100))                  // 1E100
+	_, err = maxMagnitude.Div(num("0." + strings.Repeat("0", 49) + "1")) // 1E100 / 1E-50 = 1E150
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).Round(-101) // rounds up to 1E101
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).RoundUp(-101)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).Neg().RoundDown(-101)
+	assert.EqualError(t, err, "number value out of range")
+
 	// division by zero
 	_, err = num("3").Div(types.XNumberZero)
 	assert.EqualError(t, err, "division by zero")
@@ -169,11 +179,11 @@ func TestCheckDecimalRange(t *testing.T) {
 		{decimal.New(1, 0), false},
 		{decimal.New(-1, 0), false},
 		{decimal.New(123, 0), false},
-		{decimal.RequireFromString("123456789012345678901234567890123456"), false},                  // 36 significant digits - ok
-		{decimal.RequireFromString("1234567890123456789012345678901234567"), true},                 // 37 significant digits - too many
-		{decimal.RequireFromString("-1234567890123456789012345678901234567"), true},                // negative 37 significant digits
-		{decimal.RequireFromString("1234567895171680000000000000000000000000"), false},             // 40 digits but only 15 significant - ok
-		{decimal.RequireFromString("12345678901234567890123456789012345670000000"), true},          // 37 significant digits with trailing zeros
+		{decimal.RequireFromString("123456789012345678901234567890123456"), false},        // 36 significant digits - ok
+		{decimal.RequireFromString("1234567890123456789012345678901234567"), true},        // 37 significant digits - too many
+		{decimal.RequireFromString("-1234567890123456789012345678901234567"), true},       // negative 37 significant digits
+		{decimal.RequireFromString("1234567895171680000000000000000000000000"), false},    // 40 digits but only 15 significant - ok
+		{decimal.RequireFromString("12345678901234567890123456789012345670000000"), true}, // 37 significant digits with trailing zeros
 		{decimal.RequireFromString("0.000000000000000000000000000000000001"), false},
 		{decimal.New(1, 100), false}, // 1E100 - ok magnitude
 		{decimal.New(1, 200), true},  // 1E200 - too large magnitude

@@ -37,7 +37,10 @@ func (r *Random) Validate(flow flows.Flow, exits []flows.Exit) error {
 func (r *Random) Route(ctx context.Context, run flows.Run, step flows.Step, logEvent events.EventLogger) (flows.ExitUUID, string, error) {
 	// pick a random category
 	rand := types.RandomXNumber()
-	scaled, _ := rand.Mul(types.NewXNumberFromInt(len(r.categories))) // rand < 1 so can't be out of range
+	scaled, err := rand.Mul(types.NewXNumberFromInt(len(r.categories)))
+	if err != nil {
+		return "", "", err
+	}
 	categoryNum := scaled.IntPart()
 	categoryUUID := r.categories[categoryNum].UUID()
 
