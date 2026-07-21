@@ -68,14 +68,11 @@ func ParseDecimal(val string, format *envs.NumberFormat) (decimal.Decimal, error
 	// replace non-Arabic (0-9) numerals with their equivalents
 	cleaned = strings.Map(numeralMapper, cleaned)
 
-	d, err := decimal.NewFromString(cleaned)
+	// parse with the same format restrictions (no scientific notation) and range limits as numbers
+	// elsewhere in the engine
+	n, err := types.NewXNumberFromString(cleaned)
 	if err != nil {
-		return d, err
-	}
-
-	if err := types.CheckDecimalRange(d); err != nil {
 		return decimal.Zero, err
 	}
-
-	return d, nil
+	return n.Native(), nil
 }
