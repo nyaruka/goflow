@@ -1,3 +1,8 @@
+v0.283.1 (2026-07-21)
+-------------------------
+ * Apply engine number format and range limits to contact query values
+ * Reject scientific notation in router case number parsing
+
 v0.283.0 (2026-07-21)
 -------------------------
  * Add a per-evaluation cost budget which bounds the total work of evaluating an expression
