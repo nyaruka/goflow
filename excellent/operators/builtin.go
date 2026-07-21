@@ -48,7 +48,7 @@ var NotEqual = textualBinary("!=", func(env envs.Environment, text1 *types.XText
 //
 // @operator negate "- (unary)"
 var Negate = numericalUnary("-", func(env envs.Environment, num *types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Neg())
+	return num.Neg()
 })
 
 // Add adds two numbers.
@@ -58,7 +58,11 @@ var Negate = numericalUnary("-", func(env envs.Environment, num *types.XNumber) 
 //
 // @operator add "+"
 var Add = numericalBinary("+", func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Add(num2.Native()))
+	sum, err := num1.Add(num2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return sum
 })
 
 // Subtract subtracts two numbers.
@@ -68,7 +72,11 @@ var Add = numericalBinary("+", func(env envs.Environment, num1 *types.XNumber, n
 //
 // @operator subtract "- (binary)"
 var Subtract = numericalBinary("-", func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Sub(num2.Native()))
+	diff, err := num1.Sub(num2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return diff
 })
 
 // Multiply multiplies two numbers.
@@ -78,7 +86,11 @@ var Subtract = numericalBinary("-", func(env envs.Environment, num1 *types.XNumb
 //
 // @operator multiply "*"
 var Multiply = numericalBinary("*", func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Mul(num2.Native()))
+	product, err := num1.Mul(num2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return product
 })
 
 // Divide divides a number by another.
@@ -90,11 +102,11 @@ var Multiply = numericalBinary("*", func(env envs.Environment, num1 *types.XNumb
 //
 // @operator divide "/"
 var Divide = numericalBinary("/", func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	if num2.Equals(types.XNumberZero) {
-		return types.NewXErrorf("division by zero")
+	quotient, err := num1.Div(num2)
+	if err != nil {
+		return types.NewXError(err)
 	}
-
-	return types.NewXNumber(num1.Native().Div(num2.Native()))
+	return quotient
 })
 
 // Exponent raises a number to the power of a another number.
@@ -104,7 +116,11 @@ var Divide = numericalBinary("/", func(env envs.Environment, num1 *types.XNumber
 //
 // @operator exponent "^"
 var Exponent = numericalBinary("^", func(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Pow(num2.Native()))
+	result, err := num1.Pow(num2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return result
 })
 
 // LessThan returns true if the first number is less than the second.

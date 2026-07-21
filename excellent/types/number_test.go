@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -57,6 +58,65 @@ func TestXNumber(t *testing.T) {
 	assert.False(t, types.IsXError(types.NewXNumber(decimal.New(1, 50))))             // within range
 	assert.False(t, types.IsXError(types.NewXNumber(decimal.New(1, -50))))            // within range
 	assert.False(t, types.IsXError(types.NewXNumber(decimal.RequireFromString("0")))) // zero always ok
+}
+
+func TestXNumberArithmetic(t *testing.T) {
+	num := types.RequireXNumberFromString
+
+	// checked operations that succeed
+	checkedTests := []struct {
+		op       func() (*types.XNumber, error)
+		expected string
+	}{
+		{func() (*types.XNumber, error) { return num("2").Add(num("3")) }, "5"},
+		{func() (*types.XNumber, error) { return num("2").Sub(num("3")) }, "-1"},
+		{func() (*types.XNumber, error) { return num("2.5").Mul(num("4")) }, "10"},
+		{func() (*types.XNumber, error) { return num("3").Div(num("2")) }, "1.5"},
+		{func() (*types.XNumber, error) { return num("5").Mod(num("2")) }, "1"},
+		{func() (*types.XNumber, error) { return num("2").Pow(num("8")) }, "256"},
+		{func() (*types.XNumber, error) { return num("12.146").Round(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("12.146").Round(-1) }, "10"},
+		{func() (*types.XNumber, error) { return num("12.141").RoundUp(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("12.15").RoundUp(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("-12.141").RoundUp(2) }, "-12.14"},
+		{func() (*types.XNumber, error) { return num("12.146").RoundDown(2) }, "12.14"},
+		{func() (*types.XNumber, error) { return num("12.14").RoundDown(2) }, "12.14"},
+		{func() (*types.XNumber, error) { return num("-12.146").RoundDown(2) }, "-12.15"},
+	}
+	for i, tc := range checkedTests {
+		result, err := tc.op()
+		assert.NoError(t, err, "unexpected error for test %d", i)
+		assert.Equal(t, tc.expected, result.Render(), "result mismatch for test %d", i)
+	}
+
+	// unchecked operations
+	assert.Equal(t, num("-2").Native(), num("2").Neg().Native())
+	assert.Equal(t, num("2").Native(), num("-2").Abs().Native())
+	assert.Equal(t, num("2").Native(), num("2.7").Floor().Native())
+	assert.Equal(t, num("-3").Native(), num("-2.7").Floor().Native())
+	assert.Equal(t, int64(12), num("12.146").IntPart())
+
+	// checked operations that fail
+	maxDigits := num(strings.Repeat("9", 36)) // maximum number of significant digits
+	_, err := maxDigits.Add(maxDigits)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = maxDigits.Neg().Sub(maxDigits)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = maxDigits.Mul(num("1" + strings.Repeat("0", 66))) // ~9.99E101 exceeds max magnitude
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("2").Pow(num("400"))
+	assert.EqualError(t, err, "number value out of range")
+
+	// division by zero
+	_, err = num("3").Div(types.XNumberZero)
+	assert.EqualError(t, err, "division by zero")
+	_, err = num("3").Mod(types.XNumberZero)
+	assert.EqualError(t, err, "division by zero")
+
+	// random numbers are in [0, 1)
+	r := types.RandomXNumber()
+	assert.True(t, r.Compare(types.XNumberZero) >= 0)
+	assert.True(t, r.Compare(types.NewXNumberFromInt(1)) < 0)
 }
 
 func TestToXNumberAndInteger(t *testing.T) {

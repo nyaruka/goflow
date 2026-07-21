@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/obfuscate"
-	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -595,7 +594,7 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return vals
 		case contactql.AttributeTickets:
-			return []any{decimal.NewFromInt(int64(c.tickets.Open().Count()))}
+			return []any{types.NewXNumberFromInt(c.tickets.Open().Count())}
 		case contactql.AttributeCreatedOn:
 			return []any{c.createdOn}
 		case contactql.AttributeLastSeenOn:

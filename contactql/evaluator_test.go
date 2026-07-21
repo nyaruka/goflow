@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/parse"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/shopspring/decimal"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +31,7 @@ func TestEvaluateQuery(t *testing.T) {
 		"twitter":  []any{"bob_smith"},
 		"whatsapp": []any{},
 		"gender":   []any{"male"},
-		"age":      []any{decimal.NewFromFloat(36)},
+		"age":      []any{types.NewXNumberFromInt(36)},
 		"dob":      []any{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)},
 		"state":    []any{"Kigali"},
 		"district": []any{"Gasabo"},

@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/shopspring/decimal"
 )
@@ -58,6 +59,11 @@ func NewXNumberFromInt(value int) *XNumber {
 // NewXNumberFromInt64 creates a new XNumber from the given int
 func NewXNumberFromInt64(value int64) *XNumber {
 	return newXNumber(decimal.New(value, 0))
+}
+
+// RandomXNumber creates a new random XNumber in the range [0, 1)
+func RandomXNumber() *XNumber {
+	return newXNumber(random.Decimal())
 }
 
 // RequireXNumberFromString creates a new XNumber from the given string or panics (used for tests)
@@ -132,6 +138,102 @@ func (x *XNumber) Compare(o XValue) int {
 	other := o.(*XNumber)
 
 	return x.Native().Cmp(other.Native())
+}
+
+// Add returns the sum of this number and the given number, or an error if the result is out of range
+func (x *XNumber) Add(o *XNumber) (*XNumber, error) {
+	return checkedXNumber(x.native.Add(o.native))
+}
+
+// Sub returns the difference of this number and the given number, or an error if the result is out of range
+func (x *XNumber) Sub(o *XNumber) (*XNumber, error) {
+	return checkedXNumber(x.native.Sub(o.native))
+}
+
+// Mul returns the product of this number and the given number, or an error if the result is out of range
+func (x *XNumber) Mul(o *XNumber) (*XNumber, error) {
+	return checkedXNumber(x.native.Mul(o.native))
+}
+
+// Div returns this number divided by the given number, or an error if the divisor is zero or the
+// result is out of range
+func (x *XNumber) Div(o *XNumber) (*XNumber, error) {
+	if o.native.IsZero() {
+		return nil, errors.New("division by zero")
+	}
+	return checkedXNumber(x.native.Div(o.native))
+}
+
+// Mod returns the remainder of the division of this number by the given number, or an error if the
+// divisor is zero or the result is out of range
+func (x *XNumber) Mod(o *XNumber) (*XNumber, error) {
+	if o.native.IsZero() {
+		return nil, errors.New("division by zero")
+	}
+	return checkedXNumber(x.native.Mod(o.native))
+}
+
+// Pow returns this number raised to the power of the given number, or an error if the result is out of range
+func (x *XNumber) Pow(o *XNumber) (*XNumber, error) {
+	return checkedXNumber(x.native.Pow(o.native))
+}
+
+// Neg returns the negation of this number
+func (x *XNumber) Neg() *XNumber {
+	return newXNumber(x.native.Neg())
+}
+
+// Abs returns the absolute value of this number
+func (x *XNumber) Abs() *XNumber {
+	return newXNumber(x.native.Abs())
+}
+
+// Floor returns the nearest integer value less than or equal to this number
+func (x *XNumber) Floor() *XNumber {
+	return newXNumber(x.native.Floor())
+}
+
+// IntPart returns the integer component of this number as an int64
+func (x *XNumber) IntPart() int64 {
+	return x.native.IntPart()
+}
+
+// Round rounds this number to the given number of decimal places. If places < 0 it will round the
+// integer part to the nearest 10^(-places). Returns an error if the result is out of range.
+func (x *XNumber) Round(places int) (*XNumber, error) {
+	return checkedXNumber(x.native.Round(int32(places)))
+}
+
+// RoundUp rounds this number up (towards positive infinity) to the given number of decimal places.
+// Returns an error if the result is out of range.
+func (x *XNumber) RoundUp(places int) (*XNumber, error) {
+	if x.native.Round(int32(places)).Equal(x.native) {
+		return x, nil
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+
+	return checkedXNumber(x.native.Add(halfPrecision).Round(int32(places)))
+}
+
+// RoundDown rounds this number down (towards negative infinity) to the given number of decimal places.
+// Returns an error if the result is out of range.
+func (x *XNumber) RoundDown(places int) (*XNumber, error) {
+	if x.native.Round(int32(places)).Equal(x.native) {
+		return x, nil
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+
+	return checkedXNumber(x.native.Sub(halfPrecision).Round(int32(places)))
+}
+
+// creates a new XNumber from the result of an arithmetic operation, checking that it is in range
+func checkedXNumber(d decimal.Decimal) (*XNumber, error) {
+	if err := CheckDecimalRange(d); err != nil {
+		return nil, errors.New("number value out of range")
+	}
+	return newXNumber(d), nil
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled

@@ -95,7 +95,7 @@ func (v *FieldValue) QueryValue() any {
 		}
 	case assets.FieldTypeNumber:
 		if v.Number != nil {
-			return (*v.Number).Native()
+			return v.Number
 		}
 
 	// we only search against location names and not full paths
