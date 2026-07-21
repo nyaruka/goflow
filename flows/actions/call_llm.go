@@ -43,8 +43,8 @@ type CallLLM struct {
 	onlineAction
 
 	LLM          *assets.LLMReference `json:"llm"          validate:"required"`
-	Instructions string               `json:"instructions" validate:"required"            engine:"evaluated"`
-	Input        string               `json:"input"                                       engine:"evaluated"`
+	Instructions string               `json:"instructions" validate:"required,max=10000"  engine:"evaluated"`
+	Input        string               `json:"input"        validate:"max=10000"           engine:"evaluated"`
 	OutputLocal  string               `json:"output_local" validate:"required,local_ref"`
 }
 

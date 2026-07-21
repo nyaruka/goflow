@@ -537,6 +537,19 @@ func TestReadFlow(t *testing.T) {
 	assert.Nil(t, flow.Asset())
 }
 
+func TestReadFlowSizeGuard(t *testing.T) {
+	// an over-sized legacy definition is rejected up front, before the expensive migration passes, by
+	// counting its action_sets and rule_sets
+	ruleSets := make([]string, flows.MaxNodesPerFlow+1)
+	for i := range ruleSets {
+		ruleSets[i] = "{}"
+	}
+	legacyDef := fmt.Sprintf(`{"flow_type":"M","base_language":"eng","metadata":{"uuid":"8ca44c09-791d-453a-9799-a70dd3303306","name":"x"},"action_sets":[],"rule_sets":[%s]}`, strings.Join(ruleSets, ","))
+
+	_, err := definition.ReadFlow([]byte(legacyDef), nil)
+	assert.EqualError(t, err, fmt.Sprintf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, flows.MaxNodesPerFlow+1))
+}
+
 func TestExtractTemplatesAndLocalizables(t *testing.T) {
 	env := envs.NewBuilder().Build()
 

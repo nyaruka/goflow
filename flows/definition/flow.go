@@ -333,6 +333,13 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 		mc = migrations.DefaultConfig
 	}
 
+	// reject flows with too many nodes before migrating - migration re-reads and re-marshals the entire
+	// definition once per version step, so this avoids doing that expensive work for a definition that
+	// will be rejected by validation anyway
+	if err := checkFlowSize(data); err != nil {
+		return nil, err
+	}
+
 	var err error
 	data, err = migrations.MigrateToLatest(data, mc)
 	if err != nil {
@@ -361,6 +368,29 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 	}
 
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
+}
+
+// checkFlowSize does a shallow parse of a flow definition (current or legacy format) and returns an error
+// if it contains more nodes than are allowed. It counts array elements without decoding their contents, so
+// it's cheap relative to the full parse and migration that follow.
+func checkFlowSize(data []byte) error {
+	shallow := &struct {
+		Nodes      []json.RawMessage `json:"nodes"`
+		ActionSets []json.RawMessage `json:"action_sets"` // legacy definitions
+		RuleSets   []json.RawMessage `json:"rule_sets"`   // legacy definitions
+	}{}
+
+	// ignore errors - a malformed definition will be rejected with a better error further down
+	if err := jsonx.Unmarshal(data, shallow); err != nil {
+		return nil
+	}
+
+	numNodes := len(shallow.Nodes) + len(shallow.ActionSets) + len(shallow.RuleSets)
+	if numNodes > flows.MaxNodesPerFlow {
+		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, numNodes)
+	}
+
+	return nil
 }
 
 // MarshalJSON marshals this flow into JSON

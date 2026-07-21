@@ -28,7 +28,7 @@ const TypeSwitch string = "switch"
 type Case struct {
 	UUID         uuids.UUID         `json:"uuid"                   validate:"required"`
 	Type         string             `json:"type"                   validate:"required"`
-	Arguments    []string           `json:"arguments,omitempty"    engine:"localized,evaluated"`
+	Arguments    []string           `json:"arguments,omitempty"    validate:"dive,max=10000" engine:"localized,evaluated"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
@@ -237,7 +237,7 @@ func (r *Switch) EnumerateLocalizables(include func(uuids.UUID, string, []string
 type switchEnvelope struct {
 	baseEnvelope
 
-	Operand             string             `json:"operand"               validate:"required"`
+	Operand             string             `json:"operand"               validate:"required,max=10000"`
 	Cases               []*Case            `json:"cases"`
 	DefaultCategoryUUID flows.CategoryUUID `json:"default_category_uuid" validate:"omitempty,uuid"`
 }
