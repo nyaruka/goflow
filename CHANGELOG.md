@@ -1,3 +1,9 @@
+v0.283.2 (2026-07-21)
+-------------------------
+ * Bound exponent and rounding places to prevent unbounded work from untrusted expressions
+ * Propagate error from random router scaling
+ * Confine shopspring/decimal to the engine's type system
+
 v0.283.1 (2026-07-21)
 -------------------------
  * Apply engine number format and range limits to contact query values
