@@ -11,6 +11,28 @@
         "read_error": "number value is out of permitted range"
     },
     {
+        "description": "Read error if an amount exceeds the maximum",
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": 1e16
+            }
+        },
+        "read_error": "amount for 'USD' is out of range"
+    },
+    {
+        "description": "Read error if an amount is negative",
+        "action": {
+            "type": "transfer_airtime",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "amounts": {
+                "USD": -1
+            }
+        },
+        "read_error": "amount for 'USD' is out of range"
+    },
+    {
         "description": "Error and failed transfer if contact has no tel urn",
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",

@@ -25,6 +25,9 @@ const (
 	TransferAirtimeOutputLocal = "_new_transfer"
 )
 
+// maximum allowed value for a single amount - generous enough for even hyperinflated currencies
+var maxAirtimeAmount = decimal.New(1, 15) // 1,000,000,000,000,000
+
 // TransferAirtime attempts to make an airtime transfer to the contact.
 //
 // An [event:airtime_created] event will be created if the airtime transfer could be initiated.
@@ -47,11 +50,16 @@ type TransferAirtime struct {
 
 // Validate validates our action is valid
 func (a *TransferAirtime) Validate() error {
-	// bound the magnitude of each amount - an untrusted definition could otherwise carry a decimal
-	// like 1E999999999 which is cheap to parse but expensive to do arithmetic with
+	// bound each amount - an untrusted definition could otherwise carry a decimal like
+	// 1E999999999 which is cheap to parse but expensive to do arithmetic with. The general
+	// range check comes first because comparing against such an extreme exponent is itself
+	// expensive.
 	for currency, amount := range a.Amounts {
 		if err := types.CheckDecimalRange(amount); err != nil {
 			return fmt.Errorf("amount for '%s' is out of range: %w", currency, err)
+		}
+		if amount.IsNegative() || amount.GreaterThan(maxAirtimeAmount) {
+			return fmt.Errorf("amount for '%s' is out of range", currency)
 		}
 	}
 	return nil
