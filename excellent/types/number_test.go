@@ -82,6 +82,10 @@ func TestXNumberArithmetic(t *testing.T) {
 		{func() (*types.XNumber, error) { return num("12.146").RoundDown(2) }, "12.14"},
 		{func() (*types.XNumber, error) { return num("12.14").RoundDown(2) }, "12.14"},
 		{func() (*types.XNumber, error) { return num("-12.146").RoundDown(2) }, "-12.15"},
+		{func() (*types.XNumber, error) { return num("10").Pow(num("100")) }, "1" + strings.Repeat("0", 100)}, // 1E100, largest exponent allowed
+		{func() (*types.XNumber, error) { return num("123.456").Round(2000000000) }, "123.456"},               // pathological places clamped, value unchanged
+		{func() (*types.XNumber, error) { return num("1.5").RoundUp(2000000000) }, "1.5"},                     //
+		{func() (*types.XNumber, error) { return num("1.5").RoundDown(2000000000) }, "1.5"},                   //
 	}
 	for i, tc := range checkedTests {
 		result, err := tc.op()
@@ -105,6 +109,12 @@ func TestXNumberArithmetic(t *testing.T) {
 	_, err = maxDigits.Mul(num("1" + strings.Repeat("0", 66))) // ~9.99E101 exceeds max magnitude
 	assert.EqualError(t, err, "number value out of range")
 	_, err = num("2").Pow(num("400"))
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("10").Pow(num("101")) // exponent above the magnitude limit
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("1").Pow(num("101")) // limit applies even to a base that couldn't overflow
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("2").Pow(num("1000000000")) // huge exponent rejected before the costly computation
 	assert.EqualError(t, err, "number value out of range")
 
 	maxMagnitude := num("1" + strings.Repeat("0", 100))                  // 1E100
