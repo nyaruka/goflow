@@ -1,3 +1,9 @@
+v0.283.3 (2026-07-21)
+-------------------------
+ * Harden legacy flow migration against crafted definitions
+ * Bound flow definition sizes and previously unbounded action and router fields
+ * Tighten bounds on transfer_airtime amounts
+
 v0.283.2 (2026-07-21)
 -------------------------
  * Bound exponent and rounding places to prevent unbounded work from untrusted expressions
