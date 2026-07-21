@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/obfuscate"
 	"github.com/shopspring/decimal"
@@ -141,7 +142,16 @@ func (c *Condition) Value() string { return c.value }
 
 // ValueAsNumber returns the value as a number if possible, or an error if not
 func (c *Condition) ValueAsNumber() (decimal.Decimal, error) {
-	return decimal.NewFromString(c.value)
+	d, err := decimal.NewFromString(c.value)
+	if err != nil {
+		return decimal.Zero, err
+	}
+	// apply the same range limits as numbers elsewhere in the engine - an unbounded decimal can
+	// require huge allocations when compared or rendered in full notation
+	if err := types.CheckDecimalRange(d); err != nil {
+		return decimal.Zero, err
+	}
+	return d, nil
 }
 
 // ValueAsDate returns the value as a date if possible, or an error if not
