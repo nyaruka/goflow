@@ -36,6 +36,12 @@ func TestXFunction(t *testing.T) {
 
 	assert.Equal(t, types.NewXErrorf("error calling bad(...): boom"), func2.Call(t.Context(), env, nil))
 
+	// fatal errors aren't wrapped with the function name - they propagate verbatim
+	fatal := types.NewXFunction("fatal", func(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
+		return types.ErrTooComplex
+	})
+	assert.Same(t, types.ErrTooComplex, fatal.Call(t.Context(), env, nil))
+
 	assert.True(t, anon1.Truthy())
 	assert.Equal(t, `<anon>`, anon1.Render())
 	assert.Equal(t, `<anon>`, anon1.Format(env))

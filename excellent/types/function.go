@@ -33,14 +33,19 @@ func NewXFunction(name string, fn XFunc) *XFunction {
 func (x *XFunction) Call(ctx context.Context, env envs.Environment, params []XValue) XValue {
 	val := x.fn(ctx, env, params...)
 
-	// if function returned an error, wrap the error with the function name
+	// if function returned an error, wrap the error with the function name, unless it's fatal in which
+	// case there's no useful location context to add
 	if IsXError(val) {
-		return NewXErrorf("error calling %s: %s", x.Describe(), val.(*XError).Error())
+		xerr := val.(*XError)
+		if xerr.fatal {
+			return xerr
+		}
+		return NewXErrorf("error calling %s: %s", x.Describe(), xerr.Error())
 	}
 
 	// charge the cost of the produced value against the evaluation budget
 	if b := budget.From(ctx); b != nil && !b.Charge(CostOf(val)) {
-		return NewXErrorf("expression is too complex to evaluate")
+		return ErrTooComplex
 	}
 
 	return val
