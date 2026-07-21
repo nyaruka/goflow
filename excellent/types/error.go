@@ -16,9 +16,11 @@ type XError struct {
 	fatal  bool // fatal errors abort evaluation as a whole and so aren't wrapped with location context
 }
 
+var errTooComplex = errors.New("expression is too complex to evaluate")
+
 // ErrTooComplex is returned when an evaluation exceeds its cost budget. It refers to the evaluation as a
 // whole rather than any specific part of it, so it's fatal.
-var ErrTooComplex = &XError{native: errors.New("expression is too complex to evaluate"), fatal: true}
+var ErrTooComplex = &XError{native: errTooComplex, fatal: true}
 
 // NewXError creates a new XError
 func NewXError(err error) *XError {
@@ -57,6 +59,13 @@ func (x *XError) Native() error {
 }
 
 func (x *XError) Error() string { return x.Native().Error() }
+
+// Is reports whether this error matches the target for errors.Is, comparing by the underlying native error
+// so that a fatal sentinel like ErrTooComplex is still recognized if it's ever re-wrapped in a new XError
+func (x *XError) Is(target error) bool {
+	t, ok := target.(*XError)
+	return ok && x.native != nil && t.native != nil && errors.Is(x.native, t.native)
+}
 
 // Equals determines equality for this type
 func (x *XError) Equals(o XValue) bool {
