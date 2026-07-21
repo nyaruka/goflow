@@ -37,7 +37,7 @@ type SetRunResult struct {
 	universalAction
 
 	Name     string `json:"name"                                  validate:"required,result_name"`
-	Value    string `json:"value"              engine:"evaluated"`
+	Value    string `json:"value"              engine:"evaluated" validate:"max=10000"`
 	Category string `json:"category,omitempty" engine:"localized" validate:"omitempty,result_category"`
 }
 

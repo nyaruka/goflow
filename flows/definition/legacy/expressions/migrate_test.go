@@ -398,3 +398,13 @@ func TestMigrateStringLiteral(t *testing.T) {
 	assert.Equal(t, `"line1\nline2\ttabbed"`, expressions.MigrateStringLiteral(`"line1\nline2\ttabbed"`))
 	assert.Equal(t, `"\D\w+[\.*]"`, expressions.MigrateStringLiteral(`"\D\w+[\.*]"`))
 }
+
+func TestMigrateTemplateDeeplyNested(t *testing.T) {
+	// a deeply nested legacy expression would previously overflow the parser stack, which is an
+	// unrecoverable fatal error - it must now be rejected without migrating (or crashing)
+	deep := "@(" + strings.Repeat("(", 5000) + "1" + strings.Repeat(")", 5000) + ")"
+
+	migrated, err := expressions.MigrateTemplate(deep, nil)
+	assert.Error(t, err)
+	assert.Equal(t, deep, migrated, "over-nested expression should be left unmigrated")
+}

@@ -205,11 +205,11 @@ func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
 
 // utility struct for actions which operate on other contacts
 type otherContactsAction struct {
-	Groups       []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
-	Contacts     []*core.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	ContactQuery string                   `json:"contact_query,omitempty" engine:"evaluated"`
-	URNs         []urns.URN               `json:"urns,omitempty"`
-	LegacyVars   []string                 `json:"legacy_vars,omitempty" engine:"evaluated"`
+	Groups       []*assets.GroupReference `json:"groups,omitempty" validate:"max=100,dive"`
+	Contacts     []*core.ContactReference `json:"contacts,omitempty" validate:"max=100,dive"`
+	ContactQuery string                   `json:"contact_query,omitempty" validate:"max=10000" engine:"evaluated"`
+	URNs         []urns.URN               `json:"urns,omitempty" validate:"max=100"`
+	LegacyVars   []string                 `json:"legacy_vars,omitempty" validate:"max=100,dive,max=1000" engine:"evaluated"`
 }
 
 func (a *otherContactsAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
@@ -283,7 +283,7 @@ type createMsgAction struct {
 	Attachments       []string                  `json:"attachments,omitempty"      validate:"max=10,dive,attachment" engine:"localized,evaluated"`
 	QuickReplies      []string                  `json:"quick_replies,omitempty"    validate:"max=10,dive,max=1000"   engine:"localized,evaluated"`
 	Template          *assets.TemplateReference `json:"template,omitempty"`
-	TemplateVariables []string                  `json:"template_variables,omitempty" engine:"evaluated"`
+	TemplateVariables []string                  `json:"template_variables,omitempty" validate:"max=100,dive,max=10000" engine:"evaluated"`
 }
 
 func (a *createMsgAction) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {

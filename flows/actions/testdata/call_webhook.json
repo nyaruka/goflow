@@ -10,6 +10,20 @@
         "read_error": "field 'method' is required"
     },
     {
+        "description": "Read fails if a header name is too long",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://temba.io/",
+            "body": "Hi there!",
+            "headers": {
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": "something"
+            }
+        },
+        "read_error": "field 'headers[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]' must be less than or equal to 100"
+    },
+    {
         "description": "Read fails if header name is invalid",
         "action": {
             "type": "call_webhook",

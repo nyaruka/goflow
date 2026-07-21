@@ -70,7 +70,7 @@ type CallResthook struct {
 	baseAction
 	onlineAction
 
-	Resthook   string `json:"resthook"              validate:"required"`
+	Resthook   string `json:"resthook"              validate:"required,max=1000"`
 	ResultName string `json:"result_name,omitempty" validate:"omitempty,result_name"`
 }
 

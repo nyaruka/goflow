@@ -536,6 +536,9 @@ func migrateRuleSet(lang i18n.Language, r RuleSet, validDests map[uuids.UUID]boo
 
 	switch r.Type {
 	case "subflow":
+		if config.Flow == nil {
+			return nil, "", nil, fmt.Errorf("subflow ruleset has no flow in its config")
+		}
 		flowRef := assets.NewFlowReference(assets.FlowUUID(config.Flow.UUID), config.Flow.Name)
 
 		newActions = []migratedAction{

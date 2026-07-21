@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver"
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
@@ -333,6 +334,13 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 		mc = migrations.DefaultConfig
 	}
 
+	// reject flows with too many nodes before migrating - migration re-reads and re-marshals the entire
+	// definition once per version step, so this avoids doing that expensive work for a definition that
+	// will be rejected by validation anyway
+	if err := checkFlowSize(data); err != nil {
+		return nil, err
+	}
+
 	var err error
 	data, err = migrations.MigrateToLatest(data, mc)
 	if err != nil {
@@ -361,6 +369,26 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 	}
 
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
+}
+
+// checkFlowSize counts the nodes in a flow definition (current or legacy format) and returns an error if
+// there are more than are allowed. It walks only the relevant arrays without decoding their contents or the
+// rest of the definition, so it's cheap relative to the full parse and migration that follow. Malformed or
+// duplicated input can only make it under-count, so it never rejects a flow that would otherwise be valid -
+// the authoritative check remains the post-migration validation.
+func checkFlowSize(data []byte) error {
+	numNodes := 0
+	countElement := func([]byte, jsonparser.ValueType, int, error) { numNodes++ }
+
+	jsonparser.ArrayEach(data, countElement, "nodes")       // current format
+	jsonparser.ArrayEach(data, countElement, "action_sets") // legacy format
+	jsonparser.ArrayEach(data, countElement, "rule_sets")   // legacy format
+
+	if numNodes > flows.MaxNodesPerFlow {
+		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, numNodes)
+	}
+
+	return nil
 }
 
 // MarshalJSON marshals this flow into JSON

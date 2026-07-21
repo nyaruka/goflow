@@ -3,11 +3,13 @@ package actions
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/shopspring/decimal"
 )
@@ -40,7 +42,19 @@ type TransferAirtime struct {
 	baseAction
 	onlineAction
 
-	Amounts map[string]decimal.Decimal `json:"amounts" validate:"required"`
+	Amounts map[string]decimal.Decimal `json:"amounts" validate:"required,max=100"`
+}
+
+// Validate validates our action is valid
+func (a *TransferAirtime) Validate() error {
+	// bound the magnitude of each amount - an untrusted definition could otherwise carry a decimal
+	// like 1E999999999 which is cheap to parse but expensive to do arithmetic with
+	for currency, amount := range a.Amounts {
+		if err := types.CheckDecimalRange(amount); err != nil {
+			return fmt.Errorf("amount for '%s' is out of range: %w", currency, err)
+		}
+	}
+	return nil
 }
 
 // NewTransferAirtime creates a new airtime transfer action

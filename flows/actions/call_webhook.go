@@ -57,9 +57,9 @@ type CallWebhook struct {
 	onlineAction
 
 	Method     string            `json:"method"                                   validate:"required,http_method"`
-	URL        string            `json:"url"                   engine:"evaluated" validate:"required"`
-	Headers    map[string]string `json:"headers,omitempty"     engine:"evaluated"`
-	Body       string            `json:"body,omitempty"        engine:"evaluated"`
+	URL        string            `json:"url"                   engine:"evaluated" validate:"required,max=2048"`
+	Headers    map[string]string `json:"headers,omitempty"     engine:"evaluated" validate:"max=100,dive,keys,max=100,endkeys,max=1000"`
+	Body       string            `json:"body,omitempty"        engine:"evaluated" validate:"max=10000"`
 	ResultName string            `json:"result_name,omitempty"                    validate:"omitempty,result_name"`
 }
 
