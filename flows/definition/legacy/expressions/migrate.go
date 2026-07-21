@@ -12,7 +12,13 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
+
+// maxExpressionDepth is the maximum bracket nesting depth allowed in a legacy expression. Beyond this the
+// recursive-descent parser risks exhausting the goroutine stack, which is an unrecoverable fatal error, so
+// we reject over-nested expressions before parsing. Matches the limit enforced by the current parser.
+const maxExpressionDepth = 100
 
 // ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
 var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
@@ -111,6 +117,11 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 
 // migrates an old expression into a new format expression
 func migrateExpression(env envs.Environment, expression string, options *MigrateOptions) (string, error) {
+	// reject overly nested expressions before parsing to avoid a stack overflow
+	if utils.NestingDepthExceeds(expression, maxExpressionDepth) {
+		return "", fmt.Errorf("expression nesting too deep")
+	}
+
 	errListener := excellent.NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
