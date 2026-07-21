@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/nyaruka/goflow/utils/obfuscate"
-	"github.com/shopspring/decimal"
 )
 
 // MaxConditions is the maximum number of conditions a query can contain. Every condition becomes a clause
@@ -143,12 +142,8 @@ func (c *Condition) Value() string { return c.value }
 // ValueAsNumber returns the value as a number if possible, or an error if not. Numbers have the same
 // format restrictions (no scientific notation) and range limits as numbers elsewhere in the engine -
 // an unbounded decimal can require huge allocations when compared or rendered in full notation.
-func (c *Condition) ValueAsNumber() (decimal.Decimal, error) {
-	n, err := types.NewXNumberFromString(c.value)
-	if err != nil {
-		return decimal.Zero, err
-	}
-	return n.Native(), nil
+func (c *Condition) ValueAsNumber() (*types.XNumber, error) {
+	return types.NewXNumberFromString(c.value)
 }
 
 // ValueAsDate returns the value as a date if possible, or an error if not

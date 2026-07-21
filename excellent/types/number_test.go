@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -59,6 +60,75 @@ func TestXNumber(t *testing.T) {
 	assert.False(t, types.IsXError(types.NewXNumber(decimal.RequireFromString("0")))) // zero always ok
 }
 
+func TestXNumberArithmetic(t *testing.T) {
+	num := types.RequireXNumberFromString
+
+	// checked operations that succeed
+	checkedTests := []struct {
+		op       func() (*types.XNumber, error)
+		expected string
+	}{
+		{func() (*types.XNumber, error) { return num("2").Add(num("3")) }, "5"},
+		{func() (*types.XNumber, error) { return num("2").Sub(num("3")) }, "-1"},
+		{func() (*types.XNumber, error) { return num("2.5").Mul(num("4")) }, "10"},
+		{func() (*types.XNumber, error) { return num("3").Div(num("2")) }, "1.5"},
+		{func() (*types.XNumber, error) { return num("5").Mod(num("2")) }, "1"},
+		{func() (*types.XNumber, error) { return num("2").Pow(num("8")) }, "256"},
+		{func() (*types.XNumber, error) { return num("12.146").Round(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("12.146").Round(-1) }, "10"},
+		{func() (*types.XNumber, error) { return num("12.141").RoundUp(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("12.15").RoundUp(2) }, "12.15"},
+		{func() (*types.XNumber, error) { return num("-12.141").RoundUp(2) }, "-12.14"},
+		{func() (*types.XNumber, error) { return num("12.146").RoundDown(2) }, "12.14"},
+		{func() (*types.XNumber, error) { return num("12.14").RoundDown(2) }, "12.14"},
+		{func() (*types.XNumber, error) { return num("-12.146").RoundDown(2) }, "-12.15"},
+	}
+	for i, tc := range checkedTests {
+		result, err := tc.op()
+		assert.NoError(t, err, "unexpected error for test %d", i)
+		assert.Equal(t, tc.expected, result.Render(), "result mismatch for test %d", i)
+	}
+
+	// unchecked operations
+	assert.Equal(t, num("-2").Native(), num("2").Neg().Native())
+	assert.Equal(t, num("2").Native(), num("-2").Abs().Native())
+	assert.Equal(t, num("2").Native(), num("2.7").Floor().Native())
+	assert.Equal(t, num("-3").Native(), num("-2.7").Floor().Native())
+	assert.Equal(t, int64(12), num("12.146").IntPart())
+
+	// checked operations that fail
+	maxDigits := num(strings.Repeat("9", 36)) // maximum number of significant digits
+	_, err := maxDigits.Add(maxDigits)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = maxDigits.Neg().Sub(maxDigits)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = maxDigits.Mul(num("1" + strings.Repeat("0", 66))) // ~9.99E101 exceeds max magnitude
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("2").Pow(num("400"))
+	assert.EqualError(t, err, "number value out of range")
+
+	maxMagnitude := num("1" + strings.Repeat("0", 100))                  // 1E100
+	_, err = maxMagnitude.Div(num("0." + strings.Repeat("0", 49) + "1")) // 1E100 / 1E-50 = 1E150
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).Round(-101) // rounds up to 1E101
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).RoundUp(-101)
+	assert.EqualError(t, err, "number value out of range")
+	_, err = num("5" + strings.Repeat("0", 100)).Neg().RoundDown(-101)
+	assert.EqualError(t, err, "number value out of range")
+
+	// division by zero
+	_, err = num("3").Div(types.XNumberZero)
+	assert.EqualError(t, err, "division by zero")
+	_, err = num("3").Mod(types.XNumberZero)
+	assert.EqualError(t, err, "division by zero")
+
+	// random numbers are in [0, 1)
+	r := types.RandomXNumber()
+	assert.True(t, r.Compare(types.XNumberZero) >= 0)
+	assert.True(t, r.Compare(types.NewXNumberFromInt(1)) < 0)
+}
+
 func TestToXNumberAndInteger(t *testing.T) {
 	var tests = []struct {
 		value     types.XValue
@@ -109,11 +179,11 @@ func TestCheckDecimalRange(t *testing.T) {
 		{decimal.New(1, 0), false},
 		{decimal.New(-1, 0), false},
 		{decimal.New(123, 0), false},
-		{decimal.RequireFromString("123456789012345678901234567890123456"), false},                  // 36 significant digits - ok
-		{decimal.RequireFromString("1234567890123456789012345678901234567"), true},                 // 37 significant digits - too many
-		{decimal.RequireFromString("-1234567890123456789012345678901234567"), true},                // negative 37 significant digits
-		{decimal.RequireFromString("1234567895171680000000000000000000000000"), false},             // 40 digits but only 15 significant - ok
-		{decimal.RequireFromString("12345678901234567890123456789012345670000000"), true},          // 37 significant digits with trailing zeros
+		{decimal.RequireFromString("123456789012345678901234567890123456"), false},        // 36 significant digits - ok
+		{decimal.RequireFromString("1234567890123456789012345678901234567"), true},        // 37 significant digits - too many
+		{decimal.RequireFromString("-1234567890123456789012345678901234567"), true},       // negative 37 significant digits
+		{decimal.RequireFromString("1234567895171680000000000000000000000000"), false},    // 40 digits but only 15 significant - ok
+		{decimal.RequireFromString("12345678901234567890123456789012345670000000"), true}, // 37 significant digits with trailing zeros
 		{decimal.RequireFromString("0.000000000000000000000000000000000001"), false},
 		{decimal.New(1, 100), false}, // 1E100 - ok magnitude
 		{decimal.New(1, 200), true},  // 1E200 - too large magnitude

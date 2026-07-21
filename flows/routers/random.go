@@ -5,12 +5,10 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/goflow/core/events"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -38,12 +36,16 @@ func (r *Random) Validate(flow flows.Flow, exits []flows.Exit) error {
 // Route determines which exit to take from a node
 func (r *Random) Route(ctx context.Context, run flows.Run, step flows.Step, logEvent events.EventLogger) (flows.ExitUUID, string, error) {
 	// pick a random category
-	rand := random.Decimal()
-	categoryNum := rand.Mul(decimal.New(int64(len(r.categories)), 0)).IntPart()
+	rand := types.RandomXNumber()
+	scaled, err := rand.Mul(types.NewXNumberFromInt(len(r.categories)))
+	if err != nil {
+		return "", "", err
+	}
+	categoryNum := scaled.IntPart()
 	categoryUUID := r.categories[categoryNum].UUID()
 
-	exit, err := r.routeToCategory(run, step, categoryUUID, fmt.Sprintf("%d", categoryNum), rand.String(), nil, logEvent)
-	return exit, rand.String(), err
+	exit, err := r.routeToCategory(run, step, categoryUUID, fmt.Sprintf("%d", categoryNum), rand.Render(), nil, logEvent)
+	return exit, rand.Render(), err
 }
 
 //------------------------------------------------------------------------------------------

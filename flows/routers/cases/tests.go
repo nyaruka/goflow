@@ -16,8 +16,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 //------------------------------------------------------------------------------------------
@@ -804,7 +802,7 @@ func hasOnlyPhraseTest(env envs.Environment, hays []string, pins []string) types
 // Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
-type decimalTest func(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool
+type numberTest func(value *types.XNumber, test1 *types.XNumber, test2 *types.XNumber) bool
 
 // compiled number finding regexes, cached by number format so that we don't recompile on every evaluation
 var numberPatterns sync.Map
@@ -826,7 +824,7 @@ func numberPattern(nf *envs.NumberFormat) (*regexp.Regexp, error) {
 	return pattern, nil
 }
 
-func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber, testNum2 *types.XNumber, testFunc decimalTest) types.XValue {
+func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber, testNum2 *types.XNumber, testFunc numberTest) types.XValue {
 	// get a number finding regex based on current environment
 	pattern, err := numberPattern(env.NumberFormat())
 	if err != nil {
@@ -835,10 +833,10 @@ func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber,
 
 	// look for number like things in the input and use the first one that we can actually parse
 	for _, value := range pattern.FindAllString(str.Native(), -1) {
-		num, err := ParseDecimal(value, env.NumberFormat())
+		num, err := ParseNumber(value, env.NumberFormat())
 		if err == nil {
-			if testFunc(num, testNum1.Native(), testNum2.Native()) {
-				return NewTrueResult(types.NewXNumber(num))
+			if testFunc(num, testNum1, testNum2) {
+				return NewTrueResult(num)
 			}
 		}
 	}
@@ -846,32 +844,32 @@ func testNumber(env envs.Environment, str *types.XText, testNum1 *types.XNumber,
 	return FalseResult
 }
 
-func isNumberTest(value decimal.Decimal, _ decimal.Decimal, _ decimal.Decimal) bool {
+func isNumberTest(value *types.XNumber, _ *types.XNumber, _ *types.XNumber) bool {
 	return true
 }
 
-func isNumberLT(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
-	return value.Cmp(test) < 0
+func isNumberLT(value *types.XNumber, test *types.XNumber, _ *types.XNumber) bool {
+	return value.Compare(test) < 0
 }
 
-func isNumberLTE(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
-	return value.Cmp(test) <= 0
+func isNumberLTE(value *types.XNumber, test *types.XNumber, _ *types.XNumber) bool {
+	return value.Compare(test) <= 0
 }
 
-func isNumberEQ(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
-	return value.Cmp(test) == 0
+func isNumberEQ(value *types.XNumber, test *types.XNumber, _ *types.XNumber) bool {
+	return value.Compare(test) == 0
 }
 
-func isNumberGTE(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
-	return value.Cmp(test) >= 0
+func isNumberGTE(value *types.XNumber, test *types.XNumber, _ *types.XNumber) bool {
+	return value.Compare(test) >= 0
 }
 
-func isNumberGT(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
-	return value.Cmp(test) > 0
+func isNumberGT(value *types.XNumber, test *types.XNumber, _ *types.XNumber) bool {
+	return value.Compare(test) > 0
 }
 
-func isNumberBetween(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool {
-	return value.Cmp(test1) >= 0 && value.Cmp(test2) <= 0
+func isNumberBetween(value *types.XNumber, test1 *types.XNumber, test2 *types.XNumber) bool {
+	return value.Compare(test1) >= 0 && value.Compare(test2) <= 0
 }
 
 //------------------------------------------------------------------------------------------

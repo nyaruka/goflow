@@ -5,8 +5,6 @@ import (
 
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
-
-	"github.com/shopspring/decimal"
 )
 
 var altNumerals = map[rune]rune{
@@ -55,8 +53,8 @@ func numeralMapper(r rune) rune {
 	return r
 }
 
-// ParseDecimal parses a decimal from a string
-func ParseDecimal(val string, format *envs.NumberFormat) (decimal.Decimal, error) {
+// ParseNumber parses a number from a string
+func ParseNumber(val string, format *envs.NumberFormat) (*types.XNumber, error) {
 	cleaned := strings.TrimSpace(val)
 
 	// remove digit grouping symbol
@@ -70,9 +68,5 @@ func ParseDecimal(val string, format *envs.NumberFormat) (decimal.Decimal, error
 
 	// parse with the same format restrictions (no scientific notation) and range limits as numbers
 	// elsewhere in the engine
-	n, err := types.NewXNumberFromString(cleaned)
-	if err != nil {
-		return decimal.Zero, err
-	}
-	return n.Native(), nil
+	return types.NewXNumberFromString(cleaned)
 }

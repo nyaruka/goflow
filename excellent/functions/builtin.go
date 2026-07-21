@@ -15,15 +15,13 @@ import (
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/dates"
-	"github.com/nyaruka/gocommon/random"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/shopspring/decimal"
 )
 
-var nanosPerSecond = decimal.RequireFromString("1000000000")
+var nanosPerSecond = types.NewXNumberFromInt64(1000000000)
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 // maxRepeatOutput caps the number of characters that repeat() will build in a single call, to avoid a large
@@ -900,8 +898,14 @@ func Upper(env envs.Environment, text *types.XText) types.XValue {
 //
 // @function percent(number)
 func Percent(env envs.Environment, num *types.XNumber) types.XValue {
-	// multiply by 100 and floor
-	percent := num.Native().Mul(decimal.NewFromFloat(100)).Round(0)
+	// multiply by 100 and round to a whole number
+	percent, err := num.Mul(types.NewXNumberFromInt(100))
+	if err == nil {
+		percent, err = percent.Round(0)
+	}
+	if err != nil {
+		return types.NewXError(err)
+	}
 
 	// add on a %
 	return types.NewXText(fmt.Sprintf("%d%%", percent.IntPart()))
@@ -945,7 +949,7 @@ func HTMLDecode(env envs.Environment, text *types.XText) types.XValue {
 //
 // @function abs(number)
 func Abs(env envs.Environment, num *types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Abs())
+	return num.Abs()
 }
 
 // Round rounds `number` to the nearest value.
@@ -963,7 +967,11 @@ func Abs(env envs.Environment, num *types.XNumber) types.XValue {
 //
 // @function round(number [,places])
 func Round(env envs.Environment, num *types.XNumber, places int) types.XValue {
-	return types.NewXNumber(num.Native().Round(int32(places)))
+	rounded, err := num.Round(places)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return rounded
 }
 
 // RoundUp rounds `number` up to the nearest integer value.
@@ -979,15 +987,11 @@ func Round(env envs.Environment, num *types.XNumber, places int) types.XValue {
 //
 // @function round_up(number [,places])
 func RoundUp(env envs.Environment, num *types.XNumber, places int) types.XValue {
-	dec := num.Native()
-	if dec.Round(int32(places)).Equal(dec) {
-		return num
+	rounded, err := num.RoundUp(places)
+	if err != nil {
+		return types.NewXError(err)
 	}
-
-	halfPrecision := decimal.New(5, -int32(places)-1)
-	roundedDec := dec.Add(halfPrecision).Round(int32(places))
-
-	return types.NewXNumber(roundedDec)
+	return rounded
 }
 
 // RoundDown rounds `number` down to the nearest integer value.
@@ -1003,15 +1007,11 @@ func RoundUp(env envs.Environment, num *types.XNumber, places int) types.XValue 
 //
 // @function round_down(number [,places])
 func RoundDown(env envs.Environment, num *types.XNumber, places int) types.XValue {
-	dec := num.Native()
-	if dec.Round(int32(places)).Equal(dec) {
-		return num
+	rounded, err := num.RoundDown(places)
+	if err != nil {
+		return types.NewXError(err)
 	}
-
-	halfPrecision := decimal.New(5, -int32(places)-1)
-	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
-
-	return types.NewXNumber(roundedDec)
+	return rounded
 }
 
 // Max returns the maximum value in `numbers`.
@@ -1074,17 +1074,26 @@ func Min(ctx context.Context, env envs.Environment, values ...types.XValue) type
 //
 // @function mean(numbers...)
 func Mean(ctx context.Context, env envs.Environment, args ...types.XValue) types.XValue {
-	sum := decimal.Zero
+	sum := types.XNumberZero
 
 	for _, val := range args {
 		num, xerr := types.ToXNumber(env, val)
 		if xerr != nil {
 			return xerr
 		}
-		sum = sum.Add(num.Native())
+
+		var err error
+		sum, err = sum.Add(num)
+		if err != nil {
+			return types.NewXError(err)
+		}
 	}
 
-	return types.NewXNumber(sum.Div(decimal.New(int64(len(args)), 0)))
+	mean, err := sum.Div(types.NewXNumberFromInt(len(args)))
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return mean
 }
 
 // Mod returns the remainder of the division of `dividend` by `divisor`.
@@ -1095,7 +1104,11 @@ func Mean(ctx context.Context, env envs.Environment, args ...types.XValue) types
 //
 // @function mod(dividend, divisor)
 func Mod(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Mod(num2.Native()))
+	remainder, err := num1.Mod(num2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return remainder
 }
 
 // Rand returns a single random number between [0.0-1.0).
@@ -1105,7 +1118,7 @@ func Mod(env envs.Environment, num1 *types.XNumber, num2 *types.XNumber) types.X
 //
 // @function rand()
 func Rand(env envs.Environment) types.XValue {
-	return types.NewXNumber(random.Decimal())
+	return types.RandomXNumber()
 }
 
 // RandBetween a single random integer in the given inclusive range.
@@ -1115,11 +1128,23 @@ func Rand(env envs.Environment) types.XValue {
 //
 // @function rand_between()
 func RandBetween(env envs.Environment, min *types.XNumber, max *types.XNumber) types.XValue {
-	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
+	span, err := max.Sub(min)
+	if err == nil {
+		span, err = span.Add(types.NewXNumberFromInt(1))
+	}
 
-	val := random.Decimal().Mul(span).Add(min.Native()).Floor()
+	var val *types.XNumber
+	if err == nil {
+		val, err = types.RandomXNumber().Mul(span)
+	}
+	if err == nil {
+		val, err = val.Add(min)
+	}
+	if err != nil {
+		return types.NewXError(err)
+	}
 
-	return types.NewXNumber(val)
+	return val.Floor()
 }
 
 //------------------------------------------------------------------------------------------
@@ -1211,8 +1236,11 @@ func ParseDateTime(ctx context.Context, env envs.Environment, args ...types.XVal
 //
 // @function datetime_from_epoch(seconds)
 func DateTimeFromEpoch(env envs.Environment, num *types.XNumber) types.XValue {
-	nanos := num.Native().Mul(nanosPerSecond).IntPart()
-	return types.NewXDateTime(time.Unix(0, nanos).In(env.Timezone()))
+	nanos, err := num.Mul(nanosPerSecond)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return types.NewXDateTime(time.Unix(0, nanos.IntPart()).In(env.Timezone()))
 }
 
 // DateTimeDiff returns the duration between `date1` and `date2` in the `unit` specified.
@@ -1377,8 +1405,11 @@ func TZOffset(env envs.Environment, date *types.XDateTime) types.XValue {
 //
 // @function epoch(date)
 func Epoch(env envs.Environment, date *types.XDateTime) types.XValue {
-	nanos := decimal.New(date.Native().UnixNano(), 0)
-	return types.NewXNumber(nanos.Div(nanosPerSecond))
+	seconds, err := types.NewXNumberFromInt64(date.Native().UnixNano()).Div(nanosPerSecond)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return seconds
 }
 
 // Now returns the current date and time in the current timezone.
@@ -1658,17 +1689,21 @@ func Sort(env envs.Environment, array *types.XArray) types.XValue {
 //
 // @function sum(array)
 func Sum(env envs.Environment, array *types.XArray) types.XValue {
-	total := decimal.Zero
+	total := types.XNumberZero
 	for i := 0; i < array.Count(); i++ {
 		itemAsNum, xerr := types.ToXNumber(env, array.Get(i))
 		if xerr != nil {
 			return xerr
 		}
 
-		total = total.Add(itemAsNum.Native())
+		var err error
+		total, err = total.Add(itemAsNum)
+		if err != nil {
+			return types.NewXError(err)
+		}
 	}
 
-	return types.NewXNumber(total)
+	return total
 }
 
 // Unique returns the unique values in `array`.
@@ -2348,18 +2383,18 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 
 	// date and int, do a day addition
 	if date1Err == nil && dec2Err == nil {
-		if dec2.Native().IntPart() < math.MinInt32 || dec2.Native().IntPart() > math.MaxInt32 {
+		if dec2.IntPart() < math.MinInt32 || dec2.IntPart() > math.MaxInt32 {
 			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXDateTime(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
+		return types.NewXDateTime(date1.Native().AddDate(0, 0, int(dec2.IntPart())))
 	}
 
 	// int and date, do a day addition
 	if date2Err == nil && dec1Err == nil {
-		if dec1.Native().IntPart() < math.MinInt32 || dec1.Native().IntPart() > math.MaxInt32 {
+		if dec1.IntPart() < math.MinInt32 || dec1.IntPart() > math.MaxInt32 {
 			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXDateTime(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
+		return types.NewXDateTime(date2.Native().AddDate(0, 0, int(dec1.IntPart())))
 	}
 
 	// one of these doesn't look like a valid decimal either, bail
@@ -2372,7 +2407,11 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 	}
 
 	// normal decimal addition
-	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
+	sum, err := dec1.Add(dec2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return sum
 }
 
 // ReadChars converts `text` into something that can be read by IVR systems.

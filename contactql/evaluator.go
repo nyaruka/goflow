@@ -9,12 +9,12 @@ import (
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
-	"github.com/shopspring/decimal"
+	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // Queryable is the interface objects must implement queried
 //
-// Returned values must match the type the queried property is declared as - decimal.Decimal for number
+// Returned values must match the type the queried property is declared as - *types.XNumber for number
 // properties, time.Time for datetime ones and string for everything else - as evaluation asserts them to
 // that type. Return no values rather than a value of a different type.
 type Queryable interface {
@@ -99,7 +99,7 @@ func evaluateConditionWithValue(env envs.Environment, resolver Resolver, c *Cond
 	switch valueType {
 	case assets.FieldTypeNumber:
 		asNumber, _ := c.ValueAsNumber()
-		return numberComparison(val.(decimal.Decimal), c.operator, asNumber)
+		return numberComparison(val.(*types.XNumber), c.operator, asNumber)
 	case assets.FieldTypeDatetime:
 		asDate, _ := c.ValueAsDate(env)
 		return dateComparison(val.(time.Time), c.operator, asDate)
@@ -129,20 +129,20 @@ func textComparison(objectVal string, op Operator, queryVal string, isName bool)
 	}
 }
 
-func numberComparison(objectVal decimal.Decimal, op Operator, queryVal decimal.Decimal) bool {
+func numberComparison(objectVal *types.XNumber, op Operator, queryVal *types.XNumber) bool {
 	switch op {
 	case OpEqual:
-		return objectVal.Equal(queryVal)
+		return objectVal.Compare(queryVal) == 0
 	case OpNotEqual:
-		return !objectVal.Equal(queryVal)
+		return objectVal.Compare(queryVal) != 0
 	case OpGreaterThan:
-		return objectVal.GreaterThan(queryVal)
+		return objectVal.Compare(queryVal) > 0
 	case OpGreaterThanOrEqual:
-		return objectVal.GreaterThanOrEqual(queryVal)
+		return objectVal.Compare(queryVal) >= 0
 	case OpLessThan:
-		return objectVal.LessThan(queryVal)
+		return objectVal.Compare(queryVal) < 0
 	case OpLessThanOrEqual:
-		return objectVal.LessThanOrEqual(queryVal)
+		return objectVal.Compare(queryVal) <= 0
 	default:
 		panic(fmt.Sprintf("can't query number fields with %s", op))
 	}
