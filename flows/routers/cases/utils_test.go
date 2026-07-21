@@ -50,4 +50,8 @@ func TestParseDecimal(t *testing.T) {
 	// test that oversized numbers are rejected
 	_, err := cases.ParseDecimal("1234567890123456789012345678901234567", envs.DefaultNumberFormat)
 	assert.EqualError(t, err, "number has too many digits")
+
+	// test that scientific notation is rejected
+	_, err = cases.ParseDecimal("1e10", envs.DefaultNumberFormat)
+	assert.EqualError(t, err, "not a valid number format")
 }

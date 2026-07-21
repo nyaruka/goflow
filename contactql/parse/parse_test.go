@@ -252,6 +252,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `dob > 20-02-2020`, parsed: `fields.dob > "20-02-2020"`, resolver: resolver},
 		{text: `state > Pichincha`, err: "comparisons with > can only be used with date and number fields", resolver: resolver},
 
+		// number values have the same format restrictions and range limits as numbers elsewhere in the engine
+		{text: `age <= 1e10`, err: "can't convert '1e10' to a number", resolver: resolver},
+		{text: `age = 1` + strings.Repeat("0", 100), parsed: `fields.age = 1` + strings.Repeat("0", 100), resolver: resolver},
+		{text: `age = 1` + strings.Repeat("0", 101), err: "can't convert '1" + strings.Repeat("0", 101) + "' to a number", resolver: resolver},
+		{text: `tickets = 9999999999999999999999999999999999999`, err: "can't convert '9999999999999999999999999999999999999' to a number", resolver: resolver},
+
 		// however if we don't provide a resolver, we don't know the field type, so allowed for all
 		{text: `age > 18`, parsed: `fields.age > 18`},
 		{text: `gender > male`, parsed: `fields.gender > "male"`},
@@ -326,6 +332,12 @@ func TestParsingErrors(t *testing.T) {
 			errMsg:   "can't convert 'XZ' to a number",
 			errCode:  "invalid_number",
 			errExtra: map[string]any{"value": "XZ"},
+		},
+		{
+			query:    `age = 1e200`,
+			errMsg:   "can't convert '1e200' to a number",
+			errCode:  "invalid_number",
+			errExtra: map[string]any{"value": "1e200"},
 		},
 		{
 			query:    `dob = AB`,
