@@ -140,18 +140,15 @@ func (c *Condition) Operator() Operator { return c.operator }
 // Value returns the value being compared against
 func (c *Condition) Value() string { return c.value }
 
-// ValueAsNumber returns the value as a number if possible, or an error if not
+// ValueAsNumber returns the value as a number if possible, or an error if not. Numbers have the same
+// format restrictions (no scientific notation) and range limits as numbers elsewhere in the engine -
+// an unbounded decimal can require huge allocations when compared or rendered in full notation.
 func (c *Condition) ValueAsNumber() (decimal.Decimal, error) {
-	d, err := decimal.NewFromString(c.value)
+	n, err := types.NewXNumberFromString(c.value)
 	if err != nil {
 		return decimal.Zero, err
 	}
-	// apply the same range limits as numbers elsewhere in the engine - an unbounded decimal can
-	// require huge allocations when compared or rendered in full notation
-	if err := types.CheckDecimalRange(d); err != nil {
-		return decimal.Zero, err
-	}
-	return d, nil
+	return n.Native(), nil
 }
 
 // ValueAsDate returns the value as a date if possible, or an error if not
