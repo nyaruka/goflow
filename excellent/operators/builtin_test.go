@@ -2,6 +2,7 @@ package operators_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -73,7 +74,11 @@ func TestBinaryOperators(t *testing.T) {
 		{operators.Exponent, xn("2"), xn("32.000"), xn("4294967296")},
 		{operators.Exponent, xn("9"), xn("0.5"), xn("3")},
 		{operators.Exponent, xn("4"), xn("2.5"), xn("32")},
-		{operators.Exponent, xn("2"), xn("400"), ERROR}, // overflow
+		{operators.Exponent, xn("2"), xn("400"), ERROR},                               // overflow
+		{operators.Exponent, xn("10"), xn("100"), xn("1" + strings.Repeat("0", 100))}, // largest exponent allowed
+		{operators.Exponent, xi(2), xn("101"), ERROR},                                 // exponent above the magnitude limit
+		{operators.Exponent, xi(1), xn("101"), ERROR},                                 // limit applies even to a base that couldn't overflow
+		{operators.Exponent, xi(2), xn("1000000000"), ERROR},                          // huge exponent rejected before computing
 		{operators.Exponent, ERROR, xi(1), ERROR},
 		{operators.Exponent, xi(1), ERROR, ERROR},
 

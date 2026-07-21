@@ -19,6 +19,24 @@ var decimalRegexp = regexp.MustCompile(`^-?(([0-9]+)|([0-9]+\.[0-9]+)|(\.[0-9]+)
 // MaxNumberDigits is the maximum number of significant digits in a number
 const MaxNumberDigits = 36
 
+// maxRoundPlaces bounds the places argument to Round, RoundUp and RoundDown. Numbers are limited to
+// MaxNumberDigits significant digits and a magnitude of ±1E100, so rounding to more (or fewer negative)
+// places than this can never change a representable value - but shopspring's rescale allocates a 10^places
+// big.Int, so a pathological places value like 2 billion would allocate hundreds of megabytes first.
+// Clamping to this range leaves every valid result unchanged whilst keeping the allocation tiny.
+const maxRoundPlaces = 1_000
+
+// clampRoundPlaces bounds a rounding places argument to ±maxRoundPlaces.
+func clampRoundPlaces(places int) int {
+	return min(max(places, -maxRoundPlaces), maxRoundPlaces)
+}
+
+// maxExponentMagnitude is the largest magnitude allowed for an exponent passed to Pow. A number can't exceed
+// ±1E100, so raising anything to a larger power can only ever produce an out-of-range result - and computing
+// it first would burn CPU and memory that grow exponentially with the exponent. This is a templating engine,
+// not a calculator, so exponents are held to the same magnitude limit as numbers themselves.
+var maxExponentMagnitude = decimal.New(100, 0)
+
 func init() {
 	decimal.MarshalJSONWithoutQuotes = true
 }
@@ -173,8 +191,15 @@ func (x *XNumber) Mod(o *XNumber) (*XNumber, error) {
 	return checkedXNumber(x.native.Mod(o.native))
 }
 
-// Pow returns this number raised to the power of the given number, or an error if the result is out of range
+// Pow returns this number raised to the power of the given number, or an error if the exponent is too large
+// or the result is out of range. The exponent is bounded because raising to a power grows the result - and
+// shopspring's intermediate values - exponentially with the exponent, so a large exponent burns huge amounts
+// of CPU and memory before the result's range is ever checked.
 func (x *XNumber) Pow(o *XNumber) (*XNumber, error) {
+	if o.native.Abs().GreaterThan(maxExponentMagnitude) {
+		return nil, errors.New("number value out of range")
+	}
+
 	return checkedXNumber(x.native.Pow(o.native))
 }
 
@@ -201,12 +226,14 @@ func (x *XNumber) IntPart() int64 {
 // Round rounds this number to the given number of decimal places. If places < 0 it will round the
 // integer part to the nearest 10^(-places). Returns an error if the result is out of range.
 func (x *XNumber) Round(places int) (*XNumber, error) {
+	places = clampRoundPlaces(places)
 	return checkedXNumber(x.native.Round(int32(places)))
 }
 
 // RoundUp rounds this number up (towards positive infinity) to the given number of decimal places.
 // Returns an error if the result is out of range.
 func (x *XNumber) RoundUp(places int) (*XNumber, error) {
+	places = clampRoundPlaces(places)
 	if x.native.Round(int32(places)).Equal(x.native) {
 		return x, nil
 	}
@@ -219,6 +246,7 @@ func (x *XNumber) RoundUp(places int) (*XNumber, error) {
 // RoundDown rounds this number down (towards negative infinity) to the given number of decimal places.
 // Returns an error if the result is out of range.
 func (x *XNumber) RoundDown(places int) (*XNumber, error) {
+	places = clampRoundPlaces(places)
 	if x.native.Round(int32(places)).Equal(x.native) {
 		return x, nil
 	}

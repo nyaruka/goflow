@@ -600,18 +600,23 @@ func TestFunctions(t *testing.T) {
 		{"round", dmy, []types.XValue{xs("not_num"), xs("1")}, ERROR},
 		{"round", dmy, []types.XValue{xs("10.5"), xs("not_num")}, ERROR},
 		{"round", dmy, []types.XValue{xs("10.5"), xs("1"), xs("30")}, ERROR},
+		{"round", dmy, []types.XValue{xn("123.456"), xi(1000)}, xn("123.456")},       // places beyond the value's precision is a no-op
+		{"round", dmy, []types.XValue{xn("123.456"), xi(2000000000)}, xn("123.456")}, // pathological places is clamped, value unchanged
+		{"round", dmy, []types.XValue{xn("123.456"), xi(-2000000000)}, xi(0)},        // pathological places is clamped, rounds to zero
 
 		{"round_down", dmy, []types.XValue{xs("10")}, xi(10)},
 		{"round_down", dmy, []types.XValue{xs("10.5")}, xi(10)},
 		{"round_down", dmy, []types.XValue{xs("10.7")}, xi(10)},
 		{"round_down", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_down", dmy, []types.XValue{}, ERROR},
+		{"round_down", dmy, []types.XValue{xn("1.5"), xi(2000000000)}, xn("1.5")}, // pathological places is clamped, value unchanged
 
 		{"round_up", dmy, []types.XValue{xs("10")}, xi(10)},
 		{"round_up", dmy, []types.XValue{xs("10.5")}, xi(11)},
 		{"round_up", dmy, []types.XValue{xs("10.2")}, xi(11)},
 		{"round_up", dmy, []types.XValue{xs("not_num")}, ERROR},
 		{"round_up", dmy, []types.XValue{}, ERROR},
+		{"round_up", dmy, []types.XValue{xn("1.5"), xi(2000000000)}, xn("1.5")}, // pathological places is clamped, value unchanged
 
 		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(0), xi(2)}, xa(xs("a"), xs("b"))},
 		{"slice", dmy, []types.XValue{xa(xs("a"), xs("b"), xs("c")), xi(1), xi(3)}, xa(xs("b"), xs("c"))},
