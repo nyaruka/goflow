@@ -25,6 +25,11 @@ func isValidURL(u string) bool {
 	return err == nil
 }
 
+// evaluated bodies aren't truncated like other templates because that could produce invalid JSON, but there
+// has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
+// multiple times could otherwise evaluate to something enormous
+const maxRequestBodyBytes = 1024 * 1024
+
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhook{} })
 }
@@ -105,8 +110,13 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 
 	// substitute any body variables
 	if body != "" {
-		// webhook bodies aren't truncated like other templates
+		// webhook bodies aren't truncated like other templates but can't exceed an absolute limit
 		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
+
+		if len(body) > maxRequestBodyBytes {
+			log(events.NewError(fmt.Sprintf("Webhook body evaluated to %d bytes, exceeding the limit of %d", len(body), maxRequestBodyBytes), ""))
+			return nil
+		}
 	}
 
 	call := a.call(ctx, run, step, url, method, body, log)
