@@ -12,7 +12,7 @@ import (
 
 // Template is a parsed representation of a template string, e.g. "Hi @contact.name!". It is immutable after parsing
 // and thus safe for concurrent use - parsing a template once and evaluating it many times is equivalent to passing
-// the original string to Evaluator.Template each time.
+// the original string to Evaluator.Template each time, using the default evaluation budget.
 type Template struct {
 	segments []templateSegment
 }
