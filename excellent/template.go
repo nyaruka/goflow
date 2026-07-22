@@ -146,7 +146,7 @@ func (s *expressionSegment) evaluate(env envs.Environment, root *types.XObject) 
 
 	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
 	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
-	ctx := budget.With(context.Background(), budget.New(maxEvaluationCost))
+	ctx := budget.With(context.Background(), budget.New(DefaultEvaluationBudget))
 
 	value := s.expression.Evaluate(ctx, env, NewScope(root, nil), warnings)
 	return value, warnings.all
