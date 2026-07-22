@@ -350,8 +350,10 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
 			if s.pushedFlow.terminal {
 				for _, run := range s.runs {
-					run.Exit(core.RunStatusCompleted)
-					sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+					if run.Status() == core.RunStatusActive || run.Status() == core.RunStatusWaiting {
+						run.Exit(core.RunStatusCompleted)
+						sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+					}
 				}
 			}
 
@@ -654,13 +656,6 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 	if e.Input != nil {
 		if s.input, err = inputs.Read(s.Assets(), e.Input, missing); err != nil {
 			return nil, fmt.Errorf("unable to read input: %w", err)
-		}
-	}
-
-	// older sessions won't have a sprints count but will have events and will have set legacyWaitCount
-	if s.sprints == 0 {
-		for _, r := range s.runsByUUID {
-			s.sprints += r.legacyWaitCount
 		}
 	}
 

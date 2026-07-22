@@ -1,5 +1,56 @@
 [
     {
+        "description": "Error event for invalid optin reference",
+        "action": {
+            "type": "request_optin",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "optin": {
+                "uuid": "e0f463b9-2704-4d9c-b04a-bfc1187430ba",
+                "name": "Deleted"
+            }
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "Missing dependency: optin[uuid=e0f463b9-2704-4d9c-b04a-bfc1187430ba,name=Deleted]",
+                "code": "dependency:missing"
+            }
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "e0f463b9-2704-4d9c-b04a-bfc1187430ba",
+                    "name": "Deleted",
+                    "type": "optin",
+                    "missing": true
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing optin dependency 'e0f463b9-2704-4d9c-b04a-bfc1187430ba'",
+                    "dependency": {
+                        "uuid": "e0f463b9-2704-4d9c-b04a-bfc1187430ba",
+                        "name": "Deleted",
+                        "type": "optin"
+                    }
+                }
+            ]
+        }
+    },
+    {
         "description": "NOOP when channel doesn't support optins feature",
         "action": {
             "type": "request_optin",
