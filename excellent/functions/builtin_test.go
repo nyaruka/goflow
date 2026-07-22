@@ -97,6 +97,11 @@ func TestFunctions(t *testing.T) {
 		{"boolean", dmy, []types.XValue{xs("FALSE")}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xa()}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xa(xi(1))}, types.XBooleanTrue},
+		{"boolean", dmy, []types.XValue{xt(dates.NewTimeOfDay(0, 0, 0, 0))}, types.XBooleanFalse}, // e.g. time_from_parts(0, 0, 0)
+		{"boolean", dmy, []types.XValue{types.XTimeZero}, types.XBooleanFalse},                    // e.g. time(24)
+		{"boolean", dmy, []types.XValue{xt(dates.NewTimeOfDay(0, 0, 1, 0))}, types.XBooleanTrue},
+		{"boolean", dmy, []types.XValue{xd(dates.ZeroDate)}, types.XBooleanFalse},
+		{"boolean", dmy, []types.XValue{types.XDateZero}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{ERROR}, ERROR},
 		{"boolean", dmy, []types.XValue{}, ERROR},
 
