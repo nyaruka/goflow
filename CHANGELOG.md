@@ -1,3 +1,10 @@
+v0.284.2 (2026-07-22)
+-------------------------
+ * Limit evaluated call_webhook requests to 256KiB, logging an error with code webhook:request_size when exceeded
+ * Use dedicated error code webhook:response_size when a webhook response exceeds the read limit
+ * Add sizes field with true request and response sizes to HTTP log events
+ * Update to gocommon 1.90.0
+
 v0.284.1 (2026-07-22)
 -------------------------
  * Raise call_webhook body limit to 20,000 characters and adjust header value and count limits
