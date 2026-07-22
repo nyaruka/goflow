@@ -1,6 +1,7 @@
 package envs
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -126,6 +127,9 @@ func (n locationNameLookup) lookup(env Environment, name string) []*Location {
 	return n[CollateTransform(env, name)]
 }
 
+// maxLocationLevels is the maximum number of levels in a location hierarchy that the engine supports
+const maxLocationLevels = 4
+
 // LocationHierarchy is a hierarical tree of locations
 type LocationHierarchy struct {
 	root *Location
@@ -166,6 +170,11 @@ func (h *LocationHierarchy) initializeFromRoot(env Environment, root *Location, 
 }
 
 func (h *LocationHierarchy) addNameLookups(env Environment, location *Location) {
+	// a deeper location means unsupported data made it into the hierarchy and code changes are needed
+	if int(location.level) >= len(h.levelLookups) {
+		panic(fmt.Sprintf("location hierarchies are limited to %d levels", maxLocationLevels))
+	}
+
 	lookups := h.levelLookups[int(location.level)]
 	lookups.addLookup(env, location.name, location)
 
@@ -226,7 +235,7 @@ func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
 	env := NewBuilder().Build()
 
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
-	h.initializeFromRoot(env, root, 4)
+	h.initializeFromRoot(env, root, maxLocationLevels)
 	return nil
 }
 
@@ -265,5 +274,5 @@ func ReadLocationHierarchy(env Environment, data []byte) (*LocationHierarchy, er
 
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
 
-	return NewLocationHierarchy(env, root, 4), nil
+	return NewLocationHierarchy(env, root, maxLocationLevels), nil
 }

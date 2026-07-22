@@ -60,6 +60,15 @@ func TestLocationHierarchy(t *testing.T) {
 	hierarchy, err := envs.ReadLocationHierarchy(env, []byte(locationHierarchyJSON))
 	assert.NoError(t, err)
 
+	// deeper than 4 levels is unsupported data and panics
+	assert.PanicsWithValue(t, "location hierarchies are limited to 4 levels", func() {
+		envs.ReadLocationHierarchy(env, []byte(`{
+			"name": "L0", "children": [{"name": "L1", "children": [{"name": "L2", "children": [
+				{"name": "L3", "children": [{"name": "L4"}]}
+			]}]}]
+		}`))
+	})
+
 	rwanda := hierarchy.Root()
 	assert.Equal(t, envs.LocationLevel(0), rwanda.Level())
 	assert.Equal(t, "Rwanda", rwanda.Name())
