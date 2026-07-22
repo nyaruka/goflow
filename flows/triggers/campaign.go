@@ -1,6 +1,8 @@
 package triggers
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/core"
@@ -87,7 +89,11 @@ func readCampaign(sa flows.SessionAssets, data []byte, missing assets.MissingCal
 		return nil, err
 	}
 
-	campEvt := t.event.(*events.CampaignFired)
+	campEvt, ok := t.event.(*events.CampaignFired)
+	if !ok {
+		return nil, fmt.Errorf("campaign trigger event must be of type %s", events.TypeCampaignFired)
+	}
+
 	t.campaign = sa.Campaigns().Get(campEvt.Campaign.UUID)
 	if t.campaign == nil {
 		missing(campEvt.Campaign, nil)

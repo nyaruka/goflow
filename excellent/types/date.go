@@ -31,7 +31,7 @@ func (x *XDate) Describe() string { return "date" }
 
 // Truthy determines truthiness for this type
 func (x *XDate) Truthy() bool {
-	return x != XDateZero
+	return !x.Native().Equal(dates.ZeroDate)
 }
 
 // Render returns the canonical text representation
