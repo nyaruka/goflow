@@ -34,7 +34,7 @@ func TestRefactorTemplate(t *testing.T) {
 		{`test@@example.com`, `test@@example.com`, false}, // escaped @ unchanged
 	}
 
-	eval := excellent.NewEvaluator()
+	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 	env := envs.NewBuilder().Build()
 	ctx := types.NewXObject(map[string]types.XValue{
 		"foo": types.NewXObject(map[string]types.XValue{
