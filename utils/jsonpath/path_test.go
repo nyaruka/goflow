@@ -18,6 +18,9 @@ func TestParsePath(t *testing.T) {
 		{"$[*]", []string{"*"}, ""},
 		{"$[2]", []string{"2"}, ""},
 		{"$[]", []string{"2"}, "subscript value can't be empty"},
+		{"$foo", []string{}, `unexpected character 'f' in path`},
+		{"$ .foo", []string{}, `unexpected character ' ' in path`},
+		{"$.foo bar", []string{"foo bar"}, ""},
 		{"$.foo[*]", []string{"foo", "*"}, ""},
 		{"$.foo[*].bar", []string{"foo", "*", "bar"}, ""},
 		{"$.foo[*].bar[5]", []string{"foo", "*", "bar", "5"}, ""},
@@ -65,8 +68,10 @@ func TestVisit(t *testing.T) {
 		assert.Equal(t, tc.expected, matches)
 	}
 
-	// a path with no steps is an error rather than a panic
+	// malformed paths are errors rather than hangs or panics
 	assert.EqualError(t, Visit(data, "$", func(m any) {}), "path must contain at least one step")
+	assert.EqualError(t, Visit(data, "$foo", func(m any) {}), `unexpected character 'f' in path`)
+	assert.EqualError(t, Visit(data, "$ .foo", func(m any) {}), `unexpected character ' ' in path`)
 }
 
 func TestTransform(t *testing.T) {
@@ -87,7 +92,10 @@ func TestTransform(t *testing.T) {
 		assert.Equal(t, tc.expected, tc.data)
 	}
 
-	// a path with no steps is an error rather than a panic
+	// malformed paths are errors rather than hangs or panics
 	err := Transform(map[string]any{"foo": "bar"}, "$", func(c, k, m any) any { return "baz" })
 	assert.EqualError(t, err, "path must contain at least one step")
+
+	err = Transform(map[string]any{"foo": "bar"}, "$foo", func(c, k, m any) any { return "baz" })
+	assert.EqualError(t, err, `unexpected character 'f' in path`)
 }

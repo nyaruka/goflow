@@ -13,6 +13,7 @@ package jsonpath
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -57,6 +58,8 @@ func parsePath(path string) ([]string, error) {
 				return nil, errors.New("subscript value can't be empty")
 			}
 			steps = append(steps, s)
+		} else {
+			return nil, fmt.Errorf("unexpected character %q in path", runes[i])
 		}
 	}
 
