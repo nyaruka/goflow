@@ -657,13 +657,6 @@ func readSession(eng flows.Engine, sa flows.SessionAssets, data []byte, env envs
 		}
 	}
 
-	// older sessions won't have a sprints count but will have events and will have set legacyWaitCount
-	if s.sprints == 0 {
-		for _, r := range s.runsByUUID {
-			s.sprints += r.legacyWaitCount
-		}
-	}
-
 	return s, nil
 }
 
