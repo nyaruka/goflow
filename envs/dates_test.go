@@ -82,6 +82,11 @@ func TestDateTimeFromString(t *testing.T) {
 		{envs.DateFormatYearMonthDay, envs.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
 		{envs.DateFormatYearMonthDay, envs.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
 		{envs.DateFormatYearMonthDay, envs.TimeFormatHourMinute, "UTC", false, "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
+
+		// 24 can be used to mean midnight but any other time with hour 24 is invalid and ignored
+		{envs.DateFormatDayMonthYear, envs.TimeFormatHourMinute, "UTC", false, "02-02-2020 24:00", "02-02-2020 00:00:00 +0000 UTC", false},
+		{envs.DateFormatDayMonthYear, envs.TimeFormatHourMinute, "UTC", false, "02-02-2020 24:30", "02-02-2020 00:00:00 +0000 UTC", false},
+		{envs.DateFormatDayMonthYear, envs.TimeFormatHourMinute, "UTC", false, "02-02-2020 10:60", "02-02-2020 00:00:00 +0000 UTC", false},
 	}
 
 	dates.SetNowFunc(dates.NewFixedNow(time.Date(2018, 9, 13, 13, 36, 30, 123456789, time.UTC)))
@@ -184,8 +189,12 @@ func TestTimeFromString(t *testing.T) {
 		{"it's 24:00:00 ok", dates.NewTimeOfDay(0, 0, 0, 0), false},
 
 		{"it's ok", dates.ZeroTimeOfDay, true},
+		{"it's 24:30", dates.ZeroTimeOfDay, true},
+		{"it's 24:00:30", dates.ZeroTimeOfDay, true},
 		{"it's 25:30", dates.ZeroTimeOfDay, true},
+		{"it's 10:60", dates.ZeroTimeOfDay, true},
 		{"it's 10:61", dates.ZeroTimeOfDay, true},
+		{"it's 10:30:60", dates.ZeroTimeOfDay, true},
 		{"it's 10:30:61", dates.ZeroTimeOfDay, true},
 	}
 

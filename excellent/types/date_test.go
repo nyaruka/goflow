@@ -21,6 +21,10 @@ func TestXDate(t *testing.T) {
 	assert.Equal(t, `20-02-2019`, d1.Format(env))
 
 	assert.True(t, d1.Truthy())
+
+	// the zero date is not truthy, regardless of how it was constructed
+	assert.False(t, types.XDateZero.Truthy())
+	assert.False(t, types.NewXDate(dates.ZeroDate).Truthy())
 	assert.Equal(t, `XDate(2019, 2, 20)`, d1.String())
 
 	formatted, err := d1.FormatCustom(env, "EEE, DD-MM-YYYY")
