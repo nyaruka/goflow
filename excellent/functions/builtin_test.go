@@ -518,6 +518,7 @@ func TestFunctions(t *testing.T) {
 		{"percent", dmy, []types.XValue{}, ERROR},
 
 		{"prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
+		{"prompt", dmy, []types.XValue{xs("categorize"), nil}, xs("Categorize the following text into one of the following: ")},
 		{"prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
 		{"prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"prompt", dmy, []types.XValue{}, ERROR},
@@ -532,6 +533,9 @@ func TestFunctions(t *testing.T) {
 		{"read_chars", dmy, []types.XValue{xs("abcd")}, xs("a b c d")},
 		{"read_chars", dmy, []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
 		{"read_chars", dmy, []types.XValue{xs("12")}, xs("1 , 2")},
+		{"read_chars", dmy, []types.XValue{xs("ééé")}, xs("é é é")},
+		{"read_chars", dmy, []types.XValue{xs("héllo!")}, xs("h é l , l o !")},
+		{"read_chars", dmy, []types.XValue{xs("héllo123")}, xs("h é l l , o 1 2 3")},
 		{"read_chars", dmy, []types.XValue{}, ERROR},
 
 		{"regex_match", dmy, []types.XValue{xs("zAbc"), xs(`a\w`)}, xs(`Ab`)},

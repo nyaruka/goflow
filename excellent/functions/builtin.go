@@ -2149,7 +2149,7 @@ func Prompt(env envs.Environment, name *types.XText, args ...types.XValue) types
 
 	tplArgs := make(map[string]string, len(args))
 	for i, arg := range args {
-		tplArgs[fmt.Sprintf("arg%d", i+1)] = arg.Render()
+		tplArgs[fmt.Sprintf("arg%d", i+1)] = types.Render(arg)
 	}
 
 	var buf strings.Builder
@@ -2427,19 +2427,26 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 func ReadChars(env envs.Environment, val *types.XText) types.XValue {
 	var output bytes.Buffer
 
-	// remove any leading +
-	val = types.NewXText(strings.TrimLeft(val.Native(), "+"))
+	// remove any leading + and operate on runes so multi-byte characters aren't split
+	runes := []rune(strings.TrimLeft(val.Native(), "+"))
+	length := len(runes)
 
-	length := val.Length()
+	writeGroup := func(group []rune) {
+		for j, c := range group {
+			if j > 0 {
+				output.WriteString(" ")
+			}
+			output.WriteRune(c)
+		}
+	}
 
 	// groups of three
 	if length%3 == 0 {
-		// groups of 3
 		for i := 0; i < length; i += 3 {
 			if i > 0 {
 				output.WriteString(" , ")
 			}
-			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+3], ""), " "))
+			writeGroup(runes[i : i+3])
 		}
 		return types.NewXText(output.String())
 	}
@@ -2450,13 +2457,13 @@ func ReadChars(env envs.Environment, val *types.XText) types.XValue {
 			if i > 0 {
 				output.WriteString(" , ")
 			}
-			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+4], ""), " "))
+			writeGroup(runes[i : i+4])
 		}
 		return types.NewXText(output.String())
 	}
 
 	// default, just do one at a time
-	for i, c := range val.Native() {
+	for i, c := range runes {
 		if i > 0 {
 			output.WriteString(" , ")
 		}
