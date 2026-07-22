@@ -59,6 +59,7 @@ func TestToXTime(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.XTimeZero, true},
 		{types.NewXNumberFromInt(23), types.NewXTime(dates.NewTimeOfDay(23, 0, 0, 0)), false},
 		{types.NewXNumberFromInt(24), types.XTimeZero, false},
+		{types.RequireXNumberFromString("18446744073709551640"), types.XTimeZero, true}, // 2^64 + 24, would wrap to 24 as an int64
 		{types.NewXText("10:30"), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
 		{types.NewXText("10:30 pm"), types.NewXTime(dates.NewTimeOfDay(22, 30, 0, 0)), false},
 		{types.NewXText("10"), types.NewXTime(dates.NewTimeOfDay(10, 0, 0, 0)), false},

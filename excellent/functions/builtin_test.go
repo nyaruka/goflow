@@ -438,6 +438,8 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), xs("01-12-2017")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{types.NewXNumberFromInt64(int64(math.MaxInt32 + 1)), xs("01-12-2017 10:15:33pm")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), types.NewXNumberFromInt64(int64(math.MaxInt32 + 1))}, ERROR},
+		{"legacy_add", dmy, []types.XValue{xn("18446744073709551618"), xs("01-12-2017 10:15:33pm")}, ERROR}, // 2^64 + 2, would wrap to 2 days as an int64
+		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), xn("18446744073709551618")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("xxx"), xs("10")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("10"), xs("xxx")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{}, ERROR},

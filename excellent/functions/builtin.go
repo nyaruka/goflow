@@ -24,15 +24,6 @@ import (
 var nanosPerSecond = types.NewXNumberFromInt64(1000000000)
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
-var minInt64Number = types.NewXNumberFromInt64(math.MinInt64)
-var maxInt64Number = types.NewXNumberFromInt64(math.MaxInt64)
-
-// fitsInInt64 returns whether the integer part of the given number can be represented as an int64 - expression
-// numbers permit up to 36 digits so .IntPart() can otherwise silently wrap around.
-func fitsInInt64(num *types.XNumber) bool {
-	return num.Compare(minInt64Number) >= 0 && num.Compare(maxInt64Number) <= 0
-}
-
 // maxRepeatOutput caps the number of characters that repeat() will build in a single call, to avoid a large
 // transient allocation from an attacker-controlled count (the per-evaluation budget bounds cost across calls,
 // but only after each value is built). Matches the default limit on an evaluated template.
@@ -915,12 +906,13 @@ func Percent(env envs.Environment, num *types.XNumber) types.XValue {
 	if err != nil {
 		return types.NewXError(err)
 	}
-	if !fitsInInt64(percent) {
+	asInt, ok := percent.Int64()
+	if !ok {
 		return types.NewXErrorf("percentage value is out of range")
 	}
 
 	// add on a %
-	return types.NewXText(fmt.Sprintf("%d%%", percent.IntPart()))
+	return types.NewXText(fmt.Sprintf("%d%%", asInt))
 }
 
 // URLEncode encodes `text` for use as a URL parameter.
@@ -1252,10 +1244,11 @@ func DateTimeFromEpoch(env envs.Environment, num *types.XNumber) types.XValue {
 	if err != nil {
 		return types.NewXError(err)
 	}
-	if !fitsInInt64(nanos) {
+	asInt, ok := nanos.Int64()
+	if !ok {
 		return types.NewXErrorf("epoch time is out of range")
 	}
-	return types.NewXDateTime(time.Unix(0, nanos.IntPart()).In(env.Timezone()))
+	return types.NewXDateTime(time.Unix(0, asInt).In(env.Timezone()))
 }
 
 // DateTimeDiff returns the duration between `date1` and `date2` in the `unit` specified.
@@ -2405,18 +2398,20 @@ func LegacyAdd(env envs.Environment, arg1 types.XValue, arg2 types.XValue) types
 
 	// date and int, do a day addition
 	if date1Err == nil && dec2Err == nil {
-		if dec2.IntPart() < math.MinInt32 || dec2.IntPart() > math.MaxInt32 {
+		days, ok := dec2.Int64()
+		if !ok || days < math.MinInt32 || days > math.MaxInt32 {
 			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXDateTime(date1.Native().AddDate(0, 0, int(dec2.IntPart())))
+		return types.NewXDateTime(date1.Native().AddDate(0, 0, int(days)))
 	}
 
 	// int and date, do a day addition
 	if date2Err == nil && dec1Err == nil {
-		if dec1.IntPart() < math.MinInt32 || dec1.IntPart() > math.MaxInt32 {
+		days, ok := dec1.Int64()
+		if !ok || days < math.MinInt32 || days > math.MaxInt32 {
 			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXDateTime(date2.Native().AddDate(0, 0, int(dec1.IntPart())))
+		return types.NewXDateTime(date2.Native().AddDate(0, 0, int(days)))
 	}
 
 	// one of these doesn't look like a valid decimal either, bail
