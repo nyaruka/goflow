@@ -24,19 +24,11 @@ const (
 	CallStatusSubscriberGone CallStatus = "subscriber_gone"
 )
 
-// HTTPSizes are the true sizes in bytes of a request and response, recorded because the traces
-// themselves are trimmed for logging
-type HTTPSizes struct {
-	Request  int `json:"request"`
-	Response int `json:"response"`
-}
-
 // HTTPLogWithoutTime is an HTTP log no time and status added - used for webhook events which already encode the time
 type HTTPLogWithoutTime struct {
 	*httpx.LogWithoutTime
 
 	Status CallStatus `json:"status" validate:"required"`
-	Sizes  HTTPSizes  `json:"sizes"`
 }
 
 // trim request and response traces to 10K chars to avoid bloating serialized sessions
@@ -45,19 +37,9 @@ const trimURLsTo = 2048
 
 // NewHTTPLogWithoutTime creates a new HTTP log from a trace
 func NewHTTPLogWithoutTime(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPLogWithoutTime {
-	bodySize := len(trace.ResponseBody)
-	if trace.ResponseBody == nil && trace.Response != nil && trace.Response.ContentLength > 0 {
-		// body was discarded (e.g. it exceeded the read limit) but the server declared its size
-		bodySize = int(trace.Response.ContentLength)
-	}
-
 	return &HTTPLogWithoutTime{
 		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
 		Status:         status,
-		Sizes: HTTPSizes{
-			Request:  len(trace.RequestTrace),
-			Response: len(trace.ResponseTrace) + bodySize,
-		},
 	}
 }
 
