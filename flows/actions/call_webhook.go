@@ -114,7 +114,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
 
 		if len(body) > maxRequestBodyBytes {
-			log(events.NewError(fmt.Sprintf("Webhook body evaluated to %d bytes, exceeding the limit of %d", len(body), maxRequestBodyBytes), ""))
+			log(events.NewError(fmt.Sprintf("Webhook body evaluated to %d bytes, exceeding the limit of %d", len(body), maxRequestBodyBytes), events.ErrorCodeWebhookBodyTooLarge))
 			return nil
 		}
 	}

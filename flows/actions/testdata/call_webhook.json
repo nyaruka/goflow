@@ -330,7 +330,8 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook body evaluated to 300000 bytes, exceeding the limit of 262144"
+                "text": "Webhook body evaluated to 300000 bytes, exceeding the limit of 262144",
+                "code": "webhook:body_too_large"
             }
         ],
         "webhook": null,
