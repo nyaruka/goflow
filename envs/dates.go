@@ -215,13 +215,13 @@ func parseTime(str string) (bool, dates.TimeOfDay) {
 		}
 
 		// is our time valid?
-		if hour > 24 {
+		if hour > 23 {
 			continue
 		}
-		if minute > 60 {
+		if minute > 59 {
 			continue
 		}
-		if second > 60 {
+		if second > 59 {
 			continue
 		}
 

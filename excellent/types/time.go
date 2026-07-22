@@ -31,7 +31,7 @@ func (x *XTime) Describe() string { return "time" }
 
 // Truthy determines truthiness for this type
 func (x *XTime) Truthy() bool {
-	return x != XTimeZero
+	return !x.Native().Equal(dates.ZeroTimeOfDay)
 }
 
 // Render returns the canonical text representation

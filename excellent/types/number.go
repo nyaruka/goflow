@@ -123,11 +123,17 @@ func (x *XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigit
 
 	// add thousands separators
 	if groupDigits {
+		sign, digits := "", parts[0]
+		if strings.HasPrefix(digits, "-") {
+			sign, digits = "-", digits[1:]
+		}
+
 		sb := strings.Builder{}
-		for i, r := range parts[0] {
+		sb.WriteString(sign)
+		for i, r := range digits {
 			sb.WriteRune(r)
 
-			d := (len(parts[0]) - 1) - i
+			d := (len(digits) - 1) - i
 			if d%3 == 0 && d > 0 {
 				sb.WriteString(format.DigitGroupingSymbol)
 			}

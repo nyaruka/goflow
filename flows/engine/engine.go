@@ -90,7 +90,7 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		eng: &engine{
-			evaluator:  excellent.NewEvaluator(),
+			evaluator:  excellent.NewEvaluator(excellent.DefaultEvaluationBudget),
 			services:   newEmptyServices(),
 			httpClient: http.DefaultClient,
 			options: &flows.EngineOptions{
