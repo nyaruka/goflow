@@ -32,7 +32,7 @@ type PlayAudio struct {
 	baseAction
 	voiceAction
 
-	AudioURL string `json:"audio_url" validate:"required,max=2048" engine:"localized,evaluated"`
+	AudioURL string `json:"audio_url" validate:"required,max=8192" engine:"localized,evaluated"`
 }
 
 // NewPlayAudio creates a new play message action
