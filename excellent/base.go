@@ -18,19 +18,22 @@ import (
 // Real expressions are written by humans and nest a handful of levels deep at most.
 const maxExpressionDepth = 100
 
-// maxEvaluationCost is the cost budget for a single expression evaluation. Cost accrues as values are
-// produced - text costs its length in bytes, everything else costs 1 - so this bounds both the memory and
-// the number of operations a single evaluation can consume, no matter how per-function limits are composed.
-// It's set generously: real expressions cost a few hundred units at most, so this is many orders of magnitude
-// of headroom whilst still bounding an attack to a few MB. It can be tightened later based on real-world usage.
-const maxEvaluationCost = 10_000_000
+// DefaultEvaluationBudget is the default cost budget for a single expression evaluation. Cost accrues as
+// values are produced - text costs its length in bytes, everything else costs 1 - so this bounds both the
+// memory and the number of operations a single evaluation can consume, no matter how per-function limits are
+// composed. It's set generously: real expressions cost a few hundred units at most, so this is many orders of
+// magnitude of headroom whilst still bounding an attack to a few MB. It can be tightened later based on
+// real-world usage.
+const DefaultEvaluationBudget = 10_000_000
 
 // Evaluator evaluates templates and expressions.
-type Evaluator struct{}
+type Evaluator struct {
+	budget int // cost budget for a single expression evaluation
+}
 
-// NewEvaluator creates a new evaluator
-func NewEvaluator() *Evaluator {
-	return &Evaluator{}
+// NewEvaluator creates a new evaluator with the given evaluation cost budget
+func NewEvaluator(budget int) *Evaluator {
+	return &Evaluator{budget: budget}
 }
 
 // Escaping is a function applied to expressions in a template after they've been evaluated
@@ -112,7 +115,7 @@ func (e *Evaluator) Expression(ctx context.Context, env envs.Environment, root *
 
 	// a per-evaluation cost budget is added to the caller's context so that its deadline (if any) is honoured
 	// alongside the budget
-	ctx = budget.With(ctx, budget.New(maxEvaluationCost))
+	ctx = budget.With(ctx, budget.New(e.budget))
 
 	return parsed.Evaluate(ctx, env, scope, warnings), warnings.all
 }
