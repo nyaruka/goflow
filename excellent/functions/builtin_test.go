@@ -513,6 +513,7 @@ func TestFunctions(t *testing.T) {
 		{"percent", dmy, []types.XValue{}, ERROR},
 
 		{"prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
+		{"prompt", dmy, []types.XValue{xs("categorize"), nil}, xs("Categorize the following text into one of the following: ")},
 		{"prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
 		{"prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"prompt", dmy, []types.XValue{}, ERROR},
