@@ -23,6 +23,14 @@ func init() {
 
 // Migrate13_6_1 fixes result lookups that need to be truncated.
 //
+// Known limitation, deliberately left unfixed: 13.6.0 truncates result names with TrimSpace(Truncate(name, 64))
+// and runtime result keys are the snakified name, but this migration truncates lookups with a bare Truncate. So
+// a result name with whitespace at the 64-char boundary gets a runtime key without that character while the
+// truncated lookup keeps it as a trailing underscore, and the rewritten lookup no longer resolves. This only
+// bites names over 64 chars with whitespace exactly at the boundary, and fixing it now would change the output
+// of an already-shipped migration - creating divergence between definitions migrated before and after the change
+// - which is worse than the vanishingly rare bug.
+//
 // @version 13_6_1 "13.6.1"
 func Migrate13_6_1(f Flow, cfg *Config) (Flow, error) {
 	const maxResultRef = 64
