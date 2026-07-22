@@ -205,7 +205,7 @@ func TestEvaluateTemplateValue(t *testing.T) {
 	}
 
 	for _, tc := range evaluateTests {
-		eval := excellent.NewEvaluator()
+		eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 		result, _, err := eval.TemplateValue(t.Context(), env, ctx, tc.template)
 		assert.NoError(t, err)
 
@@ -345,7 +345,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			}
 		}()
 
-		eval := excellent.NewEvaluator()
+		eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 		val, _, err := eval.Template(t.Context(), env, ctx, tc.template, nil)
 
 		if tc.hasError {
@@ -366,7 +366,7 @@ func TestEvaluateTemplateWithEscaping(t *testing.T) {
 		return strings.Replace(s, `"`, `\"`, -1)
 	}
 
-	eval := excellent.NewEvaluator()
+	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 	env := envs.NewBuilder().Build()
 	val, _, err := eval.Template(t.Context(), env, ctx, `Hi @string1`, escaping)
 	assert.NoError(t, err)
@@ -388,7 +388,7 @@ func TestEvaluateTemplateWithDeprecatedValues(t *testing.T) {
 		"yyy": dep2,
 	})
 
-	eval := excellent.NewEvaluator()
+	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 	env := envs.NewBuilder().Build()
 
 	val, warnings, err := eval.Template(t.Context(), env, ctx, `Hi @foo.bar`, nil)
@@ -458,7 +458,7 @@ func TestEvaluationErrors(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		eval := excellent.NewEvaluator()
+		eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 		result, _, err := eval.Template(t.Context(), env, ctx, tc.template, nil)
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
@@ -472,7 +472,7 @@ func TestEvaluationErrors(t *testing.T) {
 func TestEvaluationBudget(t *testing.T) {
 	env := envs.NewBuilder().Build()
 	ctx := types.NewXObject(map[string]types.XValue{"name": types.NewXText("bob jones")})
-	eval := excellent.NewEvaluator()
+	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 
 	// expressions that stay within budget evaluate normally
 	allowed := []string{
@@ -500,6 +500,15 @@ func TestEvaluationBudget(t *testing.T) {
 		if assert.Error(t, err, "expected %s to exceed budget", tc.desc) {
 			assert.Contains(t, err.Error(), "expression is too complex to evaluate", "for %s", tc.desc)
 		}
+	}
+
+	// the budget is per-evaluator, so a smaller one makes exhaustion easy to reach with modest values
+	small := excellent.NewEvaluator(100)
+	_, _, err := small.Template(t.Context(), env, ctx, `@(repeat("x", 50))`, nil)
+	assert.NoError(t, err)
+	_, _, err = small.Template(t.Context(), env, ctx, `@(repeat("x", 200))`, nil)
+	if assert.Error(t, err) {
+		assert.Contains(t, err.Error(), "expression is too complex to evaluate")
 	}
 
 	// the budget is also wired for the Expression() entry point, and empty text can't be produced for free

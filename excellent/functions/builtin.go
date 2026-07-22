@@ -2149,7 +2149,7 @@ func Prompt(env envs.Environment, name *types.XText, args ...types.XValue) types
 
 	tplArgs := make(map[string]string, len(args))
 	for i, arg := range args {
-		tplArgs[fmt.Sprintf("arg%d", i+1)] = arg.Render()
+		tplArgs[fmt.Sprintf("arg%d", i+1)] = types.Render(arg)
 	}
 
 	var buf strings.Builder

@@ -12,7 +12,7 @@ import (
 
 // Template is a parsed representation of a template string, e.g. "Hi @contact.name!". It is immutable after parsing
 // and thus safe for concurrent use - parsing a template once and evaluating it many times is equivalent to passing
-// the original string to Evaluator.Template each time.
+// the original string to Evaluator.Template each time, using the default evaluation budget.
 type Template struct {
 	segments []templateSegment
 }
@@ -146,7 +146,7 @@ func (s *expressionSegment) evaluate(env envs.Environment, root *types.XObject) 
 
 	// evaluation is context-aware so that per-evaluation limits can be enforced; the context originates here
 	// rather than being threaded in from the caller until there's a caller-side deadline worth honouring
-	ctx := budget.With(context.Background(), budget.New(maxEvaluationCost))
+	ctx := budget.With(context.Background(), budget.New(DefaultEvaluationBudget))
 
 	value := s.expression.Evaluate(ctx, env, NewScope(root, nil), warnings)
 	return value, warnings.all
