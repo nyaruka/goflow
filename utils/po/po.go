@@ -302,14 +302,16 @@ func readEntry(nextLine func() (string, error)) (*Entry, error) {
 	lines := make([]string, 0)
 	for {
 		line, err := nextLine()
+		if err != nil && err != io.EOF {
+			return nil, err
+		}
 		line = strings.TrimSpace(line)
+		if line != "" {
+			lines = append(lines, line)
+		}
 		if err == io.EOF || line == "" {
 			break
 		}
-		if err != nil {
-			return nil, err
-		}
-		lines = append(lines, line)
 	}
 
 	// there wasn't another entry to read
