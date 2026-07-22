@@ -15,6 +15,10 @@
             "response": "HTTP/1.0 200 OK\r\nContent-Length: 14\r\n\r\n{\"errors\":[]}",
             "elapsed_ms": 12,
             "retries": 0,
+            "sizes": {
+                "request": 0,
+                "response": 0
+            },
             "status": "success",
             "created_on": "2025-05-04T12:30:46.123456789Z"
         }

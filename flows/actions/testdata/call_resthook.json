@@ -123,6 +123,10 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\nContent-Type: application/json\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1037,
+                    "response": 87
+                },
                 "status": "success",
                 "resthook": "new-registration"
             },
@@ -136,6 +140,10 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 19\r\nContent-Type: text/plain\r\n\r\nservice unavailable",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1044,
+                    "response": 101
+                },
                 "status": "response_error",
                 "resthook": "new-registration"
             }
@@ -247,6 +255,10 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\nContent-Type: application/json\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1037,
+                    "response": 87
+                },
                 "status": "success",
                 "resthook": "new-registration"
             },
@@ -260,6 +272,10 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 19\r\nContent-Type: text/plain\r\n\r\nservice unavailable",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1044,
+                    "response": 101
+                },
                 "status": "response_error",
                 "resthook": "new-registration"
             },
@@ -397,6 +413,10 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\nContent-Type: application/json\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1037,
+                    "response": 87
+                },
                 "status": "success",
                 "resthook": "registration-complete"
             },
@@ -410,6 +430,10 @@
                 "response": "HTTP/1.0 410 Gone\r\nContent-Length: 22\r\n\r\n{ \"errors\": [\"gone\"] }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 1047,
+                    "response": 63
+                },
                 "status": "subscriber_gone",
                 "resthook": "registration-complete"
             },
@@ -630,6 +654,10 @@
                 "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 643,
+                    "response": 55
+                },
                 "status": "success",
                 "resthook": "new-registration"
             },
@@ -643,6 +671,10 @@
                 "response": "HTTP/1.0 503 Service Unavailable\r\nContent-Length: 37\r\n\r\n{ \"errors\": [\"service unavailable\"] }",
                 "elapsed_ms": 1000,
                 "retries": 0,
+                "sizes": {
+                    "request": 650,
+                    "response": 93
+                },
                 "status": "response_error",
                 "resthook": "new-registration"
             },

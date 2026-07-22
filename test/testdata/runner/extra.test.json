@@ -92,6 +92,10 @@
                     "request": "GET /?cmd=extra HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "retries": 0,
+                    "sizes": {
+                        "request": 96,
+                        "response": 55
+                    },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",

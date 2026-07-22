@@ -94,6 +94,10 @@
                     "request": "GET /?cmd=country HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 18\r\n\r\n{\"exists\":\"valid\"}",
                     "retries": 0,
+                    "sizes": {
+                        "request": 98,
+                        "response": 57
+                    },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",
