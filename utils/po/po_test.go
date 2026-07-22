@@ -141,6 +141,29 @@ func TestReadAndWritePO(t *testing.T) {
 	test.AssertSnapshot(t, "write_po", b.String())
 }
 
+func TestReadPOWithoutFinalNewline(t *testing.T) {
+	// last line has no trailing newline so is returned by the reader along with io.EOF
+	poFile := strings.NewReader(`msgid ""
+msgstr ""
+"Language: es\n"
+
+msgid "Red"
+msgstr "Rojo"
+
+msgid "Blue"
+msgstr "Azul"`)
+
+	p, err := po.ReadPO(poFile)
+	require.NoError(t, err)
+
+	assert.Equal(t, 2, len(p.Entries))
+	assert.Equal(t, "Red", p.Entries[0].MsgID)
+	assert.Equal(t, "Rojo", p.Entries[0].MsgStr)
+	assert.Equal(t, "Blue", p.Entries[1].MsgID)
+	assert.Equal(t, "Azul", p.Entries[1].MsgStr)
+	assert.Equal(t, "Azul", p.GetText("", "Blue"))
+}
+
 func TestGetText(t *testing.T) {
 	poFile, err := os.Open("testdata/locale/es/simple.po")
 	require.NoError(t, err)
