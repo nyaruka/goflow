@@ -112,3 +112,37 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, gasabo, hierarchy.FindByPath("rwanda > kigali city > gasabo"))
 	assert.Equal(t, ndera, hierarchy.FindByPath("rwanda > kigali city > gasabo > ndera"))
 }
+
+func TestLocationHierarchyTooDeep(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	// hierarchy with 5 levels (country > state > district > ward > sub-ward)
+	tooDeepJSON := `
+	{
+		"name": "Rwanda",
+		"children": [
+			{
+				"name": "Kigali City",
+				"children": [
+					{
+						"name": "Gasabo",
+						"children": [
+							{
+								"name": "Gisozi",
+								"children": [
+									{
+										"name": "Cell A"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}`
+
+	hierarchy, err := envs.ReadLocationHierarchy(env, []byte(tooDeepJSON))
+	assert.EqualError(t, err, "location hierarchy can have at most 4 levels, found 5")
+	assert.Nil(t, hierarchy)
+}

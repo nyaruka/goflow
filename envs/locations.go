@@ -1,6 +1,7 @@
 package envs
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -22,6 +23,9 @@ type LocationResolver interface {
 
 const (
 	LocationPathSeparator = ">"
+
+	// maximum number of levels that a location hierarchy read from JSON can have
+	maxLocationLevels = 4
 )
 
 var spaceRegex = regexp.MustCompile(`\s+`)
@@ -225,8 +229,12 @@ func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
 	// TODO this method is only used to load static assets and they're only used for testing.. but this isn't ideal
 	env := NewBuilder().Build()
 
+	if depth := le.maxDepth(); depth > maxLocationLevels {
+		return fmt.Errorf("location hierarchy can have at most %d levels, found %d", maxLocationLevels, depth)
+	}
+
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
-	h.initializeFromRoot(env, root, 4)
+	h.initializeFromRoot(env, root, maxLocationLevels)
 	return nil
 }
 
@@ -238,6 +246,15 @@ type locationEnvelope struct {
 	Name     string              `json:"name" validate:"required"`
 	Aliases  []string            `json:"aliases,omitempty"`
 	Children []*locationEnvelope `json:"children,omitempty"`
+}
+
+// maxDepth returns the number of levels in this envelope, e.g. 1 for an envelope with no children
+func (le *locationEnvelope) maxDepth() int {
+	depth := 0
+	for _, child := range le.Children {
+		depth = max(depth, child.maxDepth())
+	}
+	return depth + 1
 }
 
 func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel, parent *Location) *Location {
@@ -263,7 +280,11 @@ func ReadLocationHierarchy(env Environment, data []byte) (*LocationHierarchy, er
 		return nil, err
 	}
 
+	if depth := le.maxDepth(); depth > maxLocationLevels {
+		return nil, fmt.Errorf("location hierarchy can have at most %d levels, found %d", maxLocationLevels, depth)
+	}
+
 	root := locationFromEnvelope(&le, LocationLevel(0), nil)
 
-	return NewLocationHierarchy(env, root, 4), nil
+	return NewLocationHierarchy(env, root, maxLocationLevels), nil
 }
