@@ -1,3 +1,7 @@
+v0.284.1 (2026-07-22)
+-------------------------
+ * Raise call_webhook body limit to 20,000 characters and adjust header value and count limits
+
 v0.284.0 (2026-07-22)
 -------------------------
  * Make evaluation budget a parameter of Evaluator
