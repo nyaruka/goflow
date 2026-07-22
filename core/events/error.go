@@ -14,11 +14,11 @@ func init() {
 const TypeError string = "error"
 
 const (
-	ErrorCodeDependencyMissing    = "dependency:missing"
-	ErrorCodeURNTaken             = "urn:taken"
-	ErrorCodeExpression           = "expression"
-	ErrorCodeExpressionTooComplex = "expression:too_complex"
-	ErrorCodeWebhookBodyTooLarge  = "webhook:body_too_large"
+	ErrorCodeDependencyMissing      = "dependency:missing"
+	ErrorCodeURNTaken               = "urn:taken"
+	ErrorCodeExpression             = "expression"
+	ErrorCodeExpressionTooComplex   = "expression:too_complex"
+	ErrorCodeWebhookRequestTooLarge = "webhook:request_too_large"
 )
 
 // Error events are created when an error occurs during flow execution.

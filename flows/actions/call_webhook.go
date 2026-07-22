@@ -27,8 +27,17 @@ func isValidURL(u string) bool {
 
 // evaluated bodies aren't truncated like other templates because that could produce invalid JSON, but there
 // has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
-// multiple times could otherwise evaluate to something enormous
-const maxRequestBodyBytes = 256 * 1024
+// multiple times could otherwise evaluate to something enormous - so we limit the overall request size
+const maxRequestBytes = 256 * 1024
+
+// approximates the size in bytes of the request as it will be serialized on the wire
+func requestSize(method, url string, headers map[string]string, body string) int {
+	size := len(method) + len(url) + 12 // request line spaces, version and CRLF
+	for key, value := range headers {
+		size += len(key) + len(value) + 4 // colon, space and CRLF
+	}
+	return size + 2 + len(body) // blank line between headers and body
+}
 
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhook{} })
@@ -106,40 +115,39 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	}
 
 	method := strings.ToUpper(a.Method)
-	body := a.Body
 
-	// substitute any body variables
-	if body != "" {
-		// webhook bodies aren't truncated like other templates but can't exceed an absolute limit
-		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
-
-		if len(body) > maxRequestBodyBytes {
-			log(events.NewError(fmt.Sprintf("Webhook body evaluated to %d bytes, exceeding the limit of %d", len(body), maxRequestBodyBytes), events.ErrorCodeWebhookBodyTooLarge))
-			return nil
-		}
+	// substitute any header variables
+	headers := make(map[string]string, len(a.Headers))
+	for key, value := range a.Headers {
+		headers[key], _ = run.EvaluateTemplate(ctx, value, log)
 	}
 
-	call := a.call(ctx, run, step, url, method, body, log)
+	body := a.Body
+
+	// substitute any body variables (bodies aren't truncated like other templates)
+	if body != "" {
+		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
+	}
+
+	if size := requestSize(method, url, headers, body); size > maxRequestBytes {
+		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestTooLarge))
+		return nil
+	}
+
+	call := a.call(ctx, run, step, url, method, headers, body, log)
 	run.SetWebhook(call)
 
 	return nil
 }
 
 // Execute runs this action
-func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method, body string, log events.EventLogger) *flows.WebhookCall {
+func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method string, headers map[string]string, body string, log events.EventLogger) *flows.WebhookCall {
 	// build our request
-	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), nil)
+	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), headers)
 	if err != nil {
 		// in theory this can't happen because we're already validating the method and the URL.. but just in case
 		log(events.NewRawError(err))
 		return nil
-	}
-
-	// add the custom headers, substituting any template vars
-	for key, value := range a.Headers {
-		headerValue, _ := run.EvaluateTemplate(ctx, value, log)
-
-		req.Header.Add(key, headerValue)
 	}
 
 	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())

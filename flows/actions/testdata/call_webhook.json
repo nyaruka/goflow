@@ -152,7 +152,7 @@
                 "text": "Error evaluating expression: division by zero",
                 "code": "expression",
                 "extra": {
-                    "expression": "@(3 / 0)"
+                    "expression": "@(2 / 0)"
                 }
             },
             {
@@ -162,7 +162,7 @@
                 "text": "Error evaluating expression: division by zero",
                 "code": "expression",
                 "extra": {
-                    "expression": "@(2 / 0)"
+                    "expression": "@(3 / 0)"
                 }
             },
             {
@@ -317,7 +317,7 @@
         }
     },
     {
-        "description": "Error event created and action skipped if body evaluates to something too large",
+        "description": "Error event created and action skipped if evaluated request exceeds size limit",
         "action": {
             "type": "call_webhook",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -330,8 +330,8 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook body evaluated to 300000 bytes, exceeding the limit of 262144",
-                "code": "webhook:body_too_large"
+                "text": "Webhook request evaluated to 300034 bytes, exceeding the limit of 262144",
+                "code": "webhook:request_too_large"
             }
         ],
         "webhook": null,
