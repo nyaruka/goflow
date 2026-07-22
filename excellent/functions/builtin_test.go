@@ -225,6 +225,10 @@ func TestFunctions(t *testing.T) {
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("D")}, xi(1)},
 
 		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("-1000000000")}, xdt(time.Date(1938, 4, 24, 22, 13, 20, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("10000000000000")}, ERROR},                       // out of range for time.Unix
+		{"datetime_from_epoch", dmy, []types.XValue{xn("-10000000000000")}, ERROR},                      // out of range for time.Unix
+		{"datetime_from_epoch", dmy, []types.XValue{xn("123456789012345678901234567890123456")}, ERROR}, // out of range for time.Unix
 		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
 
@@ -273,6 +277,10 @@ func TestFunctions(t *testing.T) {
 		{"extract_object", dmy, []types.XValue{}, ERROR},
 
 		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 123456789, time.UTC))}, xn("1497286619.123456789")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(1969, 12, 31, 23, 59, 59, 500000000, time.UTC))}, xn("-0.5")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(1500, 1, 1, 0, 0, 0, 0, time.UTC))}, xn("-14831769600")}, // out of range for UnixNano
+		{"epoch", dmy, []types.XValue{xdt(time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC))}, xn("32503680000")},  // out of range for UnixNano
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"epoch", dmy, []types.XValue{}, ERROR},
 
@@ -509,6 +517,9 @@ func TestFunctions(t *testing.T) {
 
 		{"percent", dmy, []types.XValue{xs(".54")}, xs("54%")},
 		{"percent", dmy, []types.XValue{xs("1.246")}, xs("125%")},
+		{"percent", dmy, []types.XValue{xn("92233720368547758.07")}, xs("9223372036854775807%")}, // max int64
+		{"percent", dmy, []types.XValue{xn("123456789012345678901")}, ERROR},                     // out of range for int64
+		{"percent", dmy, []types.XValue{xn("-123456789012345678901")}, ERROR},                    // out of range for int64
 		{"percent", dmy, []types.XValue{xs("")}, ERROR},
 		{"percent", dmy, []types.XValue{}, ERROR},
 

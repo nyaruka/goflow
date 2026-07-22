@@ -24,6 +24,15 @@ import (
 var nanosPerSecond = types.NewXNumberFromInt64(1000000000)
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
+var minInt64Number = types.NewXNumberFromInt64(math.MinInt64)
+var maxInt64Number = types.NewXNumberFromInt64(math.MaxInt64)
+
+// fitsInInt64 returns whether the integer part of the given number can be represented as an int64 - expression
+// numbers permit up to 36 digits so .IntPart() can otherwise silently wrap around.
+func fitsInInt64(num *types.XNumber) bool {
+	return num.Compare(minInt64Number) >= 0 && num.Compare(maxInt64Number) <= 0
+}
+
 // maxRepeatOutput caps the number of characters that repeat() will build in a single call, to avoid a large
 // transient allocation from an attacker-controlled count (the per-evaluation budget bounds cost across calls,
 // but only after each value is built). Matches the default limit on an evaluated template.
@@ -906,6 +915,9 @@ func Percent(env envs.Environment, num *types.XNumber) types.XValue {
 	if err != nil {
 		return types.NewXError(err)
 	}
+	if !fitsInInt64(percent) {
+		return types.NewXErrorf("percentage value is out of range")
+	}
 
 	// add on a %
 	return types.NewXText(fmt.Sprintf("%d%%", percent.IntPart()))
@@ -1240,6 +1252,9 @@ func DateTimeFromEpoch(env envs.Environment, num *types.XNumber) types.XValue {
 	if err != nil {
 		return types.NewXError(err)
 	}
+	if !fitsInInt64(nanos) {
+		return types.NewXErrorf("epoch time is out of range")
+	}
 	return types.NewXDateTime(time.Unix(0, nanos.IntPart()).In(env.Timezone()))
 }
 
@@ -1405,11 +1420,18 @@ func TZOffset(env envs.Environment, date *types.XDateTime) types.XValue {
 //
 // @function epoch(date)
 func Epoch(env envs.Environment, date *types.XDateTime) types.XValue {
-	seconds, err := types.NewXNumberFromInt64(date.Native().UnixNano()).Div(nanosPerSecond)
+	// calculate whole seconds and the fractional part separately because UnixNano is only defined for
+	// dates between the years 1678 and 2262 and silently wraps outside that range
+	seconds := types.NewXNumberFromInt64(date.Native().Unix())
+	fraction, err := types.NewXNumberFromInt(date.Native().Nanosecond()).Div(nanosPerSecond)
 	if err != nil {
 		return types.NewXError(err)
 	}
-	return seconds
+	epoch, err := seconds.Add(fraction)
+	if err != nil {
+		return types.NewXError(err)
+	}
+	return epoch
 }
 
 // Now returns the current date and time in the current timezone.
