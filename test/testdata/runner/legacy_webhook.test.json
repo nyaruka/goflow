@@ -40,6 +40,10 @@
                     "request": "POST /?cmd=foo HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 482\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"name\":\"Ben Haggerty\",\"urn\":null,\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Webhook\",\"revision\":11,\"uuid\":\"0256c9fc-8194-4567-b4ab-6965c2b7d791\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:51.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"30c97f0e-e537-4940-ad1f-85599d3634b3\",\"uuid\":\"75e76fb0-f35a-4a2c-9d79-c694bc69dcd1\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-aac5-d9d0ae409dbe\"}}",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 13\r\n\r\n{\"foo\":\"bar\"}",
                     "retries": 0,
+                    "sizes": {
+                        "request": 630,
+                        "response": 52
+                    },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",

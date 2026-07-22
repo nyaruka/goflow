@@ -26,7 +26,8 @@ const TypeWebhookCalled string = "webhook_called"
 //	  "elapsed_ms": 123,
 //	  "retries": 0,
 //	  "request": "GET /?format=json HTTP/1.1",
-//	  "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
+//	  "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
+//	  "sizes": {"request": 89, "response": 149}
 //	}
 //
 // @event webhook_called

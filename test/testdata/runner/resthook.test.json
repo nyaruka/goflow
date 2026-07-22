@@ -80,6 +80,10 @@
                     "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 29\r\n\r\n{ \"errors\": [\"bad_request\"] }",
                     "resthook": "new-registration",
                     "retries": 0,
+                    "sizes": {
+                        "request": 668,
+                        "response": 77
+                    },
                     "status": "response_error",
                     "status_code": 400,
                     "type": "webhook_called",
@@ -93,6 +97,10 @@
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "resthook": "new-registration",
                     "retries": 0,
+                    "sizes": {
+                        "request": 665,
+                        "response": 55
+                    },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",

@@ -32,6 +32,7 @@ const TypeAirtimeCreated string = "airtime_created"
 //	      "status": "success",
 //	      "request": "POST /v1/lookup/mobile-number HTTP/1.1\r\n\r\n{}",
 //	      "response": "HTTP/1.1 200 OK\r\n\r\n{}",
+//	      "sizes": {"request": 47, "response": 23},
 //	      "created_on": "2006-01-02T15:04:05Z",
 //	      "elapsed_ms": 123
 //	    }

@@ -238,6 +238,10 @@
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "retries": 0,
+                    "sizes": {
+                        "request": 188,
+                        "response": 55
+                    },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",

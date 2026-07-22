@@ -106,6 +106,10 @@
                         "elapsed_ms": 0,
                         "retries": 0,
                         "status": "success",
+                        "sizes": {
+                            "request": 0,
+                            "response": 0
+                        },
                         "created_on": "2019-10-16T13:59:30.123456789Z"
                     }
                 ]
