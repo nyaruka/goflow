@@ -350,8 +350,10 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 			// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
 			if s.pushedFlow.terminal {
 				for _, run := range s.runs {
-					run.Exit(core.RunStatusCompleted)
-					sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+					if run.Status() == core.RunStatusActive || run.Status() == core.RunStatusWaiting {
+						run.Exit(core.RunStatusCompleted)
+						sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+					}
 				}
 			}
 
