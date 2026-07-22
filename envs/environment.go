@@ -119,7 +119,7 @@ type envEnvelope struct {
 	AllowedLanguages []i18n.Language `json:"allowed_languages,omitempty" validate:"omitempty,dive,language"`
 	NumberFormat     *NumberFormat   `json:"number_format,omitempty"`
 	DefaultCountry   i18n.Country    `json:"default_country,omitempty" validate:"omitempty,country"`
-	InputCollation   Collation       `json:"input_collation"`
+	InputCollation   Collation       `json:"input_collation" validate:"eq=default|eq=confusables|eq=arabic_variants"`
 	RedactionPolicy  RedactionPolicy `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
 	ObfuscationKey   [4]uint32       `json:"obfuscation_key"`
 }
