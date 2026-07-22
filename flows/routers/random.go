@@ -41,7 +41,7 @@ func (r *Random) Route(ctx context.Context, run flows.Run, step flows.Step, logE
 	if err != nil {
 		return "", "", err
 	}
-	categoryNum := scaled.IntPart()
+	categoryNum, _ := scaled.Int64() // in range by construction (rand in [0, 1))
 	categoryUUID := r.categories[categoryNum].UUID()
 
 	exit, err := r.routeToCategory(run, step, categoryUUID, fmt.Sprintf("%d", categoryNum), rand.Render(), nil, logEvent)
