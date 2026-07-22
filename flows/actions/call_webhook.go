@@ -130,7 +130,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	}
 
 	if size := requestSize(method, url, headers, body); size > maxRequestBytes {
-		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestTooLarge))
+		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestSize))
 		return nil
 	}
 

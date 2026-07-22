@@ -331,7 +331,7 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Webhook request evaluated to 300034 bytes, exceeding the limit of 262144",
-                "code": "webhook:request_too_large"
+                "code": "webhook:request_size"
             }
         ],
         "webhook": null,
