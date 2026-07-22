@@ -44,8 +44,7 @@ type run struct {
 	modifiedOn time.Time
 	exitedOn   *time.Time
 
-	legacyExtra     *legacyExtra
-	legacyWaitCount int
+	legacyExtra *legacyExtra
 }
 
 func newRun(session *session, flow flows.Flow, parent *run) *run {
