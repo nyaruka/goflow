@@ -18,6 +18,11 @@ func TestXTime(t *testing.T) {
 	t1 := types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
 	assert.True(t, t1.Truthy())
+
+	// midnight is not truthy, regardless of how it was constructed
+	assert.False(t, types.XTimeZero.Truthy())
+	assert.False(t, types.NewXTime(dates.NewTimeOfDay(0, 0, 0, 0)).Truthy())
+	assert.False(t, types.NewXTime(dates.ZeroTimeOfDay).Truthy())
 	assert.Equal(t, `17:01:30.000000`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Render())
 	assert.Equal(t, `17:01`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Format(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).String())
