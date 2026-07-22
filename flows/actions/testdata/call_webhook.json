@@ -319,21 +319,21 @@
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "method": "POST",
             "url": "http://temba.io/",
-            "body": "@(repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000))"
+            "body": "@(repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000))"
         },
         "events": [
             {
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook body evaluated to 140000 bytes, exceeding the limit of 131072"
+                "text": "Webhook body evaluated to 300000 bytes, exceeding the limit of 262144"
             }
         ],
         "webhook": null,
         "locals_after": {},
         "templates": [
             "http://temba.io/",
-            "@(repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000))"
+            "@(repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000) & repeat(\"abcdefghij\", 1000))"
         ],
         "inspection": {
             "counts": {
