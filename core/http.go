@@ -45,12 +45,18 @@ const trimURLsTo = 2048
 
 // NewHTTPLogWithoutTime creates a new HTTP log from a trace
 func NewHTTPLogWithoutTime(trace *httpx.Trace, status CallStatus, redact stringsx.Redactor) *HTTPLogWithoutTime {
+	bodySize := len(trace.ResponseBody)
+	if trace.ResponseBody == nil && trace.Response != nil && trace.Response.ContentLength > 0 {
+		// body was discarded (e.g. it exceeded the read limit) but the server declared its size
+		bodySize = int(trace.Response.ContentLength)
+	}
+
 	return &HTTPLogWithoutTime{
 		LogWithoutTime: httpx.NewLogWithoutTime(trace, trimURLsTo, trimTracesTo, redact),
 		Status:         status,
 		Sizes: HTTPSizes{
 			Request:  len(trace.RequestTrace),
-			Response: len(trace.ResponseTrace) + len(trace.ResponseBody),
+			Response: len(trace.ResponseTrace) + bodySize,
 		},
 	}
 }
