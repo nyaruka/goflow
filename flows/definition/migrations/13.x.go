@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/refactor"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -27,6 +28,40 @@ func init() {
 func Migrate13_6_1(f Flow, cfg *Config) (Flow, error) {
 	const maxResultRef = 64
 
+	// collect the context keys of the results created by this flow - the previous migration has already
+	// truncated and trimmed their names so these are the keys that lookups need to match at runtime
+	keys := make(map[string]bool)
+	addKey := func(name string) {
+		if name != "" {
+			keys[utils.Snakify(name)] = true
+		}
+	}
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "set_run_result" {
+				name, _ := action["name"].(string)
+				addKey(name)
+			}
+		}
+		if router := node.Router(); router != nil {
+			name, _ := router["result_name"].(string)
+			addKey(name)
+		}
+	}
+
+	truncate := func(lookup string) string {
+		truncated := stringsx.Truncate(lookup, maxResultRef)
+
+		// a truncated lookup can keep a trailing _ that the key of the truncated and trimmed result
+		// name loses, so prefer a trimmed lookup if it matches an actual result key and the
+		// truncated one doesn't
+		trimmed := strings.TrimRight(truncated, "_")
+		if trimmed != truncated && !keys[strings.ToLower(truncated)] && keys[strings.ToLower(trimmed)] {
+			return trimmed
+		}
+		return truncated
+	}
+
 	RewriteTemplates(f, GetTemplateCatalog(semver.MustParse("13.6.0")), func(s string) string {
 		// refactor any @result.* or @(...) template to find result lookups that need to be truncated
 		refactored, _ := refactor.Template(s, []string{"results"}, func(exp excellent.Expression) bool {
@@ -38,7 +73,7 @@ func Migrate13_6_1(f Flow, cfg *Config) (Flow, error) {
 					if asRef, isRef := typed.Container.(*excellent.ContextReference); isRef {
 						if asRef.Name == "results" {
 							old := typed.Lookup
-							typed.Lookup = stringsx.Truncate(old, maxResultRef)
+							typed.Lookup = truncate(old)
 							if typed.Lookup != old {
 								changed = true
 							}

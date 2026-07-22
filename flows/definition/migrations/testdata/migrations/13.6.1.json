@@ -67,5 +67,169 @@
                 }
             ]
         }
+    },
+    {
+        "description": "lookup with _ at truncation boundary that came from a space in the result name - Snakify(TrimSpace(Truncate(name, 64))) drops the space so the key has no trailing _ and the truncated lookup must be trimmed to match it",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bcdefg",
+                            "value": "yes"
+                        },
+                        {
+                            "uuid": "2461c6a1-4dd8-4b8f-9b2a-9087f7cf6c1a",
+                            "type": "send_msg",
+                            "text": "Hi @results.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_bcdefg"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "set_run_result",
+                            "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                            "value": "yes"
+                        },
+                        {
+                            "uuid": "2461c6a1-4dd8-4b8f-9b2a-9087f7cf6c1a",
+                            "type": "send_msg",
+                            "text": "Hi @results.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "lookup with _ at truncation boundary that is a literal _ in the result name - Snakify does not strip trailing underscores so the key keeps its _ and the truncated lookup must not be trimmed",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "All Responses",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            }
+                        ],
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "result_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_bcdefg",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "send_msg",
+                            "text": "Hi @results.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_bcdefg"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "13.6.1",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "router": {
+                        "type": "switch",
+                        "wait": {
+                            "type": "msg"
+                        },
+                        "categories": [
+                            {
+                                "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                                "name": "All Responses",
+                                "exit_uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                            }
+                        ],
+                        "default_category_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "result_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_",
+                        "operand": "@input.text",
+                        "cases": []
+                    },
+                    "exits": [
+                        {
+                            "uuid": "fc2fcd23-7c4a-44bd-a8c6-6c88e6ed09f8"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "actions": [
+                        {
+                            "uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
+                            "type": "send_msg",
+                            "text": "Hi @results.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a"
+                        }
+                    ]
+                }
+            ]
+        }
     }
 ]
