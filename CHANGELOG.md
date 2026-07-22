@@ -1,3 +1,21 @@
+v0.284.0 (2026-07-22)
+-------------------------
+ * Make evaluation budget a parameter of Evaluator
+ * Replace XNumber.IntPart() with range-checked Int64() and fix silent int64 wraparound in percent, datetime_from_epoch and epoch
+ * Fix panic in prompt() when passed a null argument
+ * Fix read_chars corrupting multi-byte characters by slicing bytes instead of runes
+ * Don't re-exit already ended runs when a terminal flow is pushed
+ * Fix XTime and XDate truthiness to compare by value instead of pointer identity
+ * Fix time parsing to reject out of range hour, minute and second values
+ * Fix digit grouping in number formatting for negative numbers
+ * Fix request_optin action to log dependency error when optin no longer exists
+ * Return read errors instead of panicking when campaign and optin triggers have missing or mismatched events
+ * Validate input_collation when reading an environment
+ * Fix reading PO files whose last line has no trailing newline
+ * Fix infinite loop in jsonpath parsing on unexpected characters
+ * Make exceeding the location hierarchy level limit an explicit panic
+ * Remove dead legacyWaitCount field
+
 v0.283.4 (2026-07-22)
 -------------------------
  * Raise URL length limit on webhook and audio action fields to 8192
