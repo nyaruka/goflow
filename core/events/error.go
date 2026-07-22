@@ -19,6 +19,7 @@ const (
 	ErrorCodeExpression           = "expression"
 	ErrorCodeExpressionTooComplex = "expression:too_complex"
 	ErrorCodeWebhookRequestSize   = "webhook:request_size"
+	ErrorCodeWebhookResponseSize  = "webhook:response_size"
 )
 
 // Error events are created when an error occurs during flow execution.

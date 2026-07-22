@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -158,7 +159,7 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 
 	trace, err := svc.Call(req)
 	if err != nil {
-		log(events.NewRawError(err))
+		logCallError(err, log)
 	}
 
 	if trace != nil {
@@ -180,6 +181,15 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	if a.ResultName != "" {
 		result(flows.NewResultInfo(a.ResultName, webhookCategories))
+	}
+}
+
+// logs an error from the webhook service, using a dedicated code where we have one
+func logCallError(err error, log events.EventLogger) {
+	if errors.Is(err, httpx.ErrResponseSize) {
+		log(events.NewError(err.Error(), events.ErrorCodeWebhookResponseSize))
+	} else {
+		log(events.NewRawError(err))
 	}
 }
 
