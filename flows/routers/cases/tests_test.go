@@ -482,7 +482,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	env := envs.NewBuilder().Build()
 	for _, test := range evalTests {
-		eval := excellent.NewEvaluator()
+		eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 		val, _, err := eval.Template(t.Context(), env, ctx, test.template, nil)
 
 		if test.hasError {

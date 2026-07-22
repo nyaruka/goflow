@@ -8,6 +8,39 @@
         "read_error": "field 'flow' is required"
     },
     {
+        "description": "event is required",
+        "trigger": {
+            "type": "optin",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "optin trigger event must be of type optin_started or optin_stopped"
+    },
+    {
+        "description": "event must be optin_started or optin_stopped",
+        "trigger": {
+            "type": "optin",
+            "event": {
+                "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
+                "type": "chat_started",
+                "created_on": "2000-01-01T00:00:00Z",
+                "channel": {
+                    "uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
+                    "name": "Facebook"
+                }
+            },
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Trigger Tester"
+            },
+            "triggered_on": "2000-01-01T00:00:00Z"
+        },
+        "read_error": "optin trigger event must be of type optin_started or optin_stopped"
+    },
+    {
         "description": "with all required fields",
         "trigger": {
             "type": "optin",
