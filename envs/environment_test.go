@@ -36,6 +36,21 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
 	assert.Error(t, err)
 
+	// can't create with invalid input collation
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm", "input_collation": "bogus"}`))
+	assert.Error(t, err)
+
+	// or an empty input collation
+	_, err = envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm", "input_collation": ""}`))
+	assert.Error(t, err)
+
+	// but can create with any valid input collation
+	for _, col := range []envs.Collation{envs.CollationDefault, envs.CollationConfusables, envs.CollationArabicVariants} {
+		env, err := envs.ReadEnvironment([]byte(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm", "input_collation": "` + string(col) + `"}`))
+		assert.NoError(t, err)
+		assert.Equal(t, col, env.InputCollation())
+	}
+
 	// empty environment uses all defaults
 	env, err := envs.ReadEnvironment([]byte(`{}`))
 	assert.NoError(t, err)

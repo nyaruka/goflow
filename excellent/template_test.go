@@ -102,7 +102,7 @@ func assertTemplateEquivalent(t *testing.T, env envs.Environment, ctx *types.XOb
 	template := excellent.ParseTemplate(src)
 	require.Equal(t, src, template.String(), "round trip mismatch for template %q", src)
 
-	expectedVal, expectedWarns, expectedErr := excellent.NewEvaluator().Template(t.Context(), env, ctx, src, escaping)
+	expectedVal, expectedWarns, expectedErr := excellent.NewEvaluator(excellent.DefaultEvaluationBudget).Template(t.Context(), env, ctx, src, escaping)
 	actualVal, actualWarns, actualErr := template.Evaluate(env, ctx, escaping)
 
 	assert.Equal(t, expectedVal, actualVal, "output mismatch for template %q", src)
@@ -231,7 +231,7 @@ func FuzzParseTemplate(f *testing.F) {
 			return
 		}
 
-		expectedVal, expectedWarns, expectedErr := excellent.NewEvaluator().Template(t.Context(), env, ctx, src, nil)
+		expectedVal, expectedWarns, expectedErr := excellent.NewEvaluator(excellent.DefaultEvaluationBudget).Template(t.Context(), env, ctx, src, nil)
 		actualVal, actualWarns, actualErr := template.Evaluate(env, ctx, nil)
 
 		if actualVal != expectedVal {
@@ -251,7 +251,7 @@ const benchmarkTemplate = `Hello @string1, @thing.foo is @(int1 + 2) @@here with
 func BenchmarkEvaluatorTemplate(b *testing.B) {
 	env := envs.NewBuilder().Build()
 	ctx := makeTemplateContext()
-	eval := excellent.NewEvaluator()
+	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)
 
 	b.ResetTimer()
 	for range b.N {
