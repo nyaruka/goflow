@@ -254,6 +254,15 @@ func TestFormatCustom(t *testing.T) {
 
 		// custom number format
 		{types.RequireXNumberFromString("1234.567"), &envs.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
+
+		// negative numbers (sign shouldn't be counted as a digit for grouping)
+		{types.RequireXNumberFromString("-123"), envs.DefaultNumberFormat, -1, true, "-123"},
+		{types.RequireXNumberFromString("-1234"), envs.DefaultNumberFormat, -1, true, "-1,234"},
+		{types.RequireXNumberFromString("-123456"), envs.DefaultNumberFormat, -1, true, "-123,456"},
+		{types.RequireXNumberFromString("-123456789"), envs.DefaultNumberFormat, -1, true, "-123,456,789"},
+		{types.RequireXNumberFromString("-123456.789"), envs.DefaultNumberFormat, 2, true, "-123,456.79"},
+		{types.RequireXNumberFromString("-1234.5"), envs.DefaultNumberFormat, 2, true, "-1,234.50"},
+		{types.RequireXNumberFromString("-123456"), envs.DefaultNumberFormat, -1, false, "-123456"},
 	}
 
 	for _, tc := range fmtTests {
