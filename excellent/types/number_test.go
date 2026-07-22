@@ -98,7 +98,21 @@ func TestXNumberArithmetic(t *testing.T) {
 	assert.Equal(t, num("2").Native(), num("-2").Abs().Native())
 	assert.Equal(t, num("2").Native(), num("2.7").Floor().Native())
 	assert.Equal(t, num("-3").Native(), num("-2.7").Floor().Native())
-	assert.Equal(t, int64(12), num("12.146").IntPart())
+	asInt, ok := num("12.146").Int64()
+	assert.True(t, ok)
+	assert.Equal(t, int64(12), asInt)
+	asInt, ok = num("-12.146").Int64()
+	assert.True(t, ok)
+	assert.Equal(t, int64(-12), asInt)
+	asInt, ok = num("9223372036854775807").Int64() // max int64
+	assert.True(t, ok)
+	assert.Equal(t, int64(9223372036854775807), asInt)
+	_, ok = num("9223372036854775808").Int64() // max int64 + 1
+	assert.False(t, ok)
+	_, ok = num("18446744073709551617").Int64() // 2^64 + 1, would wrap to 1
+	assert.False(t, ok)
+	_, ok = num("-18446744073709551617").Int64()
+	assert.False(t, ok)
 
 	// checked operations that fail
 	maxDigits := num(strings.Repeat("9", 36)) // maximum number of significant digits
@@ -157,6 +171,7 @@ func TestToXNumberAndInteger(t *testing.T) {
 		}), types.NewXNumberFromInt(123), 123, false},
 		{types.NewXText("12345678901234567890"), types.RequireXNumberFromString("12345678901234567890"), 0, true},                                 // out of int range
 		{types.NewXText("123456789012345678901234567890123456"), types.RequireXNumberFromString("123456789012345678901234567890123456"), 0, true}, // 36 digits, ok as number but out of int range
+		{types.NewXText("18446744073709551617"), types.RequireXNumberFromString("18446744073709551617"), 0, true},                                 // 2^64 + 1, would wrap to 1 as an int64
 		{types.NewXText("1234567890123456789012345678901234567"), types.XNumberZero, 0, true},                                                     // 37 digits, too many
 		{types.NewXText("1E100"), types.XNumberZero, 0, true},                                                                                     // scientific notation not allowed
 		{types.NewXText("1e100"), types.XNumberZero, 0, true},                                                                                     // scientific notation not allowed
@@ -254,6 +269,15 @@ func TestFormatCustom(t *testing.T) {
 
 		// custom number format
 		{types.RequireXNumberFromString("1234.567"), &envs.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
+
+		// negative numbers (sign shouldn't be counted as a digit for grouping)
+		{types.RequireXNumberFromString("-123"), envs.DefaultNumberFormat, -1, true, "-123"},
+		{types.RequireXNumberFromString("-1234"), envs.DefaultNumberFormat, -1, true, "-1,234"},
+		{types.RequireXNumberFromString("-123456"), envs.DefaultNumberFormat, -1, true, "-123,456"},
+		{types.RequireXNumberFromString("-123456789"), envs.DefaultNumberFormat, -1, true, "-123,456,789"},
+		{types.RequireXNumberFromString("-123456.789"), envs.DefaultNumberFormat, 2, true, "-123,456.79"},
+		{types.RequireXNumberFromString("-1234.5"), envs.DefaultNumberFormat, 2, true, "-1,234.50"},
+		{types.RequireXNumberFromString("-123456"), envs.DefaultNumberFormat, -1, false, "-123456"},
 	}
 
 	for _, tc := range fmtTests {

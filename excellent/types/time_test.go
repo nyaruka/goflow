@@ -18,6 +18,11 @@ func TestXTime(t *testing.T) {
 	t1 := types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0))
 	assert.Equal(t, `time`, t1.Describe())
 	assert.True(t, t1.Truthy())
+
+	// midnight is not truthy, regardless of how it was constructed
+	assert.False(t, types.XTimeZero.Truthy())
+	assert.False(t, types.NewXTime(dates.NewTimeOfDay(0, 0, 0, 0)).Truthy())
+	assert.False(t, types.NewXTime(dates.ZeroTimeOfDay).Truthy())
 	assert.Equal(t, `17:01:30.000000`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Render())
 	assert.Equal(t, `17:01`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).Format(env))
 	assert.Equal(t, `XTime(17, 1, 30, 0)`, types.NewXTime(dates.NewTimeOfDay(17, 1, 30, 0)).String())
@@ -54,6 +59,7 @@ func TestToXTime(t *testing.T) {
 		{types.NewXNumberFromInt(123), types.XTimeZero, true},
 		{types.NewXNumberFromInt(23), types.NewXTime(dates.NewTimeOfDay(23, 0, 0, 0)), false},
 		{types.NewXNumberFromInt(24), types.XTimeZero, false},
+		{types.RequireXNumberFromString("18446744073709551640"), types.XTimeZero, true}, // 2^64 + 24, would wrap to 24 as an int64
 		{types.NewXText("10:30"), types.NewXTime(dates.NewTimeOfDay(10, 30, 0, 0)), false},
 		{types.NewXText("10:30 pm"), types.NewXTime(dates.NewTimeOfDay(22, 30, 0, 0)), false},
 		{types.NewXText("10"), types.NewXTime(dates.NewTimeOfDay(10, 0, 0, 0)), false},

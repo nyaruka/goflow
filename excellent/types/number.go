@@ -123,11 +123,17 @@ func (x *XNumber) FormatCustom(format *envs.NumberFormat, places int, groupDigit
 
 	// add thousands separators
 	if groupDigits {
+		sign, digits := "", parts[0]
+		if strings.HasPrefix(digits, "-") {
+			sign, digits = "-", digits[1:]
+		}
+
 		sb := strings.Builder{}
-		for i, r := range parts[0] {
+		sb.WriteString(sign)
+		for i, r := range digits {
 			sb.WriteRune(r)
 
-			d := (len(parts[0]) - 1) - i
+			d := (len(digits) - 1) - i
 			if d%3 == 0 && d > 0 {
 				sb.WriteString(format.DigitGroupingSymbol)
 			}
@@ -218,9 +224,16 @@ func (x *XNumber) Floor() *XNumber {
 	return newXNumber(x.native.Floor())
 }
 
-// IntPart returns the integer component of this number as an int64
-func (x *XNumber) IntPart() int64 {
-	return x.native.IntPart()
+var minInt64 = decimal.NewFromInt(math.MinInt64)
+var maxInt64 = decimal.NewFromInt(math.MaxInt64)
+
+// Int64 returns the integer component of this number as an int64, or false if the number is outside the
+// range of int64 - expression numbers permit up to 36 digits and decimal.IntPart() silently wraps around.
+func (x *XNumber) Int64() (int64, bool) {
+	if x.native.Cmp(minInt64) < 0 || x.native.Cmp(maxInt64) > 0 {
+		return 0, false
+	}
+	return x.native.IntPart(), true
 }
 
 // Round rounds this number to the given number of decimal places. If places < 0 it will round the
@@ -360,9 +373,9 @@ func ToInteger(env envs.Environment, x XValue) (int, *XError) {
 		return 0, err
 	}
 
-	intPart := number.Native().IntPart()
+	intPart, ok := number.Int64()
 
-	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
+	if !ok || intPart < math.MinInt32 || intPart > math.MaxInt32 {
 		return 0, NewXErrorf("number value %s is out of range for an integer", number.Render())
 	}
 

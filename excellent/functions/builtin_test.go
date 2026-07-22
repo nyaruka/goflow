@@ -97,6 +97,11 @@ func TestFunctions(t *testing.T) {
 		{"boolean", dmy, []types.XValue{xs("FALSE")}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xa()}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{xa(xi(1))}, types.XBooleanTrue},
+		{"boolean", dmy, []types.XValue{xt(dates.NewTimeOfDay(0, 0, 0, 0))}, types.XBooleanFalse}, // e.g. time_from_parts(0, 0, 0)
+		{"boolean", dmy, []types.XValue{types.XTimeZero}, types.XBooleanFalse},                    // e.g. time(24)
+		{"boolean", dmy, []types.XValue{xt(dates.NewTimeOfDay(0, 0, 1, 0))}, types.XBooleanTrue},
+		{"boolean", dmy, []types.XValue{xd(dates.ZeroDate)}, types.XBooleanFalse},
+		{"boolean", dmy, []types.XValue{types.XDateZero}, types.XBooleanFalse},
 		{"boolean", dmy, []types.XValue{ERROR}, ERROR},
 		{"boolean", dmy, []types.XValue{}, ERROR},
 
@@ -225,6 +230,10 @@ func TestFunctions(t *testing.T) {
 		{"datetime_diff", mdy, []types.XValue{xs("03-10-2019 1:00am"), xs("03-11-2019 1:00am"), xs("D")}, xi(1)},
 
 		{"datetime_from_epoch", dmy, []types.XValue{xn("1497286619.000000000")}, xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("-1000000000")}, xdt(time.Date(1938, 4, 24, 22, 13, 20, 0, time.UTC))},
+		{"datetime_from_epoch", dmy, []types.XValue{xn("10000000000000")}, ERROR},                       // out of range for time.Unix
+		{"datetime_from_epoch", dmy, []types.XValue{xn("-10000000000000")}, ERROR},                      // out of range for time.Unix
+		{"datetime_from_epoch", dmy, []types.XValue{xn("123456789012345678901234567890123456")}, ERROR}, // out of range for time.Unix
 		{"datetime_from_epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"datetime_from_epoch", dmy, []types.XValue{}, ERROR},
 
@@ -273,6 +282,10 @@ func TestFunctions(t *testing.T) {
 		{"extract_object", dmy, []types.XValue{}, ERROR},
 
 		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(2017, 6, 12, 16, 56, 59, 123456789, time.UTC))}, xn("1497286619.123456789")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(1969, 12, 31, 23, 59, 59, 500000000, time.UTC))}, xn("-0.5")},
+		{"epoch", dmy, []types.XValue{xdt(time.Date(1500, 1, 1, 0, 0, 0, 0, time.UTC))}, xn("-14831769600")}, // out of range for UnixNano
+		{"epoch", dmy, []types.XValue{xdt(time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC))}, xn("32503680000")},  // out of range for UnixNano
 		{"epoch", dmy, []types.XValue{ERROR}, ERROR},
 		{"epoch", dmy, []types.XValue{}, ERROR},
 
@@ -425,6 +438,8 @@ func TestFunctions(t *testing.T) {
 		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), xs("01-12-2017")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{types.NewXNumberFromInt64(int64(math.MaxInt32 + 1)), xs("01-12-2017 10:15:33pm")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), types.NewXNumberFromInt64(int64(math.MaxInt32 + 1))}, ERROR},
+		{"legacy_add", dmy, []types.XValue{xn("18446744073709551618"), xs("01-12-2017 10:15:33pm")}, ERROR}, // 2^64 + 2, would wrap to 2 days as an int64
+		{"legacy_add", dmy, []types.XValue{xs("01-12-2017 10:15:33pm"), xn("18446744073709551618")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("xxx"), xs("10")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{xs("10"), xs("xxx")}, ERROR},
 		{"legacy_add", dmy, []types.XValue{}, ERROR},
@@ -509,10 +524,14 @@ func TestFunctions(t *testing.T) {
 
 		{"percent", dmy, []types.XValue{xs(".54")}, xs("54%")},
 		{"percent", dmy, []types.XValue{xs("1.246")}, xs("125%")},
+		{"percent", dmy, []types.XValue{xn("92233720368547758.07")}, xs("9223372036854775807%")}, // max int64
+		{"percent", dmy, []types.XValue{xn("123456789012345678901")}, ERROR},                     // out of range for int64
+		{"percent", dmy, []types.XValue{xn("-123456789012345678901")}, ERROR},                    // out of range for int64
 		{"percent", dmy, []types.XValue{xs("")}, ERROR},
 		{"percent", dmy, []types.XValue{}, ERROR},
 
 		{"prompt", dmy, []types.XValue{xs("categorize"), xa(xs("Positive"), xs("Negative"))}, xs("Categorize the following text into one of the following: [Positive, Negative]")},
+		{"prompt", dmy, []types.XValue{xs("categorize"), nil}, xs("Categorize the following text into one of the following: ")},
 		{"prompt", dmy, []types.XValue{xs("categorize")}, xs("Categorize the following text into one of the following: <no value>")},
 		{"prompt", dmy, []types.XValue{xs("xxx")}, ERROR},
 		{"prompt", dmy, []types.XValue{}, ERROR},
@@ -527,6 +546,9 @@ func TestFunctions(t *testing.T) {
 		{"read_chars", dmy, []types.XValue{xs("abcd")}, xs("a b c d")},
 		{"read_chars", dmy, []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
 		{"read_chars", dmy, []types.XValue{xs("12")}, xs("1 , 2")},
+		{"read_chars", dmy, []types.XValue{xs("ééé")}, xs("é é é")},
+		{"read_chars", dmy, []types.XValue{xs("héllo!")}, xs("h é l , l o !")},
+		{"read_chars", dmy, []types.XValue{xs("héllo123")}, xs("h é l l , o 1 2 3")},
 		{"read_chars", dmy, []types.XValue{}, ERROR},
 
 		{"regex_match", dmy, []types.XValue{xs("zAbc"), xs(`a\w`)}, xs(`Ab`)},

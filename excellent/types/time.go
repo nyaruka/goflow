@@ -31,7 +31,7 @@ func (x *XTime) Describe() string { return "time" }
 
 // Truthy determines truthiness for this type
 func (x *XTime) Truthy() bool {
-	return x != XTimeZero
+	return !x.Native().Equal(dates.ZeroTimeOfDay)
 }
 
 // Render returns the canonical text representation
@@ -96,11 +96,12 @@ func ToXTime(env envs.Environment, x XValue) (*XTime, *XError) {
 		case *XDateTime:
 			return typed.Time(), nil
 		case *XNumber:
-			asInt := typed.Native().IntPart()
-			if asInt >= 0 && asInt <= 23 {
-				return NewXTime(dates.NewTimeOfDay(int(asInt), 0, 0, 0)), nil
-			} else if asInt == 24 {
-				return XTimeZero, nil
+			if asInt, ok := typed.Int64(); ok {
+				if asInt >= 0 && asInt <= 23 {
+					return NewXTime(dates.NewTimeOfDay(int(asInt), 0, 0, 0)), nil
+				} else if asInt == 24 {
+					return XTimeZero, nil
+				}
 			}
 		case *XText:
 			parsed, err := envs.TimeFromString(typed.Native())

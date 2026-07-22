@@ -1,6 +1,8 @@
 package triggers
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/core"
@@ -111,7 +113,7 @@ func readOptIn(sa flows.SessionAssets, data []byte, missing assets.MissingCallba
 	case *events.OptInStopped:
 		optInRef = typed.OptIn
 	default:
-		panic("optin trigger event must be of type optin_started or optin_stopped")
+		return nil, fmt.Errorf("optin trigger event must be of type %s or %s", events.TypeOptInStarted, events.TypeOptInStopped)
 	}
 
 	t.optIn = sa.OptIns().Get(optInRef.UUID)
