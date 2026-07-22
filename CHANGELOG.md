@@ -1,3 +1,7 @@
+v0.283.4 (2026-07-22)
+-------------------------
+ * Raise URL length limit on webhook and audio action fields to 8192
+
 v0.283.3 (2026-07-21)
 -------------------------
  * Harden legacy flow migration against crafted definitions
