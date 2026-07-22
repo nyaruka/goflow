@@ -28,7 +28,7 @@ func isValidURL(u string) bool {
 // evaluated bodies aren't truncated like other templates because that could produce invalid JSON, but there
 // has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
 // multiple times could otherwise evaluate to something enormous
-const maxRequestBodyBytes = 1024 * 1024
+const maxRequestBodyBytes = 128 * 1024
 
 func init() {
 	registerType(TypeCallWebhook, func() flows.Action { return &CallWebhook{} })
