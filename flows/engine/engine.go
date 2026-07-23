@@ -97,6 +97,7 @@ func NewBuilder() *Builder {
 				MaxStepsPerSprint:    100,
 				MaxSprintsPerSession: 500,
 				MaxTemplateChars:     10000,
+				MaxNameChars:         128,
 				MaxFieldChars:        640,
 				MaxResultChars:       640,
 				LLMPrompts:           make(map[string]*template.Template),
@@ -153,6 +154,12 @@ func (b *Builder) WithMaxSprintsPerSession(max int) *Builder {
 // WithMaxTemplateChars sets the maximum number of characters allowed from an evaluated template
 func (b *Builder) WithMaxTemplateChars(max int) *Builder {
 	b.eng.options.MaxTemplateChars = max
+	return b
+}
+
+// WithMaxNameChars sets the maximum number of characters allowed in a contact name
+func (b *Builder) WithMaxNameChars(max int) *Builder {
+	b.eng.options.MaxNameChars = max
 	return b
 }
 

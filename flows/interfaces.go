@@ -243,6 +243,7 @@ type EngineOptions struct {
 	MaxStepsPerSprint    int
 	MaxSprintsPerSession int
 	MaxTemplateChars     int
+	MaxNameChars         int
 	MaxFieldChars        int
 	MaxResultChars       int
 	LLMPrompts           map[string]*template.Template
