@@ -129,7 +129,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	// has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
 	// multiple times could otherwise evaluate to something enormous - so we limit the overall request size
 	maxRequestBytes := run.Session().Engine().Options().MaxRequestBytes
-	if size := requestSize(method, url, headers, body); size > maxRequestBytes {
+	if size := requestSize(method, url, headers, body); maxRequestBytes > 0 && size > maxRequestBytes {
 		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestSize))
 		return nil
 	}

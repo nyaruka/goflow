@@ -177,7 +177,8 @@ func (b *Builder) WithMaxResultChars(max int) *Builder {
 	return b
 }
 
-// WithWebhookLimits sets the maximum sizes in bytes of the request and response of a webhook call
+// WithWebhookLimits sets the maximum sizes in bytes of the request and response of a webhook call. A value of
+// zero means no limit.
 func (b *Builder) WithWebhookLimits(maxRequestBytes, maxResponseBytes int) *Builder {
 	b.eng.options.MaxRequestBytes = maxRequestBytes
 	b.eng.options.MaxResponseBytes = maxResponseBytes
