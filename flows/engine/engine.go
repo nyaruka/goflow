@@ -63,6 +63,7 @@ func (e *engine) ReadSession(sa flows.SessionAssets, data []byte, env envs.Envir
 
 func (e *engine) Evaluator() *excellent.Evaluator { return e.evaluator }
 func (e *engine) Services() flows.Services        { return e.services }
+func (e *engine) HTTPClient() *http.Client        { return e.httpClient }
 func (e *engine) Options() *flows.EngineOptions   { return e.options }
 
 var _ flows.Engine = (*engine)(nil)
@@ -99,6 +100,8 @@ func NewBuilder() *Builder {
 				MaxTemplateChars:     10000,
 				MaxFieldChars:        640,
 				MaxResultChars:       640,
+				MaxRequestBytes:      256 * 1024,
+				MaxResponseBytes:     256 * 1024,
 				LLMPrompts:           make(map[string]*template.Template),
 				CheckSendable:        defaultCheckSendable,
 				ClaimURN:             defaultClaimURN,
@@ -111,6 +114,12 @@ func NewBuilder() *Builder {
 // configured with tracing, mocking or access control as needed (see github.com/nyaruka/gocommon/httpx).
 func (b *Builder) WithHTTPClient(client *http.Client) *Builder {
 	b.eng.httpClient = client
+	return b
+}
+
+// WithEvaluationBudget sets the cost budget for a single expression evaluation (see excellent.NewEvaluator)
+func (b *Builder) WithEvaluationBudget(budget int) *Builder {
+	b.eng.evaluator = excellent.NewEvaluator(budget)
 	return b
 }
 
@@ -168,6 +177,13 @@ func (b *Builder) WithMaxResultChars(max int) *Builder {
 	return b
 }
 
+// WithWebhookLimits sets the maximum sizes in bytes of the request and response of a webhook call
+func (b *Builder) WithWebhookLimits(maxRequestBytes, maxResponseBytes int) *Builder {
+	b.eng.options.MaxRequestBytes = maxRequestBytes
+	b.eng.options.MaxResponseBytes = maxResponseBytes
+	return b
+}
+
 // WithLLMPrompts sets the LLM prompts to use with LLM services
 func (b *Builder) WithLLMPrompts(prompts map[string]*template.Template) *Builder {
 	b.eng.options.LLMPrompts = prompts
@@ -188,7 +204,7 @@ func (b *Builder) WithClaimURN(fn flows.ClaimURNCallback) *Builder {
 
 // Build returns the final engine
 func (b *Builder) Build() flows.Engine {
-	// make the engine's HTTP client available to services that need it (e.g. webhooks)
-	b.eng.services.httpClient = b.eng.httpClient
+	// make the engine available to service factories so they can access its HTTP client and options
+	b.eng.services.engine = b.eng
 	return b.eng
 }

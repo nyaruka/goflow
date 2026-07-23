@@ -26,11 +26,6 @@ func isValidURL(u string) bool {
 	return err == nil
 }
 
-// evaluated bodies aren't truncated like other templates because that could produce invalid JSON, but there
-// has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
-// multiple times could otherwise evaluate to something enormous - so we limit the overall request size
-const maxRequestBytes = 256 * 1024
-
 // approximates the size in bytes of the request as it will be serialized on the wire
 func requestSize(method, url string, headers map[string]string, body string) int {
 	size := len(method) + len(url) + 12 // request line spaces, version and CRLF
@@ -130,6 +125,10 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		body, _ = run.EvaluateTemplateText(ctx, body, nil, false, log)
 	}
 
+	// evaluated bodies aren't truncated like other templates because that could produce invalid JSON, but there
+	// has to be an absolute cap on what we're prepared to send - e.g. a body template that embeds @webhook
+	// multiple times could otherwise evaluate to something enormous - so we limit the overall request size
+	maxRequestBytes := run.Session().Engine().Options().MaxRequestBytes
 	if size := requestSize(method, url, headers, body); size > maxRequestBytes {
 		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestSize))
 		return nil

@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"text/template"
 	"time"
 
@@ -245,6 +246,8 @@ type EngineOptions struct {
 	MaxTemplateChars     int
 	MaxFieldChars        int
 	MaxResultChars       int
+	MaxRequestBytes      int
+	MaxResponseBytes     int
 	LLMPrompts           map[string]*template.Template
 	CheckSendable        CheckSendableCallback
 	ClaimURN             ClaimURNCallback
@@ -257,6 +260,7 @@ type Engine interface {
 
 	Evaluator() *excellent.Evaluator
 	Services() Services
+	HTTPClient() *http.Client
 	Options() *EngineOptions
 }
 

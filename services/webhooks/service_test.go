@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/services/webhooks"
 	"github.com/nyaruka/goflow/test"
 	"github.com/stretchr/testify/assert"
@@ -165,8 +166,10 @@ func TestAccessRestrictions(t *testing.T) {
 	access := httpx.NewAccessConfig(10, []net.IP{net.IPv4(127, 0, 0, 1)}, nil)
 	client := &http.Client{Transport: httpx.WithAccessControl(http.DefaultTransport, access)}
 
-	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"}, 12345)
-	svc, err := factory(client, nil)
+	eng := engine.NewBuilder().WithHTTPClient(client).Build()
+
+	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"})
+	svc, err := factory(eng, nil)
 	assert.NoError(t, err)
 
 	request, _ := http.NewRequest("GET", "http://localhost/foo", nil)

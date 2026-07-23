@@ -137,7 +137,8 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope,
 		WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
 			return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 100000)).
+		WithWebhookLimits(256*1024, 100000).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"})).
 		WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
 			return services.NewLLM(), nil
 		}).

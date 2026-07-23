@@ -2,7 +2,6 @@ package engine
 
 import (
 	"errors"
-	"net/http"
 
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
@@ -11,8 +10,8 @@ import (
 // EmailServiceFactory resolves a session to a email service
 type EmailServiceFactory func(flows.SessionAssets) (flows.EmailService, error)
 
-// WebhookServiceFactory resolves a session to a webhook service, using the engine's HTTP client
-type WebhookServiceFactory func(*http.Client, flows.SessionAssets) (flows.WebhookService, error)
+// WebhookServiceFactory resolves a session to a webhook service, using the engine's HTTP client and options
+type WebhookServiceFactory func(flows.Engine, flows.SessionAssets) (flows.WebhookService, error)
 
 // LLMServiceFactory resolves an LLM asset to to an LLM service
 type LLMServiceFactory func(*core.LLM) (flows.LLMService, error)
@@ -21,11 +20,11 @@ type LLMServiceFactory func(*core.LLM) (flows.LLMService, error)
 type AirtimeServiceFactory func(flows.SessionAssets) (flows.AirtimeService, error)
 
 type services struct {
-	httpClient *http.Client
-	email      EmailServiceFactory
-	webhook    WebhookServiceFactory
-	llm        LLMServiceFactory
-	airtime    AirtimeServiceFactory
+	engine  flows.Engine
+	email   EmailServiceFactory
+	webhook WebhookServiceFactory
+	llm     LLMServiceFactory
+	airtime AirtimeServiceFactory
 }
 
 func newEmptyServices() *services {
@@ -33,7 +32,7 @@ func newEmptyServices() *services {
 		email: func(flows.SessionAssets) (flows.EmailService, error) {
 			return nil, errors.New("no email service factory configured")
 		},
-		webhook: func(*http.Client, flows.SessionAssets) (flows.WebhookService, error) {
+		webhook: func(flows.Engine, flows.SessionAssets) (flows.WebhookService, error) {
 			return nil, errors.New("no webhook service factory configured")
 		},
 		llm: func(*core.LLM) (flows.LLMService, error) {
@@ -50,7 +49,7 @@ func (s *services) Email(sa flows.SessionAssets) (flows.EmailService, error) {
 }
 
 func (s *services) Webhook(sa flows.SessionAssets) (flows.WebhookService, error) {
-	return s.webhook(s.httpClient, sa)
+	return s.webhook(s.engine, sa)
 }
 
 func (s *services) LLM(llm *core.LLM) (flows.LLMService, error) {
