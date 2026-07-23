@@ -1,3 +1,9 @@
+v0.284.3 (2026-07-23)
+-------------------------
+ * Make webhook request and response size limits engine options set via new builder method WithWebhookLimits
+ * Add engine builder method WithEvaluationBudget to configure the expression evaluation budget
+ * Truncate contact names to new MaxNameChars engine option
+
 v0.284.2 (2026-07-22)
 -------------------------
  * Limit evaluated call_webhook requests to 256KiB, logging an error with code webhook:request_size when exceeded
