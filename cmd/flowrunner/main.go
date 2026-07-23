@@ -90,7 +90,8 @@ func main() {
 func createEngine() flows.Engine {
 	return engine.NewBuilder().
 		WithHTTPClient(http.DefaultClient).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-runner"}, 10000)).
+		WithWebhookLimits(256*1024, 10000).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-runner"})).
 		Build()
 }
 

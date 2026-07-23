@@ -11,25 +11,26 @@ import (
 )
 
 type service struct {
-	httpClient     *http.Client
-	defaultHeaders map[string]string
-	maxBodyBytes   int
+	httpClient       *http.Client
+	defaultHeaders   map[string]string
+	maxResponseBytes int
 }
 
-// NewServiceFactory creates a new webhook service factory. The engine supplies the HTTP client; its transport can be
-// configured with tracing, mocking or access control as needed (see github.com/nyaruka/gocommon/httpx).
-func NewServiceFactory(defaultHeaders map[string]string, maxBodyBytes int) engine.WebhookServiceFactory {
-	return func(httpClient *http.Client, sa flows.SessionAssets) (flows.WebhookService, error) {
-		return NewService(httpClient, defaultHeaders, maxBodyBytes), nil
+// NewServiceFactory creates a new webhook service factory. The engine supplies the HTTP client and the maximum
+// response size; the client's transport can be configured with tracing, mocking or access control as needed
+// (see github.com/nyaruka/gocommon/httpx).
+func NewServiceFactory(defaultHeaders map[string]string) engine.WebhookServiceFactory {
+	return func(eng flows.Engine, sa flows.SessionAssets) (flows.WebhookService, error) {
+		return NewService(eng.HTTPClient(), defaultHeaders, eng.Options().MaxResponseBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxBodyBytes int) flows.WebhookService {
+func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxResponseBytes int) flows.WebhookService {
 	return &service{
-		httpClient:     httpClient,
-		defaultHeaders: defaultHeaders,
-		maxBodyBytes:   maxBodyBytes,
+		httpClient:       httpClient,
+		defaultHeaders:   defaultHeaders,
+		maxResponseBytes: maxResponseBytes,
 	}
 }
 
@@ -50,8 +51,8 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 	// bound how many bytes we'll read from an untrusted endpoint, wrapped inside tracing so the limit applies before
 	// the body is buffered into the trace
 	inner := s.httpClient.Transport
-	if s.maxBodyBytes > 0 {
-		inner = httpx.WithReadLimit(inner, s.maxBodyBytes)
+	if s.maxResponseBytes > 0 {
+		inner = httpx.WithReadLimit(inner, s.maxResponseBytes)
 	}
 
 	// wrap the configured transport with a per-call tracer so we capture this request's trace. Tracing is the
@@ -66,7 +67,7 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 	// if the response exceeded our limit
 	var sizeErr error
 	if resp != nil {
-		if s.maxBodyBytes > 0 {
+		if s.maxResponseBytes > 0 {
 			_, sizeErr = io.ReadAll(resp.Body)
 		}
 		resp.Body.Close()

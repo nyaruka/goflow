@@ -33,7 +33,8 @@ func newEngine(httpClient *http.Client) flows.Engine {
 		WithLLMPrompts(map[string]*template.Template{
 			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg1 }}")),
 		}).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, 10000)).
+		WithWebhookLimits(256*1024, 10000).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"})).
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil
 		}).
