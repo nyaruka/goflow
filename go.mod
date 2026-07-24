@@ -4,12 +4,11 @@ go 1.26
 
 require (
 	github.com/Masterminds/semver v1.5.0
-	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.2.0
 	github.com/go-playground/validator/v10 v10.30.3
-	github.com/nyaruka/gocommon v1.90.1
+	github.com/nyaruka/gocommon v1.91.1
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
@@ -35,6 +34,7 @@ require (
 	github.com/nyaruka/null/v3 v3.0.0 // indirect
 	github.com/nyaruka/phonenumbers/v2 v2.0.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/wneessen/go-mail v0.8.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.44.0 // indirect
 	go.opentelemetry.io/otel/metric v1.44.0 // indirect
@@ -42,6 +42,5 @@ require (
 	golang.org/x/crypto v0.54.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
-	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

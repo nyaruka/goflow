@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/nyaruka/goflow/utils/po"
+	"github.com/nyaruka/goflow/cmd/docgen/po"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
