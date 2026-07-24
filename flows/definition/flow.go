@@ -24,7 +24,7 @@ import (
 )
 
 // CurrentSpecVersion is the flow spec version supported by this library
-var CurrentSpecVersion = semver.MustParse("14.4.1")
+var CurrentSpecVersion = semver.MustParse("14.4.2")
 var CurrentSupportedSpecs, _ = semver.NewConstraint(">= 11.0.0, < 14.5.0")
 
 // IsVersionSupported checks the given version is supported
