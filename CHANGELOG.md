@@ -1,3 +1,7 @@
+v0.284.4 (2026-07-23)
+-------------------------
+ * Update to gocommon 1.90.1
+
 v0.284.3 (2026-07-23)
 -------------------------
  * Make webhook request and response size limits engine options set via new builder method WithWebhookLimits
