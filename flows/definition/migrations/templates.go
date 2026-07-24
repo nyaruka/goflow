@@ -8,7 +8,7 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
-	"github.com/nyaruka/goflow/utils/jsonpath"
+	"github.com/nyaruka/goflow/flows/definition/migrations/jsonpath"
 )
 
 //go:embed specdata/templates.json

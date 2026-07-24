@@ -7,8 +7,8 @@ import (
 	"testing/iotest"
 	"time"
 
+	"github.com/nyaruka/goflow/cmd/docgen/po"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils/po"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

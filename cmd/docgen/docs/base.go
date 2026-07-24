@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/dates"
-	"github.com/nyaruka/goflow/utils/po"
+	"github.com/nyaruka/goflow/cmd/docgen/po"
 )
 
 const (
