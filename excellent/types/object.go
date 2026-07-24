@@ -253,7 +253,7 @@ func ToXObject(env envs.Environment, x XValue) (*XObject, *XError) {
 	}
 
 	object, isObject := x.(*XObject)
-	if isObject && object != nil {
+	if isObject {
 		return object, nil
 	}
 

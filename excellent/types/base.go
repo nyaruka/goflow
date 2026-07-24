@@ -8,7 +8,9 @@ import (
 	"github.com/nyaruka/goflow/envs"
 )
 
-// XValue is the base interface of all excellent types
+// XValue is the base interface of all excellent types. A nil value is always a true nil interface - never a non-nil
+// interface to a nil pointer - so nil checks are plain x == nil. Code that produces XValues must uphold this, e.g. by
+// nil-checking concrete pointers before boxing (see core.Context which scrubs nil Contextables for this reason).
 type XValue interface {
 	// How type is rendered in console for debugging
 	fmt.Stringer
