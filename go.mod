@@ -4,12 +4,11 @@ go 1.26
 
 require (
 	github.com/Masterminds/semver v1.5.0
-	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.2.0
 	github.com/go-playground/validator/v10 v10.30.3
-	github.com/nyaruka/gocommon v1.90.1
+	github.com/nyaruka/gocommon v1.90.2-0.20260724194811-0e82759ee765
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
@@ -19,6 +18,7 @@ require (
 )
 
 require (
+	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.11.0 // indirect

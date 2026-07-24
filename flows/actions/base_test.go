@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/gocommon/smtpx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -31,7 +32,6 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/test/services"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/nyaruka/goflow/utils/smtpx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
