@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/inspect"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type testFlowThing struct {
@@ -25,8 +26,14 @@ func (t *testFlowThing) LocalizationUUID() uuids.UUID {
 }
 
 func TestTemplates(t *testing.T) {
-	l := definition.NewLocalization()
-	l.SetItemTranslation(i18n.Language("spa"), uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), "foo", []string{"Hola"})
+	l, err := definition.ReadLocalization([]byte(`{
+		"spa": {
+			"f50df34b-18f8-489b-b8e8-ccb14d720641": {
+				"foo": ["Hola"]
+			}
+		}
+	}`))
+	require.NoError(t, err)
 
 	thing := &testFlowThing{UUID: uuids.UUID("f50df34b-18f8-489b-b8e8-ccb14d720641"), Foo: "Hello", Bar: "World"}
 
