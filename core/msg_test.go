@@ -262,6 +262,8 @@ func TestQuickReplies(t *testing.T) {
 		{"Yes<extra>Really", core.QuickReply{Type: "text", Text: "Yes", Extra: "Really"}},
 		{"<location>", core.QuickReply{Type: "location"}},
 		{"<location>Click", core.QuickReply{Type: "location", Text: "Click"}},
+		{"<form>", core.QuickReply{Type: "form"}},
+		{"<form>Book now<extra>123456", core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
 	}
 	for _, tc := range texts {
 		qr := core.QuickReply{}
@@ -284,6 +286,8 @@ func TestQuickReplies(t *testing.T) {
 		{[]byte(`{"text": "Yes", "extra": "Really"}`), core.QuickReply{Text: "Yes", Extra: "Really"}},
 		{[]byte(`{"type": "location"}`), core.QuickReply{Type: "location"}},
 		{[]byte(`{"type": "location", "text": "Click"}`), core.QuickReply{Type: "location", Text: "Click"}},
+		{[]byte(`"<form>Book now<extra>123456"`), core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
+		{[]byte(`{"type": "form", "text": "Book now", "extra": "123456"}`), core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
 	}
 	for _, tc := range jsons {
 		qr := core.QuickReply{}
@@ -296,5 +300,6 @@ func TestQuickReplies(t *testing.T) {
 	assert.Equal(t, []byte(`{"type":"text","text":"Yes"}`), jsonx.MustMarshal(core.QuickReply{Text: "Yes"}))
 	assert.Equal(t, []byte(`{"type":"text","text":"Yes","extra":"Really"}`), jsonx.MustMarshal(core.QuickReply{Text: "Yes", Extra: "Really"}))
 	assert.Equal(t, []byte(`{"type":"location"}`), jsonx.MustMarshal(core.QuickReply{Type: "location"}))
+	assert.Equal(t, []byte(`{"type":"form","text":"Book now","extra":"123456"}`), jsonx.MustMarshal(core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}))
 	assert.Equal(t, []byte(`[{"type":"text","text":"Yes"},{"type":"text","text":"No"}]`), jsonx.MustMarshal([]core.QuickReply{{Text: "Yes"}, {Text: "No"}}))
 }

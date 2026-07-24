@@ -157,6 +157,8 @@ func NewMsgTemplating(template *assets.TemplateReference, components []*Templati
 	return &MsgTemplating{Template: template, Components: components, Variables: variables}
 }
 
+// QuickReply is a suggested reply or action attached to an outgoing message. For type text, extra is an optional
+// description, and for type form, extra is the channel-specific ID of the form to be opened (e.g. a WhatsApp flow ID).
 type QuickReply struct {
 	Type  string `json:"type"`
 	Text  string `json:"text,omitempty"`
@@ -168,10 +170,15 @@ func (q QuickReply) MarshalText() (text []byte, err error) {
 	if q.Type == "location" {
 		return []byte("<location>" + q.Text), nil
 	}
+
+	s := q.Text
 	if q.Extra != "" {
-		return []byte(q.Text + "<extra>" + q.Extra), nil
+		s += "<extra>" + q.Extra
 	}
-	return []byte(q.Text), nil
+	if q.Type == "form" {
+		s = "<form>" + s
+	}
+	return []byte(s), nil
 }
 
 func (q *QuickReply) UnmarshalText(text []byte) error {
@@ -182,7 +189,13 @@ func (q *QuickReply) UnmarshalText(text []byte) error {
 		return nil
 	}
 
-	q.Type = "text"
+	if strings.HasPrefix(s, "<form>") {
+		q.Type = "form"
+		s = strings.TrimPrefix(s, "<form>")
+	} else {
+		q.Type = "text"
+	}
+
 	parts := strings.SplitN(s, "<extra>", 2)
 	q.Text = parts[0]
 	if len(parts) > 1 {
