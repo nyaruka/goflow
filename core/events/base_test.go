@@ -286,6 +286,7 @@ func TestEventMarshaling(t *testing.T) {
 						"hi there",
 						nil,
 						"",
+						nil,
 					),
 					"",
 				)
@@ -301,6 +302,7 @@ func TestEventMarshaling(t *testing.T) {
 						"hi there",
 						[]utils.Attachment{"image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"},
 						"ext-id-123",
+						nil,
 					),
 					"7481888c-07dd-47dc-bf22-ef7448696ffe",
 				)

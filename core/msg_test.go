@@ -28,6 +28,7 @@ func TestMsgIn(t *testing.T) {
 			utils.Attachment("audio/mp3:https://example.com/test.mp3"),
 		},
 		"EX346436734",
+		json.RawMessage(`{"service": "checkup"}`),
 	)
 
 	// test marshaling our msg
@@ -41,7 +42,8 @@ func TestMsgIn(t *testing.T) {
 		"text":"Hi there",
 		"attachments":["image/jpeg:https://example.com/test.jpg",
 		"audio/mp3:https://example.com/test.mp3"],
-		"external_id":"EX346436734"
+		"external_id":"EX346436734",
+		"payload":{"service": "checkup"}
 	}`), marshaled, "JSON mismatch")
 
 	// test unmarshaling
@@ -53,6 +55,7 @@ func TestMsgIn(t *testing.T) {
 	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
 	assert.Equal(t, "My Android", msg.Channel().Name)
 	assert.Equal(t, "EX346436734", msg.ExternalID())
+	assert.JSONEq(t, `{"service": "checkup"}`, string(msg.Payload()))
 }
 
 func TestMsgOut(t *testing.T) {

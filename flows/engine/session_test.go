@@ -373,7 +373,7 @@ func TestMaxSprintsPerSession(t *testing.T) {
 
 	numResumes := 0
 	for {
-		msg := core.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234")
+		msg := core.NewMsgIn("tel:+593979123456", nil, "Teal", nil, "SMS1234", nil)
 		resume := resumes.NewMsg(events.NewMsgReceived(msg, ""))
 		numResumes++
 

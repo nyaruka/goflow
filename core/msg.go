@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"fmt"
 	"slices"
 	"strings"
@@ -42,7 +43,8 @@ type BaseMsg struct {
 type MsgIn struct {
 	BaseMsg
 
-	ExternalID_ string `json:"external_id,omitempty"`
+	ExternalID_ string          `json:"external_id,omitempty"`
+	Payload_    json.RawMessage `json:"payload,omitempty"`
 }
 
 // MsgOut represents a outgoing message to the session contact
@@ -56,7 +58,7 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, externalID string) *MsgIn {
+func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attachments []utils.Attachment, externalID string, payload json.RawMessage) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			URN_:         urn,
@@ -65,6 +67,7 @@ func NewMsgIn(urn urns.URN, channel *assets.ChannelReference, text string, attac
 			Attachments_: attachments,
 		},
 		ExternalID_: externalID,
+		Payload_:    payload,
 	}
 }
 
@@ -121,6 +124,9 @@ func (m *BaseMsg) Attachments() []utils.Attachment { return m.Attachments_ }
 
 // ExternalID returns the optional external ID of this incoming message
 func (m *MsgIn) ExternalID() string { return m.ExternalID_ }
+
+// Payload returns the optional structured data of this incoming message, e.g. a form submission
+func (m *MsgIn) Payload() json.RawMessage { return m.Payload_ }
 
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []QuickReply { return m.QuickReplies_ }
