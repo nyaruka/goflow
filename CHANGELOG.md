@@ -1,3 +1,12 @@
+v0.285.0 (2026-07-24)
+-------------------------
+ * Make webhook actions always update @webhook
+ * Remove support for flow translation via PO files
+ * Audit docs on actions, events and modifiers for accuracy and completeness
+ * Move utils/po and utils/jsonpath into their only consumers
+ * Replace utils/smtpx with new gocommon/smtpx and add context param to EmailService.Send
+ * Update to gocommon 1.91.1 and Masterminds/semver v3
+
 v0.284.4 (2026-07-23)
 -------------------------
  * Update to gocommon 1.90.1
