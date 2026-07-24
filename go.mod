@@ -3,7 +3,7 @@ module github.com/nyaruka/goflow
 go 1.26
 
 require (
-	github.com/Masterminds/semver v1.5.0
+	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/antlr4-go/antlr/v4 v4.13.1
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.2.0

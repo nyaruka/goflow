@@ -3,7 +3,7 @@ package migrations
 import (
 	"strings"
 
-	"github.com/Masterminds/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/stringsx"
 	"github.com/nyaruka/gocommon/uuids"
