@@ -88,7 +88,7 @@ var _ XValue = XTextEmpty
 
 // ToXText converts the given value to a string
 func ToXText(env envs.Environment, x XValue) (*XText, *XError) {
-	if IsNil(x) {
+	if x == nil {
 		return XTextEmpty, nil
 	}
 	if IsXError(x) {

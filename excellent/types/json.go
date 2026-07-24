@@ -80,7 +80,7 @@ func jsonToArray(data []byte) *XArray {
 
 // ToXJSON converts the given value to a JSON string
 func ToXJSON(x XValue) (*XText, *XError) {
-	if IsNil(x) {
+	if x == nil {
 		return NewXText(`null`), nil
 	}
 	if IsXError(x) {

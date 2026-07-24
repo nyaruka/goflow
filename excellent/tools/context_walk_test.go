@@ -23,7 +23,7 @@ func TestContextWalk(t *testing.T) {
 		"zed": types.NewXObject(map[string]types.XValue{
 			"bar": types.NewXNumberFromInt(345),
 		}),
-		"nil": (*types.XObject)(nil), // non-nil interface to a nil struct
+		"nil": nil,
 	})
 
 	// test finding all non-nil values

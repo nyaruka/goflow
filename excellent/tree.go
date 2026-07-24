@@ -45,7 +45,7 @@ func (x *ContextReference) Evaluate(ctx context.Context, env envs.Environment, s
 		return types.NewXErrorf("context has no property '%s'", x.Name)
 	}
 
-	if !types.IsNil(value) && value.Deprecated() != "" {
+	if value != nil && value.Deprecated() != "" {
 		warnings.deprecatedContext(value)
 	}
 
@@ -331,7 +331,7 @@ func resolveLookup(env envs.Environment, container types.XValue, lookup types.XV
 	object, isObject := container.(*types.XObject)
 	var resolved types.XValue
 
-	if isArray && array != nil {
+	if isArray {
 		// if left-hand side is an array, then this is an index
 		index, xerr := types.ToInteger(env, lookup)
 		if xerr != nil {
@@ -347,7 +347,7 @@ func resolveLookup(env envs.Environment, container types.XValue, lookup types.XV
 
 		resolved = array.Get(index)
 
-	} else if isObject && object != nil {
+	} else if isObject {
 		// if left-hand side is an object, then this is a property lookup
 		property, xerr := types.ToXText(env, lookup)
 		if xerr != nil {
@@ -367,7 +367,7 @@ func resolveLookup(env envs.Environment, container types.XValue, lookup types.XV
 		return types.NewXErrorf("%s doesn't support lookups", types.Describe(container))
 	}
 
-	if !types.IsNil(resolved) && resolved.Deprecated() != "" {
+	if resolved != nil && resolved.Deprecated() != "" {
 		warnings.deprecatedContext(resolved)
 	}
 

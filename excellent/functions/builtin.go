@@ -1890,7 +1890,7 @@ func JSON(env envs.Environment, value types.XValue) types.XValue {
 //
 // @function format(value)
 func Format(env envs.Environment, value types.XValue) types.XValue {
-	if !types.IsNil(value) {
+	if value != nil {
 		return types.NewXText(value.Format(env))
 	}
 	return types.XTextEmpty
@@ -2202,7 +2202,7 @@ func IsError(env envs.Environment, value types.XValue) types.XValue {
 // @function count(value)
 func Count(env envs.Environment, value types.XValue) types.XValue {
 	// a nil has count of zero
-	if types.IsNil(value) {
+	if value == nil {
 		return types.XNumberZero
 	}
 

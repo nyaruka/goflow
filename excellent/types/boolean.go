@@ -89,7 +89,7 @@ var _ XValue = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
 func ToXBoolean(x XValue) (*XBoolean, *XError) {
-	if IsNil(x) {
+	if x == nil {
 		return XBooleanFalse, nil
 	}
 	if IsXError(x) {
