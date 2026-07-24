@@ -45,9 +45,4 @@ func TestLocalization(t *testing.T) {
 	assert.Nil(t, l8n.GetItemTranslation("spa", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "bad1"))
 	assert.Nil(t, l8n.GetItemTranslation("spa", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "bad2"))
 	assert.Nil(t, l8n.GetItemTranslation("spa", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "xxx"))
-
-	l8n.SetItemTranslation("spa", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "text", []string{"Hola @contact"})
-	l8n.SetItemTranslation("kin", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "text", []string{"Bite @contact"})
-	assert.Equal(t, []string{"Hola @contact"}, l8n.GetItemTranslation("spa", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "text"))
-	assert.Equal(t, []string{"Bite @contact"}, l8n.GetItemTranslation("kin", "ac110f56-a66c-4462-921c-b2c6d1c6dadb", "text"))
 }

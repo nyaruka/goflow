@@ -169,7 +169,6 @@ type Wait interface {
 type Localization interface {
 	Validate() error
 	GetItemTranslation(i18n.Language, uuids.UUID, string) []string
-	SetItemTranslation(i18n.Language, uuids.UUID, string, []string)
 	Languages() []i18n.Language
 }
 

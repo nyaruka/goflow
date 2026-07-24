@@ -144,15 +144,6 @@ func (l localization) GetItemTranslation(lang i18n.Language, itemUUID uuids.UUID
 	return nil
 }
 
-// SetItemTranslation sets an item translation
-func (l localization) SetItemTranslation(lang i18n.Language, itemUUID uuids.UUID, property string, translated []string) {
-	_, found := l[lang]
-	if !found {
-		l[lang] = make(languageTranslation)
-	}
-	l[lang].setTextArray(itemUUID, property, translated)
-}
-
 // ReadLocalization reads entire localization flow segment
 func ReadLocalization(data []byte) (flows.Localization, error) {
 	translations := &localization{}
