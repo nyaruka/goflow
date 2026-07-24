@@ -286,7 +286,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				MsgReceived(events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234"), "")).
+				MsgReceived(events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234", nil), "")).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",

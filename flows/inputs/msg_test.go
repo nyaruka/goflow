@@ -1,6 +1,7 @@
 package inputs_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -33,6 +34,7 @@ func TestMsgInput(t *testing.T) {
 			"video/mp4:http://example.com/test.mp4",
 		},
 		"ext12345",
+		json.RawMessage(`{"service": "checkup", "count": 2}`),
 	), "")
 
 	input := inputs.NewMsg(session.Assets(), msgEvt)
@@ -52,10 +54,14 @@ func TestMsgInput(t *testing.T) {
 		"text":        types.NewXText("Hi there!"),
 		"attachments": types.NewXArray(types.NewXText("image/jpg:http://example.com/test.jpg"), types.NewXText("video/mp4:http://example.com/test.mp4")),
 		"external_id": types.NewXText("ext12345"),
+		"payload": types.NewXObject(map[string]types.XValue{
+			"service": types.NewXText("checkup"),
+			"count":   types.RequireXNumberFromString("2"),
+		}),
 	}), core.Context(env, input))
 
 	// check marshaling to JSON
 	marshaled, err := jsonx.Marshal(input)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"type":"msg","uuid":"01969b47-76cb-76f8-b384-a4094c3d60be","channel":{"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone"},"created_on":"2025-05-04T12:31:15.123456789Z","urn":"tel:+1234567890","text":"Hi there!","attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"external_id":"ext12345"}`, string(marshaled))
+	assert.Equal(t, `{"type":"msg","uuid":"01969b47-76cb-76f8-b384-a4094c3d60be","channel":{"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone"},"created_on":"2025-05-04T12:31:15.123456789Z","urn":"tel:+1234567890","text":"Hi there!","attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"external_id":"ext12345","payload":{"service":"checkup","count":2}}`, string(marshaled))
 }

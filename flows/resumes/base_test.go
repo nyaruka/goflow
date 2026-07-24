@@ -166,7 +166,7 @@ func TestResumeContext(t *testing.T) {
 	env := envs.NewBuilder().Build()
 
 	var resume flows.Resume = resumes.NewMsg(
-		events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234"), ""),
+		events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:1234567890"), nil, "Hello", nil, "SMS1234", nil), ""),
 	)
 
 	assert.Equal(t, map[string]types.XValue{

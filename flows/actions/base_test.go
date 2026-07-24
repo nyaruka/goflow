@@ -210,6 +210,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 					"audio/mp3:http://s3.amazon.com/bucket/test.mp3",
 				},
 				"",
+				nil,
 			)
 			trigger = triggers.NewBuilder(flow.Reference(false)).MsgReceived(events.NewMsgReceived(msg, "")).Build()
 		}
@@ -983,7 +984,7 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 		}
 
 		if session.Status() == flows.SessionStatusWaiting {
-			resume := resumes.NewMsg(events.NewMsgReceived(core.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234"), ""))
+			resume := resumes.NewMsg(events.NewMsgReceived(core.NewMsgIn(urns.NilURN, nil, "Hi there", nil, "SMS1234", nil), ""))
 			sprint, err = session.Resume(ctx, resume)
 			require.NoError(t, err)
 		}

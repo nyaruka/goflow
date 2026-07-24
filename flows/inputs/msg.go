@@ -1,6 +1,7 @@
 package inputs
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
@@ -29,6 +30,7 @@ type Msg struct {
 	text        string
 	attachments []utils.Attachment
 	externalID  string
+	payload     json.RawMessage
 }
 
 // NewMsg creates a new user input based on a message event
@@ -45,6 +47,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 		text:        evt.Msg.Text(),
 		attachments: evt.Msg.Attachments(),
 		externalID:  evt.Msg.ExternalID(),
+		payload:     evt.Msg.Payload(),
 	}
 }
 
@@ -58,6 +61,7 @@ func NewMsg(sa flows.SessionAssets, evt *events.MsgReceived) *Msg {
 //	text:text -> the text part of the input
 //	attachments:[]text -> any attachments on the input
 //	external_id:text -> the external ID of the input
+//	payload:any -> any structured data on the input, e.g. a form submission
 //
 // @context input
 func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
@@ -72,6 +76,11 @@ func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 		urn = i.urn.ToXValue(env)
 	}
 
+	var payload types.XValue
+	if len(i.payload) > 0 {
+		payload = types.JSONToXValue(i.payload)
+	}
+
 	return map[string]types.XValue{
 		"__default__": types.NewXText(i.format()),
 		"type":        types.NewXText(i.type_),
@@ -82,6 +91,7 @@ func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 		"text":        types.NewXText(i.text),
 		"attachments": types.NewXArray(attachments...),
 		"external_id": types.NewXText(i.externalID),
+		"payload":     payload,
 	}
 }
 
@@ -109,6 +119,7 @@ type msgEnvelope struct {
 	Text        string             `json:"text"`
 	Attachments []utils.Attachment `json:"attachments,omitempty"`
 	ExternalID  string             `json:"external_id,omitempty"`
+	Payload     json.RawMessage    `json:"payload,omitempty"`
 }
 
 func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Input, error) {
@@ -122,6 +133,7 @@ func readMsg(sa flows.SessionAssets, data []byte, missing assets.MissingCallback
 		text:        e.Text,
 		attachments: e.Attachments,
 		externalID:  e.ExternalID,
+		payload:     e.Payload,
 	}
 
 	if err := i.unmarshal(sa, &e.baseEnvelope, missing); err != nil {
@@ -138,6 +150,7 @@ func (i *Msg) MarshalJSON() ([]byte, error) {
 		Text:        i.text,
 		Attachments: i.attachments,
 		ExternalID:  i.externalID,
+		Payload:     i.payload,
 	}
 
 	i.marshal(&e.baseEnvelope)
