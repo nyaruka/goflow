@@ -98,6 +98,10 @@ func (a *CallWebhook) Validate() error {
 
 // Execute runs this action
 func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
+	// @webhook always reflects this action - cleared now so that if we never get as far as making a call, it isn't
+	// left holding the result of a previous call
+	run.SetWebhook(nil)
+
 	url, _ := run.EvaluateTemplate(ctx, a.URL, log)
 	url = strings.TrimSpace(url)
 
@@ -183,10 +187,11 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 	}
 }
 
-// logs an error from the webhook service, using a dedicated code where we have one
+// logs an error from the webhook service - a response exceeding the size limit is only a warning because the call
+// is still recorded (as a connection error) and the flow routes on that as usual
 func logCallError(err error, log events.EventLogger) {
 	if errors.Is(err, httpx.ErrResponseSize) {
-		log(events.NewError(err.Error(), events.ErrorCodeWebhookResponseSize))
+		log(events.NewWarning(err.Error()))
 	} else {
 		log(events.NewRawError(err))
 	}
