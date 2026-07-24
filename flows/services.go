@@ -22,7 +22,7 @@ type Services interface {
 
 // EmailService provides email functionality to the engine
 type EmailService interface {
-	Send(addresses []string, subject, body string) error
+	Send(ctx context.Context, addresses []string, subject, body string) error
 }
 
 // WebhookService provides webhook functionality to the engine

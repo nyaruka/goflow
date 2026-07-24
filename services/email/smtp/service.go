@@ -1,6 +1,7 @@
 package smtp
 
 import (
+	"context"
 	"strings"
 
 	"github.com/nyaruka/gocommon/smtpx"
@@ -22,7 +23,7 @@ func NewService(smtpURL string, retries *smtpx.RetryConfig) (flows.EmailService,
 	return &service{client: c, retries: retries}, nil
 }
 
-func (s *service) Send(addresses []string, subject, body string) error {
+func (s *service) Send(ctx context.Context, addresses []string, subject, body string) error {
 	// sending blank emails is a good way to get flagged as a spammer so use placeholder if body is empty
 	if strings.TrimSpace(body) == "" {
 		body = "(empty body)"
@@ -30,5 +31,5 @@ func (s *service) Send(addresses []string, subject, body string) error {
 
 	m := smtpx.NewMessage(addresses, subject, body, "")
 
-	return smtpx.Send(s.client, m, s.retries)
+	return smtpx.Send(ctx, s.client, m, s.retries)
 }

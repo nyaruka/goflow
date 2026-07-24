@@ -98,7 +98,7 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 		return nil
 	}
 
-	err = svc.Send(evaluatedAddresses, evaluatedSubject, evaluatedBody)
+	err = svc.Send(ctx, evaluatedAddresses, evaluatedSubject, evaluatedBody)
 	if err != nil {
 		log(events.NewError(fmt.Sprintf("Unable to send email: %s", err.Error()), ""))
 	} else {
