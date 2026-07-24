@@ -22,7 +22,7 @@
           ],
           "router": {
             "type": "switch",
-            "operand": "@webhook.status",
+            "operand": "@(default(webhook.status, 0))",
             "cases": [
               {
                 "uuid": "625b1f82-e438-466f-b798-8842686e3ce0",
@@ -92,7 +92,7 @@
           ],
           "router": {
             "type": "switch",
-            "operand": "@webhook.status",
+            "operand": "@(default(webhook.status, 0))",
             "cases": [
               {
                 "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",

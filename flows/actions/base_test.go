@@ -1011,3 +1011,73 @@ func TestStartSessionLoopProtectionWithInput(t *testing.T) {
 
 	assert.Equal(t, 10, len(sessions))
 }
+
+func TestCallWebhookAlwaysUpdatesWebhook(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	// a flow with a webhook call that will succeed, followed by one whose URL evaluates to empty
+	source, err := static.NewSource([]byte(`{
+		"flows": [
+			{
+				"uuid": "5472a1c3-63e1-484f-8485-cc8ecb16a058",
+				"name": "Webhooks",
+				"spec_version": "13.1.0",
+				"language": "eng",
+				"type": "messaging",
+				"nodes": [
+					{
+						"uuid": "cc49453a-78ed-48a6-8b94-318b46517071",
+						"actions": [
+							{
+								"uuid": "cdf981ae-a9cf-4c32-98f3-65bac07bf990",
+								"type": "call_webhook",
+								"method": "GET",
+								"url": "http://temba.io/"
+							},
+							{
+								"uuid": "9e042d2c-6d63-4a44-963d-9f9c1eb26f1c",
+								"type": "call_webhook",
+								"method": "GET",
+								"url": "@(\"\")"
+							}
+						],
+						"exits": [
+							{
+								"uuid": "717ee506-7b2d-4a18-b142-eafed0c5e9d8"
+							}
+						]
+					}
+				]
+			}
+		]
+	}`))
+	require.NoError(t, err)
+
+	sa, err := engine.NewSessionAssets(env, source, nil)
+	require.NoError(t, err)
+
+	httpClient, _ := test.MockedHTTP(map[string][]*httpx.MockResponse{
+		"http://temba.io/": {httpx.NewMockResponse(200, nil, []byte(`{"ok": true}`))},
+	})
+
+	eng := engine.NewBuilder().
+		WithHTTPClient(httpClient).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(nil)).
+		Build()
+
+	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Webhooks")
+	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
+
+	session, sprint, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
+	require.NoError(t, err)
+
+	// first action made its call, second action never did
+	eventTypes := make([]string, len(sprint.Events()))
+	for i, e := range sprint.Events() {
+		eventTypes[i] = e.Type()
+	}
+	assert.Equal(t, []string{"run_started", "webhook_called", "error", "run_ended"}, eventTypes)
+
+	// so @webhook was cleared by the second action rather than left holding the first action's call
+	assert.Nil(t, session.Runs()[0].Webhook())
+}

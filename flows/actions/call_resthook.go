@@ -85,6 +85,10 @@ func NewCallResthook(uuid flows.ActionUUID, resthook string, resultName string) 
 
 // Execute runs this action
 func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
+	// @webhook always reflects this action - cleared now so that if we never get as far as making a call, it isn't
+	// left holding the result of a previous call
+	run.SetWebhook(nil)
+
 	// NOOP if resthook doesn't exist
 	resthook := run.Session().Assets().Resthooks().FindBySlug(a.Resthook)
 	if resthook == nil {
