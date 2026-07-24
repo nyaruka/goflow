@@ -184,7 +184,7 @@ func (r *run) ExitedOn() *time.Time  { return r.exitedOn }
 //	child:related_run -> the last child run
 //	parent:related_run -> the parent of the run
 //	ticket:ticket -> the open ticket for the contact
-//	webhook:webhook -> the last webhook call (reset after a wait)
+//	webhook:webhook -> the result of the last webhook or resthook call
 //	node:node -> the current node
 //	globals:globals -> the global values
 //	trigger:trigger -> the trigger that started this session

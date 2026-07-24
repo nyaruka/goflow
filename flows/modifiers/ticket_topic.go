@@ -19,7 +19,7 @@ func init() {
 // TypeTicketTopic is the type of our topic modifier
 const TypeTicketTopic string = "ticket_topic"
 
-// TicketTopic modifies the topic of a ticket
+// TicketTopic modifies the topic of a ticket, creating a ticket_topic_changed event if it changed.
 type TicketTopic struct {
 	baseModifier
 

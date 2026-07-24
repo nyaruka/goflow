@@ -26,7 +26,8 @@ const (
 )
 
 // AddContactURN can be used to add a URN to the current contact. A [event:contact_urns_changed] event
-// will be created when this action is encountered.
+// will be created if the URN was added. The action sets a `_has_urn` local to the URN if the contact
+// has it after the action (whether newly added or pre-existing), and to an empty string otherwise.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

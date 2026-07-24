@@ -23,7 +23,8 @@ const TypeSendMsg string = "send_msg"
 // will attempt to find pairs of URNs and channels which can be used for sending. If it can't find such a pair, it will
 // create a message without a channel or URN.
 //
-// A [event:msg_created] event will be created with the evaluated text.
+// A [event:msg_created] event will be created with the evaluated text. If the action has a `template`
+// set and a matching translation exists for the channel, the created message will use that template.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

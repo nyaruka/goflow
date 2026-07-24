@@ -19,7 +19,8 @@ func init() {
 // TypeTicketReopen is the type of our reopen modifier
 const TypeTicketReopen string = "ticket_reopen"
 
-// TicketReopen reopens a closed ticket
+// TicketReopen reopens a closed ticket if the contact doesn't already have an open ticket, creating
+// a ticket_reopened event.
 type TicketReopen struct {
 	baseModifier
 

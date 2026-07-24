@@ -19,7 +19,8 @@ func init() {
 // TypeChannel is the type of our channel modifier
 const TypeChannel string = "channel"
 
-// Channel modifies the preferred channel of a contact
+// Channel modifies the preferred channel of a contact, creating a contact_urns_changed event if
+// anything changed. The channel must have the send role.
 type Channel struct {
 	baseModifier
 

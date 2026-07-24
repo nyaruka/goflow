@@ -20,7 +20,8 @@ func init() {
 // TypeLanguage is the type of our language modifier
 const TypeLanguage string = "language"
 
-// Language modifies the language of a contact
+// Language modifies the language of a contact, creating a contact_language_changed event if it
+// changed.
 type Language struct {
 	baseModifier
 

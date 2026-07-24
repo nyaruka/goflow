@@ -12,7 +12,8 @@ func init() {
 // TypeRunStarted is the type of our run started event
 const TypeRunStarted string = "run_started"
 
-// RunStarted events are created when an action has entered a sub-flow.
+// RunStarted events are created when a new run is started - either the session's initial run, or a
+// sub-flow run started by an [action:enter_flow] action.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

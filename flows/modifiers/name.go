@@ -20,7 +20,8 @@ func init() {
 // TypeName is the type of our name modifier
 const TypeName string = "name"
 
-// Name modifies the name of a contact
+// Name modifies the name of a contact, creating a contact_name_changed event if it changed. Names
+// are truncated to the engine's max name length.
 type Name struct {
 	baseModifier
 

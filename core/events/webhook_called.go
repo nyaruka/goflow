@@ -12,9 +12,9 @@ func init() {
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
 
-// WebhookCalled events are created when a webhook is called. The event contains
-// the URL and the status of the response, as well as a full dump of the
-// request and response.
+// WebhookCalled events are created for each webhook or resthook subscriber call. The event contains
+// the URL and the status of the response, as well as the request and response - trimmed to 10000
+// characters each for persistence, with `sizes` recording their original sizes.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

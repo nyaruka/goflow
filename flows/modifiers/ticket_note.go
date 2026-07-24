@@ -19,7 +19,7 @@ func init() {
 // TypeTicketNote is the type of our note modifier
 const TypeTicketNote string = "ticket_note"
 
-// TicketNote adds a note to a ticket
+// TicketNote adds a note to a ticket, creating a ticket_note_added event.
 type TicketNote struct {
 	baseModifier
 

@@ -31,7 +31,9 @@ const (
 	RoutesSet    RoutesModification = "set"
 )
 
-// Routes modifies the URNs on a contact while preserving channel affinity
+// Routes modifies the URNs and channel affinities on a contact, creating a contact_urns_changed
+// event if anything changed. URNs which are invalid or already taken by other contacts are skipped
+// with error events.
 type Routes struct {
 	baseModifier
 

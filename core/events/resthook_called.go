@@ -13,7 +13,7 @@ const TypeResthookCalled string = "resthook_called"
 
 // ResthookCalled events are created when a resthook is called. The event contains
 // the payload that will be sent to any subscribers of that resthook. Note that this event is
-// created regardless of whether there any subscriberes for that resthook.
+// created regardless of whether there are any subscribers for that resthook.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

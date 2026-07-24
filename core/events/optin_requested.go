@@ -12,7 +12,7 @@ func init() {
 // TypeOptInRequested is our type for the optin event
 const TypeOptInRequested string = "optin_requested"
 
-// OptInRequested events are created when an action has created an optin to be sent.
+// OptInRequested events are created when an action has requested an optin be sent to the contact.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

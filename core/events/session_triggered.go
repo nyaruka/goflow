@@ -19,7 +19,8 @@ type Exclusions struct {
 	InAFlow bool `json:"in_a_flow,omitempty"`
 }
 
-// SessionTriggered events are created when an action wants to start other people in a flow.
+// SessionTriggered events are created when an action wants to start other contacts in a flow. It's
+// the responsibility of the caller to act on the event by initiating new sessions with the flow engine.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

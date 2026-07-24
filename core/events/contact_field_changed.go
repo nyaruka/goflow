@@ -12,7 +12,7 @@ func init() {
 // TypeContactFieldChanged is the type of our save to contact event
 const TypeContactFieldChanged string = "contact_field_changed"
 
-// ContactFieldChanged events are created when a field value of the contact has been changed. An empty value indicates
+// ContactFieldChanged events are created when a field value of the contact has been changed. A null value indicates
 // that the field value has been cleared.
 //
 //	{

@@ -28,11 +28,12 @@ const (
 // maximum allowed value for a single amount - generous enough for even hyperinflated currencies
 var maxAirtimeAmount = decimal.New(1, 15) // 1,000,000,000,000,000
 
-// TransferAirtime attempts to make an airtime transfer to the contact.
+// TransferAirtime attempts to make an airtime transfer to the contact, using their first phone URN
+// as the recipient.
 //
 // An [event:airtime_created] event will be created if the airtime transfer could be initiated.
-// The action sets a `_new_transfer` local to the UUID of the airtime_created event when the
-// transfer is initiated, and to an empty string otherwise.
+// The action sets a `_new_transfer` local to the UUID of that event when the transfer is initiated,
+// and to an empty string otherwise.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

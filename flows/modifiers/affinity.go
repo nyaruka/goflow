@@ -20,7 +20,8 @@ func init() {
 // TypeAffinity is the type of our affinity modifier
 const TypeAffinity string = "affinity"
 
-// Affinity modifies the preferred URN and channel of a contact
+// Affinity modifies the preferred URN and channel of a contact, creating a contact_urns_changed
+// event if anything changed.
 type Affinity struct {
 	baseModifier
 

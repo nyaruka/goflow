@@ -21,7 +21,8 @@ func init() {
 // TypeTicketOpen is the type of our ticket modifier
 const TypeTicketOpen string = "ticket_open"
 
-// TicketOpen opens a ticket for the contact
+// TicketOpen opens a ticket for the contact if they don't already have an open ticket, creating a
+// ticket_opened event - and a ticket_note_added event if a note is provided.
 type TicketOpen struct {
 	baseModifier
 

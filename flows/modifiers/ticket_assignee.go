@@ -19,7 +19,8 @@ func init() {
 // TypeTicketAssignee is the type of our assignee modifier
 const TypeTicketAssignee string = "ticket_assignee"
 
-// TicketAssignee modifies the assignee of a ticket
+// TicketAssignee modifies the assignee of a ticket, creating a ticket_assignee_changed event if it
+// changed.
 type TicketAssignee struct {
 	baseModifier
 

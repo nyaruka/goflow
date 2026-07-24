@@ -20,7 +20,8 @@ func init() {
 // TypeTimezone is the type of our timezone modifier
 const TypeTimezone string = "timezone"
 
-// Timezone modifies the timezone of a contact
+// Timezone modifies the timezone of a contact, creating a contact_timezone_changed event if it
+// changed.
 type Timezone struct {
 	baseModifier
 

@@ -20,7 +20,8 @@ func init() {
 // TypeSeen is the type of our seen modifier
 const TypeSeen string = "seen"
 
-// Seen modifies the last seen of a contact
+// Seen modifies the last seen date of a contact, creating a contact_last_seen_changed event if the
+// new date is later than the current one.
 type Seen struct {
 	baseModifier
 

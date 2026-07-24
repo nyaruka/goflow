@@ -19,7 +19,7 @@ func init() {
 // TypeStatus is the type of our status modifier
 const TypeStatus string = "status"
 
-// Status modifies the status of a contact
+// Status modifies the status of a contact, creating a contact_status_changed event if it changed.
 type Status struct {
 	baseModifier
 

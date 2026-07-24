@@ -15,9 +15,9 @@ func init() {
 // TypeRequestOptIn is the type for the send optin action
 const TypeRequestOptIn string = "request_optin"
 
-// RequestOptIn can be used to send an optin to the contact if the channel supports that.
+// RequestOptIn can be used to request an optin from the contact.
 //
-// An [event:optin_requested] event will be created if the optin was requested.
+// An [event:optin_requested] event will be created if the contact has a channel that supports optins.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

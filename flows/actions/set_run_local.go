@@ -25,8 +25,9 @@ const (
 	LocalOperationClear     LocalOperation = "clear"
 )
 
-// SetRunLocal can be used to save a local variable. The local will be available in the context
-// for the run as @locals.[local]. The value field can be a template and will be evaluated.
+// SetRunLocal can be used to set, increment or clear a local variable on the run - as determined
+// by the `operation` field. The local will be available in the context for the run as
+// @locals.[local]. The value field may be a template and will be evaluated.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

@@ -18,7 +18,8 @@ const TypeEnterFlow string = "enter_flow"
 
 // EnterFlow can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 //
-// A [event:run_started] event will be created to record that a new run was started.
+// A [event:run_started] event will be created to record that a new run was started. If the flow
+// doesn't exist or its type can't be entered from the current session, the run will end in failure.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

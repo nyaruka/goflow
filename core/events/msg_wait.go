@@ -17,8 +17,8 @@ func init() {
 const TypeMsgWait string = "msg_wait"
 
 // MsgWait events are created when a flow pauses waiting for a response from
-// a contact. If a timeout is set, then the caller should resume the flow after
-// the number of seconds in the timeout to resume it.
+// a contact. If a timeout is set, the caller should resume the session after
+// that many seconds if no message has been received.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

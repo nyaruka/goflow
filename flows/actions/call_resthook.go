@@ -52,12 +52,16 @@ func init() {
 // TypeCallResthook is the type for the call resthook action
 const TypeCallResthook string = "call_resthook"
 
-// CallResthook can be used to call a resthook.
+// CallResthook can be used to call a resthook. A [event:resthook_called] event will be created with
+// the payload sent to subscribers, and a [event:webhook_called] event will be created for each
+// subscriber called. If the resthook isn't found, this action does nothing.
 //
-// A [event:webhook_called] event will be created for each subscriber of the resthook with the results
-// of the HTTP call. If the action has `result_name` set, a result will
-// be created with that name, and if the resthook returns valid JSON, that will be accessible
-// through `extra` on the result.
+// This action always updates the `@webhook` context value: one of the subscriber calls (prioritizing
+// failures) is picked as the result of the action, and if there were no subscriber calls, it will be
+// cleared.
+//
+// If this action has `result_name` set, a result will be created from the picked call in the same
+// way as for [action:call_webhook].
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

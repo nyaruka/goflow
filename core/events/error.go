@@ -21,7 +21,8 @@ const (
 	ErrorCodeWebhookRequestSize   = "webhook:request_size"
 )
 
-// Error events are created when an error occurs during flow execution.
+// Error events are created when an error occurs during flow execution. Some errors have a `code`
+// which identifies the type of error, and `extra` values with more details.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

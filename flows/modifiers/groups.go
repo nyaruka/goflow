@@ -29,7 +29,9 @@ const (
 	GroupsRemove GroupsModification = "remove"
 )
 
-// Groups modifies the group membership of the contact
+// Groups modifies the group membership of the contact, creating a contact_groups_changed event if
+// anything changed. Blocked and stopped contacts can't be added to groups, and membership of query
+// based groups can't be modified.
 type Groups struct {
 	baseModifier
 

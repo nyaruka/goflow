@@ -22,7 +22,11 @@ const (
 	OpenTicketOutputLocal = "_new_ticket"
 )
 
-// OpenTicket is used to open a ticket for the contact if they don't already have an open ticket.
+// OpenTicket can be used to open a ticket for the contact if they don't already have an open ticket.
+//
+// If a ticket is opened, a [event:ticket_opened] event will be created - and a [event:ticket_note_added]
+// event if the action has a non-empty `note`. The action sets a `_new_ticket` local to the UUID of
+// the new ticket, or to an empty string if no ticket was opened.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

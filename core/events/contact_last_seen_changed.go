@@ -11,7 +11,7 @@ func init() {
 // TypeContactLastSeenChanged is the type of our contact last seen changed event
 const TypeContactLastSeenChanged string = "contact_last_seen_changed"
 
-// ContactLastSeenChanged events are created when the last seen on of the contact has been changed.
+// ContactLastSeenChanged events are created when the last seen date of the contact has been changed.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

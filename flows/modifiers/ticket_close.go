@@ -19,7 +19,7 @@ func init() {
 // TypeTicketClose is the type of our close modifier
 const TypeTicketClose string = "ticket_close"
 
-// TicketClose closes an open ticket
+// TicketClose closes a ticket if it isn't already closed, creating a ticket_closed event.
 type TicketClose struct {
 	baseModifier
 

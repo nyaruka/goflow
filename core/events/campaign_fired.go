@@ -11,7 +11,7 @@ func init() {
 // TypeCampaignFired is our type for the campaign fired event
 const TypeCampaignFired string = "campaign_fired"
 
-// CampaignFired events are created when a campaign has been fired.
+// CampaignFired events are created when a campaign point has fired for the contact.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",

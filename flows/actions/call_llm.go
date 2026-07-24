@@ -21,9 +21,11 @@ const TypeCallLLM string = "call_llm"
 // LLMErrorOutput is the output used when the LLM call fails
 const LLMErrorOutput = "<ERROR>"
 
-// CallLLM can be used to call an LLM.
+// CallLLM can be used to call an LLM. The instructions and input fields may be templates and will
+// be evaluated at runtime.
 //
-// An [event:llm_called] event will be created if the LLM could be called.
+// An [event:llm_called] event will be created if the LLM could be called. The action sets the local
+// specified by `output_local` to the output of the LLM, or to `<ERROR>` if the call failed.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

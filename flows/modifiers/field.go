@@ -22,7 +22,8 @@ func init() {
 // TypeField is the type of our field modifier
 const TypeField string = "field"
 
-// Field modifies a field value on the contact
+// Field modifies a field value on the contact, creating a contact_field_changed event if the value
+// changed. Text values are truncated to the engine's max field length.
 type Field struct {
 	baseModifier
 
