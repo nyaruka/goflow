@@ -1,3 +1,9 @@
+v0.286.0 (2026-07-27)
+-------------------------
+ * Add form type for quick replies, parsed from text as <form>Button label<extra>form id
+ * Add payload field to incoming messages, exposed as @input.payload
+ * Remove types.IsNil now that XValues are never non-nil interfaces to nil pointers
+
 v0.285.0 (2026-07-24)
 -------------------------
  * Make webhook actions always update @webhook
