@@ -134,7 +134,7 @@ func ToXDateTimeWithTimeFill(env envs.Environment, x XValue) (*XDateTime, *XErro
 
 // converts the given value to a time or returns an error if that isn't possible
 func toXDateTime(env envs.Environment, x XValue, fillTime bool) (*XDateTime, *XError) {
-	if !IsNil(x) {
+	if x != nil {
 		switch typed := x.(type) {
 		case *XError:
 			return XDateTimeZero, typed

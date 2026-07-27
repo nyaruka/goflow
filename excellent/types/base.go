@@ -8,7 +8,9 @@ import (
 	"github.com/nyaruka/goflow/envs"
 )
 
-// XValue is the base interface of all excellent types
+// XValue is the base interface of all excellent types. A nil value is always a true nil interface - never a non-nil
+// interface to a nil pointer - so nil checks are plain x == nil. Code that produces XValues must uphold this, e.g. by
+// nil-checking concrete pointers before boxing (see core.Context which scrubs nil Contextables for this reason).
 type XValue interface {
 	// How type is rendered in console for debugging
 	fmt.Stringer
@@ -53,9 +55,9 @@ type XComparable interface {
 // specifically means text(x) == text(y)
 func Equals(x1 XValue, x2 XValue) bool {
 	// nil == nil
-	if IsNil(x1) && IsNil(x2) {
+	if x1 == nil && x2 == nil {
 		return true
-	} else if IsNil(x1) || IsNil(x2) {
+	} else if x1 == nil || x2 == nil {
 		return false
 	}
 
@@ -70,11 +72,11 @@ func Equals(x1 XValue, x2 XValue) bool {
 // Compare compares two given values
 func Compare(x1 XValue, x2 XValue) int {
 	// nil == nil
-	if IsNil(x1) && IsNil(x2) {
+	if x1 == nil && x2 == nil {
 		return 0
-	} else if IsNil(x1) {
+	} else if x1 == nil {
 		return -1
-	} else if IsNil(x2) {
+	} else if x2 == nil {
 		return 1
 	}
 
@@ -98,7 +100,7 @@ func SameType(x1 XValue, x2 XValue) bool {
 
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
-	if IsNil(x) {
+	if x == nil {
 		return "null"
 	}
 	return x.Describe()
@@ -106,7 +108,7 @@ func Describe(x XValue) string {
 
 // Truthy determines truthiness for the given value
 func Truthy(x XValue) bool {
-	if IsNil(x) {
+	if x == nil {
 		return false
 	}
 	return x.Truthy()
@@ -114,7 +116,7 @@ func Truthy(x XValue) bool {
 
 // Render returns the canonical text representation
 func Render(x XValue) string {
-	if IsNil(x) {
+	if x == nil {
 		return ""
 	}
 	return x.Render()
@@ -122,7 +124,7 @@ func Render(x XValue) string {
 
 // Format returns the pretty text representation
 func Format(env envs.Environment, x XValue) string {
-	if IsNil(x) {
+	if x == nil {
 		return ""
 	}
 	return x.Format(env)
@@ -130,16 +132,10 @@ func Format(env envs.Environment, x XValue) string {
 
 // String returns a representation of the given value for use in debugging
 func String(x XValue) string {
-	if IsNil(x) {
+	if x == nil {
 		return "nil"
 	}
 	return x.String()
-}
-
-// IsNil returns whether the given value is nil... because of golang's love of autoboxing nil pointers into non-nil
-// interfaces, we need to check if interface itself is nil or the underlying pointer is nil.
-func IsNil(x XValue) bool {
-	return x == nil || reflect.ValueOf(x).IsNil()
 }
 
 // CostOf returns the cost of producing a value, for the purposes of the per-evaluation budget. Text costs

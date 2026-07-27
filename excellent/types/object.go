@@ -99,7 +99,7 @@ func (x *XObject) Format(env envs.Environment) string {
 func (x *XObject) MarshalJSON() ([]byte, error) {
 	marshaled := make(map[string]json.RawMessage, x.Count())
 	for p, v := range x.properties() {
-		if IsNil(v) || x.marshalDeprecated || v.Deprecated() == "" {
+		if v == nil || x.marshalDeprecated || v.Deprecated() == "" {
 			asJSON, err := ToXJSON(v)
 			if err == nil {
 				marshaled[p] = json.RawMessage(asJSON.Native())
@@ -245,7 +245,7 @@ var _ json.Marshaler = (*XObject)(nil)
 
 // ToXObject converts the given value to an object
 func ToXObject(env envs.Environment, x XValue) (*XObject, *XError) {
-	if IsNil(x) {
+	if x == nil {
 		return XObjectEmpty, nil
 	}
 	if IsXError(x) {
@@ -253,7 +253,7 @@ func ToXObject(env envs.Environment, x XValue) (*XObject, *XError) {
 	}
 
 	object, isObject := x.(*XObject)
-	if isObject && object != nil {
+	if isObject {
 		return object, nil
 	}
 

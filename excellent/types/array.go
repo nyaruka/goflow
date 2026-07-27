@@ -139,7 +139,7 @@ var XArrayEmpty = NewXArray()
 
 // ToXArray converts the given value to an array
 func ToXArray(env envs.Environment, x XValue) (*XArray, *XError) {
-	if IsNil(x) {
+	if x == nil {
 		return XArrayEmpty, nil
 	}
 	if IsXError(x) {

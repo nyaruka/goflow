@@ -345,7 +345,7 @@ func newXNumberFromString(s string) (*XNumber, error) {
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(env envs.Environment, x XValue) (*XNumber, *XError) {
-	if !IsNil(x) {
+	if x != nil {
 		switch typed := x.(type) {
 		case *XError:
 			return XNumberZero, typed

@@ -14,7 +14,8 @@ type Contextable interface {
 
 // Context generates a lazy object for use in expressions
 func Context(env envs.Environment, contextable Contextable) types.XValue {
-	// we allow passing nil pointers which will become non-nil Contextables
+	// this is the one place where callers may pass nil pointers boxed into non-nil Contextables, and we scrub
+	// them to true nils here - XValues themselves are never non-nil interfaces to nil pointers
 	if contextable == nil || reflect.ValueOf(contextable).IsNil() {
 		return nil
 	}

@@ -87,7 +87,7 @@ var _ XValue = XTimeZero
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
 func ToXTime(env envs.Environment, x XValue) (*XTime, *XError) {
-	if !IsNil(x) {
+	if x != nil {
 		switch typed := x.(type) {
 		case *XError:
 			return XTimeZero, typed
