@@ -76,9 +76,9 @@ func (i *Msg) Context(env envs.Environment) map[string]types.XValue {
 		urn = i.urn.ToXValue(env)
 	}
 
-	var payload types.XValue
-	if len(i.payload) > 0 {
-		payload = types.JSONToXValue(i.payload)
+	payload := types.JSONToXValue(i.payload)
+	if payload == nil {
+		payload = types.XObjectEmpty
 	}
 
 	return map[string]types.XValue{

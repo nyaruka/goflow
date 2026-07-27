@@ -60,6 +60,20 @@ func TestMsgInput(t *testing.T) {
 		}),
 	}), core.Context(env, input))
 
+	// a msg without a payload has an empty payload object in its context
+	noPayloadEvt := events.NewMsgReceived(core.NewMsgIn(
+		urns.URN("tel:+1234567890"),
+		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
+		"Hi there!",
+		nil,
+		"",
+		nil,
+	), "")
+	noPayloadInput := inputs.NewMsg(session.Assets(), noPayloadEvt)
+	noPayloadContext, _ := core.Context(env, noPayloadInput).(*types.XObject)
+	payload, _ := noPayloadContext.Get("payload")
+	test.AssertXEqual(t, types.XObjectEmpty, payload)
+
 	// check marshaling to JSON
 	marshaled, err := jsonx.Marshal(input)
 	assert.NoError(t, err)

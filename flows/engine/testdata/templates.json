@@ -617,7 +617,7 @@
             },
             "created_on": "2017-12-31T11:35:09.123456Z",
             "external_id": "",
-            "payload": null,
+            "payload": {},
             "text": "Hi there",
             "type": "msg",
             "urn": "tel:+12065551212",
