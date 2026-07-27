@@ -1,3 +1,7 @@
+v0.286.1 (2026-07-27)
+-------------------------
+ * Make @input.payload an empty object instead of null when not set
+
 v0.286.0 (2026-07-27)
 -------------------------
  * Add form type for quick replies, parsed from text as <form>Button label<extra>form id
