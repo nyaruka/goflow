@@ -1,3 +1,7 @@
+v0.288.0 (2026-07-28)
+-------------------------
+ * Add 14.4.2 spec migration to change webhook status router operands to @(default(webhook.status, 0))
+
 v0.287.0 (2026-07-28)
 -------------------------
  * Add url type for quick replies, parsed from text as <url>Display text<extra>url
