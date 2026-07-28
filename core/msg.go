@@ -23,7 +23,7 @@ const (
 
 	// max length of a quick reply
 	MaxQuickReplyTextLength  = 64
-	MaxQuickReplyExtraLength = 72
+	MaxQuickReplyExtraLength = 1000
 
 	UnsendableReasonNoRoute         UnsendableReason = "no_route"         // no sendable channel+URN pair
 	UnsendableReasonContactBlocked  UnsendableReason = "contact_blocked"  // contact is blocked
@@ -164,7 +164,8 @@ func NewMsgTemplating(template *assets.TemplateReference, components []*Templati
 }
 
 // QuickReply is a suggested reply or action attached to an outgoing message. For type text, extra is an optional
-// description, and for type form, extra is the channel-specific ID of the form to be opened (e.g. a WhatsApp flow ID).
+// description, for type form, extra is the channel-specific ID of the form to be opened (e.g. a WhatsApp flow ID),
+// and for type url, extra is the URL to be opened.
 type QuickReply struct {
 	Type  string `json:"type"`
 	Text  string `json:"text,omitempty"`
@@ -183,6 +184,8 @@ func (q QuickReply) MarshalText() (text []byte, err error) {
 	}
 	if q.Type == "form" {
 		s = "<form>" + s
+	} else if q.Type == "url" {
+		s = "<url>" + s
 	}
 	return []byte(s), nil
 }
@@ -198,6 +201,9 @@ func (q *QuickReply) UnmarshalText(text []byte) error {
 	if strings.HasPrefix(s, "<form>") {
 		q.Type = "form"
 		s = strings.TrimPrefix(s, "<form>")
+	} else if strings.HasPrefix(s, "<url>") {
+		q.Type = "url"
+		s = strings.TrimPrefix(s, "<url>")
 	} else {
 		q.Type = "text"
 	}
