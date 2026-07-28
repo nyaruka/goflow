@@ -32,7 +32,7 @@ const (
 	// localizable items are actions, cases and categories, so the limits above give us the max possible per language
 	MaxItemsPerLanguage      = MaxNodesPerFlow * (MaxActionsPerNode + MaxCasesPerRouter + MaxCategoriesPerRouter)
 	MaxPropertiesPerItem     = 10    // no item has more than a few localizable properties (plus _ui metadata)
-	MaxValuesPerProperty     = 100   // max number of values in a translated property (e.g. quick replies)
+	MaxValuesPerProperty     = 10    // no localizable array is allowed more values than this (quick replies, attachments, case arguments)
 	MaxTranslationValueChars = 10000 // max length of a translation value (same as longest localizable text)
 )
 

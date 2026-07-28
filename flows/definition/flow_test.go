@@ -577,7 +577,7 @@ func TestReadFlowWithOversizedLocalization(t *testing.T) {
 
 	// translated properties can't have too many values
 	err = read(fmt.Sprintf(`{"spa": {"7e994e0d-9c51-4050-bc66-d698b8391684": {"text": [%s"x"]}}}`, strings.Repeat(`"x",`, flows.MaxValuesPerProperty)))
-	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': translation for 'text' can't have more than 100 values (has 101)")
+	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': translation for 'text' can't have more than 10 values (has 11)")
 
 	// items can't have too many translated properties
 	props := make([]string, flows.MaxPropertiesPerItem+1)
