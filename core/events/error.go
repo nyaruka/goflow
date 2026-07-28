@@ -14,6 +14,7 @@ func init() {
 const TypeError string = "error"
 
 const (
+	ErrorCodeActionUnsupported    = "action:unsupported"
 	ErrorCodeDependencyMissing    = "dependency:missing"
 	ErrorCodeURNTaken             = "urn:taken"
 	ErrorCodeExpression           = "expression"
@@ -69,4 +70,9 @@ func NewRawError(err error) *Error {
 // NewDependencyError returns an error event for a missing dependency
 func NewDependencyError(ref assets.Reference) *Error {
 	return NewError(fmt.Sprintf("Missing dependency: %s", ref.String()), ErrorCodeDependencyMissing)
+}
+
+// NewActionUnsupportedError returns an error event for an action that is no longer supported
+func NewActionUnsupportedError(text string) *Error {
+	return NewError(text, ErrorCodeActionUnsupported)
 }
