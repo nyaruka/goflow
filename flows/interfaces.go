@@ -21,12 +21,19 @@ import (
 )
 
 const (
-	MaxNodesPerFlow        = 1000 // max number of nodes in a flow
-	MaxActionsPerNode      = 100  // max number of actions in a node
-	MaxExitsPerNode        = 100  // max number of exits in a node
-	MaxCategoriesPerRouter = 100  // max number of categories a router can have
-	MaxCasesPerRouter      = 100  // max number of categories a switch router can have
-	MaxArgumentsPerCase    = 10   // max number of test arguments a switch router case can have
+	MaxNodesPerFlow        = 1000   // max number of nodes in a flow
+	MaxActionsPerNode      = 100    // max number of actions in a node
+	MaxExitsPerNode        = 100    // max number of exits in a node
+	MaxCategoriesPerRouter = 100    // max number of categories a router can have
+	MaxCasesPerRouter      = 100    // max number of categories a switch router can have
+	MaxArgumentsPerCase    = 10     // max number of test arguments a switch router case can have
+	MaxUIBytes             = 262144 // max size in bytes of a flow's _ui section
+
+	// localizable items are actions, cases and categories, so the limits above give us the max possible per language
+	MaxItemsPerLanguage      = MaxNodesPerFlow * (MaxActionsPerNode + MaxCasesPerRouter + MaxCategoriesPerRouter)
+	MaxPropertiesPerItem     = 10    // no item has more than a few localizable properties (plus _ui metadata)
+	MaxValuesPerProperty     = 10    // no localizable array is allowed more values than this (quick replies, attachments, case arguments)
+	MaxTranslationValueChars = 10000 // max length of a translation value (same as longest localizable text)
 )
 
 // CategoryUUID is the UUID of a node category

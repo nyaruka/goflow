@@ -1,6 +1,7 @@
 package definition_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -548,6 +549,47 @@ func TestReadFlowSizeGuard(t *testing.T) {
 
 	_, err := definition.ReadFlow([]byte(legacyDef), nil)
 	assert.EqualError(t, err, fmt.Sprintf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, flows.MaxNodesPerFlow+1))
+}
+
+func TestReadFlowWithOversizedUI(t *testing.T) {
+	// a definition with an over-sized _ui section is rejected up front, before the expensive migration passes
+	ui := fmt.Sprintf(`{"stuff": "%s"}`, strings.Repeat("x", flows.MaxUIBytes))
+	def := fmt.Sprintf(`{"uuid":"8ca44c09-791d-453a-9799-a70dd3303306","name":"Test","spec_version":"%s","language":"eng","type":"messaging","nodes":[],"_ui":%s}`, definition.CurrentSpecVersion, ui)
+
+	_, err := definition.ReadFlow([]byte(def), nil)
+	assert.EqualError(t, err, fmt.Sprintf("flow UI can't be larger than %d bytes (is %d)", flows.MaxUIBytes, len(ui)))
+
+	// and the same limit is enforced when constructing a flow directly
+	_, err = definition.NewFlow("8ca44c09-791d-453a-9799-a70dd3303306", "Test", "eng", flows.FlowTypeMessaging, 1, 0, definition.NewLocalization(), nil, json.RawMessage(ui), nil)
+	assert.EqualError(t, err, fmt.Sprintf("flow UI can't be larger than %d bytes (is %d)", flows.MaxUIBytes, len(ui)))
+}
+
+func TestReadFlowWithOversizedLocalization(t *testing.T) {
+	read := func(l10n string) error {
+		def := fmt.Sprintf(`{"uuid":"8ca44c09-791d-453a-9799-a70dd3303306","name":"Test","spec_version":"%s","language":"eng","type":"messaging","localization":%s,"nodes":[]}`, definition.CurrentSpecVersion, l10n)
+		_, err := definition.ReadFlow([]byte(def), nil)
+		return err
+	}
+
+	// translation values can't be longer than the longest localizable text
+	err := read(fmt.Sprintf(`{"spa": {"7e994e0d-9c51-4050-bc66-d698b8391684": {"text": ["%s"]}}}`, strings.Repeat("x", flows.MaxTranslationValueChars+1)))
+	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': translation value for 'text' can't be longer than 10000 chars (is 10001)")
+
+	// translated properties can't have too many values
+	err = read(fmt.Sprintf(`{"spa": {"7e994e0d-9c51-4050-bc66-d698b8391684": {"text": [%s"x"]}}}`, strings.Repeat(`"x",`, flows.MaxValuesPerProperty)))
+	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': translation for 'text' can't have more than 10 values (has 11)")
+
+	// items can't have too many translated properties
+	props := make([]string, flows.MaxPropertiesPerItem+1)
+	for i := range props {
+		props[i] = fmt.Sprintf(`"prop%d": ["x"]`, i)
+	}
+	err = read(fmt.Sprintf(`{"spa": {"7e994e0d-9c51-4050-bc66-d698b8391684": {%s}}}`, strings.Join(props, ",")))
+	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': can't have more than 10 properties (has 11)")
+
+	// non-string values (e.g. _ui metadata) are limited by their marshaled size
+	err = read(fmt.Sprintf(`{"spa": {"7e994e0d-9c51-4050-bc66-d698b8391684": {"_ui": {"stuff": "%s"}}}}`, strings.Repeat("x", flows.MaxTranslationValueChars)))
+	assert.EqualError(t, err, "invalid localization: invalid translation for 'spa': invalid item translation for '7e994e0d-9c51-4050-bc66-d698b8391684': translation value for '_ui' can't be larger than 10000 bytes (is 10012)")
 }
 
 func TestExtractTemplatesAndLocalizables(t *testing.T) {
