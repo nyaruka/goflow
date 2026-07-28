@@ -379,12 +379,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewOptInRequested(jotd.Reference(), facebook.Reference(), urns.URN("facebook:1234567890"))
-			},
-			`optin_requested`,
-		},
-		{
-			func() events.Event {
 				return events.NewOptInStarted(jotd.Reference(), facebook.Reference())
 			},
 			`optin_started`,
