@@ -267,6 +267,7 @@ func TestQuickReplies(t *testing.T) {
 		{"<location>Click", core.QuickReply{Type: "location", Text: "Click"}},
 		{"<form>", core.QuickReply{Type: "form"}},
 		{"<form>Book now<extra>123456", core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
+		{"<url>Create Quotation<extra>https://example.com/login?token=1234", core.QuickReply{Type: "url", Text: "Create Quotation", Extra: "https://example.com/login?token=1234"}},
 	}
 	for _, tc := range texts {
 		qr := core.QuickReply{}
@@ -291,6 +292,8 @@ func TestQuickReplies(t *testing.T) {
 		{[]byte(`{"type": "location", "text": "Click"}`), core.QuickReply{Type: "location", Text: "Click"}},
 		{[]byte(`"<form>Book now<extra>123456"`), core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
 		{[]byte(`{"type": "form", "text": "Book now", "extra": "123456"}`), core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}},
+		{[]byte(`"<url>Create Quotation<extra>https://example.com/login?token=1234"`), core.QuickReply{Type: "url", Text: "Create Quotation", Extra: "https://example.com/login?token=1234"}},
+		{[]byte(`{"type": "url", "text": "Create Quotation", "extra": "https://example.com/login?token=1234"}`), core.QuickReply{Type: "url", Text: "Create Quotation", Extra: "https://example.com/login?token=1234"}},
 	}
 	for _, tc := range jsons {
 		qr := core.QuickReply{}
@@ -304,5 +307,6 @@ func TestQuickReplies(t *testing.T) {
 	assert.Equal(t, []byte(`{"type":"text","text":"Yes","extra":"Really"}`), jsonx.MustMarshal(core.QuickReply{Text: "Yes", Extra: "Really"}))
 	assert.Equal(t, []byte(`{"type":"location"}`), jsonx.MustMarshal(core.QuickReply{Type: "location"}))
 	assert.Equal(t, []byte(`{"type":"form","text":"Book now","extra":"123456"}`), jsonx.MustMarshal(core.QuickReply{Type: "form", Text: "Book now", Extra: "123456"}))
+	assert.Equal(t, []byte(`{"type":"url","text":"Create Quotation","extra":"https://example.com/login?token=1234"}`), jsonx.MustMarshal(core.QuickReply{Type: "url", Text: "Create Quotation", Extra: "https://example.com/login?token=1234"}))
 	assert.Equal(t, []byte(`[{"type":"text","text":"Yes"},{"type":"text","text":"No"}]`), jsonx.MustMarshal([]core.QuickReply{{Text: "Yes"}, {Text: "No"}}))
 }
