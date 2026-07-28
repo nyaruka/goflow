@@ -41,8 +41,8 @@ type Field interface {
 
 // FieldReference is a reference to a field
 type FieldReference struct {
-	Key  string `json:"key" validate:"required"`
-	Name string `json:"name"`
+	Key  string `json:"key" validate:"required,max=64"`
+	Name string `json:"name" validate:"max=64"`
 }
 
 // NewFieldReference creates a new field reference with the given key and name

@@ -25,7 +25,7 @@ type OptIn interface {
 // OptInReference is used to reference an opt in
 type OptInReference struct {
 	UUID OptInUUID `json:"uuid" validate:"required,uuid"`
-	Name string    `json:"name"`
+	Name string    `json:"name" validate:"max=64"`
 }
 
 // NewOptInReference creates a new optin reference with the given UUID and name
