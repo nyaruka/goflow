@@ -451,10 +451,13 @@ func eventsForAction(action flows.Action, msgSession flows.Session, voiceSession
 
 	eventJSON := make([]json.RawMessage, len(eventList))
 	for i, event := range eventList {
-		// action examples aren't supposed to generate error events - if they have, something went wrong
+		// aside from unsupported actions, action examples aren't supposed to generate error events -
+		// if they have, something went wrong
 		if event.Type() == events.TypeError {
 			errEvent := event.(*events.Error)
-			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
+			if errEvent.Code != events.ErrorCodeActionUnsupported {
+				return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
+			}
 		}
 
 		eventJSON[i], err = jsonx.MarshalPretty(event)
