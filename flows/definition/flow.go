@@ -109,6 +109,9 @@ func (f *flow) validate() error {
 	if len(f.nodes) > flows.MaxNodesPerFlow {
 		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, len(f.nodes))
 	}
+	if len(f.ui) > flows.MaxUIBytes {
+		return fmt.Errorf("flow UI can't be larger than %d bytes (is %d)", flows.MaxUIBytes, len(f.ui))
+	}
 
 	// track UUIDs used by nodes and actions to ensure that they are unique
 	seenUUIDs := make(map[uuids.UUID]bool)
@@ -334,7 +337,7 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 		mc = migrations.DefaultConfig
 	}
 
-	// reject flows with too many nodes before migrating - migration re-reads and re-marshals the entire
+	// reject over-sized flows before migrating - migration re-reads and re-marshals the entire
 	// definition once per version step, so this avoids doing that expensive work for a definition that
 	// will be rejected by validation anyway
 	if err := checkFlowSize(data); err != nil {
@@ -371,11 +374,11 @@ func readFlow(data []byte, mc *migrations.Config, a assets.Flow) (flows.Flow, er
 	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, time.Duration(e.ExpireAfterMinutes)*time.Minute, e.Localization, nodes, e.UI, a)
 }
 
-// checkFlowSize counts the nodes in a flow definition (current or legacy format) and returns an error if
-// there are more than are allowed. It walks only the relevant arrays without decoding their contents or the
-// rest of the definition, so it's cheap relative to the full parse and migration that follow. Malformed or
-// duplicated input can only make it under-count, so it never rejects a flow that would otherwise be valid -
-// the authoritative check remains the post-migration validation.
+// checkFlowSize counts the nodes and measures the _ui section of a flow definition (current or legacy
+// format) and returns an error if either exceeds what is allowed. It walks only the relevant parts without
+// decoding their contents or the rest of the definition, so it's cheap relative to the full parse and
+// migration that follow. Malformed or duplicated input can only make it under-count, so it never rejects a
+// flow that would otherwise be valid - the authoritative checks remain the post-migration validation.
 func checkFlowSize(data []byte) error {
 	numNodes := 0
 	countElement := func([]byte, jsonparser.ValueType, int, error) { numNodes++ }
@@ -386,6 +389,10 @@ func checkFlowSize(data []byte) error {
 
 	if numNodes > flows.MaxNodesPerFlow {
 		return fmt.Errorf("flow can't have more than %d nodes (has %d)", flows.MaxNodesPerFlow, numNodes)
+	}
+
+	if ui, _, _, _ := jsonparser.Get(data, "_ui"); len(ui) > flows.MaxUIBytes {
+		return fmt.Errorf("flow UI can't be larger than %d bytes (is %d)", flows.MaxUIBytes, len(ui))
 	}
 
 	return nil

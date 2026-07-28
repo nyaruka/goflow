@@ -2,6 +2,7 @@ package definition
 
 import (
 	"fmt"
+	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
@@ -20,10 +21,40 @@ import (
 type itemTranslation map[string]any
 
 func (l itemTranslation) validate() error {
-	for property := range l {
+	if len(l) > flows.MaxPropertiesPerItem {
+		return fmt.Errorf("can't have more than %d properties (has %d)", flows.MaxPropertiesPerItem, len(l))
+	}
+
+	for property, value := range l {
 		if len(property) == 0 || len(property) > 64 {
 			return fmt.Errorf("invalid property name '%s'", stringsx.TruncateEllipsis(property, 32))
 		}
+
+		if asSlice, ok := value.([]any); ok {
+			if len(asSlice) > flows.MaxValuesPerProperty {
+				return fmt.Errorf("translation for '%s' can't have more than %d values (has %d)", property, flows.MaxValuesPerProperty, len(asSlice))
+			}
+			for _, v := range asSlice {
+				if err := checkTranslationValue(property, v); err != nil {
+					return err
+				}
+			}
+		} else if err := checkTranslationValue(property, value); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// checks the size of a single translation value - values should be strings but editors are allowed to
+// stuff other things in here (e.g. _ui metadata) which we tolerate but still limit by size
+func checkTranslationValue(property string, v any) error {
+	if asString, ok := v.(string); ok {
+		if length := utf8.RuneCountInString(asString); length > flows.MaxTranslationValueChars {
+			return fmt.Errorf("translation value for '%s' can't be longer than %d chars (is %d)", property, flows.MaxTranslationValueChars, length)
+		}
+	} else if marshaled, _ := jsonx.Marshal(v); len(marshaled) > flows.MaxTranslationValueChars {
+		return fmt.Errorf("translation value for '%s' can't be larger than %d bytes (is %d)", property, flows.MaxTranslationValueChars, len(marshaled))
 	}
 	return nil
 }
@@ -70,6 +101,10 @@ func (t itemTranslation) get(property string) []string {
 type languageTranslation map[uuids.UUID]itemTranslation
 
 func (l languageTranslation) validate() error {
+	if len(l) > flows.MaxItemsPerLanguage {
+		return fmt.Errorf("can't have more than %d item translations (has %d)", flows.MaxItemsPerLanguage, len(l))
+	}
+
 	for uuid, item := range l {
 		if !uuids.Is(string(uuid)) {
 			return fmt.Errorf("invalid item uuid '%s'", uuid)
