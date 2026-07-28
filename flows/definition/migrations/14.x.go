@@ -10,6 +10,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.4.2"), Migrate14_4_2)
 	registerMigration(semver.MustParse("14.4.1"), Migrate14_4_1)
 	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
 	registerMigration(semver.MustParse("14.3.1"), Migrate14_3_1)
@@ -17,6 +18,31 @@ func init() {
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_4_2 changes webhook and resthook split routers to use @(default(webhook.status, 0)) as their operand
+// instead of @webhook.status. If a webhook call doesn't happen (e.g. the request exceeds the engine's size limit),
+// @webhook is null and looking up .status on it generates an error event. Wrapping the lookup in default(..) means
+// the operand evaluates to 0 in that case and the contact routes to the failure category without errors.
+//
+// @version 14_4_2 "14.4.2"
+func Migrate14_4_2(f Flow, cfg *Config) (Flow, error) {
+	webhookActions := []string{"call_webhook", "call_resthook"}
+
+	for _, node := range f.Nodes() {
+		actions := node.Actions()
+		router := node.Router()
+
+		if len(actions) != 1 || !slices.Contains(webhookActions, actions[0].Type()) || router == nil || router.Type() != "switch" {
+			continue
+		}
+
+		if operand, _ := router["operand"].(string); operand == "@webhook.status" {
+			router["operand"] = "@(default(webhook.status, 0))"
+		}
+	}
+
+	return f, nil
 }
 
 // Migrate14_4_1 normalises webhook and resthook split routers to the canonical shape: operand @webhook.status with a
