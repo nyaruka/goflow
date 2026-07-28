@@ -1,3 +1,10 @@
+v0.287.0 (2026-07-28)
+-------------------------
+ * Add url type for quick replies, parsed from text as <url>Display text<extra>url
+ * Increase max quick reply extra length from 72 to 1000
+ * Change request_optin action to log an error event as opt-in requests are no longer supported
+ * Remove unused optin_requested event type
+
 v0.286.1 (2026-07-27)
 -------------------------
  * Make @input.payload an empty object instead of null when not set
