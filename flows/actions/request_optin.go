@@ -15,9 +15,9 @@ func init() {
 // TypeRequestOptIn is the type for the send optin action
 const TypeRequestOptIn string = "request_optin"
 
-// RequestOptIn can be used to request an optin from the contact.
+// RequestOptIn was used to request an optin from the contact but is no longer supported.
 //
-// An [event:optin_requested] event will be created if the contact has a channel that supports optins.
+// An [event:error] event will be created.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -44,19 +44,9 @@ func NewRequestOptIn(uuid flows.ActionUUID, optIn *assets.OptInReference) *Reque
 	}
 }
 
-// Execute creates the optin events
+// Execute logs an error event as this action is no longer supported
 func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
-	optIn := run.Session().Assets().OptIns().Get(a.OptIn.UUID)
-	if optIn == nil {
-		log(events.NewDependencyError(a.OptIn))
-		return nil
-	}
-
-	route := run.Contact().ResolveRoute()
-
-	if route != nil && route.Channel.HasFeature(assets.ChannelFeatureOptIns) {
-		log(events.NewOptInRequested(optIn.Reference(), route.Channel.Reference(), route.URN))
-	}
+	log(events.NewActionUnsupportedError("opt-in requests are no longer supported"))
 
 	return nil
 }
