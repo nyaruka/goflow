@@ -215,6 +215,13 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 		node = core.ContextFunc(env, r.nodeContext)
 	}
 
+	// a zero valued call rather than null if no call has been recorded, so that expressions like @webhook.status
+	// evaluate without errors and a flow can route on status == 0 as a failure
+	webhook := r.webhook
+	if webhook == nil {
+		webhook = &flows.WebhookCall{}
+	}
+
 	return map[string]types.XValue{
 		// the available runs
 		"run":    core.Context(env, r),
@@ -234,7 +241,7 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 		"resume":       core.Context(env, r.Session().CurrentResume()),
 		"input":        core.Context(env, r.Session().Input()),
 		"globals":      core.Context(env, r.Session().Assets().Globals()),
-		"webhook":      core.Context(env, r.webhook),
+		"webhook":      core.Context(env, webhook),
 		"node":         node,
 		"legacy_extra": r.legacyExtra.ToXValue(env),
 	}

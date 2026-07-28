@@ -65,4 +65,12 @@ func TestWebhookCall(t *testing.T) {
 		"headers":     types.XObjectEmpty,
 		"json":        nil,
 	}), core.Context(env, call3))
+
+	// a zero valued call still presents a complete context
+	test.AssertXEqual(t, types.NewXObject(map[string]types.XValue{
+		"__default__": types.XTextEmpty,
+		"status":      types.NewXNumberFromInt(0),
+		"headers":     types.XObjectEmpty,
+		"json":        nil,
+	}), core.Context(env, &flows.WebhookCall{}))
 }

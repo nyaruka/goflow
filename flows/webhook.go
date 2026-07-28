@@ -69,8 +69,13 @@ func (w *WebhookCall) Context(env envs.Environment) map[string]types.XValue {
 		json = nil
 	}
 
+	def := ""
+	if w.Method != "" {
+		def = fmt.Sprintf("%s %s", w.Method, w.URL)
+	}
+
 	return map[string]types.XValue{
-		"__default__": types.NewXText(fmt.Sprintf("%s %s", w.Method, w.URL)),
+		"__default__": types.NewXText(def),
 		"status":      types.NewXNumberFromInt(w.ResponseStatus),
 		"headers":     headers,
 		"json":        json,

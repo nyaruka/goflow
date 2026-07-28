@@ -222,6 +222,26 @@ func TestRunContext(t *testing.T) {
 		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
 	}
 
+	// a run with no recorded webhook call presents a zero valued @webhook instead of null
+	run.SetWebhook(nil)
+
+	webhookCases := []struct {
+		template string
+		expected string
+	}{
+		{`@webhook`, ``},
+		{`@webhook.status`, `0`},
+		{`@webhook.headers`, `{}`},
+		{`@webhook.json`, ``},
+		{`@(default(webhook.status, 0))`, `0`},
+	}
+	for _, tc := range webhookCases {
+		log := test.NewEventLog()
+		actual, _ := run.EvaluateTemplate(t.Context(), tc.template, log.Log)
+		assert.NoError(t, log.Error())
+		assert.Equal(t, tc.expected, actual, "template mismatch for %s", tc.template)
+	}
+
 	// test with escaping
 	log := test.NewEventLog()
 	evaluated, _ := run.EvaluateTemplateText(t.Context(), `gender = @("M\" OR")`, contactql.EscapeValue, true, log.Log)
