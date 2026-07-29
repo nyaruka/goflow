@@ -46,7 +46,7 @@ type TransferAirtime struct {
 	baseAction
 	onlineAction
 
-	Amounts map[string]decimal.Decimal `json:"amounts" validate:"required,max=100"`
+	Amounts map[string]decimal.Decimal `json:"amounts" validate:"required,max=100,dive,keys,max=8,endkeys"`
 }
 
 // Validate validates our action is valid

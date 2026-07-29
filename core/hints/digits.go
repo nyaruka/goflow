@@ -12,7 +12,7 @@ type Digits struct {
 	baseHint
 
 	Count        *int   `json:"count,omitempty"`
-	TerminatedBy string `json:"terminated_by,omitempty"`
+	TerminatedBy string `json:"terminated_by,omitempty" validate:"max=8"`
 }
 
 // NewFixedDigits creates a new digits hint for a fixed count of digits

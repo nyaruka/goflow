@@ -33,7 +33,7 @@ type SetContactTimezone struct {
 	baseAction
 	universalAction
 
-	Timezone string `json:"timezone" engine:"evaluated"`
+	Timezone string `json:"timezone" validate:"max=1000" engine:"evaluated"`
 }
 
 // NewSetContactTimezone creates a new set timezone action

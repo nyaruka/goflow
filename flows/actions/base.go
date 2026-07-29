@@ -280,7 +280,7 @@ func (a *otherContactsAction) resolveRecipients(ctx context.Context, run flows.R
 // utility struct for actions which create a message
 type createMsgAction struct {
 	Text              string                    `json:"text"                       validate:"required,max=10000"     engine:"localized,evaluated"`
-	Attachments       []string                  `json:"attachments,omitempty"      validate:"max=10,dive,attachment" engine:"localized,evaluated"`
+	Attachments       []string                  `json:"attachments,omitempty"      validate:"max=10,dive,attachment,max=8192" engine:"localized,evaluated"`
 	QuickReplies      []string                  `json:"quick_replies,omitempty"    validate:"max=10,dive,max=1000"   engine:"localized,evaluated"`
 	Template          *assets.TemplateReference `json:"template,omitempty"`
 	TemplateVariables []string                  `json:"template_variables,omitempty" validate:"max=100,dive,max=10000" engine:"evaluated"`

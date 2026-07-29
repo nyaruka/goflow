@@ -46,7 +46,7 @@ type OpenTicket struct {
 
 	Topic    *assets.TopicReference `json:"topic"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"`
-	Note     string                 `json:"note,omitempty"     engine:"evaluated"`
+	Note     string                 `json:"note,omitempty"     validate:"max=10000" engine:"evaluated"`
 }
 
 // NewOpenTicket creates a new open ticket action

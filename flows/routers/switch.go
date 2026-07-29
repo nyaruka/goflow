@@ -26,7 +26,7 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID         uuids.UUID         `json:"uuid"                   validate:"required"`
+	UUID         uuids.UUID         `json:"uuid"                   validate:"required,uuid"`
 	Type         string             `json:"type"                   validate:"required"`
 	Arguments    []string           `json:"arguments,omitempty"    validate:"dive,max=10000" engine:"localized,evaluated"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
