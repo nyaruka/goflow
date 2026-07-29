@@ -1,3 +1,8 @@
+v0.288.1 (2026-07-29)
+-------------------------
+ * Add size limits to flow _ui section and localization values
+ * Add max length validation to asset reference names
+
 v0.288.0 (2026-07-28)
 -------------------------
  * Add 14.4.2 spec migration to change webhook status router operands to @(default(webhook.status, 0))
