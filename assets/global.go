@@ -19,8 +19,8 @@ type Global interface {
 
 // GlobalReference is a reference to a global
 type GlobalReference struct {
-	Key  string `json:"key" validate:"required"`
-	Name string `json:"name"`
+	Key  string `json:"key" validate:"required,max=64"`
+	Name string `json:"name" validate:"max=64"`
 }
 
 // NewGlobalReference creates a new global reference with the given key and name

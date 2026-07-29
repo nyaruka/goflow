@@ -51,7 +51,7 @@ const (
 // ContactReference is used to reference a contact
 type ContactReference struct {
 	UUID ContactUUID `json:"uuid" validate:"required,uuid"`
-	Name string      `json:"name"`
+	Name string      `json:"name" validate:"max=128"`
 }
 
 // NewContactReference creates a new contact reference with the given UUID and name

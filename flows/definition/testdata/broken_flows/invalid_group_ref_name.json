@@ -1,0 +1,33 @@
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "35b71b7c-3e9c-46a6-9b4d-4c5f01e5a02b",
+                                    "name": "12345678901234567890123456789012345678901234567890123456789012345"
+                                }
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "23a7a64b-5f07-4a91-acc0-ddb52d7ff5ca"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

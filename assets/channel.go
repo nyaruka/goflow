@@ -56,7 +56,7 @@ type Channel interface {
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
 	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
-	Name string      `json:"name"`
+	Name string      `json:"name" validate:"max=64"`
 }
 
 // NewChannelReference creates a new channel reference with the given UUID and name

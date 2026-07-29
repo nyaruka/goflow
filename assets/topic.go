@@ -25,7 +25,7 @@ type Topic interface {
 // TopicReference is used to reference a topic
 type TopicReference struct {
 	UUID TopicUUID `json:"uuid" validate:"required,uuid"`
-	Name string    `json:"name"`
+	Name string    `json:"name" validate:"max=64"`
 }
 
 // NewTopicReference creates a new topic reference with the given UUID and name

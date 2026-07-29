@@ -81,7 +81,7 @@ type TemplateTranslation interface {
 // TemplateReference is used to reference a Template
 type TemplateReference struct {
 	UUID TemplateUUID `json:"uuid" validate:"required,uuid"`
-	Name string       `json:"name"`
+	Name string       `json:"name" validate:"max=512"`
 }
 
 // NewTemplateReference creates a new template reference with the given UUID and name

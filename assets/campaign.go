@@ -28,7 +28,7 @@ type Campaign interface {
 // CampaignReference is used to reference a campaign
 type CampaignReference struct {
 	UUID CampaignUUID `json:"uuid" validate:"required,uuid"`
-	Name string       `json:"name"`
+	Name string       `json:"name" validate:"max=64"`
 }
 
 // NewCampaignReference creates a new campaign reference with the given UUID and name

@@ -38,7 +38,7 @@ type LLM interface {
 // LLMReference is used to reference an LLM
 type LLMReference struct {
 	UUID LLMUUID `json:"uuid" validate:"required,uuid"`
-	Name string  `json:"name"`
+	Name string  `json:"name" validate:"max=64"`
 }
 
 // NewLLMReference creates a new LLM reference with the given UUID and name
