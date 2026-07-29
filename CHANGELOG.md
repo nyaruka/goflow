@@ -1,3 +1,7 @@
+v0.288.2 (2026-07-29)
+-------------------------
+ * Add max length validation to remaining flow definition fields and CaseUUID type
+
 v0.288.1 (2026-07-29)
 -------------------------
  * Add size limits to flow _ui section and localization values
