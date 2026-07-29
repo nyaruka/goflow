@@ -39,6 +39,9 @@ const (
 // CategoryUUID is the UUID of a node category
 type CategoryUUID uuids.UUID
 
+// CaseUUID is the UUID of a router case
+type CaseUUID uuids.UUID
+
 // ActionUUID is the UUID of an action
 type ActionUUID uuids.UUID
 
