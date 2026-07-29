@@ -26,7 +26,7 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	Input      string `json:"input" validate:"required" engine:"evaluated"`
+	Input      string `json:"input" validate:"required,max=10000" engine:"evaluated"`
 	ResultName string `json:"result_name" validate:"required,result_name"`
 }
 

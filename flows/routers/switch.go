@@ -26,14 +26,14 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID         uuids.UUID         `json:"uuid"                   validate:"required"`
+	UUID         flows.CaseUUID     `json:"uuid"                   validate:"required,uuid"`
 	Type         string             `json:"type"                   validate:"required"`
 	Arguments    []string           `json:"arguments,omitempty"    validate:"dive,max=10000" engine:"localized,evaluated"`
 	CategoryUUID flows.CategoryUUID `json:"category_uuid"          validate:"required"`
 }
 
 // NewCase creates a new case
-func NewCase(uuid uuids.UUID, type_ string, arguments []string, categoryUUID flows.CategoryUUID) *Case {
+func NewCase(uuid flows.CaseUUID, type_ string, arguments []string, categoryUUID flows.CategoryUUID) *Case {
 	return &Case{
 		UUID:         uuid,
 		Type:         type_,
@@ -153,7 +153,7 @@ func (r *Switch) matchCase(ctx context.Context, run flows.Run, operand types.XVa
 		// build our argument list which starts with the operand
 		args := []types.XValue{operand}
 
-		localizedArgs, _ := run.GetTextArray(c.UUID, "arguments", c.Arguments, nil)
+		localizedArgs, _ := run.GetTextArray(uuids.UUID(c.UUID), "arguments", c.Arguments, nil)
 
 		// this shouldn't happen but if the number of localized args doesn't match the base arguments, ignore them
 		if len(localizedArgs) != len(c.Arguments) {

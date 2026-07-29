@@ -94,7 +94,7 @@ var _ flows.Wait = (*Dial)(nil)
 type dialEnvelope struct {
 	baseEnvelope
 
-	Phone            string `json:"phone" validate:"required"`
+	Phone            string `json:"phone" validate:"required,max=1000"`
 	DialLimitSeconds int    `json:"dial_limit_seconds,omitempty"`
 	CallLimitSeconds int    `json:"call_limit_seconds,omitempty"`
 }
