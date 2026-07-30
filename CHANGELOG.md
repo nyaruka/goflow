@@ -1,3 +1,7 @@
+v0.288.3 (2026-07-30)
+-------------------------
+ * Raise max length of set_contact_field value to 10000
+
 v0.288.2 (2026-07-29)
 -------------------------
  * Add max length validation to remaining flow definition fields and CaseUUID type
