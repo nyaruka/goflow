@@ -761,6 +761,15 @@ func TestReadAction(t *testing.T) {
 	_, err = actions.Read([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
+	// limit on the value field is tested here rather than as a fixture to avoid a huge testdata string
+	_, err = actions.Read(fmt.Appendf(nil, `{
+		"type": "set_contact_field",
+		"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+		"field": {"key": "age", "name": "Age"},
+		"value": %q
+	}`, strings.Repeat("x", 10001)))
+	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
+
 	// legacy call_classifier action with a classifier asset reference parses fine -
 	// the now-removed classifier field is silently ignored
 	action, err := actions.Read([]byte(`{

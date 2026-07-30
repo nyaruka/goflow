@@ -34,7 +34,7 @@ type SetContactField struct {
 	universalAction
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
-	Value string                 `json:"value" validate:"max=1000" engine:"evaluated"`
+	Value string                 `json:"value" validate:"max=10000" engine:"evaluated"` // matches the engine's template length limit
 }
 
 // NewSetContactField creates a new set channel action
