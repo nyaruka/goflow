@@ -131,7 +131,7 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 		call, err := svc.Call(req)
 
 		if err != nil {
-			logCallError(err, log)
+			logCallError(err, run, log)
 		}
 		if call != nil {
 			calls = append(calls, call)

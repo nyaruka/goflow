@@ -12,7 +12,8 @@
                 "uuid": "01969b48-c2d3-76f8-af42-abb6278d787f",
                 "type": "warning",
                 "created_on": "2025-05-04T12:32:40.123456789Z",
-                "text": "deprecated context value accessed: contact.id: use contact.ref instead"
+                "text": "@contact.id is deprecated, use @contact.ref instead",
+                "code": "context:deprecated"
             }
         ]
     },
@@ -469,7 +470,8 @@
                 "uuid": "01969b48-e9e3-76f8-be3d-ee0d6d09117e",
                 "type": "warning",
                 "created_on": "2025-05-04T12:32:50.123456789Z",
-                "text": "deprecated context value accessed: legacy_extra"
+                "text": "@legacy_extra is deprecated",
+                "code": "context:deprecated"
             }
         ]
     },
@@ -529,7 +531,8 @@
                 "uuid": "01969b48-f1b3-76f8-8876-bd2f7154ab08",
                 "type": "warning",
                 "created_on": "2025-05-04T12:32:52.123456789Z",
-                "text": "deprecated context value accessed: contact.tickets: use ticket instead"
+                "text": "@contact.tickets is deprecated, use @ticket instead",
+                "code": "context:deprecated"
             }
         ]
     },

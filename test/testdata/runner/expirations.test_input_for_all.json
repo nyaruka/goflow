@@ -185,8 +185,9 @@
                     "uuid": "01969b47-8283-76f8-87c7-10f327cbfde2"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:20.123456789Z",
-                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
+                    "text": "@child.run.status is deprecated, use @child.status instead",
                     "type": "warning",
                     "uuid": "01969b47-8a53-76f8-a98e-1c65c9788658"
                 },
@@ -362,8 +363,9 @@
                     "uuid": "01969b47-d48b-76f8-aab8-757fffa552e6"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:41.123456789Z",
-                    "text": "deprecated context value accessed: child.run.status: use child.status instead",
+                    "text": "@child.run.status is deprecated, use @child.status instead",
                     "type": "warning",
                     "uuid": "01969b47-dc5b-76f8-95d6-85696b970f6a"
                 },
