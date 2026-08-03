@@ -7,7 +7,12 @@ func init() {
 // TypeWarning is the type of our warning events
 const TypeWarning string = "warning"
 
-// Warning events are created for things like accessing deprecated context values.
+const (
+	WarningCodeURLRestricted = "url:restricted"
+)
+
+// Warning events are created for things like accessing deprecated context values. Some warnings have
+// a `code` which identifies the type of warning.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
@@ -21,12 +26,14 @@ type Warning struct {
 	BaseEvent
 
 	Text string `json:"text" validate:"required"`
+	Code string `json:"code,omitempty"`
 }
 
 // NewWarning returns a new warning event
-func NewWarning(text string) *Warning {
+func NewWarning(text, code string) *Warning {
 	return &Warning{
 		BaseEvent: NewBaseEvent(TypeWarning),
 		Text:      text,
+		Code:      code,
 	}
 }

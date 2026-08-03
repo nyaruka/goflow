@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"net/http"
+	"net/url"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
@@ -27,7 +28,11 @@ type EmailService interface {
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
+	// Call makes the given HTTP request and returns the trace
 	Call(request *http.Request) (*httpx.Trace, error)
+
+	// IsRestricted returns whether the given URL is restricted and shouldn't be called from flows
+	IsRestricted(u *url.URL) bool
 }
 
 // LLMService provides LLM functionality to the engine

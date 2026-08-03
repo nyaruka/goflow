@@ -43,7 +43,7 @@ func NewCallClassifier(uuid flows.ActionUUID, input string, resultName string) *
 func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
 
-	log(events.NewWarning("NLU classifiers are no longer supported"))
+	log(events.NewWarning("NLU classifiers are no longer supported", ""))
 	a.saveResult(run, step, a.ResultName, "0", CategoryFailure, "", input, nil, log)
 	return nil
 }

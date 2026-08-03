@@ -313,7 +313,7 @@ func (r *run) EvaluateTemplateValue(ctx context.Context, template string, log ev
 		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
-		log(events.NewWarning(w))
+		log(events.NewWarning(w, ""))
 	}
 	return value, err == nil
 }
@@ -327,7 +327,7 @@ func (r *run) EvaluateTemplateText(ctx context.Context, template string, escapin
 		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
-		log(events.NewWarning(w))
+		log(events.NewWarning(w, ""))
 	}
 	if truncate {
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)

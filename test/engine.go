@@ -34,7 +34,7 @@ func newEngine(httpClient *http.Client) flows.Engine {
 			"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following: {{ .arg1 }}")),
 		}).
 		WithWebhookLimits(256*1024, 10000).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"})).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
 		WithEmailServiceFactory(func(s flows.SessionAssets) (flows.EmailService, error) {
 			return services.NewEmail(), nil
 		}).

@@ -353,6 +353,65 @@
         }
     },
     {
+        "description": "Warning event created if URL is in a restricted domain",
+        "http_mocks": {
+            "https://graph.facebook.com/v25.0/1234/messages": [
+                {
+                    "status": 200,
+                    "body": "{}"
+                }
+            ]
+        },
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "https://graph.facebook.com/v25.0/1234/messages",
+            "body": "{}"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "type": "warning",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "Webhook calls to graph.facebook.com may be blocked in the future",
+                "code": "url:restricted"
+            },
+            {
+                "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",
+                "type": "webhook_called",
+                "created_on": "2025-05-04T12:31:01.123456789Z",
+                "url": "https://graph.facebook.com/v25.0/1234/messages",
+                "status_code": 200,
+                "request": "POST /v25.0/1234/messages HTTP/1.1\r\nHost: graph.facebook.com\r\nUser-Agent: goflow-testing\r\nContent-Length: 2\r\nAccept-Encoding: gzip\r\n\r\n{}",
+                "response": "HTTP/1.0 200 OK\r\nContent-Length: 2\r\n\r\n{}",
+                "elapsed_ms": 1000,
+                "retries": 0,
+                "sizes": {
+                    "request": 136,
+                    "response": 40
+                },
+                "status": "success"
+            }
+        ],
+        "locals_after": {},
+        "templates": [
+            "https://graph.facebook.com/v25.0/1234/messages",
+            "{}"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "Result changed event created if result name set",
         "http_mocks": {
             "http://temba.io/": [
