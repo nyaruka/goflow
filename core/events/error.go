@@ -16,7 +16,13 @@ const TypeError string = "error"
 const (
 	ErrorCodeActionUnsupported    = "action:unsupported"
 	ErrorCodeDependencyMissing    = "dependency:missing"
+	ErrorCodeGroupMissing         = "group:missing"
+	ErrorCodeLabelMissing         = "label:missing"
+	ErrorCodeTimezoneInvalid      = "timezone:invalid"
+	ErrorCodeURLInvalid           = "url:invalid"
+	ErrorCodeURNInvalid           = "urn:invalid"
 	ErrorCodeURNTaken             = "urn:taken"
+	ErrorCodeUserMissing          = "user:missing"
 	ErrorCodeExpression           = "expression"
 	ErrorCodeExpressionTooComplex = "expression:too_complex"
 	ErrorCodeWebhookRequestSize   = "webhook:request_size"
@@ -43,22 +49,11 @@ type Error struct {
 
 // NewError returns a new error event for the passed in text
 func NewError(text, code string, extra ...string) *Error {
-	var extraMap map[string]string
-	if len(extra)%2 != 0 {
-		panic("extra fields must be key/value pairs")
-	}
-	if len(extra) > 0 {
-		extraMap = make(map[string]string, len(extra)/2)
-		for i := 0; i < len(extra); i += 2 {
-			extraMap[extra[i]] = extra[i+1]
-		}
-	}
-
 	return &Error{
 		BaseEvent: NewBaseEvent(TypeError),
 		Text:      text,
 		Code:      code,
-		Extra:     extraMap,
+		Extra:     extraFromPairs(extra),
 	}
 }
 
@@ -69,7 +64,7 @@ func NewRawError(err error) *Error {
 
 // NewDependencyError returns an error event for a missing dependency
 func NewDependencyError(ref assets.Reference) *Error {
-	return NewError(fmt.Sprintf("Missing dependency: %s", ref.String()), ErrorCodeDependencyMissing)
+	return NewError(fmt.Sprintf("Missing dependency: %s", ref.String()), ErrorCodeDependencyMissing, "type", ref.Type(), "identity", ref.Identity())
 }
 
 // NewActionUnsupportedError returns an error event for an action that is no longer supported

@@ -308,7 +308,7 @@ func resolveGroups(ctx context.Context, run flows.Run, references []*assets.Grou
 				// look up the set of all groups to see if such a group exists
 				group = groupAssets.FindByName(evaluatedName)
 				if group == nil {
-					log(events.NewError(fmt.Sprintf("No such group with name '%s'", evaluatedName), ""))
+					log(events.NewError(fmt.Sprintf("No such group with name '%s'", evaluatedName), events.ErrorCodeGroupMissing, "name", evaluatedName))
 				}
 			}
 		} else {
@@ -342,7 +342,7 @@ func resolveLabels(ctx context.Context, run flows.Run, references []*assets.Labe
 				// look up the set of all labels to see if such a label exists
 				label = labelAssets.FindByName(evaluatedName)
 				if label == nil {
-					log(events.NewError(fmt.Sprintf("No such label with name '%s'", evaluatedName), ""))
+					log(events.NewError(fmt.Sprintf("No such label with name '%s'", evaluatedName), events.ErrorCodeLabelMissing, "name", evaluatedName))
 				}
 			}
 		} else {
@@ -373,7 +373,7 @@ func resolveUser(ctx context.Context, run flows.Run, ref *assets.UserReference, 
 			// look up to see if such a user exists
 			user = userAssets.FindByEmail(evaluatedEmail)
 			if user == nil {
-				log(events.NewError(fmt.Sprintf("No such user with email '%s'", evaluatedEmail), ""))
+				log(events.NewError(fmt.Sprintf("No such user with email '%s'", evaluatedEmail), events.ErrorCodeUserMissing, "email", evaluatedEmail))
 			}
 		}
 	} else {

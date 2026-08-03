@@ -96,7 +96,11 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "'telegram:qwerty' is not valid URN"
+                "text": "'telegram:qwerty' is not valid URN",
+                "code": "urn:invalid",
+                "extra": {
+                    "urn": "telegram:qwerty"
+                }
             }
         ],
         "locals_after": {

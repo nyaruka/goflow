@@ -61,7 +61,7 @@ func (m *Routes) Apply(ctx context.Context, eng flows.Engine, env envs.Environme
 		urn := r.URN.Normalize()
 
 		if err := urn.Validate(); err != nil {
-			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn), ""))
+			log(events.NewError(fmt.Sprintf("'%s' is not valid URN", urn), events.ErrorCodeURNInvalid, "urn", string(urn)))
 			continue
 		}
 
