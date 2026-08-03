@@ -18,12 +18,38 @@ import (
 	"golang.org/x/net/http/httpguts"
 )
 
-func isValidURL(u string) bool {
+// domains of WhatsApp API providers which flows shouldn't be calling directly - for now calls to these
+// only generate warnings but eventually they may be blocked entirely
+var graylistedDomains = []string{
+	"360dialog.io",       // 360Dialog
+	"api.twilio.com",     // Twilio
+	"api.zenvia.com",     // Zenvia
+	"graph.facebook.com", // Meta Cloud API
+	"kaleyra.io",         // Kaleyra
+	"turn.io",            // Turn.io
+}
+
+// parses the given webhook URL, returning nil if it's too long or unparseable
+func parseURL(u string) *url.URL {
 	if utf8.RuneCountInString(u) > 8192 {
-		return false
+		return nil
 	}
-	_, err := url.Parse(u)
-	return err == nil
+	parsed, err := url.Parse(u)
+	if err != nil {
+		return nil
+	}
+	return parsed
+}
+
+// checks the given URL host against the graylisted domains, returning the matched domain or empty string
+func graylistedDomain(host string) string {
+	host = strings.ToLower(host)
+	for _, domain := range graylistedDomains {
+		if host == domain || strings.HasSuffix(host, "."+domain) {
+			return domain
+		}
+	}
+	return ""
 }
 
 // approximates the size in bytes of the request as it will be serialized on the wire
@@ -113,9 +139,15 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		log(events.NewError("Webhook URL evaluated to empty string", ""))
 		return nil
 	}
-	if !isValidURL(url) {
+
+	parsedURL := parseURL(url)
+	if parsedURL == nil {
 		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", stringsx.TruncateEllipsis(url, 255)), ""))
 		return nil
+	}
+
+	if domain := graylistedDomain(parsedURL.Hostname()); domain != "" {
+		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", domain), events.WarningCodeGraylistedURL))
 	}
 
 	method := strings.ToUpper(a.Method)
@@ -195,7 +227,7 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 // is still recorded (as a connection error) and the flow routes on that as usual
 func logCallError(err error, log events.EventLogger) {
 	if errors.Is(err, httpx.ErrResponseSize) {
-		log(events.NewWarning(err.Error()))
+		log(events.NewWarning(err.Error(), ""))
 	} else {
 		log(events.NewRawError(err))
 	}
