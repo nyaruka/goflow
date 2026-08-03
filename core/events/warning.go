@@ -8,7 +8,7 @@ func init() {
 const TypeWarning string = "warning"
 
 const (
-	WarningCodeGraylistedURL = "url:graylisted"
+	WarningCodeWebhookMessaging = "webhook:messaging"
 )
 
 // Warning events are created for things like accessing deprecated context values. Some warnings have

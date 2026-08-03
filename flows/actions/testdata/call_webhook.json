@@ -353,7 +353,7 @@
         }
     },
     {
-        "description": "Warning event created if URL is in a graylisted domain",
+        "description": "Warning event created if URL is a messaging provider domain",
         "http_mocks": {
             "https://graph.facebook.com/v25.0/1234/messages": [
                 {
@@ -375,7 +375,7 @@
                 "type": "warning",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Webhook calls to graph.facebook.com may be blocked in the future",
-                "code": "url:graylisted"
+                "code": "webhook:messaging"
             },
             {
                 "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",

@@ -20,7 +20,7 @@ import (
 
 // domains of WhatsApp API providers which flows shouldn't be calling directly - for now calls to these
 // only generate warnings but eventually they may be blocked entirely
-var graylistedDomains = []string{
+var messagingDomains = []string{
 	"360dialog.io",       // 360Dialog
 	"api.twilio.com",     // Twilio
 	"api.zenvia.com",     // Zenvia
@@ -41,10 +41,10 @@ func parseURL(u string) *url.URL {
 	return parsed
 }
 
-// checks the given URL host against the graylisted domains, returning the matched domain or empty string
-func graylistedDomain(host string) string {
+// checks the given URL host against the messaging provider domains, returning the matched domain or empty string
+func messagingDomain(host string) string {
 	host = strings.ToLower(host)
-	for _, domain := range graylistedDomains {
+	for _, domain := range messagingDomains {
 		if host == domain || strings.HasSuffix(host, "."+domain) {
 			return domain
 		}
@@ -146,8 +146,8 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		return nil
 	}
 
-	if domain := graylistedDomain(parsedURL.Hostname()); domain != "" {
-		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", domain), events.WarningCodeGraylistedURL))
+	if domain := messagingDomain(parsedURL.Hostname()); domain != "" {
+		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", domain), events.WarningCodeWebhookMessaging))
 	}
 
 	method := strings.ToUpper(a.Method)
