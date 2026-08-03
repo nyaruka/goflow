@@ -1,3 +1,10 @@
+v0.289.0 (2026-08-03)
+-------------------------
+ * Add optional code field to warning events
+ * Add warning event with code url:restricted for webhook calls to restricted domains, configured on the webhook service
+ * Make warning event messages user facing and add codes context:deprecated and webhook:response_size
+ * Remove translation catalogs for languages no longer supported by the editor UI and simplify catalog headers
+
 v0.288.3 (2026-07-30)
 -------------------------
  * Raise max length of set_contact_field value to 10000
