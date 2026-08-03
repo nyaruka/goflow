@@ -313,7 +313,8 @@ func (r *run) EvaluateTemplateValue(ctx context.Context, template string, log ev
 		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
-		log(events.NewWarning(w, ""))
+		// currently the only warnings the evaluator produces are deprecated context usages
+		log(events.NewWarning(w, events.WarningCodeDeprecatedContext))
 	}
 	return value, err == nil
 }
@@ -327,7 +328,8 @@ func (r *run) EvaluateTemplateText(ctx context.Context, template string, escapin
 		r.errorToEvents(err, log)
 	}
 	for _, w := range warnings {
-		log(events.NewWarning(w, ""))
+		// currently the only warnings the evaluator produces are deprecated context usages
+		log(events.NewWarning(w, events.WarningCodeDeprecatedContext))
 	}
 	if truncate {
 		value = stringsx.TruncateEllipsis(value, r.Session().Engine().Options().MaxTemplateChars)

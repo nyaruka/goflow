@@ -24,7 +24,7 @@ func (w *Warnings) add(m string) {
 }
 
 func (w *Warnings) deprecatedContext(v types.XValue) {
-	w.add("deprecated context value accessed: " + v.Deprecated())
+	w.add(v.Deprecated())
 }
 
 // Expression is the base interface of all syntax elements

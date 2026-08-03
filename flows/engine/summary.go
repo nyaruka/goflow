@@ -71,7 +71,7 @@ func (c *relatedRunContext) Context(env envs.Environment) map[string]types.XValu
 	}
 
 	legacyStatus := types.NewXText(string(c.run.Status()))
-	legacyStatus.SetDeprecated("child.run.status: use child.status instead")
+	legacyStatus.SetDeprecated("@child.run.status is deprecated, use @child.status instead")
 
 	return map[string]types.XValue{
 		"__default__": types.NewXText(FormatRunSummary(env, c.run)),

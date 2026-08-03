@@ -116,8 +116,9 @@
                     "value": "200"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:15.123456789Z",
-                    "text": "deprecated context value accessed: legacy_extra",
+                    "text": "@legacy_extra is deprecated",
                     "type": "warning",
                     "uuid": "01969b47-76cb-76f8-8f55-b7788ac5e343"
                 },

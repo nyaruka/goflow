@@ -172,7 +172,7 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 
 	trace, err := svc.Call(req)
 	if err != nil {
-		logCallError(err, log)
+		logCallError(err, run, log)
 	}
 
 	if trace != nil {
@@ -199,9 +199,10 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 
 // logs an error from the webhook service - a response exceeding the size limit is only a warning because the call
 // is still recorded (as a connection error) and the flow routes on that as usual
-func logCallError(err error, log events.EventLogger) {
+func logCallError(err error, run flows.Run, log events.EventLogger) {
 	if errors.Is(err, httpx.ErrResponseSize) {
-		log(events.NewWarning(err.Error(), ""))
+		maxResponseBytes := run.Session().Engine().Options().MaxResponseBytes
+		log(events.NewWarning(fmt.Sprintf("Webhook response exceeded the limit of %d bytes", maxResponseBytes), events.WarningCodeWebhookResponseSize))
 	} else {
 		log(events.NewRawError(err))
 	}

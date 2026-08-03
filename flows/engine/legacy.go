@@ -48,7 +48,7 @@ func newLegacyExtra(run flows.Run) *legacyExtra {
 
 func (e *legacyExtra) ToXValue(env envs.Environment) types.XValue {
 	value := types.NewXObject(e.values)
-	value.SetDeprecated("legacy_extra")
+	value.SetDeprecated("@legacy_extra is deprecated")
 	return value
 }
 

@@ -399,12 +399,12 @@ func TestEvaluateTemplateWithDeprecatedValues(t *testing.T) {
 	val, warnings, err = eval.Template(t.Context(), env, ctx, `Hi @foo.zzz`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi abc`, val)
-	assert.Equal(t, []string{"deprecated context value accessed: foooo"}, warnings)
+	assert.Equal(t, []string{"foooo"}, warnings)
 
 	val, warnings, err = eval.Template(t.Context(), env, ctx, `Hi @yyy @foo.zzz`, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi xyz abc`, val)
-	assert.Equal(t, []string{"deprecated context value accessed: noooo", "deprecated context value accessed: foooo"}, warnings)
+	assert.Equal(t, []string{"noooo", "foooo"}, warnings)
 }
 
 func TestEvaluationErrors(t *testing.T) {

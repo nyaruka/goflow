@@ -34,8 +34,9 @@
                     "uuid": "01969b47-1523-76f8-92ed-42cbd11a03fd"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:30:53.123456789Z",
-                    "text": "deprecated context value accessed: legacy_extra",
+                    "text": "@legacy_extra is deprecated",
                     "type": "warning",
                     "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
                 },
@@ -67,8 +68,9 @@
                     "value": "Ben Haggerty"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:05.123456789Z",
-                    "text": "deprecated context value accessed: legacy_extra",
+                    "text": "@legacy_extra is deprecated",
                     "type": "warning",
                     "uuid": "01969b47-4fbb-76f8-8b42-056e0211d5b9"
                 },
@@ -114,8 +116,9 @@
                     "value": "200"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:17.123456789Z",
-                    "text": "deprecated context value accessed: legacy_extra",
+                    "text": "@legacy_extra is deprecated",
                     "type": "warning",
                     "uuid": "01969b47-7e9b-76f8-b384-a4094c3d60be"
                 },
@@ -258,8 +261,9 @@
                     "value": "Ryan Lewis"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:33.123456789Z",
-                    "text": "deprecated context value accessed: legacy_extra",
+                    "text": "@legacy_extra is deprecated",
                     "type": "warning",
                     "uuid": "01969b47-bd1b-76f8-b4dd-bb13b355a627"
                 },

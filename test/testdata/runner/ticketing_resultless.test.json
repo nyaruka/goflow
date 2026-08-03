@@ -125,8 +125,9 @@
                     "uuid": "01969b47-6b13-76f8-a943-ec055bbeb3b4"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:31:16.123456789Z",
-                    "text": "deprecated context value accessed: contact.tickets: use ticket instead",
+                    "text": "@contact.tickets is deprecated, use @ticket instead",
                     "type": "warning",
                     "uuid": "01969b47-7ab3-76f8-b3a5-b9dac4767740"
                 },

@@ -45,8 +45,9 @@
                     "uuid": "01969b47-1523-76f8-92ed-42cbd11a03fd"
                 },
                 {
+                    "code": "context:deprecated",
                     "created_on": "2025-05-04T12:30:53.123456789Z",
-                    "text": "deprecated context value accessed: contact.id: use contact.ref instead",
+                    "text": "@contact.id is deprecated, use @contact.ref instead",
                     "type": "warning",
                     "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
                 },

@@ -436,10 +436,10 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	}
 
 	id := types.NewXText(strconv.Itoa(int(c.id)))
-	id.SetDeprecated("contact.id: use contact.ref instead")
+	id.SetDeprecated("@contact.id is deprecated, use @contact.ref instead")
 
 	tickets := c.tickets.Open().ToXValue(env)
-	tickets.SetDeprecated("contact.tickets: use ticket instead")
+	tickets.SetDeprecated("@contact.tickets is deprecated, use @ticket instead")
 
 	return map[string]types.XValue{
 		"__default__":  types.NewXText(c.Format(env)),
