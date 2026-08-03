@@ -46,7 +46,11 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Unrecognized timezone: 'xxxxxxxxxx'"
+                "text": "Unrecognized timezone: 'xxxxxxxxxx'",
+                "code": "timezone:invalid",
+                "extra": {
+                    "timezone": "xxxxxxxxxx"
+                }
             }
         ],
         "locals_after": {},

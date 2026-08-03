@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 
@@ -115,7 +116,8 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	}
 
 	if !isValidURL(url) {
-		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", stringsx.TruncateEllipsis(url, 255)), ""))
+		truncated := stringsx.TruncateEllipsis(url, 255)
+		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", truncated), events.ErrorCodeURLInvalid, "url", truncated))
 		return nil
 	}
 
@@ -139,7 +141,7 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	// multiple times could otherwise evaluate to something enormous - so we limit the overall request size
 	maxRequestBytes := run.Session().Engine().Options().MaxRequestBytes
 	if size := requestSize(method, url, headers, body); maxRequestBytes > 0 && size > maxRequestBytes {
-		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestSize))
+		log(events.NewError(fmt.Sprintf("Webhook request evaluated to %d bytes, exceeding the limit of %d", size, maxRequestBytes), events.ErrorCodeWebhookRequestSize, "size", strconv.Itoa(size), "limit", strconv.Itoa(maxRequestBytes)))
 		return nil
 	}
 
@@ -167,7 +169,7 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 
 	// for now calls to restricted URLs only generate warnings but eventually they may be blocked
 	if svc.IsRestricted(req.URL) {
-		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeURLRestricted))
+		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeURLRestricted, "hostname", req.URL.Hostname()))
 	}
 
 	trace, err := svc.Call(req)
@@ -202,7 +204,7 @@ func (a *CallWebhook) Inspect(dependency func(assets.Reference), local func(stri
 func logCallError(err error, run flows.Run, log events.EventLogger) {
 	if errors.Is(err, httpx.ErrResponseSize) {
 		maxResponseBytes := run.Session().Engine().Options().MaxResponseBytes
-		log(events.NewWarning(fmt.Sprintf("Webhook response exceeded the limit of %d bytes", maxResponseBytes), events.WarningCodeWebhookResponseSize))
+		log(events.NewWarning(fmt.Sprintf("Webhook response exceeded the limit of %d bytes", maxResponseBytes), events.WarningCodeWebhookResponseSize, "limit", strconv.Itoa(maxResponseBytes)))
 	} else {
 		log(events.NewRawError(err))
 	}

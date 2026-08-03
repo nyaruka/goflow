@@ -263,7 +263,11 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook URL evaluated to an invalid URL: ':xxxxx'"
+                "text": "Webhook URL evaluated to an invalid URL: ':xxxxx'",
+                "code": "url:invalid",
+                "extra": {
+                    "url": ":xxxxx"
+                }
             }
         ],
         "webhook": null,
@@ -296,7 +300,11 @@
                 "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook URL evaluated to an invalid URL: 'http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17036975131%22%2C%22name%22%3A%22My%20Android%20Phone%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.1234...'"
+                "text": "Webhook URL evaluated to an invalid URL: 'http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17036975131%22%2C%22name%22%3A%22My%20Android%20Phone%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.1234...'",
+                "code": "url:invalid",
+                "extra": {
+                    "url": "http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17036975131%22%2C%22name%22%3A%22My%20Android%20Phone%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.1234..."
+                }
             }
         ],
         "webhook": null,
@@ -331,7 +339,11 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Webhook request evaluated to 300034 bytes, exceeding the limit of 262144",
-                "code": "webhook:request_size"
+                "code": "webhook:request_size",
+                "extra": {
+                    "limit": "262144",
+                    "size": "300034"
+                }
             }
         ],
         "webhook": null,
@@ -375,7 +387,10 @@
                 "type": "warning",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Webhook calls to graph.facebook.com may be blocked in the future",
-                "code": "url:restricted"
+                "code": "url:restricted",
+                "extra": {
+                    "hostname": "graph.facebook.com"
+                }
             },
             {
                 "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",
@@ -926,7 +941,10 @@
                 "type": "warning",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "text": "Webhook response exceeded the limit of 100000 bytes",
-                "code": "webhook:response_size"
+                "code": "webhook:response_size",
+                "extra": {
+                    "limit": "100000"
+                }
             },
             {
                 "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",

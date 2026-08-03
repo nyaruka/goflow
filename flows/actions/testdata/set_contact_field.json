@@ -344,7 +344,11 @@
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: field[key=score,name=Score]",
-                "code": "dependency:missing"
+                "code": "dependency:missing",
+                "extra": {
+                    "identity": "score",
+                    "type": "field"
+                }
             }
         ],
         "locals_after": {},
