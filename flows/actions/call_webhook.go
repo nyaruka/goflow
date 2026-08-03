@@ -165,9 +165,9 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 		return nil
 	}
 
-	// for now direct calls to messaging provider APIs only generate warnings but eventually they may be blocked
-	if svc.IsMessagingAPI(req.URL) {
-		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeWebhookMessaging))
+	// for now calls to restricted URLs only generate warnings but eventually they may be blocked
+	if svc.IsRestricted(req.URL) {
+		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeURLRestricted))
 	}
 
 	trace, err := svc.Call(req)

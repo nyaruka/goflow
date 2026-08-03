@@ -8,7 +8,7 @@ func init() {
 const TypeWarning string = "warning"
 
 const (
-	WarningCodeWebhookMessaging = "webhook:messaging"
+	WarningCodeURLRestricted = "url:restricted"
 )
 
 // Warning events are created for things like accessing deprecated context values. Some warnings have

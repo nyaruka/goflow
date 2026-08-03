@@ -31,9 +31,8 @@ type WebhookService interface {
 	// Call makes the given HTTP request and returns the trace
 	Call(request *http.Request) (*httpx.Trace, error)
 
-	// IsMessagingAPI returns whether the given URL belongs to a messaging provider API which flows
-	// shouldn't be calling directly
-	IsMessagingAPI(u *url.URL) bool
+	// IsRestricted returns whether the given URL is restricted and shouldn't be called from flows
+	IsRestricted(u *url.URL) bool
 }
 
 // LLMService provides LLM functionality to the engine
