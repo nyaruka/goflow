@@ -3,6 +3,7 @@ package webhooks_test
 import (
 	"net"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -168,7 +169,7 @@ func TestAccessRestrictions(t *testing.T) {
 
 	eng := engine.NewBuilder().WithHTTPClient(client).Build()
 
-	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"})
+	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"}, nil)
 	svc, err := factory(eng, nil)
 	assert.NoError(t, err)
 
@@ -228,4 +229,27 @@ func TestWebhookResponseWithEscapes(t *testing.T) {
 
 	// check nothing became an escaped NULL
 	assert.NotContains(t, string(jsonx.MustMarshal(session)), `\u0000`)
+}
+
+func TestIsMessagingAPI(t *testing.T) {
+	svc := webhooks.NewService(http.DefaultClient, nil, []string{"graph.facebook.com", "360dialog.io"}, 1024)
+
+	tcs := []struct {
+		url         string
+		isMessaging bool
+	}{
+		{"https://graph.facebook.com/v25.0/1234/messages", true},
+		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true}, // check case insensitivity
+		{"https://waba-v2.360dialog.io/messages", true},          // check subdomain matching
+		{"https://facebook.com/some/page", false},
+		{"https://notgraph.facebook.com.evil.com/", false},
+		{"https://temba.io/", false},
+	}
+
+	for _, tc := range tcs {
+		u, err := url.Parse(tc.url)
+		require.NoError(t, err)
+
+		assert.Equal(t, tc.isMessaging, svc.IsMessagingAPI(u), "IsMessagingAPI mismatch for %s", tc.url)
+	}
 }

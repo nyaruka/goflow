@@ -4,6 +4,8 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/goflow/flows"
@@ -13,25 +15,40 @@ import (
 type service struct {
 	httpClient       *http.Client
 	defaultHeaders   map[string]string
+	messagingDomains []string
 	maxResponseBytes int
 }
 
 // NewServiceFactory creates a new webhook service factory. The engine supplies the HTTP client and the maximum
 // response size; the client's transport can be configured with tracing, mocking or access control as needed
-// (see github.com/nyaruka/gocommon/httpx).
-func NewServiceFactory(defaultHeaders map[string]string) engine.WebhookServiceFactory {
+// (see github.com/nyaruka/gocommon/httpx). The messaging domains are the domains of messaging provider APIs
+// which flows shouldn't be calling directly.
+func NewServiceFactory(defaultHeaders map[string]string, messagingDomains []string) engine.WebhookServiceFactory {
 	return func(eng flows.Engine, sa flows.SessionAssets) (flows.WebhookService, error) {
-		return NewService(eng.HTTPClient(), defaultHeaders, eng.Options().MaxResponseBytes), nil
+		return NewService(eng.HTTPClient(), defaultHeaders, messagingDomains, eng.Options().MaxResponseBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, defaultHeaders map[string]string, maxResponseBytes int) flows.WebhookService {
+func NewService(httpClient *http.Client, defaultHeaders map[string]string, messagingDomains []string, maxResponseBytes int) flows.WebhookService {
 	return &service{
 		httpClient:       httpClient,
 		defaultHeaders:   defaultHeaders,
+		messagingDomains: messagingDomains,
 		maxResponseBytes: maxResponseBytes,
 	}
+}
+
+// IsMessagingAPI returns whether the host of the given URL matches or is a subdomain of one of our
+// configured messaging provider domains.
+func (s *service) IsMessagingAPI(u *url.URL) bool {
+	host := strings.ToLower(u.Hostname())
+	for _, domain := range s.messagingDomains {
+		if host == domain || strings.HasSuffix(host, "."+domain) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *service) Call(request *http.Request) (*httpx.Trace, error) {

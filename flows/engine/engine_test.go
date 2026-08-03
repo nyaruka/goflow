@@ -42,7 +42,7 @@ func TestBuilder(t *testing.T) {
 	assert.EqualError(t, err, "no webhook service factory configured")
 
 	// include a webhook service
-	webhookSvc := webhooks.NewService(&http.Client{}, map[string]string{"User-Agent": "goflow"}, 1000)
+	webhookSvc := webhooks.NewService(&http.Client{}, map[string]string{"User-Agent": "goflow"}, nil, 1000)
 
 	eng = engine.NewBuilder().
 		WithWebhookServiceFactory(func(flows.Engine, flows.SessionAssets) (flows.WebhookService, error) { return webhookSvc, nil }).

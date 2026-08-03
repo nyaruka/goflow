@@ -18,38 +18,12 @@ import (
 	"golang.org/x/net/http/httpguts"
 )
 
-// domains of WhatsApp API providers which flows shouldn't be calling directly - for now calls to these
-// only generate warnings but eventually they may be blocked entirely
-var messagingDomains = []string{
-	"360dialog.io",       // 360Dialog
-	"api.twilio.com",     // Twilio
-	"api.zenvia.com",     // Zenvia
-	"graph.facebook.com", // Meta Cloud API
-	"kaleyra.io",         // Kaleyra
-	"turn.io",            // Turn.io
-}
-
-// parses the given webhook URL, returning nil if it's too long or unparseable
-func parseURL(u string) *url.URL {
+func isValidURL(u string) bool {
 	if utf8.RuneCountInString(u) > 8192 {
-		return nil
+		return false
 	}
-	parsed, err := url.Parse(u)
-	if err != nil {
-		return nil
-	}
-	return parsed
-}
-
-// checks the given URL host against the messaging provider domains, returning the matched domain or empty string
-func messagingDomain(host string) string {
-	host = strings.ToLower(host)
-	for _, domain := range messagingDomains {
-		if host == domain || strings.HasSuffix(host, "."+domain) {
-			return domain
-		}
-	}
-	return ""
+	_, err := url.Parse(u)
+	return err == nil
 }
 
 // approximates the size in bytes of the request as it will be serialized on the wire
@@ -140,14 +114,9 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		return nil
 	}
 
-	parsedURL := parseURL(url)
-	if parsedURL == nil {
+	if !isValidURL(url) {
 		log(events.NewError(fmt.Sprintf("Webhook URL evaluated to an invalid URL: '%s'", stringsx.TruncateEllipsis(url, 255)), ""))
 		return nil
-	}
-
-	if domain := messagingDomain(parsedURL.Hostname()); domain != "" {
-		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", domain), events.WarningCodeWebhookMessaging))
 	}
 
 	method := strings.ToUpper(a.Method)
@@ -194,6 +163,11 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 	if err != nil {
 		log(events.NewRawError(err))
 		return nil
+	}
+
+	// for now direct calls to messaging provider APIs only generate warnings but eventually they may be blocked
+	if svc.IsMessagingAPI(req.URL) {
+		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeWebhookMessaging))
 	}
 
 	trace, err := svc.Call(req)

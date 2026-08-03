@@ -3,6 +3,7 @@ package flows
 import (
 	"context"
 	"net/http"
+	"net/url"
 
 	"github.com/nyaruka/gocommon/httpx"
 	"github.com/nyaruka/gocommon/urns"
@@ -27,7 +28,12 @@ type EmailService interface {
 
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
+	// Call makes the given HTTP request and returns the trace
 	Call(request *http.Request) (*httpx.Trace, error)
+
+	// IsMessagingAPI returns whether the given URL belongs to a messaging provider API which flows
+	// shouldn't be calling directly
+	IsMessagingAPI(u *url.URL) bool
 }
 
 // LLMService provides LLM functionality to the engine
