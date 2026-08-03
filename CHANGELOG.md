@@ -1,3 +1,7 @@
+v0.289.1 (2026-08-03)
+-------------------------
+ * Add extra support to warning events and populate extra on more error and warning events
+
 v0.289.0 (2026-08-03)
 -------------------------
  * Add optional code field to warning events
