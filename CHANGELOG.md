@@ -1,3 +1,7 @@
+v0.290.1 (2026-08-05)
+-------------------------
+ * Remove optin events and move optin reference type into deprecated request_optin action
+
 v0.290.0 (2026-08-05)
 -------------------------
  * Remove optin trigger type
