@@ -25,9 +25,7 @@ eng := engine.NewBuilder().Build()
 session, sprint, err := eng.NewSession(ctx, assets, contact, trigger, nil)
 ```
 
-## Sessions
-
-Sessions can be persisted between sprints by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+Sessions can be persisted between sprints by calling `json.Marshal` on the `Session` instance to marshal it as JSON.
 
 ## Utilities
 
