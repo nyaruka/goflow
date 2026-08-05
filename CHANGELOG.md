@@ -1,3 +1,8 @@
+v0.290.0 (2026-08-05)
+-------------------------
+ * Remove optin trigger type
+ * Remove optin assets and channel features
+
 v0.289.1 (2026-08-03)
 -------------------------
  * Add extra support to warning events and populate extra on more error and warning events
