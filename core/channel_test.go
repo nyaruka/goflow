@@ -20,7 +20,7 @@ func TestChannel(t *testing.T) {
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
 
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}
-	ch := test.NewChannel("Android", "+250961111111", []string{"tel"}, rolesDefault, nil)
+	ch := test.NewChannel("Android", "+250961111111", []string{"tel"}, rolesDefault)
 
 	assert.Equal(t, assets.ChannelUUID("15a2ee5e-5e45-4711-8e0f-6b2abe4360d8"), ch.UUID())
 	assert.Equal(t, "Android", ch.Name())
@@ -38,7 +38,6 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))
 	assert.False(t, ch.HasRole(assets.ChannelRoleCall))
-	assert.False(t, ch.HasFeature(assets.ChannelFeatureOptIns))
 
 	// nil object returns nil reference
 	assert.Nil(t, (*core.Channel)(nil).Reference())
@@ -53,7 +52,7 @@ func TestChannelSetGetForURN(t *testing.T) {
 	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, nil, "RW", nil, false)
 	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil, false)
 	twilio := test.NewTelChannel("Twilio", "+17036975131", rolesDefault, nil, "", nil, false)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
+	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault)
 	receiver := test.NewTelChannel("Receiver", "+250724444444", rolesReceive, nil, "RW", nil, false)
 
 	all := core.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), twitter.Asset()})
@@ -75,7 +74,7 @@ func TestChannelSetGetForURN(t *testing.T) {
 	assert.Nil(t, all.GetForURN(core.NewURN("mailto", "rowan@foo.bar", "", nil), assets.ChannelRoleSend))
 
 	// nil if URN has preferred channel but that channel doesn't support the URN's scheme (e.g. bsuid URN with whatsapp channel affinity)
-	whatsapp := test.NewChannel("WhatsApp", "+250788000000", []string{"whatsapp"}, rolesDefault, nil)
+	whatsapp := test.NewChannel("WhatsApp", "+250788000000", []string{"whatsapp"}, rolesDefault)
 	waOnly := core.NewChannelAssets([]assets.Channel{whatsapp.Asset()})
 	assert.Nil(t, waOnly.GetForURN(core.NewURN("bsuid", "abc123", "", whatsapp), assets.ChannelRoleSend))
 

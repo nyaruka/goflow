@@ -11,7 +11,6 @@ type Assets interface {
 	Labels() *LabelAssets
 	LLMs() *LLMAssets
 	Locations() *LocationAssets
-	OptIns() *OptInAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets
 	Topics() *TopicAssets

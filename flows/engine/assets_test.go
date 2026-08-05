@@ -67,12 +67,6 @@ var assetsJSON = `{
 			"roles": ["editing", "engine"]
 		}
 	],
-	"optins": [
-        {
-            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-            "name": "Joke Of The Day"
-        }
-    ],
 	"resthooks": [
 		{
 			"slug": "new-registration",
@@ -111,9 +105,6 @@ func TestSessionAssets(t *testing.T) {
 	assert.Equal(t, "Survey Audience", group.Name())
 
 	assert.Nil(t, sa.Groups().Get("xyz"))
-
-	optIn := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
-	assert.Equal(t, "Joke Of The Day", optIn.Name())
 
 	resthook := sa.Resthooks().FindBySlug("new-registration")
 	assert.Equal(t, "new-registration", resthook.Slug())
@@ -157,7 +148,7 @@ func TestSessionAssetsWithSourceErrors(t *testing.T) {
 	_, err = sa.Flows().FindByName("Catch All")
 	assert.EqualError(t, err, "unable to load flow assets")
 
-	for _, errType := range []string{"channels", "fields", "globals", "groups", "labels", "llms", "locations", "optins", "resthooks", "templates", "users"} {
+	for _, errType := range []string{"channels", "fields", "globals", "groups", "labels", "llms", "locations", "resthooks", "templates", "users"} {
 		source.currentErrType = errType
 		_, err = engine.NewSessionAssets(env, source, nil)
 		assert.EqualError(t, err, fmt.Sprintf("unable to load %s assets", errType), "error mismatch for type %s", errType)
@@ -218,10 +209,6 @@ func (s *testSource) Locations() ([]assets.LocationHierarchy, error) {
 
 func (s *testSource) Resthooks() ([]assets.Resthook, error) {
 	return nil, s.err("resthooks")
-}
-
-func (s *testSource) OptIns() ([]assets.OptIn, error) {
-	return nil, s.err("optins")
 }
 
 func (s *testSource) Templates() ([]assets.Template, error) {

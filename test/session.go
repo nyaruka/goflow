@@ -51,14 +51,7 @@ var sessionAssets = `{
             "name": "Facebook Channel",
             "address": "235326346322111",
             "schemes": ["facebook"],
-            "roles": ["send", "receive"],
-            "features": ["optins"]
-        }
-    ],
-    "optins": [
-        {
-            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-            "name": "Joke Of The Day"
+            "roles": ["send", "receive"]
         }
     ],
     "topics": [

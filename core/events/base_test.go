@@ -37,7 +37,7 @@ func TestEventMarshaling(t *testing.T) {
 	tz, _ := time.LoadLocation("Africa/Kigali")
 	timeout := 500
 	gender := session.Assets().Fields().Get("gender")
-	jotd := session.Assets().OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
+	jotd := assets.NewOptInReference("248be71d-78e9-4d71-a6c4-9981d369e5cb", "Joke Of The Day")
 	weather := session.Assets().Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := session.Assets().Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	facebook := session.Assets().Channels().Get("4bb288a0-7fca-4da1-abe8-59a593aff648")
@@ -379,13 +379,13 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewOptInStarted(jotd.Reference(), facebook.Reference())
+				return events.NewOptInStarted(jotd, facebook.Reference())
 			},
 			`optin_started`,
 		},
 		{
 			func() events.Event {
-				return events.NewOptInStopped(jotd.Reference(), facebook.Reference())
+				return events.NewOptInStopped(jotd, facebook.Reference())
 			},
 			`optin_stopped`,
 		},

@@ -9,19 +9,6 @@ import (
 // OptInUUID is the UUID of an opt in
 type OptInUUID uuids.UUID
 
-// OptIn are opt-ins for messaging campaign.
-//
-//	{
-//	  "uuid": "8925c76f-926b-4a63-a6eb-ab69e7a6b79b",
-//	  "name": "Joke Of The Day"
-//	}
-//
-// @asset optin
-type OptIn interface {
-	UUID() OptInUUID
-	Name() string
-}
-
 // OptInReference is used to reference an opt in
 type OptInReference struct {
 	UUID OptInUUID `json:"uuid" validate:"required,uuid"`

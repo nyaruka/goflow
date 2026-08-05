@@ -23,7 +23,6 @@ type StaticSource struct {
 		Labels    []*Label                  `json:"labels" validate:"omitempty,dive"`
 		LLMs      []*LLM                    `json:"llms" validate:"omitempty,dive"`
 		Locations []*envs.LocationHierarchy `json:"locations"`
-		OptIns    []*OptIn                  `json:"optins" validate:"omitempty,dive"`
 		Resthooks []*Resthook               `json:"resthooks" validate:"omitempty,dive"`
 		Templates []*Template               `json:"templates" validate:"omitempty,dive"`
 		Topics    []*Topic                  `json:"topics" validate:"omitempty,dive"`
@@ -142,15 +141,6 @@ func (s *StaticSource) Locations() ([]assets.LocationHierarchy, error) {
 	set := make([]assets.LocationHierarchy, len(s.s.Locations))
 	for i := range s.s.Locations {
 		set[i] = s.s.Locations[i]
-	}
-	return set, nil
-}
-
-// OptIns returns all optin assets
-func (s *StaticSource) OptIns() ([]assets.OptIn, error) {
-	set := make([]assets.OptIn, len(s.s.OptIns))
-	for i := range s.s.OptIns {
-		set[i] = s.s.OptIns[i]
 	}
 	return set, nil
 }

@@ -22,13 +22,6 @@ const (
 	ChannelRoleUSSD    ChannelRole = "ussd"
 )
 
-// ChannelFeature is a feature that a channel supports
-type ChannelFeature string
-
-const (
-	ChannelFeatureOptIns ChannelFeature = "optins"
-)
-
 // Channel is something that can send/receive messages.
 //
 //	{
@@ -47,7 +40,6 @@ type Channel interface {
 	Address() string
 	Schemes() []string
 	Roles() []ChannelRole
-	Features() []ChannelFeature
 	Country() i18n.Country
 	MatchPrefixes() []string
 	AllowInternational() bool
