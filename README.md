@@ -1,4 +1,5 @@
-# 🎢 Goflow 
+![Goflow](.github/banner.svg)
+
 [![Build Status](https://github.com/nyaruka/goflow/workflows/CI/badge.svg)](https://github.com/nyaruka/goflow/actions?query=workflow%3ACI)
 
 ## Specification
