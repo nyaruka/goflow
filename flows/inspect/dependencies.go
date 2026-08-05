@@ -82,8 +82,6 @@ func CheckReference(sa flows.SessionAssets, ref assets.Reference) bool {
 		return sa.Labels().Get(typed.UUID) != nil
 	case *assets.LLMReference:
 		return sa.LLMs().Get(typed.UUID) != nil
-	case *assets.OptInReference:
-		return sa.OptIns().Get(typed.UUID) != nil
 	case *assets.TemplateReference:
 		return sa.Templates().Get(typed.UUID) != nil
 	case *assets.TopicReference:

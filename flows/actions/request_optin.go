@@ -50,7 +50,3 @@ func (a *RequestOptIn) Execute(ctx context.Context, run flows.Run, step flows.St
 
 	return nil
 }
-
-func (a *RequestOptIn) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
-	dependency(a.OptIn)
-}

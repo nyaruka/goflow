@@ -12,7 +12,6 @@ type Source interface {
 	Labels() ([]Label, error)
 	LLMs() ([]LLM, error)
 	Locations() ([]LocationHierarchy, error)
-	OptIns() ([]OptIn, error)
 	Resthooks() ([]Resthook, error)
 	Templates() ([]Template, error)
 	Topics() ([]Topic, error)

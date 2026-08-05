@@ -40,8 +40,8 @@ func LoadFlowFromAssets(env envs.Environment, path string, uuid assets.FlowUUID)
 	return sa.Flows().Get(uuid)
 }
 
-func NewChannel(name string, address string, schemes []string, roles []assets.ChannelRole, features []assets.ChannelFeature) *core.Channel {
-	return core.NewChannel(static.NewChannel(assets.ChannelUUID(uuids.NewV4()), name, address, schemes, roles, features))
+func NewChannel(name string, address string, schemes []string, roles []assets.ChannelRole) *core.Channel {
+	return core.NewChannel(static.NewChannel(assets.ChannelUUID(uuids.NewV4()), name, address, schemes, roles))
 }
 
 func NewTelChannel(name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country i18n.Country, matchPrefixes []string, allowInternational bool) *core.Channel {

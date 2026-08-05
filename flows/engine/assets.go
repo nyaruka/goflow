@@ -24,7 +24,6 @@ type sessionAssets struct {
 	labels    *core.LabelAssets
 	llms      *core.LLMAssets
 	locations *core.LocationAssets
-	optIns    *core.OptInAssets
 	resthooks *core.ResthookAssets
 	templates *core.TemplateAssets
 	topics    *core.TopicAssets
@@ -64,10 +63,6 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		return nil, err
 	}
 	locations, err := source.Locations()
-	if err != nil {
-		return nil, err
-	}
-	optIns, err := source.OptIns()
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +110,6 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		labels:    core.NewLabelAssets(labels),
 		llms:      core.NewLLMAssets(llms),
 		locations: core.NewLocationAssets(locations),
-		optIns:    core.NewOptInAssets(optIns),
 		resthooks: core.NewResthookAssets(resthooks),
 		templates: core.NewTemplateAssets(templates),
 		topics:    core.NewTopicAssets(topics),
@@ -133,7 +127,6 @@ func (s *sessionAssets) Groups() *core.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *core.LabelAssets       { return s.labels }
 func (s *sessionAssets) LLMs() *core.LLMAssets           { return s.llms }
 func (s *sessionAssets) Locations() *core.LocationAssets { return s.locations }
-func (s *sessionAssets) OptIns() *core.OptInAssets       { return s.optIns }
 func (s *sessionAssets) Resthooks() *core.ResthookAssets { return s.resthooks }
 func (s *sessionAssets) Templates() *core.TemplateAssets { return s.templates }
 func (s *sessionAssets) Topics() *core.TopicAssets       { return s.topics }

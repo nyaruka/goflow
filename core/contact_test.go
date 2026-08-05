@@ -342,10 +342,10 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
 	android2 := test.NewTelChannel("Android", "+250961111112", receive_roles, nil, "RW", nil, false)
-	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
-	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
-	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
-	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
+	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
+	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
+	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles)
+	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles)
 
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddRoute(urns.URN("twitter:joey"), nil)
@@ -410,9 +410,9 @@ func TestContactSetAffinity(t *testing.T) {
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
-	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles, nil)
-	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles, nil)
+	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
+	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles)
+	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles)
 
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
 	contact.AddRoute(urns.URN("twitter:joey"), nil)

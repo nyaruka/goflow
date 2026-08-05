@@ -16,9 +16,9 @@ import (
 )
 
 func TestFindTranslation(t *testing.T) {
-	channel1 := test.NewChannel("WhatsApp 1", "+12345", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
-	channel2 := test.NewChannel("WhatsApp 2", "+23456", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
-	channel3 := test.NewChannel("WhatsApp 3", "+34567", []string{"whatsapp"}, []assets.ChannelRole{}, nil)
+	channel1 := test.NewChannel("WhatsApp 1", "+12345", []string{"whatsapp"}, []assets.ChannelRole{})
+	channel2 := test.NewChannel("WhatsApp 2", "+23456", []string{"whatsapp"}, []assets.ChannelRole{})
+	channel3 := test.NewChannel("WhatsApp 3", "+34567", []string{"whatsapp"}, []assets.ChannelRole{})
 	channel1Ref := assets.NewChannelReference(channel1.UUID(), channel1.Name())
 	channel2Ref := assets.NewChannelReference(channel2.UUID(), channel2.Name())
 
@@ -61,7 +61,7 @@ func TestFindTranslation(t *testing.T) {
 }
 
 func TestTemplating(t *testing.T) {
-	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
+	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil))
 
 	tcs := []struct {
 		template           []byte
@@ -386,7 +386,7 @@ func TestTemplating(t *testing.T) {
 // TestPreviewMalformed checks that generating a preview from a malformed template asset - one whose
 // component references a variable index beyond the declared variable list - doesn't panic.
 func TestPreviewMalformed(t *testing.T) {
-	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil, nil))
+	channel := core.NewChannel(static.NewChannel("79401ef2-8eb6-48f4-9f9d-0604530b1ac0", "WhatsApp", "1234", []string{"whatsapp"}, nil))
 
 	// component maps its placeholder to index 5 but only one variable is declared
 	tplAsset := &static.Template{}

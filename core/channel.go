@@ -44,11 +44,6 @@ func (c *Channel) HasRole(role assets.ChannelRole) bool {
 	return slices.Contains(c.Roles(), role)
 }
 
-// HasFeature returns whether this channel has the given feature
-func (c *Channel) HasFeature(feat assets.ChannelFeature) bool {
-	return slices.Contains(c.Features(), feat)
-}
-
 // Context returns the properties available in expressions
 //
 //	__default__:text -> the name

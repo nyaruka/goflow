@@ -62,12 +62,6 @@ var assetsJSON = `{
 			"roles": ["editing", "engine"]
 		}
 	],
-	"optins": [
-        {
-            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-            "name": "Joke Of The Day"
-        }
-    ],
 	"resthooks": [
 		{
 			"slug": "new-registration",
@@ -129,10 +123,6 @@ func TestSource(t *testing.T) {
 	locations, err := src.Locations()
 	assert.NoError(t, err)
 	assert.Len(t, locations, 0)
-
-	optIns, err := src.OptIns()
-	assert.NoError(t, err)
-	assert.Len(t, optIns, 1)
 
 	resthooks, err := src.Resthooks()
 	assert.NoError(t, err)
