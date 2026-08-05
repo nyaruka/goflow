@@ -34,7 +34,6 @@
         "context": {
             "campaign": null,
             "keyword": "",
-            "optin": null,
             "origin": "",
             "params": {},
             "ticket": {

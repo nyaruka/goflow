@@ -162,12 +162,6 @@ var assetsJSON = `{
             "nodes": []
         }
     ],
-    "optins": [
-        {
-            "uuid": "248be71d-78e9-4d71-a6c4-9981d369e5cb",
-            "name": "Joke Of The Day"
-        }
-    ],
     "topics": [
         {
             "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -202,7 +196,6 @@ func TestTriggerMarshaling(t *testing.T) {
 	nexmo := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
 	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
 	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
-	jotd := sa.OptIns().Get("248be71d-78e9-4d71-a6c4-9981d369e5cb")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	ticket := core.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", core.TicketStatusOpen, weather, user)
@@ -290,18 +283,6 @@ func TestTriggerMarshaling(t *testing.T) {
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",
-		},
-		{
-			triggers.NewBuilder(flow).
-				OptInStarted(events.NewOptInStarted(jotd.Reference(), channel), jotd).
-				Build(),
-			"optin_started",
-		},
-		{
-			triggers.NewBuilder(flow).
-				OptInStopped(events.NewOptInStopped(jotd.Reference(), channel), jotd).
-				Build(),
-			"optin_stopped",
 		},
 		{
 			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket.UUID()), ticket).Build(),
@@ -431,7 +412,6 @@ func TestTriggerContext(t *testing.T) {
 			"name":        types.NewXText("Bob McTickets"),
 			"first_name":  types.NewXText("Bob"),
 		}),
-		"optin":    nil,
 		"origin":   types.NewXText("api"),
 		"campaign": nil,
 		"ticket":   nil,
