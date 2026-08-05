@@ -569,7 +569,7 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewRequestOptIn(
 				actionUUID,
-				assets.NewOptInReference("248be71d-78e9-4d71-a6c4-9981d369e5cb", "Joke Of The Day"),
+				&actions.OptInReference{UUID: "248be71d-78e9-4d71-a6c4-9981d369e5cb", Name: "Joke Of The Day"},
 			),
 			`{
 			"type": "request_optin",
