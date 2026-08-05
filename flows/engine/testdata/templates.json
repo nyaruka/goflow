@@ -988,7 +988,6 @@
         "output_json": {
             "campaign": null,
             "keyword": "",
-            "optin": null,
             "origin": "",
             "params": {
                 "address": {

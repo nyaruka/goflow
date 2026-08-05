@@ -28,7 +28,6 @@
         "context": {
             "campaign": null,
             "keyword": "",
-            "optin": null,
             "origin": "api",
             "params": {
                 "foo": "bar"
@@ -55,7 +54,6 @@
         "context": {
             "campaign": null,
             "keyword": "",
-            "optin": null,
             "origin": "",
             "params": {},
             "ticket": null,
