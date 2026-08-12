@@ -31,8 +31,20 @@ func NewServiceFactory(defaultHeaders map[string]string, restrictedDomains []str
 
 // NewService creates a new default webhook service
 func NewService(httpClient *http.Client, defaultHeaders map[string]string, restrictedDomains []string, maxResponseBytes int) flows.WebhookService {
+	// build the client this service will call through, layering our concerns onto the transport we were given. The
+	// read limit bounds how much we'll read from an untrusted endpoint and goes inside tracing so it applies before
+	// the body is buffered into the trace; tracing is outermost so that a request denied by access control is still
+	// captured as a trace. Tracing itself accumulates nothing, so this is done once here rather than per call - each
+	// call gets its own traces from the collector it puts on the request context.
+	inner := httpClient.Transport
+	if maxResponseBytes > 0 {
+		inner = httpx.WithReadLimit(inner, maxResponseBytes)
+	}
+	traced := *httpClient
+	traced.Transport = httpx.WithTraces(inner)
+
 	return &service{
-		httpClient:        httpClient,
+		httpClient:        &traced,
 		defaultHeaders:    defaultHeaders,
 		restrictedDomains: restrictedDomains,
 		maxResponseBytes:  maxResponseBytes,
@@ -65,20 +77,11 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 		request.Header.Del("Accept-Encoding")
 	}
 
-	// bound how many bytes we'll read from an untrusted endpoint, wrapped inside tracing so the limit applies before
-	// the body is buffered into the trace
-	inner := s.httpClient.Transport
-	if s.maxResponseBytes > 0 {
-		inner = httpx.WithReadLimit(inner, s.maxResponseBytes)
-	}
+	// collect the traces of just this call - the tracing transport on our client is shared by every call through it,
+	// and records into whichever collector the request's context carries
+	ctx, traces := httpx.WithTraceCollector(request.Context())
 
-	// wrap the configured transport with a per-call tracer so we capture this request's trace. Tracing is the
-	// outermost wrapper so that a request denied by access control is still captured as a trace.
-	tracing := httpx.WithTraces(inner)
-	client := *s.httpClient
-	client.Transport = tracing
-
-	resp, err := client.Do(request)
+	resp, err := s.httpClient.Do(request.WithContext(ctx))
 
 	// tracing has already buffered the body into the trace; draining the handed-back body surfaces ErrResponseSize
 	// if the response exceeded our limit
@@ -90,12 +93,11 @@ func (s *service) Call(request *http.Request) (*httpx.Trace, error) {
 		resp.Body.Close()
 	}
 
-	traces := tracing.Traces()
-	if len(traces) == 0 {
+	trace := traces.Last()
+	if trace == nil {
 		// the request couldn't even be dumped, so we have no trace to return
 		return nil, err
 	}
-	trace := traces[len(traces)-1]
 
 	if errors.Is(sizeErr, httpx.ErrResponseSize) {
 		// response body exceeded our limit

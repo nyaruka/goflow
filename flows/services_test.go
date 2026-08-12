@@ -15,6 +15,8 @@ import (
 func TestHTTPLogs(t *testing.T) {
 	ctx := t.Context()
 
+	ctx, traces := httpx.WithTraceCollector(ctx)
+
 	tracing := httpx.WithTraces(httpx.WithMocks(http.DefaultTransport, map[string][]*httpx.MockResponse{
 		"http://temba.io/": {
 			httpx.NewMockResponse(200, nil, []byte("hello \\u0000")),
@@ -47,9 +49,9 @@ func TestHTTPLogs(t *testing.T) {
 	_, err = client.Do(req4)
 	require.NoError(t, err)
 
-	traces := tracing.Traces()
-	require.Len(t, traces, 4)
-	trace1, trace2, trace3, trace4 := traces[0], traces[1], traces[2], traces[3]
+	captured := traces.Traces()
+	require.Len(t, captured, 4)
+	trace1, trace2, trace3, trace4 := captured[0], captured[1], captured[2], captured[3]
 
 	log1 := core.NewHTTPLog(trace1, core.HTTPStatusFromCode, nil)
 	assert.Equal(t, core.CallStatusSuccess, log1.Status)
