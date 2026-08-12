@@ -1,3 +1,7 @@
+v0.291.0 (2026-08-12)
+-------------------------
+ * Update to gocommon v1.93.1 and collect webhook traces via request context
+
 v0.290.1 (2026-08-05)
 -------------------------
  * Remove optin events and move optin reference type into deprecated request_optin action
