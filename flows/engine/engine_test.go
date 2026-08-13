@@ -18,6 +18,7 @@ func TestBuilder(t *testing.T) {
 	eng := engine.NewBuilder().
 		WithMaxStepsPerSprint(123).
 		WithMaxSprintsPerSession(567).
+		WithMaxRunsPerSession(345).
 		WithMaxTemplateChars(999).
 		WithMaxNameChars(100).
 		WithMaxFieldChars(888).
@@ -27,6 +28,7 @@ func TestBuilder(t *testing.T) {
 
 	assert.Equal(t, 123, eng.Options().MaxStepsPerSprint)
 	assert.Equal(t, 567, eng.Options().MaxSprintsPerSession)
+	assert.Equal(t, 345, eng.Options().MaxRunsPerSession)
 	assert.Equal(t, 999, eng.Options().MaxTemplateChars)
 	assert.Equal(t, 100, eng.Options().MaxNameChars)
 	assert.Equal(t, 888, eng.Options().MaxFieldChars)
