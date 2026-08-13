@@ -1,3 +1,7 @@
+v0.291.1 (2026-08-13)
+-------------------------
+ * Add engine limit on number of runs per session
+
 v0.291.0 (2026-08-12)
 -------------------------
  * Update to gocommon v1.93.1 and collect webhook traces via request context
