@@ -252,6 +252,7 @@ type ClaimURNCallback func(context.Context, SessionAssets, *core.Contact, urns.U
 type EngineOptions struct {
 	MaxStepsPerSprint    int
 	MaxSprintsPerSession int
+	MaxRunsPerSession    int
 	MaxTemplateChars     int
 	MaxNameChars         int
 	MaxFieldChars        int

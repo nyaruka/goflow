@@ -388,6 +388,30 @@ func TestMaxSprintsPerSession(t *testing.T) {
 	assert.Equal(t, 500, numResumes)
 }
 
+func TestMaxRunsPerSession(t *testing.T) {
+	ctx := t.Context()
+	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/enter_flow_loop.json").WithFlow("0fcfcd7d-ae83-4bfa-b02c-23d5d9ce3e69").MustBuild()
+	require.Equal(t, flows.SessionStatusWaiting, session.Status())
+
+	numResumes := 0
+	for {
+		msg := core.NewMsgIn("tel:+593979123456", nil, "name", nil, "SMS1234", nil)
+		resume := resumes.NewMsg(events.NewMsgReceived(msg, ""))
+		numResumes++
+
+		_, err := session.Resume(ctx, resume)
+		require.NoError(t, err)
+
+		if session.Status() == flows.SessionStatusFailed {
+			break
+		}
+	}
+
+	// each resume creates 2 new runs so we hit the limit of 500 runs after 250 resumes
+	assert.Equal(t, 250, numResumes)
+	assert.Equal(t, 500, len(session.Runs()))
+}
+
 func TestEngineErrors(t *testing.T) {
 	ctx := t.Context()
 

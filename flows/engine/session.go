@@ -347,32 +347,38 @@ func (s *session) continueUntilWait(ctx context.Context, sprint *sprint, current
 
 		// if a new flow has been pushed, find a destination there
 		if s.pushedFlow != nil {
-			// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
-			if s.pushedFlow.terminal {
-				for _, run := range s.runs {
-					if run.Status() == core.RunStatusActive || run.Status() == core.RunStatusWaiting {
-						run.Exit(core.RunStatusCompleted)
-						sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+			if len(s.runs) >= s.engine.Options().MaxRunsPerSession {
+				// we've hit the run limit - usually a sign of a loop between flows
+				failRun(sprint, currentRun, step, fmt.Sprintf("Reached maximum number of runs per session (%d)", s.engine.Options().MaxRunsPerSession))
+				s.pushedFlow = nil
+				destination = ""
+			} else {
+				// if this is terminal, then we need to mark all other runs as completed so we don't try to resume them
+				if s.pushedFlow.terminal {
+					for _, run := range s.runs {
+						if run.Status() == core.RunStatusActive || run.Status() == core.RunStatusWaiting {
+							run.Exit(core.RunStatusCompleted)
+							sprint.logEvent(events.NewRunEnded(run.UUID(), run.FlowReference(), core.RunStatusCompleted))
+						}
 					}
 				}
+
+				// create a new run for it
+				flow := s.pushedFlow.flow
+				currentRun = newRun(s, s.pushedFlow.flow, currentRun)
+				s.addRun(currentRun)
+				sprint.logEvent(events.NewRunStarted(currentRun.FlowReference(), currentRun.UUID(), parentRunUUID(currentRun), s.pushedFlow.terminal))
+				sprint.logFlow(flow)
+
+				// our destination is the first node in that flow... if such a node exists
+				if len(flow.Nodes()) > 0 {
+					destination = flow.Nodes()[0].UUID()
+				} else {
+					destination = ""
+				}
+
+				s.pushedFlow = nil // clear the trigger
 			}
-
-			// create a new run for it
-			flow := s.pushedFlow.flow
-			currentRun = newRun(s, s.pushedFlow.flow, currentRun)
-			s.addRun(currentRun)
-			sprint.logEvent(events.NewRunStarted(currentRun.FlowReference(), currentRun.UUID(), parentRunUUID(currentRun), s.pushedFlow.terminal))
-			sprint.logFlow(flow)
-
-			// our destination is the first node in that flow... if such a node exists
-			if len(flow.Nodes()) > 0 {
-				destination = flow.Nodes()[0].UUID()
-			} else {
-				destination = ""
-			}
-
-			s.pushedFlow = nil // clear the trigger
-
 		} else if exit != nil {
 			// if we're at an exit, use its destination
 			destination = exit.DestinationUUID()
