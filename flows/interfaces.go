@@ -48,9 +48,6 @@ type ActionUUID uuids.UUID
 // ExitUUID is the UUID of a node exit
 type ExitUUID uuids.UUID
 
-// StepUUID is the UUID of a run step
-type StepUUID uuids.UUID
-
 // FlowAssets provides access to flow assets
 type FlowAssets interface {
 	Get(assets.FlowUUID) (Flow, error)
@@ -236,12 +233,9 @@ type Input interface {
 type Step interface {
 	core.Contextable
 
-	UUID() StepUUID
 	NodeUUID() core.NodeUUID
-	ExitUUID() ExitUUID
 	ArrivedOn() time.Time
 
-	Leave(ExitUUID)
 	Run() Run
 }
 

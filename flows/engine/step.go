@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/jsonx"
-	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
 	"github.com/nyaruka/goflow/envs"
@@ -13,9 +12,7 @@ import (
 )
 
 type step struct {
-	uuid      flows.StepUUID
 	nodeUUID  core.NodeUUID
-	exitUUID  flows.ExitUUID
 	arrivedOn time.Time
 
 	run flows.Run // transient
@@ -24,7 +21,6 @@ type step struct {
 // NewStep creates a new step
 func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	return &step{
-		uuid:      flows.StepUUID(uuids.NewV4()),
 		nodeUUID:  n.UUID(),
 		arrivedOn: arrivedOn,
 
@@ -32,23 +28,15 @@ func NewStep(r flows.Run, n flows.Node, arrivedOn time.Time) flows.Step {
 	}
 }
 
-func (s *step) UUID() flows.StepUUID     { return s.uuid }
-func (s *step) NodeUUID() core.NodeUUID  { return s.nodeUUID }
-func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
-func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
-func (s *step) Run() flows.Run           { return s.run }
-
-func (s *step) Leave(exit flows.ExitUUID) {
-	s.exitUUID = exit
-}
+func (s *step) NodeUUID() core.NodeUUID { return s.nodeUUID }
+func (s *step) ArrivedOn() time.Time    { return s.arrivedOn }
+func (s *step) Run() flows.Run          { return s.run }
 
 // Context returns the properties available in expressions
 func (s *step) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
-		"uuid":       types.NewXText(string(s.UUID())),
 		"node_uuid":  types.NewXText(string(s.NodeUUID())),
 		"arrived_on": types.NewXDateTime(s.ArrivedOn()),
-		"exit_uuid":  types.NewXText(string(s.ExitUUID())),
 	}
 }
 
@@ -71,10 +59,8 @@ func (p Path) ToXValue(env envs.Environment) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
-	UUID      flows.StepUUID `json:"uuid" validate:"required,uuid"`
-	NodeUUID  core.NodeUUID  `json:"node_uuid" validate:"required,uuid"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid"`
-	ArrivedOn time.Time      `json:"arrived_on"`
+	NodeUUID  core.NodeUUID `json:"node_uuid" validate:"required,uuid"`
+	ArrivedOn time.Time     `json:"arrived_on"`
 }
 
 // UnmarshalJSON unmarshals a run step from the given JSON
@@ -86,9 +72,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	s.uuid = se.UUID
 	s.nodeUUID = se.NodeUUID
-	s.exitUUID = se.ExitUUID
 	s.arrivedOn = se.ArrivedOn
 	return err
 }
@@ -96,9 +80,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 // MarshalJSON marshals this run step into JSON
 func (s *step) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&stepEnvelope{
-		UUID:      s.uuid,
 		NodeUUID:  s.nodeUUID,
-		ExitUUID:  s.exitUUID,
 		ArrivedOn: s.arrivedOn,
 	})
 }

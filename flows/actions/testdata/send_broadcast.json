@@ -41,7 +41,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
@@ -106,7 +106,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't send broadcasts to groups during batch starts"
@@ -150,7 +150,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "broadcast_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "translations": {
@@ -216,25 +216,25 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "'' couldn't be resolved to a contact, group or URN"
             },
             {
-                "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "text": "'Male' couldn't be resolved to a contact, group or URN"
             },
             {
-                "uuid": "01969b47-401b-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",
                 "type": "error",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
                 "text": "'Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool' couldn't be resolved to a contact, group or URN"
             },
             {
-                "uuid": "01969b47-47eb-76f8-9d79-c694bc69dcd1",
+                "uuid": "01969b47-47eb-76f8-9729-57745fb13b06",
                 "type": "broadcast_created",
                 "created_on": "2025-05-04T12:31:03.123456789Z",
                 "translations": {
@@ -344,7 +344,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "broadcast_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "translations": {
@@ -436,7 +436,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "broadcast_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "translations": {
@@ -505,7 +505,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "broadcast_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "translations": {

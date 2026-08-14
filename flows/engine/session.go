@@ -545,8 +545,6 @@ func (s *session) pickNodeExit(ctx context.Context, sprint *sprint, r *run, node
 		exitUUID = node.Exits()[0].UUID()
 	}
 
-	step.Leave(exitUUID)
-
 	// find our exit
 	for _, exit := range node.Exits() {
 		if exit.UUID() == exitUUID {

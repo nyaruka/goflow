@@ -34,7 +34,7 @@
                         "name": "Gender"
                     },
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                    "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                     "value": {
                         "text": "M"
                     }
@@ -46,7 +46,7 @@
                         "name": "Gender"
                     },
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-2c93-76f8-b774-0a98171a0712",
                     "value": null
                 },
                 {
@@ -57,7 +57,7 @@
                         "unsendable_reason": "no_route"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                    "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b"
                 },
                 {
                     "created_on": "2025-05-04T12:31:01.123456789Z",
@@ -68,7 +68,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-401b-76f8-9729-57745fb13b06"
+                    "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe"
                 }
             ],
             "segments": [],
@@ -87,9 +87,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "c7c85cef-12d1-4225-afb0-91d1a72cf7b9",
-                                "node_uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4"
                             }
                         ],
                         "status": "completed",

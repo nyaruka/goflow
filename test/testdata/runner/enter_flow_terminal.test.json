@@ -42,7 +42,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:56.123456789Z",
@@ -53,7 +53,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b"
+                    "uuid": "01969b47-2c93-76f8-b774-0a98171a0712"
                 },
                 {
                     "created_on": "2025-05-04T12:31:00.123456789Z",
@@ -62,10 +62,10 @@
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
                     "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                    "run_uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                    "run_uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                     "terminal": true,
                     "type": "run_started",
-                    "uuid": "01969b47-3c33-76f8-9729-57745fb13b06"
+                    "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe"
                 },
                 {
                     "created_on": "2025-05-04T12:31:03.123456789Z",
@@ -79,7 +79,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-47eb-76f8-8b42-056e0211d5b9"
+                    "uuid": "01969b47-47eb-76f8-9729-57745fb13b06"
                 },
                 {
                     "created_on": "2025-05-04T12:31:06.123456789Z",
@@ -87,10 +87,10 @@
                         "name": "Child flow",
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
-                    "run_uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                    "run_uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-53a3-76f8-89aa-1577771fa183"
+                    "uuid": "01969b47-53a3-76f8-9d79-c694bc69dcd1"
                 }
             ],
             "segments": [],
@@ -109,8 +109,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1"
                             }
                         ],
                         "status": "completed",
@@ -128,13 +127,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "exit_uuid": "d47af449-7faa-4387-9059-8fad67085538",
-                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     }
                 ],
                 "sprints": 1,

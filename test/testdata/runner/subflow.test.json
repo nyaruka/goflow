@@ -48,7 +48,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:57.123456789Z",
@@ -57,9 +57,9 @@
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
                     "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                    "run_uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b",
+                    "run_uuid": "01969b47-2c93-76f8-b774-0a98171a0712",
                     "type": "run_started",
-                    "uuid": "01969b47-307b-76f8-aac5-d9d0ae409dbe"
+                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
                 },
                 {
                     "created_on": "2025-05-04T12:31:00.123456789Z",
@@ -73,13 +73,13 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-3c33-76f8-9d79-c694bc69dcd1"
+                    "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe"
                 },
                 {
                     "created_on": "2025-05-04T12:31:03.123456789Z",
                     "expires_on": "2025-05-07T12:31:01.123456789Z",
                     "type": "msg_wait",
-                    "uuid": "01969b47-47eb-76f8-8b42-056e0211d5b9"
+                    "uuid": "01969b47-47eb-76f8-9729-57745fb13b06"
                 }
             ],
             "segments": [],
@@ -98,8 +98,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1"
                             }
                         ],
                         "status": "active",
@@ -117,12 +116,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:58.123456789Z",
-                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "uuid": "a5111699-b2f8-4a37-9729-57745fb13b06"
+                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b"
+                        "uuid": "01969b47-2c93-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 1,
@@ -146,7 +144,7 @@
                     "created_on": "2025-05-04T12:31:10.123456789Z",
                     "name": "Name",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-6343-76f8-8f55-b7788ac5e343",
+                    "uuid": "01969b47-6343-76f8-8b42-056e0211d5b9",
                     "value": "Ryan Lewis"
                 },
                 {
@@ -161,7 +159,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-72e3-76f8-b384-a4094c3d60be"
+                    "uuid": "01969b47-72e3-76f8-89aa-1577771fa183"
                 },
                 {
                     "created_on": "2025-05-04T12:31:17.123456789Z",
@@ -169,10 +167,10 @@
                         "name": "Child flow",
                         "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
-                    "run_uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b",
+                    "run_uuid": "01969b47-2c93-76f8-b774-0a98171a0712",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-7e9b-76f8-b3a5-b9dac4767740"
+                    "uuid": "01969b47-7e9b-76f8-8f55-b7788ac5e343"
                 },
                 {
                     "created_on": "2025-05-04T12:31:21.123456789Z",
@@ -186,7 +184,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-8e3b-76f8-a98e-1c65c9788658"
+                    "uuid": "01969b47-8e3b-76f8-a943-ec055bbeb3b4"
                 },
                 {
                     "created_on": "2025-05-04T12:31:24.123456789Z",
@@ -197,7 +195,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-99f3-76f8-893f-6422e535ea8c"
+                    "uuid": "01969b47-99f3-76f8-b384-a4094c3d60be"
                 }
             ],
             "segments": [
@@ -244,15 +242,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "4d043c51-260c-4a5f-a7d7-defd1067c9f2",
-                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:19.123456789Z",
-                                "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
-                                "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
-                                "uuid": "94070388-5c8b-4c1d-87c7-10f327cbfde2"
+                                "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
                             }
                         ],
                         "status": "completed",
@@ -271,15 +265,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:58.123456789Z",
-                                "exit_uuid": "78f74c5c-5797-4bcf-8d05-7f38e34e968d",
-                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "uuid": "a5111699-b2f8-4a37-9729-57745fb13b06"
+                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:12.123456789Z",
-                                "exit_uuid": "80aa94f5-1c2f-4286-b2ec-5a3bdaf9c7d0",
-                                "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
-                                "uuid": "7913265b-ea6e-42a0-a943-ec055bbeb3b4"
+                                "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
                             }
                         ],
                         "results": {
@@ -293,7 +283,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b"
+                        "uuid": "01969b47-2c93-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 2,
