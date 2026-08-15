@@ -9,7 +9,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Can't add URN with empty path"
@@ -43,7 +43,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -53,7 +53,7 @@
                 }
             },
             {
-                "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "urns": [
@@ -93,7 +93,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "'telegram:qwerty' is not valid URN",
@@ -162,7 +162,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "urns": [
@@ -231,7 +231,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "urns": [

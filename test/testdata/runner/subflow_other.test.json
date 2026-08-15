@@ -48,7 +48,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:59.123456789Z",
@@ -57,9 +57,9 @@
                         "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
                     },
                     "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                    "run_uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                    "run_uuid": "01969b47-3463-76f8-b774-0a98171a0712",
                     "type": "run_started",
-                    "uuid": "01969b47-384b-76f8-9729-57745fb13b06"
+                    "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                 },
                 {
                     "created_on": "2025-05-04T12:31:02.123456789Z",
@@ -73,13 +73,13 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-4403-76f8-8b42-056e0211d5b9"
+                    "uuid": "01969b47-4403-76f8-aac5-d9d0ae409dbe"
                 },
                 {
                     "created_on": "2025-05-04T12:31:07.123456789Z",
                     "expires_on": "2025-05-07T12:31:05.123456789Z",
                     "type": "msg_wait",
-                    "uuid": "01969b47-578b-76f8-8f55-b7788ac5e343"
+                    "uuid": "01969b47-578b-76f8-9729-57745fb13b06"
                 }
             ],
             "segments": [
@@ -113,14 +113,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                                "uuid": "21ba4570-846e-4143-a7eb-cc4cc9ec3e6b"
+                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                             }
                         ],
                         "status": "active",
@@ -138,18 +135,15 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "57006809-aa29-4493-89aa-1577771fa183"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 1,
@@ -173,7 +167,7 @@
                     "created_on": "2025-05-04T12:31:14.123456789Z",
                     "name": "Answer",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-72e3-76f8-b384-a4094c3d60be",
+                    "uuid": "01969b47-72e3-76f8-8b42-056e0211d5b9",
                     "value": "neither"
                 },
                 {
@@ -188,13 +182,13 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-8283-76f8-87c7-10f327cbfde2"
+                    "uuid": "01969b47-8283-76f8-89aa-1577771fa183"
                 },
                 {
                     "created_on": "2025-05-04T12:31:23.123456789Z",
                     "expires_on": "2025-05-07T12:31:21.123456789Z",
                     "type": "msg_wait",
-                    "uuid": "01969b47-960b-76f8-893f-6422e535ea8c"
+                    "uuid": "01969b47-960b-76f8-8f55-b7788ac5e343"
                 }
             ],
             "segments": [
@@ -240,14 +234,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                                "uuid": "21ba4570-846e-4143-a7eb-cc4cc9ec3e6b"
+                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                             }
                         ],
                         "status": "active",
@@ -266,26 +257,19 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "exit_uuid": "980b6ca4-1812-4fa8-959f-777b5b5d02cf",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "57006809-aa29-4493-89aa-1577771fa183"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17",
-                                "uuid": "c7e91e47-648c-4373-b3a5-b9dac4767740"
+                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "91d98eaf-5a8f-41bb-a98e-1c65c9788658"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             }
                         ],
                         "results": {
@@ -299,7 +283,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 2,
@@ -327,7 +311,7 @@
                         "value": "neither"
                     },
                     "type": "run_result_changed",
-                    "uuid": "01969b47-ad7b-76f8-b4dd-bb13b355a627",
+                    "uuid": "01969b47-ad7b-76f8-b384-a4094c3d60be",
                     "value": "yes"
                 },
                 {
@@ -342,7 +326,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-bd1b-76f8-a58f-30ba497b0d21"
+                    "uuid": "01969b47-bd1b-76f8-b3a5-b9dac4767740"
                 },
                 {
                     "created_on": "2025-05-04T12:31:36.123456789Z",
@@ -350,10 +334,10 @@
                         "name": "Rules",
                         "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
                     },
-                    "run_uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                    "run_uuid": "01969b47-3463-76f8-b774-0a98171a0712",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-c8d3-76f8-a8c9-d76ecec32717"
+                    "uuid": "01969b47-c8d3-76f8-87c7-10f327cbfde2"
                 },
                 {
                     "created_on": "2025-05-04T12:31:40.123456789Z",
@@ -367,13 +351,13 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-d873-76f8-95d6-85696b970f6a"
+                    "uuid": "01969b47-d873-76f8-a98e-1c65c9788658"
                 },
                 {
                     "created_on": "2025-05-04T12:31:45.123456789Z",
                     "expires_on": "2025-05-07T12:31:43.123456789Z",
                     "type": "msg_wait",
-                    "uuid": "01969b47-ebfb-76f8-ab7b-b7ab5b0dc119"
+                    "uuid": "01969b47-ebfb-76f8-893f-6422e535ea8c"
                 }
             ],
             "segments": [
@@ -427,26 +411,19 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "exit_uuid": "d6ed7786-a703-48af-9005-217636db5844",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                                "uuid": "21ba4570-846e-4143-a7eb-cc4cc9ec3e6b"
+                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:38.123456789Z",
-                                "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
-                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "99d743e0-7972-4b93-aab8-757fffa552e6"
+                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:42.123456789Z",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "ba99aafc-1dfa-4256-bbf4-9afbc59f7bb4"
+                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                             }
                         ],
                         "status": "waiting",
@@ -465,33 +442,23 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "exit_uuid": "980b6ca4-1812-4fa8-959f-777b5b5d02cf",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "57006809-aa29-4493-89aa-1577771fa183"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17",
-                                "uuid": "c7e91e47-648c-4373-b3a5-b9dac4767740"
+                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "exit_uuid": "5a2f31ea-6ffc-40ce-8adc-d1f5d9f9d5e4",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "91d98eaf-5a8f-41bb-a98e-1c65c9788658"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e",
-                                "uuid": "ac67e9eb-b541-43e4-9aeb-7faa667f1355"
+                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
                             }
                         ],
                         "results": {
@@ -505,7 +472,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 3,
@@ -529,7 +496,7 @@
                     "created_on": "2025-05-04T12:31:52.123456789Z",
                     "name": "Answer",
                     "type": "run_result_changed",
-                    "uuid": "01969b48-0753-76f8-a851-494c098c6807",
+                    "uuid": "01969b48-0753-76f8-b4dd-bb13b355a627",
                     "value": "never"
                 },
                 {
@@ -544,13 +511,13 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b48-16f3-76f8-a96b-7a2ea92d0f00"
+                    "uuid": "01969b48-16f3-76f8-9aeb-7faa667f1355"
                 },
                 {
                     "created_on": "2025-05-04T12:32:01.123456789Z",
                     "expires_on": "2025-05-07T12:31:59.123456789Z",
                     "type": "msg_wait",
-                    "uuid": "01969b48-2a7b-76f8-bc1e-a15dedcb8e98"
+                    "uuid": "01969b48-2a7b-76f8-a58f-30ba497b0d21"
                 }
             ],
             "segments": [
@@ -597,38 +564,27 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "exit_uuid": "d6ed7786-a703-48af-9005-217636db5844",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                                "uuid": "21ba4570-846e-4143-a7eb-cc4cc9ec3e6b"
+                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:38.123456789Z",
-                                "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
-                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "99d743e0-7972-4b93-aab8-757fffa552e6"
+                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:42.123456789Z",
-                                "exit_uuid": "5b6fb733-249a-42f6-992e-1253f158404c",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "ba99aafc-1dfa-4256-bbf4-9afbc59f7bb4"
+                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:54.123456789Z",
-                                "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
-                                "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
-                                "uuid": "a57b9391-cd23-4136-99b2-e3c62e5695d5"
+                                "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:58.123456789Z",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "307bd433-68df-49b3-88c7-56bcb29ae35a"
+                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                             }
                         ],
                         "results": {
@@ -657,33 +613,23 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "exit_uuid": "980b6ca4-1812-4fa8-959f-777b5b5d02cf",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "57006809-aa29-4493-89aa-1577771fa183"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17",
-                                "uuid": "c7e91e47-648c-4373-b3a5-b9dac4767740"
+                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "exit_uuid": "5a2f31ea-6ffc-40ce-8adc-d1f5d9f9d5e4",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "91d98eaf-5a8f-41bb-a98e-1c65c9788658"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e",
-                                "uuid": "ac67e9eb-b541-43e4-9aeb-7faa667f1355"
+                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
                             }
                         ],
                         "results": {
@@ -697,7 +643,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 4,
@@ -725,7 +671,7 @@
                         "value": "never"
                     },
                     "type": "run_result_changed",
-                    "uuid": "01969b48-41eb-76f8-88a0-aff178d69252",
+                    "uuid": "01969b48-41eb-76f8-aab8-757fffa552e6",
                     "value": "no"
                 },
                 {
@@ -740,7 +686,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b48-518b-76f8-a502-6fb7f5d04e3f"
+                    "uuid": "01969b48-518b-76f8-95d6-85696b970f6a"
                 },
                 {
                     "created_on": "2025-05-04T12:32:14.123456789Z",
@@ -751,7 +697,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b48-5d43-76f8-8e47-34e3393ba6d0"
+                    "uuid": "01969b48-5d43-76f8-bbf4-9afbc59f7bb4"
                 }
             ],
             "segments": [
@@ -791,45 +737,31 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "exit_uuid": "d6ed7786-a703-48af-9005-217636db5844",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                                "uuid": "21ba4570-846e-4143-a7eb-cc4cc9ec3e6b"
+                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:38.123456789Z",
-                                "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
-                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f",
-                                "uuid": "99d743e0-7972-4b93-aab8-757fffa552e6"
+                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:42.123456789Z",
-                                "exit_uuid": "5b6fb733-249a-42f6-992e-1253f158404c",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "ba99aafc-1dfa-4256-bbf4-9afbc59f7bb4"
+                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:54.123456789Z",
-                                "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
-                                "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742",
-                                "uuid": "a57b9391-cd23-4136-99b2-e3c62e5695d5"
+                                "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:58.123456789Z",
-                                "exit_uuid": "3a7b37a7-3ea0-4532-8c27-742c467be53a",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "uuid": "307bd433-68df-49b3-88c7-56bcb29ae35a"
+                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:32:09.123456789Z",
-                                "exit_uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
-                                "node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1",
-                                "uuid": "05e1c939-8c53-42b8-aa6f-a957c6de8daa"
+                                "node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
                             }
                         ],
                         "results": {
@@ -858,33 +790,23 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "exit_uuid": "980b6ca4-1812-4fa8-959f-777b5b5d02cf",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "57006809-aa29-4493-89aa-1577771fa183"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17",
-                                "uuid": "c7e91e47-648c-4373-b3a5-b9dac4767740"
+                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "exit_uuid": "5a2f31ea-6ffc-40ce-8adc-d1f5d9f9d5e4",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "uuid": "91d98eaf-5a8f-41bb-a98e-1c65c9788658"
+                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e",
-                                "uuid": "ac67e9eb-b541-43e4-9aeb-7faa667f1355"
+                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
                             }
                         ],
                         "results": {
@@ -898,7 +820,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                        "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
                     }
                 ],
                 "sprints": 5,

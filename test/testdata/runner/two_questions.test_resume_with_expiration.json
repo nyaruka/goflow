@@ -54,14 +54,14 @@
                         "urn": "tel:+12024561111"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:56.123456789Z",
                     "expires_on": "2025-05-07T12:30:54.123456789Z",
                     "timeout_seconds": 600,
                     "type": "msg_wait",
-                    "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b"
+                    "uuid": "01969b47-2c93-76f8-b774-0a98171a0712"
                 }
             ],
             "segments": [],
@@ -80,8 +80,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
                             }
                         ],
                         "status": "waiting",
@@ -113,7 +112,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "expired",
                     "type": "run_ended",
-                    "uuid": "01969b47-3c33-76f8-9729-57745fb13b06"
+                    "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe"
                 }
             ],
             "segments": [],
@@ -132,8 +131,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
                             }
                         ],
                         "status": "expired",

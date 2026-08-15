@@ -54,7 +54,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "can't transfer airtime to contact without a phone number"
@@ -89,7 +89,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "airtime_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "external_id": "4ZJR8BT9MF",
@@ -116,7 +116,7 @@
             }
         ],
         "locals_after": {
-            "_new_transfer": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
+            "_new_transfer": "01969b47-307b-76f8-b774-0a98171a0712"
         },
         "inspection": {
             "counts": {
@@ -157,7 +157,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "text": "invalid recipient number"
@@ -204,7 +204,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "can't transfer airtime to contact without a phone number"

@@ -58,9 +58,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456Z",
-                                "exit_uuid": "",
-                                "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65"
                             }
                         ],
                         "results": {},
@@ -71,41 +69,41 @@
                     },
                     "resthook": "new-registration",
                     "type": "resthook_called",
-                    "uuid": "01969b47-20db-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:57.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=badrequest HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 513\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"language\":\"eng\",\"name\":\"Ben Haggerty\",\"urn\":\"tel:+12065551212\",\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:51.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"59ad8481-1332-4457-b20c-e3cb6203e029\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-95cf-9fca95f1c30a\"}}",
+                    "request": "POST /?cmd=badrequest HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 452\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"language\":\"eng\",\"name\":\"Ben Haggerty\",\"urn\":\"tel:+12065551212\",\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:51.123456Z\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-95cf-9fca95f1c30a\"}}",
                     "response": "HTTP/1.0 400 Bad Request\r\nContent-Length: 29\r\n\r\n{ \"errors\": [\"bad_request\"] }",
                     "resthook": "new-registration",
                     "retries": 0,
                     "sizes": {
-                        "request": 668,
+                        "request": 607,
                         "response": 77
                     },
                     "status": "response_error",
                     "status_code": 400,
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=badrequest",
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712"
                 },
                 {
                     "created_on": "2025-05-04T12:31:01.123456789Z",
                     "elapsed_ms": 1000,
-                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 513\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"language\":\"eng\",\"name\":\"Ben Haggerty\",\"urn\":\"tel:+12065551212\",\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:51.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"59ad8481-1332-4457-b20c-e3cb6203e029\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-95cf-9fca95f1c30a\"}}",
+                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost\r\nUser-Agent: goflow-testing\r\nContent-Length: 452\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"channel\":null,\"contact\":{\"language\":\"eng\",\"name\":\"Ben Haggerty\",\"urn\":\"tel:+12065551212\",\"uuid\":\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\"},\"flow\":{\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\"input\":null,\"path\":[{\"arrived_on\":\"2025-05-04T12:30:51.123456Z\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\"}],\"results\":{},\"run\":{\"created_on\":\"2025-05-04T12:30:47.123456Z\",\"uuid\":\"01969b47-113b-76f8-95cf-9fca95f1c30a\"}}",
                     "response": "HTTP/1.0 200 OK\r\nContent-Length: 16\r\n\r\n{ \"ok\": \"true\" }",
                     "resthook": "new-registration",
                     "retries": 0,
                     "sizes": {
-                        "request": 665,
+                        "request": 604,
                         "response": 55
                     },
                     "status": "success",
                     "status_code": 200,
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=success",
-                    "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe"
+                    "uuid": "01969b47-401b-76f8-a7eb-cc4cc9ec3e6b"
                 },
                 {
                     "category": "Failure",
@@ -117,7 +115,7 @@
                     },
                     "name": "Response 1",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-4fbb-76f8-9729-57745fb13b06",
+                    "uuid": "01969b47-4fbb-76f8-aac5-d9d0ae409dbe",
                     "value": "400"
                 },
                 {
@@ -132,7 +130,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-5f5b-76f8-8b42-056e0211d5b9"
+                    "uuid": "01969b47-5f5b-76f8-9729-57745fb13b06"
                 },
                 {
                     "created_on": "2025-05-04T12:31:12.123456789Z",
@@ -143,7 +141,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-6b13-76f8-89aa-1577771fa183"
+                    "uuid": "01969b47-6b13-76f8-9d79-c694bc69dcd1"
                 }
             ],
             "segments": [
@@ -171,15 +169,11 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "cffd72b4-0b30-41a8-ae2b-b8e5019a164d",
-                                "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65"
                             },
                             {
                                 "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "exit_uuid": "d075e84c-cdfd-4b6d-82e1-d64a03fb7acb",
-                                "node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                                "uuid": "75e76fb0-f35a-4a2c-9d79-c694bc69dcd1"
+                                "node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
                             }
                         ],
                         "results": {

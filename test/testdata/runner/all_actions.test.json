@@ -61,7 +61,7 @@
                         }
                     ],
                     "type": "input_labels_added",
-                    "uuid": "01969b47-24c3-76f8-b774-0a98171a0712"
+                    "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029"
                 },
                 {
                     "created_on": "2025-05-04T12:30:56.123456789Z",
@@ -76,7 +76,7 @@
                         }
                     ],
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-2c93-76f8-a7eb-cc4cc9ec3e6b"
+                    "uuid": "01969b47-2c93-76f8-b774-0a98171a0712"
                 },
                 {
                     "created_on": "2025-05-04T12:30:58.123456789Z",
@@ -87,7 +87,7 @@
                         "mailto:ben@macklemore",
                         "twitter:ben_haggerty"
                     ],
-                    "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe"
+                    "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b"
                 },
                 {
                     "created_on": "2025-05-04T12:31:01.123456789Z",
@@ -96,7 +96,7 @@
                         "name": "Activation Token"
                     },
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-401b-76f8-9729-57745fb13b06",
+                    "uuid": "01969b47-401b-76f8-aac5-d9d0ae409dbe",
                     "value": {
                         "text": "XXX-YYY-ZZZ"
                     }
@@ -110,7 +110,7 @@
                         "test@example.com"
                     ],
                     "type": "email_sent",
-                    "uuid": "01969b47-47eb-76f8-9d79-c694bc69dcd1"
+                    "uuid": "01969b47-47eb-76f8-9729-57745fb13b06"
                 },
                 {
                     "contacts": [
@@ -181,7 +181,7 @@
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     },
                     "type": "session_triggered",
-                    "uuid": "01969b47-4fbb-76f8-8b42-056e0211d5b9"
+                    "uuid": "01969b47-4fbb-76f8-9d79-c694bc69dcd1"
                 },
                 {
                     "base_language": "eng",
@@ -198,7 +198,7 @@
                     "urns": [
                         "tel:+12065551212"
                     ],
-                    "uuid": "01969b47-578b-76f8-89aa-1577771fa183"
+                    "uuid": "01969b47-578b-76f8-8b42-056e0211d5b9"
                 },
                 {
                     "base_language": "eng",
@@ -224,7 +224,7 @@
                         }
                     },
                     "type": "broadcast_created",
-                    "uuid": "01969b47-5f5b-76f8-8f55-b7788ac5e343"
+                    "uuid": "01969b47-5f5b-76f8-89aa-1577771fa183"
                 },
                 {
                     "created_on": "2025-05-04T12:31:11.123456789Z",
@@ -235,7 +235,7 @@
                         }
                     ],
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-672b-76f8-a943-ec055bbeb3b4"
+                    "uuid": "01969b47-672b-76f8-8f55-b7788ac5e343"
                 },
                 {
                     "created_on": "2025-05-04T12:31:13.123456789Z",
@@ -246,7 +246,7 @@
                         }
                     ],
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-6efb-76f8-b384-a4094c3d60be"
+                    "uuid": "01969b47-6efb-76f8-a943-ec055bbeb3b4"
                 },
                 {
                     "created_on": "2025-05-04T12:31:15.123456789Z",
@@ -261,7 +261,7 @@
                         }
                     ],
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-76cb-76f8-b3a5-b9dac4767740"
+                    "uuid": "01969b47-76cb-76f8-b384-a4094c3d60be"
                 },
                 {
                     "created_on": "2025-05-04T12:31:17.123456789Z",
@@ -275,7 +275,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-7e9b-76f8-87c7-10f327cbfde2"
+                    "uuid": "01969b47-7e9b-76f8-b3a5-b9dac4767740"
                 },
                 {
                     "created_on": "2025-05-04T12:31:19.123456789Z",
@@ -289,7 +289,7 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-866b-76f8-a98e-1c65c9788658"
+                    "uuid": "01969b47-866b-76f8-87c7-10f327cbfde2"
                 },
                 {
                     "created_on": "2025-05-04T12:31:21.123456789Z",
@@ -316,27 +316,27 @@
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
-                    "uuid": "01969b47-8e3b-76f8-893f-6422e535ea8c"
+                    "uuid": "01969b47-8e3b-76f8-a98e-1c65c9788658"
                 },
                 {
                     "category": "Male",
                     "created_on": "2025-05-04T12:31:25.123456789Z",
                     "name": "Gender",
                     "type": "run_result_changed",
-                    "uuid": "01969b47-9ddb-76f8-bffe-b26e15b12b0f",
+                    "uuid": "01969b47-9ddb-76f8-893f-6422e535ea8c",
                     "value": "m"
                 },
                 {
                     "created_on": "2025-05-04T12:31:27.123456789Z",
                     "name": "Jeff Jefferson 2",
                     "type": "contact_name_changed",
-                    "uuid": "01969b47-a5ab-76f8-b4dd-bb13b355a627"
+                    "uuid": "01969b47-a5ab-76f8-bffe-b26e15b12b0f"
                 },
                 {
                     "created_on": "2025-05-04T12:31:29.123456789Z",
                     "language": "",
                     "type": "contact_language_changed",
-                    "uuid": "01969b47-ad7b-76f8-9aeb-7faa667f1355"
+                    "uuid": "01969b47-ad7b-76f8-b4dd-bb13b355a627"
                 },
                 {
                     "created_on": "2025-05-04T12:31:32.123456789Z",
@@ -345,7 +345,7 @@
                         "name": "Gender"
                     },
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-b933-76f8-a58f-30ba497b0d21",
+                    "uuid": "01969b47-b933-76f8-9aeb-7faa667f1355",
                     "value": {
                         "text": "Male"
                     }
@@ -359,7 +359,7 @@
                         }
                     ],
                     "type": "contact_groups_changed",
-                    "uuid": "01969b47-c103-76f8-a8c9-d76ecec32717"
+                    "uuid": "01969b47-c103-76f8-a58f-30ba497b0d21"
                 },
                 {
                     "created_on": "2025-05-04T12:31:37.123456789Z",
@@ -368,7 +368,7 @@
                         "name": "District"
                     },
                     "type": "contact_field_changed",
-                    "uuid": "01969b47-ccbb-76f8-aab8-757fffa552e6",
+                    "uuid": "01969b47-ccbb-76f8-a8c9-d76ecec32717",
                     "value": {
                         "district": "Rwanda > Kigali City > Gasabo",
                         "state": "Rwanda > Kigali City",
@@ -389,7 +389,7 @@
                     "status_code": 200,
                     "type": "webhook_called",
                     "url": "http://localhost/?cmd=success&name=Jeff%20Jefferson%202",
-                    "uuid": "01969b47-dc5b-76f8-95d6-85696b970f6a"
+                    "uuid": "01969b47-dc5b-76f8-aab8-757fffa552e6"
                 },
                 {
                     "created_on": "2025-05-04T12:31:43.123456789Z",
@@ -400,7 +400,7 @@
                         "mailto:ben@macklemore",
                         "twitter:ben_haggerty"
                     ],
-                    "uuid": "01969b47-e42b-76f8-bbf4-9afbc59f7bb4"
+                    "uuid": "01969b47-e42b-76f8-95d6-85696b970f6a"
                 },
                 {
                     "created_on": "2025-05-04T12:31:47.123456789Z",
@@ -409,9 +409,9 @@
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
                     "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                    "run_uuid": "01969b47-efe3-76f8-ab7b-b7ab5b0dc119",
+                    "run_uuid": "01969b47-efe3-76f8-bbf4-9afbc59f7bb4",
                     "type": "run_started",
-                    "uuid": "01969b47-f3cb-76f8-8a21-0c8b658d7ece"
+                    "uuid": "01969b47-f3cb-76f8-ab7b-b7ab5b0dc119"
                 },
                 {
                     "created_on": "2025-05-04T12:31:50.123456789Z",
@@ -419,10 +419,10 @@
                         "name": "Registration Flow",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
-                    "run_uuid": "01969b47-efe3-76f8-ab7b-b7ab5b0dc119",
+                    "run_uuid": "01969b47-efe3-76f8-bbf4-9afbc59f7bb4",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b47-ff83-76f8-a851-494c098c6807"
+                    "uuid": "01969b47-ff83-76f8-8a21-0c8b658d7ece"
                 },
                 {
                     "created_on": "2025-05-04T12:31:53.123456789Z",
@@ -433,7 +433,7 @@
                     "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                     "status": "completed",
                     "type": "run_ended",
-                    "uuid": "01969b48-0b3b-76f8-99b2-e3c62e5695d5"
+                    "uuid": "01969b48-0b3b-76f8-a851-494c098c6807"
                 }
             ],
             "segments": [],
@@ -468,9 +468,7 @@
                         "path": [
                             {
                                 "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "exit_uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6",
-                                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "59ad8481-1332-4457-b20c-e3cb6203e029"
+                                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507"
                             }
                         ],
                         "results": {
@@ -505,7 +503,7 @@
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                         "path": [],
                         "status": "completed",
-                        "uuid": "01969b47-efe3-76f8-ab7b-b7ab5b0dc119"
+                        "uuid": "01969b47-efe3-76f8-bbf4-9afbc59f7bb4"
                     }
                 ],
                 "sprints": 1,

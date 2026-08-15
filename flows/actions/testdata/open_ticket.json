@@ -12,7 +12,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: topic[uuid=dc61e948-26a1-407e-9739-b73b46400b51,name=Deleted]",
@@ -73,7 +73,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't open tickets during batch starts"
@@ -116,11 +116,11 @@
         },
         "events": [
             {
-                "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "ticket": {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -133,14 +133,14 @@
                 }
             },
             {
-                "uuid": "01969b47-3c33-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "ticket_uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "ticket_uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "note": "Last message: Hi everybody"
             },
             {
-                "uuid": "01969b47-4403-76f8-9d79-c694bc69dcd1",
+                "uuid": "01969b47-4403-76f8-9729-57745fb13b06",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
                 "groups_added": [
@@ -184,7 +184,7 @@
             },
             "tickets": [
                 {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -198,7 +198,7 @@
             ]
         },
         "locals_after": {
-            "_new_ticket": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
+            "_new_ticket": "01969b47-307b-76f8-b774-0a98171a0712"
         },
         "templates": [
             "Last message: @input.text"
@@ -237,11 +237,11 @@
         },
         "events": [
             {
-                "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "ticket": {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
@@ -250,7 +250,7 @@
                 }
             },
             {
-                "uuid": "01969b47-3c33-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
                 "groups_added": [
@@ -294,7 +294,7 @@
             },
             "tickets": [
                 {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
@@ -304,7 +304,7 @@
             ]
         },
         "locals_after": {
-            "_new_ticket": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
+            "_new_ticket": "01969b47-307b-76f8-b774-0a98171a0712"
         },
         "inspection": {
             "counts": {
@@ -336,11 +336,11 @@
         },
         "events": [
             {
-                "uuid": "01969b47-3463-76f8-aac5-d9d0ae409dbe",
+                "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
                 "ticket": {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -353,14 +353,14 @@
                 }
             },
             {
-                "uuid": "01969b47-3c33-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
-                "ticket_uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "ticket_uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "note": "Last message: Hi everybody"
             },
             {
-                "uuid": "01969b47-4403-76f8-9d79-c694bc69dcd1",
+                "uuid": "01969b47-4403-76f8-9729-57745fb13b06",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
                 "groups_added": [
@@ -404,7 +404,7 @@
             },
             "tickets": [
                 {
-                    "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                    "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -418,7 +418,7 @@
             ]
         },
         "locals_after": {
-            "_new_ticket": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b"
+            "_new_ticket": "01969b47-307b-76f8-b774-0a98171a0712"
         },
         "templates": [
             "@(lower(\"JIM\" & \"@NYARUKA.COM\"))",
@@ -460,7 +460,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "No such user with email 'EVE@NYARUKA.COM'",
@@ -470,11 +470,11 @@
                 }
             },
             {
-                "uuid": "01969b47-3c33-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
                 "ticket": {
-                    "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                    "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -483,14 +483,14 @@
                 }
             },
             {
-                "uuid": "01969b47-4403-76f8-9d79-c694bc69dcd1",
+                "uuid": "01969b47-4403-76f8-9729-57745fb13b06",
                 "type": "ticket_note_added",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
-                "ticket_uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                "ticket_uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                 "note": "Last message: Hi everybody"
             },
             {
-                "uuid": "01969b47-4bd3-76f8-8b42-056e0211d5b9",
+                "uuid": "01969b47-4bd3-76f8-9d79-c694bc69dcd1",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:04.123456789Z",
                 "groups_added": [
@@ -534,7 +534,7 @@
             },
             "tickets": [
                 {
-                    "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                    "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                     "status": "open",
                     "topic": {
                         "uuid": "472a7a73-96cb-4736-b567-056d987cc5b4",
@@ -544,7 +544,7 @@
             ]
         },
         "locals_after": {
-            "_new_ticket": "01969b47-384b-76f8-aac5-d9d0ae409dbe"
+            "_new_ticket": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
         },
         "templates": [
             "@(\"EVE@NYARUKA.COM\")",
@@ -580,7 +580,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Error evaluating expression: division by zero",
@@ -590,11 +590,11 @@
                 }
             },
             {
-                "uuid": "01969b47-3c33-76f8-9729-57745fb13b06",
+                "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe",
                 "type": "ticket_opened",
                 "created_on": "2025-05-04T12:31:00.123456789Z",
                 "ticket": {
-                    "uuid": "01969b47-384b-76f8-aac5-d9d0ae409dbe",
+                    "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
                     "status": "open",
                     "topic": {
                         "uuid": "0d9a2c56-6fc2-4f27-93c5-a6322e26b740",
@@ -603,7 +603,7 @@
                 }
             },
             {
-                "uuid": "01969b47-4403-76f8-9d79-c694bc69dcd1",
+                "uuid": "01969b47-4403-76f8-9729-57745fb13b06",
                 "type": "contact_groups_changed",
                 "created_on": "2025-05-04T12:31:02.123456789Z",
                 "groups_added": [
@@ -615,7 +615,7 @@
             }
         ],
         "locals_after": {
-            "_new_ticket": "01969b47-384b-76f8-aac5-d9d0ae409dbe"
+            "_new_ticket": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
         },
         "templates": [
             "@(1/ 0)"

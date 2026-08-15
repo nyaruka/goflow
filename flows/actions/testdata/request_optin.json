@@ -11,7 +11,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "opt-in requests are no longer supported",

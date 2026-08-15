@@ -49,7 +49,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: flow[uuid=dede1e50-db55-4b50-8929-2116bfc56148,name=Missing]",
@@ -116,7 +116,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "Missing dependency: group[uuid=33382939-babf-4982-9395-8793feb4e7c6,name=Climbers]",
@@ -179,7 +179,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't start new sessions for groups or queries during batch starts"
@@ -227,7 +227,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "text": "Can't start new sessions for groups or queries during batch starts"
@@ -277,7 +277,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-24c3-76f8-b774-0a98171a0712",
+                "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
                 "type": "session_triggered",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "flow": {
@@ -391,7 +391,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "session_triggered",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "flow": {
@@ -525,7 +525,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "text": "'oui' couldn't be resolved to a contact, group or URN"
@@ -577,7 +577,7 @@
         },
         "events": [
             {
-                "uuid": "01969b47-307b-76f8-a7eb-cc4cc9ec3e6b",
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "session_triggered",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "flow": {
