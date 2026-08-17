@@ -147,12 +147,16 @@ func (s *session) waitingRun() *run {
 	return nil
 }
 
-// Compact removes state which the engine will never need again - i.e. the paths of exited runs. Callers should only
-// invoke this after extracting anything they themselves need from the session, and before marshaling it for storage.
+// Compact removes state which the engine will never need again - i.e. the paths, locals and webhooks of exited runs.
+// Callers should only invoke this after extracting anything they themselves need from the session, and before
+// marshaling it for storage.
 func (s *session) Compact() {
 	for _, r := range s.runs {
 		if r.Status() != core.RunStatusActive && r.Status() != core.RunStatusWaiting {
-			r.(*run).path = nil
+			rr := r.(*run)
+			rr.path = nil
+			rr.locals = nil
+			rr.webhook = nil
 		}
 	}
 }

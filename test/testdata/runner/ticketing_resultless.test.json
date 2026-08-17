@@ -187,9 +187,6 @@
                             "uuid": "3486fc59-d417-4189-93cd-e0aa8e3112ac"
                         },
                         "had_input": true,
-                        "locals": {
-                            "_new_ticket": "01969b47-5f5b-76f8-9729-57745fb13b06"
-                        },
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
                         "results": {
                             "response_1": {

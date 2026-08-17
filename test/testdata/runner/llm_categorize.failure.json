@@ -157,9 +157,6 @@
                             "uuid": "79a67c64-b43d-45f2-a5fc-1c2eeed6d04e"
                         },
                         "had_input": true,
-                        "locals": {
-                            "_llm_output": "<ERROR>"
-                        },
                         "modified_on": "2025-05-04T12:31:15.123456789Z",
                         "results": {
                             "intent": {

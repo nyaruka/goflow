@@ -150,14 +150,7 @@
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "status": "completed",
-                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "webhook": {
-                            "headers": null,
-                            "json": null,
-                            "method": "GET",
-                            "status": 0,
-                            "url": "http://temba.io/bad"
-                        }
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "sprints": 1,

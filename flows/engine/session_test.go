@@ -447,11 +447,20 @@ func TestSessionCompact(t *testing.T) {
 	require.NotEmpty(t, session.Runs()[0].Path())
 	require.NotEmpty(t, session.Runs()[1].Path())
 
+	require.NotNil(t, session.Runs()[1].Locals())
+
+	// give the exited run a webhook so we can check that it's cleared
+	session.Runs()[1].SetWebhook(&flows.WebhookCall{Method: "GET", URL: "http://example.com", ResponseStatus: 200})
+	require.NotNil(t, session.Runs()[1].Webhook())
+
 	session.Compact()
 
-	// waiting run keeps its path, exited run loses its
+	// waiting run keeps its path, exited run loses its path, locals and webhook
 	assert.NotEmpty(t, session.Runs()[0].Path())
+	assert.NotNil(t, session.Runs()[0].Locals())
 	assert.Empty(t, session.Runs()[1].Path())
+	assert.Nil(t, session.Runs()[1].Locals())
+	assert.Nil(t, session.Runs()[1].Webhook())
 
 	// and in the marshaled session, the exited run has no path key at all
 	marshaled, err := jsonx.Marshal(session)

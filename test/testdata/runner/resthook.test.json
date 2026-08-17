@@ -182,18 +182,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "webhook": {
-                            "headers": {},
-                            "json": {
-                                "errors": [
-                                    "bad_request"
-                                ]
-                            },
-                            "method": "POST",
-                            "status": 400,
-                            "url": "http://localhost/?cmd=badrequest"
-                        }
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "sprints": 1,
