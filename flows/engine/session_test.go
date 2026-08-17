@@ -431,3 +431,45 @@ func TestEngineErrors(t *testing.T) {
 	assert.EqualError(t, err, "resume of type dial not accepted by wait of type msg")
 	assert.Equal(t, engine.ErrorResumeRejectedByWait, err.(*engine.Error).Code())
 }
+
+func TestSessionCompact(t *testing.T) {
+	_, session, _ := test.NewSessionBuilder().WithAssetsPath("../../test/testdata/runner/subflow_other.json").WithFlow("9e43da00-b2e5-450e-a351-0772f5469511").MustBuild()
+
+	// resume twice so that the child run completes and the parent run is waiting
+	session, _, err := test.ResumeSession(session, session.Assets(), "neither")
+	require.NoError(t, err)
+	session, _, err = test.ResumeSession(session, session.Assets(), "yes")
+	require.NoError(t, err)
+
+	require.Equal(t, flows.SessionStatusWaiting, session.Status())
+	require.Equal(t, core.RunStatusWaiting, session.Runs()[0].Status())
+	require.Equal(t, core.RunStatusCompleted, session.Runs()[1].Status())
+	require.NotEmpty(t, session.Runs()[0].Path())
+	require.NotEmpty(t, session.Runs()[1].Path())
+
+	session.Compact()
+
+	// waiting run keeps its path, exited run loses its
+	assert.NotEmpty(t, session.Runs()[0].Path())
+	assert.Empty(t, session.Runs()[1].Path())
+
+	// and in the marshaled session, the exited run has no path key at all
+	marshaled, err := jsonx.Marshal(session)
+	require.NoError(t, err)
+
+	envelope := &struct {
+		Runs []map[string]json.RawMessage `json:"runs"`
+	}{}
+	jsonx.MustUnmarshal(marshaled, envelope)
+	assert.Contains(t, envelope.Runs[0], "path")
+	assert.NotContains(t, envelope.Runs[1], "path")
+
+	// a compacted session can be reloaded and resumed to completion
+	session, _, err = test.ResumeSession(session, session.Assets(), "never")
+	require.NoError(t, err)
+	session, _, err = test.ResumeSession(session, session.Assets(), "no")
+	require.NoError(t, err)
+
+	assert.Equal(t, flows.SessionStatusCompleted, session.Status())
+	assert.Empty(t, session.Runs()[1].Path())
+}

@@ -255,24 +255,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:21.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "fb57fe4a-d3d6-4765-a554-f13d344dbd9b"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "22c48807-0f4a-4229-8cf3-e05019804ff7"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
-                                "node_uuid": "17d45eb5-f35d-4e15-974d-8beb26b67050"
-                            }
-                        ],
                         "results": {
                             "number": {
                                 "category": "Numeric",

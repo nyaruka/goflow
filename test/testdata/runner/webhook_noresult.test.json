@@ -149,24 +149,6 @@
                             "uuid": "68dae09d-db22-4879-90a7-a89395e3167b"
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "03eec86c-190c-48a2-bdaa-bbe07b36bd2f"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:57.123456789Z",
-                                "node_uuid": "48541207-c17a-4207-8c3c-0be96a571b83"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "1fd2cd66-1a4b-4ab7-bc0c-1a14eab92cc8"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
                         "webhook": {

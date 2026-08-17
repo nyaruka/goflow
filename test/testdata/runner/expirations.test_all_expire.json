@@ -271,16 +271,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:05.123456789Z",
-                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     }
@@ -394,20 +384,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
-                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029"
                     },
@@ -421,16 +397,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:05.123456789Z",
-                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     }
@@ -478,20 +444,6 @@
                             "uuid": "1931e19c-49ce-460c-ba0a-630fa2db76af"
                         },
                         "modified_on": "2025-05-04T12:31:40.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "7b8302b9-9b8b-431a-a3fd-4f5763179398"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "c7f12baf-32fa-4927-802b-14589c96c5c7"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:35.123456789Z",
-                                "node_uuid": "03b05513-7eec-4b04-a863-48e2f0a80fcc"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     },
@@ -505,20 +457,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:25.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
-                                "node_uuid": "775ff683-ebfc-43ae-aba2-6c06f2f3befa"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "cbdb5e44-7c36-41b8-97c6-a64f0e2830cd"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "d003a6ba-f04c-484e-921d-3808707f9c62"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029"
                     },
@@ -532,16 +470,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "e354d2be-ea18-4380-a1c4-8f0d8131bf29"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:05.123456789Z",
-                                "node_uuid": "7f003aad-01d2-45b4-94a7-decb0fff8082"
-                            }
-                        ],
                         "status": "expired",
                         "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     }

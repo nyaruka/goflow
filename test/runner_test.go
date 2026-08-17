@@ -161,6 +161,8 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope,
 
 	// try to resume the session for each of the provided resumes
 	for i, rawResume := range rawResumes {
+		session.Compact()
+
 		sessionJSON, err := jsonx.MarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("error marshalling output: %w", err)
@@ -192,6 +194,8 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope,
 			return runResult{}, err
 		}
 	}
+
+	session.Compact()
 
 	sessionJSON, err := jsonx.MarshalPretty(session)
 	if err != nil {

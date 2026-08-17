@@ -2459,12 +2459,6 @@
                             "uuid": "2e9c05fa-2c89-4035-983f-0da6a7c0a6bc"
                         },
                         "modified_on": "2025-05-04T12:44:13.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     },
@@ -2478,12 +2472,6 @@
                         },
                         "modified_on": "2025-05-04T12:44:10.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029"
                     },
@@ -2497,12 +2485,6 @@
                         },
                         "modified_on": "2025-05-04T12:44:07.123456789Z",
                         "parent_uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     },
@@ -2516,12 +2498,6 @@
                         },
                         "modified_on": "2025-05-04T12:44:04.123456789Z",
                         "parent_uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-4bd3-76f8-9729-57745fb13b06"
                     },
@@ -2535,12 +2511,6 @@
                         },
                         "modified_on": "2025-05-04T12:44:01.123456789Z",
                         "parent_uuid": "01969b47-4bd3-76f8-9729-57745fb13b06",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-5f5b-76f8-8b42-056e0211d5b9"
                     },
@@ -2554,12 +2524,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:58.123456789Z",
                         "parent_uuid": "01969b47-5f5b-76f8-8b42-056e0211d5b9",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-72e3-76f8-8f55-b7788ac5e343"
                     },
@@ -2573,12 +2537,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:55.123456789Z",
                         "parent_uuid": "01969b47-72e3-76f8-8f55-b7788ac5e343",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-866b-76f8-b384-a4094c3d60be"
                     },
@@ -2592,12 +2550,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:52.123456789Z",
                         "parent_uuid": "01969b47-866b-76f8-b384-a4094c3d60be",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-99f3-76f8-87c7-10f327cbfde2"
                     },
@@ -2611,12 +2563,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:49.123456789Z",
                         "parent_uuid": "01969b47-99f3-76f8-87c7-10f327cbfde2",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-ad7b-76f8-893f-6422e535ea8c"
                     },
@@ -2630,12 +2576,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:46.123456789Z",
                         "parent_uuid": "01969b47-ad7b-76f8-893f-6422e535ea8c",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-c103-76f8-b4dd-bb13b355a627"
                     },
@@ -2649,12 +2589,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:43.123456789Z",
                         "parent_uuid": "01969b47-c103-76f8-b4dd-bb13b355a627",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-d48b-76f8-a58f-30ba497b0d21"
                     },
@@ -2668,12 +2602,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:40.123456789Z",
                         "parent_uuid": "01969b47-d48b-76f8-a58f-30ba497b0d21",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-e813-76f8-aab8-757fffa552e6"
                     },
@@ -2687,12 +2615,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:37.123456789Z",
                         "parent_uuid": "01969b47-e813-76f8-aab8-757fffa552e6",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b47-fb9b-76f8-bbf4-9afbc59f7bb4"
                     },
@@ -2706,12 +2628,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:34.123456789Z",
                         "parent_uuid": "01969b47-fb9b-76f8-bbf4-9afbc59f7bb4",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-0f23-76f8-8a21-0c8b658d7ece"
                     },
@@ -2725,12 +2641,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:31.123456789Z",
                         "parent_uuid": "01969b48-0f23-76f8-8a21-0c8b658d7ece",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-22ab-76f8-99b2-e3c62e5695d5"
                     },
@@ -2744,12 +2654,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:28.123456789Z",
                         "parent_uuid": "01969b48-22ab-76f8-99b2-e3c62e5695d5",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-3633-76f8-88c7-56bcb29ae35a"
                     },
@@ -2763,12 +2667,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:25.123456789Z",
                         "parent_uuid": "01969b48-3633-76f8-88c7-56bcb29ae35a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-49bb-76f8-9ea3-78702727831a"
                     },
@@ -2782,12 +2680,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:22.123456789Z",
                         "parent_uuid": "01969b48-49bb-76f8-9ea3-78702727831a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-5d43-76f8-aa6f-a957c6de8daa"
                     },
@@ -2801,12 +2693,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:19.123456789Z",
                         "parent_uuid": "01969b48-5d43-76f8-aa6f-a957c6de8daa",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-70cb-76f8-8e47-34e3393ba6d0"
                     },
@@ -2820,12 +2706,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:16.123456789Z",
                         "parent_uuid": "01969b48-70cb-76f8-8e47-34e3393ba6d0",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-8453-76f8-b806-699460e5ca92"
                     },
@@ -2839,12 +2719,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:13.123456789Z",
                         "parent_uuid": "01969b48-8453-76f8-b806-699460e5ca92",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-97db-76f8-9170-73aa5f656389"
                     },
@@ -2858,12 +2732,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:10.123456789Z",
                         "parent_uuid": "01969b48-97db-76f8-9170-73aa5f656389",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-ab63-76f8-af42-abb6278d787f"
                     },
@@ -2877,12 +2745,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:07.123456789Z",
                         "parent_uuid": "01969b48-ab63-76f8-af42-abb6278d787f",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-beeb-76f8-9ad1-04953223c01c"
                     },
@@ -2896,12 +2758,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:04.123456789Z",
                         "parent_uuid": "01969b48-beeb-76f8-9ad1-04953223c01c",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-d273-76f8-afc7-28aa8c70780e"
                     },
@@ -2915,12 +2771,6 @@
                         },
                         "modified_on": "2025-05-04T12:43:01.123456789Z",
                         "parent_uuid": "01969b48-d273-76f8-afc7-28aa8c70780e",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-e5fb-76f8-8876-bd2f7154ab08"
                     },
@@ -2934,12 +2784,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:58.123456789Z",
                         "parent_uuid": "01969b48-e5fb-76f8-8876-bd2f7154ab08",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b48-f983-76f8-9392-7a1afb687bf3"
                     },
@@ -2953,12 +2797,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:55.123456789Z",
                         "parent_uuid": "01969b48-f983-76f8-9392-7a1afb687bf3",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-0d0b-76f8-85e2-056da0a5692a"
                     },
@@ -2972,12 +2810,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:52.123456789Z",
                         "parent_uuid": "01969b49-0d0b-76f8-85e2-056da0a5692a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-2093-76f8-8c88-29e9c787ac32"
                     },
@@ -2991,12 +2823,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:49.123456789Z",
                         "parent_uuid": "01969b49-2093-76f8-8c88-29e9c787ac32",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-341b-76f8-8d77-6c3d50b7bc5a"
                     },
@@ -3010,12 +2836,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:46.123456789Z",
                         "parent_uuid": "01969b49-341b-76f8-8d77-6c3d50b7bc5a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-47a3-76f8-bb6f-b873752f885a"
                     },
@@ -3029,12 +2849,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:43.123456789Z",
                         "parent_uuid": "01969b49-47a3-76f8-bb6f-b873752f885a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-5b2b-76f8-a3c7-06ece10484c1"
                     },
@@ -3048,12 +2862,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:40.123456789Z",
                         "parent_uuid": "01969b49-5b2b-76f8-a3c7-06ece10484c1",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-6eb3-76f8-9805-2814d9047b68"
                     },
@@ -3067,12 +2875,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:37.123456789Z",
                         "parent_uuid": "01969b49-6eb3-76f8-9805-2814d9047b68",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-823b-76f8-b967-8af4e55f3a3f"
                     },
@@ -3086,12 +2888,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:34.123456789Z",
                         "parent_uuid": "01969b49-823b-76f8-b967-8af4e55f3a3f",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-95c3-76f8-97ad-3aa8fbd702eb"
                     },
@@ -3105,12 +2901,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:31.123456789Z",
                         "parent_uuid": "01969b49-95c3-76f8-97ad-3aa8fbd702eb",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-a94b-76f8-94dc-1f5ff9b87f5d"
                     },
@@ -3124,12 +2914,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:28.123456789Z",
                         "parent_uuid": "01969b49-a94b-76f8-94dc-1f5ff9b87f5d",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-bcd3-76f8-a0c4-2314fb7af950"
                     },
@@ -3143,12 +2927,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:25.123456789Z",
                         "parent_uuid": "01969b49-bcd3-76f8-a0c4-2314fb7af950",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-d05b-76f8-893a-aceb33fab072"
                     },
@@ -3162,12 +2940,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:22.123456789Z",
                         "parent_uuid": "01969b49-d05b-76f8-893a-aceb33fab072",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:33:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-e3e3-76f8-92e7-6bb1f58ce1eb"
                     },
@@ -3181,12 +2953,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:19.123456789Z",
                         "parent_uuid": "01969b49-e3e3-76f8-92e7-6bb1f58ce1eb",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b49-f76b-76f8-9ffd-1f8b2a958d21"
                     },
@@ -3200,12 +2966,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:16.123456789Z",
                         "parent_uuid": "01969b49-f76b-76f8-9ffd-1f8b2a958d21",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-0af3-76f8-91f5-a92c2231e811"
                     },
@@ -3219,12 +2979,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:13.123456789Z",
                         "parent_uuid": "01969b4a-0af3-76f8-91f5-a92c2231e811",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-1e7b-76f8-a98c-c3ed5728bb2f"
                     },
@@ -3238,12 +2992,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:10.123456789Z",
                         "parent_uuid": "01969b4a-1e7b-76f8-a98c-c3ed5728bb2f",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-3203-76f8-84ae-2dc9f2d6a060"
                     },
@@ -3257,12 +3005,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:07.123456789Z",
                         "parent_uuid": "01969b4a-3203-76f8-84ae-2dc9f2d6a060",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-458b-76f8-94b1-31442acf0ff7"
                     },
@@ -3276,12 +3018,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:04.123456789Z",
                         "parent_uuid": "01969b4a-458b-76f8-94b1-31442acf0ff7",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-5913-76f8-a966-b98cee34c80a"
                     },
@@ -3295,12 +3031,6 @@
                         },
                         "modified_on": "2025-05-04T12:42:01.123456789Z",
                         "parent_uuid": "01969b4a-5913-76f8-a966-b98cee34c80a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-6c9b-76f8-a207-1680d9c0b689"
                     },
@@ -3314,12 +3044,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:58.123456789Z",
                         "parent_uuid": "01969b4a-6c9b-76f8-a207-1680d9c0b689",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-8023-76f8-99a3-375b9e29205d"
                     },
@@ -3333,12 +3057,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:55.123456789Z",
                         "parent_uuid": "01969b4a-8023-76f8-99a3-375b9e29205d",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-93ab-76f8-a4d8-bab6c01e389e"
                     },
@@ -3352,12 +3070,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:52.123456789Z",
                         "parent_uuid": "01969b4a-93ab-76f8-a4d8-bab6c01e389e",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-a733-76f8-9d8a-f120e44f6e7e"
                     },
@@ -3371,12 +3083,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:49.123456789Z",
                         "parent_uuid": "01969b4a-a733-76f8-9d8a-f120e44f6e7e",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-babb-76f8-8451-42ed7f9f8e9f"
                     },
@@ -3390,12 +3096,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:46.123456789Z",
                         "parent_uuid": "01969b4a-babb-76f8-8451-42ed7f9f8e9f",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:34:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-ce43-76f8-a480-34c08e788481"
                     },
@@ -3409,12 +3109,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:43.123456789Z",
                         "parent_uuid": "01969b4a-ce43-76f8-a480-34c08e788481",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-e1cb-76f8-95ef-e4990cac10a0"
                     },
@@ -3428,12 +3122,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:40.123456789Z",
                         "parent_uuid": "01969b4a-e1cb-76f8-95ef-e4990cac10a0",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4a-f553-76f8-80a2-9fcfe8176188"
                     },
@@ -3447,12 +3135,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:37.123456789Z",
                         "parent_uuid": "01969b4a-f553-76f8-80a2-9fcfe8176188",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-08db-76f8-8e71-2881455dd0a1"
                     },
@@ -3466,12 +3148,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:34.123456789Z",
                         "parent_uuid": "01969b4b-08db-76f8-8e71-2881455dd0a1",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-1c63-76f8-b595-707a910d7a7e"
                     },
@@ -3485,12 +3161,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:31.123456789Z",
                         "parent_uuid": "01969b4b-1c63-76f8-b595-707a910d7a7e",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-2feb-76f8-97c4-496959aec522"
                     },
@@ -3504,12 +3174,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:28.123456789Z",
                         "parent_uuid": "01969b4b-2feb-76f8-97c4-496959aec522",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-4373-76f8-8167-f270578a41b1"
                     },
@@ -3523,12 +3187,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:25.123456789Z",
                         "parent_uuid": "01969b4b-4373-76f8-8167-f270578a41b1",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-56fb-76f8-b9b8-45ff82237e0a"
                     },
@@ -3542,12 +3200,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:22.123456789Z",
                         "parent_uuid": "01969b4b-56fb-76f8-b9b8-45ff82237e0a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-6a83-76f8-bc7f-6839726aa5ed"
                     },
@@ -3561,12 +3213,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:19.123456789Z",
                         "parent_uuid": "01969b4b-6a83-76f8-bc7f-6839726aa5ed",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-7e0b-76f8-8914-82462d3ce0de"
                     },
@@ -3580,12 +3226,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:16.123456789Z",
                         "parent_uuid": "01969b4b-7e0b-76f8-8914-82462d3ce0de",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-9193-76f8-9507-15f7876c8be4"
                     },
@@ -3599,12 +3239,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:13.123456789Z",
                         "parent_uuid": "01969b4b-9193-76f8-9507-15f7876c8be4",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-a51b-76f8-ae63-985ede038d43"
                     },
@@ -3618,12 +3252,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:10.123456789Z",
                         "parent_uuid": "01969b4b-a51b-76f8-ae63-985ede038d43",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:35:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-b8a3-76f8-bd6c-dfbedd172131"
                     },
@@ -3637,12 +3265,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:07.123456789Z",
                         "parent_uuid": "01969b4b-b8a3-76f8-bd6c-dfbedd172131",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-cc2b-76f8-a058-7bd75fb63916"
                     },
@@ -3656,12 +3278,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:04.123456789Z",
                         "parent_uuid": "01969b4b-cc2b-76f8-a058-7bd75fb63916",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-dfb3-76f8-8388-cd440939261b"
                     },
@@ -3675,12 +3291,6 @@
                         },
                         "modified_on": "2025-05-04T12:41:01.123456789Z",
                         "parent_uuid": "01969b4b-dfb3-76f8-8388-cd440939261b",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4b-f33b-76f8-ade1-9ba4c0a72b57"
                     },
@@ -3694,12 +3304,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:58.123456789Z",
                         "parent_uuid": "01969b4b-f33b-76f8-ade1-9ba4c0a72b57",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-06c3-76f8-ab89-93324df1eb69"
                     },
@@ -3713,12 +3317,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:55.123456789Z",
                         "parent_uuid": "01969b4c-06c3-76f8-ab89-93324df1eb69",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-1a4b-76f8-8e8a-682741bd50b4"
                     },
@@ -3732,12 +3330,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:52.123456789Z",
                         "parent_uuid": "01969b4c-1a4b-76f8-8e8a-682741bd50b4",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-2dd3-76f8-9dc9-862dff449d35"
                     },
@@ -3751,12 +3343,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:49.123456789Z",
                         "parent_uuid": "01969b4c-2dd3-76f8-9dc9-862dff449d35",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-415b-76f8-8eb1-ecee04171189"
                     },
@@ -3770,12 +3356,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:46.123456789Z",
                         "parent_uuid": "01969b4c-415b-76f8-8eb1-ecee04171189",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-54e3-76f8-b0e6-17a2ab3655bb"
                     },
@@ -3789,12 +3369,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:43.123456789Z",
                         "parent_uuid": "01969b4c-54e3-76f8-b0e6-17a2ab3655bb",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-686b-76f8-93f8-64b7182f7498"
                     },
@@ -3808,12 +3382,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:40.123456789Z",
                         "parent_uuid": "01969b4c-686b-76f8-93f8-64b7182f7498",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-7bf3-76f8-a1ef-94c44429a9ed"
                     },
@@ -3827,12 +3395,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:37.123456789Z",
                         "parent_uuid": "01969b4c-7bf3-76f8-a1ef-94c44429a9ed",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-8f7b-76f8-9e2c-95a63d0a4961"
                     },
@@ -3846,12 +3408,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:34.123456789Z",
                         "parent_uuid": "01969b4c-8f7b-76f8-9e2c-95a63d0a4961",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:36:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-a303-76f8-8f58-87b85d532dd6"
                     },
@@ -3865,12 +3421,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:31.123456789Z",
                         "parent_uuid": "01969b4c-a303-76f8-8f58-87b85d532dd6",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-b68b-76f8-baf3-7ffc3cb17332"
                     },
@@ -3884,12 +3434,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:28.123456789Z",
                         "parent_uuid": "01969b4c-b68b-76f8-baf3-7ffc3cb17332",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-ca13-76f8-8a84-f64c290805a6"
                     },
@@ -3903,12 +3447,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:25.123456789Z",
                         "parent_uuid": "01969b4c-ca13-76f8-8a84-f64c290805a6",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-dd9b-76f8-927f-0caaac67a676"
                     },
@@ -3922,12 +3460,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:22.123456789Z",
                         "parent_uuid": "01969b4c-dd9b-76f8-927f-0caaac67a676",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4c-f123-76f8-8e5c-e7b170016218"
                     },
@@ -3941,12 +3473,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:19.123456789Z",
                         "parent_uuid": "01969b4c-f123-76f8-8e5c-e7b170016218",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-04ab-76f8-99ad-3b05945f09cb"
                     },
@@ -3960,12 +3486,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:16.123456789Z",
                         "parent_uuid": "01969b4d-04ab-76f8-99ad-3b05945f09cb",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-1833-76f8-a573-364b7778817e"
                     },
@@ -3979,12 +3499,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:13.123456789Z",
                         "parent_uuid": "01969b4d-1833-76f8-a573-364b7778817e",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-2bbb-76f8-af93-db2c6eeb442a"
                     },
@@ -3998,12 +3512,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:10.123456789Z",
                         "parent_uuid": "01969b4d-2bbb-76f8-af93-db2c6eeb442a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-3f43-76f8-aaba-682246964983"
                     },
@@ -4017,12 +3525,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:07.123456789Z",
                         "parent_uuid": "01969b4d-3f43-76f8-aaba-682246964983",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-52cb-76f8-a541-d15dc06fdc0c"
                     },
@@ -4036,12 +3538,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:04.123456789Z",
                         "parent_uuid": "01969b4d-52cb-76f8-a541-d15dc06fdc0c",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-6653-76f8-b16b-d47463e692d7"
                     },
@@ -4055,12 +3551,6 @@
                         },
                         "modified_on": "2025-05-04T12:40:01.123456789Z",
                         "parent_uuid": "01969b4d-6653-76f8-b16b-d47463e692d7",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-79db-76f8-b567-c0fe3c3c763f"
                     },
@@ -4074,12 +3564,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:58.123456789Z",
                         "parent_uuid": "01969b4d-79db-76f8-b567-c0fe3c3c763f",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:37:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-8d63-76f8-8ba1-3091fbfde491"
                     },
@@ -4093,12 +3577,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:55.123456789Z",
                         "parent_uuid": "01969b4d-8d63-76f8-8ba1-3091fbfde491",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-a0eb-76f8-ac2c-1704e6f75110"
                     },
@@ -4112,12 +3590,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:52.123456789Z",
                         "parent_uuid": "01969b4d-a0eb-76f8-ac2c-1704e6f75110",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-b473-76f8-a5e4-edf17cce47db"
                     },
@@ -4131,12 +3603,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:49.123456789Z",
                         "parent_uuid": "01969b4d-b473-76f8-a5e4-edf17cce47db",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:11.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-c7fb-76f8-b940-704f966d2a4a"
                     },
@@ -4150,12 +3616,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:46.123456789Z",
                         "parent_uuid": "01969b4d-c7fb-76f8-b940-704f966d2a4a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:16.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-db83-76f8-abe3-043add21a6f2"
                     },
@@ -4169,12 +3629,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:43.123456789Z",
                         "parent_uuid": "01969b4d-db83-76f8-abe3-043add21a6f2",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:21.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4d-ef0b-76f8-9f23-7980ea4926fb"
                     },
@@ -4188,12 +3642,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:40.123456789Z",
                         "parent_uuid": "01969b4d-ef0b-76f8-9f23-7980ea4926fb",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:26.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-0293-76f8-a1c7-f54a3c144f2c"
                     },
@@ -4207,12 +3655,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:37.123456789Z",
                         "parent_uuid": "01969b4e-0293-76f8-a1c7-f54a3c144f2c",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:31.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-161b-76f8-8381-d6d330fd08da"
                     },
@@ -4226,12 +3668,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:34.123456789Z",
                         "parent_uuid": "01969b4e-161b-76f8-8381-d6d330fd08da",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:36.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-29a3-76f8-8018-8bb23e741563"
                     },
@@ -4245,12 +3681,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:31.123456789Z",
                         "parent_uuid": "01969b4e-29a3-76f8-8018-8bb23e741563",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:41.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-3d2b-76f8-801e-36c732b46655"
                     },
@@ -4264,12 +3694,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:28.123456789Z",
                         "parent_uuid": "01969b4e-3d2b-76f8-801e-36c732b46655",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:46.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-50b3-76f8-89fd-69892bc7b500"
                     },
@@ -4283,12 +3707,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:25.123456789Z",
                         "parent_uuid": "01969b4e-50b3-76f8-89fd-69892bc7b500",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:51.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-643b-76f8-aa24-2ec8c8fb7047"
                     },
@@ -4302,12 +3720,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:22.123456789Z",
                         "parent_uuid": "01969b4e-643b-76f8-aa24-2ec8c8fb7047",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:38:56.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-77c3-76f8-8c69-994e179b4a07"
                     },
@@ -4321,12 +3733,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:19.123456789Z",
                         "parent_uuid": "01969b4e-77c3-76f8-8c69-994e179b4a07",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:39:01.123456789Z",
-                                "node_uuid": "f603b93d-d2a3-41b2-87ba-60e37184998c"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-8b4b-76f8-ae04-3a981112c42a"
                     },
@@ -4340,12 +3746,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:16.123456789Z",
                         "parent_uuid": "01969b4e-8b4b-76f8-ae04-3a981112c42a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:39:06.123456789Z",
-                                "node_uuid": "a73d356d-d85f-4d1a-9744-28bb9884ae90"
-                            }
-                        ],
                         "status": "failed",
                         "uuid": "01969b4e-9ed3-76f8-a9c4-9fd428f16ce0"
                     },
@@ -4359,7 +3759,6 @@
                         },
                         "modified_on": "2025-05-04T12:39:13.123456789Z",
                         "parent_uuid": "01969b4e-9ed3-76f8-a9c4-9fd428f16ce0",
-                        "path": [],
                         "status": "failed",
                         "uuid": "01969b4e-b25b-76f8-9af6-e560a523a77c"
                     }

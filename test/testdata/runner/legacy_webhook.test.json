@@ -114,16 +114,6 @@
                             "uuid": "0256c9fc-8194-4567-b4ab-6965c2b7d791"
                         },
                         "modified_on": "2025-05-04T12:31:06.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "30c97f0e-e537-4940-ad1f-85599d3634b3"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "0b45a338-d7a6-4c19-b0b2-03b2d35141ed"
-                            }
-                        ],
                         "results": {
                             "webhook_result": {
                                 "category": "Success",

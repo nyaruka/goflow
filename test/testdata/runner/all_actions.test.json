@@ -465,12 +465,6 @@
                             "counter": "2"
                         },
                         "modified_on": "2025-05-04T12:31:51.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507"
-                            }
-                        ],
                         "results": {
                             "gender": {
                                 "category": "Male",
@@ -501,7 +495,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:48.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [],
                         "status": "completed",
                         "uuid": "01969b47-efe3-76f8-bbf4-9afbc59f7bb4"
                     }

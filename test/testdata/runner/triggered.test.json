@@ -76,12 +76,6 @@
                             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
                         },
                         "modified_on": "2025-05-04T12:30:54.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }

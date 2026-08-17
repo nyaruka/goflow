@@ -439,28 +439,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:34.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
-                            }
-                        ],
                         "results": {
                             "answer": {
                                 "category": "Yes",
@@ -610,28 +588,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:34.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
-                            }
-                        ],
                         "results": {
                             "answer": {
                                 "category": "Yes",
@@ -734,36 +690,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:32:12.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:38.123456789Z",
-                                "node_uuid": "70af8b8f-9caf-4af9-8e03-5686beb9336f"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:42.123456789Z",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:54.123456789Z",
-                                "node_uuid": "c6e9b298-77bc-4d4c-91b6-43fa18338742"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:58.123456789Z",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:32:09.123456789Z",
-                                "node_uuid": "48d058e6-a40c-437f-a3b0-f757dbbdeda1"
-                            }
-                        ],
                         "results": {
                             "answer": {
                                 "category": "No",
@@ -787,28 +713,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:34.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:00.123456789Z",
-                                "node_uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:04.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:16.123456789Z",
-                                "node_uuid": "4ff04e17-96d0-4920-8920-8d4d5fb2ae17"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:20.123456789Z",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "9b53d684-62a6-4f25-900c-268f762b192e"
-                            }
-                        ],
                         "results": {
                             "answer": {
                                 "category": "Yes",

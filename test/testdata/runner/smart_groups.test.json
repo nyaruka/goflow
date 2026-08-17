@@ -236,12 +236,6 @@
                             "_has_urn": "tel:+250781234567"
                         },
                         "modified_on": "2025-05-04T12:31:19.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:53.123456789Z",
-                                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-190b-76f8-92ed-42cbd11a03fd"
                     }

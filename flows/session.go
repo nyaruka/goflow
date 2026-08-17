@@ -81,6 +81,7 @@ type Session interface {
 	ParentRun() RunSummary
 	CurrentContext() *types.XObject
 	History() *core.SessionHistory
+	Compact()
 
 	Engine() Engine
 }

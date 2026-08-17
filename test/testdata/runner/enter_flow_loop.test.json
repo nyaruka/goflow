@@ -240,20 +240,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:08.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Name",
@@ -277,20 +263,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
-                                "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
-                                "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
-                                "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-6efb-76f8-9d79-c694bc69dcd1"
                     },
@@ -471,20 +443,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:08.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Name",
@@ -508,20 +466,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
-                                "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
-                                "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
-                                "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-6efb-76f8-9d79-c694bc69dcd1"
                     },
@@ -536,20 +480,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:48.123456789Z",
                         "parent_uuid": "01969b47-6efb-76f8-9d79-c694bc69dcd1",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:35.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:47.123456789Z",
-                                "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Name",
@@ -573,20 +503,6 @@
                         },
                         "modified_on": "2025-05-04T12:32:02.123456789Z",
                         "parent_uuid": "01969b47-ad7b-76f8-b384-a4094c3d60be",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:55.123456789Z",
-                                "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:59.123456789Z",
-                                "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:32:01.123456789Z",
-                                "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b48-0b3b-76f8-9aeb-7faa667f1355"
                     },
@@ -673,20 +589,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:08.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Name",
@@ -710,20 +612,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:24.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:15.123456789Z",
-                                "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
-                                "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:23.123456789Z",
-                                "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-6efb-76f8-9d79-c694bc69dcd1"
                     },
@@ -738,20 +626,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:48.123456789Z",
                         "parent_uuid": "01969b47-6efb-76f8-9d79-c694bc69dcd1",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:31.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:35.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:47.123456789Z",
-                                "node_uuid": "407b256c-b7d3-402d-88e5-acd265e250ba"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Name",
@@ -775,20 +649,6 @@
                         },
                         "modified_on": "2025-05-04T12:32:02.123456789Z",
                         "parent_uuid": "01969b47-ad7b-76f8-b384-a4094c3d60be",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:55.123456789Z",
-                                "node_uuid": "8d4144fc-c189-4b3c-82ee-0a176b26cd97"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:59.123456789Z",
-                                "node_uuid": "9b24a837-6c15-4231-8661-72971bb00a61"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:32:01.123456789Z",
-                                "node_uuid": "f7ae0d89-ca23-4f7c-8b3b-6adfbc619a08"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b48-0b3b-76f8-9aeb-7faa667f1355"
                     },
@@ -803,16 +663,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:32:24.123456789Z",
                         "parent_uuid": "01969b48-0b3b-76f8-9aeb-7faa667f1355",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:32:09.123456789Z",
-                                "node_uuid": "79ed409a-96bc-4feb-a3f6-b81e18d8ca73"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:32:13.123456789Z",
-                                "node_uuid": "e546f5ce-8f17-439f-af49-b5046d7c8069"
-                            }
-                        ],
                         "results": {
                             "command": {
                                 "category": "Exit",

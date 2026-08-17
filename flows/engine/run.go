@@ -150,7 +150,7 @@ func (r *run) CreateStep(node flows.Node) flows.Step {
 }
 
 func (r *run) PathLocation() (flows.Step, flows.Node, error) {
-	if r.Path() == nil {
+	if len(r.Path()) == 0 {
 		return nil, nil, fmt.Errorf("run has no location as path is empty")
 	}
 
@@ -426,7 +426,7 @@ var _ flows.RunSummary = (*run)(nil)
 type runEnvelope struct {
 	UUID       core.RunUUID          `json:"uuid"                  validate:"required,uuid"`
 	Flow       *assets.FlowReference `json:"flow"                  validate:"required"`
-	Path       []*step               `json:"path"                  validate:"dive"`
+	Path       []*step               `json:"path,omitempty"        validate:"dive"`
 	Locals     *flows.Locals         `json:"locals,omitzero"`
 	Results    flows.Results         `json:"results,omitempty"     validate:"omitempty,dive"`
 	Status     core.RunStatus        `json:"status"                validate:"required"`

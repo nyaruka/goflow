@@ -441,44 +441,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:52.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "e48228ed-085d-4c54-81f8-da2a5f4a6c24"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "797e66c1-99bf-4d65-8944-812e723be5f1"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "1db62b2a-7885-48f8-abaf-43074c6201b5"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
-                                "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:24.123456789Z",
-                                "node_uuid": "050d338f-33d5-4c95-8a55-d4702c8365f5"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:28.123456789Z",
-                                "node_uuid": "7963b7ee-137a-4d70-92ee-f57da97cc607"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:39.123456789Z",
-                                "node_uuid": "4c6e76f3-c91b-4a3c-b5fc-998e8bfd4bd8"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:43.123456789Z",
-                                "node_uuid": "45ba2955-3d64-43a6-bad9-a1eb30f6e27e"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:49.123456789Z",
-                                "node_uuid": "0e260a3e-d506-4c21-aded-1eb63bbfd911"
-                            }
-                        ],
                         "results": {
                             "age": {
                                 "category": "10 - 100",

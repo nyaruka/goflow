@@ -194,20 +194,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:15.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
-                            }
-                        ],
                         "results": {
                             "contact_name": {
                                 "category": "All Responses",

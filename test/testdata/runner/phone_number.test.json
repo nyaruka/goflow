@@ -311,28 +311,6 @@
                             "_has_urn": "tel:+17184567890"
                         },
                         "modified_on": "2025-05-04T12:31:29.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "626c8aa2-2903-4453-9ac5-1a2e6d21acf6"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "36e57807-2608-471f-b5c8-0798aac2667e"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
-                                "node_uuid": "6e15badb-5c42-41e1-ae77-a34b9b850139"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:22.123456789Z",
-                                "node_uuid": "b7653335-7790-4f00-aede-7c6d03c8f829"
-                            }
-                        ],
                         "results": {
                             "backup_phone": {
                                 "category": "Has Phone",
