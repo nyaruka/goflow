@@ -225,7 +225,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookLimits(256*1024, 100000).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
+			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"}, []string{"api.twilio.com"})).
 			WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
 				return services.NewLLM(), nil
 			}).
@@ -1072,7 +1072,7 @@ func TestCallWebhookAlwaysUpdatesWebhook(t *testing.T) {
 
 	eng := engine.NewBuilder().
 		WithHTTPClient(httpClient).
-		WithWebhookServiceFactory(webhooks.NewServiceFactory(nil, nil)).
+		WithWebhookServiceFactory(webhooks.NewServiceFactory(nil, nil, nil)).
 		Build()
 
 	flow := assets.NewFlowReference("5472a1c3-63e1-484f-8485-cc8ecb16a058", "Webhooks")

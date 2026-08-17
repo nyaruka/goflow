@@ -26,13 +26,27 @@ type EmailService interface {
 	Send(ctx context.Context, addresses []string, subject, body string) error
 }
 
+// URLRestriction is the level of restriction which applies to a webhook URL
+type URLRestriction string
+
+const (
+	// URLRestrictionNone means the URL can be called from flows
+	URLRestrictionNone URLRestriction = ""
+
+	// URLRestrictionWarn means the URL can be called from flows but a warning is generated
+	URLRestrictionWarn URLRestriction = "warn"
+
+	// URLRestrictionBlock means the URL can't be called from flows
+	URLRestrictionBlock URLRestriction = "block"
+)
+
 // WebhookService provides webhook functionality to the engine
 type WebhookService interface {
 	// Call makes the given HTTP request and returns the trace
 	Call(request *http.Request) (*httpx.Trace, error)
 
-	// IsRestricted returns whether the given URL is restricted and shouldn't be called from flows
-	IsRestricted(u *url.URL) bool
+	// Restriction returns the level of restriction which applies to the given URL
+	Restriction(u *url.URL) URLRestriction
 }
 
 // LLMService provides LLM functionality to the engine

@@ -167,9 +167,13 @@ func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, 
 		return nil
 	}
 
-	// for now calls to restricted URLs only generate warnings but eventually they may be blocked
-	if svc.IsRestricted(req.URL) {
+	// calls to restricted URLs either generate a warning that they may be blocked in the future, or are blocked now
+	switch svc.Restriction(req.URL) {
+	case flows.URLRestrictionWarn:
 		log(events.NewWarning(fmt.Sprintf("Webhook calls to %s may be blocked in the future", req.URL.Hostname()), events.WarningCodeURLRestricted, "hostname", req.URL.Hostname()))
+	case flows.URLRestrictionBlock:
+		log(events.NewError(fmt.Sprintf("Webhook calls to %s are not allowed", req.URL.Hostname()), events.ErrorCodeURLRestricted, "hostname", req.URL.Hostname()))
+		return nil
 	}
 
 	trace, err := svc.Call(req)

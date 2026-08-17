@@ -554,7 +554,7 @@ func TestWebhookCalledEventTrimming(t *testing.T) {
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", strings.NewReader(strings.Repeat("X", 20000)))
 
-	svc := webhooks.NewService(client, nil, nil, 1024*1024)
+	svc := webhooks.NewService(client, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
@@ -579,7 +579,7 @@ func TestWebhookCalledEventValid(t *testing.T) {
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
-	svc := webhooks.NewService(client, nil, nil, 1024*1024)
+	svc := webhooks.NewService(client, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
@@ -599,7 +599,7 @@ func TestWebhookCalledEventNullChar(t *testing.T) {
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
-	svc := webhooks.NewService(client, nil, nil, 1024*1024)
+	svc := webhooks.NewService(client, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 
@@ -620,7 +620,7 @@ func TestWebhookCalledEventBadUTF8(t *testing.T) {
 
 	request, _ := http.NewRequest("GET", "http://temba.io/", nil)
 
-	svc := webhooks.NewService(client, nil, nil, 1024*1024)
+	svc := webhooks.NewService(client, nil, nil, nil, 1024*1024)
 	call, err := svc.Call(request)
 	require.NoError(t, err)
 

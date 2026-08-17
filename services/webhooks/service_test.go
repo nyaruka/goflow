@@ -169,7 +169,7 @@ func TestAccessRestrictions(t *testing.T) {
 
 	eng := engine.NewBuilder().WithHTTPClient(client).Build()
 
-	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"}, nil)
+	factory := webhooks.NewServiceFactory(map[string]string{"User-Agent": "Foo"}, nil, nil)
 	svc, err := factory(eng, nil)
 	assert.NoError(t, err)
 
@@ -231,25 +231,26 @@ func TestWebhookResponseWithEscapes(t *testing.T) {
 	assert.NotContains(t, string(jsonx.MustMarshal(session)), `\u0000`)
 }
 
-func TestIsRestricted(t *testing.T) {
-	svc := webhooks.NewService(http.DefaultClient, nil, []string{"graph.facebook.com", "360dialog.io"}, 1024)
+func TestRestriction(t *testing.T) {
+	svc := webhooks.NewService(http.DefaultClient, nil, []string{"graph.facebook.com", "360dialog.io"}, []string{"api.twilio.com", "360dialog.io"}, 1024)
 
 	tcs := []struct {
-		url          string
-		isRestricted bool
+		url         string
+		restriction flows.URLRestriction
 	}{
-		{"https://graph.facebook.com/v25.0/1234/messages", true},
-		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true}, // check case insensitivity
-		{"https://waba-v2.360dialog.io/messages", true},          // check subdomain matching
-		{"https://facebook.com/some/page", false},
-		{"https://notgraph.facebook.com.evil.com/", false},
-		{"https://temba.io/", false},
+		{"https://graph.facebook.com/v25.0/1234/messages", flows.URLRestrictionWarn},
+		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", flows.URLRestrictionWarn}, // check case insensitivity
+		{"https://api.twilio.com/2010-04-01/Accounts", flows.URLRestrictionBlock},
+		{"https://waba-v2.360dialog.io/messages", flows.URLRestrictionBlock}, // check subdomain matching, blocking wins
+		{"https://facebook.com/some/page", flows.URLRestrictionNone},
+		{"https://notgraph.facebook.com.evil.com/", flows.URLRestrictionNone},
+		{"https://temba.io/", flows.URLRestrictionNone},
 	}
 
 	for _, tc := range tcs {
 		u, err := url.Parse(tc.url)
 		require.NoError(t, err)
 
-		assert.Equal(t, tc.isRestricted, svc.IsRestricted(u), "IsRestricted mismatch for %s", tc.url)
+		assert.Equal(t, tc.restriction, svc.Restriction(u), "restriction mismatch for %s", tc.url)
 	}
 }

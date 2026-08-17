@@ -13,24 +13,26 @@ import (
 )
 
 type service struct {
-	httpClient        *http.Client
-	defaultHeaders    map[string]string
-	restrictedDomains []string
-	maxResponseBytes  int
+	httpClient       *http.Client
+	defaultHeaders   map[string]string
+	warnDomains      []string
+	blockDomains     []string
+	maxResponseBytes int
 }
 
 // NewServiceFactory creates a new webhook service factory. The engine supplies the HTTP client and the maximum
 // response size; the client's transport can be configured with tracing, mocking or access control as needed
-// (see github.com/nyaruka/gocommon/httpx). The restricted domains are domains (e.g. messaging provider APIs)
-// which flows shouldn't be calling directly.
-func NewServiceFactory(defaultHeaders map[string]string, restrictedDomains []string) engine.WebhookServiceFactory {
+// (see github.com/nyaruka/gocommon/httpx). The warn and block domains are domains (e.g. messaging provider APIs)
+// which flows shouldn't be calling directly - calls to the former generate a warning, calls to the latter aren't
+// made at all. Domains are expected to be lowercase and match subdomains too.
+func NewServiceFactory(defaultHeaders map[string]string, warnDomains, blockDomains []string) engine.WebhookServiceFactory {
 	return func(eng flows.Engine, sa flows.SessionAssets) (flows.WebhookService, error) {
-		return NewService(eng.HTTPClient(), defaultHeaders, restrictedDomains, eng.Options().MaxResponseBytes), nil
+		return NewService(eng.HTTPClient(), defaultHeaders, warnDomains, blockDomains, eng.Options().MaxResponseBytes), nil
 	}
 }
 
 // NewService creates a new default webhook service
-func NewService(httpClient *http.Client, defaultHeaders map[string]string, restrictedDomains []string, maxResponseBytes int) flows.WebhookService {
+func NewService(httpClient *http.Client, defaultHeaders map[string]string, warnDomains, blockDomains []string, maxResponseBytes int) flows.WebhookService {
 	// build the client this service will call through, layering our concerns onto the transport we were given. The
 	// read limit bounds how much we'll read from an untrusted endpoint and goes inside tracing so it applies before
 	// the body is buffered into the trace; tracing is outermost so that a request denied by access control is still
@@ -44,18 +46,30 @@ func NewService(httpClient *http.Client, defaultHeaders map[string]string, restr
 	traced.Transport = httpx.WithTraces(inner)
 
 	return &service{
-		httpClient:        &traced,
-		defaultHeaders:    defaultHeaders,
-		restrictedDomains: restrictedDomains,
-		maxResponseBytes:  maxResponseBytes,
+		httpClient:       &traced,
+		defaultHeaders:   defaultHeaders,
+		warnDomains:      warnDomains,
+		blockDomains:     blockDomains,
+		maxResponseBytes: maxResponseBytes,
 	}
 }
 
-// IsRestricted returns whether the host of the given URL matches or is a subdomain of one of our
-// configured restricted domains.
-func (s *service) IsRestricted(u *url.URL) bool {
+// Restriction returns the level of restriction which applies to the given URL, based on whether its host matches
+// or is a subdomain of one of our configured domains. Blocking takes precedence over warning.
+func (s *service) Restriction(u *url.URL) flows.URLRestriction {
 	host := strings.ToLower(u.Hostname())
-	for _, domain := range s.restrictedDomains {
+
+	if matchesDomain(host, s.blockDomains) {
+		return flows.URLRestrictionBlock
+	}
+	if matchesDomain(host, s.warnDomains) {
+		return flows.URLRestrictionWarn
+	}
+	return flows.URLRestrictionNone
+}
+
+func matchesDomain(host string, domains []string) bool {
+	for _, domain := range domains {
 		if host == domain || strings.HasSuffix(host, "."+domain) {
 			return true
 		}

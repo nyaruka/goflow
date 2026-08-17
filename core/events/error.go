@@ -20,6 +20,7 @@ const (
 	ErrorCodeLabelMissing         = "label:missing"
 	ErrorCodeTimezoneInvalid      = "timezone:invalid"
 	ErrorCodeURLInvalid           = "url:invalid"
+	ErrorCodeURLRestricted        = "url:restricted"
 	ErrorCodeURNInvalid           = "urn:invalid"
 	ErrorCodeURNTaken             = "urn:taken"
 	ErrorCodeUserMissing          = "user:missing"

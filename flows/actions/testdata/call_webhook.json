@@ -427,6 +427,45 @@
         }
     },
     {
+        "description": "Error event created and no call made if URL is in a blocked domain",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/1234/Messages.json",
+            "body": "{}"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "Webhook calls to api.twilio.com are not allowed",
+                "code": "url:restricted",
+                "extra": {
+                    "hostname": "api.twilio.com"
+                }
+            }
+        ],
+        "webhook": null,
+        "locals_after": {},
+        "templates": [
+            "https://api.twilio.com/2010-04-01/Accounts/1234/Messages.json",
+            "{}"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "Result changed event created if result name set",
         "http_mocks": {
             "http://temba.io/": [
