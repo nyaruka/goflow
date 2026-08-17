@@ -1,3 +1,8 @@
+v0.292.0 (2026-08-17)
+-------------------------
+ * Add Session.Compact() which clears the paths, locals and webhooks of exited runs
+ * Remove UUID and exit_uuid from run path steps
+
 v0.291.1 (2026-08-13)
 -------------------------
  * Add engine limit on number of runs per session
