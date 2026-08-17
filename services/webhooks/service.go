@@ -56,9 +56,11 @@ func NewService(httpClient *http.Client, defaultHeaders map[string]string, block
 }
 
 // IsBlocked returns whether the host of the given URL matches or is a subdomain of one of our
-// configured blocked domains.
+// configured blocked domains. The trailing dot of a fully qualified name is stripped first - it
+// resolves to the same host, so leaving it on would let "example.com." slip past a block on
+// "example.com".
 func (s *service) IsBlocked(u *url.URL) bool {
-	host := strings.ToLower(u.Hostname())
+	host := strings.TrimSuffix(strings.ToLower(u.Hostname()), ".")
 	for _, domain := range s.blockedDomains {
 		if host == domain || strings.HasSuffix(host, "."+domain) {
 			return true

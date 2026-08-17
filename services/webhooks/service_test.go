@@ -239,8 +239,10 @@ func TestIsBlocked(t *testing.T) {
 		isBlocked bool
 	}{
 		{"https://graph.facebook.com/v25.0/1234/messages", true},
-		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true}, // check case insensitivity
-		{"https://waba-v2.360dialog.io/messages", true},          // check subdomain matching
+		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true},  // check case insensitivity
+		{"https://waba-v2.360dialog.io/messages", true},           // check subdomain matching
+		{"https://graph.facebook.com./v25.0/1234/messages", true}, // check trailing dot of a FQDN
+		{"https://waba-v2.360dialog.io./messages", true},          // check trailing dot on a subdomain
 		{"https://facebook.com/some/page", false},
 		{"https://notgraph.facebook.com.evil.com/", false},
 		{"https://temba.io/", false},
