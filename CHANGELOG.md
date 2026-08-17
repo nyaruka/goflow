@@ -1,3 +1,9 @@
+v0.293.0 (2026-08-17)
+-------------------------
+ * Block webhook calls to blocked domains instead of generating a warning, replacing warning code url:restricted with error code url:blocked
+ * Rename WebhookService.IsRestricted to IsBlocked
+ * Strip trailing dot from hostnames when matching blocked domains
+
 v0.292.0 (2026-08-17)
 -------------------------
  * Add Session.Compact() which clears the paths, locals and webhooks of exited runs
