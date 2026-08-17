@@ -9,7 +9,6 @@ const TypeWarning string = "warning"
 
 const (
 	WarningCodeDeprecatedContext   = "context:deprecated"
-	WarningCodeURLRestricted       = "url:restricted"
 	WarningCodeWebhookResponseSize = "webhook:response_size"
 )
 

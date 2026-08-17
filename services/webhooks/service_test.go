@@ -231,16 +231,18 @@ func TestWebhookResponseWithEscapes(t *testing.T) {
 	assert.NotContains(t, string(jsonx.MustMarshal(session)), `\u0000`)
 }
 
-func TestIsRestricted(t *testing.T) {
+func TestIsBlocked(t *testing.T) {
 	svc := webhooks.NewService(http.DefaultClient, nil, []string{"graph.facebook.com", "360dialog.io"}, 1024)
 
 	tcs := []struct {
-		url          string
-		isRestricted bool
+		url       string
+		isBlocked bool
 	}{
 		{"https://graph.facebook.com/v25.0/1234/messages", true},
-		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true}, // check case insensitivity
-		{"https://waba-v2.360dialog.io/messages", true},          // check subdomain matching
+		{"https://GRAPH.FACEBOOK.COM/v25.0/1234/messages", true},  // check case insensitivity
+		{"https://waba-v2.360dialog.io/messages", true},           // check subdomain matching
+		{"https://graph.facebook.com./v25.0/1234/messages", true}, // check trailing dot of a FQDN
+		{"https://waba-v2.360dialog.io./messages", true},          // check trailing dot on a subdomain
 		{"https://facebook.com/some/page", false},
 		{"https://notgraph.facebook.com.evil.com/", false},
 		{"https://temba.io/", false},
@@ -250,6 +252,6 @@ func TestIsRestricted(t *testing.T) {
 		u, err := url.Parse(tc.url)
 		require.NoError(t, err)
 
-		assert.Equal(t, tc.isRestricted, svc.IsRestricted(u), "IsRestricted mismatch for %s", tc.url)
+		assert.Equal(t, tc.isBlocked, svc.IsBlocked(u), "IsBlocked mismatch for %s", tc.url)
 	}
 }
