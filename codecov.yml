@@ -1,4 +1,0 @@
-ignore:
- - "test"
- - "contactql/gen"
- - "excellent/gen"
