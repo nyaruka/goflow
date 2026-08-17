@@ -209,16 +209,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "webhook": {
-                            "headers": {},
-                            "json": {
-                                "exists": "valid"
-                            },
-                            "method": "GET",
-                            "status": 200,
-                            "url": "http://localhost/?cmd=country"
-                        }
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }
                 ],
                 "sprints": 2,
