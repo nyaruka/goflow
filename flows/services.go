@@ -31,8 +31,8 @@ type WebhookService interface {
 	// Call makes the given HTTP request and returns the trace
 	Call(request *http.Request) (*httpx.Trace, error)
 
-	// IsRestricted returns whether the given URL is restricted and shouldn't be called from flows
-	IsRestricted(u *url.URL) bool
+	// IsBlocked returns whether the given URL is in a blocked domain and shouldn't be called from flows
+	IsBlocked(u *url.URL) bool
 }
 
 // LLMService provides LLM functionality to the engine

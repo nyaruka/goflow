@@ -19,6 +19,7 @@ const (
 	ErrorCodeGroupMissing         = "group:missing"
 	ErrorCodeLabelMissing         = "label:missing"
 	ErrorCodeTimezoneInvalid      = "timezone:invalid"
+	ErrorCodeURLBlocked           = "url:blocked"
 	ErrorCodeURLInvalid           = "url:invalid"
 	ErrorCodeURNInvalid           = "urn:invalid"
 	ErrorCodeURNTaken             = "urn:taken"
