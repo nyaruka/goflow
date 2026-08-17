@@ -106,12 +106,6 @@
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
                         "modified_on": "2025-05-04T12:30:54.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     },
@@ -124,12 +118,6 @@
                         },
                         "modified_on": "2025-05-04T12:31:04.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:31:01.123456789Z",
-                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b"
                     }

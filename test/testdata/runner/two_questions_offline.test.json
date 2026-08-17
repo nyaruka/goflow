@@ -329,20 +329,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:26.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:05.123456789Z",
-                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:18.123456789Z",
-                                "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
-                            }
-                        ],
                         "results": {
                             "favorite_color": {
                                 "category": "Red",

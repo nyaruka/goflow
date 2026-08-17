@@ -84,12 +84,6 @@
                             "uuid": "999c5562-5eb0-4f18-9735-bca0b8d1378e"
                         },
                         "modified_on": "2025-05-04T12:30:59.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "2cba8049-4e9b-41cd-8bd0-a9e8396c2dc4"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }

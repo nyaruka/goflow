@@ -239,16 +239,6 @@
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
                         "modified_on": "2025-05-04T12:31:22.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:19.123456789Z",
-                                "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     },
@@ -262,16 +252,6 @@
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:15.123456789Z",
                         "parent_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:58.123456789Z",
-                                "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:12.123456789Z",
-                                "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
-                            }
-                        ],
                         "results": {
                             "name": {
                                 "category": "Name",

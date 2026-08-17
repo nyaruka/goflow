@@ -122,12 +122,6 @@
                             "uuid": "adc9b075-268b-4636-9ef4-3f71aef9f997"
                         },
                         "modified_on": "2025-05-04T12:30:56.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "eeed313c-614c-4e26-8471-f3f02d09b6ca"
-                            }
-                        ],
                         "status": "completed",
                         "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
                     }

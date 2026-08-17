@@ -80,12 +80,6 @@
                             "uuid": "90420633-8c92-4480-940a-382cdd6a33b9"
                         },
                         "modified_on": "2025-05-04T12:30:58.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a"
-                            }
-                        ],
                         "results": {
                             "redirect": {
                                 "category": "Failed",

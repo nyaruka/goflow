@@ -268,28 +268,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:25.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "20b85218-553f-4fbb-bf65-8b8df6907b82"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
-                                "node_uuid": "1695cf39-4bba-4d26-89a9-612243ec5cb2"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "0ec90220-1025-4533-8410-38f9adc0452b"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:11.123456789Z",
-                                "node_uuid": "deabc51b-a4af-4a7e-bb89-2a634bbc862d"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:22.123456789Z",
-                                "node_uuid": "1134cc64-ecdf-44a8-9134-ff88b1dc9fcc"
-                            }
-                        ],
                         "results": {
                             "beer": {
                                 "category": "Pilsner",

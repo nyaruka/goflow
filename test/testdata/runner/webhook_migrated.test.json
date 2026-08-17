@@ -179,20 +179,6 @@
                         },
                         "had_input": true,
                         "modified_on": "2025-05-04T12:31:20.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "5b5abbf2-5f12-4f83-a804-90695e6c4302"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:03.123456789Z",
-                                "node_uuid": "d02536d0-7e86-47ab-8c60-fcf2678abc2b"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:13.123456789Z",
-                                "node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647"
-                            }
-                        ],
                         "results": {
                             "country": {
                                 "category": "Valid",

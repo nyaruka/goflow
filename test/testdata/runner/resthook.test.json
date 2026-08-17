@@ -166,16 +166,6 @@
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
                         "modified_on": "2025-05-04T12:31:10.123456789Z",
-                        "path": [
-                            {
-                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
-                                "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65"
-                            },
-                            {
-                                "arrived_on": "2025-05-04T12:31:07.123456789Z",
-                                "node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4"
-                            }
-                        ],
                         "results": {
                             "response_1": {
                                 "category": "Failure",
