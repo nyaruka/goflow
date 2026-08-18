@@ -32,6 +32,17 @@ const (
 	FlowTypeVoice FlowType = "voice"
 )
 
+// CanEnter returns whether a session of this type can enter a flow of the given type
+func (t FlowType) CanEnter(other FlowType) bool {
+	// same type is always fine, and any type of session can enter a background flow
+	if t == other || other == FlowTypeMessagingBackground {
+		return true
+	}
+
+	// voice sessions can also enter messaging flows
+	return t == FlowTypeVoice && other == FlowTypeMessaging
+}
+
 // Allows returns whether this flow type allows the given item
 func (t FlowType) Allows(r FlowTypeRestricted) bool {
 	for _, allowedType := range r.AllowedFlowTypes() {

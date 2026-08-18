@@ -88,6 +88,84 @@
         }
     },
     {
+        "description": "Messaging flow can be entered from voice flow",
+        "no_input": true,
+        "action": {
+            "type": "enter_flow",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "flow": {
+                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                "name": "Collect Age"
+            }
+        },
+        "in_flow_type": "voice",
+        "events": [
+            {
+                "uuid": "01969b47-2c93-76f8-b774-0a98171a0712",
+                "type": "run_started",
+                "created_on": "2025-05-04T12:30:56.123456789Z",
+                "flow": {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "revision": 123
+                },
+                "run_uuid": "01969b47-28ab-76f8-b20c-e3cb6203e029",
+                "parent_uuid": "01969b47-1523-76f8-95cf-9fca95f1c30a"
+            },
+            {
+                "uuid": "01969b47-401b-76f8-a7eb-cc4cc9ec3e6b",
+                "type": "run_result_changed",
+                "created_on": "2025-05-04T12:31:01.123456789Z",
+                "name": "Age",
+                "value": "23",
+                "category": "Youth"
+            },
+            {
+                "uuid": "01969b47-4bd3-76f8-aac5-d9d0ae409dbe",
+                "type": "contact_field_changed",
+                "created_on": "2025-05-04T12:31:04.123456789Z",
+                "field": {
+                    "key": "age",
+                    "name": "Age"
+                },
+                "value": {
+                    "text": "23",
+                    "number": 23
+                }
+            },
+            {
+                "uuid": "01969b47-578b-76f8-9729-57745fb13b06",
+                "type": "run_ended",
+                "created_on": "2025-05-04T12:31:07.123456789Z",
+                "run_uuid": "01969b47-28ab-76f8-b20c-e3cb6203e029",
+                "flow": {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "revision": 123
+                },
+                "status": "completed"
+            }
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Collect Age",
+                    "type": "flow"
+                }
+            ],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "Background flow can be entered from messaging flow",
         "action": {
             "type": "enter_flow",
