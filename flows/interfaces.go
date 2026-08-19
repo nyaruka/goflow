@@ -165,6 +165,7 @@ type Timeout interface {
 type Wait interface {
 	utils.Typed
 	FlowTypeRestricted
+	TemplateEnumerator
 
 	Timeout() Timeout
 

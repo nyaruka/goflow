@@ -692,6 +692,26 @@ func TestExtractTemplatesAndLocalizables(t *testing.T) {
 				"Male",
 			},
 		},
+		{
+			"../../test/testdata/runner/ivr_dial.json",
+			"90420633-8c92-4480-940a-382cdd6a33b9",
+			[]string{
+				`@(default(resume.dial.status, ""))`,
+				`answered`,
+				`no_answer`,
+				`busy`,
+				`@fields.supervisor_phone`,
+			},
+			[]string{
+				`answered`,
+				`no_answer`,
+				`busy`,
+				`Answered`,
+				`No Answer`,
+				`Busy`,
+				`Failed`,
+			},
+		},
 	}
 
 	for _, tc := range testCases {

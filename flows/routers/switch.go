@@ -221,6 +221,8 @@ func (r *Switch) EnumerateTemplates(localization flows.Localization, include fun
 	include(i18n.NilLanguage, r.operand)
 
 	inspect.Templates(r.cases, localization, include)
+
+	r.baseRouter.EnumerateTemplates(localization, include)
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object

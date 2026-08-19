@@ -95,6 +95,33 @@
                     "uuid": "e80bc037-3b57-45b5-9f19-a8346a475578"
                 }
             ]
+        },
+        {
+            "uuid": "27d47130-64f7-45f8-b3b7-b0cdadb478ba",
+            "actions": [],
+            "router": {
+                "type": "switch",
+                "wait": {
+                    "type": "dial",
+                    "phone": "@fields.supervisor_phone"
+                },
+                "default_category_uuid": "b8bcb45c-c886-4d43-8bdc-e30cee4a4f7b",
+                "result_name": "Dial",
+                "operand": "@input.text",
+                "cases": [],
+                "categories": [
+                    {
+                        "uuid": "b8bcb45c-c886-4d43-8bdc-e30cee4a4f7b",
+                        "name": "Other",
+                        "exit_uuid": "d3ad3232-cbd8-4a47-b41a-d24d69bf7cc4"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "d3ad3232-cbd8-4a47-b41a-d24d69bf7cc4"
+                }
+            ]
         }
     ]
 }

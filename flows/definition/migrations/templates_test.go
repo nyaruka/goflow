@@ -18,8 +18,8 @@ func TestCurrentTemplateCatalog(t *testing.T) {
 	s := &migrations.TemplateCatalog{
 		Actions: make(map[string][]string),
 		Routers: map[string][]string{
-			"random": {".operand", ".cases[*].arguments[*]"},
-			"switch": {".operand", ".cases[*].arguments[*]"},
+			"random": {".operand", ".cases[*].arguments[*]", ".wait.phone"},
+			"switch": {".operand", ".cases[*].arguments[*]", ".wait.phone"},
 		},
 	}
 
