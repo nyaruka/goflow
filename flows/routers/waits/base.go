@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -56,6 +57,10 @@ func (w *baseWait) Timeout() flows.Timeout {
 
 func (w *baseWait) expiresOn(run flows.Run) time.Time {
 	return dates.Now().Add(run.Flow().ExpireAfter())
+}
+
+// EnumerateTemplates enumerates all expressions on this object
+func (w *baseWait) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
 }
 
 //------------------------------------------------------------------------------------------

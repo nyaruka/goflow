@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/core"
@@ -43,6 +44,11 @@ func TestDialWait(t *testing.T) {
 	marshaled, err := jsonx.Marshal(wait)
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"dial","phone":"@(\"+\" & \"593979123456\")","dial_limit_seconds":10,"call_limit_seconds":120}`, string(marshaled))
+
+	// phone is enumerated as a template
+	templates := make([]string, 0)
+	wait.EnumerateTemplates(nil, func(l i18n.Language, t string) { templates = append(templates, t) })
+	assert.Equal(t, []string{`@("+" & "593979123456")`}, templates)
 
 	// try activating the wait
 	log := test.NewEventLog()

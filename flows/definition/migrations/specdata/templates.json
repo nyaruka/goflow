@@ -88,11 +88,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -185,11 +187,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -282,11 +286,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -379,11 +385,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -475,11 +483,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -571,11 +581,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -667,11 +679,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -763,11 +777,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -852,11 +868,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -941,11 +959,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -1030,11 +1050,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -1119,11 +1141,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -1208,11 +1232,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     },
@@ -1298,11 +1324,13 @@
         "routers": {
             "random": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ],
             "switch": [
                 ".operand",
-                ".cases[*].arguments[*]"
+                ".cases[*].arguments[*]",
+                ".wait.phone"
             ]
         }
     }

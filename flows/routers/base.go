@@ -74,6 +74,9 @@ func (r *baseRouter) Inspect(result func(*flows.ResultInfo), dependency func(ass
 
 // EnumerateTemplates enumerates all expressions on this object and its children
 func (r *baseRouter) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
+	if r.wait != nil {
+		r.wait.EnumerateTemplates(localization, include)
+	}
 }
 
 // EnumerateLocalizables enumerates all the localizable text on this object

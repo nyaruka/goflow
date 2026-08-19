@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/dates"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/core/events"
@@ -83,6 +84,11 @@ func (w *Dial) Begin(ctx context.Context, run flows.Run, log events.EventLogger)
 // Accept returns whether this wait accepts the given resume
 func (w *Dial) Accepts(resume flows.Resume) bool {
 	return resume.Type() == resumes.TypeDial
+}
+
+// EnumerateTemplates enumerates all expressions on this object
+func (w *Dial) EnumerateTemplates(localization flows.Localization, include func(i18n.Language, string)) {
+	include(i18n.NilLanguage, w.phone)
 }
 
 var _ flows.Wait = (*Dial)(nil)
