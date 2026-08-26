@@ -1,6 +1,6 @@
 module github.com/nyaruka/goflow
 
-go 1.26
+go 1.26.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.5.0
@@ -8,7 +8,7 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.2.0
 	github.com/go-playground/validator/v10 v10.30.3
-	github.com/nyaruka/gocommon v1.93.1
+	github.com/nyaruka/gocommon v1.94.2
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
@@ -29,7 +29,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/leodido/go-urn v1.5.0 // indirect
 	github.com/nyaruka/null/v3 v3.0.0 // indirect
 	github.com/nyaruka/phonenumbers/v2 v2.0.7 // indirect
