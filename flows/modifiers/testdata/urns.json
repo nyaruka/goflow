@@ -379,7 +379,7 @@
         "modifier": {
             "type": "urns",
             "urns": [
-                "twitter:TAKEN123"
+                "ext:taken123"
             ],
             "modification": "append"
         },
@@ -401,7 +401,7 @@
                 "text": "URN is taken by another contact",
                 "code": "urn:taken",
                 "extra": {
-                    "urn": "twitter:taken123"
+                    "urn": "ext:taken123"
                 }
             }
         ]

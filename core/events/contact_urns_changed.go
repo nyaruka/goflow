@@ -19,7 +19,7 @@ const TypeContactURNsChanged string = "contact_urns_changed"
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "urns": [
 //	    "tel:+12345678900",
-//	    "twitter:bob"
+//	    "telegram:3527065"
 //	  ]
 //	}
 //

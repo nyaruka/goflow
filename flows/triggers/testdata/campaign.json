@@ -28,8 +28,8 @@
                 "type": "chat_started",
                 "created_on": "2000-01-01T00:00:00Z",
                 "channel": {
-                    "uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
-                    "name": "Facebook"
+                    "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+                    "name": "Telegram Channel"
                 }
             },
             "flow": {

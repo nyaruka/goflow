@@ -22,8 +22,8 @@
             "event": {
                 "type": "new_conversation",
                 "channel": {
-                    "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-                    "name": "Facebook"
+                    "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+                    "name": "Telegram Channel"
                 }
             }
         },

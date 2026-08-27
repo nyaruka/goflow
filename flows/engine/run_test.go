@@ -28,7 +28,7 @@ var sessionAssets = `{
     "channels": [
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "My Android Phone",
+            "name": "Android Channel",
             "address": "+17036975131",
             "schemes": [
                 "tel"
@@ -187,11 +187,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(contact.urns))`,
-			`["tel:+12024561111","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`,
+			`["tel:+12024561111","telegram:54784326227#nyaruka","mailto:foo@bar.com"]`,
 		},
 		{
 			`@(json(urns))`,
-			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12024561111","telegram":null,"twitter":null,"twitterid":"twitterid:54784326227#nyaruka","viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
+			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12024561111","telegram":"telegram:54784326227#nyaruka","twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,

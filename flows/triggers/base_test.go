@@ -138,16 +138,16 @@ var assetsJSON = `{
     ],
     "channels": [
         {
-            "uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
-            "name": "Facebook",
-            "address": "23532562626",
-            "schemes": ["facebook"],
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Telegram Channel",
+            "address": "345765375445",
+            "schemes": ["telegram"],
             "roles": ["send", "receive"]
         },
         {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo",
-            "address": "+16055742523",
+            "name": "Vonage Channel",
+            "address": "+17036975132",
             "schemes": ["tel"],
             "roles": ["send", "receive"]
         }
@@ -194,7 +194,7 @@ func TestTriggerMarshaling(t *testing.T) {
 
 	flow := assets.NewFlowReference("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc", "Registration")
 	nexmo := sa.Channels().Get("3a05eaf5-cb1b-4246-bef1-f277419c83a7")
-	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Nexmo")
+	channel := assets.NewChannelReference("3a05eaf5-cb1b-4246-bef1-f277419c83a7", "Vonage Channel")
 	reminders := sa.Campaigns().Get("58e9b092-fe42-4173-876c-ff45a14a24fe")
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
@@ -330,7 +330,7 @@ func TestReadTrigger(t *testing.T) {
 			"type": "incoming_call",
 			"channel": {
 				"uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-				"name": "Nexmo"
+				"name": "Vonage Channel"
 			}
 		}
 	}`), missing)

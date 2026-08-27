@@ -27,7 +27,7 @@ type ChannelEvent struct {
 //	  "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //	  "event": {
 //	      "type": "new_conversation",
-//	      "channel": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "Facebook"}
+//	      "channel": {"uuid": "8e21f093-99aa-413b-b55b-758b54308fcb", "name": "Telegram Channel"}
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //	}

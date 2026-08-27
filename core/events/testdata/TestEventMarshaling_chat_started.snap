@@ -3,8 +3,8 @@
     "type": "chat_started",
     "created_on": "2025-05-04T12:30:46.123456789Z",
     "channel": {
-        "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-        "name": "Facebook Channel"
+        "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+        "name": "Telegram Channel"
     },
     "params": {
         "referrer_id": "acme"

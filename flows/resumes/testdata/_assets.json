@@ -153,12 +153,14 @@
     "channels": [
         {
             "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
-            "name": "Twilio",
-            "address": "235326346",
+            "name": "Twilio Channel",
+            "address": "+17036975133",
             "schemes": [
                 "tel"
             ],
             "roles": [
+                "send",
+                "receive",
                 "call",
                 "answer"
             ]

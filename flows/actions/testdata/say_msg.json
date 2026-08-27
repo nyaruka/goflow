@@ -54,7 +54,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there Ryan Lewis",
                     "attachments": [
@@ -102,7 +102,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there Ryan Lewis",
                     "locale": "eng-US"
@@ -159,7 +159,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hola Ryan Lewis",
                     "attachments": [

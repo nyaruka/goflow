@@ -27,7 +27,7 @@ func TestMsgInput(t *testing.T) {
 
 	msgEvt := events.NewMsgReceived(core.NewMsgIn(
 		urns.URN("tel:+1234567890"),
-		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
+		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Vonage Channel"),
 		"Hi there!",
 		[]utils.Attachment{
 			"image/jpg:http://example.com/test.jpg",
@@ -63,7 +63,7 @@ func TestMsgInput(t *testing.T) {
 	// a msg without a payload has an empty payload object in its context
 	noPayloadEvt := events.NewMsgReceived(core.NewMsgIn(
 		urns.URN("tel:+1234567890"),
-		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
+		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Vonage Channel"),
 		"Hi there!",
 		nil,
 		"",
@@ -77,5 +77,5 @@ func TestMsgInput(t *testing.T) {
 	// check marshaling to JSON
 	marshaled, err := jsonx.Marshal(input)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"type":"msg","uuid":"01969b47-76cb-76f8-89aa-1577771fa183","channel":{"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone"},"created_on":"2025-05-04T12:31:15.123456789Z","urn":"tel:+1234567890","text":"Hi there!","attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"external_id":"ext12345","payload":{"service":"checkup","count":2}}`, string(marshaled))
+	assert.Equal(t, `{"type":"msg","uuid":"01969b47-76cb-76f8-89aa-1577771fa183","channel":{"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"Android Channel"},"created_on":"2025-05-04T12:31:15.123456789Z","urn":"tel:+1234567890","text":"Hi there!","attachments":["image/jpg:http://example.com/test.jpg","video/mp4:http://example.com/test.mp4"],"external_id":"ext12345","payload":{"service":"checkup","count":2}}`, string(marshaled))
 }

@@ -8,7 +8,7 @@
             "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
             "channel": {
                 "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "name": "Nexmo"
+                "name": "Vonage Channel"
             },
             "urn": "tel:+12065551212"
         }

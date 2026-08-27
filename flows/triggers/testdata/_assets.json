@@ -7,11 +7,11 @@
     ],
     "channels": [
         {
-            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
-            "name": "Facebook",
-            "address": "457547478475",
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Telegram Channel",
+            "address": "345765375445",
             "schemes": [
-                "facebook"
+                "telegram"
             ],
             "roles": [
                 "send",

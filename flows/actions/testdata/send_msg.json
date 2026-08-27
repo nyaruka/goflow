@@ -133,7 +133,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there ",
                     "attachments": [
@@ -216,7 +216,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "locale": "eng-US"
@@ -272,7 +272,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "attachments": [
@@ -325,7 +325,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "quick_replies": [
@@ -382,7 +382,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef",
                     "locale": "eng-US"
@@ -492,7 +492,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi Ryan Lewis, who's a good boy?",
                     "locale": "eng-US"
@@ -563,7 +563,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
@@ -643,7 +643,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
@@ -710,7 +710,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
@@ -788,7 +788,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hola!",
                     "attachments": [
@@ -870,7 +870,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como boy.",
                     "quick_replies": [
@@ -984,7 +984,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
                     "attachments": [
@@ -1079,7 +1079,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
                     "templating": {
@@ -1161,7 +1161,7 @@
                     "urn": "tel:+12065551212",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "this content is FORBIDDEN",
                     "locale": "eng-US",

@@ -20,7 +20,7 @@
         "timezone": "America/Guayaquil",
         "urns": [
             "tel:+12065551212",
-            "facebook:1122334455667788",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -40,12 +40,12 @@
                     "uuid": "01969b47-1523-76f8-92ed-42cbd11a03fd"
                 },
                 {
-                    "category": "Other",
+                    "category": "Telegram",
                     "created_on": "2025-05-04T12:30:55.123456789Z",
                     "name": "URN Check",
                     "type": "run_result_changed",
                     "uuid": "01969b47-28ab-76f8-b20c-e3cb6203e029",
-                    "value": ""
+                    "value": "telegram:1122334455667788"
                 },
                 {
                     "category": "Other",
@@ -71,7 +71,7 @@
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
                         "locale": "eng-US",
-                        "text": "URN Check: \nGroup Check: []",
+                        "text": "URN Check: telegram:1122334455667788\nGroup Check: []",
                         "urn": "tel:+12065551212"
                     },
                     "type": "msg_created",
@@ -106,9 +106,10 @@
             "segments": [
                 {
                     "destination_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
-                    "exit_uuid": "8f2a3d3f-6522-42ea-8322-c1677bcb324e",
+                    "exit_uuid": "62b0f2b2-fbd6-4f7f-9237-83c3562dc70e",
                     "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "operand": "telegram:1122334455667788",
                     "time": "2025-05-04T12:30:56.123456789Z"
                 },
                 {
@@ -158,11 +159,12 @@
                                 "value": "[]"
                             },
                             "urn_check": {
-                                "category": "Other",
+                                "category": "Telegram",
                                 "created_on": "2025-05-04T12:30:52.123456789Z",
+                                "input": "telegram:1122334455667788",
                                 "name": "URN Check",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "value": ""
+                                "value": "telegram:1122334455667788"
                             }
                         },
                         "status": "completed",

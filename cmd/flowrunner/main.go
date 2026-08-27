@@ -40,7 +40,7 @@ const contactJSON = `{
 	"timezone": "America/Guayaquil",
 	"urns": [
 		"tel:+12065551212",
-		"facebook:1122334455667788",
+		"telegram:1122334455667788",
 		"mailto:ben@macklemore"
 	]
 }

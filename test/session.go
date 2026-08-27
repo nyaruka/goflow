@@ -33,7 +33,7 @@ var sessionAssets = `{
     "channels": [
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "My Android Phone",
+            "name": "Android Channel",
             "address": "+17036975131",
             "schemes": ["tel"],
             "roles": ["send", "receive"],
@@ -41,16 +41,9 @@ var sessionAssets = `{
         },
         {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
-            "name": "Twitter Channel",
-            "address": "nyaruka",
-            "schemes": ["twitter"],
-            "roles": ["send", "receive"]
-        },
-        {
-            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-            "name": "Facebook Channel",
-            "address": "235326346322111",
-            "schemes": ["facebook"],
+            "name": "Telegram Channel",
+            "address": "345765375445",
+            "schemes": ["telegram"],
             "roles": ["send", "receive"]
         }
     ],
@@ -291,7 +284,7 @@ var sessionContact = `{
     "created_on": "2018-06-20T11:40:30.123456789-00:00",
     "urns": [
         "tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
-        "twitterid:54784326227#nyaruka",
+        "telegram:54784326227#nyaruka",
         "mailto:foo@bar.com"
     ],
     "groups": [
@@ -377,7 +370,7 @@ var sessionResume = `{
                 "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
             ],
             "channel": {
-                "name": "Nexmo",
+                "name": "Android Channel",
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
             },
             "text": "Hi there",
@@ -391,16 +384,16 @@ var voiceSessionAssets = `{
     "channels": [
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "My Android Phone",
+            "name": "Android Channel",
             "address": "+17036975131",
             "schemes": ["tel"],
             "roles": ["send", "receive"],
             "country": "US"
         },
         {
-            "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
-            "name": "Nexmo",
-            "address": "+12024560010",
+            "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
+            "name": "Twilio Channel",
+            "address": "+17036975133",
             "schemes": ["tel"],
             "roles": ["send", "receive", "call", "answer"]
         }
@@ -463,7 +456,7 @@ var voiceSessionTrigger = `{
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
     "event": {
         "type": "incoming_call",
-        "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
+        "channel": {"uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1", "name": "Twilio Channel"}
     },
     "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"}
 }`
@@ -532,7 +525,7 @@ func CreateTestVoiceSession(testServerURL string) (flows.Session, []events.Event
 		return nil, nil, fmt.Errorf("error reading trigger: %w", err)
 	}
 
-	channel := sa.Channels().Get("fd47a886-451b-46fb-bcb6-242a4046c0c0")
+	channel := sa.Channels().Get("a78930fe-6a40-4aa8-99c3-e61b02f45ca1")
 	call := core.NewCall("01978eda-e42f-755d-8684-a03805330cf1", channel, urns.URN("tel:+12065551212"))
 
 	tz, _ := time.LoadLocation("America/Guayaquil")

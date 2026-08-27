@@ -11,16 +11,16 @@ import (
 )
 
 func TestReferences(t *testing.T) {
-	channelRef := assets.NewChannelReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Nexmo")
+	channelRef := assets.NewChannelReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Vonage Channel")
 	assert.Equal(t, "channel", channelRef.Type())
 	assert.Equal(t, "61602f3e-f603-4c70-8a8f-c477505bf4bf", channelRef.Identity())
 	assert.Equal(t, uuids.UUID("61602f3e-f603-4c70-8a8f-c477505bf4bf"), channelRef.GenericUUID())
-	assert.Equal(t, "channel[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Nexmo]", channelRef.String())
+	assert.Equal(t, "channel[uuid=61602f3e-f603-4c70-8a8f-c477505bf4bf,name=Vonage Channel]", channelRef.String())
 	assert.False(t, channelRef.Variable())
 	assert.NoError(t, utils.Validate(channelRef))
 
 	// channel references must always be concrete
-	assert.EqualError(t, utils.Validate(assets.NewChannelReference("", "Nexmo")), "field 'uuid' is required")
+	assert.EqualError(t, utils.Validate(assets.NewChannelReference("", "Vonage Channel")), "field 'uuid' is required")
 
 	fieldRef := assets.NewFieldReference("gender", "Gender")
 	assert.Equal(t, "field", fieldRef.Type())

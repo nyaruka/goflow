@@ -83,7 +83,7 @@
     },
     {
         "template": "@contact.urns",
-        "output": "[tel:+12024561111, twitterid:54784326227#nyaruka, mailto:foo@bar.com]",
+        "output": "[tel:+12024561111, telegram:54784326227#nyaruka, mailto:foo@bar.com]",
         "events": []
     },
     {
@@ -122,7 +122,7 @@
     },
     {
         "template": "@(contact.urns[1])",
-        "output": "twitterid:54784326227#nyaruka",
+        "output": "telegram:54784326227#nyaruka",
         "events": []
     },
     {
@@ -133,7 +133,7 @@
     {
         "template": "@contact.urns",
         "redact_urns": true,
-        "output": "[tel:********, twitterid:********, mailto:********]",
+        "output": "[tel:********, telegram:********, mailto:********]",
         "events": []
     },
     {
@@ -144,7 +144,7 @@
     },
     {
         "template": "@urns",
-        "output": "{bsuid: , ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: , twitter: , twitterid: twitterid:54784326227#nyaruka, viber: , vk: , webchat: , wechat: , whatsapp: }",
+        "output": "{bsuid: , ext: , facebook: , fcm: , freshchat: , instagram: , jiochat: , line: , mailto: mailto:foo@bar.com, rocketchat: , slack: , tel: tel:+12024561111, telegram: telegram:54784326227#nyaruka, twitter: , twitterid: , viber: , vk: , webchat: , wechat: , whatsapp: }",
         "events": []
     },
     {
@@ -319,7 +319,7 @@
     },
     {
         "template": "@input.channel.name",
-        "output": "My Android Phone",
+        "output": "Android Channel",
         "events": []
     },
     {
@@ -497,7 +497,7 @@
     },
     {
         "template": "@(json(contact.urns))",
-        "output": "[\"tel:+12024561111\",\"twitterid:54784326227#nyaruka\",\"mailto:foo@bar.com\"]",
+        "output": "[\"tel:+12024561111\",\"telegram:54784326227#nyaruka\",\"mailto:foo@bar.com\"]",
         "events": []
     },
     {
@@ -551,7 +551,7 @@
         "output_json": {
             "channel": {
                 "address": "+17036975131",
-                "name": "My Android Phone",
+                "name": "Android Channel",
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
             },
             "created_on": "2018-06-20T11:40:30.123456Z",
@@ -599,7 +599,7 @@
             "urn": "tel:+12024561111",
             "urns": [
                 "tel:+12024561111",
-                "twitterid:54784326227#nyaruka",
+                "telegram:54784326227#nyaruka",
                 "mailto:foo@bar.com"
             ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
@@ -615,7 +615,7 @@
             ],
             "channel": {
                 "address": "+17036975131",
-                "name": "My Android Phone",
+                "name": "Android Channel",
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
             },
             "created_on": "2017-12-31T11:35:09.123456Z",
@@ -634,7 +634,7 @@
             "contact": {
                 "channel": {
                     "address": "+17036975131",
-                    "name": "My Android Phone",
+                    "name": "Android Channel",
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-06-20T11:40:30.123456Z",
@@ -682,7 +682,7 @@
                 "urn": "tel:+12024561111",
                 "urns": [
                     "tel:+12024561111",
-                    "twitterid:54784326227#nyaruka",
+                    "telegram:54784326227#nyaruka",
                     "mailto:foo@bar.com"
                 ],
                 "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
@@ -775,7 +775,7 @@
             "contact": {
                 "channel": {
                     "address": "+17036975131",
-                    "name": "My Android Phone",
+                    "name": "Android Channel",
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-06-20T11:40:30.123456Z",
@@ -823,7 +823,7 @@
                 "urn": "tel:+12024561111",
                 "urns": [
                     "tel:+12024561111",
-                    "twitterid:54784326227#nyaruka",
+                    "telegram:54784326227#nyaruka",
                     "mailto:foo@bar.com"
                 ],
                 "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
@@ -871,9 +871,9 @@
                 "rocketchat": null,
                 "slack": null,
                 "tel": "tel:+12024561111",
-                "telegram": null,
+                "telegram": "telegram:54784326227#nyaruka",
                 "twitter": null,
-                "twitterid": "twitterid:54784326227#nyaruka",
+                "twitterid": null,
                 "viber": null,
                 "vk": null,
                 "webchat": null,
@@ -890,7 +890,7 @@
             "contact": {
                 "channel": {
                     "address": "+17036975131",
-                    "name": "My Android Phone",
+                    "name": "Android Channel",
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-01-01T12:00:00.000000Z",

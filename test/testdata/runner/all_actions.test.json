@@ -20,7 +20,7 @@
         "timezone": "America/Guayaquil",
         "urns": [
             "tel:+12065551212",
-            "facebook:1122334455667788",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -83,9 +83,9 @@
                     "type": "contact_urns_changed",
                     "urns": [
                         "tel:+12065551212",
-                        "facebook:1122334455667788",
+                        "telegram:1122334455667788",
                         "mailto:ben@macklemore",
-                        "twitter:ben_haggerty"
+                        "ext:ben_haggerty"
                     ],
                     "uuid": "01969b47-3463-76f8-a7eb-cc4cc9ec3e6b"
                 },
@@ -166,9 +166,9 @@
                             "timezone": "America/Guayaquil",
                             "urns": [
                                 "tel:+12065551212",
-                                "facebook:1122334455667788",
+                                "telegram:1122334455667788",
                                 "mailto:ben@macklemore",
-                                "twitter:ben_haggerty"
+                                "ext:ben_haggerty"
                             ],
                             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                         },
@@ -396,9 +396,9 @@
                     "type": "contact_urns_changed",
                     "urns": [
                         "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "facebook:1122334455667788",
+                        "telegram:1122334455667788",
                         "mailto:ben@macklemore",
-                        "twitter:ben_haggerty"
+                        "ext:ben_haggerty"
                     ],
                     "uuid": "01969b47-e42b-76f8-95d6-85696b970f6a"
                 },
@@ -493,7 +493,7 @@
                         "created_on": "2006-01-02T15:04:05Z",
                         "msg": {
                             "channel": {
-                                "name": "Nexmo",
+                                "name": "Vonage Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "text": "Ryan Lewis",
@@ -528,7 +528,7 @@
             "created_on": "2006-01-02T15:04:05Z",
             "msg": {
                 "channel": {
-                    "name": "Nexmo",
+                    "name": "Vonage Channel",
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "text": "Ryan Lewis",

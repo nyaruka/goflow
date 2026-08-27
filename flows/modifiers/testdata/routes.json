@@ -17,14 +17,14 @@
                     "urn": "tel:+17036972222",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 },
                 {
                     "urn": "tel:+17036973333",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     }
                 }
             ],
@@ -72,7 +72,7 @@
                     "urn": "tel:+17036971111",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -107,7 +107,7 @@
                     "urn": "tel:+17036971111",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -143,14 +143,14 @@
                     "urn": "tel:+17036973333",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 },
                 {
                     "urn": "tel:+17036974444",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     }
                 }
             ],
@@ -197,14 +197,14 @@
                     "urn": "tel:+17036971111",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 },
                 {
                     "urn": "tel:+17036972222",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     }
                 }
             ],
@@ -240,7 +240,7 @@
                     "urn": "tel:+17036971111",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -413,14 +413,14 @@
                     "urn": "tel:+17036972222",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     }
                 },
                 {
                     "urn": "tel:+17036973333",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -464,7 +464,7 @@
                     "urn": "tel:+1 (701) 222 2222",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -510,7 +510,7 @@
                     "urn": "xyz:12345",
                     "channel": {
                         "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                        "name": "Nexmo"
+                        "name": "Vonage Channel"
                     }
                 }
             ],
@@ -553,10 +553,10 @@
             "type": "routes",
             "routes": [
                 {
-                    "urn": "twitter:TAKEN123",
+                    "urn": "ext:taken123",
                     "channel": {
-                        "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
-                        "name": "Twitter Channel"
+                        "uuid": "eb9fee95-d762-4679-a7d5-91532e400c54",
+                        "name": "Receive Only"
                     }
                 }
             ],
@@ -579,7 +579,7 @@
                 "text": "URN is taken by another contact",
                 "code": "urn:taken",
                 "extra": {
-                    "urn": "twitter:taken123"
+                    "urn": "ext:taken123"
                 }
             }
         ]
