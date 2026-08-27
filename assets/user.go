@@ -33,7 +33,7 @@ type User interface {
 // UserReference is used to reference a user
 type UserReference struct {
 	UUID       UserUUID `json:"uuid,omitempty" validate:"omitempty,uuid"`
-	Name       string   `json:"name,omitempty" validate:"max=320"` // first and last names can each be 150 chars
+	Name       string   `json:"name,omitempty" validate:"max=320"`                      // first and last names can each be 150 chars
 	EmailMatch string   `json:"email,omitempty" validate:"max=1000" engine:"evaluated"` // TODO should really be email_match in JSON
 }
 
