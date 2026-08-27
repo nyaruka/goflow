@@ -1,3 +1,9 @@
+v0.293.1 (2026-08-27)
+-------------------------
+ * Add template enumeration for dial wait phone field
+ * Update to gocommon v1.94.2
+ * Use a consistent set of channel assets and fictional phone numbers in test fixtures
+
 v0.293.0 (2026-08-17)
 -------------------------
  * Block webhook calls to blocked domains instead of generating a warning, replacing warning code url:restricted with error code url:blocked
