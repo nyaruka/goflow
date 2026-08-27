@@ -43,7 +43,7 @@ func TestEventMarshaling(t *testing.T) {
 	telegram := session.Assets().Channels().Get("8e21f093-99aa-413b-b55b-758b54308fcb")
 	ticket := core.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", core.TicketStatusOpen, weather, user)
 	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
-	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", android, "tel:+12065551212")
+	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", android, "tel:+12065550100")
 
 	eventTests := []struct {
 		event    func() events.Event
@@ -94,7 +94,7 @@ func TestEventMarshaling(t *testing.T) {
 						core.NewContactReference(core.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
 					},
 					"name = \"Bob\"",
-					[]urns.URN{urns.URN("tel:+12345678900")},
+					[]urns.URN{urns.URN("tel:+12345550104")},
 					nil,
 					nil,
 				)
@@ -209,7 +209,7 @@ func TestEventMarshaling(t *testing.T) {
 		{
 			func() events.Event {
 				return events.NewContactURNsChanged([]urns.URN{
-					urns.URN("tel:+12345678900"),
+					urns.URN("tel:+12345550104"),
 					urns.URN("telegram:8764843252522#bob"),
 				})
 			},
@@ -223,7 +223,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewDialWait(urns.URN("tel:+1234567890"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
+				return events.NewDialWait(urns.URN("tel:+12345550102"), 20, 120, time.Date(2022, 2, 3, 13, 45, 30, 0, time.UTC))
 			},
 			`dial_wait`,
 		},
@@ -255,7 +255,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewIVRCreated(
 					core.NewIVRMsgOut(
-						urns.URN("tel:+12345678900"),
+						urns.URN("tel:+12345550104"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 						"Hi there",
 						"http://example.com/hi.mp3",
@@ -281,7 +281,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewMsgReceived(
 					core.NewMsgIn(
-						urns.URN("tel:+12065551212"),
+						urns.URN("tel:+12065550100"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 						"hi there",
 						nil,
@@ -297,7 +297,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewMsgReceived(
 					core.NewMsgIn(
-						urns.URN("tel:+12065551212"),
+						urns.URN("tel:+12065550100"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 						"hi there",
 						[]utils.Attachment{"image/jpeg:https://s3.amazon.com/mybucket/attachment.jpg"},
@@ -313,7 +313,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewMsgCreated(
 					core.NewMsgOut(
-						urns.URN("tel:+12345678900"),
+						urns.URN("tel:+12345550104"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 						&core.MsgContent{Text: "Hi there"},
 						nil,
@@ -330,7 +330,7 @@ func TestEventMarshaling(t *testing.T) {
 			func() events.Event {
 				return events.NewMsgCreated(
 					core.NewMsgOut(
-						urns.URN("tel:+12345678900"),
+						urns.URN("tel:+12345550104"),
 						assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 						&core.MsgContent{
 							Text:         "Hi there",
@@ -422,7 +422,7 @@ func TestEventMarshaling(t *testing.T) {
 					"age > 20",
 					events.Exclusions{InAFlow: true},
 					false,
-					[]urns.URN{urns.URN("tel:+12345678900")},
+					[]urns.URN{urns.URN("tel:+12345550104")},
 					json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
 					&core.SessionHistory{ParentUUID: "418a704c-f33e-4924-a00e-1763d1498a13", Ancestors: 2, AncestorsSinceInput: 0},
 				)

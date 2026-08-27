@@ -51,7 +51,7 @@ func TestChannelSetGetForURN(t *testing.T) {
 	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, nil, "EC", nil, true)
 	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, nil, "RW", nil, false)
 	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil, false)
-	twilio := test.NewTelChannel("Twilio", "+17036975133", rolesDefault, nil, "", nil, false)
+	twilio := test.NewTelChannel("Twilio", "+17035550113", rolesDefault, nil, "", nil, false)
 	telegram := test.NewChannel("Telegram", "345765375445", []string{"telegram"}, rolesDefault)
 	receiver := test.NewTelChannel("Receiver", "+250724444444", rolesReceive, nil, "RW", nil, false)
 
@@ -62,13 +62,13 @@ func TestChannelSetGetForURN(t *testing.T) {
 
 	// nil if no channel
 	emptySet := core.NewChannelAssets(nil)
-	assert.Nil(t, emptySet.GetForURN(core.NewURN("tel", "+12345678999", "", nil), assets.ChannelRoleSend))
+	assert.Nil(t, emptySet.GetForURN(core.NewURN("tel", "+12345550101", "", nil), assets.ChannelRoleSend))
 
 	// nil if not channel with correct role
-	assert.Nil(t, receiverSet.GetForURN(core.NewURN("tel", "+12345678999", "", receiver), assets.ChannelRoleSend))
+	assert.Nil(t, receiverSet.GetForURN(core.NewURN("tel", "+12345550101", "", receiver), assets.ChannelRoleSend))
 
 	// can still match URN has a preferred channel with matching role
-	assert.Equal(t, receiver, receiverSet.GetForURN(core.NewURN("tel", "+12345678999", "", receiver), assets.ChannelRoleReceive))
+	assert.Equal(t, receiver, receiverSet.GetForURN(core.NewURN("tel", "+12345550101", "", receiver), assets.ChannelRoleReceive))
 
 	// nil if no channel with correct scheme
 	assert.Nil(t, all.GetForURN(core.NewURN("mailto", "rowan@foo.bar", "", nil), assets.ChannelRoleSend))

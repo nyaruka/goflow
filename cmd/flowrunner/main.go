@@ -39,7 +39,7 @@ const contactJSON = `{
 	"fields": {},
 	"timezone": "America/Guayaquil",
 	"urns": [
-		"tel:+12065551212",
+		"tel:+12065550100",
 		"telegram:1122334455667788",
 		"mailto:ben@macklemore"
 	]
@@ -164,7 +164,7 @@ func RunFlow(eng flows.Engine, assetsPath string, flowUUID assets.FlowUUID, init
 		// if we're starting a voice flow we need a call
 		if flow.Type() == flows.FlowTypeVoice {
 			channel := sa.Channels().GetForURN(contact.URNs()[0], assets.ChannelRoleCall)
-			call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
+			call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065550100"))
 		}
 
 		repro.Trigger = tb.Build()

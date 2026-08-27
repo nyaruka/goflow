@@ -21,7 +21,7 @@ func TestCall(t *testing.T) {
 			{
 				"uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
 				"name": "Twilio Channel",
-				"address": "+17036975133",
+				"address": "+17035550113",
 				"schemes": [
 					"tel"
 				],
@@ -44,19 +44,19 @@ func TestCall(t *testing.T) {
 	call := core.NewCall(
 		"01978a2f-ad9a-7f2e-ad44-6e7547078cec",
 		twilio,
-		urns.URN("tel:+1234567890"),
+		urns.URN("tel:+12345550102"),
 	)
 
 	// test marshaling our call
 	ce := &core.CallEnvelope{
 		UUID:    "01978a2f-ad9a-7f2e-ad44-6e7547078cec",
 		Channel: assets.NewChannelReference("a78930fe-6a40-4aa8-99c3-e61b02f45ca1", "Twilio Channel"),
-		URN:     urns.URN("tel:+1234567890"),
+		URN:     urns.URN("tel:+12345550102"),
 	}
 	assert.Equal(t, ce, call.Marshal())
 
 	// test unmarshaling
 	call = ce.Unmarshal(sa.Channels(), assets.PanicOnMissing)
 	assert.Equal(t, assets.ChannelUUID("a78930fe-6a40-4aa8-99c3-e61b02f45ca1"), call.Channel().UUID())
-	assert.Equal(t, urns.URN("tel:+1234567890"), call.URN())
+	assert.Equal(t, urns.URN("tel:+12345550102"), call.URN())
 }

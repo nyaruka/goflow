@@ -300,10 +300,10 @@
                 "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "Webhook URL evaluated to an invalid URL: 'http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17036975131%22%2C%22name%22%3A%22Android%20Channel%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.123456Z...'",
+                "text": "Webhook URL evaluated to an invalid URL: 'http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17035550111%22%2C%22name%22%3A%22Android%20Channel%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.123456Z...'",
                 "code": "url:invalid",
                 "extra": {
-                    "url": "http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17036975131%22%2C%22name%22%3A%22Android%20Channel%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.123456Z..."
+                    "url": "http://example.com?%7B%22contact%22%3A%7B%22channel%22%3A%7B%22address%22%3A%22%2B17035550111%22%2C%22name%22%3A%22Android%20Channel%22%2C%22uuid%22%3A%2257f1078f-88aa-46f4-a59a-948a5739c03d%22%7D%2C%22created_on%22%3A%222018-06-20T11%3A40%3A30.123456Z..."
                 }
             }
         ],

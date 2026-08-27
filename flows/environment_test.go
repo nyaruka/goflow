@@ -30,7 +30,7 @@ var assetsJSON = `{
     	{
 			"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
 			"name": "Android Channel",
-			"address": "+17036975131",
+			"address": "+17035550111",
 			"schemes": ["tel"],
 			"roles": ["send", "receive"],
 			"country": "US"
@@ -103,7 +103,7 @@ const contactJSON = `{
 	"language": "fra",
 	"timezone": "America/Guayaquil",
 	"urns": [
-		"tel:+12065551212"
+		"tel:+12065550100"
 	]
 }`
 

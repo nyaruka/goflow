@@ -38,7 +38,7 @@ Provides a command line interface for stepping through a given flow.
 % $GOPATH/bin/flowrunner test/testdata/runner/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 Starting flow 'U-Report Registration Flow'....
 ---------------------------------------
-💬 "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212"
+💬 "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-0100"
 ⏳ waiting for message....
 ```
 

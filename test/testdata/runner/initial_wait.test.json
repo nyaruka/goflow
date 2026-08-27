@@ -12,7 +12,7 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
+            "tel:+12065550100",
             "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
@@ -49,7 +49,7 @@
                         },
                         "locale": "eng-US",
                         "text": "You said PING",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-3c33-76f8-b774-0a98171a0712"
@@ -83,7 +83,7 @@
                     "created_on": "2000-01-01T00:00:00Z",
                     "text": "PING",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
                 },
                 "runs": [
@@ -117,7 +117,7 @@
                         "created_on": "2000-01-01T00:00:00Z",
                         "msg": {
                             "text": "PING",
-                            "urn": "tel:+12065551212"
+                            "urn": "tel:+12065550100"
                         },
                         "type": "msg_received",
                         "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"
@@ -140,7 +140,7 @@
             "created_on": "2000-01-01T00:00:00Z",
             "msg": {
                 "text": "PING",
-                "urn": "tel:+12065551212"
+                "urn": "tel:+12065550100"
             },
             "type": "msg_received",
             "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108"

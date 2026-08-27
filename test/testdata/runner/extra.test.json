@@ -7,7 +7,7 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212"
+            "tel:+12065550100"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
     },
@@ -49,7 +49,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Extra: {address: {city: Seattle, state: WA}}",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-28ab-76f8-b774-0a98171a0712"
@@ -83,7 +83,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Extra: {0: Ben Haggerty, 1: Ben, 2: Haggerty, address: {city: Seattle, state: WA}, name_check: {\"0\":\"Ben Haggerty\",\"1\":\"Ben\",\"2\":\"Haggerty\"}}",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-578b-76f8-9729-57745fb13b06"
@@ -131,7 +131,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Extra: {0: Ben Haggerty, 1: Ben, 2: Haggerty, address: {city: Seattle, state: WA}, name_check: {\"0\":\"Ben Haggerty\",\"1\":\"Ben\",\"2\":\"Haggerty\"}, ok: true, webhook: { \"ok\": \"true\" }}",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-866b-76f8-8f55-b7788ac5e343"
@@ -271,7 +271,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Extra: {0: Ben Haggerty, 1: Ben, 2: Haggerty, address: {city: Seattle, state: WA}, name_check: {\n                        \"0\": \"Ben Haggerty\",\n                        \"1\": \"Ben\",\n                        \"2\": \"Haggerty\"\n                    }, ok: true, webhook: {\n                        \"ok\": \"true\"\n                    }}",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-c4eb-76f8-a98e-1c65c9788658"
@@ -309,7 +309,7 @@
                     "created_on": "2006-01-02T15:06:05Z",
                     "text": "Ryan Lewis",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
                 },
                 "runs": [
@@ -391,7 +391,7 @@
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "Ryan Lewis",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983846-00e7-742c-8456-b78d89c92b24"

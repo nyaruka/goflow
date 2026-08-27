@@ -29,7 +29,7 @@ var sessionAssets = `{
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Android Channel",
-            "address": "+17036975131",
+            "address": "+17035550111",
             "schemes": [
                 "tel"
             ],
@@ -91,7 +91,7 @@ var sessionContact = `{
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"created_on": "2018-06-20T11:40:30.123456789-00:00",
-	"urns": [ "tel:+12065551212"],
+	"urns": [ "tel:+12065550100"],
 	"fields": {
 		"gender": {"text": "M"}
 	}
@@ -187,11 +187,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(contact.urns))`,
-			`["tel:+12024561111","telegram:54784326227#nyaruka","mailto:foo@bar.com"]`,
+			`["tel:+12025550110","telegram:54784326227#nyaruka","mailto:foo@bar.com"]`,
 		},
 		{
 			`@(json(urns))`,
-			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12024561111","telegram":"telegram:54784326227#nyaruka","twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
+			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":"mailto:foo@bar.com","rocketchat":null,"slack":null,"tel":"tel:+12025550110","telegram":"telegram:54784326227#nyaruka","twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(results.favorite_color))`,
@@ -203,11 +203,11 @@ func TestRunContext(t *testing.T) {
 		},
 		{
 			`@(json(parent.contact.urns))`,
-			`["tel:+12024562222"]`,
+			`["tel:+12025550111"]`,
 		},
 		{
 			`@(json(parent.urns))`,
-			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":null,"rocketchat":null,"slack":null,"tel":"tel:+12024562222","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
+			`{"bsuid":null,"ext":null,"facebook":null,"fcm":null,"freshchat":null,"instagram":null,"jiochat":null,"line":null,"mailto":null,"rocketchat":null,"slack":null,"tel":"tel:+12025550111","telegram":null,"twitter":null,"twitterid":null,"viber":null,"vk":null,"webchat":null,"wechat":null,"whatsapp":null}`,
 		},
 		{
 			`@(json(parent.fields))`,
@@ -460,7 +460,7 @@ func TestTranslation(t *testing.T) {
 		env := envs.NewBuilder().WithAllowedLanguages(tc.envLangs...).Build()
 		_, _, sp := test.NewSessionBuilder().
 			WithEnvironment(env).
-			WithContact("2efa1803-ae4d-4a58-ba54-b523e53e40f3", 123, "Bob", tc.contactLang, "tel+1234567890").
+			WithContact("2efa1803-ae4d-4a58-ba54-b523e53e40f3", 123, "Bob", tc.contactLang, "tel+12345550102").
 			WithAssetsJSON(assetsJSON).
 			MustBuild()
 

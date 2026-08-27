@@ -43,9 +43,9 @@ func LoadFlowFromAssets(env envs.Environment, path string, uuid assets.FlowUUID)
 // Test asset files should use these channels rather than inventing new ones, and reuse an existing definition
 // verbatim - same UUID, name, address, schemes and roles - whenever one of them is needed:
 //
-//	57f1078f-88aa-46f4-a59a-948a5739c03d  Android Channel   +17036975131   tel        send, receive (country US)
-//	3a05eaf5-cb1b-4246-bef1-f277419c83a7  Vonage Channel    +17036975132   tel        send, receive
-//	a78930fe-6a40-4aa8-99c3-e61b02f45ca1  Twilio Channel    +17036975133   tel        send, receive, call, answer
+//	57f1078f-88aa-46f4-a59a-948a5739c03d  Android Channel   +17035550111   tel        send, receive (country US)
+//	3a05eaf5-cb1b-4246-bef1-f277419c83a7  Vonage Channel    +17035550112   tel        send, receive
+//	a78930fe-6a40-4aa8-99c3-e61b02f45ca1  Twilio Channel    +17035550113   tel        send, receive, call, answer
 //	8e21f093-99aa-413b-b55b-758b54308fcb  Telegram Channel  345765375445   telegram   send, receive
 //	eb9fee95-d762-4679-a7d5-91532e400c54  Receive Only      56789          ext        receive
 //

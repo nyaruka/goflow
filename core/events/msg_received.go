@@ -19,7 +19,7 @@ const TypeMsgReceived string = "msg_received"
 //	  "msg": {
 //	    "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
 //	    "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//	    "urn": "tel:+12065551212",
+//	    "urn": "tel:+12065550100",
 //	    "text": "hi there",
 //	    "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //	  }

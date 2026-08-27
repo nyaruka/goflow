@@ -147,7 +147,7 @@ var assetsJSON = `{
         {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
             "name": "Vonage Channel",
-            "address": "+17036975132",
+            "address": "+17035550112",
             "schemes": ["tel"],
             "roles": ["send", "receive"]
         }
@@ -199,10 +199,10 @@ func TestTriggerMarshaling(t *testing.T) {
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	user := sa.Users().Get("0c78ef47-7d56-44d8-8f57-96e0f30e8f44")
 	ticket := core.NewTicket("276c2e43-d6f9-4c36-8e54-b5af5039acf6", core.TicketStatusOpen, weather, user)
-	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065551212")
+	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", nexmo, "tel:+12065550100")
 
 	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddRoute("tel:+12065551212", nil)
+	contact.AddRoute("tel:+12065550100", nil)
 
 	eng := engine.NewBuilder().Build()
 	session, _, err := eng.NewSession(t.Context(), sa, env, contact, triggers.NewBuilder(flow).Manual().Build(), nil)
@@ -279,7 +279,7 @@ func TestTriggerMarshaling(t *testing.T) {
 		},
 		{
 			triggers.NewBuilder(flow).
-				MsgReceived(events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:+1234567890"), channel, "Hi there", nil, "SMS1234", nil), "")).
+				MsgReceived(events.NewMsgReceived(core.NewMsgIn(urns.URN("tel:+12345550102"), channel, "Hi there", nil, "SMS1234", nil), "")).
 				WithMatch(triggers.NewKeywordMatch(triggers.KeywordMatchTypeFirstWord, "hi")).
 				Build(),
 			"msg",
@@ -351,7 +351,7 @@ func TestTriggerSessionInitialization(t *testing.T) {
 	flow := assets.NewFlowReference(assets.FlowUUID("7c37d7e5-6468-4b31-8109-ced2ef8b5ddc"), "Registration")
 
 	contact := core.NewEmptyContact(sa, "Bob", i18n.Language("eng"), nil)
-	contact.AddRoute(urns.URN("tel:+12065551212"), nil)
+	contact.AddRoute(urns.URN("tel:+12065550100"), nil)
 
 	params := types.NewXObject(map[string]types.XValue{"foo": types.NewXText("bar")})
 

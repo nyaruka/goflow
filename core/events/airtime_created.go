@@ -23,7 +23,7 @@ const TypeAirtimeCreated string = "airtime_created"
 //	  "created_on": "2006-01-02T15:04:05Z",
 //	  "external_id": "2237512891",
 //	  "sender": "tel:4748",
-//	  "recipient": "tel:+1242563637",
+//	  "recipient": "tel:+12425550100",
 //	  "currency": "RWF",
 //	  "amount": 100,
 //	  "http_logs": [

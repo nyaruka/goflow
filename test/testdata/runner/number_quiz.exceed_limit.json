@@ -7,7 +7,7 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
+            "tel:+12065550100",
             "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
@@ -37,7 +37,7 @@
                         },
                         "locale": "eng-US",
                         "text": "What is 2 + 2?",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
@@ -118,7 +118,7 @@
                         },
                         "locale": "eng-US",
                         "text": "That's incorrect. Please try again.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-672b-76f8-9729-57745fb13b06"
@@ -162,7 +162,7 @@
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "3",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-b62e-7238-98f2-86efa860382e"
                 },
                 "runs": [
@@ -249,7 +249,7 @@
                         },
                         "locale": "eng-US",
                         "text": "That's incorrect. Please try again.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-a993-76f8-8f55-b7788ac5e343"
@@ -293,7 +293,7 @@
                     "created_on": "2006-01-02T15:05:05Z",
                     "text": "5",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
                 },
                 "runs": [
@@ -392,7 +392,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Sorry, you got it wrong too many times.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-ebfb-76f8-87c7-10f327cbfde2"
@@ -435,7 +435,7 @@
                     "created_on": "2006-01-02T15:06:05Z",
                     "text": "22",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
                 },
                 "runs": [
@@ -484,7 +484,7 @@
                 "created_on": "2006-01-02T15:04:05Z",
                 "msg": {
                     "text": "3",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-b62e-7238-98f2-86efa860382e"
@@ -497,7 +497,7 @@
                 "created_on": "2006-01-02T15:05:05Z",
                 "msg": {
                     "text": "5",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
@@ -510,7 +510,7 @@
                 "created_on": "2006-01-02T15:06:05Z",
                 "msg": {
                     "text": "22",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983846-00e7-742c-8456-b78d89c92b24"

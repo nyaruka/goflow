@@ -43,7 +43,7 @@ var defaultContactJSON = []byte(`{
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"urns": [
-		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+		"tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
 		"telegram:54784326227#nyaruka"
 	],
 	"groups": [
@@ -196,13 +196,13 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
+				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065550100"))
 			}
 
 			trigger = tb.Build()
 		} else {
 			msg := core.NewMsgIn(
-				urns.URN("tel:+12065551212"),
+				urns.URN("tel:+12065550100"),
 				nil,
 				"Hi everybody",
 				[]utils.Attachment{

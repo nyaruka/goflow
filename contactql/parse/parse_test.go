@@ -48,10 +48,10 @@ func TestParseQuery(t *testing.T) {
 		{text: `w m`, parsed: `name = "w" AND name = "m"`, resolver: resolver},
 		{text: `tel:+0123456566`, parsed: `urns.tel = "+0123456566"`, resolver: resolver}, // whole query is a URN
 		{text: `twitter:bobby`, parsed: `urns.twitter = "bobby"`, resolver: resolver},
-		{text: `(202) 456-1111`, parsed: `urns.tel = "+12024561111"`, resolver: resolver}, // whole query looks like a phone number
-		{text: `+12024561111`, parsed: `urns.tel = "+12024561111"`, resolver: resolver},
-		{text: ` 202.456.1111 `, parsed: `urns.tel = "+12024561111"`, resolver: resolver},
-		{text: `"+12024561111"`, parsed: `urns.tel ~ "+12024561111"`, resolver: resolver},
+		{text: `(202) 555-0110`, parsed: `urns.tel = "+12025550110"`, resolver: resolver}, // whole query looks like a phone number
+		{text: `+12025550110`, parsed: `urns.tel = "+12025550110"`, resolver: resolver},
+		{text: ` 202.555.0110 `, parsed: `urns.tel = "+12025550110"`, resolver: resolver},
+		{text: `"+12025550110"`, parsed: `urns.tel ~ "+12025550110"`, resolver: resolver},
 		{text: `566`, parsed: `name ~ 566`, resolver: resolver}, // too short to be a phone number
 
 		// implicit conditions with URN redaction

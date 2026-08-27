@@ -17,7 +17,7 @@ const TypeCallCreated string = "call_created"
 //	  "created_on": "2019-01-02T15:04:05Z",
 //	  "call": {
 //	    "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
-//	    "urn": "tel:+1234567890",
+//	    "urn": "tel:+12345550102",
 //	    "channel": {"uuid": "2e2b43c7-88e9-43d6-b291-ebf9a24c2f86", "name": "Twilio"}
 //	  }
 //	}

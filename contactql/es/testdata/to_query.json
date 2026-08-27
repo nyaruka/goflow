@@ -1818,14 +1818,14 @@
     },
     {
         "description": "urn attribute equality",
-        "query": "urn=\"+12067799192\"",
+        "query": "urn=\"+12065550102\"",
         "elastic": {
             "nested": {
                 "path": "urns",
                 "query": {
                     "term": {
                         "urns.path.keyword": {
-                            "value": "+12067799192"
+                            "value": "+12065550102"
                         }
                     }
                 }
@@ -1835,7 +1835,7 @@
     },
     {
         "description": "urn attribute inequality",
-        "query": "urn!=\"+12067799192\"",
+        "query": "urn!=\"+12065550102\"",
         "elastic": {
             "bool": {
                 "must_not": {
@@ -1844,7 +1844,7 @@
                         "query": {
                             "term": {
                                 "urns.path.keyword": {
-                                    "value": "+12067799192"
+                                    "value": "+12065550102"
                                 }
                             }
                         }

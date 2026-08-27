@@ -27,7 +27,7 @@ const TypeCall string = "call"
 //	    "call": {
 //	      "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
 //	      "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//	      "urn": "tel:+12065551212"
+//	      "urn": "tel:+12065550100"
 //	    }
 //	  },
 //	  "triggered_on": "2000-01-01T00:00:00.000000000-00:00"

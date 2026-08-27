@@ -12,7 +12,7 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12024561111",
+            "tel:+12025550110",
             "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
@@ -50,8 +50,8 @@
                                 "type": "text"
                             }
                         ],
-                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 456-1111",
-                        "urn": "tel:+12024561111"
+                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (202) 555-0110",
+                        "urn": "tel:+12025550110"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
