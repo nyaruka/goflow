@@ -20,7 +20,7 @@ import (
 
 func TestMsgIn(t *testing.T) {
 	msg := core.NewMsgIn(
-		urns.URN("tel:+1234567890"),
+		urns.URN("tel:+12345550102"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
 		[]utils.Attachment{
@@ -36,7 +36,7 @@ func TestMsgIn(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"urn":"tel:+1234567890",
+		"urn":"tel:+12345550102",
 		"channel":{"uuid":"61f38f46-a856-4f90-899e-905691784159",
 		"name":"My Android"},
 		"text":"Hi there",
@@ -50,7 +50,7 @@ func TestMsgIn(t *testing.T) {
 	msg = &core.MsgIn{}
 	err = utils.UnmarshalAndValidate(marshaled, msg)
 	require.NoError(t, err)
-	assert.Equal(t, urns.URN("tel:+1234567890"), msg.URN())
+	assert.Equal(t, urns.URN("tel:+12345550102"), msg.URN())
 	assert.Equal(t, "Hi there", msg.Text())
 	assert.Equal(t, assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), msg.Channel().UUID)
 	assert.Equal(t, "My Android", msg.Channel().Name)
@@ -62,7 +62,7 @@ func TestMsgOut(t *testing.T) {
 	test.MockUniverse()
 
 	msg := core.NewMsgOut(
-		urns.URN("tel:+1234567890"),
+		urns.URN("tel:+12345550102"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		&core.MsgContent{
 			Text:        "Hi there",
@@ -78,7 +78,7 @@ func TestMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"urn": "tel:+1234567890",
+		"urn": "tel:+12345550102",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
 		"attachments": ["image/jpeg:https://example.com/test.jpg", "audio/mp3:https://example.com/test.mp3"],
@@ -90,7 +90,7 @@ func TestIVRMsgOut(t *testing.T) {
 	test.MockUniverse()
 
 	msg := core.NewIVRMsgOut(
-		urns.URN("tel:+1234567890"),
+		urns.URN("tel:+12345550102"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
 		"https://example.com/test.mp3",
@@ -102,7 +102,7 @@ func TestIVRMsgOut(t *testing.T) {
 	require.NoError(t, err)
 
 	test.AssertEqualJSON(t, []byte(`{
-		"urn": "tel:+1234567890",
+		"urn": "tel:+12345550102",
 		"channel": {"uuid":"61f38f46-a856-4f90-899e-905691784159", "name":"My Android"},
 		"text": "Hi there",
 		"attachments": ["audio:https://example.com/test.mp3"],

@@ -144,7 +144,7 @@
             "type": "send_broadcast",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
-                "tel:+1234567890"
+                "tel:+12345550102"
             ],
             "text": "Hi there!"
         },
@@ -160,7 +160,7 @@
                 },
                 "base_language": "eng",
                 "urns": [
-                    "tel:+1234567890"
+                    "tel:+12345550102"
                 ]
             }
         ],
@@ -202,12 +202,12 @@
             ],
             "contact_query": "name = \"Bob\"",
             "urns": [
-                "tel:+1234567890"
+                "tel:+12345550102"
             ],
             "legacy_vars": [
                 "@(\"\")",
                 "@contact.fields.gender",
-                "@(\"5129165834\")",
+                "@(\"5125550100\")",
                 "@contact.urn",
                 "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
                 "  11708c34-d4ab-4b04-b82a-2578f6e0013c  "
@@ -261,9 +261,9 @@
                 ],
                 "contact_query": "name = \"Bob\"",
                 "urns": [
-                    "tel:+1234567890",
-                    "tel:+15129165834",
-                    "tel:+12065551212"
+                    "tel:+12345550102",
+                    "tel:+15125550100",
+                    "tel:+12065550100"
                 ]
             }
         ],
@@ -272,7 +272,7 @@
             "name = \"Bob\"",
             "@(\"\")",
             "@contact.fields.gender",
-            "@(\"5129165834\")",
+            "@(\"5125550100\")",
             "@contact.urn",
             "Bobby 32df805d-a033-4c2c-a6c1-54f3628d9920 McCool",
             "  11708c34-d4ab-4b04-b82a-2578f6e0013c  ",
@@ -315,7 +315,7 @@
             "type": "send_broadcast",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
-                "tel:+1234567890"
+                "tel:+12345550102"
             ],
             "text": "Hi there!",
             "attachments": [
@@ -383,7 +383,7 @@
                 },
                 "base_language": "eng",
                 "urns": [
-                    "tel:+1234567890"
+                    "tel:+12345550102"
                 ]
             }
         ],
@@ -422,7 +422,7 @@
             "type": "send_broadcast",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
-                "tel:+1234567890"
+                "tel:+12345550102"
             ],
             "text": "Hi @contact.name, who's a good boy?",
             "template": {
@@ -446,7 +446,7 @@
                 },
                 "base_language": "eng",
                 "urns": [
-                    "tel:+1234567890"
+                    "tel:+12345550102"
                 ],
                 "template": {
                     "uuid": "5722e1fd-fe32-4e74-ac78-3cf41a6adb7e",
@@ -491,7 +491,7 @@
             "type": "send_broadcast",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "urns": [
-                "tel:+1234567890"
+                "tel:+12345550102"
             ],
             "text": "Hi @contact.name, who's a good boy?",
             "template": {
@@ -515,7 +515,7 @@
                 },
                 "base_language": "eng",
                 "urns": [
-                    "tel:+1234567890"
+                    "tel:+12345550102"
                 ]
             }
         ],

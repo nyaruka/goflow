@@ -53,7 +53,7 @@
                         {
                             "uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
                             "type": "add_contact_urn",
-                            "scheme": "twitter",
+                            "scheme": "ext",
                             "path": "@(replace(lower(contact.name), \" \", \"_\"))"
                         },
                         {
@@ -101,7 +101,7 @@
                             "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
                             "type": "send_broadcast",
                             "urns": [
-                                "tel:+12065551212"
+                                "tel:+12065550100"
                             ],
                             "text": "Hi @contact.name, are you ready?"
                         },
@@ -311,7 +311,7 @@
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Android Channel",
-            "address": "+17036975131",
+            "address": "+17035550111",
             "schemes": [
                 "tel"
             ],
@@ -323,22 +323,10 @@
         },
         {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
-            "name": "Twitter Channel",
-            "address": "nyaruka",
+            "name": "Telegram Channel",
+            "address": "345765375445",
             "schemes": [
-                "twitter"
-            ],
-            "roles": [
-                "send",
-                "receive"
-            ]
-        },
-        {
-            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-            "name": "Facebook Channel",
-            "address": "235326346322111",
-            "schemes": [
-                "facebook"
+                "telegram"
             ],
             "roles": [
                 "send",

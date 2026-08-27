@@ -2,7 +2,7 @@
     "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
     "type": "dial_wait",
     "created_on": "2025-05-04T12:30:46.123456789Z",
-    "urn": "tel:+1234567890",
+    "urn": "tel:+12345550102",
     "dial_limit_seconds": 20,
     "call_limit_seconds": 120,
     "expires_on": "2022-02-03T13:45:30Z"

@@ -7,8 +7,8 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
+            "tel:+12065550100",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -152,7 +152,7 @@
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "Bobby",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-b62e-7238-98f2-86efa860382e"
                 },
                 "runs": [
@@ -263,7 +263,7 @@
                     "created_on": "2006-01-02T15:05:05Z",
                     "text": "123",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
                 },
                 "runs": [
@@ -427,7 +427,7 @@
                     "created_on": "2006-01-02T15:06:05Z",
                     "text": "18",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
                 },
                 "runs": [
@@ -492,7 +492,7 @@
                 "created_on": "2006-01-02T15:04:05Z",
                 "msg": {
                     "text": "Bobby",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-b62e-7238-98f2-86efa860382e"
@@ -505,7 +505,7 @@
                 "created_on": "2006-01-02T15:05:05Z",
                 "msg": {
                     "text": "123",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
@@ -518,7 +518,7 @@
                 "created_on": "2006-01-02T15:06:05Z",
                 "msg": {
                     "text": "18",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983846-00e7-742c-8456-b78d89c92b24"

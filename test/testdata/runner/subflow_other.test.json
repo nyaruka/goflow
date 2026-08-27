@@ -16,8 +16,8 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
+            "tel:+12065550100",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -45,7 +45,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Hi there, let's go to the child.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
@@ -70,7 +70,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Welcome to the child, say yes or no!",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-4403-76f8-aac5-d9d0ae409dbe"
@@ -179,7 +179,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Nope, that's neither.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-8283-76f8-89aa-1577771fa183"
@@ -219,7 +219,7 @@
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "neither",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-b62e-7238-98f2-86efa860382e"
                 },
                 "runs": [
@@ -323,7 +323,7 @@
                         },
                         "locale": "eng-US",
                         "text": "You said yes",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-bd1b-76f8-b3a5-b9dac4767740"
@@ -348,7 +348,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Hooray, you did it and said yes. Say yes or no!",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-d873-76f8-a98e-1c65c9788658"
@@ -396,7 +396,7 @@
                     "created_on": "2006-01-02T15:05:05Z",
                     "text": "yes",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
                 },
                 "runs": [
@@ -486,7 +486,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Nope, that's neither",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b48-16f3-76f8-9aeb-7faa667f1355"
@@ -526,7 +526,7 @@
                     "created_on": "2006-01-02T15:06:05Z",
                     "text": "never",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
                 },
                 "runs": [
@@ -639,7 +639,7 @@
                         },
                         "locale": "eng-US",
                         "text": "All Done! You said yes in the child and no here.",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b48-518b-76f8-95d6-85696b970f6a"
@@ -677,7 +677,7 @@
                     "created_on": "2006-01-02T15:07:05Z",
                     "text": "no",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983880-572a-7de7-a57d-d4d707e29e3c"
                 },
                 "runs": [
@@ -748,11 +748,11 @@
                 "created_on": "2006-01-02T15:04:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "neither",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-b62e-7238-98f2-86efa860382e"
@@ -765,11 +765,11 @@
                 "created_on": "2006-01-02T15:05:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "yes",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
@@ -782,11 +782,11 @@
                 "created_on": "2006-01-02T15:06:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "never",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983846-00e7-742c-8456-b78d89c92b24"
@@ -799,11 +799,11 @@
                 "created_on": "2006-01-02T15:07:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "no",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983880-572a-7de7-a57d-d4d707e29e3c"

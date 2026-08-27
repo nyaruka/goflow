@@ -29,9 +29,9 @@ func TestContact(t *testing.T) {
 	source, err := static.NewSource([]byte(`{
 		"channels": [
 			{
-				"uuid": "294a14d4-c998-41e5-a314-5941b97b89d7",
-				"name": "My Android Phone",
-				"address": "+17036975131",
+				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+				"name": "Android Channel",
+				"address": "+17035550111",
 				"schemes": ["tel"],
 				"roles": ["send", "receive"],
 				"country": "US"
@@ -51,7 +51,7 @@ func TestContact(t *testing.T) {
 	sa, err := engine.NewSessionAssets(env, source, nil)
 	require.NoError(t, err)
 
-	android := sa.Channels().Get("294a14d4-c998-41e5-a314-5941b97b89d7")
+	android := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
 	uuids.SetGenerator(uuids.NewSeededGenerator(1234, time.Now))
 	defer uuids.SetGenerator(uuids.DefaultGenerator)
@@ -84,8 +84,8 @@ func TestContact(t *testing.T) {
 	contact.SetLastSeenOn(time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC))
 	assert.Equal(t, time.Date(2018, 12, 15, 10, 0, 0, 0, time.UTC), *contact.LastSeenOn())
 
-	contact.AddRoute(urns.URN("tel:+12024561111?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil)
-	contact.AddRoute(urns.URN("twitter:joey"), nil)
+	contact.AddRoute(urns.URN("tel:+12025550110?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"), nil)
+	contact.AddRoute(urns.URN("telegram:3527065"), nil)
 	contact.AddRoute(urns.URN("whatsapp:235423721788"), nil)
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
@@ -117,9 +117,9 @@ func TestContact(t *testing.T) {
 		"mailto":     nil,
 		"rocketchat": nil,
 		"slack":      nil,
-		"tel":        core.NewURN("tel", "+12024561111", "", android).ToXValue(env),
-		"telegram":   nil,
-		"twitter":    core.NewURN("twitter", "joey", "", nil).ToXValue(env),
+		"tel":        core.NewURN("tel", "+12025550110", "", android).ToXValue(env),
+		"telegram":   core.NewURN("telegram", "3527065", "", nil).ToXValue(env),
+		"twitter":    nil,
 		"twitterid":  nil,
 		"viber":      nil,
 		"vk":         nil,
@@ -190,21 +190,21 @@ func TestContactURNs(t *testing.T) {
 	contact := core.NewEmptyContact(sa, "", i18n.NilLanguage, nil)
 
 	assert.Len(t, contact.URNs(), 0)
-	assert.True(t, contact.AddRoute("tel:+12024561111", nil))  // didn't have URN so returns true
-	assert.False(t, contact.AddRoute("tel:+12024561111", nil)) // did have
+	assert.True(t, contact.AddRoute("tel:+12025550110", nil))  // didn't have URN so returns true
+	assert.False(t, contact.AddRoute("tel:+12025550110", nil)) // did have
 
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
-	assert.True(t, contact.AddRoute("tel:+12024562222", nil))
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.False(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024561111"}, {URN: "tel:+12024562222"}})) // no change
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024562222", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}})) // order changed
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil)}, contact.URNs())
-	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12024562222"}, {URN: "tel:+12024561111"}, {URN: "tel:+12024563333"}}))
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024561111", "", nil), core.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
-	assert.True(t, contact.RemoveURN("tel:+12024561111"))
-	assert.False(t, contact.RemoveURN("tel:+12024566666"))
-	assert.Equal(t, core.URNList{core.NewURN("tel", "+12024562222", "", nil), core.NewURN("tel", "+12024563333", "", nil)}, contact.URNs())
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550110", "", nil)}, contact.URNs())
+	assert.True(t, contact.AddRoute("tel:+12025550111", nil))
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550110", "", nil), core.NewURN("tel", "+12025550111", "", nil)}, contact.URNs())
+	assert.False(t, contact.SetRoutes([]core.Route{{URN: "tel:+12025550110"}, {URN: "tel:+12025550111"}})) // no change
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550110", "", nil), core.NewURN("tel", "+12025550111", "", nil)}, contact.URNs())
+	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12025550111"}, {URN: "tel:+12025550110"}})) // order changed
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550111", "", nil), core.NewURN("tel", "+12025550110", "", nil)}, contact.URNs())
+	assert.True(t, contact.SetRoutes([]core.Route{{URN: "tel:+12025550111"}, {URN: "tel:+12025550110"}, {URN: "tel:+12025550112"}}))
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550111", "", nil), core.NewURN("tel", "+12025550110", "", nil), core.NewURN("tel", "+12025550112", "", nil)}, contact.URNs())
+	assert.True(t, contact.RemoveURN("tel:+12025550110"))
+	assert.False(t, contact.RemoveURN("tel:+12025550113"))
+	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550111", "", nil), core.NewURN("tel", "+12025550112", "", nil)}, contact.URNs())
 }
 
 func TestReadContact(t *testing.T) {
@@ -243,8 +243,8 @@ func TestReadContactWithMissingAssets(t *testing.T) {
 		"timezone": "America/Guayaquil",
 		"created_on": "2018-06-20T11:40:30.123456789-00:00",
 		"urns": [
-			"tel:+12024561111?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
-			"twitterid:54784326227#nyaruka",
+			"tel:+12025550110?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+			"telegram:54784326227#nyaruka",
 			"mailto:foo@bar.com"
 		],
 		"groups": [
@@ -301,7 +301,7 @@ func TestContactFormat(t *testing.T) {
 
 	// name takes precedence if set
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddRoute(urns.URN("twitter:joey"), nil)
+	contact.AddRoute(urns.URN("telegram:3527065"), nil)
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
@@ -321,8 +321,8 @@ func TestContactFormat(t *testing.T) {
 		nil,
 		assets.PanicOnMissing,
 	)
-	contact.AddRoute(urns.URN("twitter:joey"), nil)
-	assert.Equal(t, "joey", contact.Format(env))
+	contact.AddRoute(urns.URN("telegram:3527065"), nil)
+	assert.Equal(t, "3527065", contact.Format(env))
 
 	anonEnv := envs.NewBuilder().WithRedactionPolicy(envs.RedactionPolicyURNs).Build()
 
@@ -342,46 +342,46 @@ func TestContactSetPreferredChannel(t *testing.T) {
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
 	android2 := test.NewTelChannel("Android", "+250961111112", receive_roles, nil, "RW", nil, false)
-	twitter1 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
-	twitter2 := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
+	telegram1 := test.NewChannel("Telegram", "345765375445", []string{"telegram"}, roles)
+	telegram2 := test.NewChannel("Telegram", "345765375446", []string{"telegram"}, roles)
 	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles)
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles)
 
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddRoute(urns.URN("twitter:joey"), nil)
-	contact.AddRoute(urns.URN("tel:+12345678999"), nil)
-	contact.AddRoute(urns.URN("tel:+18005555777"), nil)
-	contact.AddRoute(urns.URN("whatsapp:18005555888"), nil)
+	contact.AddRoute(urns.URN("telegram:3527065"), nil)
+	contact.AddRoute(urns.URN("tel:+12345550101"), nil)
+	contact.AddRoute(urns.URN("tel:+18005550100"), nil)
+	contact.AddRoute(urns.URN("whatsapp:18005550101"), nil)
 
 	contact.UpdatePreferredChannel(android)
 
 	// tel channels should be re-assigned to that channel, and moved to front of list
-	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("tel:+12345550101?channel="+string(android.UUID())), contact.URNs()[0].Encode())
 	assert.Equal(t, android, contact.URNs()[0].Channel)
-	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[1].Encode())
+	assert.Equal(t, urns.URN("tel:+18005550100?channel="+string(android.UUID())), contact.URNs()[1].Encode())
 	assert.Equal(t, android, contact.URNs()[1].Channel)
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].Encode())
+	assert.Equal(t, urns.URN("telegram:3527065"), contact.URNs()[2].Encode())
 	assert.Nil(t, contact.URNs()[2].Channel)
 
 	// same only applies to URNs of other schemes if they don't have a channel already
-	contact.UpdatePreferredChannel(twitter1)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
+	contact.UpdatePreferredChannel(telegram1)
+	assert.Equal(t, urns.URN("telegram:3527065?channel="+string(telegram1.UUID())), contact.URNs()[0].Encode())
 
-	contact.UpdatePreferredChannel(twitter2)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
+	contact.UpdatePreferredChannel(telegram2)
+	assert.Equal(t, urns.URN("telegram:3527065?channel="+string(telegram1.UUID())), contact.URNs()[0].Encode())
 
 	contact.UpdatePreferredChannel(whatsapp1)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("whatsapp:18005550101?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
 
 	contact.UpdatePreferredChannel(whatsapp2)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("whatsapp:18005550101?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
 
 	// if they are already associated with the channel, then they become the preferred URN
 	contact.UpdatePreferredChannel(android)
-	contact.UpdatePreferredChannel(twitter1)
+	contact.UpdatePreferredChannel(telegram1)
 
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter1.UUID())), contact.URNs()[0].Encode())
-	assert.Equal(t, twitter1, contact.URNs()[0].Channel)
+	assert.Equal(t, urns.URN("telegram:3527065?channel="+string(telegram1.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, telegram1, contact.URNs()[0].Channel)
 
 	contact.UpdatePreferredChannel(android2)
 
@@ -410,53 +410,53 @@ func TestContactSetAffinity(t *testing.T) {
 	roles := []assets.ChannelRole{assets.ChannelRoleSend}
 
 	android := test.NewTelChannel("Android", "+250961111111", roles, nil, "RW", nil, false)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
+	telegram := test.NewChannel("Telegram", "345765375445", []string{"telegram"}, roles)
 	whatsapp1 := test.NewChannel("Whatsapp", "+250961111113", []string{"whatsapp"}, roles)
 	whatsapp2 := test.NewChannel("Whatsapp", "+250961111114", []string{"whatsapp"}, roles)
 
 	contact := core.NewEmptyContact(sa, "Joe", i18n.NilLanguage, nil)
-	contact.AddRoute(urns.URN("twitter:joey"), nil)
-	contact.AddRoute(urns.URN("tel:+12345678999"), nil)
-	contact.AddRoute(urns.URN("tel:+18005555777"), nil)
-	contact.AddRoute(urns.URN("whatsapp:18005555888"), nil)
+	contact.AddRoute(urns.URN("telegram:3527065"), nil)
+	contact.AddRoute(urns.URN("tel:+12345550101"), nil)
+	contact.AddRoute(urns.URN("tel:+18005550100"), nil)
+	contact.AddRoute(urns.URN("whatsapp:18005550101"), nil)
 
 	// test moving a URN to the front with channel
-	changed := contact.SetAffinity(urns.URN("tel:+18005555777"), android)
+	changed := contact.SetAffinity(urns.URN("tel:+18005550100"), android)
 	assert.True(t, changed)
-	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("tel:+18005550100?channel="+string(android.UUID())), contact.URNs()[0].Encode())
 	assert.Equal(t, android, contact.URNs()[0].Channel)
 
 	// test moving another URN to the front with channel
-	changed = contact.SetAffinity(urns.URN("tel:+12345678999"), android)
+	changed = contact.SetAffinity(urns.URN("tel:+12345550101"), android)
 	assert.True(t, changed)
-	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("tel:+12345550101?channel="+string(android.UUID())), contact.URNs()[0].Encode())
 	assert.Equal(t, android, contact.URNs()[0].Channel)
 
 	// test setting the same URN again with same channel (no change)
-	changed = contact.SetAffinity(urns.URN("tel:+12345678999"), android)
+	changed = contact.SetAffinity(urns.URN("tel:+12345550101"), android)
 	assert.False(t, changed)
 
 	// test setting a URN with a different scheme
-	changed = contact.SetAffinity(urns.URN("twitter:joey"), twitter)
+	changed = contact.SetAffinity(urns.URN("telegram:3527065"), telegram)
 	assert.True(t, changed)
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter.UUID())), contact.URNs()[0].Encode())
-	assert.Equal(t, twitter, contact.URNs()[0].Channel)
+	assert.Equal(t, urns.URN("telegram:3527065?channel="+string(telegram.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, telegram, contact.URNs()[0].Channel)
 
 	// test reassigning the same URN to a different channel
-	changed = contact.SetAffinity(urns.URN("twitter:joey"), android)
+	changed = contact.SetAffinity(urns.URN("telegram:3527065"), android)
 	assert.True(t, changed)
 	assert.Equal(t, android, contact.URNs()[0].Channel) // channel should be updated to android
 
 	// test whatsapp URN with channel assignment
-	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp1)
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005550101"), whatsapp1)
 	assert.True(t, changed)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("whatsapp:18005550101?channel="+string(whatsapp1.UUID())), contact.URNs()[0].Encode())
 	assert.Equal(t, whatsapp1, contact.URNs()[0].Channel)
 
 	// test whatsapp channel reassignment to different channel
-	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp2)
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005550101"), whatsapp2)
 	assert.True(t, changed)
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("whatsapp:18005550101?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
 	assert.Equal(t, whatsapp2, contact.URNs()[0].Channel)
 
 	// test URN that doesn't exist
@@ -464,14 +464,14 @@ func TestContactSetAffinity(t *testing.T) {
 	assert.False(t, changed)
 
 	// test moving URN that's already at front with same channel (no change)
-	changed = contact.SetAffinity(urns.URN("whatsapp:18005555888"), whatsapp2)
+	changed = contact.SetAffinity(urns.URN("whatsapp:18005550101"), whatsapp2)
 	assert.False(t, changed)
 
 	// verify URN order after all operations
-	assert.Equal(t, urns.URN("whatsapp:18005555888?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
-	assert.Equal(t, urns.URN("twitter:joey?channel="+string(android.UUID())), contact.URNs()[1].Encode())
-	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[2].Encode())
-	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[3].Encode())
+	assert.Equal(t, urns.URN("whatsapp:18005550101?channel="+string(whatsapp2.UUID())), contact.URNs()[0].Encode())
+	assert.Equal(t, urns.URN("telegram:3527065?channel="+string(android.UUID())), contact.URNs()[1].Encode())
+	assert.Equal(t, urns.URN("tel:+12345550101?channel="+string(android.UUID())), contact.URNs()[2].Encode())
+	assert.Equal(t, urns.URN("tel:+18005550100?channel="+string(android.UUID())), contact.URNs()[3].Encode())
 }
 
 func TestReevaluateQueryBasedGroups(t *testing.T) {
@@ -546,9 +546,9 @@ func TestContactQuery(t *testing.T) {
 		"language": "eng",
 		"timezone": "America/Guayaquil",
 		"urns": [
-			"tel:+12065551212", 
-			"tel:+12065551313", 
-			"twitter:ewok"
+			"tel:+12065550100", 
+			"tel:+12065550101", 
+			"ext:ewok"
 		],
 		"created_on": "2020-01-24T13:24:30Z",
 		"last_seen_on": "2020-08-06T15:41:30Z"
@@ -593,42 +593,42 @@ func TestContactQuery(t *testing.T) {
 		{`last_seen_on != ""`, envs.RedactionPolicyNone, true, ""},
 		{`last_seen_on = ""`, envs.RedactionPolicyNone, false, ""},
 
-		{`tel = +12065551212`, envs.RedactionPolicyNone, true, ""},
-		{`tel = +12065551313`, envs.RedactionPolicyNone, true, ""},
-		{`tel = +13065551212`, envs.RedactionPolicyNone, false, ""},
+		{`tel = +12065550100`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +12065550101`, envs.RedactionPolicyNone, true, ""},
+		{`tel = +13065550100`, envs.RedactionPolicyNone, false, ""},
 		{`tel ~ 555`, envs.RedactionPolicyNone, true, ""},
 		{`tel ~ 666`, envs.RedactionPolicyNone, false, ""},
 		{`tel = ""`, envs.RedactionPolicyNone, false, ""},
 		{`tel != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`tel = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`tel = +12065550100`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
 		{`tel ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
 		{`tel = ""`, envs.RedactionPolicyURNs, false, ""},
 		{`tel != ""`, envs.RedactionPolicyURNs, true, ""},
 
-		{`twitter = ewok`, envs.RedactionPolicyNone, true, ""},
-		{`twitter = nicp`, envs.RedactionPolicyNone, false, ""},
-		{`twitter ~ wok`, envs.RedactionPolicyNone, true, ""},
-		{`twitter ~ EWO`, envs.RedactionPolicyNone, true, ""},
-		{`twitter ~ ijk`, envs.RedactionPolicyNone, false, ""},
-		{`twitter = ""`, envs.RedactionPolicyNone, false, ""},
-		{`twitter != ""`, envs.RedactionPolicyNone, true, ""},
+		{`ext = ewok`, envs.RedactionPolicyNone, true, ""},
+		{`ext = nicp`, envs.RedactionPolicyNone, false, ""},
+		{`ext ~ wok`, envs.RedactionPolicyNone, true, ""},
+		{`ext ~ EWO`, envs.RedactionPolicyNone, true, ""},
+		{`ext ~ ijk`, envs.RedactionPolicyNone, false, ""},
+		{`ext = ""`, envs.RedactionPolicyNone, false, ""},
+		{`ext != ""`, envs.RedactionPolicyNone, true, ""},
 
 		{`viber = ewok`, envs.RedactionPolicyNone, false, ""},
 		{`viber ~ wok`, envs.RedactionPolicyNone, false, ""},
 		{`viber = ""`, envs.RedactionPolicyNone, true, ""},
 		{`viber != ""`, envs.RedactionPolicyNone, false, ""},
 
-		{`urn = +12065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn = +12065550100`, envs.RedactionPolicyNone, true, ""},
 		{`urn = ewok`, envs.RedactionPolicyNone, true, ""},
-		{`urn = +13065551212`, envs.RedactionPolicyNone, false, ""},
-		{`urn != +13065551212`, envs.RedactionPolicyNone, true, ""},
+		{`urn = +13065550100`, envs.RedactionPolicyNone, false, ""},
+		{`urn != +13065550100`, envs.RedactionPolicyNone, true, ""},
 		{`urn ~ 555`, envs.RedactionPolicyNone, true, ""},
 		{`urn ~ 666`, envs.RedactionPolicyNone, false, ""},
 		{`urn = ""`, envs.RedactionPolicyNone, false, ""},
 		{`urn != ""`, envs.RedactionPolicyNone, true, ""},
 
-		{`urn = +12065551212`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
+		{`urn = +12065550100`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
 		{`urn ~ 555`, envs.RedactionPolicyURNs, false, "cannot query on redacted URNs"},
 		{`urn = ""`, envs.RedactionPolicyURNs, false, ""},
 		{`urn != ""`, envs.RedactionPolicyURNs, true, ""},

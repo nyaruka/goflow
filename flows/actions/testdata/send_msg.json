@@ -130,10 +130,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:31:11.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there ",
                     "attachments": [
@@ -213,10 +213,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:31:01.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "locale": "eng-US"
@@ -269,10 +269,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "attachments": [
@@ -322,10 +322,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there",
                     "quick_replies": [
@@ -379,10 +379,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there Ryan Lewis welcome to U-Report, the secret password is Chef",
                     "locale": "eng-US"
@@ -489,10 +489,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi Ryan Lewis, who's a good boy?",
                     "locale": "eng-US"
@@ -560,10 +560,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi Ryan Lewis, who's an excellent boy?",
                     "templating": {
@@ -640,10 +640,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
@@ -707,10 +707,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hi there, it's time to get up!",
                     "templating": {
@@ -785,10 +785,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Hola!",
                     "attachments": [
@@ -867,10 +867,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "Actualizar\n\nHola, Ryan Lewis, tu género está guardado como boy.",
                     "quick_replies": [
@@ -981,10 +981,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
                     "attachments": [
@@ -1076,10 +1076,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "The first true cats came into existence about 12 million years ago and were the Proailurus.",
                     "templating": {
@@ -1158,10 +1158,10 @@
                 "type": "msg_created",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "this content is FORBIDDEN",
                     "locale": "eng-US",

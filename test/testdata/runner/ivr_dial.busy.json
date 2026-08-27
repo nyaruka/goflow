@@ -4,14 +4,14 @@
             "name": "Twilio",
             "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1"
         },
-        "urn": "tel:+12065551212",
+        "urn": "tel:+12065550100",
         "uuid": "01978a2f-ad9a-7f2e-ad44-6e7547078cec"
     },
     "contact": {
         "created_on": "2018-01-01T12:00:00Z",
         "fields": {
             "supervisor_phone": {
-                "text": "(206)5551212"
+                "text": "(206)5550100"
             }
         },
         "id": 1234567,
@@ -20,8 +20,8 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
+            "tel:+12065550100",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -46,7 +46,7 @@
                     "dial_limit_seconds": 60,
                     "expires_on": "2025-05-04T14:32:22.123456789Z",
                     "type": "dial_wait",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01969b47-24c3-76f8-b20c-e3cb6203e029"
                 }
             ],

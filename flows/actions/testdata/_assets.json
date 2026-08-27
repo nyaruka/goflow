@@ -107,8 +107,8 @@
     "channels": [
         {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "My Android Phone",
-            "address": "+17036975131",
+            "name": "Android Channel",
+            "address": "+17035550111",
             "schemes": [
                 "tel"
             ],
@@ -120,8 +120,8 @@
         },
         {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo",
-            "address": "+16055742523",
+            "name": "Vonage Channel",
+            "address": "+17035550112",
             "schemes": [
                 "tel"
             ],
@@ -131,23 +131,11 @@
             ]
         },
         {
-            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-            "name": "Facebook Channel",
-            "address": "235326346322111",
-            "schemes": [
-                "facebook"
-            ],
-            "roles": [
-                "send",
-                "receive"
-            ]
-        },
-        {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
-            "name": "Twitter Channel",
-            "address": "nyaruka",
+            "name": "Telegram Channel",
+            "address": "345765375445",
             "schemes": [
-                "twitterid"
+                "telegram"
             ],
             "roles": [
                 "send",
@@ -286,7 +274,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "eng-US",
                     "components": [
@@ -312,7 +300,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "spa",
                     "components": [
@@ -344,7 +332,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "eng",
                     "components": [
@@ -366,7 +354,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "eng-US",
                     "components": [
@@ -409,7 +397,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "spa",
                     "components": [
@@ -464,7 +452,7 @@
                 {
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "locale": "eng-US",
                     "components": [

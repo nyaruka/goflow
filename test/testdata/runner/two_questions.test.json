@@ -12,8 +12,8 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
+            "tel:+12065550100",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -58,8 +58,8 @@
                                 "type": "text"
                             }
                         ],
-                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
-                        "urn": "tel:+12065551212"
+                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-0100",
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
@@ -134,7 +134,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-5f5b-76f8-9d79-c694bc69dcd1"
@@ -167,7 +167,7 @@
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "I like blue!",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-b62e-7238-98f2-86efa860382e"
                 },
                 "runs": [
@@ -263,7 +263,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Great, you are done and like Coke! Webhook status was ",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-a993-76f8-b3a5-b9dac4767740"
@@ -301,7 +301,7 @@
                     "created_on": "2006-01-02T15:05:05Z",
                     "text": "Coke",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"
                 },
                 "runs": [
@@ -357,11 +357,11 @@
                 "created_on": "2006-01-02T15:04:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "I like blue!",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-b62e-7238-98f2-86efa860382e"
@@ -374,11 +374,11 @@
                 "created_on": "2006-01-02T15:05:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "Coke",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-e0d1-790e-8f1f-e3f339af8d37"

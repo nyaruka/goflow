@@ -110,7 +110,7 @@
                         "type": "switch",
                         "wait": {
                             "type": "dial",
-                            "phone": "1(206)5551212"
+                            "phone": "1(206)5550100"
                         },
                         "result_name": "Redirect",
                         "categories": [
@@ -153,12 +153,14 @@
     "channels": [
         {
             "uuid": "a78930fe-6a40-4aa8-99c3-e61b02f45ca1",
-            "name": "Twilio",
-            "address": "235326346",
+            "name": "Twilio Channel",
+            "address": "+17035550113",
             "schemes": [
                 "tel"
             ],
             "roles": [
+                "send",
+                "receive",
                 "call",
                 "answer"
             ]

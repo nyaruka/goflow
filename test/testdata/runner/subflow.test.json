@@ -16,8 +16,8 @@
         "status": "active",
         "timezone": "America/Guayaquil",
         "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
+            "tel:+12065550100",
+            "telegram:1122334455667788",
             "mailto:ben@macklemore"
         ],
         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
@@ -45,7 +45,7 @@
                         },
                         "locale": "eng-US",
                         "text": "This is the parent flow",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
@@ -70,7 +70,7 @@
                         },
                         "locale": "eng-US",
                         "text": "What is your name?",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-3c33-76f8-aac5-d9d0ae409dbe"
@@ -156,7 +156,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Got it!",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-72e3-76f8-89aa-1577771fa183"
@@ -181,7 +181,7 @@
                         },
                         "locale": "eng-US",
                         "text": "Flow succeeded, they said Ryan Lewis",
-                        "urn": "tel:+12065551212"
+                        "urn": "tel:+12065550100"
                     },
                     "type": "msg_created",
                     "uuid": "01969b47-8e3b-76f8-a943-ec055bbeb3b4"
@@ -227,7 +227,7 @@
                     "created_on": "2006-01-02T15:04:05Z",
                     "text": "Ryan Lewis",
                     "type": "msg",
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "uuid": "01983845-b62e-7238-98f2-86efa860382e"
                 },
                 "runs": [
@@ -287,11 +287,11 @@
                 "created_on": "2006-01-02T15:04:05Z",
                 "msg": {
                     "channel": {
-                        "name": "Nexmo",
+                        "name": "Vonage Channel",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
                     "text": "Ryan Lewis",
-                    "urn": "tel:+12065551212"
+                    "urn": "tel:+12065550100"
                 },
                 "type": "msg_received",
                 "uuid": "01983845-b62e-7238-98f2-86efa860382e"

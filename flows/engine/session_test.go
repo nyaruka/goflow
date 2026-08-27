@@ -148,7 +148,7 @@ func TestReadWithMissingAssets(t *testing.T) {
 	sort.Strings(refs)
 
 	assert.Equal(t, []string{
-		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=My Android Phone]",
+		"channel[uuid=57f1078f-88aa-46f4-a59a-948a5739c03d,name=Android Channel]",
 		"flow[uuid=50c3706e-fedb-42c0-8eab-dda3335714b7,name=Registration]",
 		"flow[uuid=b7cf0d83-f1c9-411c-96fd-c511a4cfa86d,name=Collect Age]",
 	}, refs)

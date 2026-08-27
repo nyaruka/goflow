@@ -5,9 +5,9 @@
     "call": {
         "uuid": "0198ce92-ff2f-7b07-b158-b21ab168ebba",
         "channel": {
-            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-            "name": "Facebook Channel"
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Android Channel"
         },
-        "urn": "tel:+12065551212"
+        "urn": "tel:+12065550100"
     }
 }

@@ -1,8 +1,8 @@
 {
     "channels": [
         {
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "Telegram",
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Telegram Channel",
             "address": "345765375445",
             "schemes": [
                 "telegram"

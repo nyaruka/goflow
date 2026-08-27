@@ -22,7 +22,7 @@ const TypeTypingStopped string = "typing_stopped"
 //	  "created_on": "2019-01-02T15:04:05Z",
 //	  "direction": "incoming",
 //	  "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Facebook"},
-//	  "urn": "tel:+12065551212",
+//	  "urn": "tel:+12065550100",
 //	  "msg_external_id": "EX12345"
 //	}
 //

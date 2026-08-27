@@ -6,7 +6,7 @@
         "created_on": "2025-05-04T12:31:00.123456789Z",
         "channel": {
             "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-            "name": "Nexmo"
+            "name": "Vonage Channel"
         }
     },
     "flow": {

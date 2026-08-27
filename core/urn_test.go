@@ -43,7 +43,7 @@ func TestURN(t *testing.T) {
             {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "Android Channel",
-				"address": "+17036975131",
+				"address": "+17035550111",
 				"schemes": [
 					"tel"
 				],
@@ -99,7 +99,7 @@ func TestURN(t *testing.T) {
 
 func TestURNList(t *testing.T) {
 	urn1 := core.NewURN("tel", "+250781234567", "", nil)
-	urn2 := core.NewURN("twitter", "134252511151", "billy_bob", nil)
+	urn2 := core.NewURN("telegram", "134252511151", "billy_bob", nil)
 	urn3 := core.NewURN("tel", "+250781111222", "", nil)
 	urnList := core.URNList{urn1, urn2, urn3}
 
@@ -113,7 +113,7 @@ func TestURNList(t *testing.T) {
 	// check use in expressions
 	test.AssertXEqual(t, types.NewXArray(
 		types.NewXText("tel:+250781234567"),
-		types.NewXText("twitter:134252511151#billy_bob"),
+		types.NewXText("telegram:134252511151#billy_bob"),
 		types.NewXText("tel:+250781111222"),
 	), urnList.ToXValue(env))
 }

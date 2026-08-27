@@ -51,24 +51,24 @@ func TestChannelSetGetForURN(t *testing.T) {
 	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, nil, "EC", nil, true)
 	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, nil, "RW", nil, false)
 	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil, false)
-	twilio := test.NewTelChannel("Twilio", "+17036975131", rolesDefault, nil, "", nil, false)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault)
+	twilio := test.NewTelChannel("Twilio", "+17035550113", rolesDefault, nil, "", nil, false)
+	telegram := test.NewChannel("Telegram", "345765375445", []string{"telegram"}, rolesDefault)
 	receiver := test.NewTelChannel("Receiver", "+250724444444", rolesReceive, nil, "RW", nil, false)
 
-	all := core.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), twitter.Asset()})
+	all := core.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), telegram.Asset()})
 	rwOnly := core.NewChannelAssets([]assets.Channel{mtn.Asset(), tigo.Asset()})
 	twOnly := core.NewChannelAssets([]assets.Channel{twilio.Asset()})
 	receiverSet := core.NewChannelAssets([]assets.Channel{receiver.Asset()})
 
 	// nil if no channel
 	emptySet := core.NewChannelAssets(nil)
-	assert.Nil(t, emptySet.GetForURN(core.NewURN("tel", "+12345678999", "", nil), assets.ChannelRoleSend))
+	assert.Nil(t, emptySet.GetForURN(core.NewURN("tel", "+12345550101", "", nil), assets.ChannelRoleSend))
 
 	// nil if not channel with correct role
-	assert.Nil(t, receiverSet.GetForURN(core.NewURN("tel", "+12345678999", "", receiver), assets.ChannelRoleSend))
+	assert.Nil(t, receiverSet.GetForURN(core.NewURN("tel", "+12345550101", "", receiver), assets.ChannelRoleSend))
 
 	// can still match URN has a preferred channel with matching role
-	assert.Equal(t, receiver, receiverSet.GetForURN(core.NewURN("tel", "+12345678999", "", receiver), assets.ChannelRoleReceive))
+	assert.Equal(t, receiver, receiverSet.GetForURN(core.NewURN("tel", "+12345550101", "", receiver), assets.ChannelRoleReceive))
 
 	// nil if no channel with correct scheme
 	assert.Nil(t, all.GetForURN(core.NewURN("mailto", "rowan@foo.bar", "", nil), assets.ChannelRoleSend))
@@ -82,7 +82,7 @@ func TestChannelSetGetForURN(t *testing.T) {
 	assert.Equal(t, tigo, all.GetForURN(core.NewURN("tel", "+250962222222", "", tigo), assets.ChannelRoleSend))
 
 	// if there's only one channel for that scheme, it's used
-	assert.Equal(t, twitter, all.GetForURN(core.NewURN("twitter", "nyaruka2", "", nil), assets.ChannelRoleSend))
+	assert.Equal(t, telegram, all.GetForURN(core.NewURN("telegram", "3527065", "", nil), assets.ChannelRoleSend))
 
 	// if there's only one channel for that country, it's used
 	assert.Equal(t, claro, all.GetForURN(core.NewURN("tel", "+593971234567", "", nil), assets.ChannelRoleSend))

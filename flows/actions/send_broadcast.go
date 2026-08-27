@@ -27,7 +27,7 @@ const TypeSendBroadcast string = "send_broadcast"
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "send_broadcast",
-//	  "urns": ["tel:+12065551212"],
+//	  "urns": ["tel:+12065550100"],
 //	  "text": "Hi @contact.name, are you ready to complete today's survey?",
 //	  "template": {
 //	    "uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2",

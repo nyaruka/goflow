@@ -25,7 +25,7 @@ const TypeSetContactChannel string = "set_contact_channel"
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "set_contact_channel",
-//	  "channel": {"uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648", "name": "Facebook Channel"}
+//	  "channel": {"uuid": "8e21f093-99aa-413b-b55b-758b54308fcb", "name": "Telegram Channel"}
 //	}
 //
 // @action set_contact_channel

@@ -90,10 +90,10 @@
                 "type": "ivr_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "",
                     "attachments": [
@@ -146,10 +146,10 @@
                 "type": "ivr_created",
                 "created_on": "2025-05-04T12:30:54.123456789Z",
                 "msg": {
-                    "urn": "tel:+12065551212",
+                    "urn": "tel:+12065550100",
                     "channel": {
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                        "name": "My Android Phone"
+                        "name": "Android Channel"
                     },
                     "text": "",
                     "attachments": [

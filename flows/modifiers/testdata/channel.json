@@ -7,15 +7,15 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "modifier": {
             "type": "channel",
             "channel": {
                 "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "name": "Nexmo"
+                "name": "Vonage Channel"
             }
         },
         "contact_after": {
@@ -24,8 +24,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "events": [
@@ -34,8 +34,8 @@
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
-                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                    "twitterid:54784326227#nyaruka"
+                    "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                    "telegram:54784326227#nyaruka"
                 ]
             }
         ]
@@ -48,15 +48,15 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "modifier": {
             "type": "channel",
             "channel": {
                 "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "name": "Nexmo"
+                "name": "Vonage Channel"
             }
         },
         "contact_after": {
@@ -65,8 +65,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "events": []
@@ -79,8 +79,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "modifier": {
@@ -93,8 +93,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "events": [
@@ -103,8 +103,8 @@
                 "type": "contact_urns_changed",
                 "created_on": "2025-05-04T12:30:46.123456789Z",
                 "urns": [
-                    "tel:+12065551212",
-                    "twitterid:54784326227#nyaruka"
+                    "tel:+12065550100",
+                    "telegram:54784326227#nyaruka"
                 ]
             }
         ]
@@ -117,8 +117,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "modifier": {
@@ -134,8 +134,8 @@
             "status": "active",
             "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
-                "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
-                "twitterid:54784326227#nyaruka"
+                "tel:+12065550100?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "telegram:54784326227#nyaruka"
             ]
         },
         "events": [

@@ -33,7 +33,7 @@ const TypeBroadcastCreated string = "broadcast_created"
 //	    }
 //	  },
 //	  "base_language": "eng",
-//	  "urns": ["tel:+12065551212"],
+//	  "urns": ["tel:+12065550100"],
 //	  "contacts": [{"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"}],
 //	  "template": {"uuid": "3ce100b7-a734-4b4e-891b-350b1279ade2", "name": "revive_issue"},
 //	  "template_variables": ["Ryan Lewis", "boy"]

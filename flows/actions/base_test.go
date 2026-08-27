@@ -43,8 +43,8 @@ var defaultContactJSON = []byte(`{
 	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"urns": [
-		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-		"twitterid:54784326227#nyaruka"
+		"tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+		"telegram:54784326227#nyaruka"
 	],
 	"groups": [
 		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -196,13 +196,13 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 
 			if flow.Type() == flows.FlowTypeVoice {
 				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065551212"))
+				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065550100"))
 			}
 
 			trigger = tb.Build()
 		} else {
 			msg := core.NewMsgIn(
-				urns.URN("tel:+12065551212"),
+				urns.URN("tel:+12065550100"),
 				nil,
 				"Hi everybody",
 				[]utils.Attachment{
@@ -524,7 +524,7 @@ func TestConstructors(t *testing.T) {
 					core.NewContactReference(core.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
 				},
 				"fields.age > 20",
-				[]urns.URN{"twitter:nyaruka"},
+				[]urns.URN{"telegram:3527065"},
 				nil,
 				nil,
 				nil,
@@ -548,7 +548,7 @@ func TestConstructors(t *testing.T) {
 				}
 			],
 			"contact_query": "fields.age > 20",
-			"urns": ["twitter:nyaruka"]
+			"urns": ["telegram:3527065"]
 		}`,
 		},
 		{
@@ -598,14 +598,14 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewSetContactChannel(
 				actionUUID,
-				assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "My Android Phone"),
+				assets.NewChannelReference(assets.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d"), "Android Channel"),
 			),
 			`{
 			"type": "set_contact_channel",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 			"channel": {
 				"uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-				"name": "My Android Phone"
+				"name": "Android Channel"
 			}
 		}`,
 		},
@@ -712,7 +712,7 @@ func TestConstructors(t *testing.T) {
 					core.NewContactReference(core.ContactUUID("cbe87f5c-cda2-4f90-b5dd-0ac93a884950"), "Bob Smith"),
 				},
 				"fields.age > 20",
-				[]urns.URN{"twitter:nyaruka"},
+				[]urns.URN{"telegram:3527065"},
 				nil,  // legacy vars
 				true, // create new contact
 			),
@@ -736,7 +736,7 @@ func TestConstructors(t *testing.T) {
 				}
 			],
 			"contact_query": "fields.age > 20",
-			"urns": ["twitter:nyaruka"],
+			"urns": ["telegram:3527065"],
 			"exclusions": {},
 			"create_contact": true
 		}`,
