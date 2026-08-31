@@ -1,3 +1,7 @@
+v0.293.2 (2026-08-31)
+-------------------------
+ * Update to gocommon v1.94.3
+
 v0.293.1 (2026-08-27)
 -------------------------
  * Add template enumeration for dial wait phone field
