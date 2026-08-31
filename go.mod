@@ -8,13 +8,13 @@ require (
 	github.com/blevesearch/segment v0.9.1
 	github.com/buger/jsonparser v1.2.0
 	github.com/go-playground/validator/v10 v10.30.3
-	github.com/nyaruka/gocommon v1.94.2
+	github.com/nyaruka/gocommon v1.94.3
 	github.com/sergi/go-diff v1.4.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/exp v0.0.0-20260727155853-b88d891fe743
 	golang.org/x/net v0.56.0
-	golang.org/x/text v0.40.0
+	golang.org/x/text v0.41.0
 )
 
 require (
@@ -30,8 +30,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/leodido/go-urn v1.5.0 // indirect
-	github.com/nyaruka/null/v3 v3.0.0 // indirect
-	github.com/nyaruka/phonenumbers/v2 v2.0.7 // indirect
+	github.com/nyaruka/null/v3 v3.1.0 // indirect
+	github.com/nyaruka/phonenumbers/v2 v2.0.11 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/wneessen/go-mail v0.8.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
