@@ -199,10 +199,10 @@ func TestClone(t *testing.T) {
 
 		// if flow has a UI section, check UI node UUIDs correspond to real nodes
 		if len(clone.UI()) > 0 {
-			clonedUI, err := jsonx.DecodeGeneric(clone.UI())
-			require.NoError(t, err)
+			var clonedUI map[string]any
+			require.NoError(t, jsonx.Unmarshal(clone.UI(), &clonedUI))
 
-			nodeMap := clonedUI.(map[string]any)["nodes"].(map[string]any)
+			nodeMap := clonedUI["nodes"].(map[string]any)
 
 			for nodeUUID := range nodeMap {
 				assert.NotNil(t, clone.GetNode(core.NodeUUID(nodeUUID)), "UI has node with UUID %s that doesn't exist in flow", nodeUUID)

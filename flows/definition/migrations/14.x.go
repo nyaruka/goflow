@@ -1,9 +1,9 @@
 package migrations
 
 import (
-	"encoding/json"
-	"fmt"
+	"encoding/json/jsontext"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -338,11 +338,11 @@ func Migrate14_0_0(f Flow, cfg *Config) (Flow, error) {
 
 	expires, ok := f["expire_after_minutes"]
 	if ok {
-		expiresNum, ok := expires.(json.Number)
+		expiresRaw, ok := expires.(jsontext.Value)
 		if ok {
-			expiresInt, err := expiresNum.Int64()
+			expiresInt, err := strconv.ParseInt(string(expiresRaw), 10, 64)
 			if err == nil {
-				f["expire_after_minutes"] = json.Number(fmt.Sprint(min(int(expiresInt), maxExpires[f.Type()])))
+				f["expire_after_minutes"] = jsontext.Value(strconv.Itoa(min(int(expiresInt), maxExpires[f.Type()])))
 			}
 		}
 	}
