@@ -59,9 +59,9 @@ func TestGetObjectUUID(t *testing.T) {
 
 func TestLocalizationPrimitives(t *testing.T) {
 	readLocalization := func(j string) migrations.Localization {
-		m, err := jsonx.DecodeGeneric([]byte(j))
-		require.NoError(t, err)
-		return migrations.Localization(m.(map[string]any))
+		var m map[string]any
+		require.NoError(t, jsonx.Unmarshal([]byte(j), &m))
+		return migrations.Localization(m)
 	}
 
 	l10n1 := readLocalization(`{

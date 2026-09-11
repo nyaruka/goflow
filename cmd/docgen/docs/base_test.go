@@ -56,8 +56,8 @@ func readJSONOutput(t *testing.T, file ...string) any {
 	output, err := os.ReadFile(path.Join(file...))
 	require.NoError(t, err)
 
-	generic, err := jsonx.DecodeGeneric(output)
-	require.NoError(t, err)
+	var generic any
+	require.NoError(t, jsonx.Unmarshal(output, &generic))
 
 	return generic
 }

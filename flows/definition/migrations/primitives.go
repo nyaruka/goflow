@@ -1,10 +1,11 @@
 package migrations
 
 import (
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"errors"
 
 	"github.com/nyaruka/gocommon/i18n"
-	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/gocommon/uuids"
 )
 
@@ -179,9 +180,24 @@ func GetObjectUUID(o any) uuids.UUID {
 	return ""
 }
 
+// rawNumbers decodes numbers as raw jsontext.Value so that re-marshaling a migrated flow can't alter how they were
+// originally formatted or lose precision by passing through a float64
+var rawNumbers = json.WithUnmarshalers(json.UnmarshalFromFunc(func(dec *jsontext.Decoder, v *any) error {
+	if dec.PeekKind() == '0' { // i.e. a number
+		val, err := dec.ReadValue()
+		if err != nil {
+			return err
+		}
+		*v = val.Clone() // value is only valid until the next read
+		return nil
+	}
+	return errors.ErrUnsupported // not a number, use default handling
+}))
+
 // ReadFlow reads a flow definition as a flow primitive
 func ReadFlow(data []byte) (Flow, error) {
-	g, err := jsonx.DecodeGeneric(data)
+	var g any
+	err := json.Unmarshal(data, &g, jsontext.AllowDuplicateNames(true), jsontext.AllowInvalidUTF8(true), rawNumbers)
 	if err != nil {
 		return nil, err
 	}
