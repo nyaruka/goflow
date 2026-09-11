@@ -1,3 +1,7 @@
+v0.293.5 (2026-09-11)
+-------------------------
+ * Read flows for migration with numbers as raw jsontext.Value
+
 v0.293.4 (2026-09-09)
 -------------------------
  * Update to gocommon v1.95.0
