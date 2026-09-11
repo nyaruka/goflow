@@ -64,23 +64,3 @@ Takes a legacy flow definition as piped input and outputs the migrated definitio
 % cat legacy_flow.json | $GOPATH/bin/flowmigrate
 % cat legacy_export.json | jq '.flows[0]' | $GOPATH/bin/flowmigrate
 ```
-
-## Development
-
-You can run all the tests with:
-
-```
-% go test github.com/nyaruka/goflow/...
-```
-
-If you've made changes to the flow engine output, regenerate the test files with:
-
-```
-% go test github.com/nyaruka/goflow/test -update
-```
-
-If you need to rebuild the ANTLR grammar files:
-
-```
-go generate ./...
-```
