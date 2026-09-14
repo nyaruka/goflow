@@ -43,6 +43,9 @@ var dmy = envs.NewBuilder().
 var ara = envs.NewBuilder().
 	WithInputCollation(envs.CollationArabicVariants).
 	Build()
+var con = envs.NewBuilder().
+	WithInputCollation(envs.CollationConfusables).
+	Build()
 
 var assetsJSON = `{
 	"flows": [
@@ -146,12 +149,16 @@ var testTests = []struct {
 	{"has_any_word", dmy, []types.XValue{xs("one"), xs("two"), xs("three")}, ERROR},
 	{"has_any_word", dmy, []types.XValue{xs("but foo"), nil}, falseResult},
 	{"has_any_word", dmy, []types.XValue{nil, xs("but foo")}, falseResult},
-	{"has_any_word", dmy, []types.XValue{xs("بلی"), xs("بلی")}, result(xs("بلی"))}, // using regular collation
-	{"has_any_word", dmy, []types.XValue{xs("بلي"), xs("بلی")}, falseResult},       // not quite the same yeh
-	{"has_any_word", dmy, []types.XValue{xs("بلى"), xs("بلی")}, falseResult},       // not quite the same yeh
-	{"has_any_word", ara, []types.XValue{xs("بلی"), xs("بلی")}, result(xs("بلی"))}, // using ara-far collation
-	{"has_any_word", ara, []types.XValue{xs("بلي"), xs("بلی")}, result(xs("بلي"))}, // using ara-far collation
-	{"has_any_word", ara, []types.XValue{xs("بلى"), xs("بلی")}, result(xs("بلى"))}, // using ara-far collation
+	{"has_any_word", dmy, []types.XValue{xs("بلی"), xs("بلی")}, result(xs("بلی"))},    // using regular collation
+	{"has_any_word", dmy, []types.XValue{xs("بلي"), xs("بلی")}, falseResult},          // not quite the same yeh
+	{"has_any_word", dmy, []types.XValue{xs("بلى"), xs("بلی")}, falseResult},          // not quite the same yeh
+	{"has_any_word", ara, []types.XValue{xs("بلی"), xs("بلی")}, result(xs("بلی"))},    // using ara-far collation
+	{"has_any_word", ara, []types.XValue{xs("بلي"), xs("بلی")}, result(xs("بلي"))},    // using ara-far collation
+	{"has_any_word", ara, []types.XValue{xs("بلى"), xs("بلی")}, result(xs("بلى"))},    // using ara-far collation
+	{"has_any_word", con, []types.XValue{xs("JOIN"), xs("join")}, result(xs("JOIN"))}, // using confusables collation
+	{"has_any_word", con, []types.XValue{xs("REGISTER"), xs("register")}, result(xs("REGISTER"))},
+	{"has_any_word", con, []types.XValue{xs("jоin"), xs("join")}, result(xs("jоin"))}, // cyrillic о
+	{"has_any_word", con, []types.XValue{xs("joln"), xs("join")}, falseResult},
 	{"has_any_word", dmy, []types.XValue{}, ERROR},
 
 	{"has_all_words", dmy, []types.XValue{xs("this.is.my.word"), xs("WORD word")}, result(xs("word"))},

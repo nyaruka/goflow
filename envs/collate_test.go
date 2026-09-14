@@ -25,6 +25,26 @@ func TestCollation(t *testing.T) {
 			"Nyaruka": true,
 			"𝒩ɣaruka": true,
 		}},
+		{envs.CollationConfusables, "JOIN", "join", map[string]bool{ // capital I must not become l
+			"join":  true,
+			"Join":  true,
+			"JOIN":  true,
+			"jоin":  true, // cyrillic о
+			"ЈОIN":  true, // cyrillic Ј and О
+			"joln":  false,
+			"jo1n":  false,
+			"joint": false,
+		}},
+		{envs.CollationConfusables, "REGISTER", "register", map[string]bool{
+			"register": true,
+			"Register": true,
+			"reglster": false,
+		}},
+		{envs.CollationConfusables, "𝐒𝐓𝐎𝐏", "stop", map[string]bool{ // math bold caps have no lowercase mapping
+			"stop": true,
+			"STOP": true,
+			"Stop": true,
+		}},
 		{envs.CollationArabicVariants, "٠١٢٣٤٥٦۷٨٩", "۰۱۲۳۴۵۶۷۸۹", map[string]bool{
 			"٤٥٦۷":       false,
 			"٠١٢٣٤٥٦۷٨٩": true,
