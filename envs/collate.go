@@ -50,7 +50,10 @@ var transformers = map[Collation]collateTransformer{
 		return strings.ToLower(s)
 	},
 	CollationConfusables: func(s string) string {
-		return strings.ToLower(stringsx.Skeleton(s))
+		// lowercase before taking the skeleton because the confusables mapping isn't case-preserving, e.g. it maps
+		// capital I to lowercase l, so JOIN would otherwise become joln and not match join. Lowercase again afterwards
+		// because characters without a lowercase mapping (e.g. 𝒩) can skeleton to uppercase letters.
+		return strings.ToLower(stringsx.Skeleton(strings.ToLower(s)))
 	},
 	CollationArabicVariants: func(s string) string {
 		return strings.ToLower(replaceRunes(norm.NFKC.String(s), arabicVariants))
