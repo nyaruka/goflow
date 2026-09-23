@@ -60,7 +60,7 @@ type LLMResponse struct {
 // LLMClassification is the result of an LLM service classification call
 type LLMClassification struct {
 	Category      string             // the chosen category, which must be one of the given categories
-	Confidence    *float64           // confidence in the chosen category, if the model provides one
+	Confidence    float64            // confidence in the chosen category, between 0 and 1
 	Probabilities map[string]float64 // per-category probabilities, if the model provides them
 	TokensInput   int64
 	TokensOutput  int64

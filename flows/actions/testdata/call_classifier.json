@@ -59,7 +59,8 @@
             }
         ],
         "locals_after": {
-            "_classification": "\u003cERROR\u003e"
+            "_classification": "\u003cERROR\u003e",
+            "_classification_conf": "0"
         },
         "templates": [
             "@input.text"
@@ -171,7 +172,7 @@
         }
     },
     {
-        "description": "Confidence local cleared if model doesn't provide confidence",
+        "description": "classifier_called event without probabilities if model doesn't provide them",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -202,6 +203,7 @@
                     "Hotels"
                 ],
                 "category": "Flights",
+                "confidence": 0.8,
                 "tokens": {
                     "input": 34,
                     "output": 5
@@ -210,7 +212,8 @@
             }
         ],
         "locals_after": {
-            "_classification": "Flights"
+            "_classification": "Flights",
+            "_classification_conf": "0.8"
         },
         "templates": [
             "\\return Flights"
@@ -262,7 +265,8 @@
             }
         ],
         "locals_after": {
-            "_classification": "\u003cERROR\u003e"
+            "_classification": "\u003cERROR\u003e",
+            "_classification_conf": "0"
         },
         "templates": [
             "\\return Cars"

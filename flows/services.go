@@ -39,7 +39,8 @@ type WebhookService interface {
 type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error)
 
-	// Classify picks which of the given categories best fits the input, returning an error if none do
+	// Classify picks which of the given categories best fits the input, returning an error if none do. Flows rely on a
+	// confidence being provided for every model, so services must approximate one if the model doesn't provide it.
 	Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error)
 }
 

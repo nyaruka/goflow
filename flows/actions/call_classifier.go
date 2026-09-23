@@ -25,7 +25,7 @@ const TypeCallClassifier string = "call_classifier"
 // A [event:classifier_called] event will be created if the LLM could be called. The action sets the local specified
 // by `output_local` to the name of the chosen category, or to `<ERROR>` if the call failed, including when none of
 // the categories fit the input. If `confidence_local` is specified, it is set to the confidence in the chosen
-// category, or cleared if the model doesn't provide one.
+// category, between 0 and 1, or to 0 if the call failed.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -74,12 +74,12 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 	}
 
 	if a.ConfidenceLocal != "" {
-		// always set or clear so a previous value can't be mistaken for this call's
-		if cls != nil && cls.Confidence != nil {
-			run.Locals().Set(a.ConfidenceLocal, strconv.FormatFloat(*cls.Confidence, 'f', -1, 64))
-		} else {
-			run.Locals().Clear(a.ConfidenceLocal)
+		// always numeric so flows can compare it without checking for errors first
+		confidence := 0.0
+		if cls != nil {
+			confidence = cls.Confidence
 		}
+		run.Locals().Set(a.ConfidenceLocal, strconv.FormatFloat(confidence, 'f', -1, 64))
 	}
 
 	return nil
