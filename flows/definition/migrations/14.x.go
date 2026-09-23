@@ -10,6 +10,7 @@ import (
 )
 
 func init() {
+	registerMigration(semver.MustParse("14.5.0"), Migrate14_5_0)
 	registerMigration(semver.MustParse("14.4.2"), Migrate14_4_2)
 	registerMigration(semver.MustParse("14.4.1"), Migrate14_4_1)
 	registerMigration(semver.MustParse("14.4.0"), Migrate14_4_0)
@@ -18,6 +19,31 @@ func init() {
 	registerMigration(semver.MustParse("14.2.0"), Migrate14_2_0)
 	registerMigration(semver.MustParse("14.1.0"), Migrate14_1_0)
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
+}
+
+// Migrate14_5_0 replaces legacy call_classifier actions, which called NLU classifiers and could now only ever save a
+// Failure result, with set_run_result actions that save that same result. This frees the call_classifier type for
+// LLM based classification.
+//
+// @version 14_5_0 "14.5.0"
+func Migrate14_5_0(f Flow, cfg *Config) (Flow, error) {
+	for _, node := range f.Nodes() {
+		for _, action := range node.Actions() {
+			if action.Type() == "call_classifier" {
+				resultName := action["result_name"]
+				uuid := action["uuid"]
+
+				clear(action)
+				action["uuid"] = uuid
+				action["type"] = "set_run_result"
+				action["name"] = resultName
+				action["value"] = "0"
+				action["category"] = "Failure"
+			}
+		}
+	}
+
+	return f, nil
 }
 
 // Migrate14_4_2 changes webhook and resthook split routers to use @(default(webhook.status, 0)) as their operand

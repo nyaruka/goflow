@@ -1,0 +1,259 @@
+{
+    "contact": {
+        "created_on": "2018-01-01T12:00:00Z",
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065550100"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": null,
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
+                    "type": "run_started",
+                    "uuid": "01969b47-1523-76f8-92ed-42cbd11a03fd"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:53.123456789Z",
+                    "msg": {
+                        "locale": "eng-US",
+                        "text": "Hi! What can I help you with?",
+                        "unsendable_reason": "no_route"
+                    },
+                    "type": "msg_created",
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:58.123456789Z",
+                    "expires_on": "2025-05-07T12:30:56.123456789Z",
+                    "type": "msg_wait",
+                    "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21",
+                    "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "time": "2025-05-04T12:30:54.123456789Z"
+                }
+            ],
+            "session": {
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "runs": [
+                    {
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
+                        "exited_on": null,
+                        "flow": {
+                            "name": "LLM Classify",
+                            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                        },
+                        "modified_on": "2025-05-04T12:30:59.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49"
+                            },
+                            {
+                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
+                    }
+                ],
+                "sprints": 1,
+                "status": "waiting",
+                "trigger": {
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+            }
+        },
+        {
+            "events": [
+                {
+                    "category": "All Responses",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
+                    "name": "Response 1",
+                    "type": "run_result_changed",
+                    "uuid": "01969b47-4fbb-76f8-aac5-d9d0ae409dbe",
+                    "value": "\\return Cars"
+                },
+                {
+                    "categories": [
+                        "Flights",
+                        "Hotels"
+                    ],
+                    "confidence": 0.9,
+                    "created_on": "2025-05-04T12:31:11.123456789Z",
+                    "elapsed_ms": 1000,
+                    "input": "\\return Cars",
+                    "llm": {
+                        "name": "Claude",
+                        "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000"
+                    },
+                    "probabilities": {
+                        "Flights": 0.1,
+                        "Hotels": 0.1
+                    },
+                    "tokens": {
+                        "input": 34,
+                        "output": 5
+                    },
+                    "type": "classifier_called",
+                    "uuid": "01969b47-672b-76f8-9729-57745fb13b06"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2025-05-04T12:31:15.123456789Z",
+                    "name": "Intent",
+                    "type": "run_result_changed",
+                    "uuid": "01969b47-76cb-76f8-9d79-c694bc69dcd1",
+                    "value": "<CANT>"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:19.123456789Z",
+                    "msg": {
+                        "locale": "eng-US",
+                        "text": "Hmm I didn't understand that",
+                        "unsendable_reason": "no_route"
+                    },
+                    "type": "msg_created",
+                    "uuid": "01969b47-866b-76f8-8b42-056e0211d5b9"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:22.123456789Z",
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-9223-76f8-89aa-1577771fa183"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                    "flow_uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21",
+                    "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "operand": "\\return Cars",
+                    "time": "2025-05-04T12:31:06.123456789Z"
+                },
+                {
+                    "destination_uuid": "72b177c0-f66f-48fe-bdb5-f5c4383502c0",
+                    "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876",
+                    "flow_uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21",
+                    "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "operand": "<CANT>",
+                    "time": "2025-05-04T12:31:16.123456789Z"
+                }
+            ],
+            "session": {
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "input": {
+                    "created_on": "2006-01-02T15:04:05Z",
+                    "text": "\\return Cars",
+                    "type": "msg",
+                    "urn": "tel:+12065550100",
+                    "uuid": "01983845-b62e-7238-98f2-86efa860382e"
+                },
+                "runs": [
+                    {
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
+                        "exited_on": "2025-05-04T12:31:20.123456789Z",
+                        "flow": {
+                            "name": "LLM Classify",
+                            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                        },
+                        "had_input": true,
+                        "modified_on": "2025-05-04T12:31:20.123456789Z",
+                        "results": {
+                            "intent": {
+                                "category": "Other",
+                                "created_on": "2025-05-04T12:31:12.123456789Z",
+                                "input": "<CANT>",
+                                "name": "Intent",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "value": "<CANT>"
+                            },
+                            "response_1": {
+                                "category": "All Responses",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "input": "\\return Cars",
+                                "name": "Response 1",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "value": "\\return Cars"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
+                    }
+                ],
+                "sprints": 2,
+                "status": "completed",
+                "trigger": {
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "event": {
+                "created_on": "2006-01-02T15:04:05Z",
+                "msg": {
+                    "text": "\\return Cars",
+                    "urn": "tel:+12065550100"
+                },
+                "type": "msg_received",
+                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
+            },
+            "resumed_on": "2019-10-04T12:20:49.046879-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "flow": {
+            "name": "LLM Classify",
+            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+        },
+        "params": {},
+        "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+        "type": "manual"
+    }
+}

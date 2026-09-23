@@ -27,7 +27,6 @@ const resultExtraMaxBytes = 10000
 // common category names
 const (
 	CategorySuccess = "Success"
-	CategorySkipped = "Skipped"
 	CategoryFailure = "Failure"
 )
 

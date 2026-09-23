@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/nyaruka/goflow/core"
@@ -79,6 +80,30 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 	}
 
 	return &core.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+}
+
+func (s *LLMService) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
+	var category string
+	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
+		return nil, errors.New(input[7:])
+	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise none
+		if c := input[8:]; slices.Contains(categories, c) {
+			category = c
+		}
+	} else { // otherwise the last category is chosen, like a categorize prompt
+		category = categories[len(categories)-1]
+	}
+
+	probs := make(map[string]float64, len(categories))
+	for _, c := range categories {
+		if c == category {
+			probs[c] = 0.9
+		} else {
+			probs[c] = 0.1
+		}
+	}
+
+	return &core.LLMClassification{Category: category, Confidence: 0.9, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

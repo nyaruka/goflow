@@ -38,6 +38,9 @@ type WebhookService interface {
 // LLMService provides LLM functionality to the engine
 type LLMService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error)
+
+	// Classify picks which of the given categories best fits the input
+	Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error)
 }
 
 // AirtimeService provides airtime functionality to the engine

@@ -1,29 +1,64 @@
 [
     {
-        "description": "Warning event and failure result regardless of input",
+        "description": "Read error for legacy shape without LLM or categories",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "input": "@input.text",
             "result_name": "Intent"
         },
+        "read_error": "field 'llm' is required, field 'categories' is required, field 'output_local' is required"
+    },
+    {
+        "description": "Read error for duplicate categories",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "@input.text",
+            "categories": [
+                "Flights",
+                "Flights"
+            ],
+            "output_local": "_llm_output"
+        },
+        "read_error": "field 'categories' must not contain duplicates"
+    },
+    {
+        "description": "Error event for invalid LLM reference",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                "name": "Deleted"
+            },
+            "input": "@input.text",
+            "categories": [
+                "Flights",
+                "Hotels"
+            ],
+            "output_local": "_llm_output"
+        },
         "events": [
             {
                 "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
-                "type": "warning",
+                "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "NLU classifiers are no longer supported"
-            },
-            {
-                "uuid": "01969b47-401b-76f8-a7eb-cc4cc9ec3e6b",
-                "type": "run_result_changed",
-                "created_on": "2025-05-04T12:31:01.123456789Z",
-                "name": "Intent",
-                "value": "0",
-                "category": "Failure"
+                "text": "Missing dependency: llm[uuid=63998ee7-a7a5-4cc5-be67-c773e1b6b9b1,name=Deleted]",
+                "code": "dependency:missing",
+                "extra": {
+                    "identity": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                    "type": "llm"
+                }
             }
         ],
-        "locals_after": {},
+        "locals_after": {
+            "_llm_output": "\u003cERROR\u003e"
+        },
         "templates": [
             "@input.text"
         ],
@@ -32,22 +67,217 @@
                 "languages": 0,
                 "nodes": 1
             },
-            "dependencies": [],
-            "locals": [],
-            "results": [
+            "dependencies": [
                 {
-                    "key": "intent",
-                    "name": "Intent",
-                    "categories": [
-                        "Success",
-                        "Skipped",
-                        "Failure"
-                    ],
-                    "node_uuids": [
-                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
-                    ]
+                    "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                    "name": "Deleted",
+                    "type": "llm",
+                    "missing": true
                 }
             ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": [
+                {
+                    "type": "missing_dependency",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "missing llm dependency '63998ee7-a7a5-4cc5-be67-c773e1b6b9b1'",
+                    "dependency": {
+                        "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
+                        "name": "Deleted",
+                        "type": "llm"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "description": "classifier_called event and category in local if successful",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "@input.text",
+            "categories": [
+                "Flights",
+                "Hotels"
+            ],
+            "output_local": "_llm_output"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
+                "type": "classifier_called",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "llm": {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude"
+                },
+                "input": "Hi everybody",
+                "categories": [
+                    "Flights",
+                    "Hotels"
+                ],
+                "category": "Hotels",
+                "confidence": 0.9,
+                "probabilities": {
+                    "Flights": 0.1,
+                    "Hotels": 0.9
+                },
+                "tokens": {
+                    "input": 34,
+                    "output": 5
+                },
+                "elapsed_ms": 1000
+            }
+        ],
+        "locals_after": {
+            "_llm_output": "Hotels"
+        },
+        "templates": [
+            "@input.text"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "classifier_called event and <CANT> in local if no category fits",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "\\return Cars",
+            "categories": [
+                "Flights",
+                "Hotels"
+            ],
+            "output_local": "_llm_output"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
+                "type": "classifier_called",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "llm": {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude"
+                },
+                "input": "\\return Cars",
+                "categories": [
+                    "Flights",
+                    "Hotels"
+                ],
+                "confidence": 0.9,
+                "probabilities": {
+                    "Flights": 0.1,
+                    "Hotels": 0.1
+                },
+                "tokens": {
+                    "input": 34,
+                    "output": 5
+                },
+                "elapsed_ms": 1000
+            }
+        ],
+        "locals_after": {
+            "_llm_output": "\u003cCANT\u003e"
+        },
+        "templates": [
+            "\\return Cars"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Error event and <ERROR> in local if call fails",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "\\error boom",
+            "categories": [
+                "Flights",
+                "Hotels"
+            ],
+            "output_local": "_llm_output"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-3463-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:58.123456789Z",
+                "text": "boom"
+            }
+        ],
+        "locals_after": {
+            "_llm_output": "\u003cERROR\u003e"
+        },
+        "templates": [
+            "\\error boom"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
             "parent_refs": [],
             "issues": []
         }

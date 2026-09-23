@@ -1,0 +1,19 @@
+{
+    "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+    "type": "classifier_called",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "llm": {
+        "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
+        "name": "GPT-4"
+    },
+    "input": "What's the weather like?",
+    "categories": [
+        "Flights",
+        "Hotels"
+    ],
+    "tokens": {
+        "input": 123,
+        "output": 5
+    },
+    "elapsed_ms": 123
+}

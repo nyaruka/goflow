@@ -1,0 +1,25 @@
+{
+    "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+    "type": "classifier_called",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "llm": {
+        "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
+        "name": "GPT-4"
+    },
+    "input": "I'd like to book a room for two nights",
+    "categories": [
+        "Flights",
+        "Hotels"
+    ],
+    "category": "Hotels",
+    "confidence": 0.92,
+    "probabilities": {
+        "Flights": 0.08,
+        "Hotels": 0.92
+    },
+    "tokens": {
+        "input": 123,
+        "output": 5
+    },
+    "elapsed_ms": 123
+}

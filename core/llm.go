@@ -56,3 +56,12 @@ type LLMResponse struct {
 	TokensInput  int64
 	TokensOutput int64
 }
+
+// LLMClassification is the result of an LLM service classification call
+type LLMClassification struct {
+	Category      string             // the chosen category, or empty if none fits
+	Confidence    float64            // confidence in the chosen category, if the model provides one
+	Probabilities map[string]float64 // per-category probabilities, if the model provides them
+	TokensInput   int64
+	TokensOutput  int64
+}

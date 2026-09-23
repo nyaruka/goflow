@@ -74,3 +74,29 @@ func TestLLMService(t *testing.T) {
 	assert.Equal(t, "C", resp.Output)
 
 }
+
+func TestLLMServiceClassify(t *testing.T) {
+	svc := services.NewLLM()
+	ctx := t.Context()
+	categories := []string{"Flights", "Hotels"}
+
+	// plain input chooses the last category
+	cls, err := svc.Classify(ctx, "I want to book a room", categories)
+	assert.NoError(t, err)
+	assert.Equal(t, "Hotels", cls.Category)
+	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
+
+	// "\return" chooses the given category if it's one of the categories
+	cls, err = svc.Classify(ctx, "\\return Flights", categories)
+	assert.NoError(t, err)
+	assert.Equal(t, "Flights", cls.Category)
+
+	// ...otherwise none
+	cls, err = svc.Classify(ctx, "\\return Cars", categories)
+	assert.NoError(t, err)
+	assert.Equal(t, "", cls.Category)
+
+	// "\error" returns an error
+	_, err = svc.Classify(ctx, "\\error boom", categories)
+	assert.EqualError(t, err, "boom")
+}

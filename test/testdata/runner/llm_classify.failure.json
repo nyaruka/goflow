@@ -1,0 +1,223 @@
+{
+    "contact": {
+        "created_on": "2018-01-01T12:00:00Z",
+        "id": 1234567,
+        "language": "eng",
+        "name": "Ben Haggerty",
+        "status": "active",
+        "timezone": "America/Guayaquil",
+        "urns": [
+            "tel:+12065550100"
+        ],
+        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": null,
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2025-05-04T12:30:50.123456789Z",
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
+                    "type": "run_started",
+                    "uuid": "01969b47-1523-76f8-92ed-42cbd11a03fd"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:53.123456789Z",
+                    "msg": {
+                        "locale": "eng-US",
+                        "text": "Hi! What can I help you with?",
+                        "unsendable_reason": "no_route"
+                    },
+                    "type": "msg_created",
+                    "uuid": "01969b47-20db-76f8-b20c-e3cb6203e029"
+                },
+                {
+                    "created_on": "2025-05-04T12:30:58.123456789Z",
+                    "expires_on": "2025-05-07T12:30:56.123456789Z",
+                    "type": "msg_wait",
+                    "uuid": "01969b47-3463-76f8-b774-0a98171a0712"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                    "flow_uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21",
+                    "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+                    "time": "2025-05-04T12:30:54.123456789Z"
+                }
+            ],
+            "session": {
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "runs": [
+                    {
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
+                        "exited_on": null,
+                        "flow": {
+                            "name": "LLM Classify",
+                            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                        },
+                        "modified_on": "2025-05-04T12:30:59.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2025-05-04T12:30:51.123456789Z",
+                                "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49"
+                            },
+                            {
+                                "arrived_on": "2025-05-04T12:30:55.123456789Z",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
+                    }
+                ],
+                "sprints": 1,
+                "status": "waiting",
+                "trigger": {
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+            }
+        },
+        {
+            "events": [
+                {
+                    "category": "All Responses",
+                    "created_on": "2025-05-04T12:31:05.123456789Z",
+                    "name": "Response 1",
+                    "type": "run_result_changed",
+                    "uuid": "01969b47-4fbb-76f8-aac5-d9d0ae409dbe",
+                    "value": "\\error this is an error"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:10.123456789Z",
+                    "text": "this is an error",
+                    "type": "error",
+                    "uuid": "01969b47-6343-76f8-9729-57745fb13b06"
+                },
+                {
+                    "category": "Failure",
+                    "created_on": "2025-05-04T12:31:14.123456789Z",
+                    "name": "Intent",
+                    "type": "run_result_changed",
+                    "uuid": "01969b47-72e3-76f8-9d79-c694bc69dcd1",
+                    "value": "<ERROR>"
+                },
+                {
+                    "created_on": "2025-05-04T12:31:17.123456789Z",
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "run_uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a",
+                    "status": "completed",
+                    "type": "run_ended",
+                    "uuid": "01969b47-7e9b-76f8-8b42-056e0211d5b9"
+                }
+            ],
+            "segments": [
+                {
+                    "destination_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                    "exit_uuid": "43accf99-4940-44f7-926b-a8b35d9403d6",
+                    "flow_uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21",
+                    "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "operand": "\\error this is an error",
+                    "time": "2025-05-04T12:31:06.123456789Z"
+                }
+            ],
+            "session": {
+                "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "input": {
+                    "created_on": "2006-01-02T15:04:05Z",
+                    "text": "\\error this is an error",
+                    "type": "msg",
+                    "urn": "tel:+12065550100",
+                    "uuid": "01983845-b62e-7238-98f2-86efa860382e"
+                },
+                "runs": [
+                    {
+                        "created_on": "2025-05-04T12:30:47.123456789Z",
+                        "exited_on": "2025-05-04T12:31:15.123456789Z",
+                        "flow": {
+                            "name": "LLM Classify",
+                            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                        },
+                        "had_input": true,
+                        "modified_on": "2025-05-04T12:31:15.123456789Z",
+                        "results": {
+                            "intent": {
+                                "category": "Failure",
+                                "created_on": "2025-05-04T12:31:11.123456789Z",
+                                "input": "<ERROR>",
+                                "name": "Intent",
+                                "node_uuid": "145eb3d3-b841-4e66-abac-297ae525c7ad",
+                                "value": "<ERROR>"
+                            },
+                            "response_1": {
+                                "category": "All Responses",
+                                "created_on": "2025-05-04T12:31:02.123456789Z",
+                                "input": "\\error this is an error",
+                                "name": "Response 1",
+                                "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                                "value": "\\error this is an error"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "01969b47-113b-76f8-95cf-9fca95f1c30a"
+                    }
+                ],
+                "sprints": 2,
+                "status": "completed",
+                "trigger": {
+                    "flow": {
+                        "name": "LLM Classify",
+                        "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+                    },
+                    "params": {},
+                    "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+                    "type": "manual"
+                },
+                "type": "messaging",
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "event": {
+                "created_on": "2006-01-02T15:04:05Z",
+                "msg": {
+                    "text": "\\error this is an error",
+                    "urn": "tel:+12065550100"
+                },
+                "type": "msg_received",
+                "uuid": "01983845-b62e-7238-98f2-86efa860382e"
+            },
+            "resumed_on": "2019-10-04T12:20:49.046879-05:00",
+            "type": "msg"
+        }
+    ],
+    "trigger": {
+        "flow": {
+            "name": "LLM Classify",
+            "uuid": "5b0dbc3a-7e3c-4a8b-9d6f-2c1e8f4a6b21"
+        },
+        "params": {},
+        "triggered_on": "2019-10-04T12:20:38.377033-05:00",
+        "type": "manual"
+    }
+}
