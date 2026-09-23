@@ -779,6 +779,21 @@ func TestReadAction(t *testing.T) {
 	}`, strings.Repeat("x", 10001)))
 	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
 
+	categories := make([]string, 101)
+	for i := range categories {
+		categories[i] = fmt.Sprintf("Category %d", i)
+	}
+	categoriesJSON, _ := json.Marshal(categories)
+	_, err = actions.Read(fmt.Appendf(nil, `{
+		"type": "call_classifier",
+		"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+		"model": {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4"},
+		"input": "@input.text",
+		"categories": %s,
+		"output_local": "_classification"
+	}`, categoriesJSON))
+	assert.EqualError(t, err, "field 'categories' must have a maximum of 100 items")
+
 }
 
 func TestResthookPayload(t *testing.T) {

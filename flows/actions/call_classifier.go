@@ -47,7 +47,7 @@ type CallClassifier struct {
 
 	Model           *assets.LLMReference `json:"model"        validate:"required"`
 	Input           string               `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
-	Categories      []string             `json:"categories"   validate:"required,min=1,max=255,unique,dive,result_category"`
+	Categories      []string             `json:"categories"   validate:"required,min=1,max=100,unique,dive,result_category"`
 	OutputLocal     string               `json:"output_local"                validate:"required,local_ref"`
 	ConfidenceLocal string               `json:"confidence_local,omitempty" validate:"omitempty,local_ref"`
 }
