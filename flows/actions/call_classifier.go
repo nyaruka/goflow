@@ -64,6 +64,14 @@ func NewCallClassifier(uuid flows.ActionUUID, model *assets.LLMReference, input 
 	}
 }
 
+// Validate validates our action is valid
+func (a *CallClassifier) Validate() error {
+	if a.ConfidenceLocal == a.OutputLocal {
+		return fmt.Errorf("confidence_local can't be the same as output_local")
+	}
+	return nil
+}
+
 // Execute runs this action
 func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	cls := a.call(ctx, run, log)
