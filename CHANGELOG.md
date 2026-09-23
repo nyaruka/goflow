@@ -1,3 +1,7 @@
+v0.294.0 (2026-09-23)
+-------------------------
+ * Add LLM based call_classifier action and migrate legacy classifier actions to it
+
 v0.293.6 (2026-09-14)
 -------------------------
  * Fix confusables collation not matching uppercase input
