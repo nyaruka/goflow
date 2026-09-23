@@ -2,7 +2,7 @@
     "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
     "type": "classifier_called",
     "created_on": "2025-05-04T12:30:46.123456789Z",
-    "llm": {
+    "model": {
         "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
         "name": "GPT-4"
     },

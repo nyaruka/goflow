@@ -30,7 +30,7 @@ const TypeCallClassifier string = "call_classifier"
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //	  "type": "call_classifier",
-//	  "llm": {
+//	  "model": {
 //	    "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
 //	    "name": "GPT-4"
 //	  },
@@ -45,7 +45,7 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	LLM             *assets.LLMReference `json:"llm"          validate:"required"`
+	Model           *assets.LLMReference `json:"model"        validate:"required"`
 	Input           string               `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
 	Categories      []string             `json:"categories"   validate:"required,min=1,max=255,unique,dive,result_category"`
 	OutputLocal     string               `json:"output_local"                validate:"required,local_ref"`
@@ -53,10 +53,10 @@ type CallClassifier struct {
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, llm *assets.LLMReference, input string, categories []string, outputLocal, confidenceLocal string) *CallClassifier {
+func NewCallClassifier(uuid flows.ActionUUID, model *assets.LLMReference, input string, categories []string, outputLocal, confidenceLocal string) *CallClassifier {
 	return &CallClassifier{
 		baseAction:      newBaseAction(TypeCallClassifier, uuid),
-		LLM:             llm,
+		Model:           model,
 		Input:           input,
 		Categories:      categories,
 		OutputLocal:     outputLocal,
@@ -87,13 +87,13 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 
 func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.LLMClassification {
 	llms := run.Session().Assets().LLMs()
-	llm := llms.Get(a.LLM.UUID)
+	llm := llms.Get(a.Model.UUID)
 	if llm == nil {
-		log(events.NewDependencyError(a.LLM))
+		log(events.NewDependencyError(a.Model))
 		return nil
 	}
 	if !llm.HasRole(assets.LLMRoleEngine) {
-		log(events.NewError(fmt.Sprintf("LLM %s does not have the engine role", a.LLM.UUID), ""))
+		log(events.NewError(fmt.Sprintf("LLM %s does not have the engine role", a.Model.UUID), ""))
 		return nil
 	}
 
@@ -119,7 +119,7 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 }
 
 func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
-	dependency(a.LLM)
+	dependency(a.Model)
 	local(a.OutputLocal)
 	if a.ConfidenceLocal != "" {
 		local(a.ConfidenceLocal)

@@ -56,7 +56,7 @@
                         {
                             "type": "call_classifier",
                             "uuid": "3cd8f2db-8429-462e-ab93-8041dd23abf1",
-                            "llm": {
+                            "model": {
                                 "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
                                 "name": "Claude"
                             },

@@ -386,7 +386,7 @@ func TestConstructors(t *testing.T) {
 			`{
 			"type": "call_classifier",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-			"llm": {
+			"model": {
 				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
 				"name": "GPT-4"
 			},

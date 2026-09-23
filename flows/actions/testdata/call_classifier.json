@@ -1,20 +1,20 @@
 [
     {
-        "description": "Read error for legacy shape without LLM or categories",
+        "description": "Read error for legacy shape without model or categories",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "input": "@input.text",
             "result_name": "Intent"
         },
-        "read_error": "field 'llm' is required, field 'categories' is required, field 'output_local' is required"
+        "read_error": "field 'model' is required, field 'categories' is required, field 'output_local' is required"
     },
     {
         "description": "Read error for duplicate categories",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
+            "model": {
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },
@@ -33,7 +33,7 @@
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
+            "model": {
                 "uuid": "63998ee7-a7a5-4cc5-be67-c773e1b6b9b1",
                 "name": "Deleted"
             },
@@ -104,7 +104,7 @@
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
+            "model": {
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },
@@ -121,7 +121,7 @@
                 "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
                 "type": "classifier_called",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "llm": {
+                "model": {
                     "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                     "name": "Claude"
                 },
@@ -176,7 +176,7 @@
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
+            "model": {
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },
@@ -193,7 +193,7 @@
                 "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
                 "type": "classifier_called",
                 "created_on": "2025-05-04T12:30:59.123456789Z",
-                "llm": {
+                "model": {
                     "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                     "name": "Claude"
                 },
@@ -244,7 +244,7 @@
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
+            "model": {
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },

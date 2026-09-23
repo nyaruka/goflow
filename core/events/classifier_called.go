@@ -22,7 +22,7 @@ const TypeClassifierCalled string = "classifier_called"
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "classifier_called",
 //	  "created_on": "2006-01-02T15:04:05Z",
-//	  "llm": {
+//	  "model": {
 //	    "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
 //	    "name": "GPT-4"
 //	  },
@@ -39,7 +39,7 @@ const TypeClassifierCalled string = "classifier_called"
 type ClassifierCalled struct {
 	BaseEvent
 
-	LLM           *assets.LLMReference `json:"llm" validate:"required"`
+	Model         *assets.LLMReference `json:"model" validate:"required"`
 	Input         string               `json:"input"`
 	Categories    []string             `json:"categories"`
 	Category      string               `json:"category"`
@@ -50,10 +50,10 @@ type ClassifierCalled struct {
 }
 
 // NewClassifierCalled returns a new classifier called event
-func NewClassifierCalled(llm *assets.LLMReference, input string, categories []string, cls *core.LLMClassification, elapsed time.Duration) *ClassifierCalled {
+func NewClassifierCalled(model *assets.LLMReference, input string, categories []string, cls *core.LLMClassification, elapsed time.Duration) *ClassifierCalled {
 	return &ClassifierCalled{
 		BaseEvent:     NewBaseEvent(TypeClassifierCalled),
-		LLM:           llm,
+		Model:         model,
 		Input:         input,
 		Categories:    categories,
 		Category:      cls.Category,
