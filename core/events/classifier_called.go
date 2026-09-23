@@ -14,7 +14,7 @@ func init() {
 // TypeClassifierCalled is the type for our classifier calls events
 const TypeClassifierCalled string = "classifier_called"
 
-// ClassifierCalled events are created when an LLM is called to classify some input into one of a set of categories.
+// ClassifierCalled events are created when a model is called to classify some input into one of a set of categories.
 // Confidence is a measure of how reliable the choice is and isn't necessarily the chosen category's probability. The
 // per-category probabilities are only included if the model provides them.
 //
@@ -39,18 +39,18 @@ const TypeClassifierCalled string = "classifier_called"
 type ClassifierCalled struct {
 	BaseEvent
 
-	Model         *assets.LLMReference `json:"model" validate:"required"`
-	Input         string               `json:"input"`
-	Categories    []string             `json:"categories"`
-	Category      string               `json:"category"`
-	Confidence    float64              `json:"confidence"`
-	Probabilities map[string]float64   `json:"probabilities,omitempty"`
-	Tokens        LLMTokens            `json:"tokens"`
-	ElapsedMS     int64                `json:"elapsed_ms"`
+	Model         *assets.ModelReference `json:"model" validate:"required"`
+	Input         string                 `json:"input"`
+	Categories    []string               `json:"categories"`
+	Category      string                 `json:"category"`
+	Confidence    float64                `json:"confidence"`
+	Probabilities map[string]float64     `json:"probabilities,omitempty"`
+	Tokens        ModelTokens            `json:"tokens"`
+	ElapsedMS     int64                  `json:"elapsed_ms"`
 }
 
 // NewClassifierCalled returns a new classifier called event
-func NewClassifierCalled(model *assets.LLMReference, input string, categories []string, cls *core.LLMClassification, elapsed time.Duration) *ClassifierCalled {
+func NewClassifierCalled(model *assets.ModelReference, input string, categories []string, cls *core.ModelClassification, elapsed time.Duration) *ClassifierCalled {
 	return &ClassifierCalled{
 		BaseEvent:     NewBaseEvent(TypeClassifierCalled),
 		Model:         model,
@@ -59,7 +59,7 @@ func NewClassifierCalled(model *assets.LLMReference, input string, categories []
 		Category:      cls.Category,
 		Confidence:    cls.Confidence,
 		Probabilities: cls.Probabilities,
-		Tokens:        LLMTokens{Input: cls.TokensInput, Output: cls.TokensOutput},
+		Tokens:        ModelTokens{Input: cls.TokensInput, Output: cls.TokensOutput},
 		ElapsedMS:     elapsed.Milliseconds(),
 	}
 }

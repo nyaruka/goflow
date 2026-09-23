@@ -22,7 +22,7 @@ type sessionAssets struct {
 	globals   *core.GlobalAssets
 	groups    *core.GroupAssets
 	labels    *core.LabelAssets
-	llms      *core.LLMAssets
+	models    *core.ModelAssets
 	locations *core.LocationAssets
 	resthooks *core.ResthookAssets
 	templates *core.TemplateAssets
@@ -58,7 +58,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 	if err != nil {
 		return nil, err
 	}
-	llms, err := source.LLMs()
+	models, err := source.Models()
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func NewSessionAssets(env envs.Environment, source assets.Source, migrationConfi
 		globals:   core.NewGlobalAssets(globals),
 		groups:    groupAssets,
 		labels:    core.NewLabelAssets(labels),
-		llms:      core.NewLLMAssets(llms),
+		models:    core.NewModelAssets(models),
 		locations: core.NewLocationAssets(locations),
 		resthooks: core.NewResthookAssets(resthooks),
 		templates: core.NewTemplateAssets(templates),
@@ -125,7 +125,7 @@ func (s *sessionAssets) Flows() flows.FlowAssets         { return s.flows }
 func (s *sessionAssets) Globals() *core.GlobalAssets     { return s.globals }
 func (s *sessionAssets) Groups() *core.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *core.LabelAssets       { return s.labels }
-func (s *sessionAssets) LLMs() *core.LLMAssets           { return s.llms }
+func (s *sessionAssets) Models() *core.ModelAssets       { return s.models }
 func (s *sessionAssets) Locations() *core.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *core.ResthookAssets { return s.resthooks }
 func (s *sessionAssets) Templates() *core.TemplateAssets { return s.templates }

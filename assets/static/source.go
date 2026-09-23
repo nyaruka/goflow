@@ -21,8 +21,8 @@ type StaticSource struct {
 		Globals   []*Global                 `json:"globals" validate:"omitempty,dive"`
 		Groups    []*Group                  `json:"groups" validate:"omitempty,dive"`
 		Labels    []*Label                  `json:"labels" validate:"omitempty,dive"`
-		LLMs      []*LLM                    `json:"llms" validate:"omitempty,dive"`
 		Locations []*envs.LocationHierarchy `json:"locations"`
+		Models    []*Model                  `json:"models" validate:"omitempty,dive"`
 		Resthooks []*Resthook               `json:"resthooks" validate:"omitempty,dive"`
 		Templates []*Template               `json:"templates" validate:"omitempty,dive"`
 		Topics    []*Topic                  `json:"topics" validate:"omitempty,dive"`
@@ -127,11 +127,11 @@ func (s *StaticSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
-// LLMs returns all LLM assets
-func (s *StaticSource) LLMs() ([]assets.LLM, error) {
-	set := make([]assets.LLM, len(s.s.LLMs))
-	for i := range s.s.LLMs {
-		set[i] = s.s.LLMs[i]
+// Models returns all model assets
+func (s *StaticSource) Models() ([]assets.Model, error) {
+	set := make([]assets.Model, len(s.s.Models))
+	for i := range s.s.Models {
+		set[i] = s.s.Models[i]
 	}
 	return set, nil
 }

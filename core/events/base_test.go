@@ -42,7 +42,7 @@ func TestEventMarshaling(t *testing.T) {
 	android := session.Assets().Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
 	telegram := session.Assets().Channels().Get("8e21f093-99aa-413b-b55b-758b54308fcb")
 	ticket := core.NewTicket("7481888c-07dd-47dc-bf22-ef7448696ffe", core.TicketStatusOpen, weather, user)
-	gpt4 := session.Assets().LLMs().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
+	gpt4 := session.Assets().Models().Get("14115c03-b4c5-49e2-b9ac-390c43e9d7ce")
 	call := core.NewCall("0198ce92-ff2f-7b07-b158-b21ab168ebba", android, "tel:+12065550100")
 
 	eventTests := []struct {
@@ -131,7 +131,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"I'd like to book a room for two nights",
 					[]string{"Flights", "Hotels"},
-					&core.LLMClassification{Category: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
+					&core.ModelClassification{Category: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
 					123*time.Millisecond,
 				)
 			},
@@ -283,7 +283,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"Categorize the following text as Positive or Negative",
 					"Please stop messaging me",
-					&core.LLMResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
+					&core.ModelResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
 					123*time.Millisecond,
 				)
 			},

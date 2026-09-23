@@ -137,9 +137,9 @@ func (b *Builder) WithWebhookServiceFactory(f WebhookServiceFactory) *Builder {
 	return b
 }
 
-// WithLLMServiceFactory sets the LLM service factory
-func (b *Builder) WithLLMServiceFactory(f LLMServiceFactory) *Builder {
-	b.eng.services.llm = f
+// WithModelServiceFactory sets the model service factory
+func (b *Builder) WithModelServiceFactory(f ModelServiceFactory) *Builder {
+	b.eng.services.model = f
 	return b
 }
 

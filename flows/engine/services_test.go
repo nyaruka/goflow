@@ -15,9 +15,9 @@ func TestEmptyServices(t *testing.T) {
 	assert.EqualError(t, err, "no webhook service factory configured")
 	assert.Nil(t, webhookSvc)
 
-	llmSvc, err := eng.Services().LLM(nil)
-	assert.EqualError(t, err, "no LLM service factory configured")
-	assert.Nil(t, llmSvc)
+	modelSvc, err := eng.Services().Model(nil)
+	assert.EqualError(t, err, "no model service factory configured")
+	assert.Nil(t, modelSvc)
 
 	airtimeSvc, err := eng.Services().Airtime(nil)
 	assert.EqualError(t, err, "no airtime service factory configured")

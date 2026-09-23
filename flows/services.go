@@ -17,7 +17,7 @@ import (
 type Services interface {
 	Email(SessionAssets) (EmailService, error)
 	Webhook(SessionAssets) (WebhookService, error)
-	LLM(*core.LLM) (LLMService, error)
+	Model(*core.Model) (ModelService, error)
 	Airtime(SessionAssets) (AirtimeService, error)
 }
 
@@ -35,13 +35,13 @@ type WebhookService interface {
 	IsBlocked(u *url.URL) bool
 }
 
-// LLMService provides LLM functionality to the engine
-type LLMService interface {
-	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error)
+// ModelService provides model functionality to the engine
+type ModelService interface {
+	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error)
 
 	// Classify picks which of the given categories best fits the input, returning an error if none do. Flows rely on a
 	// confidence being provided for every model, so services must approximate one if the model doesn't provide it.
-	Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error)
+	Classify(ctx context.Context, input string, categories []string) (*core.ModelClassification, error)
 }
 
 // AirtimeService provides airtime functionality to the engine

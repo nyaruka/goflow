@@ -98,7 +98,7 @@ type FlowTest struct {
 	Resumes     []json.RawMessage                `json:"resumes"`
 	Outputs     []json.RawMessage                `json:"outputs"`
 	HTTPMocks   map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
-	LLMMocks    []*services.MockLLMResult        `json:"llm_mocks,omitempty"`
+	ModelMocks  []*services.MockModelResult      `json:"model_mocks,omitempty"`
 }
 
 type runResult struct {
@@ -106,7 +106,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope, rawTrigger []byte, rawCall *core.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client, llm flows.LLMService) (runResult, error) {
+func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope, rawTrigger []byte, rawCall *core.CallEnvelope, rawResumes []json.RawMessage, httpClient *http.Client, model flows.ModelService) (runResult, error) {
 	ctx := context.Background()
 
 	// load the test specific assets
@@ -140,8 +140,8 @@ func runFlow(assetsPath string, rawEnv []byte, rawContact *core.ContactEnvelope,
 		}).
 		WithWebhookLimits(256*1024, 100000).
 		WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
-		WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
-			return llm, nil
+		WithModelServiceFactory(func(l *core.Model) (flows.ModelService, error) {
+			return model, nil
 		}).
 		WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 			return services.NewAirtime("RWF"), nil
@@ -238,16 +238,16 @@ func TestFlows(t *testing.T) {
 			httpClient, mocks = MockedHTTP(flowTest.HTTPMocks)
 		}
 
-		// and an LLM service whose calls are answered from the test's mocks if it has them
-		var llm flows.LLMService = services.NewLLM()
-		var llmMocks *services.MockLLM
-		if flowTest.LLMMocks != nil {
-			llmMocks = services.NewMockLLM(flowTest.LLMMocks...)
-			llm = llmMocks
+		// and a model service whose calls are answered from the test's mocks if it has them
+		var model flows.ModelService = services.NewModel()
+		var modelMocks *services.MockModel
+		if flowTest.ModelMocks != nil {
+			modelMocks = services.NewMockModel(flowTest.ModelMocks...)
+			model = modelMocks
 		}
 
 		// run our flow
-		runResult, err := runFlow(tc.assetsFile, flowTest.Environment, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes, httpClient, llm)
+		runResult, err := runFlow(tc.assetsFile, flowTest.Environment, flowTest.Contact, flowTest.Trigger, flowTest.Call, flowTest.Resumes, httpClient, model)
 		if err != nil {
 			t.Errorf("error running flow for flow '%s' and output '%s': %s", tc.assetsFile, tc.outputFile, err)
 			continue
@@ -257,8 +257,8 @@ func TestFlows(t *testing.T) {
 		if mocks != nil {
 			require.False(t, mocks.HasUnused(), "unused HTTP mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
 		}
-		if llmMocks != nil {
-			require.False(t, llmMocks.HasUnused(), "unused LLM mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
+		if modelMocks != nil {
+			require.False(t, modelMocks.HasUnused(), "unused model mocks for flow '%s' and output '%s'", tc.assetsFile, tc.outputFile)
 		}
 
 		if UpdateSnapshots {
@@ -268,7 +268,7 @@ func TestFlows(t *testing.T) {
 				rawOutputs[i], err = jsonx.Marshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
-			flowTest := &FlowTest{Contact: flowTest.Contact, Trigger: flowTest.Trigger, Call: flowTest.Call, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: flowTest.HTTPMocks, LLMMocks: flowTest.LLMMocks}
+			flowTest := &FlowTest{Contact: flowTest.Contact, Trigger: flowTest.Trigger, Call: flowTest.Call, Resumes: flowTest.Resumes, Outputs: rawOutputs, HTTPMocks: flowTest.HTTPMocks, ModelMocks: flowTest.ModelMocks}
 			testJSON, err := jsonx.MarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 

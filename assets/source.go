@@ -10,7 +10,7 @@ type Source interface {
 	Globals() ([]Global, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
-	LLMs() ([]LLM, error)
+	Models() ([]Model, error)
 	Locations() ([]LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
 	Templates() ([]Template, error)

@@ -35,28 +35,28 @@ const TypeLLMCalled string = "llm_called"
 type LLMCalled struct {
 	BaseEvent
 
-	LLM          *assets.LLMReference `json:"llm" validate:"required"`
-	Instructions string               `json:"instructions"`
-	Input        string               `json:"input"`
-	Output       string               `json:"output"`
-	Tokens       LLMTokens            `json:"tokens"`
-	ElapsedMS    int64                `json:"elapsed_ms"`
+	LLM          *assets.ModelReference `json:"llm" validate:"required"`
+	Instructions string                 `json:"instructions"`
+	Input        string                 `json:"input"`
+	Output       string                 `json:"output"`
+	Tokens       ModelTokens            `json:"tokens"`
+	ElapsedMS    int64                  `json:"elapsed_ms"`
 }
 
-type LLMTokens struct {
+type ModelTokens struct {
 	Input  int64 `json:"input"`
 	Output int64 `json:"output"`
 }
 
 // NewLLMCalled returns a new LLM called event
-func NewLLMCalled(llm *assets.LLMReference, instructions, input string, resp *core.LLMResponse, elapsed time.Duration) *LLMCalled {
+func NewLLMCalled(llm *assets.ModelReference, instructions, input string, resp *core.ModelResponse, elapsed time.Duration) *LLMCalled {
 	return &LLMCalled{
 		BaseEvent:    NewBaseEvent(TypeLLMCalled),
 		LLM:          llm,
 		Instructions: instructions,
 		Input:        input,
 		Output:       resp.Output,
-		Tokens:       LLMTokens{Input: resp.TokensInput, Output: resp.TokensOutput},
+		Tokens:       ModelTokens{Input: resp.TokensInput, Output: resp.TokensOutput},
 		ElapsedMS:    elapsed.Milliseconds(),
 	}
 }

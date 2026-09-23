@@ -211,7 +211,7 @@
     },
     {
         "description": "classifier_called event without probabilities if model doesn't provide them",
-        "llm_mocks": [
+        "model_mocks": [
             {
                 "category": "Flights",
                 "confidence": 0.8,
@@ -287,7 +287,7 @@
     },
     {
         "description": "Error event and <ERROR> in local if call fails, e.g. no category fits",
-        "llm_mocks": [
+        "model_mocks": [
             {
                 "error": "no category fits input"
             }
