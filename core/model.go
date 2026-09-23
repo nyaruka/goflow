@@ -57,8 +57,8 @@ type ModelResponse struct {
 	TokensOutput int64
 }
 
-// ModelClassification is the result of a model service classification call
-type ModelClassification struct {
+// Classification is the result of a model service classification call
+type Classification struct {
 	Category      string             // the chosen category, which must be one of the given categories
 	Confidence    float64            // confidence in the chosen category, between 0 and 1
 	Probabilities map[string]float64 // per-category probabilities, if the model provides them

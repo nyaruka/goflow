@@ -41,7 +41,7 @@ type ModelService interface {
 
 	// Classify picks which of the given categories best fits the input, returning an error if none do. Flows rely on a
 	// confidence being provided for every model, so services must approximate one if the model doesn't provide it.
-	Classify(ctx context.Context, input string, categories []string) (*core.ModelClassification, error)
+	Classify(ctx context.Context, input string, categories []string) (*core.Classification, error)
 }
 
 // AirtimeService provides airtime functionality to the engine

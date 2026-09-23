@@ -88,7 +88,7 @@ func TestMockModel(t *testing.T) {
 
 	cls, err := svc.Classify(ctx, "I want to fly to Paris", []string{"Flights", "Hotels"})
 	assert.NoError(t, err)
-	assert.Equal(t, &core.ModelClassification{Category: "Flights", Confidence: 0.7}, cls)
+	assert.Equal(t, &core.Classification{Category: "Flights", Confidence: 0.7}, cls)
 
 	_, err = svc.Classify(ctx, "Hi", []string{"Flights", "Hotels"})
 	assert.EqualError(t, err, "boom")

@@ -97,7 +97,7 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 	return nil
 }
 
-func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.ModelClassification {
+func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.Classification {
 	models := run.Session().Assets().Models()
 	model := models.Get(a.Model.UUID)
 	if model == nil {

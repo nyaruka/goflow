@@ -50,7 +50,7 @@ type ClassifierCalled struct {
 }
 
 // NewClassifierCalled returns a new classifier called event
-func NewClassifierCalled(model *assets.ModelReference, input string, categories []string, cls *core.ModelClassification, elapsed time.Duration) *ClassifierCalled {
+func NewClassifierCalled(model *assets.ModelReference, input string, categories []string, cls *core.Classification, elapsed time.Duration) *ClassifierCalled {
 	return &ClassifierCalled{
 		BaseEvent:     NewBaseEvent(TypeClassifierCalled),
 		Model:         model,

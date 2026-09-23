@@ -80,7 +80,7 @@ func (s *ModelService) Response(ctx context.Context, instructions, input string,
 	return &core.ModelResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
 }
 
-func (s *ModelService) Classify(ctx context.Context, input string, categories []string) (*core.ModelClassification, error) {
+func (s *ModelService) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
 	// the last category is chosen, like a categorize prompt
 	category := categories[len(categories)-1]
 	probs := make(map[string]float64, len(categories))
@@ -92,7 +92,7 @@ func (s *ModelService) Classify(ctx context.Context, input string, categories []
 		}
 	}
 
-	return &core.ModelClassification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.Classification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
 }
 
 // MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
@@ -139,7 +139,7 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
-func (m *MockModel) Classify(ctx context.Context, input string, categories []string) (*core.ModelClassification, error) {
+func (m *MockModel) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
 	r := m.next(&ModelCall{Input: input, Categories: categories})
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
@@ -148,7 +148,7 @@ func (m *MockModel) Classify(ctx context.Context, input string, categories []str
 		panic(fmt.Sprintf("mock model result category '%s' isn't one of the classify call's categories", r.Category))
 	}
 
-	return &core.ModelClassification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Classification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
 func (m *MockModel) next(call *ModelCall) *MockModelResult {
