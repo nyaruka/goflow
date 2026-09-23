@@ -130,8 +130,8 @@ func TestEventMarshaling(t *testing.T) {
 				return events.NewClassifierCalled(
 					gpt4.Reference(),
 					"I'd like to book a room for two nights",
-					[]string{"Flights", "Hotels"},
-					&core.Classification{Category: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
+					[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
+					&core.Classification{Option: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
 					123*time.Millisecond,
 				)
 			},

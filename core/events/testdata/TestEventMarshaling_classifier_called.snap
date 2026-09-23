@@ -7,11 +7,11 @@
         "name": "GPT-4"
     },
     "input": "I'd like to book a room for two nights",
-    "categories": [
+    "options": [
         "Flights",
         "Hotels"
     ],
-    "category": "Hotels",
+    "option": "Hotels",
     "confidence": 0.86,
     "probabilities": {
         "Flights": 0.29,

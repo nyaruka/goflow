@@ -14,9 +14,9 @@ func init() {
 // TypeClassifierCalled is the type for our classifier calls events
 const TypeClassifierCalled string = "classifier_called"
 
-// ClassifierCalled events are created when a model is called to classify some input into one of a set of categories.
-// Confidence is a measure of how reliable the choice is and isn't necessarily the chosen category's probability. The
-// per-category probabilities are only included if the model provides them.
+// ClassifierCalled events are created when a model is called to classify some input as one of a set of options.
+// Confidence is a measure of how reliable the choice is and isn't necessarily the chosen option's probability. The
+// per-option probabilities are only included if the model provides them.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
@@ -27,8 +27,8 @@ const TypeClassifierCalled string = "classifier_called"
 //	    "name": "GPT-4"
 //	  },
 //	  "input": "I'd like to book a room for two nights",
-//	  "categories": ["Flights", "Hotels"],
-//	  "category": "Hotels",
+//	  "options": ["Flights", "Hotels"],
+//	  "option": "Hotels",
 //	  "confidence": 0.86,
 //	  "probabilities": {"Flights": 0.29, "Hotels": 0.71},
 //	  "tokens": {"input": 123, "output": 5},
@@ -41,8 +41,8 @@ type ClassifierCalled struct {
 
 	Model         *assets.ModelReference `json:"model" validate:"required"`
 	Input         string                 `json:"input"`
-	Categories    []string               `json:"categories"`
-	Category      string                 `json:"category"`
+	Options       []string               `json:"options"`
+	Option        string                 `json:"option"`
 	Confidence    float64                `json:"confidence"`
 	Probabilities map[string]float64     `json:"probabilities,omitempty"`
 	Tokens        ModelTokens            `json:"tokens"`
@@ -50,16 +50,24 @@ type ClassifierCalled struct {
 }
 
 // NewClassifierCalled returns a new classifier called event
-func NewClassifierCalled(model *assets.ModelReference, input string, categories []string, cls *core.Classification, elapsed time.Duration) *ClassifierCalled {
+func NewClassifierCalled(model *assets.ModelReference, input string, options []*core.ClassifierOption, cls *core.Classification, elapsed time.Duration) *ClassifierCalled {
 	return &ClassifierCalled{
 		BaseEvent:     NewBaseEvent(TypeClassifierCalled),
 		Model:         model,
 		Input:         input,
-		Categories:    categories,
-		Category:      cls.Category,
+		Options:       optionNames(options),
+		Option:        cls.Option,
 		Confidence:    cls.Confidence,
 		Probabilities: cls.Probabilities,
 		Tokens:        ModelTokens{Input: cls.TokensInput, Output: cls.TokensOutput},
 		ElapsedMS:     elapsed.Milliseconds(),
 	}
+}
+
+func optionNames(options []*core.ClassifierOption) []string {
+	names := make([]string, len(options))
+	for i, o := range options {
+		names[i] = o.Name
+	}
+	return names
 }

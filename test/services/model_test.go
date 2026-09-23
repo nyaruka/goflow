@@ -62,12 +62,12 @@ func TestModelService(t *testing.T) {
 func TestModelServiceClassify(t *testing.T) {
 	svc := services.NewModel()
 	ctx := t.Context()
-	categories := []string{"Flights", "Hotels"}
+	options := []*core.ClassifierOption{{Name: "Flights"}, {Name: "Hotels"}}
 
-	// plain input chooses the last category
-	cls, err := svc.Classify(ctx, "I want to book a room", categories)
+	// plain input chooses the last option
+	cls, err := svc.Classify(ctx, "I want to book a room", options)
 	assert.NoError(t, err)
-	assert.Equal(t, "Hotels", cls.Category)
+	assert.Equal(t, "Hotels", cls.Option)
 	assert.Equal(t, 0.8, cls.Confidence)
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
 }
@@ -77,7 +77,7 @@ func TestMockModel(t *testing.T) {
 
 	svc := services.NewMockModel(
 		&services.MockModelResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
-		&services.MockModelResult{Category: "Flights", Confidence: 0.7},
+		&services.MockModelResult{Option: "Flights", Confidence: 0.7},
 		&services.MockModelResult{Error: "boom"},
 	)
 	assert.True(t, svc.HasUnused())
@@ -86,26 +86,28 @@ func TestMockModel(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
 
-	cls, err := svc.Classify(ctx, "I want to fly to Paris", []string{"Flights", "Hotels"})
-	assert.NoError(t, err)
-	assert.Equal(t, &core.Classification{Category: "Flights", Confidence: 0.7}, cls)
+	options := []*core.ClassifierOption{{Name: "Flights"}, {Name: "Hotels"}}
 
-	_, err = svc.Classify(ctx, "Hi", []string{"Flights", "Hotels"})
+	cls, err := svc.Classify(ctx, "I want to fly to Paris", options)
+	assert.NoError(t, err)
+	assert.Equal(t, &core.Classification{Option: "Flights", Confidence: 0.7}, cls)
+
+	_, err = svc.Classify(ctx, "Hi", options)
 	assert.EqualError(t, err, "boom")
 
 	assert.False(t, svc.HasUnused())
 	assert.Equal(t, []*services.ModelCall{
 		{Instructions: "Translate to French", Input: "Hello", MaxTokens: 100},
-		{Input: "I want to fly to Paris", Categories: []string{"Flights", "Hotels"}},
-		{Input: "Hi", Categories: []string{"Flights", "Hotels"}},
+		{Input: "I want to fly to Paris", Options: options},
+		{Input: "Hi", Options: options},
 	}, svc.Calls())
 
 	// running out of results, or a result that doesn't fit the call, is a test setup mistake
 	assert.PanicsWithValue(t, "missing mock model result for call with input 'Hi'", func() { svc.Response(ctx, "Summarize", "Hi", 100) })
 	assert.Panics(t, func() {
-		services.NewMockModel(&services.MockModelResult{Category: "Cars"}).Classify(ctx, "Hi", []string{"Flights"})
+		services.NewMockModel(&services.MockModelResult{Option: "Cars"}).Classify(ctx, "Hi", options)
 	})
 	assert.Panics(t, func() {
-		services.NewMockModel(&services.MockModelResult{Category: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
+		services.NewMockModel(&services.MockModelResult{Option: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
 	})
 }

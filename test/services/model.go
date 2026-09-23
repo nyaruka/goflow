@@ -80,26 +80,26 @@ func (s *ModelService) Response(ctx context.Context, instructions, input string,
 	return &core.ModelResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
 }
 
-func (s *ModelService) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
-	// the last category is chosen, like a categorize prompt
-	category := categories[len(categories)-1]
-	probs := make(map[string]float64, len(categories))
-	for _, c := range categories {
-		if c == category {
-			probs[c] = 0.9
+func (s *ModelService) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
+	// the last option is chosen, like a categorize prompt
+	option := options[len(options)-1].Name
+	probs := make(map[string]float64, len(options))
+	for _, o := range options {
+		if o.Name == option {
+			probs[o.Name] = 0.9
 		} else {
-			probs[c] = 0.1
+			probs[o.Name] = 0.1
 		}
 	}
 
-	return &core.Classification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
 }
 
 // MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
-// Category, Confidence and Probabilities, and either returns Error instead if it's set.
+// Option, Confidence and Probabilities, and either returns Error instead if it's set.
 type MockModelResult struct {
 	Output        string             `json:"output,omitempty"`
-	Category      string             `json:"category,omitempty"`
+	Option        string             `json:"option,omitempty"`
 	Confidence    float64            `json:"confidence,omitempty"`
 	Probabilities map[string]float64 `json:"probabilities,omitempty"`
 	TokensInput   int64              `json:"tokens_input,omitempty"`
@@ -111,8 +111,8 @@ type MockModelResult struct {
 type ModelCall struct {
 	Instructions string // set for Response calls
 	Input        string
-	MaxTokens    int      // set for Response calls
-	Categories   []string // set for Classify calls
+	MaxTokens    int                      // set for Response calls
+	Options      []*core.ClassifierOption // set for Classify calls
 }
 
 // MockModel is a model service for testing which answers each call with the next of its given results
@@ -132,23 +132,23 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
-	if r.Category != "" {
-		panic("mock model result with category used for a response call")
+	if r.Option != "" {
+		panic("mock model result with option used for a response call")
 	}
 
 	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
-func (m *MockModel) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
-	r := m.next(&ModelCall{Input: input, Categories: categories})
+func (m *MockModel) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
+	r := m.next(&ModelCall{Input: input, Options: options})
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
-	if !slices.Contains(categories, r.Category) {
-		panic(fmt.Sprintf("mock model result category '%s' isn't one of the classify call's categories", r.Category))
+	if !slices.ContainsFunc(options, func(o *core.ClassifierOption) bool { return o.Name == r.Option }) {
+		panic(fmt.Sprintf("mock model result option '%s' isn't one of the classify call's options", r.Option))
 	}
 
-	return &core.Classification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
 func (m *MockModel) next(call *ModelCall) *MockModelResult {

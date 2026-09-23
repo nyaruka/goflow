@@ -57,11 +57,18 @@ type ModelResponse struct {
 	TokensOutput int64
 }
 
+// ClassifierOption is an option that input can be classified as. The description helps the model decide whether the
+// option fits.
+type ClassifierOption struct {
+	Name        string `json:"name"                  validate:"required,result_category"`
+	Description string `json:"description,omitempty" validate:"max=1000"`
+}
+
 // Classification is the result of a model service classification call
 type Classification struct {
-	Category      string             // the chosen category, which must be one of the given categories
-	Confidence    float64            // confidence in the chosen category, between 0 and 1
-	Probabilities map[string]float64 // per-category probabilities, if the model provides them
+	Option        string             // the name of the chosen option, which must be one of the given options
+	Confidence    float64            // confidence in the chosen option, between 0 and 1
+	Probabilities map[string]float64 // per-option probabilities, if the model provides them
 	TokensInput   int64
 	TokensOutput  int64
 }

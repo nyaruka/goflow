@@ -61,9 +61,15 @@
                                 "name": "Claude"
                             },
                             "input": "@results.response_1",
-                            "categories": [
-                                "Flights",
-                                "Hotels"
+                            "options": [
+                                {
+                                    "name": "Flights",
+                                    "description": "Booking or changing flights"
+                                },
+                                {
+                                    "name": "Hotels",
+                                    "description": "Booking or changing hotel rooms"
+                                }
                             ],
                             "output_local": "_classification",
                             "confidence_local": "_classification_conf"

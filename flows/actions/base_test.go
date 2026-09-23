@@ -392,7 +392,7 @@ func TestConstructors(t *testing.T) {
 				actionUUID,
 				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
-				[]string{"Flights", "Hotels"},
+				[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
 				"_classification",
 				"_classification_conf",
 			),
@@ -404,7 +404,7 @@ func TestConstructors(t *testing.T) {
 				"name": "GPT-4"
 			},
 			"input": "@input.text",
-			"categories": ["Flights", "Hotels"],
+			"options": [{"name": "Flights", "description": "Booking flights"}, {"name": "Hotels"}],
 			"output_local": "_classification",
 			"confidence_local": "_classification_conf"
 		}`,
@@ -792,20 +792,20 @@ func TestReadAction(t *testing.T) {
 	}`, strings.Repeat("x", 10001)))
 	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
 
-	categories := make([]string, 101)
-	for i := range categories {
-		categories[i] = fmt.Sprintf("Category %d", i)
+	options := make([]*core.ClassifierOption, 101)
+	for i := range options {
+		options[i] = &core.ClassifierOption{Name: fmt.Sprintf("Option %d", i)}
 	}
-	categoriesJSON, _ := json.Marshal(categories)
+	optionsJSON, _ := json.Marshal(options)
 	_, err = actions.Read(fmt.Appendf(nil, `{
 		"type": "call_classifier",
 		"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 		"model": {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4"},
 		"input": "@input.text",
-		"categories": %s,
+		"options": %s,
 		"output_local": "_classification"
-	}`, categoriesJSON))
-	assert.EqualError(t, err, "field 'categories' must have a maximum of 100 items")
+	}`, optionsJSON))
+	assert.EqualError(t, err, "field 'options' must have a maximum of 100 items")
 
 }
 
