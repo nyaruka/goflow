@@ -1,3 +1,9 @@
+v0.294.1 (2026-09-23)
+-------------------------
+ * Replace call_classifier categories with options that can have descriptions
+ * Rename LLM to Model in Go API and asset JSON, and ModelClassification to Classification
+ * Replace in-band LLM test directives with scripted MockLLM results
+
 v0.294.0 (2026-09-23)
 -------------------------
  * Add LLM based call_classifier action and migrate legacy classifier actions to it
