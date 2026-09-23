@@ -380,7 +380,8 @@ func TestConstructors(t *testing.T) {
 				assets.NewLLMReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
 				[]string{"Flights", "Hotels"},
-				"_llm_output",
+				"_classification",
+				"_classification_prob",
 			),
 			`{
 			"type": "call_classifier",
@@ -391,7 +392,8 @@ func TestConstructors(t *testing.T) {
 			},
 			"input": "@input.text",
 			"categories": ["Flights", "Hotels"],
-			"output_local": "_llm_output"
+			"output_local": "_classification",
+			"probability_local": "_classification_prob"
 		}`,
 		},
 		{

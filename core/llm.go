@@ -65,3 +65,12 @@ type LLMClassification struct {
 	TokensInput   int64
 	TokensOutput  int64
 }
+
+// CategoryProbability returns the probability of the chosen category, if the model provided probabilities
+func (c *LLMClassification) CategoryProbability() (float64, bool) {
+	if c == nil {
+		return 0, false
+	}
+	p, ok := c.Probabilities[c.Category]
+	return p, ok
+}

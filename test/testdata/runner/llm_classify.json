@@ -65,7 +65,8 @@
                                 "Flights",
                                 "Hotels"
                             ],
-                            "output_local": "_llm_output"
+                            "output_local": "_classification",
+                            "probability_local": "_classification_prob"
                         }
                     ],
                     "router": {
@@ -93,7 +94,7 @@
                             }
                         ],
                         "default_category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
-                        "operand": "@locals._llm_output",
+                        "operand": "@locals._classification",
                         "result_name": "Intent",
                         "cases": [
                             {

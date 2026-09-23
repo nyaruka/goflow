@@ -23,7 +23,8 @@
                 "Flights",
                 "Flights"
             ],
-            "output_local": "_llm_output"
+            "output_local": "_classification",
+            "probability_local": "_classification_prob"
         },
         "read_error": "field 'categories' must not contain duplicates"
     },
@@ -41,7 +42,8 @@
                 "Flights",
                 "Hotels"
             ],
-            "output_local": "_llm_output"
+            "output_local": "_classification",
+            "probability_local": "_classification_prob"
         },
         "events": [
             {
@@ -57,7 +59,7 @@
             }
         ],
         "locals_after": {
-            "_llm_output": "\u003cERROR\u003e"
+            "_classification": "\u003cERROR\u003e"
         },
         "templates": [
             "@input.text"
@@ -76,7 +78,8 @@
                 }
             ],
             "locals": [
-                "_llm_output"
+                "_classification",
+                "_classification_prob"
             ],
             "results": [],
             "parent_refs": [],
@@ -109,7 +112,8 @@
                 "Flights",
                 "Hotels"
             ],
-            "output_local": "_llm_output"
+            "output_local": "_classification",
+            "probability_local": "_classification_prob"
         },
         "events": [
             {
@@ -139,7 +143,8 @@
             }
         ],
         "locals_after": {
-            "_llm_output": "Hotels"
+            "_classification": "Hotels",
+            "_classification_prob": "0.9"
         },
         "templates": [
             "@input.text"
@@ -157,7 +162,8 @@
                 }
             ],
             "locals": [
-                "_llm_output"
+                "_classification",
+                "_classification_prob"
             ],
             "results": [],
             "parent_refs": [],
@@ -178,7 +184,8 @@
                 "Flights",
                 "Hotels"
             ],
-            "output_local": "_llm_output"
+            "output_local": "_classification",
+            "probability_local": "_classification_prob"
         },
         "events": [
             {
@@ -189,7 +196,7 @@
             }
         ],
         "locals_after": {
-            "_llm_output": "\u003cERROR\u003e"
+            "_classification": "\u003cERROR\u003e"
         },
         "templates": [
             "\\return Cars"
@@ -207,7 +214,8 @@
                 }
             ],
             "locals": [
-                "_llm_output"
+                "_classification",
+                "_classification_prob"
             ],
             "results": [],
             "parent_refs": [],
