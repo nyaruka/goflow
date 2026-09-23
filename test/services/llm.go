@@ -7,12 +7,14 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
 
-// LLMService is an implementation of an LLM service for testing that echos the input.
+// LLMService is a deterministic LLM service for testing which derives its output from its input. Tests which need
+// specific results should use MockLLM instead.
 type LLMService struct{}
 
 func NewLLM() *LLMService {
@@ -43,11 +45,7 @@ func translate(s string) (string, error) {
 
 func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error) {
 	var output string
-	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
-		return nil, errors.New(input[7:])
-	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will return "foo"
-		output = input[8:]
-	} else if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
+	if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
 		words := strings.Fields(instructions)
 		output = strings.TrimSuffix(words[len(words)-1], "]")
 	} else if strings.HasPrefix(instructions, "Translate") { // "Translate..." leetifies the input; if "JSON" is mentioned, values of a string->[]string object
@@ -83,34 +81,105 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 }
 
 func (s *LLMService) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
-	var category string
-	withProbs := true
-	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
-		return nil, errors.New(input[7:])
-	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise error, and like a generative LLM, won't provide probabilities
-		category = input[8:]
-		if !slices.Contains(categories, category) {
-			return nil, errors.New("no category fits input")
-		}
-		withProbs = false
-	} else { // otherwise the last category is chosen, like a categorize prompt
-		category = categories[len(categories)-1]
-	}
-
-	cls := &core.LLMClassification{Category: category, Confidence: 0.8, TokensInput: 34, TokensOutput: 5}
-
-	if withProbs {
-		cls.Probabilities = make(map[string]float64, len(categories))
-		for _, c := range categories {
-			if c == category {
-				cls.Probabilities[c] = 0.9
-			} else {
-				cls.Probabilities[c] = 0.1
-			}
+	// the last category is chosen, like a categorize prompt
+	category := categories[len(categories)-1]
+	probs := make(map[string]float64, len(categories))
+	for _, c := range categories {
+		if c == category {
+			probs[c] = 0.9
+		} else {
+			probs[c] = 0.1
 		}
 	}
 
-	return cls, nil
+	return &core.LLMClassification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+}
+
+// MockLLMResult is a canned result for a call to a MockLLM. A call to Response uses Output, a call to Classify uses
+// Category, Confidence and Probabilities, and either returns Error instead if it's set.
+type MockLLMResult struct {
+	Output        string             `json:"output,omitempty"`
+	Category      string             `json:"category,omitempty"`
+	Confidence    float64            `json:"confidence,omitempty"`
+	Probabilities map[string]float64 `json:"probabilities,omitempty"`
+	TokensInput   int64              `json:"tokens_input,omitempty"`
+	TokensOutput  int64              `json:"tokens_output,omitempty"`
+	Error         string             `json:"error,omitempty"`
+}
+
+// LLMCall is a call made to a MockLLM
+type LLMCall struct {
+	Instructions string // set for Response calls
+	Input        string
+	MaxTokens    int      // set for Response calls
+	Categories   []string // set for Classify calls
+}
+
+// MockLLM is an LLM service for testing which answers each call with the next of its given results
+type MockLLM struct {
+	mutex   sync.Mutex
+	results []*MockLLMResult
+	calls   []*LLMCall
+}
+
+// NewMockLLM creates a new mock LLM service which will return the given results in order
+func NewMockLLM(results ...*MockLLMResult) *MockLLM {
+	return &MockLLM{results: slices.Clone(results)}
+}
+
+func (m *MockLLM) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error) {
+	r := m.next(&LLMCall{Instructions: instructions, Input: input, MaxTokens: maxTokens})
+	if r.Error != "" {
+		return nil, errors.New(r.Error)
+	}
+	if r.Category != "" {
+		panic("mock LLM result with category used for a response call")
+	}
+
+	return &core.LLMResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+}
+
+func (m *MockLLM) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
+	r := m.next(&LLMCall{Input: input, Categories: categories})
+	if r.Error != "" {
+		return nil, errors.New(r.Error)
+	}
+	if !slices.Contains(categories, r.Category) {
+		panic(fmt.Sprintf("mock LLM result category '%s' isn't one of the classify call's categories", r.Category))
+	}
+
+	return &core.LLMClassification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+}
+
+func (m *MockLLM) next(call *LLMCall) *MockLLMResult {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	m.calls = append(m.calls, call)
+
+	if len(m.results) == 0 {
+		panic(fmt.Sprintf("missing mock LLM result for call with input '%s'", call.Input))
+	}
+	r := m.results[0]
+	m.results = m.results[1:]
+	return r
+}
+
+// Calls returns the calls made to this service so far
+func (m *MockLLM) Calls() []*LLMCall {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	return slices.Clone(m.calls)
+}
+
+// HasUnused returns whether there are results which haven't been used
+func (m *MockLLM) HasUnused() bool {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	return len(m.results) > 0
 }
 
 var _ flows.LLMService = (*LLMService)(nil)
+var _ flows.LLMService = (*MockLLM)(nil)

@@ -3,6 +3,7 @@ package services_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/test/services"
 	"github.com/stretchr/testify/assert"
 )
@@ -51,23 +52,6 @@ func TestLLMService(t *testing.T) {
 	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
 	assert.Error(t, err)
 
-	// directives still take precedence over translate
-	_, err = svc.Response(ctx, "Translate", "\\error boom", 100)
-	assert.EqualError(t, err, "boom")
-
-	resp, err = svc.Response(ctx, "Translate", "\\return foo", 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "foo", resp.Output)
-
-	// \return directive returns what follows
-	resp, err = svc.Response(ctx, "whatever", "\\return foo", 100)
-	assert.NoError(t, err)
-	assert.Equal(t, "foo", resp.Output)
-
-	// \error directive returns an error
-	_, err = svc.Response(ctx, "whatever", "\\error boom", 100)
-	assert.EqualError(t, err, "boom")
-
 	// Categorize instructions pick the last word
 	resp, err = svc.Response(ctx, "Categorize into [A, B, C]", "input", 100)
 	assert.NoError(t, err)
@@ -86,19 +70,42 @@ func TestLLMServiceClassify(t *testing.T) {
 	assert.Equal(t, "Hotels", cls.Category)
 	assert.Equal(t, 0.8, cls.Confidence)
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
+}
 
-	// "\return" chooses the given category if it's one of the categories, without probabilities
-	cls, err = svc.Classify(ctx, "\\return Flights", categories)
+func TestMockLLM(t *testing.T) {
+	ctx := t.Context()
+
+	svc := services.NewMockLLM(
+		&services.MockLLMResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
+		&services.MockLLMResult{Category: "Flights", Confidence: 0.7},
+		&services.MockLLMResult{Error: "boom"},
+	)
+	assert.True(t, svc.HasUnused())
+
+	resp, err := svc.Response(ctx, "Translate to French", "Hello", 100)
 	assert.NoError(t, err)
-	assert.Equal(t, "Flights", cls.Category)
-	assert.Equal(t, 0.8, cls.Confidence)
-	assert.Nil(t, cls.Probabilities)
+	assert.Equal(t, &core.LLMResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
 
-	// ...otherwise errors
-	_, err = svc.Classify(ctx, "\\return Cars", categories)
-	assert.EqualError(t, err, "no category fits input")
+	cls, err := svc.Classify(ctx, "I want to fly to Paris", []string{"Flights", "Hotels"})
+	assert.NoError(t, err)
+	assert.Equal(t, &core.LLMClassification{Category: "Flights", Confidence: 0.7}, cls)
 
-	// "\error" returns an error
-	_, err = svc.Classify(ctx, "\\error boom", categories)
+	_, err = svc.Classify(ctx, "Hi", []string{"Flights", "Hotels"})
 	assert.EqualError(t, err, "boom")
+
+	assert.False(t, svc.HasUnused())
+	assert.Equal(t, []*services.LLMCall{
+		{Instructions: "Translate to French", Input: "Hello", MaxTokens: 100},
+		{Input: "I want to fly to Paris", Categories: []string{"Flights", "Hotels"}},
+		{Input: "Hi", Categories: []string{"Flights", "Hotels"}},
+	}, svc.Calls())
+
+	// running out of results, or a result that doesn't fit the call, is a test setup mistake
+	assert.PanicsWithValue(t, "missing mock LLM result for call with input 'Hi'", func() { svc.Response(ctx, "Summarize", "Hi", 100) })
+	assert.Panics(t, func() {
+		services.NewMockLLM(&services.MockLLMResult{Category: "Cars"}).Classify(ctx, "Hi", []string{"Flights"})
+	})
+	assert.Panics(t, func() {
+		services.NewMockLLM(&services.MockLLMResult{Category: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
+	})
 }

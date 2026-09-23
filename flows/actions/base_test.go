@@ -82,6 +82,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 	tests := []struct {
 		Description  string                           `json:"description"`
 		HTTPMocks    map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
+		LLMMocks     []*services.MockLLMResult        `json:"llm_mocks,omitempty"`
 		SMTPError    string                           `json:"smtp_error,omitempty"`
 		Contact      json.RawMessage                  `json:"contact,omitempty"`
 		HasTicket    bool                             `json:"has_ticket,omitempty"`
@@ -117,6 +118,15 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		if tc.HTTPMocks != nil {
 			httpClient, mocks = test.MockedHTTP(tc.HTTPMocks)
 		}
+
+		// answer LLM calls from this test case's mocks if it has them
+		var llm flows.LLMService = services.NewLLM()
+		var llmMocks *services.MockLLM
+		if tc.LLMMocks != nil {
+			llmMocks = services.NewMockLLM(tc.LLMMocks...)
+			llm = llmMocks
+		}
+
 		if tc.SMTPError != "" {
 			smtpx.SetSender(smtpx.NewMockSender(errors.New(tc.SMTPError)))
 		} else {
@@ -227,7 +237,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			WithWebhookLimits(256*1024, 100000).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
 			WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
-				return services.NewLLM(), nil
+				return llm, nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return services.NewAirtime("RWF"), nil
@@ -247,6 +257,9 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		// check all http mocks were used
 		if mocks != nil {
 			require.False(t, mocks.HasUnused(), "unused HTTP mocks in %s", testName)
+		}
+		if llmMocks != nil {
+			require.False(t, llmMocks.HasUnused(), "unused LLM mocks in %s", testName)
 		}
 
 		tc.Templates = utils.EnsureNonNil(tc.Templates)

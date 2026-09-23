@@ -211,6 +211,14 @@
     },
     {
         "description": "classifier_called event without probabilities if model doesn't provide them",
+        "llm_mocks": [
+            {
+                "category": "Flights",
+                "confidence": 0.8,
+                "tokens_input": 34,
+                "tokens_output": 5
+            }
+        ],
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -218,7 +226,7 @@
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },
-            "input": "\\return Flights",
+            "input": "I want to fly to Paris",
             "categories": [
                 "Flights",
                 "Hotels"
@@ -235,7 +243,7 @@
                     "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                     "name": "Claude"
                 },
-                "input": "\\return Flights",
+                "input": "I want to fly to Paris",
                 "categories": [
                     "Flights",
                     "Hotels"
@@ -254,7 +262,7 @@
             "_classification_conf": "0.8"
         },
         "templates": [
-            "\\return Flights"
+            "I want to fly to Paris"
         ],
         "inspection": {
             "counts": {
@@ -279,6 +287,11 @@
     },
     {
         "description": "Error event and <ERROR> in local if call fails, e.g. no category fits",
+        "llm_mocks": [
+            {
+                "error": "no category fits input"
+            }
+        ],
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -286,7 +299,7 @@
                 "uuid": "51ade705-8338-40a9-8a77-37657a936966",
                 "name": "Claude"
             },
-            "input": "\\return Cars",
+            "input": "I want to rent a car",
             "categories": [
                 "Flights",
                 "Hotels"
@@ -307,7 +320,7 @@
             "_classification_conf": "0"
         },
         "templates": [
-            "\\return Cars"
+            "I want to rent a car"
         ],
         "inspection": {
             "counts": {
