@@ -9,7 +9,7 @@ type Assets interface {
 	Globals() *GlobalAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
-	LLMs() *LLMAssets
+	Models() *ModelAssets
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
 	Templates() *TemplateAssets

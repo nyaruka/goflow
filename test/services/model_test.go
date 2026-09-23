@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLLMService(t *testing.T) {
-	svc := services.NewLLM()
+func TestModelService(t *testing.T) {
+	svc := services.NewModel()
 	ctx := t.Context()
 
 	// plain input is echoed with instructions
@@ -43,10 +43,10 @@ func TestLLMService(t *testing.T) {
 
 	// values exactly equal to "error" cause the service to error
 	_, err = svc.Response(ctx, "Translate to Spanish", "error", 100)
-	assert.EqualError(t, err, "simulated LLM error")
+	assert.EqualError(t, err, "simulated model error")
 
 	_, err = svc.Response(ctx, "Translate as JSON", `{"a":["Hi","error"]}`, 100)
-	assert.EqualError(t, err, "simulated LLM error")
+	assert.EqualError(t, err, "simulated model error")
 
 	// invalid JSON input with a JSON translate instruction errors
 	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
@@ -59,8 +59,8 @@ func TestLLMService(t *testing.T) {
 
 }
 
-func TestLLMServiceClassify(t *testing.T) {
-	svc := services.NewLLM()
+func TestModelServiceClassify(t *testing.T) {
+	svc := services.NewModel()
 	ctx := t.Context()
 	categories := []string{"Flights", "Hotels"}
 
@@ -72,40 +72,40 @@ func TestLLMServiceClassify(t *testing.T) {
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
 }
 
-func TestMockLLM(t *testing.T) {
+func TestMockModel(t *testing.T) {
 	ctx := t.Context()
 
-	svc := services.NewMockLLM(
-		&services.MockLLMResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
-		&services.MockLLMResult{Category: "Flights", Confidence: 0.7},
-		&services.MockLLMResult{Error: "boom"},
+	svc := services.NewMockModel(
+		&services.MockModelResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
+		&services.MockModelResult{Category: "Flights", Confidence: 0.7},
+		&services.MockModelResult{Error: "boom"},
 	)
 	assert.True(t, svc.HasUnused())
 
 	resp, err := svc.Response(ctx, "Translate to French", "Hello", 100)
 	assert.NoError(t, err)
-	assert.Equal(t, &core.LLMResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
+	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
 
 	cls, err := svc.Classify(ctx, "I want to fly to Paris", []string{"Flights", "Hotels"})
 	assert.NoError(t, err)
-	assert.Equal(t, &core.LLMClassification{Category: "Flights", Confidence: 0.7}, cls)
+	assert.Equal(t, &core.Classification{Category: "Flights", Confidence: 0.7}, cls)
 
 	_, err = svc.Classify(ctx, "Hi", []string{"Flights", "Hotels"})
 	assert.EqualError(t, err, "boom")
 
 	assert.False(t, svc.HasUnused())
-	assert.Equal(t, []*services.LLMCall{
+	assert.Equal(t, []*services.ModelCall{
 		{Instructions: "Translate to French", Input: "Hello", MaxTokens: 100},
 		{Input: "I want to fly to Paris", Categories: []string{"Flights", "Hotels"}},
 		{Input: "Hi", Categories: []string{"Flights", "Hotels"}},
 	}, svc.Calls())
 
 	// running out of results, or a result that doesn't fit the call, is a test setup mistake
-	assert.PanicsWithValue(t, "missing mock LLM result for call with input 'Hi'", func() { svc.Response(ctx, "Summarize", "Hi", 100) })
+	assert.PanicsWithValue(t, "missing mock model result for call with input 'Hi'", func() { svc.Response(ctx, "Summarize", "Hi", 100) })
 	assert.Panics(t, func() {
-		services.NewMockLLM(&services.MockLLMResult{Category: "Cars"}).Classify(ctx, "Hi", []string{"Flights"})
+		services.NewMockModel(&services.MockModelResult{Category: "Cars"}).Classify(ctx, "Hi", []string{"Flights"})
 	})
 	assert.Panics(t, func() {
-		services.NewMockLLM(&services.MockLLMResult{Category: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
+		services.NewMockModel(&services.MockModelResult{Category: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
 	})
 }

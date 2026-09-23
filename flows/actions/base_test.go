@@ -82,7 +82,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 	tests := []struct {
 		Description  string                           `json:"description"`
 		HTTPMocks    map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
-		LLMMocks     []*services.MockLLMResult        `json:"llm_mocks,omitempty"`
+		ModelMocks   []*services.MockModelResult      `json:"model_mocks,omitempty"`
 		SMTPError    string                           `json:"smtp_error,omitempty"`
 		Contact      json.RawMessage                  `json:"contact,omitempty"`
 		HasTicket    bool                             `json:"has_ticket,omitempty"`
@@ -119,12 +119,12 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			httpClient, mocks = test.MockedHTTP(tc.HTTPMocks)
 		}
 
-		// answer LLM calls from this test case's mocks if it has them
-		var llm flows.LLMService = services.NewLLM()
-		var llmMocks *services.MockLLM
-		if tc.LLMMocks != nil {
-			llmMocks = services.NewMockLLM(tc.LLMMocks...)
-			llm = llmMocks
+		// answer model calls from this test case's mocks if it has them
+		var model flows.ModelService = services.NewModel()
+		var modelMocks *services.MockModel
+		if tc.ModelMocks != nil {
+			modelMocks = services.NewMockModel(tc.ModelMocks...)
+			model = modelMocks
 		}
 
 		if tc.SMTPError != "" {
@@ -236,8 +236,8 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 			}).
 			WithWebhookLimits(256*1024, 100000).
 			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
-			WithLLMServiceFactory(func(l *core.LLM) (flows.LLMService, error) {
-				return llm, nil
+			WithModelServiceFactory(func(l *core.Model) (flows.ModelService, error) {
+				return model, nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {
 				return services.NewAirtime("RWF"), nil
@@ -258,8 +258,8 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		if mocks != nil {
 			require.False(t, mocks.HasUnused(), "unused HTTP mocks in %s", testName)
 		}
-		if llmMocks != nil {
-			require.False(t, llmMocks.HasUnused(), "unused LLM mocks in %s", testName)
+		if modelMocks != nil {
+			require.False(t, modelMocks.HasUnused(), "unused model mocks in %s", testName)
 		}
 
 		tc.Templates = utils.EnsureNonNil(tc.Templates)
@@ -390,7 +390,7 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewCallClassifier(
 				actionUUID,
-				assets.NewLLMReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
+				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
 				[]string{"Flights", "Hotels"},
 				"_classification",
@@ -412,7 +412,7 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewCallLLM(
 				actionUUID,
-				assets.NewLLMReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
+				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"Tell a joke about a person with this name",
 				"@contact.name",
 				"the_joke",

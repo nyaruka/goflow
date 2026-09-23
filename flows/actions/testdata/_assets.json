@@ -232,7 +232,7 @@
             "name": "Spam"
         }
     ],
-    "llms": [
+    "models": [
         {
             "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
             "name": "GPT-4",

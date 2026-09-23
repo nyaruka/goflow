@@ -54,7 +54,7 @@ var assetsJSON = `{
 			"name": "Spam"
 		}
 	],
-	"llms": [
+	"models": [
 		{
 			"uuid": "ae823e89-b0cc-40eb-a711-b8700fe34882",
 			"name": "GPT-4",
@@ -116,9 +116,9 @@ func TestSource(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, labels, 1)
 
-	llms, err := src.LLMs()
+	models, err := src.Models()
 	assert.NoError(t, err)
-	assert.Len(t, llms, 1)
+	assert.Len(t, models, 1)
 
 	locations, err := src.Locations()
 	assert.NoError(t, err)

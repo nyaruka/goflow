@@ -18,13 +18,13 @@ func init() {
 // TypeCallLLM is the type for the call LLM action
 const TypeCallLLM string = "call_llm"
 
-// LLMErrorOutput is the output used when the LLM call fails
-const LLMErrorOutput = "<ERROR>"
+// ModelErrorOutput is the output used when a model call fails
+const ModelErrorOutput = "<ERROR>"
 
 // CallLLM can be used to call an LLM. The instructions and input fields may be templates and will
 // be evaluated at runtime.
 //
-// An [event:llm_called] event will be created if the LLM could be called. The action sets the local
+// An [event:llm_called] event will be created if the model could be called. The action sets the local
 // specified by `output_local` to the output of the LLM, or to `<ERROR>` if the call failed.
 //
 //	{
@@ -44,14 +44,14 @@ type CallLLM struct {
 	baseAction
 	onlineAction
 
-	LLM          *assets.LLMReference `json:"llm"          validate:"required"`
-	Instructions string               `json:"instructions" validate:"required,max=10000"  engine:"evaluated"`
-	Input        string               `json:"input"        validate:"max=10000"           engine:"evaluated"`
-	OutputLocal  string               `json:"output_local" validate:"required,local_ref"`
+	LLM          *assets.ModelReference `json:"llm"          validate:"required"`
+	Instructions string                 `json:"instructions" validate:"required,max=10000"  engine:"evaluated"`
+	Input        string                 `json:"input"        validate:"max=10000"           engine:"evaluated"`
+	OutputLocal  string                 `json:"output_local" validate:"required,local_ref"`
 }
 
 // NewCallLLM creates a new call LLM action
-func NewCallLLM(uuid flows.ActionUUID, llm *assets.LLMReference, instructions, input, outputLocal string) *CallLLM {
+func NewCallLLM(uuid flows.ActionUUID, llm *assets.ModelReference, instructions, input, outputLocal string) *CallLLM {
 	return &CallLLM{
 		baseAction:   newBaseAction(TypeCallLLM, uuid),
 		LLM:          llm,
@@ -67,21 +67,21 @@ func (a *CallLLM) Execute(ctx context.Context, run flows.Run, step flows.Step, l
 	if resp != nil {
 		run.Locals().Set(a.OutputLocal, resp.Output)
 	} else {
-		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
+		run.Locals().Set(a.OutputLocal, ModelErrorOutput)
 	}
 
 	return nil
 }
 
-func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.LLMResponse {
-	llms := run.Session().Assets().LLMs()
-	llm := llms.Get(a.LLM.UUID)
-	if llm == nil {
+func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.ModelResponse {
+	models := run.Session().Assets().Models()
+	model := models.Get(a.LLM.UUID)
+	if model == nil {
 		log(events.NewDependencyError(a.LLM))
 		return nil
 	}
-	if !llm.HasRole(assets.LLMRoleEngine) {
-		log(events.NewError(fmt.Sprintf("LLM %s does not have the engine role", a.LLM.UUID), ""))
+	if !model.HasRole(assets.ModelRoleEngine) {
+		log(events.NewError(fmt.Sprintf("model %s does not have the engine role", a.LLM.UUID), ""))
 		return nil
 	}
 
@@ -89,7 +89,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogge
 	instructions, _ := run.EvaluateTemplate(ctx, a.Instructions, log)
 	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
 
-	svc, err := run.Session().Engine().Services().LLM(llm)
+	svc, err := run.Session().Engine().Services().Model(model)
 	if err != nil {
 		log(events.NewRawError(err))
 		return nil
@@ -103,7 +103,7 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogge
 		return nil
 	}
 
-	log(events.NewLLMCalled(llm.Reference(), instructions, input, resp, dates.Since(start)))
+	log(events.NewLLMCalled(model.Reference(), instructions, input, resp, dates.Since(start)))
 
 	return resp
 }

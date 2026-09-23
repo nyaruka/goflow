@@ -20,10 +20,10 @@ func init() {
 // TypeCallClassifier is the type for the call classifier action
 const TypeCallClassifier string = "call_classifier"
 
-// CallClassifier can be used to classify input into one of a set of categories using an LLM. The input field may be
+// CallClassifier can be used to classify input into one of a set of categories using a model. The input field may be
 // a template and will be evaluated at runtime.
 //
-// A [event:classifier_called] event will be created if the LLM could be called. The action sets the local specified
+// A [event:classifier_called] event will be created if the model could be called. The action sets the local specified
 // by `output_local` to the name of the chosen category, or to `<ERROR>` if the call failed, including when none of
 // the categories fit the input. If `confidence_local` is specified, it is set to the confidence in the chosen
 // category, between 0 and 1, or to 0 if the call failed.
@@ -46,15 +46,15 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	Model           *assets.LLMReference `json:"model"        validate:"required"`
-	Input           string               `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
-	Categories      []string             `json:"categories"   validate:"required,min=1,max=100,unique,dive,result_category"`
-	OutputLocal     string               `json:"output_local"                validate:"required,local_ref"`
-	ConfidenceLocal string               `json:"confidence_local,omitempty" validate:"omitempty,local_ref"`
+	Model           *assets.ModelReference `json:"model"        validate:"required"`
+	Input           string                 `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
+	Categories      []string               `json:"categories"   validate:"required,min=1,max=100,unique,dive,result_category"`
+	OutputLocal     string                 `json:"output_local"                validate:"required,local_ref"`
+	ConfidenceLocal string                 `json:"confidence_local,omitempty" validate:"omitempty,local_ref"`
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, model *assets.LLMReference, input string, categories []string, outputLocal, confidenceLocal string) *CallClassifier {
+func NewCallClassifier(uuid flows.ActionUUID, model *assets.ModelReference, input string, categories []string, outputLocal, confidenceLocal string) *CallClassifier {
 	return &CallClassifier{
 		baseAction:      newBaseAction(TypeCallClassifier, uuid),
 		Model:           model,
@@ -67,8 +67,8 @@ func NewCallClassifier(uuid flows.ActionUUID, model *assets.LLMReference, input 
 
 // Validate validates our action is valid
 func (a *CallClassifier) Validate() error {
-	if slices.Contains(a.Categories, LLMErrorOutput) {
-		return fmt.Errorf("categories can't include %s", LLMErrorOutput)
+	if slices.Contains(a.Categories, ModelErrorOutput) {
+		return fmt.Errorf("categories can't include %s", ModelErrorOutput)
 	}
 	if a.ConfidenceLocal == a.OutputLocal {
 		return fmt.Errorf("confidence_local can't be the same as output_local")
@@ -82,7 +82,7 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 	if cls != nil {
 		run.Locals().Set(a.OutputLocal, cls.Category)
 	} else {
-		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
+		run.Locals().Set(a.OutputLocal, ModelErrorOutput)
 	}
 
 	if a.ConfidenceLocal != "" {
@@ -97,21 +97,21 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 	return nil
 }
 
-func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.LLMClassification {
-	llms := run.Session().Assets().LLMs()
-	llm := llms.Get(a.Model.UUID)
-	if llm == nil {
+func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.EventLogger) *core.Classification {
+	models := run.Session().Assets().Models()
+	model := models.Get(a.Model.UUID)
+	if model == nil {
 		log(events.NewDependencyError(a.Model))
 		return nil
 	}
-	if !llm.HasRole(assets.LLMRoleEngine) {
-		log(events.NewError(fmt.Sprintf("LLM %s does not have the engine role", a.Model.UUID), ""))
+	if !model.HasRole(assets.ModelRoleEngine) {
+		log(events.NewError(fmt.Sprintf("model %s does not have the engine role", a.Model.UUID), ""))
 		return nil
 	}
 
 	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
 
-	svc, err := run.Session().Engine().Services().LLM(llm)
+	svc, err := run.Session().Engine().Services().Model(model)
 	if err != nil {
 		log(events.NewRawError(err))
 		return nil
@@ -125,7 +125,7 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 		return nil
 	}
 
-	log(events.NewClassifierCalled(llm.Reference(), input, a.Categories, cls, dates.Since(start)))
+	log(events.NewClassifierCalled(model.Reference(), input, a.Categories, cls, dates.Since(start)))
 
 	return cls
 }

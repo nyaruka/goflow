@@ -13,12 +13,12 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// LLMService is a deterministic LLM service for testing which derives its output from its input. Tests which need
-// specific results should use MockLLM instead.
-type LLMService struct{}
+// ModelService is a deterministic model service for testing which derives its output from its input. Tests which need
+// specific results should use MockModel instead.
+type ModelService struct{}
 
-func NewLLM() *LLMService {
-	return &LLMService{}
+func NewModel() *ModelService {
+	return &ModelService{}
 }
 
 var leetify = strings.NewReplacer(
@@ -35,7 +35,7 @@ var leetify = strings.NewReplacer(
 
 func translate(s string) (string, error) {
 	if s == "error" {
-		return "", errors.New("simulated LLM error")
+		return "", errors.New("simulated model error")
 	}
 	if s == "untranslatable" {
 		return "<CANT>", nil
@@ -43,7 +43,7 @@ func translate(s string) (string, error) {
 	return leetify(s), nil
 }
 
-func (s *LLMService) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error) {
+func (s *ModelService) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error) {
 	var output string
 	if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
 		words := strings.Fields(instructions)
@@ -77,10 +77,10 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}
 
-	return &core.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+	return &core.ModelResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
 }
 
-func (s *LLMService) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
+func (s *ModelService) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
 	// the last category is chosen, like a categorize prompt
 	category := categories[len(categories)-1]
 	probs := make(map[string]float64, len(categories))
@@ -92,12 +92,12 @@ func (s *LLMService) Classify(ctx context.Context, input string, categories []st
 		}
 	}
 
-	return &core.LLMClassification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.Classification{Category: category, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
 }
 
-// MockLLMResult is a canned result for a call to a MockLLM. A call to Response uses Output, a call to Classify uses
+// MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
 // Category, Confidence and Probabilities, and either returns Error instead if it's set.
-type MockLLMResult struct {
+type MockModelResult struct {
 	Output        string             `json:"output,omitempty"`
 	Category      string             `json:"category,omitempty"`
 	Confidence    float64            `json:"confidence,omitempty"`
@@ -107,58 +107,58 @@ type MockLLMResult struct {
 	Error         string             `json:"error,omitempty"`
 }
 
-// LLMCall is a call made to a MockLLM
-type LLMCall struct {
+// ModelCall is a call made to a MockModel
+type ModelCall struct {
 	Instructions string // set for Response calls
 	Input        string
 	MaxTokens    int      // set for Response calls
 	Categories   []string // set for Classify calls
 }
 
-// MockLLM is an LLM service for testing which answers each call with the next of its given results
-type MockLLM struct {
+// MockModel is a model service for testing which answers each call with the next of its given results
+type MockModel struct {
 	mutex   sync.Mutex
-	results []*MockLLMResult
-	calls   []*LLMCall
+	results []*MockModelResult
+	calls   []*ModelCall
 }
 
-// NewMockLLM creates a new mock LLM service which will return the given results in order
-func NewMockLLM(results ...*MockLLMResult) *MockLLM {
-	return &MockLLM{results: slices.Clone(results)}
+// NewMockModel creates a new mock model service which will return the given results in order
+func NewMockModel(results ...*MockModelResult) *MockModel {
+	return &MockModel{results: slices.Clone(results)}
 }
 
-func (m *MockLLM) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.LLMResponse, error) {
-	r := m.next(&LLMCall{Instructions: instructions, Input: input, MaxTokens: maxTokens})
+func (m *MockModel) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error) {
+	r := m.next(&ModelCall{Instructions: instructions, Input: input, MaxTokens: maxTokens})
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
 	if r.Category != "" {
-		panic("mock LLM result with category used for a response call")
+		panic("mock model result with category used for a response call")
 	}
 
-	return &core.LLMResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
-func (m *MockLLM) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
-	r := m.next(&LLMCall{Input: input, Categories: categories})
+func (m *MockModel) Classify(ctx context.Context, input string, categories []string) (*core.Classification, error) {
+	r := m.next(&ModelCall{Input: input, Categories: categories})
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
 	if !slices.Contains(categories, r.Category) {
-		panic(fmt.Sprintf("mock LLM result category '%s' isn't one of the classify call's categories", r.Category))
+		panic(fmt.Sprintf("mock model result category '%s' isn't one of the classify call's categories", r.Category))
 	}
 
-	return &core.LLMClassification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Classification{Category: r.Category, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
 }
 
-func (m *MockLLM) next(call *LLMCall) *MockLLMResult {
+func (m *MockModel) next(call *ModelCall) *MockModelResult {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	m.calls = append(m.calls, call)
 
 	if len(m.results) == 0 {
-		panic(fmt.Sprintf("missing mock LLM result for call with input '%s'", call.Input))
+		panic(fmt.Sprintf("missing mock model result for call with input '%s'", call.Input))
 	}
 	r := m.results[0]
 	m.results = m.results[1:]
@@ -166,7 +166,7 @@ func (m *MockLLM) next(call *LLMCall) *MockLLMResult {
 }
 
 // Calls returns the calls made to this service so far
-func (m *MockLLM) Calls() []*LLMCall {
+func (m *MockModel) Calls() []*ModelCall {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -174,12 +174,12 @@ func (m *MockLLM) Calls() []*LLMCall {
 }
 
 // HasUnused returns whether there are results which haven't been used
-func (m *MockLLM) HasUnused() bool {
+func (m *MockModel) HasUnused() bool {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	return len(m.results) > 0
 }
 
-var _ flows.LLMService = (*LLMService)(nil)
-var _ flows.LLMService = (*MockLLM)(nil)
+var _ flows.ModelService = (*ModelService)(nil)
+var _ flows.ModelService = (*MockModel)(nil)
