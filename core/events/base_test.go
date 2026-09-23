@@ -127,6 +127,18 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
+				return events.NewClassifierCalled(
+					gpt4.Reference(),
+					"I'd like to book a room for two nights",
+					[]string{"Flights", "Hotels"},
+					&core.LLMClassification{Category: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
+					123*time.Millisecond,
+				)
+			},
+			`classifier_called`,
+		},
+		{
+			func() events.Event {
 				return events.NewContactFieldChanged(
 					gender.Reference(),
 					core.NewValue(types.NewXText("male"), nil, nil, "", "", ""),

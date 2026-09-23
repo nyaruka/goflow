@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/nyaruka/goflow/core"
@@ -79,6 +80,37 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 	}
 
 	return &core.LLMResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+}
+
+func (s *LLMService) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
+	var category string
+	withProbs := true
+	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
+		return nil, errors.New(input[7:])
+	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise error, and like a generative LLM, won't provide probabilities
+		category = input[8:]
+		if !slices.Contains(categories, category) {
+			return nil, errors.New("no category fits input")
+		}
+		withProbs = false
+	} else { // otherwise the last category is chosen, like a categorize prompt
+		category = categories[len(categories)-1]
+	}
+
+	cls := &core.LLMClassification{Category: category, Confidence: 0.8, TokensInput: 34, TokensOutput: 5}
+
+	if withProbs {
+		cls.Probabilities = make(map[string]float64, len(categories))
+		for _, c := range categories {
+			if c == category {
+				cls.Probabilities[c] = 0.9
+			} else {
+				cls.Probabilities[c] = 0.1
+			}
+		}
+	}
+
+	return cls, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

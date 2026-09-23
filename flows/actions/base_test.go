@@ -377,14 +377,23 @@ func TestConstructors(t *testing.T) {
 		{
 			actions.NewCallClassifier(
 				actionUUID,
+				assets.NewLLMReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
-				"Intent",
+				[]string{"Flights", "Hotels"},
+				"_classification",
+				"_classification_conf",
 			),
 			`{
 			"type": "call_classifier",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"model": {
+				"uuid": "0baee364-07a7-4c93-9778-9f55a35903bb",
+				"name": "GPT-4"
+			},
 			"input": "@input.text",
-			"result_name": "Intent"
+			"categories": ["Flights", "Hotels"],
+			"output_local": "_classification",
+			"confidence_local": "_classification_conf"
 		}`,
 		},
 		{
@@ -770,17 +779,21 @@ func TestReadAction(t *testing.T) {
 	}`, strings.Repeat("x", 10001)))
 	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
 
-	// legacy call_classifier action with a classifier asset reference parses fine -
-	// the now-removed classifier field is silently ignored
-	action, err := actions.Read([]byte(`{
+	categories := make([]string, 101)
+	for i := range categories {
+		categories[i] = fmt.Sprintf("Category %d", i)
+	}
+	categoriesJSON, _ := json.Marshal(categories)
+	_, err = actions.Read(fmt.Appendf(nil, `{
 		"type": "call_classifier",
 		"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-		"classifier": {"uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000", "name": "Booking"},
+		"model": {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4"},
 		"input": "@input.text",
-		"result_name": "Intent"
-	}`))
-	require.NoError(t, err)
-	assert.Equal(t, actions.TypeCallClassifier, action.Type())
+		"categories": %s,
+		"output_local": "_classification"
+	}`, categoriesJSON))
+	assert.EqualError(t, err, "field 'categories' must have a maximum of 100 items")
+
 }
 
 func TestResthookPayload(t *testing.T) {

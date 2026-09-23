@@ -33,6 +33,7 @@ var messageFuncs = map[string]ErrorMessageFunc{
 		}
 		return fmt.Sprintf("must be less than or equal to %s", e.Param())
 	},
+	"unique":     func(e validator.FieldError) string { return "must not contain duplicates" },
 	"startswith": func(e validator.FieldError) string { return fmt.Sprintf("must start with '%s'", e.Param()) },
 	"mutually_exclusive": func(e validator.FieldError) string {
 		return fmt.Sprintf("is mutually exclusive with '%s'", e.Param())
