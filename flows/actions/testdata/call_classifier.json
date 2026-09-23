@@ -29,6 +29,25 @@
         "read_error": "field 'categories' must not contain duplicates"
     },
     {
+        "description": "Read error for category that is the error output",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "model": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "@input.text",
+            "categories": [
+                "Flights",
+                "<ERROR>"
+            ],
+            "output_local": "_classification",
+            "confidence_local": "_classification_conf"
+        },
+        "read_error": "categories can't include <ERROR>"
+    },
+    {
         "description": "Read error for confidence local same as output local",
         "action": {
             "type": "call_classifier",

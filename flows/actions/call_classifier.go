@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strconv"
 
 	"github.com/nyaruka/gocommon/dates"
@@ -66,6 +67,9 @@ func NewCallClassifier(uuid flows.ActionUUID, model *assets.LLMReference, input 
 
 // Validate validates our action is valid
 func (a *CallClassifier) Validate() error {
+	if slices.Contains(a.Categories, LLMErrorOutput) {
+		return fmt.Errorf("categories can't include %s", LLMErrorOutput)
+	}
 	if a.ConfidenceLocal == a.OutputLocal {
 		return fmt.Errorf("confidence_local can't be the same as output_local")
 	}
