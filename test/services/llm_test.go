@@ -84,12 +84,15 @@ func TestLLMServiceClassify(t *testing.T) {
 	cls, err := svc.Classify(ctx, "I want to book a room", categories)
 	assert.NoError(t, err)
 	assert.Equal(t, "Hotels", cls.Category)
+	assert.Equal(t, 0.8, *cls.Confidence)
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
 
-	// "\return" chooses the given category if it's one of the categories
+	// "\return" chooses the given category if it's one of the categories, without confidence or probabilities
 	cls, err = svc.Classify(ctx, "\\return Flights", categories)
 	assert.NoError(t, err)
 	assert.Equal(t, "Flights", cls.Category)
+	assert.Nil(t, cls.Confidence)
+	assert.Nil(t, cls.Probabilities)
 
 	// ...otherwise errors
 	_, err = svc.Classify(ctx, "\\return Cars", categories)

@@ -84,27 +84,34 @@ func (s *LLMService) Response(ctx context.Context, instructions, input string, m
 
 func (s *LLMService) Classify(ctx context.Context, input string, categories []string) (*core.LLMClassification, error) {
 	var category string
+	withScores := true
 	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
 		return nil, errors.New(input[7:])
-	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise error
+	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise error, and like a generative LLM, won't provide confidence or probabilities
 		category = input[8:]
 		if !slices.Contains(categories, category) {
 			return nil, errors.New("no category fits input")
 		}
+		withScores = false
 	} else { // otherwise the last category is chosen, like a categorize prompt
 		category = categories[len(categories)-1]
 	}
 
-	probs := make(map[string]float64, len(categories))
-	for _, c := range categories {
-		if c == category {
-			probs[c] = 0.9
-		} else {
-			probs[c] = 0.1
+	cls := &core.LLMClassification{Category: category, TokensInput: 34, TokensOutput: 5}
+
+	if withScores {
+		cls.Confidence = new(0.8)
+		cls.Probabilities = make(map[string]float64, len(categories))
+		for _, c := range categories {
+			if c == category {
+				cls.Probabilities[c] = 0.9
+			} else {
+				cls.Probabilities[c] = 0.1
+			}
 		}
 	}
 
-	return &core.LLMClassification{Category: category, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return cls, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

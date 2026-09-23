@@ -15,7 +15,8 @@ func init() {
 const TypeClassifierCalled string = "classifier_called"
 
 // ClassifierCalled events are created when an LLM is called to classify some input into one of a set of categories.
-// Per-category probabilities are only included if the model provides them.
+// The confidence and per-category probabilities are only included if the model provides them. Confidence is a
+// measure of how reliable the choice is and isn't necessarily the chosen category's probability.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
@@ -28,7 +29,8 @@ const TypeClassifierCalled string = "classifier_called"
 //	  "input": "I'd like to book a room for two nights",
 //	  "categories": ["Flights", "Hotels"],
 //	  "category": "Hotels",
-//	  "probabilities": {"Flights": 0.08, "Hotels": 0.92},
+//	  "confidence": 0.86,
+//	  "probabilities": {"Flights": 0.29, "Hotels": 0.71},
 //	  "tokens": {"input": 123, "output": 5},
 //	  "elapsed_ms": 123
 //	}
@@ -41,6 +43,7 @@ type ClassifierCalled struct {
 	Input         string               `json:"input"`
 	Categories    []string             `json:"categories"`
 	Category      string               `json:"category"`
+	Confidence    *float64             `json:"confidence,omitempty"`
 	Probabilities map[string]float64   `json:"probabilities,omitempty"`
 	Tokens        LLMTokens            `json:"tokens"`
 	ElapsedMS     int64                `json:"elapsed_ms"`
@@ -54,6 +57,7 @@ func NewClassifierCalled(llm *assets.LLMReference, input string, categories []st
 		Input:         input,
 		Categories:    categories,
 		Category:      cls.Category,
+		Confidence:    cls.Confidence,
 		Probabilities: cls.Probabilities,
 		Tokens:        LLMTokens{Input: cls.TokensInput, Output: cls.TokensOutput},
 		ElapsedMS:     elapsed.Milliseconds(),

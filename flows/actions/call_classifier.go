@@ -24,7 +24,7 @@ const TypeCallClassifier string = "call_classifier"
 //
 // A [event:classifier_called] event will be created if the LLM could be called. The action sets the local specified
 // by `output_local` to the name of the chosen category, or to `<ERROR>` if the call failed, including when none of
-// the categories fit the input. If `probability_local` is specified, it is set to the probability of the chosen
+// the categories fit the input. If `confidence_local` is specified, it is set to the confidence in the chosen
 // category, or cleared if the model doesn't provide one.
 //
 //	{
@@ -37,7 +37,7 @@ const TypeCallClassifier string = "call_classifier"
 //	  "input": "@input.text",
 //	  "categories": ["Flights", "Hotels"],
 //	  "output_local": "_classification",
-//	  "probability_local": "_classification_prob"
+//	  "confidence_local": "_classification_conf"
 //	}
 //
 // @action call_classifier
@@ -45,22 +45,22 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	LLM              *assets.LLMReference `json:"llm"          validate:"required"`
-	Input            string               `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
-	Categories       []string             `json:"categories"   validate:"required,min=1,max=255,unique,dive,result_category"`
-	OutputLocal      string               `json:"output_local"                validate:"required,local_ref"`
-	ProbabilityLocal string               `json:"probability_local,omitempty" validate:"omitempty,local_ref"`
+	LLM             *assets.LLMReference `json:"llm"          validate:"required"`
+	Input           string               `json:"input"        validate:"max=10000"                                   engine:"evaluated"`
+	Categories      []string             `json:"categories"   validate:"required,min=1,max=255,unique,dive,result_category"`
+	OutputLocal     string               `json:"output_local"                validate:"required,local_ref"`
+	ConfidenceLocal string               `json:"confidence_local,omitempty" validate:"omitempty,local_ref"`
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, llm *assets.LLMReference, input string, categories []string, outputLocal, probabilityLocal string) *CallClassifier {
+func NewCallClassifier(uuid flows.ActionUUID, llm *assets.LLMReference, input string, categories []string, outputLocal, confidenceLocal string) *CallClassifier {
 	return &CallClassifier{
-		baseAction:       newBaseAction(TypeCallClassifier, uuid),
-		LLM:              llm,
-		Input:            input,
-		Categories:       categories,
-		OutputLocal:      outputLocal,
-		ProbabilityLocal: probabilityLocal,
+		baseAction:      newBaseAction(TypeCallClassifier, uuid),
+		LLM:             llm,
+		Input:           input,
+		Categories:      categories,
+		OutputLocal:     outputLocal,
+		ConfidenceLocal: confidenceLocal,
 	}
 }
 
@@ -73,12 +73,12 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
 	}
 
-	if a.ProbabilityLocal != "" {
+	if a.ConfidenceLocal != "" {
 		// always set or clear so a previous value can't be mistaken for this call's
-		if prob, ok := cls.CategoryProbability(); ok {
-			run.Locals().Set(a.ProbabilityLocal, strconv.FormatFloat(prob, 'f', -1, 64))
+		if cls != nil && cls.Confidence != nil {
+			run.Locals().Set(a.ConfidenceLocal, strconv.FormatFloat(*cls.Confidence, 'f', -1, 64))
 		} else {
-			run.Locals().Clear(a.ProbabilityLocal)
+			run.Locals().Clear(a.ConfidenceLocal)
 		}
 	}
 
@@ -121,7 +121,7 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.LLM)
 	local(a.OutputLocal)
-	if a.ProbabilityLocal != "" {
-		local(a.ProbabilityLocal)
+	if a.ConfidenceLocal != "" {
+		local(a.ConfidenceLocal)
 	}
 }

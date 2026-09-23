@@ -24,7 +24,7 @@
                 "Flights"
             ],
             "output_local": "_classification",
-            "probability_local": "_classification_prob"
+            "confidence_local": "_classification_conf"
         },
         "read_error": "field 'categories' must not contain duplicates"
     },
@@ -43,7 +43,7 @@
                 "Hotels"
             ],
             "output_local": "_classification",
-            "probability_local": "_classification_prob"
+            "confidence_local": "_classification_conf"
         },
         "events": [
             {
@@ -79,7 +79,7 @@
             ],
             "locals": [
                 "_classification",
-                "_classification_prob"
+                "_classification_conf"
             ],
             "results": [],
             "parent_refs": [],
@@ -113,7 +113,7 @@
                 "Hotels"
             ],
             "output_local": "_classification",
-            "probability_local": "_classification_prob"
+            "confidence_local": "_classification_conf"
         },
         "events": [
             {
@@ -130,6 +130,7 @@
                     "Hotels"
                 ],
                 "category": "Hotels",
+                "confidence": 0.8,
                 "probabilities": {
                     "Flights": 0.1,
                     "Hotels": 0.9
@@ -143,7 +144,7 @@
         ],
         "locals_after": {
             "_classification": "Hotels",
-            "_classification_prob": "0.9"
+            "_classification_conf": "0.8"
         },
         "templates": [
             "@input.text"
@@ -162,7 +163,73 @@
             ],
             "locals": [
                 "_classification",
-                "_classification_prob"
+                "_classification_conf"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Confidence local cleared if model doesn't provide confidence",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "\\return Flights",
+            "categories": [
+                "Flights",
+                "Hotels"
+            ],
+            "output_local": "_classification",
+            "confidence_local": "_classification_conf"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
+                "type": "classifier_called",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "llm": {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude"
+                },
+                "input": "\\return Flights",
+                "categories": [
+                    "Flights",
+                    "Hotels"
+                ],
+                "category": "Flights",
+                "tokens": {
+                    "input": 34,
+                    "output": 5
+                },
+                "elapsed_ms": 1000
+            }
+        ],
+        "locals_after": {
+            "_classification": "Flights"
+        },
+        "templates": [
+            "\\return Flights"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_classification",
+                "_classification_conf"
             ],
             "results": [],
             "parent_refs": [],
@@ -184,7 +251,7 @@
                 "Hotels"
             ],
             "output_local": "_classification",
-            "probability_local": "_classification_prob"
+            "confidence_local": "_classification_conf"
         },
         "events": [
             {
@@ -214,7 +281,7 @@
             ],
             "locals": [
                 "_classification",
-                "_classification_prob"
+                "_classification_conf"
             ],
             "results": [],
             "parent_refs": [],

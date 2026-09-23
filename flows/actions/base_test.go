@@ -381,7 +381,7 @@ func TestConstructors(t *testing.T) {
 				"@input.text",
 				[]string{"Flights", "Hotels"},
 				"_classification",
-				"_classification_prob",
+				"_classification_conf",
 			),
 			`{
 			"type": "call_classifier",
@@ -393,7 +393,7 @@ func TestConstructors(t *testing.T) {
 			"input": "@input.text",
 			"categories": ["Flights", "Hotels"],
 			"output_local": "_classification",
-			"probability_local": "_classification_prob"
+			"confidence_local": "_classification_conf"
 		}`,
 		},
 		{

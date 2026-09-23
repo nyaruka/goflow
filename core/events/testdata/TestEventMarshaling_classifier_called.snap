@@ -12,9 +12,10 @@
         "Hotels"
     ],
     "category": "Hotels",
+    "confidence": 0.86,
     "probabilities": {
-        "Flights": 0.08,
-        "Hotels": 0.92
+        "Flights": 0.29,
+        "Hotels": 0.71
     },
     "tokens": {
         "input": 123,
