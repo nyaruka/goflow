@@ -86,9 +86,10 @@ func (s *LLMService) Classify(ctx context.Context, input string, categories []st
 	var category string
 	if strings.HasPrefix(input, "\\error ") { // an input like "\error foo" will return the error "foo"
 		return nil, errors.New(input[7:])
-	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise none
-		if c := input[8:]; slices.Contains(categories, c) {
-			category = c
+	} else if strings.HasPrefix(input, "\\return ") { // an input like "\return foo" will choose "foo" if it's a category, otherwise error
+		category = input[8:]
+		if !slices.Contains(categories, category) {
+			return nil, errors.New("no category fits input")
 		}
 	} else { // otherwise the last category is chosen, like a categorize prompt
 		category = categories[len(categories)-1]

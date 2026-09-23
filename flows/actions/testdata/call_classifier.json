@@ -165,7 +165,7 @@
         }
     },
     {
-        "description": "classifier_called event and <CANT> in local if no category fits",
+        "description": "Error event and <ERROR> in local if call fails, e.g. no category fits",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -182,85 +182,17 @@
         },
         "events": [
             {
-                "uuid": "01969b47-384b-76f8-b774-0a98171a0712",
-                "type": "classifier_called",
-                "created_on": "2025-05-04T12:30:59.123456789Z",
-                "llm": {
-                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
-                    "name": "Claude"
-                },
-                "input": "\\return Cars",
-                "categories": [
-                    "Flights",
-                    "Hotels"
-                ],
-                "confidence": 0.9,
-                "probabilities": {
-                    "Flights": 0.1,
-                    "Hotels": 0.1
-                },
-                "tokens": {
-                    "input": 34,
-                    "output": 5
-                },
-                "elapsed_ms": 1000
-            }
-        ],
-        "locals_after": {
-            "_llm_output": "\u003cCANT\u003e"
-        },
-        "templates": [
-            "\\return Cars"
-        ],
-        "inspection": {
-            "counts": {
-                "languages": 0,
-                "nodes": 1
-            },
-            "dependencies": [
-                {
-                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
-                    "name": "Claude",
-                    "type": "llm"
-                }
-            ],
-            "locals": [
-                "_llm_output"
-            ],
-            "results": [],
-            "parent_refs": [],
-            "issues": []
-        }
-    },
-    {
-        "description": "Error event and <ERROR> in local if call fails",
-        "action": {
-            "type": "call_classifier",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "llm": {
-                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
-                "name": "Claude"
-            },
-            "input": "\\error boom",
-            "categories": [
-                "Flights",
-                "Hotels"
-            ],
-            "output_local": "_llm_output"
-        },
-        "events": [
-            {
                 "uuid": "01969b47-3463-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "boom"
+                "text": "no category fits input"
             }
         ],
         "locals_after": {
             "_llm_output": "\u003cERROR\u003e"
         },
         "templates": [
-            "\\error boom"
+            "\\return Cars"
         ],
         "inspection": {
             "counts": {

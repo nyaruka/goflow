@@ -91,10 +91,9 @@ func TestLLMServiceClassify(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "Flights", cls.Category)
 
-	// ...otherwise none
-	cls, err = svc.Classify(ctx, "\\return Cars", categories)
-	assert.NoError(t, err)
-	assert.Equal(t, "", cls.Category)
+	// ...otherwise errors
+	_, err = svc.Classify(ctx, "\\return Cars", categories)
+	assert.EqualError(t, err, "no category fits input")
 
 	// "\error" returns an error
 	_, err = svc.Classify(ctx, "\\error boom", categories)

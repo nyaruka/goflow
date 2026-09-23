@@ -139,18 +139,6 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewClassifierCalled(
-					gpt4.Reference(),
-					"What's the weather like?",
-					[]string{"Flights", "Hotels"},
-					&core.LLMClassification{Category: "", TokensInput: 123, TokensOutput: 5},
-					123*time.Millisecond,
-				)
-			},
-			`classifier_called_no_match`,
-		},
-		{
-			func() events.Event {
 				return events.NewContactFieldChanged(
 					gender.Reference(),
 					core.NewValue(types.NewXText("male"), nil, nil, "", "", ""),

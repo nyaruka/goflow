@@ -15,8 +15,7 @@ func init() {
 const TypeClassifierCalled string = "classifier_called"
 
 // ClassifierCalled events are created when an LLM is called to classify some input into one of a set of categories.
-// The category is omitted if none of the categories fit the input. The confidence and per-category probabilities
-// are only included if the model provides them.
+// The confidence and per-category probabilities are only included if the model provides them.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
@@ -42,7 +41,7 @@ type ClassifierCalled struct {
 	LLM           *assets.LLMReference `json:"llm" validate:"required"`
 	Input         string               `json:"input"`
 	Categories    []string             `json:"categories"`
-	Category      string               `json:"category,omitempty"`
+	Category      string               `json:"category"`
 	Confidence    float64              `json:"confidence,omitempty"`
 	Probabilities map[string]float64   `json:"probabilities,omitempty"`
 	Tokens        LLMTokens            `json:"tokens"`

@@ -18,15 +18,12 @@ func init() {
 // TypeCallClassifier is the type for the call classifier action
 const TypeCallClassifier string = "call_classifier"
 
-// LLMNoMatchOutput is the output used when none of the categories fit the input
-const LLMNoMatchOutput = "<CANT>"
-
 // CallClassifier can be used to classify input into one of a set of categories using an LLM. The input field may be
 // a template and will be evaluated at runtime.
 //
 // A [event:classifier_called] event will be created if the LLM could be called. The action sets the local specified
-// by `output_local` to the name of the chosen category, to `<CANT>` if none of the categories fit the input, or to
-// `<ERROR>` if the call failed.
+// by `output_local` to the name of the chosen category, or to `<ERROR>` if the call failed, including when none of
+// the categories fit the input.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -65,12 +62,10 @@ func NewCallClassifier(uuid flows.ActionUUID, llm *assets.LLMReference, input st
 // Execute runs this action
 func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	cls := a.call(ctx, run, log)
-	if cls == nil {
-		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
-	} else if cls.Category == "" {
-		run.Locals().Set(a.OutputLocal, LLMNoMatchOutput)
-	} else {
+	if cls != nil {
 		run.Locals().Set(a.OutputLocal, cls.Category)
+	} else {
+		run.Locals().Set(a.OutputLocal, LLMErrorOutput)
 	}
 
 	return nil
