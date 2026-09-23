@@ -39,9 +39,9 @@ type WebhookService interface {
 type ModelService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error)
 
-	// Classify picks which of the given categories best fits the input, returning an error if none do. Flows rely on a
+	// Classify picks which of the given options best fits the input, returning an error if none do. Flows rely on a
 	// confidence being provided for every model, so services must approximate one if the model doesn't provide it.
-	Classify(ctx context.Context, input string, categories []string) (*core.Classification, error)
+	Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error)
 }
 
 // AirtimeService provides airtime functionality to the engine

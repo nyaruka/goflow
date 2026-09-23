@@ -1,16 +1,16 @@
 [
     {
-        "description": "Read error for legacy shape without model or categories",
+        "description": "Read error for legacy shape without model or options",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "input": "@input.text",
             "result_name": "Intent"
         },
-        "read_error": "field 'model' is required, field 'categories' is required, field 'output_local' is required"
+        "read_error": "field 'model' is required, field 'options' is required, field 'output_local' is required"
     },
     {
-        "description": "Read error for duplicate categories",
+        "description": "Read error for duplicate options",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -19,17 +19,21 @@
                 "name": "Claude"
             },
             "input": "@input.text",
-            "categories": [
-                "Flights",
-                "Flights"
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Flights"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
         },
-        "read_error": "field 'categories' must not contain duplicates"
+        "read_error": "field 'options' must not contain duplicates"
     },
     {
-        "description": "Read error for category that is the error output",
+        "description": "Read error for option without a name",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -38,14 +42,37 @@
                 "name": "Claude"
             },
             "input": "@input.text",
-            "categories": [
-                "Flights",
-                "<ERROR>"
+            "options": [
+                {
+                    "description": "Booking or changing flights"
+                }
+            ],
+            "output_local": "_classification"
+        },
+        "read_error": "field 'options[0].name' is required"
+    },
+    {
+        "description": "Read error for option that is the error output",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "model": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "@input.text",
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "<ERROR>"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
         },
-        "read_error": "categories can't include <ERROR>"
+        "read_error": "options can't include <ERROR>"
     },
     {
         "description": "Read error for confidence local same as output local",
@@ -57,9 +84,13 @@
                 "name": "Claude"
             },
             "input": "@input.text",
-            "categories": [
-                "Flights",
-                "Hotels"
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Hotels"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification"
@@ -76,9 +107,13 @@
                 "name": "Deleted"
             },
             "input": "@input.text",
-            "categories": [
-                "Flights",
-                "Hotels"
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Hotels"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
@@ -138,7 +173,7 @@
         }
     },
     {
-        "description": "classifier_called event and category in local if successful",
+        "description": "classifier_called event and option in local if successful",
         "action": {
             "type": "call_classifier",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -147,9 +182,14 @@
                 "name": "Claude"
             },
             "input": "@input.text",
-            "categories": [
-                "Flights",
-                "Hotels"
+            "options": [
+                {
+                    "name": "Flights",
+                    "description": "Booking or changing flights"
+                },
+                {
+                    "name": "Hotels"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
@@ -164,11 +204,11 @@
                     "name": "Claude"
                 },
                 "input": "Hi everybody",
-                "categories": [
+                "options": [
                     "Flights",
                     "Hotels"
                 ],
-                "category": "Hotels",
+                "option": "Hotels",
                 "confidence": 0.8,
                 "probabilities": {
                     "Flights": 0.1,
@@ -213,7 +253,7 @@
         "description": "classifier_called event without probabilities if model doesn't provide them",
         "model_mocks": [
             {
-                "category": "Flights",
+                "option": "Flights",
                 "confidence": 0.8,
                 "tokens_input": 34,
                 "tokens_output": 5
@@ -227,9 +267,13 @@
                 "name": "Claude"
             },
             "input": "I want to fly to Paris",
-            "categories": [
-                "Flights",
-                "Hotels"
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Hotels"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
@@ -244,11 +288,11 @@
                     "name": "Claude"
                 },
                 "input": "I want to fly to Paris",
-                "categories": [
+                "options": [
                     "Flights",
                     "Hotels"
                 ],
-                "category": "Flights",
+                "option": "Flights",
                 "confidence": 0.8,
                 "tokens": {
                     "input": 34,
@@ -286,10 +330,10 @@
         }
     },
     {
-        "description": "Error event and <ERROR> in local if call fails, e.g. no category fits",
+        "description": "Error event and <ERROR> in local if call fails, e.g. no option fits",
         "model_mocks": [
             {
-                "error": "no category fits input"
+                "error": "no option fits input"
             }
         ],
         "action": {
@@ -300,9 +344,13 @@
                 "name": "Claude"
             },
             "input": "I want to rent a car",
-            "categories": [
-                "Flights",
-                "Hotels"
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Hotels"
+                }
             ],
             "output_local": "_classification",
             "confidence_local": "_classification_conf"
@@ -312,7 +360,7 @@
                 "uuid": "01969b47-3463-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "no category fits input"
+                "text": "no option fits input"
             }
         ],
         "locals_after": {
