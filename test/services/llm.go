@@ -104,7 +104,7 @@ func (s *LLMService) Classify(ctx context.Context, input string, categories []st
 		}
 	}
 
-	return &core.LLMClassification{Category: category, Confidence: 0.9, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.LLMClassification{Category: category, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
 }
 
 var _ flows.LLMService = (*LLMService)(nil)

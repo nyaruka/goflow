@@ -131,7 +131,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"I'd like to book a room for two nights",
 					[]string{"Flights", "Hotels"},
-					&core.LLMClassification{Category: "Hotels", Confidence: 0.92, Probabilities: map[string]float64{"Flights": 0.08, "Hotels": 0.92}, TokensInput: 123, TokensOutput: 5},
+					&core.LLMClassification{Category: "Hotels", Probabilities: map[string]float64{"Flights": 0.08, "Hotels": 0.92}, TokensInput: 123, TokensOutput: 5},
 					123*time.Millisecond,
 				)
 			},

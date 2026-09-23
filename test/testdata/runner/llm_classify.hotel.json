@@ -108,7 +108,6 @@
                         "Hotels"
                     ],
                     "category": "Hotels",
-                    "confidence": 0.9,
                     "created_on": "2025-05-04T12:31:11.123456789Z",
                     "elapsed_ms": 1000,
                     "input": "I need a room for tonight",

@@ -130,7 +130,6 @@
                     "Hotels"
                 ],
                 "category": "Hotels",
-                "confidence": 0.9,
                 "probabilities": {
                     "Flights": 0.1,
                     "Hotels": 0.9
