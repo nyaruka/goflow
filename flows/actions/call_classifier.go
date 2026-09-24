@@ -24,9 +24,9 @@ const TypeCallClassifier string = "call_classifier"
 // fits.
 //
 // A [event:classifier_called] event will be created if the model could be called. The action sets the local specified
-// by `output_local` to the name of the chosen option, or to `<ERROR>` if the call failed, including when none of the
-// options fit the input. If `confidence_local` is specified, it is set to the confidence in the chosen option, between
-// 0 and 1, or to 0 if the call failed.
+// by `output_local` to the name of the chosen option, or to `<ERROR>` if the call failed. The model always chooses one
+// of the options, so if `confidence_local` is specified, it is set to the confidence in the chosen option, between 0
+// and 1, for flows to decide whether that's confident enough. It is set to 0 if the call failed.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
