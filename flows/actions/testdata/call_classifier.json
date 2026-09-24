@@ -330,10 +330,10 @@
         }
     },
     {
-        "description": "Error event and <ERROR> in local if call fails, e.g. no option fits",
+        "description": "Error event and <ERROR> in local if call fails",
         "model_mocks": [
             {
-                "error": "no option fits input"
+                "error": "model service unavailable"
             }
         ],
         "action": {
@@ -360,7 +360,7 @@
                 "uuid": "01969b47-3463-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:58.123456789Z",
-                "text": "no option fits input"
+                "text": "model service unavailable"
             }
         ],
         "locals_after": {

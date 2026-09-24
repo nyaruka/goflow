@@ -39,8 +39,9 @@ type WebhookService interface {
 type ModelService interface {
 	Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error)
 
-	// Classify picks which of the given options best fits the input, returning an error if none do. Flows rely on a
-	// confidence being provided for every model, so services must approximate one if the model doesn't provide it.
+	// Classify picks which of the given options best fits the input, with a confidence that flows compare against a
+	// minimum. It always picks one of the options, so input that fits none of them should get a low confidence rather
+	// than an error. Services must approximate a confidence if the model doesn't provide one.
 	Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error)
 }
 
