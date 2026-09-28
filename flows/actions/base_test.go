@@ -792,7 +792,7 @@ func TestReadAction(t *testing.T) {
 	}`, strings.Repeat("x", 10001)))
 	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
 
-	options := make([]*core.ClassifierOption, 101)
+	options := make([]*core.ClassifierOption, 11)
 	for i := range options {
 		options[i] = &core.ClassifierOption{Name: fmt.Sprintf("Option %d", i)}
 	}
@@ -805,7 +805,7 @@ func TestReadAction(t *testing.T) {
 		"options": %s,
 		"output_local": "_classification"
 	}`, optionsJSON))
-	assert.EqualError(t, err, "field 'options' must have a maximum of 100 items")
+	assert.EqualError(t, err, "field 'options' must have a maximum of 10 items")
 
 }
 

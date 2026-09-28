@@ -53,7 +53,7 @@ type CallClassifier struct {
 
 	Model         *assets.ModelReference   `json:"model"                    validate:"required"`
 	Input         string                   `json:"input"                    validate:"max=10000"                          engine:"evaluated"`
-	Options       []*core.ClassifierOption `json:"options"                  validate:"required,min=1,max=100,unique=Name,dive"`
+	Options       []*core.ClassifierOption `json:"options"                  validate:"required,min=1,max=10,unique=Name,dive"`
 	MinConfidence float64                  `json:"min_confidence,omitempty" validate:"min=0,max=1"`
 	OutputLocal   string                   `json:"output_local"             validate:"required,local_ref"`
 }
