@@ -309,8 +309,10 @@
             {
                 "option": "Flights",
                 "confidence": 0.8,
-                "tokens_input": 34,
-                "tokens_output": 5
+                "tokens": {
+                    "input": 34,
+                    "output": 5
+                }
             }
         ],
         "action": {

@@ -104,13 +104,8 @@ type MockModelResult struct {
 	Confidence    float64             `json:"confidence,omitempty"`
 	Probabilities map[string]float64  `json:"probabilities,omitempty"`
 	Items         map[string][]string `json:"items,omitempty"`
-	TokensInput   int64               `json:"tokens_input,omitempty"`
-	TokensOutput  int64               `json:"tokens_output,omitempty"`
+	Tokens        core.ModelTokens    `json:"tokens,omitzero"`
 	Error         string              `json:"error,omitempty"`
-}
-
-func (r *MockModelResult) tokens() core.ModelTokens {
-	return core.ModelTokens{Input: r.TokensInput, Output: r.TokensOutput}
 }
 
 // ModelCall is a call made to a MockModel
@@ -145,7 +140,7 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 		panic("mock model result for another call type used for a response call")
 	}
 
-	return &core.ModelResponse{Output: r.Output, Tokens: r.tokens()}, nil
+	return &core.ModelResponse{Output: r.Output, Tokens: r.Tokens}, nil
 }
 
 func (m *MockModel) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
@@ -157,7 +152,7 @@ func (m *MockModel) Classify(ctx context.Context, input string, options []*core.
 		panic(fmt.Sprintf("mock model result option '%s' isn't one of the classify call's options", r.Option))
 	}
 
-	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, Tokens: r.tokens()}, nil
+	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, Tokens: r.Tokens}, nil
 }
 
 func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
@@ -169,7 +164,7 @@ func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language,
 		panic("mock model result for another call type used for a translate call")
 	}
 
-	return &core.Translation{Items: r.Items, Tokens: r.tokens()}, nil
+	return &core.Translation{Items: r.Items, Tokens: r.Tokens}, nil
 }
 
 func (m *MockModel) next(call *ModelCall) *MockModelResult {

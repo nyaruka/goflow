@@ -74,10 +74,10 @@ func TestMockModel(t *testing.T) {
 	ctx := t.Context()
 
 	svc := services.NewMockModel(
-		&services.MockModelResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
+		&services.MockModelResult{Output: "Bonjour", Tokens: core.ModelTokens{Input: 12, Output: 3}},
 		&services.MockModelResult{Option: "Flights", Confidence: 0.7},
 		&services.MockModelResult{Error: "boom"},
-		&services.MockModelResult{Items: map[string][]string{"a": {"Bonjour"}}, TokensInput: 20, TokensOutput: 4},
+		&services.MockModelResult{Items: map[string][]string{"a": {"Bonjour"}}, Tokens: core.ModelTokens{Input: 20, Output: 4}},
 		&services.MockModelResult{Error: "bang"},
 	)
 	assert.True(t, svc.HasUnused())
