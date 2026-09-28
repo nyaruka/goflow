@@ -122,4 +122,10 @@ func TestMockModel(t *testing.T) {
 	assert.Panics(t, func() {
 		services.NewMockModel(&services.MockModelResult{Option: "Cars"}).Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
 	})
+	assert.Panics(t, func() {
+		services.NewMockModel(&services.MockModelResult{Output: "Salut"}).Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
+	})
+	assert.Panics(t, func() {
+		services.NewMockModel(&services.MockModelResult{Items: map[string][]string{"a": {"Salut"}}}).Response(ctx, "Summarize", "Hi", 100)
+	})
 }

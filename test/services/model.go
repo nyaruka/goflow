@@ -137,8 +137,8 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
-	if r.Option != "" {
-		panic("mock model result with option used for a response call")
+	if r.Option != "" || r.Items != nil {
+		panic("mock model result for another call type used for a response call")
 	}
 
 	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
@@ -161,8 +161,8 @@ func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language,
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
-	if r.Option != "" {
-		panic("mock model result with option used for a translate call")
+	if r.Option != "" || r.Output != "" {
+		panic("mock model result for another call type used for a translate call")
 	}
 
 	return &core.Translation{Items: r.Items, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
