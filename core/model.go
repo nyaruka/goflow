@@ -50,11 +50,16 @@ func (s *ModelAssets) Get(uuid assets.ModelUUID) *Model {
 	return s.byUUID[uuid]
 }
 
+// ModelTokens is the number of tokens a model call consumed
+type ModelTokens struct {
+	Input  int64 `json:"input"`
+	Output int64 `json:"output"`
+}
+
 // ModelResponse is the response from a model service call
 type ModelResponse struct {
-	Output       string
-	TokensInput  int64
-	TokensOutput int64
+	Output string
+	Tokens ModelTokens
 }
 
 // ClassifierOption is an option that input can be classified as. The description helps the model decide whether the
@@ -69,13 +74,11 @@ type Classification struct {
 	Option        string             // the name of the chosen option, which must be one of the given options
 	Confidence    float64            // confidence in the chosen option, between 0 and 1
 	Probabilities map[string]float64 // per-option probabilities, if the model provides them
-	TokensInput   int64
-	TokensOutput  int64
+	Tokens        ModelTokens
 }
 
 // Translation is the result of translating items of text
 type Translation struct {
-	Items        map[string][]string // translated strings by item, with any untranslatable items omitted
-	TokensInput  int64
-	TokensOutput int64
+	Items  map[string][]string // translated strings by item, with any untranslatable items omitted
+	Tokens ModelTokens
 }

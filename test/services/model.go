@@ -58,7 +58,7 @@ func (s *ModelService) Response(ctx context.Context, instructions, input string,
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}
 
-	return &core.ModelResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+	return &core.ModelResponse{Output: output, Tokens: core.ModelTokens{Input: 45, Output: 78}}, nil
 }
 
 func (s *ModelService) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
@@ -73,7 +73,7 @@ func (s *ModelService) Classify(ctx context.Context, input string, options []*co
 		}
 	}
 
-	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, Tokens: core.ModelTokens{Input: 34, Output: 5}}, nil
 }
 
 func (s *ModelService) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
@@ -93,7 +93,7 @@ func (s *ModelService) Translate(ctx context.Context, source, target i18n.Langua
 		}
 	}
 
-	return &core.Translation{Items: translated, TokensInput: 56, TokensOutput: 67}, nil
+	return &core.Translation{Items: translated, Tokens: core.ModelTokens{Input: 56, Output: 67}}, nil
 }
 
 // MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
@@ -107,6 +107,10 @@ type MockModelResult struct {
 	TokensInput   int64               `json:"tokens_input,omitempty"`
 	TokensOutput  int64               `json:"tokens_output,omitempty"`
 	Error         string              `json:"error,omitempty"`
+}
+
+func (r *MockModelResult) tokens() core.ModelTokens {
+	return core.ModelTokens{Input: r.TokensInput, Output: r.TokensOutput}
 }
 
 // ModelCall is a call made to a MockModel
@@ -141,7 +145,7 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 		panic("mock model result for another call type used for a response call")
 	}
 
-	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.ModelResponse{Output: r.Output, Tokens: r.tokens()}, nil
 }
 
 func (m *MockModel) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
@@ -153,7 +157,7 @@ func (m *MockModel) Classify(ctx context.Context, input string, options []*core.
 		panic(fmt.Sprintf("mock model result option '%s' isn't one of the classify call's options", r.Option))
 	}
 
-	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, Tokens: r.tokens()}, nil
 }
 
 func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
@@ -165,7 +169,7 @@ func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language,
 		panic("mock model result for another call type used for a translate call")
 	}
 
-	return &core.Translation{Items: r.Items, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Translation{Items: r.Items, Tokens: r.tokens()}, nil
 }
 
 func (m *MockModel) next(call *ModelCall) *MockModelResult {

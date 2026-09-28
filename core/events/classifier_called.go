@@ -45,7 +45,7 @@ type ClassifierCalled struct {
 	Option        string                 `json:"option"`
 	Confidence    float64                `json:"confidence"`
 	Probabilities map[string]float64     `json:"probabilities,omitempty"`
-	Tokens        ModelTokens            `json:"tokens"`
+	Tokens        core.ModelTokens       `json:"tokens"`
 	ElapsedMS     int64                  `json:"elapsed_ms"`
 }
 
@@ -59,7 +59,7 @@ func NewClassifierCalled(model *assets.ModelReference, input string, options []*
 		Option:        cls.Option,
 		Confidence:    cls.Confidence,
 		Probabilities: cls.Probabilities,
-		Tokens:        ModelTokens{Input: cls.TokensInput, Output: cls.TokensOutput},
+		Tokens:        cls.Tokens,
 		ElapsedMS:     elapsed.Milliseconds(),
 	}
 }

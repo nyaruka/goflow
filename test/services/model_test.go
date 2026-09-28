@@ -84,7 +84,7 @@ func TestMockModel(t *testing.T) {
 
 	resp, err := svc.Response(ctx, "Translate to French", "Hello", 100)
 	assert.NoError(t, err)
-	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
+	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", Tokens: core.ModelTokens{Input: 12, Output: 3}}, resp)
 
 	options := []*core.ClassifierOption{{Name: "Flights"}, {Name: "Hotels"}}
 
@@ -97,7 +97,7 @@ func TestMockModel(t *testing.T) {
 
 	tr, err := svc.Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hello"}})
 	assert.NoError(t, err)
-	assert.Equal(t, &core.Translation{Items: map[string][]string{"a": {"Bonjour"}}, TokensInput: 20, TokensOutput: 4}, tr)
+	assert.Equal(t, &core.Translation{Items: map[string][]string{"a": {"Bonjour"}}, Tokens: core.ModelTokens{Input: 20, Output: 4}}, tr)
 
 	_, err = svc.Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
 	assert.EqualError(t, err, "bang")

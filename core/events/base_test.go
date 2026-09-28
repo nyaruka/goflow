@@ -131,7 +131,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"I'd like to book a room for two nights",
 					[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
-					&core.Classification{Option: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, TokensInput: 123, TokensOutput: 5},
+					&core.Classification{Option: "Hotels", Confidence: 0.86, Probabilities: map[string]float64{"Flights": 0.29, "Hotels": 0.71}, Tokens: core.ModelTokens{Input: 123, Output: 5}},
 					123*time.Millisecond,
 				)
 			},
@@ -283,7 +283,7 @@ func TestEventMarshaling(t *testing.T) {
 					gpt4.Reference(),
 					"Categorize the following text as Positive or Negative",
 					"Please stop messaging me",
-					&core.ModelResponse{Output: "Positive", TokensInput: 234, TokensOutput: 333},
+					&core.ModelResponse{Output: "Positive", Tokens: core.ModelTokens{Input: 234, Output: 333}},
 					123*time.Millisecond,
 				)
 			},
