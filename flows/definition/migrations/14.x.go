@@ -67,13 +67,16 @@ func Migrate14_6_0(f Flow, cfg *Config) (Flow, error) {
 			continue
 		}
 
-		uuid, model, input := action["uuid"], action["llm"], action["input"]
+		uuid, model := action["uuid"], action["llm"]
+		input, hasInput := action["input"]
 
 		clear(action)
 		action["uuid"] = uuid
 		action["type"] = "call_classifier"
 		action["model"] = model
-		action["input"] = input
+		if hasInput {
+			action["input"] = input
+		}
 		action["options"] = options
 		action["min_confidence"] = jsontext.Value("0.5")
 		action["output_local"] = outputLocal
