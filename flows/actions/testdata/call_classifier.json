@@ -173,6 +173,60 @@
         }
     },
     {
+        "description": "Error event if model can't classify",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "model": {
+                "uuid": "b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f",
+                "name": "Translator"
+            },
+            "input": "@input.text",
+            "options": [
+                {
+                    "name": "Flights"
+                },
+                {
+                    "name": "Hotels"
+                }
+            ],
+            "output_local": "_classification"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "model b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f does not have the classification role"
+            }
+        ],
+        "locals_after": {
+            "_classification": "\u003cERROR\u003e"
+        },
+        "templates": [
+            "@input.text"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f",
+                    "name": "Translator",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_classification"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "classifier_called event and option in local if successful",
         "action": {
             "type": "call_classifier",

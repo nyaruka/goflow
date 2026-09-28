@@ -14,10 +14,10 @@ func TestModel(t *testing.T) {
 		assets.ModelUUID("37657cf7-5eab-4286-9cb0-bbf270587bad"),
 		"GPT-4",
 		"openai",
-		[]assets.ModelRole{assets.ModelRoleEditing, assets.ModelRoleEngine},
+		[]assets.ModelRole{assets.ModelRoleTranslation, assets.ModelRoleGeneration},
 	)
 	assert.Equal(t, assets.ModelUUID("37657cf7-5eab-4286-9cb0-bbf270587bad"), model.UUID())
 	assert.Equal(t, "GPT-4", model.Name())
 	assert.Equal(t, "openai", model.Type())
-	assert.Equal(t, []assets.ModelRole{assets.ModelRoleEditing, assets.ModelRoleEngine}, model.Roles())
+	assert.Equal(t, []assets.ModelRole{assets.ModelRoleTranslation, assets.ModelRoleGeneration}, model.Roles())
 }

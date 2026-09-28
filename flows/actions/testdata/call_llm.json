@@ -66,6 +66,54 @@
         }
     },
     {
+        "description": "Error event if model can't generate text",
+        "action": {
+            "type": "call_llm",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61",
+                "name": "Classifier"
+            },
+            "instructions": "Categorize the following text as positive or negative",
+            "input": "@input.text",
+            "output_local": "_llm_output"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "model 8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61 does not have the generation role"
+            }
+        ],
+        "locals_after": {
+            "_llm_output": "\u003cERROR\u003e"
+        },
+        "templates": [
+            "Categorize the following text as positive or negative",
+            "@input.text"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61",
+                    "name": "Classifier",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
         "description": "llm_called event if successful",
         "action": {
             "type": "call_llm",
