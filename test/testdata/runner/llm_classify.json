@@ -71,8 +71,8 @@
                                     "description": "Booking or changing hotel rooms"
                                 }
                             ],
-                            "output_local": "_classification",
-                            "confidence_local": "_classification_conf"
+                            "min_confidence": 0.5,
+                            "output_local": "_classification"
                         }
                     ],
                     "router": {

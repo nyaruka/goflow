@@ -393,8 +393,8 @@ func TestConstructors(t *testing.T) {
 				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
 				[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
+				0.5,
 				"_classification",
-				"_classification_conf",
 			),
 			`{
 			"type": "call_classifier",
@@ -405,8 +405,8 @@ func TestConstructors(t *testing.T) {
 			},
 			"input": "@input.text",
 			"options": [{"name": "Flights", "description": "Booking flights"}, {"name": "Hotels"}],
-			"output_local": "_classification",
-			"confidence_local": "_classification_conf"
+			"min_confidence": 0.5,
+			"output_local": "_classification"
 		}`,
 		},
 		{
