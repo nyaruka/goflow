@@ -1,3 +1,9 @@
+v0.295.0 (2026-09-28)
+-------------------------
+ * Split model roles into translation, generation and classification, adding Translate to ModelService
+ * Reject mock model results meant for another call type in Response and Translate
+ * Share a ModelTokens struct across model results, events and mock results
+
 v0.294.1 (2026-09-23)
 -------------------------
  * Replace call_classifier categories with options that can have descriptions
