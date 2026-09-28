@@ -27,30 +27,14 @@ func TestModelService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "You asked:\n\nplease translate this\n\nHello", resp.Output)
 
-	// "Translate" instructions mentioning "JSON" parse the input as a string->[]string object and leetify values
-	resp, err = svc.Response(ctx, "Translate as JSON", `{"greeting":["Hello","Hi"],"name":["World"]}`, 100)
-	assert.NoError(t, err)
-	assert.JSONEq(t, `{"greeting":["H3110","H1"],"name":["W0r1d"]}`, resp.Output)
-
 	// values exactly equal to "untranslatable" become "<CANT>"
 	resp, err = svc.Response(ctx, "Translate to Spanish", "untranslatable", 100)
 	assert.NoError(t, err)
 	assert.Equal(t, "<CANT>", resp.Output)
 
-	resp, err = svc.Response(ctx, "Translate as JSON", `{"a":["Hi","untranslatable"]}`, 100)
-	assert.NoError(t, err)
-	assert.JSONEq(t, `{"a":["H1","<CANT>"]}`, resp.Output)
-
 	// values exactly equal to "error" cause the service to error
 	_, err = svc.Response(ctx, "Translate to Spanish", "error", 100)
 	assert.EqualError(t, err, "simulated model error")
-
-	_, err = svc.Response(ctx, "Translate as JSON", `{"a":["Hi","error"]}`, 100)
-	assert.EqualError(t, err, "simulated model error")
-
-	// invalid JSON input with a JSON translate instruction errors
-	_, err = svc.Response(ctx, "Translate as JSON", "not json", 100)
-	assert.Error(t, err)
 
 	// Categorize instructions pick the last word
 	resp, err = svc.Response(ctx, "Categorize into [A, B, C]", "input", 100)
@@ -72,19 +56,35 @@ func TestModelServiceClassify(t *testing.T) {
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
 }
 
+func TestModelServiceTranslate(t *testing.T) {
+	svc := services.NewModel()
+	ctx := t.Context()
+
+	// values are leetified, and items with an untranslatable value are omitted
+	tr, err := svc.Translate(ctx, "eng", "spa", map[string][]string{"greeting": {"Hello", "Hi"}, "name": {"World"}, "other": {"Hi", "untranslatable"}})
+	assert.NoError(t, err)
+	assert.Equal(t, map[string][]string{"greeting": {"H3110", "H1"}, "name": {"W0r1d"}}, tr.Items)
+
+	// values exactly equal to "error" cause the service to error
+	_, err = svc.Translate(ctx, "eng", "spa", map[string][]string{"a": {"Hi", "error"}})
+	assert.EqualError(t, err, "simulated model error")
+}
+
 func TestMockModel(t *testing.T) {
 	ctx := t.Context()
 
 	svc := services.NewMockModel(
-		&services.MockModelResult{Output: "Bonjour", TokensInput: 12, TokensOutput: 3},
+		&services.MockModelResult{Output: "Bonjour", Tokens: core.ModelTokens{Input: 12, Output: 3}},
 		&services.MockModelResult{Option: "Flights", Confidence: 0.7},
 		&services.MockModelResult{Error: "boom"},
+		&services.MockModelResult{Items: map[string][]string{"a": {"Bonjour"}}, Tokens: core.ModelTokens{Input: 20, Output: 4}},
+		&services.MockModelResult{Error: "bang"},
 	)
 	assert.True(t, svc.HasUnused())
 
 	resp, err := svc.Response(ctx, "Translate to French", "Hello", 100)
 	assert.NoError(t, err)
-	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", TokensInput: 12, TokensOutput: 3}, resp)
+	assert.Equal(t, &core.ModelResponse{Output: "Bonjour", Tokens: core.ModelTokens{Input: 12, Output: 3}}, resp)
 
 	options := []*core.ClassifierOption{{Name: "Flights"}, {Name: "Hotels"}}
 
@@ -95,11 +95,20 @@ func TestMockModel(t *testing.T) {
 	_, err = svc.Classify(ctx, "Hi", options)
 	assert.EqualError(t, err, "boom")
 
+	tr, err := svc.Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hello"}})
+	assert.NoError(t, err)
+	assert.Equal(t, &core.Translation{Items: map[string][]string{"a": {"Bonjour"}}, Tokens: core.ModelTokens{Input: 20, Output: 4}}, tr)
+
+	_, err = svc.Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
+	assert.EqualError(t, err, "bang")
+
 	assert.False(t, svc.HasUnused())
 	assert.Equal(t, []*services.ModelCall{
 		{Instructions: "Translate to French", Input: "Hello", MaxTokens: 100},
 		{Input: "I want to fly to Paris", Options: options},
 		{Input: "Hi", Options: options},
+		{Source: "eng", Target: "fra", Items: map[string][]string{"a": {"Hello"}}},
+		{Source: "eng", Target: "fra", Items: map[string][]string{"a": {"Hi"}}},
 	}, svc.Calls())
 
 	// running out of results, or a result that doesn't fit the call, is a test setup mistake
@@ -109,5 +118,14 @@ func TestMockModel(t *testing.T) {
 	})
 	assert.Panics(t, func() {
 		services.NewMockModel(&services.MockModelResult{Option: "Cars"}).Response(ctx, "Summarize", "Hi", 100)
+	})
+	assert.Panics(t, func() {
+		services.NewMockModel(&services.MockModelResult{Option: "Cars"}).Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
+	})
+	assert.Panics(t, func() {
+		services.NewMockModel(&services.MockModelResult{Output: "Salut"}).Translate(ctx, "eng", "fra", map[string][]string{"a": {"Hi"}})
+	})
+	assert.Panics(t, func() {
+		services.NewMockModel(&services.MockModelResult{Items: map[string][]string{"a": {"Salut"}}}).Response(ctx, "Summarize", "Hi", 100)
 	})
 }

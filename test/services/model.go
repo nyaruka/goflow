@@ -2,13 +2,13 @@ package services
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"slices"
 	"strings"
 	"sync"
 
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -48,36 +48,17 @@ func (s *ModelService) Response(ctx context.Context, instructions, input string,
 	if strings.HasPrefix(instructions, "Categorize") { // instructions like "Categorize... Category2, Category3]" will return "Category3"
 		words := strings.Fields(instructions)
 		output = strings.TrimSuffix(words[len(words)-1], "]")
-	} else if strings.HasPrefix(instructions, "Translate") { // "Translate..." leetifies the input; if "JSON" is mentioned, values of a string->[]string object
-		if strings.Contains(instructions, "JSON") {
-			obj := map[string][]string{}
-			if err := json.Unmarshal([]byte(input), &obj); err != nil {
-				return nil, fmt.Errorf("invalid JSON object input: %w", err)
-			}
-			for k, vs := range obj {
-				for i, v := range vs {
-					tv, err := translate(v)
-					if err != nil {
-						return nil, err
-					}
-					vs[i] = tv
-				}
-				obj[k] = vs
-			}
-			b, _ := json.Marshal(obj)
-			output = string(b)
-		} else {
-			tv, err := translate(input)
-			if err != nil {
-				return nil, err
-			}
-			output = tv
+	} else if strings.HasPrefix(instructions, "Translate") { // "Translate..." leetifies the input
+		tv, err := translate(input)
+		if err != nil {
+			return nil, err
 		}
+		output = tv
 	} else {
 		output = "You asked:\n\n" + instructions + "\n\n" + input
 	}
 
-	return &core.ModelResponse{Output: output, TokensInput: 45, TokensOutput: 78}, nil
+	return &core.ModelResponse{Output: output, Tokens: core.ModelTokens{Input: 45, Output: 78}}, nil
 }
 
 func (s *ModelService) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
@@ -92,19 +73,39 @@ func (s *ModelService) Classify(ctx context.Context, input string, options []*co
 		}
 	}
 
-	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, TokensInput: 34, TokensOutput: 5}, nil
+	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, Tokens: core.ModelTokens{Input: 34, Output: 5}}, nil
+}
+
+func (s *ModelService) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
+	translated := make(map[string][]string, len(items))
+
+	for key, vals := range items {
+		tvals := make([]string, len(vals))
+		for i, v := range vals {
+			tv, err := translate(v)
+			if err != nil {
+				return nil, err
+			}
+			tvals[i] = tv
+		}
+		if !slices.Contains(tvals, "<CANT>") {
+			translated[key] = tvals
+		}
+	}
+
+	return &core.Translation{Items: translated, Tokens: core.ModelTokens{Input: 56, Output: 67}}, nil
 }
 
 // MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
-// Option, Confidence and Probabilities, and either returns Error instead if it's set.
+// Option, Confidence and Probabilities, a call to Translate uses Items, and any returns Error instead if it's set.
 type MockModelResult struct {
-	Output        string             `json:"output,omitempty"`
-	Option        string             `json:"option,omitempty"`
-	Confidence    float64            `json:"confidence,omitempty"`
-	Probabilities map[string]float64 `json:"probabilities,omitempty"`
-	TokensInput   int64              `json:"tokens_input,omitempty"`
-	TokensOutput  int64              `json:"tokens_output,omitempty"`
-	Error         string             `json:"error,omitempty"`
+	Output        string              `json:"output,omitempty"`
+	Option        string              `json:"option,omitempty"`
+	Confidence    float64             `json:"confidence,omitempty"`
+	Probabilities map[string]float64  `json:"probabilities,omitempty"`
+	Items         map[string][]string `json:"items,omitempty"`
+	Tokens        core.ModelTokens    `json:"tokens,omitzero"`
+	Error         string              `json:"error,omitempty"`
 }
 
 // ModelCall is a call made to a MockModel
@@ -113,6 +114,9 @@ type ModelCall struct {
 	Input        string
 	MaxTokens    int                      // set for Response calls
 	Options      []*core.ClassifierOption // set for Classify calls
+	Source       i18n.Language            // set for Translate calls
+	Target       i18n.Language            // set for Translate calls
+	Items        map[string][]string      // set for Translate calls
 }
 
 // MockModel is a model service for testing which answers each call with the next of its given results
@@ -132,11 +136,11 @@ func (m *MockModel) Response(ctx context.Context, instructions, input string, ma
 	if r.Error != "" {
 		return nil, errors.New(r.Error)
 	}
-	if r.Option != "" {
-		panic("mock model result with option used for a response call")
+	if r.Option != "" || r.Items != nil {
+		panic("mock model result for another call type used for a response call")
 	}
 
-	return &core.ModelResponse{Output: r.Output, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.ModelResponse{Output: r.Output, Tokens: r.Tokens}, nil
 }
 
 func (m *MockModel) Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error) {
@@ -148,7 +152,19 @@ func (m *MockModel) Classify(ctx context.Context, input string, options []*core.
 		panic(fmt.Sprintf("mock model result option '%s' isn't one of the classify call's options", r.Option))
 	}
 
-	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, TokensInput: r.TokensInput, TokensOutput: r.TokensOutput}, nil
+	return &core.Classification{Option: r.Option, Confidence: r.Confidence, Probabilities: r.Probabilities, Tokens: r.Tokens}, nil
+}
+
+func (m *MockModel) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
+	r := m.next(&ModelCall{Source: source, Target: target, Items: items})
+	if r.Error != "" {
+		return nil, errors.New(r.Error)
+	}
+	if r.Option != "" || r.Output != "" {
+		panic("mock model result for another call type used for a translate call")
+	}
+
+	return &core.Translation{Items: r.Items, Tokens: r.Tokens}, nil
 }
 
 func (m *MockModel) next(call *ModelCall) *MockModelResult {
