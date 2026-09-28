@@ -1,0 +1,560 @@
+[
+    {
+        "description": "flow with split by AI categorize node",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "call_llm",
+                            "llm": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "instructions": "@(prompt(\"categorize\", slice(node.categories, 0, -2)))",
+                            "input": "@input",
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Flights",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Hotels",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            },
+                            {
+                                "uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                                "name": "Other",
+                                "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                        "operand": "@locals._llm_output",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            },
+                            {
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                            },
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        },
+                        {
+                            "uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "call_classifier",
+                            "model": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "input": "@input",
+                            "options": [
+                                {
+                                    "name": "Flights"
+                                },
+                                {
+                                    "name": "Hotels"
+                                }
+                            ],
+                            "min_confidence": 0.5,
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Flights",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Hotels",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            },
+                            {
+                                "uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                                "name": "Other",
+                                "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                        "operand": "@locals._llm_output",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            },
+                            {
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                            },
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        },
+                        {
+                            "uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "description": "call_llm nodes that aren't split by AI categorize nodes are left alone",
+        "original": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.5.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "call_llm",
+                            "llm": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "instructions": "Categorize as Flights or Hotels",
+                            "input": "@input",
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Flights",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Hotels",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            },
+                            {
+                                "uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                                "name": "Other",
+                                "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                        "operand": "@locals._llm_output",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            },
+                            {
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                            },
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        },
+                        {
+                            "uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "5c1e8a3b-0d4f-4b8e-9a6c-1f2e3d4c5b6a",
+                    "actions": [
+                        {
+                            "uuid": "d877f916-eb5a-47e4-a8f0-8df27c16cf82",
+                            "type": "call_llm",
+                            "llm": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "instructions": "@(prompt(\"categorize\", slice(node.categories, 0, -2)))",
+                            "input": "@input",
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "990210fb-166e-49c9-9fb9-5b21ec4b6dc8",
+                                "name": "Flights",
+                                "exit_uuid": "5efe76aa-edeb-4855-bd24-eeaf11f19d8d"
+                            },
+                            {
+                                "uuid": "6ec3d6bb-7da6-42dc-b03f-c07c8fadd665",
+                                "name": "Hotels",
+                                "exit_uuid": "6b9f1782-8f01-4869-a629-4abfe0aa7444"
+                            },
+                            {
+                                "uuid": "9e97af58-9da6-44de-bb5b-cc91c6da0289",
+                                "name": "Other",
+                                "exit_uuid": "fb5920f0-f278-4b96-af22-222346d6f628"
+                            },
+                            {
+                                "uuid": "5234b710-0aed-4f17-b003-e5fdd3e507bd",
+                                "name": "Failure",
+                                "exit_uuid": "a52a4d5e-43da-4413-bfd6-d7b6447fe2ef"
+                            }
+                        ],
+                        "default_category_uuid": "9e97af58-9da6-44de-bb5b-cc91c6da0289",
+                        "operand": "@locals.other",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "2a0cf12c-953f-4ee3-a191-9fc656c63e47",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "990210fb-166e-49c9-9fb9-5b21ec4b6dc8"
+                            },
+                            {
+                                "uuid": "a16e4a6f-1bd5-4541-96b6-3a1b34c4aa4f",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "6ec3d6bb-7da6-42dc-b03f-c07c8fadd665"
+                            },
+                            {
+                                "uuid": "dac86e3e-50de-42d6-ac28-899db9cfb684",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "5234b710-0aed-4f17-b003-e5fdd3e507bd"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "5efe76aa-edeb-4855-bd24-eeaf11f19d8d"
+                        },
+                        {
+                            "uuid": "6b9f1782-8f01-4869-a629-4abfe0aa7444"
+                        },
+                        {
+                            "uuid": "fb5920f0-f278-4b96-af22-222346d6f628"
+                        },
+                        {
+                            "uuid": "a52a4d5e-43da-4413-bfd6-d7b6447fe2ef"
+                        }
+                    ]
+                }
+            ]
+        },
+        "migrated": {
+            "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+            "name": "Test Flow",
+            "spec_version": "14.6.0",
+            "language": "eng",
+            "type": "messaging",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "4eab7a66-0b55-45f6-803f-129a6f49e723",
+                    "actions": [
+                        {
+                            "uuid": "c766e805-da3a-46f4-97c4-7ce54b16bf71",
+                            "type": "call_llm",
+                            "llm": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "instructions": "Categorize as Flights or Hotels",
+                            "input": "@input",
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                                "name": "Flights",
+                                "exit_uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                            },
+                            {
+                                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                                "name": "Hotels",
+                                "exit_uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                            },
+                            {
+                                "uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                                "name": "Other",
+                                "exit_uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                            },
+                            {
+                                "uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9",
+                                "name": "Failure",
+                                "exit_uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                            }
+                        ],
+                        "default_category_uuid": "a766ac1a-766f-4ce5-be4c-a24061bfdec0",
+                        "operand": "@locals._llm_output",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                            },
+                            {
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                            },
+                            {
+                                "uuid": "73bfb9dc-9bbb-4928-92fd-d8957edf4a92",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "e86a60b9-6e8e-4150-9ab9-19e6eb7003d9"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "33712037-9861-4d61-9dcb-60d7fffef96a"
+                        },
+                        {
+                            "uuid": "fdd988ba-34c1-45a8-8413-e89b0a36001e"
+                        },
+                        {
+                            "uuid": "bbcb0d26-a8c4-48f7-9d39-eeb202d09876"
+                        },
+                        {
+                            "uuid": "959d6e4c-658a-49fc-a80d-5ed7df5af640"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "5c1e8a3b-0d4f-4b8e-9a6c-1f2e3d4c5b6a",
+                    "actions": [
+                        {
+                            "uuid": "d877f916-eb5a-47e4-a8f0-8df27c16cf82",
+                            "type": "call_llm",
+                            "llm": {
+                                "uuid": "1c06c884-39dd-4ce4-ad9f-9a01cbe6c000",
+                                "name": "Claude"
+                            },
+                            "instructions": "@(prompt(\"categorize\", slice(node.categories, 0, -2)))",
+                            "input": "@input",
+                            "output_local": "_llm_output"
+                        }
+                    ],
+                    "router": {
+                        "type": "switch",
+                        "categories": [
+                            {
+                                "uuid": "990210fb-166e-49c9-9fb9-5b21ec4b6dc8",
+                                "name": "Flights",
+                                "exit_uuid": "5efe76aa-edeb-4855-bd24-eeaf11f19d8d"
+                            },
+                            {
+                                "uuid": "6ec3d6bb-7da6-42dc-b03f-c07c8fadd665",
+                                "name": "Hotels",
+                                "exit_uuid": "6b9f1782-8f01-4869-a629-4abfe0aa7444"
+                            },
+                            {
+                                "uuid": "9e97af58-9da6-44de-bb5b-cc91c6da0289",
+                                "name": "Other",
+                                "exit_uuid": "fb5920f0-f278-4b96-af22-222346d6f628"
+                            },
+                            {
+                                "uuid": "5234b710-0aed-4f17-b003-e5fdd3e507bd",
+                                "name": "Failure",
+                                "exit_uuid": "a52a4d5e-43da-4413-bfd6-d7b6447fe2ef"
+                            }
+                        ],
+                        "default_category_uuid": "9e97af58-9da6-44de-bb5b-cc91c6da0289",
+                        "operand": "@locals.other",
+                        "result_name": "Intent",
+                        "cases": [
+                            {
+                                "uuid": "2a0cf12c-953f-4ee3-a191-9fc656c63e47",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Flights"
+                                ],
+                                "category_uuid": "990210fb-166e-49c9-9fb9-5b21ec4b6dc8"
+                            },
+                            {
+                                "uuid": "a16e4a6f-1bd5-4541-96b6-3a1b34c4aa4f",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "Hotels"
+                                ],
+                                "category_uuid": "6ec3d6bb-7da6-42dc-b03f-c07c8fadd665"
+                            },
+                            {
+                                "uuid": "dac86e3e-50de-42d6-ac28-899db9cfb684",
+                                "type": "has_only_text",
+                                "arguments": [
+                                    "<ERROR>"
+                                ],
+                                "category_uuid": "5234b710-0aed-4f17-b003-e5fdd3e507bd"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "5efe76aa-edeb-4855-bd24-eeaf11f19d8d"
+                        },
+                        {
+                            "uuid": "6b9f1782-8f01-4869-a629-4abfe0aa7444"
+                        },
+                        {
+                            "uuid": "fb5920f0-f278-4b96-af22-222346d6f628"
+                        },
+                        {
+                            "uuid": "a52a4d5e-43da-4413-bfd6-d7b6447fe2ef"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
