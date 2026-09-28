@@ -72,3 +72,10 @@ type Classification struct {
 	TokensInput   int64
 	TokensOutput  int64
 }
+
+// Translation is the result of translating items of text
+type Translation struct {
+	Items        map[string][]string // translated strings by item, with any untranslatable items omitted
+	TokensInput  int64
+	TokensOutput int64
+}

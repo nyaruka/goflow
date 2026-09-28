@@ -6,6 +6,7 @@ import (
 	"net/url"
 
 	"github.com/nyaruka/gocommon/httpx"
+	"github.com/nyaruka/gocommon/i18n"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/core"
 	"github.com/nyaruka/goflow/core/events"
@@ -43,6 +44,11 @@ type ModelService interface {
 	// minimum. It always picks one of the options, so input that fits none of them should get a low confidence rather
 	// than an error. Services must approximate a confidence if the model doesn't provide one.
 	Classify(ctx context.Context, input string, options []*core.ClassifierOption) (*core.Classification, error)
+
+	// Translate translates each item's strings from the source language, which is und or mul if not known, to the
+	// target language, leaving @ expressions untranslated. An item whose strings can't all be translated is omitted
+	// from the result rather than being an error.
+	Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error)
 }
 
 // AirtimeService provides airtime functionality to the engine
