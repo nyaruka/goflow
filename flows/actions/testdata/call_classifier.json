@@ -197,7 +197,7 @@
                 "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "model b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f does not have the classification role"
+                "text": "model b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f does not have the classify role"
             }
         ],
         "locals_after": {

@@ -109,8 +109,8 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 		log(events.NewDependencyError(a.Model))
 		return nil
 	}
-	if !model.HasRole(assets.ModelRoleClassification) {
-		log(events.NewError(fmt.Sprintf("model %s does not have the classification role", a.Model.UUID), ""))
+	if !model.HasRole(assets.ModelRoleClassify) {
+		log(events.NewError(fmt.Sprintf("model %s does not have the classify role", a.Model.UUID), ""))
 		return nil
 	}
 
