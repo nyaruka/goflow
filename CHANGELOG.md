@@ -1,3 +1,8 @@
+## v0.295.2 (2026-09-29)
+ * Limit call_classifier options to 10
+ * Add 14.6.0 migration to replace AI categorize call_llm actions with call_classifier, without writing a null input when the original action had none
+ * Replace call_classifier's confidence_local with min_confidence, below which the output is <NONE>
+
 ## v0.295.1 (2026-09-29)
  * Rename model roles to verbs: translate, generate, classify
 
