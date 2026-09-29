@@ -64,7 +64,7 @@ const (
 // name based contains conditions are tokenized but only tokens of at least 2 characters are used
 const minNameTokenContainsLength = 2
 
-// URN based contains conditions ust be at least 3 characters long as the ES implementation uses trigrams
+// URN and email based contains conditions must be at least 3 characters long as the ES implementation uses trigrams
 const minURNContainsLength = 3
 
 var isNumberRegex = regexp.MustCompile(`^\d+(\.\d+)?$`)
@@ -203,9 +203,13 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 			if len(c.value) < minURNContainsLength {
 				return NewQueryError(ErrInvalidPartialURN, fmt.Sprintf("contains operator on URN requires value of minimum length %d", minURNContainsLength)).WithExtra("min_value_length", strconv.Itoa(minURNContainsLength))
 			}
+		} else if c.propKey == AttributeEmail {
+			if len(c.value) < minURNContainsLength {
+				return NewQueryError(ErrInvalidPartialEmail, fmt.Sprintf("contains operator on email requires value of minimum length %d", minURNContainsLength)).WithExtra("min_value_length", strconv.Itoa(minURNContainsLength))
+			}
 		} else {
-			// ~ can only be used with the name/urn attributes or actual URNs
-			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name or URN values").WithExtra("property", c.propKey)
+			// ~ can only be used with the name/email/urn attributes or actual URNs
+			return NewQueryError(ErrUnsupportedContains, "contains conditions can only be used with name, email or URN values").WithExtra("property", c.propKey)
 		}
 
 	case OpGreaterThan, OpGreaterThanOrEqual, OpLessThan, OpLessThanOrEqual:

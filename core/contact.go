@@ -95,6 +95,7 @@ type Contact struct {
 	id         ContactID
 	name       string
 	language   i18n.Language
+	email      string
 	status     ContactStatus
 	timezone   *time.Location
 	createdOn  time.Time
@@ -115,6 +116,7 @@ func NewContact(
 	id ContactID,
 	name string,
 	language i18n.Language,
+	email string,
 	status ContactStatus,
 	timezone *time.Location,
 	createdOn time.Time,
@@ -139,6 +141,7 @@ func NewContact(
 		id:         id,
 		name:       name,
 		language:   language,
+		email:      email,
 		status:     status,
 		timezone:   timezone,
 		createdOn:  createdOn,
@@ -176,6 +179,7 @@ func (c *Contact) Clone() *Contact {
 		id:         c.id,
 		name:       c.name,
 		language:   c.language,
+		email:      c.email,
 		status:     c.status,
 		timezone:   c.timezone,
 		createdOn:  c.createdOn,
@@ -199,6 +203,9 @@ func (c *Contact) SetLanguage(lang i18n.Language) { c.language = lang }
 
 // Language gets the language for this contact
 func (c *Contact) Language() i18n.Language { return c.language }
+
+// Email gets the email address for this contact
+func (c *Contact) Email() string { return c.email }
 
 // Country gets the country for this contact..
 //
@@ -402,6 +409,7 @@ func (c *Contact) Format(env envs.Environment) string {
 //	first_name:text -> the first name of the contact
 //	name:text -> the name of the contact
 //	language:text -> the language of the contact as 3-letter ISO code
+//	email:text -> the email address of the contact
 //	status:text -> the status of the contact
 //	created_on:datetime -> the creation date of the contact
 //	last_seen_on:any -> the last seen date of the contact
@@ -448,6 +456,7 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 		"name":         types.NewXText(c.name),
 		"first_name":   firstName,
 		"language":     types.NewXText(string(c.language)),
+		"email":        types.NewXText(c.email),
 		"timezone":     timezone,
 		"status":       types.NewXText(string(c.status)),
 		"created_on":   types.NewXDateTime(c.createdOn),
@@ -587,6 +596,11 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				return []any{string(c.language)}
 			}
 			return nil
+		case contactql.AttributeEmail:
+			if c.email != "" {
+				return []any{c.email}
+			}
+			return nil
 		case contactql.AttributeURN:
 			vals := make([]any, len(c.URNs()))
 			for i, urn := range c.URNs() {
@@ -634,6 +648,7 @@ type ContactEnvelope struct {
 	ID         ContactID                `json:"id,omitempty"`
 	Name       string                   `json:"name,omitempty"`
 	Language   i18n.Language            `json:"language,omitempty"`
+	Email      string                   `json:"email,omitempty"`
 	Status     ContactStatus            `json:"status,omitempty"    validate:"required,contact_status"`
 	Timezone   string                   `json:"timezone,omitempty"`
 	CreatedOn  time.Time                `json:"created_on"          validate:"required"`
@@ -650,6 +665,7 @@ func (e *ContactEnvelope) Unmarshal(sa Assets, missing assets.MissingCallback) (
 		id:         e.ID,
 		name:       e.Name,
 		language:   e.Language,
+		email:      e.Email,
 		status:     e.Status,
 		createdOn:  e.CreatedOn,
 		lastSeenOn: e.LastSeenOn,
@@ -691,6 +707,7 @@ func (c *Contact) Marshal() *ContactEnvelope {
 		ID:         c.id,
 		Status:     c.status,
 		Language:   c.language,
+		Email:      c.email,
 		CreatedOn:  c.createdOn,
 		LastSeenOn: c.lastSeenOn,
 		URNs:       c.urns.Encode(),

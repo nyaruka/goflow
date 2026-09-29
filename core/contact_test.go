@@ -64,6 +64,7 @@ func TestContact(t *testing.T) {
 		core.ContactID(12345),
 		"Joe Bloggs",
 		i18n.Language("eng"),
+		"joe@example.com",
 		core.ContactStatusActive,
 		tz,
 		time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC),
@@ -92,6 +93,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, core.ContactID(12345), contact.ID())
 	assert.Equal(t, tz, contact.Timezone())
 	assert.Equal(t, i18n.Language("eng"), contact.Language())
+	assert.Equal(t, "joe@example.com", contact.Email())
 	assert.Equal(t, android, contact.PreferredChannel())
 	assert.Equal(t, i18n.Country("US"), contact.Country())
 	assert.Equal(t, i18n.Locale("eng-US"), contact.Locale(env))
@@ -141,6 +143,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, core.ContactID(12345), clone.ID())
 	assert.Equal(t, tz, clone.Timezone())
 	assert.Equal(t, i18n.Language("eng"), clone.Language())
+	assert.Equal(t, "joe@example.com", clone.Email())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
 	assert.Equal(t, 0, clone.Tickets().Open().Count()) // not included
@@ -153,6 +156,7 @@ func TestContact(t *testing.T) {
 		"__default__":  types.NewXText("Joe Bloggs"),
 		"channel":      core.Context(env, android),
 		"created_on":   types.NewXDateTime(contact.CreatedOn()),
+		"email":        types.NewXText("joe@example.com"),
 		"last_seen_on": types.NewXDateTime(*contact.LastSeenOn()),
 		"fields":       core.Context(env, contact.Fields()),
 		"first_name":   types.NewXText("Joe"),
@@ -176,6 +180,7 @@ func TestContact(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, contact.UUID(), unmarshaled.UUID())
+	assert.Equal(t, "joe@example.com", unmarshaled.Email())
 }
 
 func TestContactURNs(t *testing.T) {
@@ -311,6 +316,7 @@ func TestContactFormat(t *testing.T) {
 		core.ContactID(1234),
 		"",
 		i18n.NilLanguage,
+		"",
 		core.ContactStatusActive,
 		nil,
 		time.Now(),
@@ -544,10 +550,11 @@ func TestContactQuery(t *testing.T) {
 			}
 		],
 		"language": "eng",
+		"email": "ben@example.com",
 		"timezone": "America/Guayaquil",
 		"urns": [
-			"tel:+12065550100", 
-			"tel:+12065550101", 
+			"tel:+12065550100",
+			"tel:+12065550101",
 			"ext:ewok"
 		],
 		"created_on": "2020-01-24T13:24:30Z",
@@ -578,6 +585,16 @@ func TestContactQuery(t *testing.T) {
 		{`language = FRA`, envs.RedactionPolicyNone, false, ""},
 		{`language = ""`, envs.RedactionPolicyNone, false, ""},
 		{`language != ""`, envs.RedactionPolicyNone, true, ""},
+
+		{`email = ben@example.com`, envs.RedactionPolicyNone, true, ""},
+		{`email = BEN@Example.com`, envs.RedactionPolicyNone, true, ""},
+		{`email = joe@example.com`, envs.RedactionPolicyNone, false, ""},
+		{`email != joe@example.com`, envs.RedactionPolicyNone, true, ""},
+		{`email ~ example`, envs.RedactionPolicyNone, true, ""},
+		{`email ~ EXAMPLE.COM`, envs.RedactionPolicyNone, true, ""},
+		{`email ~ gmail`, envs.RedactionPolicyNone, false, ""},
+		{`email = ""`, envs.RedactionPolicyNone, false, ""},
+		{`email != ""`, envs.RedactionPolicyNone, true, ""},
 
 		{`created_on = 24-01-2020`, envs.RedactionPolicyNone, true, ""},
 		{`created_on = 25-01-2020`, envs.RedactionPolicyNone, false, ""},

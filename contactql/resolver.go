@@ -12,6 +12,7 @@ const (
 	AttributeName       = "name"
 	AttributeStatus     = "status"
 	AttributeLanguage   = "language"
+	AttributeEmail      = "email"
 	AttributeURN        = "urn"
 	AttributeGroup      = "group"
 	AttributeFlow       = "flow"
@@ -28,6 +29,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeName:       assets.FieldTypeText,
 	AttributeStatus:     assets.FieldTypeText,
 	AttributeLanguage:   assets.FieldTypeText,
+	AttributeEmail:      assets.FieldTypeText,
 	AttributeURN:        assets.FieldTypeText,
 	AttributeGroup:      assets.FieldTypeText,
 	AttributeFlow:       assets.FieldTypeText,

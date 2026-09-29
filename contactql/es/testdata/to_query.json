@@ -1389,6 +1389,70 @@
         "redact_urns": false
     },
     {
+        "description": "email equality",
+        "query": "email=Bob@Example.com",
+        "elastic": {
+            "term": {
+                "email": {
+                    "value": "bob@example.com"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "email inequality",
+        "query": "email!=Bob@Example.com",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "email": {
+                            "value": "bob@example.com"
+                        }
+                    }
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "email contains",
+        "query": "email~Example.com",
+        "elastic": {
+            "match_phrase": {
+                "email": {
+                    "query": "example.com"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "email is set",
+        "query": "email!=\"\"",
+        "elastic": {
+            "exists": {
+                "field": "email"
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "email is not set",
+        "query": "email=\"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "email"
+                    }
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
         "description": "created_on greater than",
         "query": "created_on>2018-06-23",
         "elastic": {

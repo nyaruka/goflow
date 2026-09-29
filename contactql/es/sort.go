@@ -32,7 +32,7 @@ func (c *Converter) Sort(sortBy string, resolver contactql.Resolver) (elastic.So
 	}
 
 	// other attributes are straight sorts
-	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage {
+	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage || property == contactql.AttributeEmail {
 		return elastic.SortBy(property, ascending), nil
 	}
 
