@@ -1,124 +1,98 @@
-v0.295.1 (2026-09-29)
--------------------------
+## v0.295.1 (2026-09-29)
  * Rename model roles to verbs: translate, generate, classify
 
-v0.295.0 (2026-09-28)
--------------------------
+## v0.295.0 (2026-09-28)
  * Split model roles into translation, generation and classification, adding Translate to ModelService
  * Reject mock model results meant for another call type in Response and Translate
  * Share a ModelTokens struct across model results, events and mock results
 
-v0.294.1 (2026-09-23)
--------------------------
+## v0.294.1 (2026-09-23)
  * Replace call_classifier categories with options that can have descriptions
  * Rename LLM to Model in Go API and asset JSON, and ModelClassification to Classification
  * Replace in-band LLM test directives with scripted MockLLM results
 
-v0.294.0 (2026-09-23)
--------------------------
+## v0.294.0 (2026-09-23)
  * Add LLM based call_classifier action and migrate legacy classifier actions to it
 
-v0.293.6 (2026-09-14)
--------------------------
+## v0.293.6 (2026-09-14)
  * Fix confusables collation not matching uppercase input
 
-v0.293.5 (2026-09-11)
--------------------------
+## v0.293.5 (2026-09-11)
  * Read flows for migration with numbers as raw jsontext.Value
 
-v0.293.4 (2026-09-09)
--------------------------
+## v0.293.4 (2026-09-09)
  * Update to gocommon v1.95.0
 
-v0.293.3 (2026-09-09)
--------------------------
+## v0.293.3 (2026-09-09)
  * Update to Go 1.27
 
-v0.293.2 (2026-08-31)
--------------------------
+## v0.293.2 (2026-08-31)
  * Update to gocommon v1.94.3
 
-v0.293.1 (2026-08-27)
--------------------------
+## v0.293.1 (2026-08-27)
  * Add template enumeration for dial wait phone field
  * Update to gocommon v1.94.2
  * Use a consistent set of channel assets and fictional phone numbers in test fixtures
 
-v0.293.0 (2026-08-17)
--------------------------
+## v0.293.0 (2026-08-17)
  * Block webhook calls to blocked domains instead of generating a warning, replacing warning code url:restricted with error code url:blocked
  * Rename WebhookService.IsRestricted to IsBlocked
  * Strip trailing dot from hostnames when matching blocked domains
 
-v0.292.0 (2026-08-17)
--------------------------
+## v0.292.0 (2026-08-17)
  * Add Session.Compact() which clears the paths, locals and webhooks of exited runs
  * Remove UUID and exit_uuid from run path steps
 
-v0.291.1 (2026-08-13)
--------------------------
+## v0.291.1 (2026-08-13)
  * Add engine limit on number of runs per session
 
-v0.291.0 (2026-08-12)
--------------------------
+## v0.291.0 (2026-08-12)
  * Update to gocommon v1.93.1 and collect webhook traces via request context
 
-v0.290.1 (2026-08-05)
--------------------------
+## v0.290.1 (2026-08-05)
  * Remove optin events and move optin reference type into deprecated request_optin action
 
-v0.290.0 (2026-08-05)
--------------------------
+## v0.290.0 (2026-08-05)
  * Remove optin trigger type
  * Remove optin assets and channel features
 
-v0.289.1 (2026-08-03)
--------------------------
+## v0.289.1 (2026-08-03)
  * Add extra support to warning events and populate extra on more error and warning events
 
-v0.289.0 (2026-08-03)
--------------------------
+## v0.289.0 (2026-08-03)
  * Add optional code field to warning events
  * Add warning event with code url:restricted for webhook calls to restricted domains, configured on the webhook service
  * Make warning event messages user facing and add codes context:deprecated and webhook:response_size
  * Remove translation catalogs for languages no longer supported by the editor UI and simplify catalog headers
 
-v0.288.3 (2026-07-30)
--------------------------
+## v0.288.3 (2026-07-30)
  * Raise max length of set_contact_field value to 10000
 
-v0.288.2 (2026-07-29)
--------------------------
+## v0.288.2 (2026-07-29)
  * Add max length validation to remaining flow definition fields and CaseUUID type
 
-v0.288.1 (2026-07-29)
--------------------------
+## v0.288.1 (2026-07-29)
  * Add size limits to flow _ui section and localization values
  * Add max length validation to asset reference names
 
-v0.288.0 (2026-07-28)
--------------------------
+## v0.288.0 (2026-07-28)
  * Add 14.4.2 spec migration to change webhook status router operands to @(default(webhook.status, 0))
 
-v0.287.0 (2026-07-28)
--------------------------
+## v0.287.0 (2026-07-28)
  * Add url type for quick replies, parsed from text as <url>Display text<extra>url
  * Increase max quick reply extra length from 72 to 1000
  * Change request_optin action to log an error event as opt-in requests are no longer supported
  * Remove unused optin_requested event type
 
-v0.286.1 (2026-07-27)
--------------------------
+## v0.286.1 (2026-07-27)
  * Make @input.payload an empty object instead of null when not set
 
-v0.286.0 (2026-07-27)
--------------------------
+## v0.286.0 (2026-07-27)
  * Add form type for quick replies, parsed from text as <form>Button label<extra>form id
  * Add payload field to incoming messages, exposed as @input.payload
  * Remove types.IsNil now that XValues are never non-nil interfaces to nil pointers
 
-v0.285.0 (2026-07-24)
--------------------------
+## v0.285.0 (2026-07-24)
  * Make webhook actions always update @webhook
  * Remove support for flow translation via PO files
  * Audit docs on actions, events and modifiers for accuracy and completeness
@@ -126,29 +100,24 @@ v0.285.0 (2026-07-24)
  * Replace utils/smtpx with new gocommon/smtpx and add context param to EmailService.Send
  * Update to gocommon 1.91.1 and Masterminds/semver v3
 
-v0.284.4 (2026-07-23)
--------------------------
+## v0.284.4 (2026-07-23)
  * Update to gocommon 1.90.1
 
-v0.284.3 (2026-07-23)
--------------------------
+## v0.284.3 (2026-07-23)
  * Make webhook request and response size limits engine options set via new builder method WithWebhookLimits
  * Add engine builder method WithEvaluationBudget to configure the expression evaluation budget
  * Truncate contact names to new MaxNameChars engine option
 
-v0.284.2 (2026-07-22)
--------------------------
+## v0.284.2 (2026-07-22)
  * Limit evaluated call_webhook requests to 256KiB, logging an error with code webhook:request_size when exceeded
  * Use dedicated error code webhook:response_size when a webhook response exceeds the read limit
  * Add sizes field with true request and response sizes to HTTP log events
  * Update to gocommon 1.90.0
 
-v0.284.1 (2026-07-22)
--------------------------
+## v0.284.1 (2026-07-22)
  * Raise call_webhook body limit to 20,000 characters and adjust header value and count limits
 
-v0.284.0 (2026-07-22)
--------------------------
+## v0.284.0 (2026-07-22)
  * Make evaluation budget a parameter of Evaluator
  * Replace XNumber.IntPart() with range-checked Int64() and fix silent int64 wraparound in percent, datetime_from_epoch and epoch
  * Fix panic in prompt() when passed a null argument
@@ -165,29 +134,24 @@ v0.284.0 (2026-07-22)
  * Make exceeding the location hierarchy level limit an explicit panic
  * Remove dead legacyWaitCount field
 
-v0.283.4 (2026-07-22)
--------------------------
+## v0.283.4 (2026-07-22)
  * Raise URL length limit on webhook and audio action fields to 8192
 
-v0.283.3 (2026-07-21)
--------------------------
+## v0.283.3 (2026-07-21)
  * Harden legacy flow migration against crafted definitions
  * Bound flow definition sizes and previously unbounded action and router fields
  * Tighten bounds on transfer_airtime amounts
 
-v0.283.2 (2026-07-21)
--------------------------
+## v0.283.2 (2026-07-21)
  * Bound exponent and rounding places to prevent unbounded work from untrusted expressions
  * Propagate error from random router scaling
  * Confine shopspring/decimal to the engine's type system
 
-v0.283.1 (2026-07-21)
--------------------------
+## v0.283.1 (2026-07-21)
  * Apply engine number format and range limits to contact query values
  * Reject scientific notation in router case number parsing
 
-v0.283.0 (2026-07-21)
--------------------------
+## v0.283.0 (2026-07-21)
  * Add a per-evaluation cost budget which bounds the total work of evaluating an expression
  * Limit the output size of expression functions split, concat, array and repeat
  * Add context.Context parameter to the Run.EvaluateTemplate methods
@@ -197,1757 +161,1350 @@ v0.283.0 (2026-07-21)
  * Don't hold flow assets lock while loading and reading flows
  * Update to latest gocommon
 
-v0.282.1 (2026-07-16)
--------------------------
+## v0.282.1 (2026-07-16)
  * Add contact_flow_changed event type
 
-v0.282.0 (2026-07-16)
--------------------------
+## v0.282.0 (2026-07-16)
  * Replace Contact.ResolveRoutes with singular ResolveRoute
 
-v0.281.0 (2026-07-15)
--------------------------
+## v0.281.0 (2026-07-15)
  * Add optional channel, urn and msg_external_id fields to typing events
  * Update to latest gocommon
 
-v0.280.1 (2026-07-14)
--------------------------
+## v0.280.1 (2026-07-14)
  * Add excellent.Template - a parsed, immutable representation of a template
 
-v0.280.0 (2026-07-13)
--------------------------
+## v0.280.0 (2026-07-13)
  * Split contactql into a light AST/evaluation package and a new contactql/parse package which holds the ANTLR parsing
  * Move remaining asset wrappers (Field, Global, Label, Location, Resthook, Template) from flows into core
  * Move Group into core with query parsing hoisted to the engine
  * Move Contact into core and add core.Assets
  * Move ExtractJSON to utils, NewNodeUUID to core, and rename flows.ContactQueryEscaping to contactql.EscapeValue
 
-v0.279.1 (2026-07-09)
--------------------------
+## v0.279.1 (2026-07-09)
  * Add typing_started and typing_stopped event types
 
-v0.279.0 (2026-07-09)
--------------------------
+## v0.279.0 (2026-07-09)
  * Move thin live objects (Ticket, Call, URN) and asset wrappers (Channel, Topic, User, LLM, OptIn, Campaign) from flows into core
  * Replace flows.ReadTicket and flows.ReadCall with Unmarshal methods on the envelope types
 
-v0.278.4 (2026-07-09)
--------------------------
+## v0.278.4 (2026-07-09)
  * Update to latest gocommon
 
-v0.278.3 (2026-07-08)
--------------------------
+## v0.278.3 (2026-07-08)
  * Remove WhatsApp URN support from airtime transfers, keep tel only
 
-v0.278.2 (2026-07-08)
--------------------------
+## v0.278.2 (2026-07-08)
  * Guard WhatsApp BSUID URNs against phone-number assumptions
  * Update latest gocommon
 
-v0.278.1 (2026-07-02)
--------------------------
+## v0.278.1 (2026-07-02)
  * Replace transient event step attachments with a step description struct
 
-v0.278.0 (2026-07-02)
--------------------------
+## v0.278.0 (2026-07-02)
  * Move events out of flows into their own root-level package
 
-v0.277.4 (2026-07-01)
--------------------------
+## v0.277.4 (2026-07-01)
  * Update dependencies
 
-v0.277.3 (2026-06-04)
--------------------------
+## v0.277.3 (2026-06-04)
  * Update to gocommon v1.83.0
 
-v0.277.2 (2026-06-04)
--------------------------
+## v0.277.2 (2026-06-04)
  * Update to gocommon v1.82.0 and phonenumbers v2
 
-v0.277.1 (2026-06-03)
--------------------------
+## v0.277.1 (2026-06-03)
  * Update to gocommon v1.81.3
 
-v0.277.0 (2026-06-02)
--------------------------
+## v0.277.0 (2026-06-02)
  * Pass an HTTP client to the engine instead of using global httpx tracing/mocking
 
-v0.276.5 (2026-05-27)
--------------------------
+## v0.276.5 (2026-05-27)
  * Let AirtimeService.Create receive the pre-allocated event UUID
 
-v0.276.4 (2026-05-27)
--------------------------
+## v0.276.4 (2026-05-27)
  * Add Confirm to AirtimeService interface
 
-v0.276.3 (2026-05-27)
--------------------------
+## v0.276.3 (2026-05-27)
  * Re-add ExternalID to airtime transfer for the provider transaction id
 
-v0.276.2 (2026-05-27)
--------------------------
+## v0.276.2 (2026-05-27)
  * Replace airtime_transferred event with airtime_created
 
-v0.276.1 (2026-05-27)
--------------------------
+## v0.276.1 (2026-05-27)
  * Downgrade webhook router fix to 14.4.1 and simplify localization cleanup
 
-v0.276.0 (2026-05-27)
--------------------------
+## v0.276.0 (2026-05-27)
  * Normalise webhook and resthook split routers to canonical shape
 
-v0.275.0 (2026-05-26)
--------------------------
+## v0.275.0 (2026-05-26)
  * Remove classifier assets
 
-v0.274.1 (2026-04-30)
--------------------------
+## v0.274.1 (2026-04-30)
  * Split LLM token usage into input and output
 
-v0.274.0 (2026-04-28)
--------------------------
+## v0.274.0 (2026-04-28)
  * Rename LLM roles translation/flows to editing/engine
 
-v0.273.10 (2026-04-27)
--------------------------
+## v0.273.10 (2026-04-27)
  * Add roles field to LLM assets and enforce flows role for call_llm
 
-v0.273.9 (2026-04-24)
--------------------------
+## v0.273.9 (2026-04-24)
  * Test LLM translate returns error for value 'error'
 
-v0.273.8 (2026-04-24)
--------------------------
+## v0.273.8 (2026-04-24)
  * Test LLM translate returns <CANT> for value 'untranslatable'
 
-v0.273.7 (2026-04-24)
--------------------------
+## v0.273.7 (2026-04-24)
  * Remove codecov integration
  * Add Translate prefix to test LLM service that converts input to leetspeak
 
-v0.273.6 (2026-04-22)
--------------------------
+## v0.273.6 (2026-04-22)
  * Honor \return and \error directives in first element of JSON array input
 
-v0.273.5 (2026-04-08)
--------------------------
+## v0.273.5 (2026-04-08)
  * Fix stale 'localizable template' docstrings on set_contact_* actions
  * Add localized engine tag to say_msg audio_url field
 
-v0.273.4 (2026-04-08)
--------------------------
+## v0.273.4 (2026-04-08)
  * Check scheme when resolving URN's affinity channel
 
-v0.273.3 (2026-04-07)
--------------------------
+## v0.273.3 (2026-04-07)
  * Preserve channel affinity in routes modifier set mode
 
-v0.273.2 (2026-04-07)
--------------------------
+## v0.273.2 (2026-04-07)
  * Deprecate URNs modifier in favor of routes modifier
 
-v0.273.1 (2026-04-07)
--------------------------
+## v0.273.1 (2026-04-07)
  * Use routes modifier in add_contact_urn action
 
-v0.273.0 (2026-04-07)
--------------------------
+## v0.273.0 (2026-04-07)
  * Add routes modifier for setting contact URNs with channel affinity
 
-v0.272.3 (2026-03-27)
--------------------------
+## v0.272.3 (2026-03-27)
  * Update tests for new bsuid URN scheme from gocommon
 
-v0.272.2 (2026-03-27)
--------------------------
+## v0.272.2 (2026-03-27)
  * Update gocommon
 
-v0.272.1 (2026-03-25)
--------------------------
+## v0.272.1 (2026-03-25)
  * Allow entering background flows from any flow type
 
-v0.272.0 (2026-03-24)
--------------------------
+## v0.272.0 (2026-03-24)
  * Update deps
  * Add uuidAsDocID option to es.Converter for indexes where _id is UUID
  * Update to go 1.26
  * Refactor contactql/es to use Converter struct instead of standalone functions
 
-v0.271.0 (2026-03-19)
--------------------------
+## v0.271.0 (2026-03-19)
  * Remove all_urns field from send_msg actions
 
-v0.270.0 (2026-03-10)
--------------------------
+## v0.270.0 (2026-03-10)
  * Add template support to send_broadcast actions
 
-v0.269.3 (2026-03-03)
--------------------------
+## v0.269.3 (2026-03-03)
  * Use minor version for last migration
 
-v0.269.2 (2026-03-03)
--------------------------
+## v0.269.2 (2026-03-03)
  * Add flow migration to fix invalid case arguments
 
-v0.269.1 (2026-03-03)
--------------------------
+## v0.269.1 (2026-03-03)
  * Allow cases to have up to 10 arguments
 
-v0.269.0 (2026-03-03)
--------------------------
+## v0.269.0 (2026-03-03)
  * Restrict case tests to maximum 2 arguments and fix bad test files
 
-v0.268.2 (2026-02-23)
--------------------------
+## v0.268.2 (2026-02-23)
  * Update .gitignore
 
-v0.268.1 (2026-02-23)
--------------------------
+## v0.268.1 (2026-02-23)
  * Export test.MockStartTime var
 
-v0.268.0 (2026-02-22)
--------------------------
+## v0.268.0 (2026-02-22)
  * Add range check for numbers to prevent DynamoDB overflow
 
-v0.267.0 (2026-02-18)
--------------------------
+## v0.267.0 (2026-02-18)
  * Add ticket_uuid to msg_received event
 
-v0.266.0 (2026-02-05)
--------------------------
+## v0.266.0 (2026-02-05)
  * Add affinity modifier
 
-v0.265.2 (2026-02-04)
--------------------------
+## v0.265.2 (2026-02-04)
  * Truncate quick reply text and extra to max lengths
 
-v0.265.1 (2026-02-03)
--------------------------
+## v0.265.1 (2026-02-03)
  * Add type field to quick replies and add more inteligent parsing
 
-v0.265.0 (2026-02-03)
--------------------------
+## v0.265.0 (2026-02-03)
  * Add modifier for last_seen_on
 
-v0.264.0 (2026-01-26)
--------------------------
+## v0.264.0 (2026-01-26)
  * AddContactURN action should set local if successful
 
-v0.263.6 (2026-01-15)
--------------------------
+## v0.263.6 (2026-01-15)
  * Add _via field to Event struct
 
-v0.263.5 (2026-01-14)
--------------------------
+## v0.263.5 (2026-01-14)
  * Tweak error messages related to URN claiming
  * Make error events from template evaluation more user friendly
  * Truncate bad webhook URL error message
  * Update error event texts to be more user friendly
 
-v0.263.4 (2026-01-14)
--------------------------
+## v0.263.4 (2026-01-14)
  * Change failure event messages to be user facing
 
-v0.263.3 (2026-01-14)
--------------------------
+## v0.263.3 (2026-01-14)
  * Don't create failure events in parent runs when unwinding from failure
  * Make Session.created_on required
 
-v0.263.2 (2026-01-12)
--------------------------
+## v0.263.2 (2026-01-12)
  * Add codes to error events
 
-v0.263.1 (2026-01-12)
--------------------------
+## v0.263.1 (2026-01-12)
  * Pass context into modifiers and engine callbacks
 
-v0.263.0 (2026-01-12)
--------------------------
+## v0.263.0 (2026-01-12)
  * Update dependencies
  * Require claiming of URNs via engine callback
 
-v0.262.5 (2025-11-27)
--------------------------
+## v0.262.5 (2025-11-27)
  * Set Step.run when reading steps in run paths
 
-v0.262.4 (2025-11-27)
--------------------------
+## v0.262.4 (2025-11-27)
  * Add missing Run method to Step interface
 
-v0.262.3 (2025-11-27)
--------------------------
+## v0.262.3 (2025-11-27)
  * Change Event.Step to be actual step object with transient run object
 
-v0.262.2 (2025-11-27)
--------------------------
+## v0.262.2 (2025-11-27)
  * Don't persist step UUID on events
 
-v0.262.1 (2025-11-27)
--------------------------
+## v0.262.1 (2025-11-27)
  * Fix unmarshaling of events with _user set
 
-v0.262.0 (2025-11-27)
--------------------------
+## v0.262.0 (2025-11-27)
  * Add _user field to events to be set by caller
  * Remove reading of legacy events on runs
  * Remove note property from ticket_opened events and change open_ticket actions to create separate ticket_note_added events instead.
  * Re-add devcontainer configuration
 
-v0.261.2 (2025-11-20)
--------------------------
+## v0.261.2 (2025-11-20)
  * Bump golang.org/x/crypto from 0.44.0 to 0.45.0
 
-v0.261.1 (2025-11-12)
--------------------------
+## v0.261.1 (2025-11-12)
  * Update to latest gocommon
 
-v0.261.0 (2025-11-12)
--------------------------
+## v0.261.0 (2025-11-12)
  * Add new msg_deleted and msg_status_changed events
 
-v0.260.0 (2025-10-31)
--------------------------
+## v0.260.0 (2025-10-31)
  * Rework how URNs are modeled internally
 
-v0.259.3 (2025-10-27)
--------------------------
+## v0.259.3 (2025-10-27)
  * Use identity URNs for messages
 
-v0.259.2 (2025-10-21)
--------------------------
+## v0.259.2 (2025-10-21)
  * Rename no_destination to no_route
 
-v0.259.1 (2025-10-21)
--------------------------
+## v0.259.1 (2025-10-21)
  * Remove unncessary NilUnsendableReason constant
 
-v0.259.0 (2025-10-21)
--------------------------
+## v0.259.0 (2025-10-21)
  * Split contact_status unsendable reason into specific reasons by status
 
-v0.258.0 (2025-10-06)
--------------------------
+## v0.258.0 (2025-10-06)
  * Rename event logging callback functions for clarity
  * Actions shouldn't log modifiers
  * Allow modifiers to return real errors
 
-v0.257.6 (2025-10-03)
--------------------------
+## v0.257.6 (2025-10-03)
  * Revert "optin_requested events should also use identity URN"
 
-v0.257.5 (2025-10-03)
--------------------------
+## v0.257.5 (2025-10-03)
  * airtime_transferred and optin_requested events should use identity URNs
 
-v0.257.4 (2025-10-01)
--------------------------
+## v0.257.4 (2025-10-01)
  * Change first param of CheckSendableCallback to SessionAssets from Environment
 
-v0.257.3 (2025-10-01)
--------------------------
+## v0.257.3 (2025-10-01)
  * Rename EngineOptions.IsSendable to CheckSendable and add type for it
 
-v0.257.2 (2025-10-01)
--------------------------
+## v0.257.2 (2025-10-01)
  * Allow message issendable check configured via engine options
 
-v0.257.1 (2025-09-24)
--------------------------
+## v0.257.1 (2025-09-24)
  * Add flows.NewBroadcastUUID function
 
-v0.257.0 (2025-09-24)
--------------------------
+## v0.257.0 (2025-09-24)
  * Add broadcast and ticket references to msg_created events
 
-v0.256.10 (2025-09-16)
--------------------------
+## v0.256.10 (2025-09-16)
  * Make test.NewHTTPServer usable for other things
 
-v0.256.9 (2025-09-12)
--------------------------
+## v0.256.9 (2025-09-12)
  * Ticket closed events should only have ticket UUID
 
-v0.256.8 (2025-09-11)
--------------------------
+## v0.256.8 (2025-09-11)
  * Simplify ticket modifiers so that they only operate on a single ticket
  * Add ticket_reopen modifier
 
-v0.256.7 (2025-09-11)
--------------------------
+## v0.256.7 (2025-09-11)
  * Add ticket_close modifier
 
-v0.256.6 (2025-09-11)
--------------------------
+## v0.256.6 (2025-09-11)
  * Limit @contact.tickets to be open tickets and mark as deprecated
 
-v0.256.5 (2025-09-10)
--------------------------
+## v0.256.5 (2025-09-10)
  * Tweak cloning of contacts to not include tickets
 
-v0.256.4 (2025-09-10)
--------------------------
+## v0.256.4 (2025-09-10)
  * Ticket modifiers have a set of ticket UUIDs  and operate on the contact's associated tickets.
  * Rename ticket modifier to ticket_open
 
-v0.256.3 (2025-09-09)
--------------------------
+## v0.256.3 (2025-09-09)
  * Replace contact.ticket with list that can hold other tickets
 
-v0.256.2 (2025-09-09)
--------------------------
+## v0.256.2 (2025-09-09)
  * Rework ticket modifiers to be just normal modifiers, adding ticket to state that modifiers can modify
 
-v0.256.1 (2025-09-08)
--------------------------
+## v0.256.1 (2025-09-08)
  * Remove Ticket.last_activity_on
 
-v0.256.0 (2025-09-08)
--------------------------
+## v0.256.0 (2025-09-08)
  * Add ticket modifiers for assignee, note, and topic
  * Add status and last_activity_on to Ticket
 
-v0.255.7 (2025-09-08)
--------------------------
+## v0.255.7 (2025-09-08)
  * Deprecate contact.id in favor of ref
 
-v0.255.6 (2025-09-05)
--------------------------
+## v0.255.6 (2025-09-05)
  * Use unsigned integers for keys in obfuscate/ids.go
 
-v0.255.5 (2025-09-05)
--------------------------
+## v0.255.5 (2025-09-05)
  * Make obfuscation key 4 x int32
 
-v0.255.4 (2025-09-05)
--------------------------
+## v0.255.4 (2025-09-05)
  * Enable contact queries on ref and expose ref in context as @contact.ref
 
-v0.255.3 (2025-09-02)
--------------------------
+## v0.255.3 (2025-09-02)
  * Instead of a boolean, record the previous assignee on the event
 
-v0.255.2 (2025-09-02)
--------------------------
+## v0.255.2 (2025-09-02)
  * Add initial field to ticket_assignee_changed events
 
-v0.255.1 (2025-09-01)
--------------------------
+## v0.255.1 (2025-09-01)
  * Rename ticket_assigned to ticket_assignee_changed to better reflect that it's for unassignment as well
 
-v0.255.0 (2025-09-01)
--------------------------
+## v0.255.0 (2025-09-01)
  * Rework ticket triggers to take ticket separately from the event
  * Add new ticket event types
 
-v0.254.3 (2025-08-26)
--------------------------
+## v0.254.3 (2025-08-26)
  * Tweak optin event constructors to take references
 
-v0.254.2 (2025-08-26)
--------------------------
+## v0.254.2 (2025-08-26)
  * Add channel to call_missed events
 
-v0.254.1 (2025-08-26)
--------------------------
+## v0.254.1 (2025-08-26)
  * Move event field to base trigger struct
 
-v0.254.0 (2025-08-26)
--------------------------
+## v0.254.0 (2025-08-26)
  * Add chat_started events and chat triggers
  * Add new call_missed event type and rework call triggers to accept it
 
-v0.253.2 (2025-08-22)
--------------------------
+## v0.253.2 (2025-08-22)
  * Add call_created event
 
-v0.253.1 (2025-08-21)
--------------------------
+## v0.253.1 (2025-08-21)
  * Rename call_started to call_received
 
-v0.253.0 (2025-08-21)
--------------------------
+## v0.253.0 (2025-08-21)
  * Add call trigger type and call_started event
  * Tweak marshalling of run_started events
 
-v0.252.8 (2025-08-21)
--------------------------
+## v0.252.8 (2025-08-21)
  * Add flows.SessionStatusExpired
 
-v0.252.7 (2025-08-21)
--------------------------
+## v0.252.7 (2025-08-21)
  * Add flows.SessionStatusInterrupted
 
-v0.252.6 (2025-08-20)
--------------------------
+## v0.252.6 (2025-08-20)
  * Add flows.RunStatusInterrupted
 
-v0.252.5 (2025-08-18)
--------------------------
+## v0.252.5 (2025-08-18)
  * Add run_ended events
  * Rework run_started event generation so it is created in the engine for all new runs and not just subflows
  * Replace flow_entered events with run_started events
 
-v0.252.4 (2025-08-18)
--------------------------
+## v0.252.4 (2025-08-18)
  * Remove Run.events altogether though keeping .events on the envelope to read events to recreate fields like webhook
 
-v0.252.3 (2025-08-18)
--------------------------
+## v0.252.3 (2025-08-18)
  * Limit events persisted on runs to only those used still needed to recreate @webhook.
 
-v0.252.2 (2025-08-15)
--------------------------
+## v0.252.2 (2025-08-15)
  * Remove Run.Events() so that run events can only be used internally.
  * Count sprints and store on session rather than counting wait events.
 
-v0.252.1 (2025-08-15)
--------------------------
+## v0.252.1 (2025-08-15)
  * Add had_input field to runs to replace tracking of msg_received events internally
 
-v0.252.0 (2025-08-15)
--------------------------
+## v0.252.0 (2025-08-15)
  * Use more engine.run internally to reduce methods needed on flows.Run
  * Rework triggers and resumes to so they don't directly make state changes
 
-v0.251.6 (2025-08-11)
--------------------------
+## v0.251.6 (2025-08-11)
  * Add flows.NewNodeUUID and flows.NewActionUUID functions
 
-v0.251.5 (2025-08-07)
--------------------------
+## v0.251.5 (2025-08-07)
  * Fix URNs modifier set operations from generating event even when URNs are unchanged
 
-v0.251.4 (2025-07-31)
--------------------------
+## v0.251.4 (2025-07-31)
  * Improve error message when reading action fails
 
-v0.251.3 (2025-07-24)
--------------------------
+## v0.251.3 (2025-07-24)
  * Fix marshaling of session.created_on
 
-v0.251.2 (2025-07-24)
--------------------------
+## v0.251.2 (2025-07-24)
  * Don't make event.uuid required just yet
 
-v0.251.1 (2025-07-23)
--------------------------
+## v0.251.1 (2025-07-23)
  * Make recent changes to resumes, triggers and events required
 
-v0.251.0 (2025-07-22)
--------------------------
+## v0.251.0 (2025-07-22)
  * Remove no longer used events and resume types
 
-v0.250.0 (2025-06-30)
--------------------------
+## v0.250.0 (2025-06-30)
  * Add UUIDs to events and remove UUID from msg and airtime transfer
 
-v0.249.2 (2025-06-25)
--------------------------
+## v0.249.2 (2025-06-25)
  * For reals this time
 
-v0.249.1 (2025-06-25)
--------------------------
+## v0.249.1 (2025-06-25)
  * Fix stuttering in waits/hints package too
 
-v0.249.0 (2025-06-25)
--------------------------
+## v0.249.0 (2025-06-25)
  * Remove stuttering
 
-v0.248.5 (2025-06-25)
--------------------------
+## v0.248.5 (2025-06-25)
  * Remove has_intent, has_top_intent and has_category from documentation
 
-v0.248.4 (2025-06-24)
--------------------------
+## v0.248.4 (2025-06-24)
  * Make Contact.status required
 
-v0.248.3 (2025-06-24)
--------------------------
+## v0.248.3 (2025-06-24)
  * Make it easier to embed a contact in JSON
  * Cleanup after recent IVR related changes
 
-v0.248.2 (2025-06-24)
--------------------------
+## v0.248.2 (2025-06-24)
  * Convert remaining resume types to be event based
 
-v0.248.1 (2025-06-21)
--------------------------
+## v0.248.1 (2025-06-21)
  * Cleanup environment stuff in resumes
 
-v0.248.0 (2025-06-21)
--------------------------
+## v0.248.0 (2025-06-21)
  * Simplify starting new sessions
  * Remove environment and contact from triggers and resumes
 
-v0.247.10 (2025-06-20)
--------------------------
+## v0.247.10 (2025-06-20)
  * Remove calls from triggers and instead require passing via engine methods
 
-v0.247.9 (2025-06-20)
--------------------------
+## v0.247.9 (2025-06-20)
  * Add flows.NewCallUUID
 
-v0.247.8 (2025-06-20)
--------------------------
+## v0.247.8 (2025-06-20)
  * Make calls objects with real channels and add UUID
 
-v0.247.7 (2025-06-19)
--------------------------
+## v0.247.7 (2025-06-19)
  * Rework campaign event triggers to use events
 
-v0.247.6 (2025-06-19)
--------------------------
+## v0.247.6 (2025-06-19)
  * Remove group field on campaign assets
 
-v0.247.5 (2025-06-19)
--------------------------
+## v0.247.5 (2025-06-19)
  * Rename campaign event to campaign point
  * Model campaigns as actual assets
 
-v0.247.4 (2025-06-18)
--------------------------
+## v0.247.4 (2025-06-18)
  * Convert optin triggers to use real events
 
-v0.247.3 (2025-06-18)
--------------------------
+## v0.247.3 (2025-06-18)
  * Rework ticket triggers to use real events
 
-v0.247.2 (2025-06-18)
--------------------------
+## v0.247.2 (2025-06-18)
  * Stop writing trigger.msg and resume.msg
 
-v0.247.1 (2025-06-17)
--------------------------
+## v0.247.1 (2025-06-17)
  * Record flows entered on sprints
 
-v0.247.0 (2025-06-17)
--------------------------
+## v0.247.0 (2025-06-17)
  * Rework msg triggers and resumes to take a msg_received event instead of a msg
 
-v0.246.6 (2025-05-21)
--------------------------
+## v0.246.6 (2025-05-21)
  * Add Sprint.IsInitial
 
-v0.246.5 (2025-05-21)
--------------------------
+## v0.246.5 (2025-05-21)
  * Add Session.CreatedOn
 
-v0.246.4 (2025-05-19)
--------------------------
+## v0.246.4 (2025-05-19)
  * Add Trigger.SetCall
 
-v0.246.3 (2025-05-19)
--------------------------
+## v0.246.3 (2025-05-19)
  * Fix reading of trigger without contact
 
-v0.246.2 (2025-05-19)
--------------------------
+## v0.246.2 (2025-05-19)
  * Add SetContact to Trigger interface
 
-v0.246.1 (2025-05-19)
--------------------------
+## v0.246.1 (2025-05-19)
  * Allow triggers to be persisted without the contact
 
-v0.246.0 (2025-05-19)
--------------------------
+## v0.246.0 (2025-05-19)
  * Remove support for Facebook topics
 
-v0.245.1 (2025-05-14)
--------------------------
+## v0.245.1 (2025-05-14)
  * Change user references to be by UUID with email being the variable form
 
-v0.245.0 (2025-05-13)
--------------------------
+## v0.245.0 (2025-05-13)
  * Add UUID to user assets
 
-v0.244.0 (2025-05-08)
--------------------------
+## v0.244.0 (2025-05-08)
  * Remove ID from MsgIn and add externalID as param to NewMsgIn
 
-v0.243.3 (2025-05-06)
--------------------------
+## v0.243.3 (2025-05-06)
  * Tweak spec docs to include limits
  * Rework all tests using mocked time or rng to call new test.MockUniverse function
  * Use v7 UUIDs for airtime transfers and tickets as well
  * Update dependencies
 
-v0.243.2 (2025-05-06)
--------------------------
+## v0.243.2 (2025-05-06)
  * Use v7 UUIDs for session UUIDs
  * Add functions to generate UUIDs for msgs, sessions, runs and contacts to ensure consistency
 
-v0.243.1 (2025-05-05)
--------------------------
+## v0.243.1 (2025-05-05)
  * Use v7 UUIDs for messages and runs
 
-v0.243.0 (2025-05-05)
--------------------------
+## v0.243.0 (2025-05-05)
  * Relax UUID validation to allow for v4 and v7 UUIDs
  * Convert event marshalling tests to use snapshots
  * Fix all the places we unnecessarily use json.RawMessage
  * Hide .extra on results from auto-complete
 
-v0.242.1 (2025-04-30)
--------------------------
+## v0.242.1 (2025-04-30)
  * Don't create result when call_resthook action has no subscribers
 
-v0.242.0 (2025-04-29)
--------------------------
+## v0.242.0 (2025-04-29)
  * Migrate open ticket and transfer airtime actions to move result generation to the router
 
-v0.241.0 (2025-04-25)
--------------------------
+## v0.241.0 (2025-04-25)
  * Include locals in flow inspection
 
-v0.240.5 (2025-04-24)
--------------------------
+## v0.240.5 (2025-04-24)
  * Update airtime transfer action to not require a result
 
-v0.240.4 (2025-04-23)
--------------------------
+## v0.240.4 (2025-04-23)
  * Update dependencies
  * Require languages to be valid ISO codes not just 3 letter strings
 
-v0.240.3 (2025-04-23)
--------------------------
+## v0.240.3 (2025-04-23)
  * Augment 14.2 migration to cleanup invalid languages
 
-v0.240.2 (2025-04-22)
--------------------------
+## v0.240.2 (2025-04-22)
  * Rename flows.Inspection to flows.Info
 
-v0.240.1 (2025-04-22)
--------------------------
+## v0.240.1 (2025-04-22)
  * Add node and language counts to inspection results
 
-v0.240.0 (2025-04-22)
--------------------------
+## v0.240.0 (2025-04-22)
  * Add basic validation of flow localization
  * Add 14.2 flow migration to rename open_ticket.body to open_ticket.note
  * Simplify extracting results and dependencies during inspection
 
-v0.239.0 (2025-04-21)
--------------------------
+## v0.239.0 (2025-04-21)
  * Make result optional on open ticket actions but always write a local that can be used for splitting
 
-v0.238.2 (2025-04-15)
--------------------------
+## v0.238.2 (2025-04-15)
  * Amend 14.1 migration to trim quick replies to 10
 
-v0.238.1 (2025-04-14)
--------------------------
+## v0.238.1 (2025-04-14)
  * Relax length limit on quick replies since they can be expressions but add limits elsewhere
 
-v0.238.0 (2025-04-14)
--------------------------
+## v0.238.0 (2025-04-14)
  * Add 14.1 migration to make webhook nodes split on @webhook and fix quick replies that are too long
 
-v0.237.0 (2025-04-14)
--------------------------
+## v0.237.0 (2025-04-14)
  * Limit groups and label actions to 100 items
  * Limit argument count on router cases
  * Add validation for flow names and number of router cases
 
-v0.236.4 (2025-04-11)
--------------------------
+## v0.236.4 (2025-04-11)
  * For validation errors that relate to limits, include the count in the message
 
-v0.236.3 (2025-04-10)
--------------------------
+## v0.236.3 (2025-04-10)
  * Amend 14.0 migration to also fix empty category names
 
-v0.236.2 (2025-04-10)
--------------------------
+## v0.236.2 (2025-04-10)
  * Move dtone airtime service out of this repo and use mock in tests
 
-v0.236.1 (2025-04-09)
--------------------------
+## v0.236.1 (2025-04-09)
  * Remove luis and bothub classification services
 
-v0.236.0 (2025-04-09)
--------------------------
+## v0.236.0 (2025-04-09)
  * Refactor webhooks to 1) to clear run.webhook in case of error and 2) let run.webhook be more easily restored
 
-v0.235.4 (2025-04-09)
--------------------------
+## v0.235.4 (2025-04-09)
  * Allow users to manage the whatsapp channels by using the preferred channel action
 
-v0.235.3 (2025-04-08)
--------------------------
+## v0.235.3 (2025-04-08)
  * Simplify naming llm_prompt to prompt
  * Tweak llm_prompt so onus is on the caller to format args
 
-v0.235.2 (2025-04-07)
--------------------------
+## v0.235.2 (2025-04-07)
  * Fix invalid expires values in 14.0.0 migration
 
-v0.235.1 (2025-04-07)
--------------------------
+## v0.235.1 (2025-04-07)
  * Put flows.NewAssetsEnvironment back as we need it for non-flow contact modifications
 
-v0.235.0 (2025-04-07)
--------------------------
+## v0.235.0 (2025-04-07)
  * Bump spec version to 14.0.0
  * Add call_llm action with corresponding llm_called event.
  * Add local variables to runs and expose in context
  * Add @node.categories as the list of category names on the current node
 
-v0.234.3 (2025-04-01)
--------------------------
+## v0.234.3 (2025-04-01)
  * Add maxTokens param to LLMService.Response and remove unused TicketService
 
-v0.234.2 (2025-03-31)
--------------------------
+## v0.234.2 (2025-03-31)
  * Tweak tokensused to be int64
 
-v0.234.1 (2025-03-31)
--------------------------
+## v0.234.1 (2025-03-31)
  * LLM services should return tokens used as well as the response
 
-v0.234.0 (2025-03-31)
--------------------------
+## v0.234.0 (2025-03-31)
  * Allow embedding of _ui bods in item translations
 
-v0.233.1 (2025-03-29)
--------------------------
+## v0.233.1 (2025-03-29)
  * Tweak test LLM service
 
-v0.233.0 (2025-03-28)
--------------------------
+## v0.233.0 (2025-03-28)
  * Make engine context.Context aware and pass down into services
 
-v0.232.4 (2025-03-27)
--------------------------
+## v0.232.4 (2025-03-27)
  * Tweak LLM service implementation for testing to just echo input back
 
-v0.232.3 (2025-03-27)
--------------------------
+## v0.232.3 (2025-03-27)
  * Reorg test services
 
-v0.232.2 (2025-03-27)
--------------------------
+## v0.232.2 (2025-03-27)
  * Tweak signature of LLMService.Response
 
-v0.232.1 (2025-03-27)
--------------------------
+## v0.232.1 (2025-03-27)
  * Add LLM service
 
-v0.232.0 (2025-03-26)
--------------------------
+## v0.232.0 (2025-03-26)
  * Add support for LLM assets
  * Update phonenumbers library
  * Udpate to go 1.24
 
-v0.231.1 (2025-03-12)
--------------------------
+## v0.231.1 (2025-03-12)
  * Allow flows.MsgContent to be unmarshalled from string
 
-v0.231.0 (2025-03-11)
--------------------------
+## v0.231.0 (2025-03-11)
  * Add limits for nodes per flow, actions per node, categories and exits
  * Update deps
 
-v0.230.0 (2025-02-27)
--------------------------
+## v0.230.0 (2025-02-27)
  * Add extra field to quick replies and support encoding as text using new line
  * Rewrite places we use non-constant format strings
  * Change flow expires after default to 3 days
 
-v0.229.1 (2025-02-13)
--------------------------
+## v0.229.1 (2025-02-13)
  * Marshal quick replies as structs
 
-v0.229.0 (2025-02-13)
--------------------------
+## v0.229.0 (2025-02-13)
  * Convert quick replies into structs
 
-v0.228.1 (2025-01-29)
--------------------------
+## v0.228.1 (2025-01-29)
  * Add UUID to sprints
 
-v0.228.0 (2025-01-24)
--------------------------
+## v0.228.0 (2025-01-24)
  * Make expires_on non-nil on waits
  * Add fallback values for expires after for messaging and voice flow types
  * Use time.Duration internally for flow wait expire value
 
-v0.227.0 (2025-01-08)
--------------------------
+## v0.227.0 (2025-01-08)
  * Enforce a limit of 50 URNs per contact
 
-v0.226.1 (2025-01-06)
--------------------------
+## v0.226.1 (2025-01-06)
  * Disallow empty categories
  * Allow category names of up to 64 chars
 
-v0.226.0 (2024-12-16)
--------------------------
+## v0.226.0 (2024-12-16)
  * Remove waiting_exits from flow inspection as it's no longer needed
 
-v0.225.8 (2024-12-12)
--------------------------
+## v0.225.8 (2024-12-12)
  * Completely relax requirements for result names
 
-v0.225.7 (2024-12-11)
--------------------------
+## v0.225.7 (2024-12-11)
  * Allow more characters in result names
 
-v0.225.6 (2024-12-11)
--------------------------
+## v0.225.6 (2024-12-11)
  * Allow more characters in result names
 
-v0.225.5 (2024-12-10)
--------------------------
+## v0.225.5 (2024-12-10)
  * Update deps
  * Revert keying results by name rather than snakified name
 
-v0.225.4 (2024-12-10)
--------------------------
+## v0.225.4 (2024-12-10)
  * Rework results so they're keyed by name rather than snakified name
 
-v0.225.3 (2024-12-09)
--------------------------
+## v0.225.3 (2024-12-09)
  * Add patch flow migration to fix result references in expressions that need to be truncated
 
-v0.225.2 (2024-12-09)
--------------------------
+## v0.225.2 (2024-12-09)
  * Allow reading of results in sessions with invalid names
 
-v0.225.1 (2024-12-05)
--------------------------
+## v0.225.1 (2024-12-05)
  * Add custom validators for result name and category and make them match current floweditor validation
 
-v0.225.0 (2024-12-03)
--------------------------
+## v0.225.0 (2024-12-03)
  * Add new 13.6 flow migration to truncate result names and categories
 
-v0.224.1 (2024-12-02)
--------------------------
+## v0.224.1 (2024-12-02)
  * Remove unused fields from run result events
  * Only generate run_result_changed event when value or category changes
 
-v0.224.0 (2024-12-02)
--------------------------
+## v0.224.0 (2024-12-02)
  * Update deps
  * Include previous result value on run_result_changed events
 
-v0.223.0 (2024-11-12)
--------------------------
+## v0.223.0 (2024-11-12)
  * Change transfer_airtime to fail when no exact matching amount
  * Update deps
 
-v0.222.5 (2024-09-30)
--------------------------
+## v0.222.5 (2024-09-30)
  * Fix inspection of contact queries using group = "" or group != ""
 
-v0.222.4 (2024-09-19)
--------------------------
+## v0.222.4 (2024-09-19)
  * Add query to trigger_session and create_broadcast action constructors
 
-v0.222.3 (2024-09-17)
--------------------------
+## v0.222.3 (2024-09-17)
  * Validate result name/category fields in actions that create results
 
-v0.222.2 (2024-09-16)
--------------------------
+## v0.222.2 (2024-09-16)
  * Update dependencies
  * Update to go 1.23
 
-v0.222.1 (2024-08-21)
--------------------------
+## v0.222.1 (2024-08-21)
  * Add workaround for numbers that pass urns.ParseNumber but fail phone URN valdiation
  * Drop support for localizing template variables in send_msg actions
 
-v0.222.0 (2024-08-19)
--------------------------
+## v0.222.0 (2024-08-19)
  * Enable to send airtime to WhatsApp URNs
  * Remove old body field on ticket modifier
 
-v0.221.1 (2024-08-06)
--------------------------
+## v0.221.1 (2024-08-06)
  * On second thoughts, better to just bundle the note with the open ticket event
 
-v0.221.0 (2024-08-06)
--------------------------
+## v0.221.0 (2024-08-06)
  * Replace ticket body with initial note
 
-v0.220.0 (2024-08-02)
--------------------------
+## v0.220.0 (2024-08-02)
  * Update to latest gocommon
 
-v0.219.2 (2024-07-16)
--------------------------
+## v0.219.2 (2024-07-16)
  * Add validation of attachment values in flow definitions
 
-v0.219.1 (2024-07-16)
--------------------------
+## v0.219.1 (2024-07-16)
  * Don't use template variables as attachments unless they're valid
 
-v0.219.0 (2024-07-15)
--------------------------
+## v0.219.0 (2024-07-15)
  * Update to latest gocommon which changes contact ql conversion to ES
 
-v0.218.3 (2024-07-04)
--------------------------
+## v0.218.3 (2024-07-04)
  * Change flos.NewMsgOut to take flows.MsgContent
 
-v0.218.2 (2024-07-04)
--------------------------
+## v0.218.2 (2024-07-04)
  * Move code to generate templating into flows.Template
 
-v0.218.1 (2024-07-03)
--------------------------
+## v0.218.1 (2024-07-03)
  * Remove namespace on template translations as it's not needed by engine and can be added by mailroom when queueing
  * Move functionality to generate preview content for template message from send_msg action to TemplateTranslation
 
-v0.218.0 (2024-07-03)
--------------------------
+## v0.218.0 (2024-07-03)
  * Rework broadcast translation selection to merge across text, attachments and quick replies
 
-v0.217.0 (2024-06-26)
--------------------------
+## v0.217.0 (2024-06-26)
  * Drop db support on flows.BroadcastTranslations
 
-v0.216.4 (2024-06-14)
--------------------------
+## v0.216.4 (2024-06-14)
  * Revert adding support for sending airtime to WhatsApp
 
-v0.216.3 (2024-06-12)
--------------------------
+## v0.216.3 (2024-06-12)
  * Use empty value for airtime failure result
 
-v0.216.2 (2024-06-12)
--------------------------
+## v0.216.2 (2024-06-12)
  * Save airtime transfer transaction id as result and on event as external_id
  * Remove support for old template component types
 
-v0.216.1 (2024-06-12)
--------------------------
+## v0.216.1 (2024-06-12)
  * Add transfer UUID field to airtime transfer
 
-v0.216.0 (2024-06-11)
--------------------------
+## v0.216.0 (2024-06-11)
  * Support sending for WhatsApp URNs
  * Update DT One requests
 
-v0.215.1 (2024-06-10)
--------------------------
+## v0.215.1 (2024-06-10)
  * Support template component types like header/* and body/*
 
-v0.215.0 (2024-06-06)
--------------------------
+## v0.215.0 (2024-06-06)
  * Support template header components of type image, video or document and use as attachments on preview message
 
-v0.214.6 (2024-06-05)
--------------------------
+## v0.214.6 (2024-06-05)
  * Update goreleaser config to v2
 
-v0.214.5 (2024-05-24)
--------------------------
+## v0.214.5 (2024-05-24)
  * Make date parsing stricter
 
-v0.214.4 (2024-05-22)
--------------------------
+## v0.214.4 (2024-05-22)
  * Ensure QueryError always has a code and use `syntax` as code for all parser errors
 
-v0.214.3 (2024-05-21)
--------------------------
+## v0.214.3 (2024-05-21)
  * Tweak type of extra on query errors
 
-v0.214.2 (2024-05-21)
--------------------------
+## v0.214.2 (2024-05-21)
  * Use std library errors
 
-v0.214.1 (2024-05-20)
--------------------------
+## v0.214.1 (2024-05-20)
  * Move elastic utils to gocommon
 
-v0.214.0 (2024-05-17)
--------------------------
+## v0.214.0 (2024-05-17)
  * Rewrite contactql query conversion to ES to use simple maps instead of unmaintained library
 
-v0.213.3 (2024-05-17)
--------------------------
+## v0.213.3 (2024-05-17)
  * Merge pull request #1255 from nyaruka/migration_fix
  * Fix migrating directly from 13.2 to 13.5
 
-v0.213.2 (2024-05-16)
--------------------------
+## v0.213.2 (2024-05-16)
  * Tweak releaser config
 
-v0.213.1 (2024-05-16)
--------------------------
+## v0.213.1 (2024-05-16)
  * Switch to use goreleaser and update actions to latest versions
 
-v0.213.0 (2024-05-15)
--------------------------
+## v0.213.0 (2024-05-15)
  * Normalize contactql queries with type prefixes
 
-v0.212.0 (2024-05-15)
--------------------------
+## v0.212.0 (2024-05-15)
  * Add support for contactql conditions with properties prefixed by their type
  * Update to latest ANTLR4
 
-v0.211.2 (2024-05-09)
--------------------------
+## v0.211.2 (2024-05-09)
  * Update gocommom
 
-v0.211.1 (2024-05-09)
--------------------------
+## v0.211.1 (2024-05-09)
  * Update to latest gocommon
 
-v0.211.0 (2024-05-08)
--------------------------
+## v0.211.0 (2024-05-08)
  * Update to latest gocommon
  * Remove old urn modifier which was replaced by the urns modifier
 
-v0.210.0 (2024-04-25)
--------------------------
+## v0.210.0 (2024-04-25)
  * Add new 13.5 flow spec which changes send_msg to use single list of variables
 
-v0.209.2 (2024-04-17)
--------------------------
+## v0.209.2 (2024-04-17)
  * Remove deprecated params in templating
 
-v0.209.1 (2024-04-16)
--------------------------
+## v0.209.1 (2024-04-16)
  * Re-include legacy .params field on components temporarily
 
-v0.209.0 (2024-04-16)
--------------------------
+## v0.209.0 (2024-04-16)
  * Rework the format of MsgTemplating
 
-v0.208.0 (2024-04-15)
--------------------------
+## v0.208.0 (2024-04-15)
  * Update to latest decimal library that fixes .Pow
  * Rework template assets to use variables instead of component specific param lists
 
-v0.207.3 (2024-03-20)
--------------------------
+## v0.207.3 (2024-03-20)
  * Remove no longer used templating.params
 
-v0.207.2 (2024-03-20)
--------------------------
+## v0.207.2 (2024-03-20)
  * Include component name on templating
 
-v0.207.1 (2024-03-20)
--------------------------
+## v0.207.1 (2024-03-20)
  * Drop support for variables in display parts of template components
 
-v0.207.0 (2024-03-20)
--------------------------
+## v0.207.0 (2024-03-20)
  * Rework template components... again
 
-v0.206.4 (2024-03-19)
--------------------------
+## v0.206.4 (2024-03-19)
  * Add type and display fields to temmplate components
 
-v0.206.3 (2024-03-15)
--------------------------
+## v0.206.3 (2024-03-15)
  * Truncate quick replies for template preview messages
 
-v0.206.2 (2024-03-14)
--------------------------
+## v0.206.2 (2024-03-14)
  * Update to go 1.22
  * Mark @child.run.status as deprecated in context
  * Reorg of expression refactoring code into its own package
 
-v0.206.1 (2024-03-05)
--------------------------
+## v0.206.1 (2024-03-05)
  * Remove no longer used uuid property from msg.templating
 
-v0.206.0 (2024-03-05)
--------------------------
+## v0.206.0 (2024-03-05)
  * Instead of supporting both variables and components in send_msg actions, add 13.4 migration
 
-v0.205.0 (2024-03-05)
--------------------------
+## v0.205.0 (2024-03-05)
  * Support excluding deprecated object properties from marshalling
  * Deprecate undocumented multi-match result fields
  * Update autocompletion docs for results extra
 
-v0.204.1 (2024-03-04)
--------------------------
+## v0.204.1 (2024-03-04)
  * Update docs for @webhook
 
-v0.204.0 (2024-03-04)
--------------------------
+## v0.204.0 (2024-03-04)
  * Make @webhook an object with headers and json properties
 
-v0.203.0 (2024-02-27)
--------------------------
+## v0.203.0 (2024-02-27)
  * Rework semd_msg templating to have a simpler structure in flow definitions and fix enumerating templates and localizable strings
 
-v0.202.1 (2024-02-23)
--------------------------
+## v0.202.1 (2024-02-23)
  * Limit use of reflect nil checking
 
-v0.202.0 (2024-02-20)
--------------------------
+## v0.202.0 (2024-02-20)
  * Add warnings from template eval functions and recorded as events
  * Add excellent.Evaluator and move top level evaluation functions to methods on that
  * Rework xvalues to be passed by pointer and have a base struct
  * Rework router reading to be like action reading (and allow for enumeration of types)
 
-v0.201.0 (2024-02-12)
--------------------------
+## v0.201.0 (2024-02-12)
  * Replace template translation content and params by the components fields
 
-v0.200.1 (2024-01-30)
--------------------------
+## v0.200.1 (2024-01-30)
  * Support more WA templates components
 
-v0.200.0 (2024-01-22)
--------------------------
+## v0.200.0 (2024-01-22)
  * Rework template assets to use params instead of variables
 
-v0.199.0 (2024-01-17)
--------------------------
+## v0.199.0 (2024-01-17)
  * Replace flows.MsgTemplating variables by params
 
-v0.198.0 (2024-01-02)
--------------------------
+## v0.198.0 (2024-01-02)
  * Update deps
  * Remove ticketers
 
-v0.197.7 (2023-12-12)
--------------------------
+## v0.197.7 (2023-12-12)
  * Merge pull request #1198 from nyaruka/trim_attachments
  * Trim whitespace from evaluated message attachments
 
-v0.197.6 (2023-11-27)
--------------------------
+## v0.197.6 (2023-11-27)
  * Update to latest gocommon
  * Rework template translation finding
 
-v0.197.5 (2023-11-20)
--------------------------
+## v0.197.5 (2023-11-20)
  * Update deps
 
-v0.197.4 (2023-11-13)
--------------------------
+## v0.197.4 (2023-11-13)
  * Tweak Arabic Variants collation
  * Update depedencies
 
-v0.197.3 (2023-10-30)
--------------------------
+## v0.197.3 (2023-10-30)
  * Update to latest gocommon
 
-v0.197.2 (2023-10-27)
--------------------------
+## v0.197.2 (2023-10-27)
  * Less panics, more validation errors for invalid flow defs
 
-v0.197.1 (2023-10-12)
--------------------------
+## v0.197.1 (2023-10-12)
  * Update deps
 
-v0.197.0 (2023-10-06)
--------------------------
+## v0.197.0 (2023-10-06)
  * Drop support for contact less sessions
  * Add devcontainer config
 
-v0.196.2 (2023-10-02)
--------------------------
+## v0.196.2 (2023-10-02)
  * Don't treat ژ and ږ as equivalent in arabic variants collation
 
-v0.196.1 (2023-09-27)
--------------------------
+## v0.196.1 (2023-09-27)
  * Remove deprecated collation alias
 
-v0.196.0 (2023-09-26)
--------------------------
+## v0.196.0 (2023-09-26)
  * Update to go 1.21
  * Add more mappings to arabic collation
 
-v0.195.4 (2023-09-23)
--------------------------
+## v0.195.4 (2023-09-23)
  * Fix inspectng optin refs
 
-v0.195.3 (2023-09-21)
--------------------------
+## v0.195.3 (2023-09-21)
  * Rename send_optin to request_optin and optin_created to optin_requested
  * Add mores tests for arabic-farsi collation
 
-v0.195.2 (2023-09-18)
--------------------------
+## v0.195.2 (2023-09-18)
  * Rename optin_sent to optin_created for consistency with msg_created and add channel/URN properties
 
-v0.195.1 (2023-09-18)
--------------------------
+## v0.195.1 (2023-09-18)
  * Fix optin triggers marshaling with type ticket
 
-v0.195.0 (2023-09-14)
--------------------------
+## v0.195.0 (2023-09-14)
  * Add send_optin action and optin_sent event
  * Add features to channel assets and define optins as a feature
  * Add trigger type for optins
  * Add OptIn as new asset type
 
-v0.194.0 (2023-09-11)
--------------------------
+## v0.194.0 (2023-09-11)
  * Update to latest gocommon
  * Remove support for delegate channels
 
-v0.193.1 (2023-09-04)
--------------------------
+## v0.193.1 (2023-09-04)
  * Update to latest gocommon
 
-v0.193.0 (2023-09-04)
--------------------------
+## v0.193.0 (2023-09-04)
  * Simplify naming in po package to avoid stuttering
  * Switch to i18n package from gocommon
 
-v0.192.1 (2023-08-31)
--------------------------
+## v0.192.1 (2023-08-31)
  * Update to latest gocommon
  * Replace interface{} with any
 
-v0.192.0 (2023-08-18)
--------------------------
+## v0.192.0 (2023-08-18)
  * Replace input cleaning with input collation
 
-v0.191.0 (2023-08-17)
--------------------------
+## v0.191.0 (2023-08-17)
  * Add input cleaners
 
-v0.190.1 (2023-08-15)
--------------------------
+## v0.190.1 (2023-08-15)
  * Merge pull request #1176 from nyaruka/split_env_types
  * Split flows.Environment into AssetsEnvironment and SessionEnvironment
 
-v0.190.0 (2023-08-15)
--------------------------
+## v0.190.0 (2023-08-15)
  * Replace max_value_length on env with new engine options for max field and result chars
  * Simplify how we create a merged environment with properties from the contact
 
-v0.189.0 (2023-08-11)
--------------------------
+## v0.189.0 (2023-08-11)
  * Add filter expression function
 
-v0.188.0 (2023-08-09)
--------------------------
+## v0.188.0 (2023-08-09)
  * Update go to 1.20
  * Make numerical router tests work with Eastern Arabic digits
 
-v0.187.0 (2023-07-20)
--------------------------
+## v0.187.0 (2023-07-20)
  * Update deps
 
-v0.186.1 (2023-07-10)
--------------------------
+## v0.186.1 (2023-07-10)
  * Fix has_ward argument ordering
 
-v0.186.0 (2023-05-24)
--------------------------
+## v0.186.0 (2023-05-24)
  * Add contains function
 
-v0.185.2 (2023-05-03)
--------------------------
+## v0.185.2 (2023-05-03)
  * Support hyphen in locations name as one word
 
-v0.185.1 (2023-05-02)
--------------------------
+## v0.185.1 (2023-05-02)
  * Fix matching location name with diacritics
 
-v0.185.0 (2023-04-26)
--------------------------
+## v0.185.0 (2023-04-26)
  * Contacts only have one (open) ticket
  * Bump golang.org/x/net from 0.5.0 to 0.7.0
 
-v0.184.4 (2023-02-27)
--------------------------
+## v0.184.4 (2023-02-27)
  * Sort should return error (instead of panic) if array has mixed types
 
-v0.184.3 (2023-02-22)
--------------------------
+## v0.184.3 (2023-02-22)
  * Re-add matching by group name in start_session actions
 
-v0.184.2 (2023-02-13)
--------------------------
+## v0.184.2 (2023-02-13)
  * Remove matching legacy vars against group names for start_session and send_broadcast actions
 
-v0.184.1 (2023-02-08)
--------------------------
+## v0.184.1 (2023-02-08)
  * Tweak BroadcastTranslations.ForContact to also return language
 
-v0.184.0 (2023-02-08)
--------------------------
+## v0.184.0 (2023-02-08)
  * Truncate quick replies that are too long
  * Add support for resolving broadcast translations for different contacts
 
-v0.183.0 (2023-02-07)
--------------------------
+## v0.183.0 (2023-02-07)
  * Ignore importing split arguments translations
  * Convert StringSet functions to be generic
 
-v0.182.0 (2023-02-02)
--------------------------
+## v0.182.0 (2023-02-02)
  * Reorganize ANTLR generated code as per recommendations in ANTLR README
  * Upgrade to latest ANTLR and rebuild grammars
  * Add support for contact queries in broadcasts
 
-v0.181.0 (2023-02-01)
--------------------------
+## v0.181.0 (2023-02-01)
  * Update to validator v10
  * Update to nyaruka/null v2
 
-v0.180.0 (2023-01-26)
--------------------------
+## v0.180.0 (2023-01-26)
  * Make envs.Language, envs.Country and envs.Locale play nice with NULLs when persisting
  * Fix docstring on ivr_created event
  * Fix wording in spec migration comments
 
-v0.179.1 (2023-01-18)
--------------------------
+## v0.179.1 (2023-01-18)
  * Add migration versions to auto-generated docs
 
-v0.179.0 (2023-01-18)
--------------------------
+## v0.179.0 (2023-01-18)
  * Add 13.2.0 flow migration to replace "base" as flow language with "und"
 
-v0.178.2 (2023-01-11)
--------------------------
+## v0.178.2 (2023-01-11)
  * Fix and improve mobile bindings to work without wait objects on sessions
 
-v0.178.1 (2022-12-16)
--------------------------
+## v0.178.1 (2022-12-16)
  * Tweak envs.NewLocale(..) to allow passing NilCountry
 
-v0.178.0 (2022-12-16)
--------------------------
+## v0.178.0 (2022-12-16)
  * Replace TemplateTranslation.language and country fields with single locale field and also don't duplicate locale on MsgTemplating since it's now on the message itself
  * Derive contact country from tel urns if no preferred channel
  * Change msg_out.language to locale
 
-v0.177.0 (2022-12-15)
--------------------------
+## v0.177.0 (2022-12-15)
  * Reduce msg/ivr_created localization blobs to a single language
 
-v0.176.0 (2022-12-15)
--------------------------
+## v0.176.0 (2022-12-15)
  * Add localization outcome object to msg/ivr_created events to replace msg_out.text_language field
  * Simplify getting text translations in flow actions
 
-v0.175.0 (2022-11-30)
--------------------------
+## v0.175.0 (2022-11-30)
  * Add a new issue type for use of legacy vars in start_session actions
 
-v0.174.4 (2022-11-28)
--------------------------
+## v0.174.4 (2022-11-28)
  * Update deps
 
-v0.174.3 (2022-11-18)
--------------------------
+## v0.174.3 (2022-11-18)
  * Update to latest gocommon
 
-v0.174.2
-----------
+## v0.174.2 (2022-11-11)
  * Add support for parsing attachments with unavailable: prefixes
 
-v0.174.1
-----------
+## v0.174.1 (2022-10-31)
  * Update to latest gocommon
 
-v0.174.0
-----------
+## v0.174.0 (2022-10-27)
  * Add optional revision number to flow refs, use on run.flow
 
-v0.173.2
-----------
+## v0.173.2 (2022-10-21)
  * Also fix case where translation just has different number of args
 
-v0.173.1
-----------
+## v0.173.1 (2022-10-21)
  * Ignore empty string translations in flow localization sections
 
-v0.173.0
-----------
+## v0.173.0 (2022-10-21)
  * Remove merging translation text arrays as it never makes sense
 
-v0.172.6
-----------
+## v0.172.6 (2022-10-17)
  * Fix bubbling failing runs in case of missing flow
 
-v0.172.5
-----------
+## v0.172.5 (2022-10-10)
  * Fix parsing of geo type attachments
 
-v0.172.4
-----------
+## v0.172.4 (2022-10-07)
  * Make utils.Attachment smarter about parsing raw URLs
 
-v0.172.3
-----------
+## v0.172.3 (2022-10-05)
  * Update dependencies
 
-v0.172.2
-----------
+## v0.172.2 (2022-09-30)
  * Dial wait expiry should be based on the maximum time the forwarded call might take
 
-v0.172.1
-----------
+## v0.172.1 (2022-09-30)
  * Set defaults for dial wait time limits
 
-v0.172.0
-----------
+## v0.172.0 (2022-09-30)
  * Add time limits to dial waits
 
-v0.171.0
-----------
+## v0.171.0 (2022-09-23)
  * Rename connection to call in IVR context
 
-v0.170.0
-----------
+## v0.170.0 (2022-09-12)
  * Add unsendable reason to MsgOut and set when contact status is not active
 
-v0.169.0
-----------
+## v0.169.0 (2022-09-09)
  * Update to latest gocommon
  * Add keys function to get object properties
  * Use go 1.19
 
-v0.168.2
-----------
+## v0.168.2 (2022-08-26)
  * Update to latest gocommon
 
-v0.168.1
-----------
+## v0.168.1 (2022-08-18)
  * Update to latest gocommon
 
-v0.168.0
-----------
+## v0.168.0 (2022-08-12)
  * Use HTTP log functionality from gocommon
  * Update parsed docstrings to use codeblock formating (tab) for examples
 
-v0.167.0
-----------
+## v0.167.0 (2022-08-04)
  * Update to latest gocommon
 
-v0.166.0
-----------
+## v0.166.0 (2022-07-26)
  * Add contact status to variable context
 
-v0.165.5
-----------
+## v0.165.5 (2022-07-25)
  * Update to latest gocommon which adds teams URNs
 
-v0.165.4
-----------
+## v0.165.4 (2022-07-25)
  * Another tweak to SessionBuilder so that it doesn't override assets
 
-v0.165.3
-----------
+## v0.165.3 (2022-07-25)
  * More tweaks to SessionBuilder
 
-v0.165.2
-----------
+## v0.165.2 (2022-07-25)
  * Allow passing of a flows.SessionAssets to test.SessionBuilder
 
-v0.165.1
-----------
+## v0.165.1 (2022-07-21)
  * Updated translations from Transifex
 
-v0.165.0
-----------
+## v0.165.0 (2022-07-16)
  * Add modifier to open a ticket
 
-v0.164.3
-----------
+## v0.164.3 (2022-07-14)
  * Modifer.Apply should return if it made a modification and caller responsible for calling ReevaluateGroups if so
  * Add Services param to Modifier.Apply
 
-v0.164.2
-----------
+## v0.164.2 (2022-07-13)
  * Pass session assets to service factories
 
-v0.164.1
-----------
+## v0.164.1 (2022-07-13)
  * Remove flow sessions from service factories
 
-v0.164.0
-----------
+## v0.164.0 (2022-07-13)
  * Rework services to not require sessions
 
-v0.163.0
-----------
+## v0.163.0 (2022-07-09)
  * Always truncate URLs in HTTP logs to 2048 chars
 
-v0.162.1
-----------
+## v0.162.1 (2022-06-30)
  * Support simplifying of queries than can't be parsed but can be constructed
 
-v0.162.0
-----------
+## v0.162.0 (2022-06-30)
  * Provide API for building contact queries programatically
 
-v0.161.2
-----------
+## v0.161.2 (2022-06-15)
  * Update ANTLR
  * Update to better maintained fork of go-mail
 
-v0.161.1
-----------
+## v0.161.1 (2022-06-14)
  * Ensure that failing a session doesn't leave runs in active/waiting state
 
-v0.161.0
-----------
+## v0.161.0 (2022-06-10)
  * Update to latest gocommon and phonenumbers
 
-v0.160.0
-----------
+## v0.160.0 (2022-06-08)
  * Add option to exclude contacts in a flow on start session action
 
-v0.159.2
-----------
+## v0.159.2 (2022-05-25)
  * Trim URLs in call_webhook actions
 
-v0.159.1
-----------
+## v0.159.1 (2022-05-11)
  * Fix not equals conditions in contact queries on fields that aren't set
 
-v0.159.0
-----------
+## v0.159.0 (2022-05-10)
  * Improve simplifying of contactql queries
  * Update direct dependencies except ANTLR4
  * Go 1.18
 
-v0.158.1
-----------
+## v0.158.1 (2022-04-25)
  * send_msg action should fallback to template trans in env default language if no trans found for contact language
 
-v0.158.0
-----------
+## v0.158.0 (2022-04-19)
  * Add status as a contact query attribute, disallowed for smart groups
 
-v0.157.0
-----------
+## v0.157.0 (2022-04-12)
  * Update to latest gocommon
  * Allow querying on whether group is set or not for consistency with other fields
  * Support contact queries on flow history
 
-v0.156.1
-----------
+## v0.156.1 (2022-04-05)
  * SessionAssets implementation of contactql.Resolver methods should return pure assets
 
-v0.156.0
-----------
+## v0.156.0 (2022-04-05)
  * Give flows.Flow a reference to their asset if they have one
 
-v0.155.0
-----------
+## v0.155.0 (2022-04-04)
  * Switch from flow to flow_id and groups to group_ids for ES queries
 
-v0.154.0
-----------
+## v0.154.0 (2022-03-24)
  * Give errors returned from Session.Resume codes
 
-v0.153.0
-----------
+## v0.153.0 (2022-03-18)
  * Add concat excellent function
  * Updated translations from Transifex
 
-v0.152.0
-----------
+## v0.152.0 (2022-03-03)
  * start_session actions should generate error event if flow asset missing
 
-v0.151.0
-----------
+## v0.151.0 (2022-02-14)
  * Add flow as contactql query attribute
 
-v0.150.2
-----------
+## v0.150.2 (2022-02-09)
  * Export events.BaseEvent so that callers can create their own events
 
-v0.150.1
-----------
+## v0.150.1 (2022-02-05)
  * Fix bug when we remove a contact from all static groups
 
-v0.150.0
-----------
+## v0.150.0 (2022-02-03)
  * If caller tries to resume with wrong resume type, don't fail session but error instead
 
-v0.149.1
-----------
+## v0.149.1 (2022-02-01)
  * Update to gocommon 1.17.1
 
-v0.149.0
-----------
+## v0.149.0 (2022-01-27)
  * Remove no longer used Run.expires_on
 
-v0.148.0
-----------
+## v0.148.0 (2022-01-25)
  * Add expiresOn to dial waits so all wait types have it
 
-v0.147.0
-----------
+## v0.147.0 (2022-01-17)
  * Add @trigger.campaign for campaign triggers
  * Only treat start_session legacy vars as tel URNs if they are parseable phone numbers
 
-v0.146.1
-----------
+## v0.146.1 (2022-01-12)
  * Update to latest gocommon
 
-v0.146.0
-----------
+## v0.146.0 (2022-01-07)
  * Rename FlowRun to Run
  * Update to latest gocommon
 
-v0.145.0
-----------
+## v0.145.0 (2022-01-04)
  * Add expires_on to msg_wait events
  * Remove activated wait objects on sessions, callers should use the wait events
  * Tweak validation error message for min and max tags when field isn't a slice
 
-v0.144.3
-----------
+## v0.144.3 (2021-12-17)
  * Fix tests broken by new scheme addition
 
-v0.144.2
-----------
+## v0.144.2 (2021-12-17)
  * Update to latest gocommon to get Instagram scheme type
 
-v0.144.1
-----------
+## v0.144.1 (2021-12-17)
  * Update to latest gocommon
 
-v0.144.0
-----------
+## v0.144.0 (2021-12-16)
  * Add extraction field to webhook_called events
 
-v0.143.4
-----------
+## v0.143.4 (2021-12-16)
  * Use WebhookCall.ResponseJSON for @webhook and @result.*.extra
  * Updated translations from Transifex
 
-v0.143.3
-----------
+## v0.143.3 (2021-12-13)
  * Add more options for customizing contact used by test.SessionBuilder
 
-v0.143.2
-----------
+## v0.143.2 (2021-12-09)
  * Add test.SessionBuilder to make it easier to build sessions for testing
 
-v0.143.1
-----------
+## v0.143.1 (2021-12-09)
  * Include node on segments, revert change to add segments without destinations
 
-v0.143.0
-----------
+## v0.143.0 (2021-12-08)
  * For random router results, input should be raw random number, value is the bucket
  * Include segments with no destination
  * Add operand and time to flows.Segment
 
-v0.142.1
-----------
+## v0.142.1 (2021-12-07)
  * Put back engine.NewSprint which mailroom uses for surveyor submissions
 
-v0.142.0
-----------
+## v0.142.0 (2021-12-07)
  * Add Segments() to Sprint which returns all complete segments in that sprint
  * Simplify error message that users see if they have label action with no input
 
-v0.141.0
-----------
+## v0.141.0 (2021-11-15)
  * Rework Context into Scope, expose functions via a root scope, and support shadowing
  * Cleanup function exposure in contexts and add more tests
  * Drop unused child.run.* and parent.run.* parts of the context except .status as used subflow splits
@@ -1958,571 +1515,442 @@ v0.141.0
  * Let Excellent functions know their own name to make better error messages
  * Only msg resumes should set input, all other resumes clear it
 
-v0.140.1
-----------
+## v0.140.1 (2021-11-09)
  * Update locale files (adds empty cs and mn translations)
 
-v0.140.0
-----------
+## v0.140.0 (2021-10-28)
  * Add reverse excellent function
 
-v0.139.1
-----------
+## v0.139.1 (2021-10-27)
  * Limit webhook URLs to 2048 chars
 
-v0.139.0
-----------
+## v0.139.0 (2021-10-26)
  * Add sort() excellent function
 
-v0.138.0
-----------
+## v0.138.0 (2021-10-25)
  * Add engine property for maximum resumes per session
 
-v0.137.0
-----------
+## v0.137.0 (2021-10-12)
  * Simplify contactql queries after parsing
 
-v0.136.5
-----------
+## v0.136.5 (2021-10-06)
  * Update to latest gocommon
  * Update locale files
 
-v0.136.4
-----------
+## v0.136.4 (2021-09-28)
  * Improve validator error message with startswith tag
 
-v0.136.3
-----------
+## v0.136.3 (2021-09-28)
  * Tweak validation to work when struct doesn't use json tags
 
-v0.136.2
-----------
+## v0.136.2 (2021-09-24)
  * Fix trigger docs
 
-v0.136.1
-----------
+## v0.136.1 (2021-09-20)
  * Add Session.FindStep
 
-v0.136.0
-----------
+## v0.136.0 (2021-09-20)
  * Rework WebhookCall and HTTPLog to overlap as much as possible
 
-v0.135.0
-----------
+## v0.135.0 (2021-09-16)
  * Get rid of ticket subjects
 
-v0.134.3
-----------
+## v0.134.3 (2021-09-15)
  * Add number of retries to webhook_called events
 
-v0.134.2
-----------
+## v0.134.2 (2021-09-14)
  * Fix word_slice when passing custom delimiters
 
-v0.134.1
-----------
+## v0.134.1 (2021-09-10)
  * Re-evaluate dynamic groups after opening tickets
 
-v0.134.0
-----------
+## v0.134.0 (2021-09-08)
  * Add support for variable user references to open ticket actions
 
-v0.133.1
-----------
+## v0.133.1 (2021-08-26)
  * Update to latest gocommon/phonenumbers
 
-v0.133.0
-----------
+## v0.133.0 (2021-08-25)
  * If open ticket action doesn't specify a topic, default to General
  * Expose topic instead of subject in context for ticket objects
 
-v0.132.1
-----------
+## v0.132.1 (2021-08-23)
  * Update to latest gocommon and add webchat URN schemes
 
-v0.132.0
-----------
+## v0.132.0 (2021-08-05)
  * Require either a subject or a topic to open a ticket but not both
  * Add assignee as optional field to open ticket actions
  * Add topics to tickets
 
-v0.131.1
-----------
+## v0.131.1 (2021-08-05)
  * Move slot param for LUIS classifiers to last
  * Add util cmd for testing classifier services
 
-v0.131.0
-----------
+## v0.131.0 (2021-08-03)
  * Update to LUIS API v3.0
 
-v0.130.2
-----------
+## v0.130.2 (2021-08-03)
  * Add support for tickets queries in elastic
 
-v0.130.1
-----------
+## v0.130.1 (2021-07-30)
  * Also simplify converting queries to elastic
 
-v0.130.0
-----------
+## v0.130.0 (2021-07-30)
  * Simplify parsing contact queries
  * Add support for query property tickets
 
-v0.129.0
-----------
+## v0.129.0 (2021-07-29)
  * Rework contactql to separate query parsing, validation and evaluation
 
-v0.128.0
-----------
+## v0.128.0 (2021-07-21)
  * Add unique excellent function to get unique elements in an array
 
-v0.127.0
-----------
+## v0.127.0 (2021-07-19)
  * Update to latest gocommon
 
-v0.126.2
-----------
+## v0.126.2 (2021-07-16)
  * Updated translations from Transifex
  * Replace usages of soon to be deprecated ioutil
  * Allow Msg type triggers to have connections
 
-v0.126.1
-----------
+## v0.126.1 (2021-07-09)
  * Update locale files
 
-v0.126.0
-----------
+## v0.126.0 (2021-07-09)
  * Use latest gocommon, replace all nulls and escaped nulls when parsing bodies as JSON
 
-v0.125.2
-----------
+## v0.125.2 (2021-07-05)
  * Add assignee (optional) to ticket_opened events
  * Cleanup from linter suggestions
 
-v0.125.1
-----------
+## v0.125.1 (2021-07-05)
  * Strip out invalid UTF-8 from webhook responses before trying to convert to JSON
 
-v0.125.0
-----------
+## v0.125.0 (2021-07-02)
  * Update to latest gocommon
 
-v0.124.4
-----------
+## v0.124.4 (2021-06-28)
  * Make users more like contacts in expressions by giving them an always non-empty default and a first_name property
 
-v0.124.3
-----------
+## v0.124.3 (2021-06-24)
  * Fix inspecting user dependencies in flows
 
-v0.124.2
-----------
+## v0.124.2 (2021-06-23)
  * Change default property of user objects in expressions to be the name to match contacts
 
-v0.124.1
-----------
+## v0.124.1 (2021-06-23)
  * Fix remove_first_word when input contains non-ASCII
 
-v0.124.0
-----------
+## v0.124.0 (2021-06-22)
  * Add User assets and use for Ticket.Assignee and Trigger.user
 
-v0.123.0
-----------
+## v0.123.0 (2021-06-17)
  * Add SUM() excellent function
  * Remove default_language from envs and usa first item of allowed_languages as the default
 
-v0.122.0
-----------
+## v0.122.0 (2021-06-09)
  * Allow build failing on codecov uploads again
  * Get rid of ticket references
 
-v0.121.0
-----------
+## v0.121.0 (2021-06-09)
  * Don't generate separate completion/functions doc files
 
-v0.120.1
-----------
+## v0.120.1 (2021-06-08)
  * Tweak test.AssertEqualJSON to take msgAndArgs param like asserts library
 
-v0.120.0
-----------
+## v0.120.0 (2021-06-07)
  * Add ticket as property to @trigger in context
  * Add new ticket type trigger with a closed event
 
-v0.119.0
-----------
+## v0.119.0 (2021-05-19)
  * Remove legacy_extra issue type
 
-v0.118.2
-----------
+## v0.118.2 (2021-05-18)
  * Add @ticket to the root context as the last opened ticket
 
-v0.118.1
-----------
+## v0.118.1 (2021-05-12)
  * Add way to create new ticket reference instances and add contact tickets to editor autocompletion
 
-v0.118.0
-----------
+## v0.118.0 (2021-05-11)
  * Add contact tickets to expression context
 
-v0.117.0
-----------
+## v0.117.0 (2021-05-06)
  * Add WA template translations namespace
 
-v0.116.1
-----------
+## v0.116.1 (2021-04-21)
  * Use standard hypenated BCP47 locale codes consistently
 
-v0.116.0
-----------
+## v0.116.0 (2021-04-21)
  * Test on go 1.16.x
  * Update to latest gocommon datefmt and pass locale to all date formatting calls
 
-v0.115.2
-----------
+## v0.115.2 (2021-03-30)
  * Fix dtone API endpoint URL and use external IDs
 
-v0.115.1
-----------
+## v0.115.1 (2021-03-30)
  * Fix sometimes retrying successful SMTP sends
 
-v0.115.0
-----------
+## v0.115.0 (2021-03-29)
  * Add support for retrying SMTP sends
 
-v0.114.0
-----------
+## v0.114.0 (2021-03-26)
  * Fully implement airtime service using new DT One API
 
-v0.113.3
-----------
+## v0.113.3 (2021-03-17)
  * Fix resuming a parent run when flow is missing
 
-v0.113.2
-----------
+## v0.113.2 (2021-03-09)
  * Add last missing translations for es and pt-BR
 
-v0.113.1
-----------
+## v0.113.1 (2021-03-03)
  * Update Spanish locale and gocommon dependency
 
-v0.113.0
-----------
+## v0.113.0 (2021-02-25)
  * Don't blow up building context if node is null
  * Add contact language to resthook payload
 
-v0.112.2
-----------
+## v0.112.2 (2021-02-10)
  * Add accessor for URN on ActivatedDialWait
 
-v0.112.1
-----------
+## v0.112.1 (2021-02-03)
  * Log error event and skip when attachment is longer than 2048 limit
 
-v0.112.0
-----------
+## v0.112.0 (2021-01-26)
  * Include resume and node in migration expression parsing
  * Add dial types of waits and resumes
 
-v0.111.0
-----------
+## v0.111.0 (2021-01-20)
  * Move to ElasticSearch v7 clients (backwards incompatible change)
 
-v0.110.2
-----------
+## v0.110.2 (2021-01-19)
  * Remove forward_ivr action and ivr_forwarded event
 
-v0.110.1
-----------
+## v0.110.1 (2021-01-18)
  * Spanish translations from transifex
 
-v0.110.0
-----------
+## v0.110.0 (2021-01-15)
  * Combine the completion.json and functions.json editor support files into a single editor.json file
  * Remove generated docs from repo
 
-v0.109.4
-----------
+## v0.109.4 (2021-01-14)
  * Fix release workflow
 
-v0.109.3
-----------
+## v0.109.3 (2021-01-14)
  * Fix release workflow
 
-v0.109.2
-----------
+## v0.109.2 (2021-01-14)
  * Don't use fuzzy entries in po files
 
-v0.109.1
-----------
+## v0.109.1 (2021-01-14)
  * Add forward_ivr action and ivr_forwarded event
 
-v0.109.0
-----------
+## v0.109.0 (2021-01-12)
  * Add @node.(uuid|visit_count) to context
 
-v0.108.0
-----------
+## v0.108.0 (2021-01-07)
  * Rename messaging_passive to messaging_background
 
-v0.107.2
-----------
+## v0.107.2 (2021-01-06)
  * Disallow labeling actions in passive flows
 
-v0.107.1
-----------
+## v0.107.1 (2020-12-17)
  * Add float64 workaround for exponent expressions with non-integer exponents
 
-v0.107.0
-----------
+## v0.107.0 (2020-12-16)
  * Add new flow type for passive messaging flows
  * Update to gocommon v1.7.1 to get fix for phone number parsing
 
-v0.106.3
-----------
+## v0.106.3 (2020-12-02)
  * Engine evaluator for contact sql should support != x for number and datetime values
 
-v0.106.2
-----------
+## v0.106.2 (2020-11-20)
  * Update to latest gocommon
 
-v0.106.1
-----------
+## v0.106.1 (2020-10-30)
  * URN and channel modifiers should error with invalid URNs and channels
 
-v0.106.0
-----------
+## v0.106.0 (2020-10-29)
  * Getting channel for URN should always consider the role on the channels
  * Update to latest gocommon which adds rocketchat scheme
  * SetPreferredChannel only when the channel has the send role
 
-v0.105.5
-----------
+## v0.105.5 (2020-10-26)
  * Support sorting contacts by last seen on attribute
 
-v0.105.4
-----------
+## v0.105.4 (2020-10-16)
  * Add support for Bengali numerals in number tests
 
-v0.105.3
-----------
+## v0.105.3 (2020-10-14)
  * Add support for Eastern Arabic numerals in number tests
 
-v0.105.2
-----------
+## v0.105.2 (2020-10-13)
  * Clear a run's expiration when it exits
  * Unwind accumulated run expirations as child runs complete
  * Include country in msg templating on msg_created events
 
-v0.105.1
-----------
+## v0.105.1 (2020-10-12)
  * Update to latest gocommon v1.5.3
 
-v0.105.0
-----------
+## v0.105.0 (2020-09-25)
  * Bump some deps, test on go 1.15 and fix bug found by 1.15 compiler
 
-v0.104.1
-----------
+## v0.104.1 (2020-09-10)
  * Update to gocommon v1.5.1
 
-v0.104.0
-----------
+## v0.104.0 (2020-09-09)
  * Use dummy value to avoid sending empty emails
  * Rework smtpx package for sending emails in places besides flows
  * Don't parse numbers in scientific notation
 
-v0.103.1
-----------
+## v0.103.1 (2020-09-04)
  * Update to latest gocommon v1.5.0
  * Run environment's DefaultLanguage and DefaultLocale methods should use contact language
 
-v0.103.0
-----------
+## v0.103.0 (2020-09-03)
  * Update to latest gocommon
  * Update terminology around groups with queries
 
-v0.102.1
-----------
+## v0.102.1 (2020-08-24)
  * Add archived contact status
 
-v0.102.0
-----------
+## v0.102.0 (2020-08-18)
  * Update to latest gocommon
 
-v0.101.2
-----------
+## v0.101.2 (2020-08-13)
  * Add empty localizations for all the languages used in RapidPro
 
-v0.101.1
-----------
+## v0.101.1 (2020-08-13)
  * Fix test
 
-v0.101.0
-----------
+## v0.101.0 (2020-08-13)
  * Use language codes (e.g. en-us) rather than locale names (en_US) for docs directories
 
-v0.100.1
-----------
+## v0.100.1 (2020-08-13)
  * Add completed pt_BR translation
 
-v0.100.0
-----------
+## v0.100.0 (2020-08-11)
  * Add last_seen_on to contacts and expose in expressions and queries
 
-v0.99.0
-----------
+## v0.99.0 (2020-07-30)
  * Rework elastic query generation so that all errors are caught at parsing stage
  * Allow URN inequality in elastic searches
 
-v0.98.0
-----------
+## v0.98.0 (2020-07-28)
  * Rework error handling in contactql so more errors are caught during parsing and have associated codes
 
-v0.97.0
-----------
+## v0.97.0 (2020-07-27)
  * Re-add classifier_called events for backward compatibility
  * Groups modifier should generate error if asked to operate on blocked or stopped contact
  * Move modifiers package out of actions package
  * ContactQL parser errors should contain more info
 
-v0.96.0
-----------
+## v0.96.0 (2020-07-23)
  * Reorganize validation code so utils doesn't have to know about tags defined higher up
  * Clone the test session during doc generation so actions always start with the same session
  * Add action to change contact status
  * Add historical information to triggers about the session that triggered them and use to prevent looping
 
-v0.95.1
-----------
+## v0.95.1 (2020-07-20)
  * Improve documentation of call_webhook action
 
-v0.95.0
-----------
+## v0.95.0 (2020-07-20)
  * Use latest wit.ai API version
  * Allow searching with values containing single quotes
  * Add user and origin fields to manual triggers
  * Add builder for triggers
  * Pass language to bothub API calls
 
-v0.94.2
-----------
+## v0.94.2 (2020-07-01)
  * Use jsonx.Marshal consistently
 
-v0.94.1
-----------
+## v0.94.1 (2020-07-01)
  * Add IsQueryError util
 
-v0.94.0
-----------
+## v0.94.0 (2020-06-26)
  * Move all location stuff from utils to envs
  * Simplify resolving locations from environments
  * Refactor field modifiers to take raw values and location parsing to not require a session
 
-v0.93.1
-----------
+## v0.93.1 (2020-06-25)
  * Fix clearing all URNs
 
-v0.93.0
-----------
+## v0.93.0 (2020-06-24)
  * Add urns modifier to replace all the URNs on a contact
 
-v0.92.0
-----------
+## v0.92.0 (2020-06-15)
  * Move elastic functionality from mailroom
 
-v0.91.1
-----------
+## v0.91.1 (2020-06-11)
  * Fix clearing of fields
 
-v0.91.0
-----------
+## v0.91.0 (2020-06-10)
  * Move generic PO stuff into utils/i18n
 
-v0.90.0
-----------
+## v0.90.0 (2020-06-10)
  * Allow querying contacts by UUID
  * Move i18n package under flows to avoid confusion with locales package
  * Add completion to localized documentation
 
-v0.89.0
-----------
+## v0.89.0 (2020-06-08)
  * Tweak change language functionality to allow missing translations
  * Add country to template translations and use when resolving templates
 
-v0.88.0
-----------
+## v0.88.0 (2020-06-05)
  * Add support for localized documentation
 
-v0.87.0
-----------
+## v0.87.0 (2020-06-03)
  * Disallow opening tickets, starting sessions and sending broadcasts when doing batch start
  * Add ability to change the language of a flow
  * Update our format_datetime docs to properly show range of 01-24
  * Fix evaluation of legacy vars in other-contacts actions
 
-v0.86.2
-----------
+## v0.86.2 (2020-05-07)
  * Fix spelling of Readact
 
-v0.86.1
-----------
+## v0.86.1 (2020-05-07)
  * Do redaction of access keys from HTTP logs
 
-v0.86.0
-----------
+## v0.86.0 (2020-05-05)
  * Add open_ticket actions and ticket_opened events
 
-v0.85.0
-----------
+## v0.85.0 (2020-05-01)
  * Add new service_called event to be used for classifiers and ticketers etc
 
-v0.84.0
-----------
+## v0.84.0 (2020-04-28)
  * Replace contact blocked and stopped fields with status field
  * Rename blocked and stopped modifiers to contact status modifier
 
-v0.83.1
-----------
+## v0.83.1 (2020-04-21)
  * Fix anywhere we truncate strings to do it by rune
 
-v0.83.0
-----------
+## v0.83.0 (2020-04-17)
  * Add blocked and stopped modifiers and events
  * Add blocked and stopped fields to contact
 
-v0.82.0
-----------
+## v0.82.0 (2020-04-16)
  * Fix default to understand objects with defaults
 
-v0.81.0
-----------
+## v0.81.0 (2020-04-07)
  * Rework httpx to replace NewTrace with NewRequest+DoTrace
  * Separate out the header part of response traces from the body which won't always be valid UTF-8
 
-v0.80.0
-----------
+## v0.80.0 (2020-04-03)
  * ivr_created events should include language of translated text
 
-v0.79.1
-----------
+## v0.79.1 (2020-04-02)
  * Include 3-char language code as extra header in PO files
 
-v0.79.0
-----------
+## v0.79.0 (2020-03-28)
  * Add custom Source-Flows header to exported PO files
  * Make router categories inspectable
  * Importing of translations into flows
 
-v0.78.1
-----------
+## v0.78.1 (2020-03-27)
  * Add decode_html Excellent function
  * Start of i18n work
  * Prevent XText.Slice from panicking
 
-v0.78.0
-----------
+## v0.78.0 (2020-03-23)
  * Add support for extracting the "base" translation of a flow
  * Allow queries on URNs to check if they are set or not
  * Add Language.ToISO639_2()
@@ -2531,580 +1959,453 @@ v0.78.0
  * Rework group asset loading so that parsing is not deferred
  * Override environment country if contact has preferred channel with country
 
-v0.77.4
-----------
+## v0.77.4 (2020-03-16)
  * Fix loading flow assets that are new spec but also have metadata section
 
-v0.77.3
-----------
+## v0.77.3 (2020-03-12)
  * Update README
 
-v0.77.2
-----------
+## v0.77.2 (2020-03-11)
  * Update README
 
-v0.77.1
-----------
+## v0.77.1 (2020-03-09)
  * Fix not passing access config correctly to webhook services
 
-v0.77.0
-----------
+## v0.77.0 (2020-03-09)
  * Allow http services to be configured with a list of disallowed hosts
 
-v0.76.3
-----------
+## v0.76.3 (2020-03-02)
  * fix @legacy_extra issue on routers
  * update gomobile instructions
 
-v0.76.2
-----------
+## v0.76.2 (2020-02-27)
  * Add trim, trim_left and trim_right excellent functions
 
-v0.76.1
-----------
+## v0.76.1 (2020-02-26)
  * Sort issues by node order
  * Add issues to report on invalid regex and usage of @legacy_extra
 
-v0.76.0
-----------
+## v0.76.0 (2020-02-24)
  * Validate language codes in contact queries
  * Disallow group queries against group names that don't exist
 
-v0.75.1
-----------
+## v0.75.1 (2020-02-21)
  * Remove contacts from broken groups
 
-v0.75.0
-----------
+## v0.75.0 (2020-02-21)
  * Handle missing groups on contact creation
  * Fix != with multiple values and add support for group attribute in contact queries
  * Improve docs for operators
 
-v0.74.0
-----------
+## v0.74.0 (2020-02-19)
  * Use jsonx functions for all JSON marshal/unmarshal
  * Add support for removing a URN to the urns modifier
  * Groups modifier should log errors for dynamic groups
  * Rename snapshot flag to -update
 
-v0.73.0
-----------
+## v0.73.0 (2020-02-17)
  * Include translation language with missing dependency issues
 
-v0.72.2
-----------
+## v0.72.2 (2020-02-17)
  * Allow flow inspection without assets
 
-v0.72.1
-----------
+## v0.72.1 (2020-02-17)
  * Quote telephone numbers in contact queries
  * Tweak parsing of phone numbers in contact queries
 
-v0.72.0
-----------
+## v0.72.0 (2020-02-14)
  * Rename "problems" to "issues"
 
-v0.71.3
-----------
+## v0.71.3 (2020-02-13)
  * Implement missing_dependency as a type of problem
  * Add framework for checking for problems during flow inspection
 
-v0.71.2
-----------
+## v0.71.2 (2020-02-11)
  * Rework dependency and template extraction to include actions and routers
 
-v0.71.1
-----------
+## v0.71.1 (2020-02-07)
  * Channels with no country are implicitly international
 
-v0.71.0
-----------
+## v0.71.0 (2020-02-07)
  * Add field to channel assets which determines whether they should try to send internationally
 
-v0.70.0
-----------
+## v0.70.0 (2020-02-06)
  * Make cloning a flow definition more deterministic
  * Update actions to log error events when dependencies are missing
  * Interpret contact queries which are formatted phone numbers as tel = queries
 
-v0.69.0
-----------
+## v0.69.0 (2020-02-04)
  * Move JSON utils into their own package
  * Track node UUIDs of dependencies
 
-v0.68.0
-----------
+## v0.68.0 (2020-02-04)
  * Convert dependency inspection output to list of things with type attribute
  * Replace Flow.CheckDepedencies and CheckDependenciesRecursive with passing assets to Inspect
 
-v0.67.1
-----------
+## v0.67.1 (2020-02-03)
  * Update to gocommon v1.2.0
 
-v0.67.0
-----------
+## v0.67.0 (2020-01-30)
  * Rename Flow.Validate to Flow.CheckDependencies for clarity
  * Create error event when webhook response too big
  * Rework webhook calls to use same calling code as other HTTP services
 
-v0.66.3
-----------
+## v0.66.3 (2020-01-28)
  * Allow globals with empty values
 
-v0.66.2
-----------
+## v0.66.2 (2020-01-28)
  * Add mobile binding for IsVersionSupported
  * Re-add version check to ReadFlow
 
-v0.66.1
-----------
+## v0.66.1 (2020-01-27)
  * Match evaluation of contact queries in ES
 
-v0.66.0
-----------
+## v0.66.0 (2020-01-24)
  * Fix problems with contact searching and add support for URN as attribute
 
-v0.65.0
-----------
+## v0.65.0 (2020-01-24)
  * Ignore content-type headers and try to parse all webhook responses as JSON
  * Update ContactQL to interpret implicit conditions which are URNs as scheme=path
 
-v0.64.11
-----------
+## v0.64.11 (2020-01-22)
  * Limit the size of evaluated templates and truncate anything bigger
 
-v0.64.10
-----------
+## v0.64.10 (2020-01-22)
  * Stringify contactql like the queries they came from
  * Trim webhook_called request traces to 10K same as response traces
  * Only set extra on webhook result if less than 10000 bytes
 
-v0.64.9
-----------
+## v0.64.9 (2020-01-21)
  * Allow getting current context even for ended sessions
 
-v0.64.8
-----------
+## v0.64.8 (2020-01-17)
  * Fix another panic during context walking
 
-v0.64.7
-----------
+## v0.64.7 (2020-01-16)
  * Fix panic in context walking
 
-v0.64.6
-----------
+## v0.64.6 (2020-01-15)
  * Add support for marshaling XObjects with their defaults, and tool for walking the context to find objects
 
-v0.64.5
-----------
+## v0.64.5 (2020-01-13)
  * Fix creation of no-nil interface to nil structs in context
 
-v0.64.4
-----------
+## v0.64.4 (2020-01-13)
  * Make it easier to get current expression context of a waiting session
 
-v0.64.3
-----------
+## v0.64.3 (2020-01-13)
  * Allow webhook calls with GET method to have bodies
 
-v0.64.2
-----------
+## v0.64.2 (2020-01-09)
  * Include parent result references in flow inspection
 
-v0.64.1
-----------
+## v0.64.1 (2020-01-08)
  * Add support for jitter in webhook retries
 
-v0.64.0
-----------
+## v0.64.0 (2020-01-08)
  * Make http retrying available to all services which use HTTP
  * Fix parsing out relative date value during migration of date tests
 
-v0.63.1
-----------
+## v0.63.1 (2019-12-20)
  * Perform URL validation in call_webhook and skip action appropriately
 
-v0.63.0
-----------
+## v0.63.0 (2019-12-17)
  * Loosen email regex used by has_email test
  * Allow cloning of JSON flow definitions not tied to any spec version
 
-v0.62.0
-----------
+## v0.62.0 (2019-12-17)
  * Render email_sent events in flowrunner
  * Allow flowmigrate to take a target version argument
  * Implement 13.1 migration as adding UUID to semd_msg.templating
 
-v0.61.0
-----------
+## v0.61.0 (2019-11-28)
  * Implement email as a service
 
-v0.60.1
-----------
+## v0.60.1 (2019-11-27)
  * Fix re-evaluating dynamic groups when query references non-existent field
 
-v0.60.0
-----------
+## v0.60.0 (2019-11-25)
  * Add @globals to completion
  * Add topic to send_msg actions
 
-v0.59.0
-----------
+## v0.59.0 (2019-11-21)
  * Validate run summary JSON passed to flow action triggers
  * Expose keyword match on trigger in context
 
-v0.58.0
-----------
+## v0.58.0 (2019-11-20)
  * Give services their own HTTP clients
  * Allow webhook service to take a map of deafult header values
 
-v0.57.0
-----------
+## v0.57.0 (2019-11-19)
  * Add globals to evaluation context as @globals
  * Add global as new asset type
 
-v0.56.3
-----------
+## v0.56.3 (2019-11-15)
  * DTOne client should record http log for timeouts
 
-v0.56.2
-----------
+## v0.56.2 (2019-11-07)
  * Fix migrating save actions with URN fields
 
-v0.56.1
-----------
+## v0.56.1 (2019-11-06)
  * Tweak criteria for deciding whether to try reading a flow as legacy
 
-v0.56.0
-----------
+## v0.56.0 (2019-11-05)
  * Fix docstring for UPPER()
  * Rework ReadFlow to accept legacy flows too
  * Move legacy package inside flows/definition
 
-v0.55.0
-----------
+## v0.55.0 (2019-10-31)
  * Update start_session action to use escaping when evaluating the contact query
  * Add support for escaping expressions in templates
 
-v0.54.3
-----------
+## v0.54.3 (2019-10-28)
  * Relax requirement for field assets to have UUID set since engine doesn't use this
 
-v0.54.2
-----------
+## v0.54.2 (2019-10-28)
  * Fix naming in mobile bindings
 
-v0.54.1
-----------
+## v0.54.1 (2019-10-28)
  * Fix docstring for UPPER()
 
-v0.54.0
-----------
+## v0.54.0 (2019-10-21)
  * NewEnvironmentBuilder() -> envs.NewBuilder() to match engine.NewBuilder()
  * Include classifiers in flow dependency inspection
 
-v0.53.1
-----------
+## v0.53.1 (2019-10-18)
  * Add classification service for Bothub
 
-v0.53.0
-----------
+## v0.53.0 (2019-10-16)
  * Record arrays of http logs on classifier_called and airtime_transferred events
 
-v0.52.1
-----------
+## v0.52.1 (2019-10-14)
  * Modify grammar to allow result names that start with underscores
 
-v0.52.0
-----------
+## v0.52.0 (2019-10-11)
  * All service factory methods should return an error if service can't be returned
  * Rework airtime transfer nodes to function more like NLU nodes
  * Add classification service implementation for LUIS
 
-v0.51.0
-----------
+## v0.51.0 (2019-10-08)
  * Add NLU support: a classify action, a classification service and various router tests
 
-v0.50.4
-----------
+## v0.50.4 (2019-09-27)
  * Revert change to operands for media waits
 
-v0.50.3
-----------
+## v0.50.3 (2019-09-27)
  * Fix migrating operands on rulesets waiting for media
  * Change autocompletion type of related_run.results to any since we can't autocomplete it
 
-v0.50.2
-----------
+## v0.50.2 (2019-09-25)
  * Fix migration of localization when flow has unused base translations
 
-v0.50.1
-----------
+## v0.50.1 (2019-09-24)
  * Have a single HTTPClient on the engine instead of every service having its own
 
-v0.50.0
-----------
+## v0.50.0 (2019-09-24)
  * Fix formatting runsummary with missing flow
  * Add contact_query field to start_session actions
  * Rework services so they take a session and resolve to a provider that does the work
 
-v0.49.0
-----------
+## v0.49.0 (2019-08-27)
  * Rework webhook calling code as a service and fix not saving result when connection errors
 
-v0.48.2
-----------
+## v0.48.2 (2019-08-26)
  * Include sender and recipient in airtime events
 
-v0.48.1
-----------
+## v0.48.1 (2019-08-26)
  * Add .Source() to SessionAssets interface
 
-v0.48.0
-----------
+## v0.48.0 (2019-08-26)
  * Unexport things that no longer need to be exported now that we've ditched extensions, clean up names of typed things
  * Remove transferto extension functionality and instead have standard transfer_airtime action which defers to an airtime service
 
-v0.47.3
-----------
+## v0.47.3 (2019-08-23)
  * completions.json should include section for session-less contexts
 
-v0.47.2
-----------
+## v0.47.2 (2019-08-14)
  * Add FlowReference to FlowRun interface and add some more tests
 
-v0.47.1
-----------
+## v0.47.1 (2019-08-14)
  * Renamed errored statuses to failed, replace fatal error events with failure events
 
-v0.47.0
-----------
+## v0.47.0 (2019-08-13)
  * Allow loading of runs with missing flows
  * A terminal enter_flow action should leave existing runs as completed instead of interrupted
  * Make documented item titles into actual links so it's easier to get the link of a particular item in the docs
 
-v0.46.0
-----------
+## v0.46.0 (2019-08-07)
  * Add UUID to assets.Field
 
-v0.45.2
-----------
+## v0.45.2 (2019-08-01)
  * Fix parsing context references like foo.0
 
-v0.45.1
-----------
+## v0.45.1 (2019-07-31)
  * ContactSQL query parsing should error if URN schenme used when URN redaction is enabled, and validate fields
 
-v0.45.0
-----------
+## v0.45.0 (2019-07-31)
  * urn_parts should error for non-URNs and so Wrap migrated urn_parts expressions with default to catch errors
  * Migrate non-tel URN types using urn_parts(..).path
  * Redacted URNs should still have scheme, and format_urn should work for redacted URNs
 
-v0.44.4
-----------
+## v0.44.4 (2019-07-29)
  * Set redaction policy in visitor constructor for contactql
 
-v0.44.3
-----------
+## v0.44.3 (2019-07-26)
  * Fix parsing of implicit conditions in contactql
 
-v0.44.2
-----------
+## v0.44.2 (2019-07-26)
  * Add UUID() to Session interface
 
-v0.44.1
-----------
+## v0.44.1 (2019-07-26)
  * Make trigger.params null for trigger types that don't use it, non-null for those that do
 
-v0.44.0
-----------
+## v0.44.0 (2019-07-26)
  * Add UUID field to sessions
  * Rework trigger.params to be an XObject and always non-null in expressions
  * Implement a week_number function which matches Excel's WEEKNUM
 
-v0.43.2
-----------
+## v0.43.2 (2019-07-23)
  * rename voice trigger to be more consistent
 
-v0.43.1
-----------
+## v0.43.1 (2019-07-23)
  * add ivr flow trigger constructor
 
-v0.43.0
-----------
+## v0.43.0 (2019-07-23)
  * Allow array lookups like foo.0
  * More re-organization of utils code into smaller packages
 
-v0.42.0
-----------
+## v0.42.0 (2019-07-19)
  * Move Environment type and environment based date parsing to new envs package
  * Move Date and TimeOfDay types to new dates package
  * Do template and dependency enumeration by reflection
 
-v0.41.18
-----------
+## v0.41.18 (2019-07-11)
  * Drop current template rewriting functionality which isn't used and can't be used with migrations
  * Generate context map from docstrings
 
-v0.41.17
-----------
+## v0.41.17 (2019-07-11)
  * Add SetURN function to Msg
  * Fix localization UUID in test action holder flow
  * Update send_email action to allow localization of subject and body
  * Reorganize docgen code to make it easier to add new doc outputs
 
-v0.41.16
-----------
+## v0.41.16 (2019-07-05)
  * Allow setting channel on a non-tel URN if it doesn't have a channel
  * Deprecate parent.run and child.run in the context and move those fields up one level
 
-v0.41.15
-----------
+## v0.41.15 (2019-07-03)
  * Tweak to goflow interfaces to allow introspection into contactql
  * Include external ID of msg on input expression context
 
-v0.41.14
-----------
+## v0.41.14 (2019-07-01)
  * Fix start_session when create_contact is true
 
-v0.41.13
-----------
+## v0.41.13 (2019-07-01)
  * Fix index out of bounds panic when transation for item exists but has less strings than original
 
-v0.41.12
-----------
+## v0.41.12 (2019-06-24)
  * Fix format excellent function when passed a nil
  * Fix parsing of 12AM and 12PM times
 
-v0.41.11
-----------
+## v0.41.11 (2019-06-20)
  * parse_json should error for invalid JSON
  * Switch to faster json.Valid for checking JSON validity
 
-v0.41.10
-----------
+## v0.41.10 (2019-06-20)
  * Add foreach_value function to allow us to keep legacy webhook payloads the same
  * Make @results and @run.results the same
 
-v0.41.9
-----------
+## v0.41.9 (2019-06-19)
  * NOOP if there are no rceipients for start_session and send_broadcast
  * Update send_broadcast and start_session to accept a URN in legacy_vars
 
-v0.41.8
-----------
+## v0.41.8 (2019-06-18)
  * Use std lib function to check HTTP headers
 
-v0.41.7
-----------
+## v0.41.7 (2019-06-04)
  * Remapping UUIDs during cloning must include UUIDs which are values in arrays
 
-v0.41.6
-----------
+## v0.41.6 (2019-06-03)
  * has_group can take optional second parameter which is group name.. used only in dependency inspection
 
-v0.41.5
-----------
+## v0.41.5 (2019-05-31)
  * Fix cloning of UI sections
 
-v0.41.4
-----------
+## v0.41.4 (2019-05-31)
  * Check that numbers are actually valid in our has_phone test
 
-v0.41.3
-----------
+## v0.41.3 (2019-05-30)
  * Handle missing ruleset types in legacy flows
 
-v0.41.2
-----------
+## v0.41.2 (2019-05-29)
  * handle no media type in our migration
 
-v0.41.1
-----------
+## v0.41.1 (2019-05-28)
  * Include node UUIDs in result infos returned from flow inspection
 
-v0.41.0
-----------
+## v0.41.0 (2019-05-27)
  * Legacy flow migration should just ignore invalid actionset/rule destinations
  * Drop includeUI as an option for flow migration and just always include it
 
-v0.40.3
-----------
+## v0.40.3 (2019-05-27)
  * Re-organize test utils so they're all in the test package
 
-v0.40.2
-----------
+## v0.40.2 (2019-05-25)
  * Add FixedUUID4Generator for testing
 
-v0.40.1
-----------
+## v0.40.1 (2019-05-24)
  * Make recursion optional again during flow validation
 
-v0.40.0
-----------
+## v0.40.0 (2019-05-23)
  * Add temporary Flow.MarshalWithInfo to aid with moving mailroom to new endpoint
  * Split up flow inspection and dependency validation and don't embed inspection results in the flow definition
 
-v0.39.4
-----------
+## v0.39.4 (2019-05-23)
  * Add support for cloning flows using generic JSON representations
 
-v0.39.3
-----------
+## v0.39.3 (2019-05-21)
  * Handle malformed single message campaign event flows
 
-v0.39.2
-----------
+## v0.39.2 (2019-05-21)
  * Fix IsLegacyDefinition
 
-v0.39.1
-----------
+## v0.39.1 (2019-05-20)
  * (Re)allow inspecting without session assets
 
-v0.39.0
-----------
+## v0.39.0 (2019-05-14)
  * Allow igoring of missing flow assets like any other asset type
  * Simplify the expression used to emulate legacy webhook payloads
  * Do structural validation in ReadFlow so flow returned from that is always valid
 
-v0.38.3
-----------
+## v0.38.3 (2019-05-09)
  * Switch to new library for UUID generation
  * Expose current flow spec version in mobile bindings
 
-v0.38.2
-----------
+## v0.38.2 (2019-05-07)
  * Fix send_broadcast and start_session actions so telephone numbers are normalized
 
-v0.38.1
-----------
+## v0.38.1 (2019-05-03)
  * properly return template dependencies for flows
 
-v0.38.0
-----------
+## v0.38.0 (2019-05-03)
  * Rework creating and starting sessions so sessions no longer exist in limbo state between the two
  * Add @webhook as shortcut to .extra of last webhook result
  * Make URLJoin honor absolute urls
 
-v0.37.3
-----------
+## v0.37.3 (2019-05-01)
  * Omit empty variables in message templates
  * Router failing to pick category should be fatal error event - not hard error
  * Match number like .5 and 1OO (o's) as 1)
  * Don't include quick replies and attachments whih both error and evaluate to empty
 
-v0.37.2
-----------
+## v0.37.2 (2019-04-24)
  * fix text_slice for unicode strings
 
-v0.37.1
-----------
+## v0.37.1 (2019-04-24)
  * @fields defaults to table like @results
  * Add default values to @run, @parent, @parent.run, @child, @child.run
 
-v0.37.0
-----------
+## v0.37.0 (2019-04-24)
  * Add TemplateIncluder to ease inclusion of templates as strings, slices or maps
  * Remove left() and right(), replace with text_slice()
  * Re-add defaults for several context objects
@@ -3112,361 +2413,287 @@ v0.37.0
  * Allow passing count of replacements to replace()
  * Allow empty results, fix empty category caltulations
 
-v0.36.2
-----------
+## v0.36.2 (2019-04-22)
  * accept text/javascript as a content type in webhooks
 
-v0.36.1
-----------
+## v0.36.1 (2019-04-19)
  * better error message for not being able to resume
 
-v0.36.0
-----------
+## v0.36.0 (2019-04-18)
  * Bump current flow spec version to 13
 
-v0.35.0
-----------
+## v0.35.0 (2019-04-18)
  * Migrate date_ tests to set delta value in UI config
  * is_text_eq -> has_only_text
  * @child and @parent should mirror root of context, not @run
 
-v0.34.1
-----------
+## v0.34.1 (2019-04-16)
  * Add format_results and migrate @flow to @(format_results(results))
  * Add type-aware format() function 
 
-v0.34.0
-----------
+## v0.34.0 (2019-04-15)
  * dict/keys -> object/properties
  * Split length() into count() and text_length()
  * Support != operator in contact queries
  * Extract operators into their own functions which can then be documented and have live examples
 
-v0.33.9
-----------
+## v0.33.9 (2019-04-12)
  * Ingore broken recording dicts on legacy say actions
  * Add is_error as a regular function and has_error as a router case test
  * Fix JSONing time values
 
-v0.33.8
-----------
+## v0.33.8 (2019-04-11)
  * Expressions refactor
 
-v0.33.7
-----------
+## v0.33.7 (2019-04-11)
  * Ignore errors migrating legacy expressions
  * Regexes for migrating context references
 
-v0.33.6
-----------
+## v0.33.6 (2019-04-08)
  * Ignore empty webhook headers during flow migration and validate that header namews are valid during validation
  * ReadFlow should maintain UI.. but as raw JSON
  * Flowrunner improvements
 
-v0.33.5
-----------
+## v0.33.5 (2019-04-05)
  * Fix routing after a timeout
 
-v0.33.4
-----------
+## v0.33.4 (2019-04-05)
  * Ensure an error from a resume is logged to the run
 
-v0.33.3
-----------
+## v0.33.3 (2019-04-04)
  * Fix auditing context refs like foo.0
 
-v0.33.2
-----------
+## v0.33.2 (2019-04-04)
  * Add NewActivatedMsgWait
 
-v0.33.1
-----------
+## v0.33.1 (2019-04-04)
  * Simplify resuming sessions so we only look at the wait on the actual node
  * Use relative timeout value in activated wait and msg_wait event
 
-v0.33.0
-----------
+## v0.33.0 (2019-04-04)
  * Add category_uuid to timeouts on waits, migrate legacy timeout rules to that
 
-v0.32.1
-----------
+## v0.32.1 (2019-04-03)
  * Operand of group split should be @contact.groups
  * Migrate a ruleset of type contact_field that splits on @contact.groups to an expression split
  * Add hint to msg_wait event, move waits into router package
  * Update engine to look for wait on router instead of node
 
-v0.32.0
-----------
+## v0.32.0 (2019-04-02)
  * Convert almost all complex types to be represented in expressions as simple XDicts
  * Add functional programming basics
  * Add template assets to goflow
 
-v0.31.3
-----------
+## v0.31.3 (2019-03-27)
  * Add check to call_resthook that payload is valid JSON
 
-v0.31.2
-----------
+## v0.31.2 (2019-03-27)
  * CallResthookAction should error if it can't evaluiate the payload template
  * Resthook payload should still be valid when contact URN can't be formatted
 
-v0.31.1
-----------
+## v0.31.1 (2019-03-27)
  * Generate better error message when resthook payload is not valid JSON
 
-v0.31.0
-----------
+## v0.31.0 (2019-03-27)
  * Better error message when marshalling a run
  * Use dict() function to simplify default webhook payload
  * Convert @contact.groups to be only excellent primitives
  * Add extract and dict as excellent functions
 
-v0.30.4
-----------
+## v0.30.4 (2019-03-26)
  * Add @fields as top-level shortcut to contact fields as map
  * Add @urns as dict of highest-priority URN by scheme
  * Make location parsing more forgiving
 
-v0.30.3
-----------
+## v0.30.3 (2019-03-25)
  * Bug fix: switch router should use category from first matching rule
  * Stringify maps with {...} and arrays with [...]
 
-v0.30.2
-----------
+## v0.30.2 (2019-03-22)
  * Record exit UUIDs coming from waits in validated flow definition
  * Match characters  intended to be combined with another character to support Thai, Bengali and Burmese properly
  * Extract and save result categories during validation
  * Add validation that node has > 0 exits, routers have > 0 categories, and categories have an exit
 
-v0.30.1
-----------
+## v0.30.1 (2019-03-20)
  * Don't try to validate a subflow which is missing
 
-v0.30.0
-----------
+## v0.30.0 (2019-03-20)
  * Fix HasDate tests to compare dates in env timezone
  * Return missing assets from SessionAssets.Validate
  * Replace runtime loop detection with an engine limit on steps per sprint (default 100)
 
-v0.29.11
-----------
+## v0.29.11 (2019-03-14)
  * Don't trim whitespace on input to has_pattern test
 
-v0.29.10
-----------
+## v0.29.10 (2019-03-13)
  * Fix migration of the @step.attacthments array in legacy expressions
  * Merge result infos by key so caller doesn't have to know how to do that
 
-v0.29.9
-----------
+## v0.29.9 (2019-03-11)
  * Fix migration of datetime + time in legacy expressions
 
-v0.29.8
-----------
+## v0.29.8 (2019-03-08)
  * Fix migration of legacy flows that don't have entry set
 
-v0.29.7
-----------
+## v0.29.7 (2019-03-08)
  * Change random router to return raw random value as result value
  * Return results as list of name/key objects during flow validation
  * Order nodes by y during flow migration
  * Convert attachment URLs to absolute during flow migration
 
-v0.29.6
-----------
+## v0.29.6 (2019-03-06)
  * Migrate name only legacy label and group references
  * Add more tests for has_pattern
 
-v0.29.5
-----------
+## v0.29.5 (2019-03-05)
  * Fix tests
 
-v0.29.4
-----------
+## v0.29.4 (2019-03-05)
  * Flow name shouldn't be required (matches any other asset type)
 
-v0.29.3
-----------
+## v0.29.3 (2019-03-05)
  * Use presence of flow_type to determine if flow is in legacy format and handle legacy flows with missing metadata section
 
-v0.29.2
-----------
+## v0.29.2 (2019-03-05)
  * Allow flow validation without assets
 
-v0.29.1
-----------
+## v0.29.1 (2019-03-04)
  * Store a map of result keys to result names in a validated flow definition
 
-v0.29.0
-----------
+## v0.29.0 (2019-03-04)
  * call_resthook action should generate result even if there are no subscribers
  * If a resthook call returns a success and a 410, use the success as the result
  * Validating flow should add dependencies and result_names to definition
  * Rework flow validation so dependency checking happens centrally and not in each action
  * Add util methods for enumerating and rewriting templats in group and label references
 
-v0.28.14
-----------
+## v0.28.14 (2019-02-26)
  * Allow conversion of numbers to times
  * Migrate datetime+time to a minutes addition expression
  * Add tools.RefactorTemplate and tools.FindContextRefsInTemplate
 
-v0.28.13
-----------
+## v0.28.13 (2019-02-23)
  * Fix title to work with text which is uppercase
  * Change implementation of remove_first_word so that punctuation is preserved
  * Anything + TIME should migrate to replace_time(..)
 
-v0.28.12
-----------
+## v0.28.12 (2019-02-22)
  * Fix migration of datevalue+time
 
-v0.28.11
-----------
+## v0.28.11 (2019-02-22)
  * length(nil) == 0
  * Arrays should stringify as CSV
  * Maps should stringify as new line separated key: value pairs
 
-v0.28.10
-----------
+## v0.28.10 (2019-02-22)
  * Wrap results of date arithmetic in format_date
 
-v0.28.9
-----------
+## v0.28.9 (2019-02-21)
  * Fix calling length on a complex object that needs to be reduced
 
-v0.28.8
-----------
+## v0.28.8 (2019-02-21)
  * Fix migration of DAYS()
 
-v0.28.7
-----------
+## v0.28.7 (2019-02-21)
  * add accessor for msg in MsgResume
 
-v0.28.6
-----------
+## v0.28.6 (2019-02-21)
  * DATEVALUE should migrate to date() so it returns a date rather than a datetime
  * Add date() conversion function
  * Change datetime_from_parts to date_from_parts
 
-v0.28.5
-----------
+## v0.28.5 (2019-02-21)
  * fix resolving @parent or @child when they are nil
 
-v0.28.4
-----------
+## v0.28.4 (2019-02-20)
  * Add utils.Date and types.XDate
 
-v0.28.3
-----------
+## v0.28.3 (2019-02-20)
  * Don't localize fields not localized in legacy engine
  * Rework time parsing to accept hour only and more ISO8601 formats
 
-v0.28.2
-----------
+## v0.28.2 (2019-02-20)
  * allow single tls renegotiation
 
-v0.28.1
-----------
+## v0.28.1 (2019-02-19)
  * Allow looping back into a flow that wasn't started in this sprint
 
-v0.28.0
-----------
+## v0.28.0 (2019-02-19)
  * Rename from_epoch to datetime_from_epoch
  * Add time functions and has_time router test
  * Remove support for .0 indexing in excellent
  * Remove gomobile dependency
 
-v0.27.9
-----------
+## v0.27.9 (2019-02-15)
  * Don't treat identifiers as special case, parse them like all other expressions
  * When migrating expressions like flow.2factor, wrap non-name keys in ["..."]
 
-v0.27.8
-----------
+## v0.27.8 (2019-02-14)
  * Add better flow spec version handling and ability to peek at definitions to determin if they are legacy
 
-v0.27.7
-----------
+## v0.27.7 (2019-02-14)
  * Don't fake an ignored response body but record it in the event as ignored
  * If a webhook call doesn't return a content-type header, try to detect type
 
-v0.27.6
-----------
+## v0.27.6 (2019-02-13)
  * Verify parsed numbers in has_phone are valid
 
-v0.27.5
-----------
+## v0.27.5 (2019-02-11)
  * update contact PreferredChannel and PreferredURN to resolve first sendable destination
 
-v0.27.4
-----------
+## v0.27.4 (2019-02-11)
  * add country to mobile.NewEnvironment
  * move NewSession and ReadSession into Engine
  * engine.EngineBuilder -> engine.Builder because gofmt doesn't like stuttering
  * remove webhook mocking and reading engine coonfig from JSON
 
-v0.27.3
-----------
+## v0.27.3 (2019-02-11)
  * Fix migration of weekday() to add 1
  * Add resthook_called event
 
-v0.27.2
-----------
+## v0.27.2 (2019-02-11)
  * simplify reading environments from JSON
  * rename .Environment() to .Build()
 
-v0.27.1
-----------
+## v0.27.1 (2019-02-09)
  * Add max_value_length to environment and apply in name and field change modifiers
 
-v0.27.0
-----------
+## v0.27.0 (2019-02-04)
  * Add type to sessions (the type of the flow it was triggered with)
 
-v0.26.0
-----------
+## v0.26.0 (2019-01-31)
  * Update modifier loading so missing assets are reported
  * Remove logrus logging
  * Rework all session objects to record missing assets
  * Ensure error events are logged to sprint as well as run
 
-v0.25.5
-----------
+## v0.25.5 (2019-01-30)
  * Include status code in webhook events
 
-v0.25.4
-----------
+## v0.25.4 (2019-01-28)
  * Fix renderEventDoc to properly render JSON in markdown
  * Add full constructor for sprint
 
-v0.25.3
-----------
+## v0.25.3 (2019-01-15)
  * Remove flow server components which are no longer used
 
-v0.25.2
-----------
+## v0.25.2 (2019-01-14)
  * Simpler trigger constructors
 
-v0.25.1
-----------
+## v0.25.1 (2019-01-10)
  * Fix unmarshalling legacy say actions
 
-v0.25.0
-----------
+## v0.25.0 (2019-01-09)
  * New IVR events
 
-v0.24.1
-----------
+## v0.24.1 (2018-12-21)
  * Fix time-filling bug
 
-v0.24.0
-----------
+## v0.24.0 (2018-12-19)
  * Convert to go module to be used as library
 
-v0.23.0
-----------
+## v0.23.0 (2018-10-25)
  * Migrate api actions so that URL expressions are wrapped in url_encode()
  * Don't url encode msg attachment expressions automatically
  * Fix not being to read contact_field_changed events where value is null
@@ -3483,8 +2710,7 @@ v0.23.0
  * Require exit UUIds to be unique across the entire flow
  * Improve number parsing
 
-v0.22.0
-----------
+## v0.22.0 (2018-10-13)
  * Move input from run to session
  * Make contact.name .language .timezone omitted in JSON when empty
  * Make contact.created_on required
@@ -3496,50 +2722,40 @@ v0.22.0
  * Create new static asset source type for simpler testing
  * Add channel event trigger type
 
-v0.21.4
-----------
+## v0.21.4 (2018-10-10)
  * Rework transferto action to generate result like a webhook call
 
-v0.21.3
-----------
+## v0.21.3 (2018-10-09)
  * Add results from run summary on flow_action triggers to @legacy_extra
  * Fix migration of @flow by itself
 
-v0.21.2
-----------
+## v0.21.2 (2018-10-09)
  * Fix migration of calls to HOUR(...)
  * Support formatting/parsing of decimal values with configurable digit separators
 
-v0.21.1
-----------
+## v0.21.1 (2018-10-05)
  * Re-evaluate and correct contact groups at the start/resume of a session
  * Add run.modified_on
 
-v0.21.0
-----------
+## v0.21.0 (2018-10-04)
  * Change sigature of ReevaluateDynamicGroups to not require a session
  * Fix language selection for flow localization 
 
-v0.20.1
-----------
+## v0.20.1 (2018-10-03)
  * Fix run expirations
  * Rename webhook_called.time_taken -> elapsed_ms
 
-v0.20.0
-----------
+## v0.20.0 (2018-10-03)
  * Replace caller events with resumes
  * Record time taken in webhook_called events
 
-v0.19.2
-----------
+## v0.19.2 (2018-09-28)
  * Only generate a contact_field_changed event if a value has actually changed
 
-v0.19.1
-----------
+## v0.19.1 (2018-09-28)
  * Fix blowing up when contact doesn't have a value for a contact field
 
-v0.19.0
-----------
+## v0.19.0 (2018-09-28)
  * Add missing regex_match func and migration of string literals in legacy flows
  * Allow contacts to be loaded in a mode that ignores missing groups or fields
  * Disallow creating contacts with empty field values
@@ -3548,8 +2764,7 @@ v0.19.0
  * Fix group reevaluation when contact has no value for a text field
  * Cleanup function docstrings and fix from_epoch
 
-v0.18.0
-----------
+## v0.18.0 (2018-09-26)
  * Use default value for router on migrated webhook ruleset in case resthook didn't have any subscribers
  * Add resthook slug to webhook_called events if it exists
  * Generate a groups changed event when dynamic groups are re-evaluated
@@ -3559,113 +2774,90 @@ v0.18.0
  * Only generate events when state has actually changed
  * Move event functiionality into the actions that generate them
 
-v0.17.1
-----------
+## v0.17.1 (2018-09-21)
  * Use result name when populating @legacy_extra instead of just .webhook
 
-v0.17.0
-----------
+## v0.17.0 (2018-09-21)
  * Remove Connection Error as a separate exit for webhook routers
  * call_webhook and call_resthook now save a result and run.Webhook is removed
  * @input and @results as shortcuts to @run.input and @run.results
  * Router tests can now return extra to be added to the result
 
-v0.17.0
-----------
+## v0.17.0 (2018-09-21)
  * Remove "Connection Error" as a separate exit for webhook routers
  * call_webhook and call_resthook now save a result and run.Webhook is removed
  * @input and @results as shortcuts to @run.input and @run.results
  * Router tests can now return extra to be added to the result
 
-v0.16.0
-----------
+## v0.16.0 (2018-09-19)
  * Adds @legacy_extra to context to mimic @extra in legacy flows
 
-v0.15.2
-----------
+## v0.15.2 (2018-09-14)
  * Fix determining whether asset serversource supports a particular type
  * Fix parsing of numbers when string contains uppercase letters
 
-v0.15.1
-----------
+## v0.15.1 (2018-09-14)
  * Fill in current time when parsing dates during tests
  * Add ui config options for composed split migrations
 
-v0.15.0
-----------
+## v0.15.0 (2018-09-13)
  * Great assets refactor
 
-v0.14.7
-----------
+## v0.14.7 (2018-09-10)
  * Replicate channel matching logic from RP
 
-v0.14.6
-----------
+## v0.14.6 (2018-09-07)
  * Don't strip URN params when parsing
 
-v0.14.5
-----------
+## v0.14.5 (2018-09-07)
  * Migrate legacy webhook calls to POST if they don't have a method set
 
-v0.14.4
-----------
+## v0.14.4 (2018-09-06)
  * Simplify string tokenization and add more tests
 
-v0.14.3
-----------
+## v0.14.3 (2018-09-04)
  * Fix message attachment expressions not being URL encoded
  * Fix parsing of locations
 
-v0.14.2
-----------
+## v0.14.2 (2018-09-03)
  * Small refactor of how we migrate rules to cases/exits that fixes an ordering bug and add option to not collapse exits
 
-v0.14.1
-----------
+## v0.14.1 (2018-09-03)
  * Fix sentry integration
  * Fix FIELD() blowing up when using space as separator
 
-v0.14.0
-----------
+## v0.14.0 (2018-08-30)
  * Documentation improvements and make language required in flow definition
  * Add flow type and validate that actions only occur in supported flow types
 
-v0.13.3
-----------
+## v0.13.3 (2018-08-28)
  * Fix scanner treating parentheses inside string literals as expression boundaries
  * Fix not correctly scanning excellent identifiers followed by periods
  * Add migrate tab to flowserver index page for easy flow migration testing
 
-v0.13.2
-----------
+## v0.13.2 (2018-08-27)
  * Refactor assets functionality
 
-v0.13.1
-----------
+## v0.13.1 (2018-08-15)
  * to_epoch() becomes epoch() and returns fractional seconds
  * Improved docuentation
  * Add Heroku deployment support
 
-v0.13.0
-----------
+## v0.13.0 (2018-08-02)
  * Wrap multiple asset responses in a results object
 
-v0.12.2
-----------
+## v0.12.2 (2018-08-02)
  * Update UI node type names
  * Add all trigger types to docs so that we test parsing of the examples
  * Add campaign as a trigger type
 
-v0.12.1
-----------
+## v0.12.1 (2018-07-31)
  * Improve error messages when trigger can't be read due to asset load failure
 
-v0.12.0
-----------
+## v0.12.0 (2018-07-31)
  * Migrate flows individually
 
-v0.11.0
-----------
+## v0.11.0 (2018-07-31)
  * Rework assets so whether or not they are managed as sets is configured at the type level
  * LocationHiearchy assets should be managed like a set like other asset types
  * Migrate empty flows
@@ -3674,12 +2866,10 @@ v0.11.0
  * Dynamic type for actions, events, routers etc
  * Make func names more consistent and implement same typing system for waits
 
-v0.10.21
-----------
+## v0.10.21 (2018-07-11)
  * Tweak resthook_called events so the event itself has status=success for HTTP 410 responses
 
-v0.10.20
-----------
+## v0.10.20 (2018-07-07)
  * Migrate ruleset_types to editor types in _ui
  * Use a sequential time source for flow tests instead of replacing time values with placeholders
  * Add call_resthook action type and migrate from legacy resthook rulesets
@@ -3688,138 +2878,112 @@ v0.10.20
  * Migrate "" escape sequences in string literals in legacy expressions to \"
  * Add support for \n \" sequences in Excellent string literals
 
-v0.10.19
-----------
+## v0.10.19 (2018-07-03)
  * Add format_date function which only takes date (non-time) formatting chars
  * Fix encoding of contact name in webhook payloads
  * Fix logging of panics to sentry
 
-v0.10.18
-----------
+## v0.10.18 (2018-07-02)
  * Encode spaces as %20 in URL expressions
  * Match legacy behavior for @contact
 
-v0.10.17
-----------
+## v0.10.17 (2018-07-02)
  * Add proper migrations for when word_* functions have final by_spaces param, and also collapse decremented values if they are literals (e.g. 2- 1)
  * Update word(), word_slice() and word_count() to take a final optional param called delimiters
  * Don't throw validation error if add_input_labels or add_contact_groups has zero groups/labels
 
-v0.10.16
-----------
+## v0.10.16 (2018-06-27)
  * Don't log 400 responses to sentry
 
-v0.10.15
-----------
+## v0.10.15 (2018-06-27)
  * Migrate expressions in webhook header values
  * Allow dynamic searches to query language and created_on
  * Expose contact.created_on in expressions
  * Migrate rulesets where there is an explicit Other category
 
-v0.10.14
-----------
+## v0.10.14 (2018-05-31)
  * Fix @contact.id not being migrated in legacy flows
 
-v0.10.13
-----------
+## v0.10.13 (2018-05-31)
  * Migrate @contact.<scheme> expressions to @(format_urn(contact.urns.<scheme>)) so there's no error if such a URN doesn't exist
  * Fix not saving a result when router takes default exit
 
-v0.10.12
-----------
+## v0.10.12 (2018-05-31)
  * Merge pull request #308 from nyaruka/mock_webhooks
  * Add webhook mocks to engine config and check when making webhook calls if there is a matching mock
  * Fix migration of @extra.flow in legacy expressions
  * Fix mapping of @flow.contact in legacy expressions
 
-v0.10.11
-----------
+## v0.10.11 (2018-05-28)
  * Don't log errors twice
 
-v0.10.10
-----------
+## v0.10.10 (2018-05-27)
  * Add all_groups flag to remove_contact_groups action
  * Add sentry for reporting errors
 
-v0.10.9
-----------
+## v0.10.9 (2018-05-25)
  * Fix migrating legacy @flow.foo.text/time expressions
 
-v0.10.8
-----------
+## v0.10.8 (2018-05-25)
  * Handle legacy flows where things which are supposed to be translation dicts aren't
 
-v0.10.7
-----------
+## v0.10.7 (2018-05-25)
  * Expose flow.revision in context and webhook payloads
 
-v0.10.6
-----------
+## v0.10.6 (2018-05-24)
  * Fix panic when field value is nil
 
-v0.10.5
-----------
+## v0.10.5 (2018-05-23)
  * Implement redacting URNs
  * Add numeric ID to contacts
 
-v0.10.4
-----------
+## v0.10.4 (2018-05-15)
  * run.input.text should be optional
 
-v0.10.3
-----------
+## v0.10.3 (2018-05-14)
  * Allow webhook calls to be mocked and add tests
  * Don't blow up if legacy stickies have floating point positions
  * Update CLEAN() to match legacy behaviour
  * More fixes when evaluating migrated legacy template tests
 
-v0.10.2
-----------
+## v0.10.2 (2018-05-11)
  * Drop requirement for input.uuid to be a valid UUIDv4 since it comes from msg.uuid which isn't always valid UUID4
 
-v0.10.1
-----------
+## v0.10.1 (2018-05-10)
  * Improve parser error messages and add tests for error messages
  * Update to latest gocommon which fixes tel URN which are shortcodes failing validation
 
-v0.10.0
-----------
+## v0.10.0 (2018-05-08)
  * Empty/blank values should clear name/fields/language/timezone
  * Split SetContactAProperty into new actions for name, language and timezone
  * Improve error messages from struct validation
  * Result input should be nullable if there is no input
  * Timeout rule should use timeout as value
 
-v0.9.10
-----------
+## v0.9.10 (2018-05-04)
  * Result input should be nullable if there is no input
  * Fix HasWaitTimedOut test
  * Waits should retain their timeout value
 
-v0.9.9
-----------
+## v0.9.9 (2018-05-03)
  * Use fuzzy number parsing for tests, stricter for type conversion
  * Migrate endpoint of flowserver can take include_ui param
  * Add migration of notes
  * Include contact name on migration of contact references
 
-v0.9.8
-----------
+## v0.9.8 (2018-05-03)
  * Fix goreleasing from travis
 
-v0.9.7
-----------
+## v0.9.7 (2018-05-03)
  * Migrate contact.groups to be a CSV list
  * Support channels with UUIDs which aren't UUID4
 
-v0.9.6
-----------
+## v0.9.6 (2018-05-03)
  * Migrate templates in legacy HasState and HasWard tests
  * Fix migration of has_email tests
  * Add JSON util functions for marshalling without HTML escaping
  * Add support for searching for locations by path
 
-v0.9.5
-----------
+## v0.9.5 (2018-05-01)
  * Router test docstring examples should always include use of .match
  * Use left,top instead of x,y
