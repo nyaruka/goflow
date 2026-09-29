@@ -1,3 +1,7 @@
+v0.295.1 (2026-09-29)
+-------------------------
+ * Rename model roles to verbs: translate, generate, classify
+
 v0.295.0 (2026-09-28)
 -------------------------
  * Split model roles into translation, generation and classification, adding Translate to ModelService

@@ -237,25 +237,25 @@
             "uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce",
             "name": "GPT-4",
             "type": "openai",
-            "roles": ["translation", "generation", "classification"]
+            "roles": ["translate", "generate", "classify"]
         },
         {
             "uuid": "51ade705-8338-40a9-8a77-37657a936966",
             "name": "Claude",
             "type": "anthropic",
-            "roles": ["translation", "generation", "classification"]
+            "roles": ["translate", "generate", "classify"]
         },
         {
             "uuid": "8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61",
             "name": "Classifier",
             "type": "jev",
-            "roles": ["classification"]
+            "roles": ["classify"]
         },
         {
             "uuid": "b5d1c6e2-3f4a-4b7c-8e9d-0a1b2c3d4e5f",
             "name": "Translator",
             "type": "openai",
-            "roles": ["translation"]
+            "roles": ["translate"]
         }
     ],
     "resthooks": [

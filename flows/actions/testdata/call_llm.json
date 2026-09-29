@@ -83,7 +83,7 @@
                 "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "model 8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61 does not have the generation role"
+                "text": "model 8f8a0f5c-0e1f-4a3e-9d5e-7c0b8f3a2d61 does not have the generate role"
             }
         ],
         "locals_after": {

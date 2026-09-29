@@ -80,8 +80,8 @@ func (a *CallLLM) call(ctx context.Context, run flows.Run, log events.EventLogge
 		log(events.NewDependencyError(a.LLM))
 		return nil
 	}
-	if !model.HasRole(assets.ModelRoleGeneration) {
-		log(events.NewError(fmt.Sprintf("model %s does not have the generation role", a.LLM.UUID), ""))
+	if !model.HasRole(assets.ModelRoleGenerate) {
+		log(events.NewError(fmt.Sprintf("model %s does not have the generate role", a.LLM.UUID), ""))
 		return nil
 	}
 
