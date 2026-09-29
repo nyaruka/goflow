@@ -123,7 +123,7 @@ func TestRoutesAppendDoesNotClaimBeyondMax(t *testing.T) {
 	for i := range existing {
 		existing[i] = urns.URN(fmt.Sprintf("tel:+170200%05d", i))
 	}
-	contact, err := core.NewContact(sa, core.NewContactUUID(), core.ContactID(1), "Bob", i18n.NilLanguage, core.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
+	contact, err := core.NewContact(sa, core.NewContactUUID(), core.ContactID(1), "Bob", i18n.NilLanguage, "", core.ContactStatusActive, nil, time.Now(), nil, existing, nil, nil, nil, assets.IgnoreMissing)
 	require.NoError(t, err)
 
 	// try to append three new URNs - only the first should fit

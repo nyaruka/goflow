@@ -241,6 +241,26 @@ func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contac
 		})
 	case contactql.AttributeLanguage:
 		return textAttributeQuery(cond, "language", strings.ToLower)
+	case contactql.AttributeEmail:
+		// special case for set/unset
+		if (cond.Operator() == contactql.OpEqual || cond.Operator() == contactql.OpNotEqual) && value == "" {
+			query := elastic.Exists("email")
+			if cond.Operator() == contactql.OpEqual {
+				query = elastic.Not(query)
+			}
+			return query
+		}
+
+		switch cond.Operator() {
+		case contactql.OpEqual:
+			return elastic.Term("email.keyword", value)
+		case contactql.OpNotEqual:
+			return elastic.Not(elastic.Term("email.keyword", value))
+		case contactql.OpContains:
+			return elastic.MatchPhrase("email", value)
+		default:
+			panic(fmt.Sprintf("unsupported email attribute operator: %s", cond.Operator()))
+		}
 	case contactql.AttributeCreatedOn:
 		value, _ := cond.ValueAsDate(c.env)
 		start, end := dates.DayToUTCRange(value, value.Location())

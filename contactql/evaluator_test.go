@@ -26,6 +26,7 @@ func TestEvaluateQuery(t *testing.T) {
 		"id":       []any{"12345"},
 		"ref":      []any{"A6YWQL"},
 		"name":     []any{"Bob Smithwick"},
+		"email":    []any{"bob@example.com"},
 		"flow":     []any{"Registration"},
 		"tel":      []any{"+59313145145"},
 		"twitter":  []any{"bob_smith"},
@@ -64,6 +65,19 @@ func TestEvaluateQuery(t *testing.T) {
 		{query: `name ~ "Sm"`, result: true},
 		{query: `name ~ "Smithwicke"`, result: true}, // only compare up to 8 chars
 		{query: `name ~ "Smithx"`, result: false},
+
+		// email condition
+		{query: `email = "bob@example.com"`, result: true},
+		{query: `email = "BOB@Example.COM"`, result: true},
+		{query: `email = "jim@example.com"`, result: false},
+		{query: `email != "jim@example.com"`, result: true},
+		{query: `email != "bob@example.com"`, result: false},
+		{query: `email ~ "example.com"`, result: true},
+		{query: `email ~ "@EXAMPLE"`, result: true},
+		{query: `email ~ "bob@ex"`, result: true},
+		{query: `email ~ "gmail"`, result: false},
+		{query: `email = ""`, result: false},
+		{query: `email != ""`, result: true},
 
 		{query: `flow = "Registration"`, result: true},
 		{query: `flow != "Registration"`, result: false},

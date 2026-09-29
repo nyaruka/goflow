@@ -15,6 +15,7 @@ const (
 	ErrInvalidFlow           = "invalid_flow"           // `value` the value we tried to parse as a flow name
 	ErrInvalidPartialName    = "invalid_partial_name"   // `min_token_length` the minimum length of token required for name contains condition
 	ErrInvalidPartialURN     = "invalid_partial_urn"    // `min_value_length` the minimum length of value required for URN contains condition
+	ErrInvalidPartialEmail   = "invalid_partial_email"  // `min_value_length` the minimum length of value required for email contains condition
 	ErrUnsupportedContains   = "unsupported_contains"   // `property` the property key
 	ErrUnsupportedComparison = "unsupported_comparison" // `property` the property key, `operator` one of =>, <, >=, <=
 	ErrUnsupportedSetCheck   = "unsupported_setcheck"   // `property` the property key, `operator` one of =, !=

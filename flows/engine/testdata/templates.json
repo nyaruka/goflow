@@ -33,6 +33,11 @@
         "events": []
     },
     {
+        "template": "@contact.email",
+        "output": "ryan@nyaruka.com",
+        "events": []
+    },
+    {
         "template": "@contact.timezone",
         "output": "America/Guayaquil",
         "events": []
@@ -555,6 +560,7 @@
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
             },
             "created_on": "2018-06-20T11:40:30.123456Z",
+            "email": "ryan@nyaruka.com",
             "fields": {
                 "activation_token": "AACC55",
                 "age": 23,
@@ -638,6 +644,7 @@
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-06-20T11:40:30.123456Z",
+                "email": "ryan@nyaruka.com",
                 "fields": {
                     "activation_token": "AACC55",
                     "age": 23,
@@ -779,6 +786,7 @@
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-06-20T11:40:30.123456Z",
+                "email": "ryan@nyaruka.com",
                 "fields": {
                     "activation_token": "AACC55",
                     "age": 23,
@@ -894,6 +902,7 @@
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2018-01-01T12:00:00.000000Z",
+                "email": "",
                 "fields": {
                     "activation_token": null,
                     "age": 33,

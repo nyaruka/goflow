@@ -45,6 +45,15 @@
         }
     },
     {
+        "description": "ascending email",
+        "sort_by": "email",
+        "elastic": {
+            "email.keyword": {
+                "order": "asc"
+            }
+        }
+    },
+    {
         "description": "descending numeric",
         "sort_by": "-AGE",
         "elastic": {

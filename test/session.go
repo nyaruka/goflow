@@ -280,6 +280,7 @@ var sessionContact = `{
     "name": "Ryan Lewis",
     "status": "active",
     "language": "eng",
+    "email": "ryan@nyaruka.com",
     "timezone": "America/Guayaquil",
     "created_on": "2018-06-20T11:40:30.123456789-00:00",
     "urns": [
@@ -687,6 +688,7 @@ func (b *SessionBuilder) Build() (flows.SessionAssets, flows.Session, flows.Spri
 		b.contactID,
 		b.contactName,
 		b.contactLang,
+		"",
 		core.ContactStatusActive,
 		nil,
 		time.Date(2020, 1, 1, 12, 45, 30, 123456, time.UTC),
