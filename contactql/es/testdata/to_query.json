@@ -1393,7 +1393,7 @@
         "query": "email=Bob@Example.com",
         "elastic": {
             "term": {
-                "email": {
+                "email.keyword": {
                     "value": "bob@example.com"
                 }
             }
@@ -1407,7 +1407,7 @@
             "bool": {
                 "must_not": {
                     "term": {
-                        "email": {
+                        "email.keyword": {
                             "value": "bob@example.com"
                         }
                     }

@@ -26,13 +26,13 @@ func (c *Converter) Sort(sortBy string, resolver contactql.Resolver) (elastic.So
 
 	property = strings.ToLower(property)
 
-	// name needs to be sorted by keyword field
-	if property == contactql.AttributeName {
-		return elastic.SortBy("name.keyword", ascending), nil
+	// analyzed text attributes need to be sorted by their keyword field
+	if property == contactql.AttributeName || property == contactql.AttributeEmail {
+		return elastic.SortBy(property+".keyword", ascending), nil
 	}
 
 	// other attributes are straight sorts
-	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage || property == contactql.AttributeEmail {
+	if property == contactql.AttributeID || property == contactql.AttributeCreatedOn || property == contactql.AttributeLastSeenOn || property == contactql.AttributeLanguage {
 		return elastic.SortBy(property, ascending), nil
 	}
 

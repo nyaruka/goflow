@@ -253,9 +253,9 @@ func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contac
 
 		switch cond.Operator() {
 		case contactql.OpEqual:
-			return elastic.Term("email", value)
+			return elastic.Term("email.keyword", value)
 		case contactql.OpNotEqual:
-			return elastic.Not(elastic.Term("email", value))
+			return elastic.Not(elastic.Term("email.keyword", value))
 		case contactql.OpContains:
 			return elastic.MatchPhrase("email", value)
 		default:

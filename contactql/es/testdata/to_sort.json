@@ -48,7 +48,7 @@
         "description": "ascending email",
         "sort_by": "email",
         "elastic": {
-            "email": {
+            "email.keyword": {
                 "order": "asc"
             }
         }
