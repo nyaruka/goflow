@@ -9,7 +9,7 @@ type Model struct {
 	UUID_  assets.ModelUUID   `json:"uuid"  validate:"required,uuid"`
 	Name_  string             `json:"name"`
 	Type_  string             `json:"type"`
-	Roles_ []assets.ModelRole `json:"roles" validate:"min=1,dive,eq=translation|eq=generation|eq=classification"`
+	Roles_ []assets.ModelRole `json:"roles" validate:"min=1,dive,eq=translate|eq=generate|eq=classify"`
 }
 
 // NewModel creates a new model

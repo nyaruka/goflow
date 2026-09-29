@@ -14,9 +14,9 @@ type ModelRole string
 
 // different roles that models can perform
 const (
-	ModelRoleTranslation    ModelRole = "translation"
-	ModelRoleGeneration     ModelRole = "generation"
-	ModelRoleClassification ModelRole = "classification"
+	ModelRoleTranslate ModelRole = "translate"
+	ModelRoleGenerate  ModelRole = "generate"
+	ModelRoleClassify  ModelRole = "classify"
 )
 
 // Model is an AI model, e.g. a large language model.
@@ -25,7 +25,7 @@ const (
 //	  "uuid": "00cc7310-4bb9-473f-851e-39b0880aad78",
 //	  "name": "ChatGPT-4",
 //	  "type": "openai",
-//	  "roles": ["translation", "generation", "classification"]
+//	  "roles": ["translate", "generate", "classify"]
 //	}
 //
 // @asset model

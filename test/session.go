@@ -225,8 +225,8 @@ var sessionAssets = `{
         {"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"}
     ],
     "models": [
-        {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4", "type": "openai", "roles": ["translation", "generation", "classification"]},
-        {"uuid": "51ade705-8338-40a9-8a77-37657a936966", "name": "Claude", "type": "anthropic", "roles": ["translation", "generation", "classification"]}
+        {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4", "type": "openai", "roles": ["translate", "generate", "classify"]},
+        {"uuid": "51ade705-8338-40a9-8a77-37657a936966", "name": "Claude", "type": "anthropic", "roles": ["translate", "generate", "classify"]}
     ],
     "locations": [
         {
