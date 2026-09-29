@@ -393,8 +393,8 @@ func TestConstructors(t *testing.T) {
 				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
 				[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
+				0.5,
 				"_classification",
-				"_classification_conf",
 			),
 			`{
 			"type": "call_classifier",
@@ -405,8 +405,8 @@ func TestConstructors(t *testing.T) {
 			},
 			"input": "@input.text",
 			"options": [{"name": "Flights", "description": "Booking flights"}, {"name": "Hotels"}],
-			"output_local": "_classification",
-			"confidence_local": "_classification_conf"
+			"min_confidence": 0.5,
+			"output_local": "_classification"
 		}`,
 		},
 		{
@@ -792,7 +792,7 @@ func TestReadAction(t *testing.T) {
 	}`, strings.Repeat("x", 10001)))
 	assert.EqualError(t, err, "field 'value' must be less than or equal to 10000")
 
-	options := make([]*core.ClassifierOption, 101)
+	options := make([]*core.ClassifierOption, 11)
 	for i := range options {
 		options[i] = &core.ClassifierOption{Name: fmt.Sprintf("Option %d", i)}
 	}
@@ -805,7 +805,7 @@ func TestReadAction(t *testing.T) {
 		"options": %s,
 		"output_local": "_classification"
 	}`, optionsJSON))
-	assert.EqualError(t, err, "field 'options' must have a maximum of 100 items")
+	assert.EqualError(t, err, "field 'options' must have a maximum of 10 items")
 
 }
 

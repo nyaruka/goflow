@@ -36,7 +36,8 @@ func TestIsVersionSupported(t *testing.T) {
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("14.2.0")))
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("14.3.1")))
 	assert.True(t, definition.IsVersionSupported(semver.MustParse("14.5.0")))
-	assert.False(t, definition.IsVersionSupported(semver.MustParse("14.6.0")))
+	assert.True(t, definition.IsVersionSupported(semver.MustParse("14.6.0")))
+	assert.False(t, definition.IsVersionSupported(semver.MustParse("14.7.0")))
 	assert.False(t, definition.IsVersionSupported(semver.MustParse("15.0.0")))
 }
 

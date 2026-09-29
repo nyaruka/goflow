@@ -3,7 +3,6 @@ package actions
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	"github.com/nyaruka/gocommon/dates"
 	"github.com/nyaruka/goflow/assets"
@@ -19,14 +18,17 @@ func init() {
 // TypeCallClassifier is the type for the call classifier action
 const TypeCallClassifier string = "call_classifier"
 
+// ClassifierNoneOutput is the output used when the model isn't confident enough in any option
+const ClassifierNoneOutput = "<NONE>"
+
 // CallClassifier can be used to classify input as one of a set of options using a model. The input field may be a
 // template and will be evaluated at runtime. Each option can have a description to help the model decide whether it
 // fits.
 //
 // A [event:classifier_called] event will be created if the model could be called. The action sets the local specified
 // by `output_local` to the name of the chosen option, or to `<ERROR>` if the call failed. The model always chooses one
-// of the options, so if `confidence_local` is specified, it is set to the confidence in the chosen option, between 0
-// and 1, for flows to decide whether that's confident enough. It is set to 0 if the call failed.
+// of the options, so if its confidence in that option is below `min_confidence` (between 0 and 1), the local is set
+// to `<NONE>` instead.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -40,8 +42,8 @@ const TypeCallClassifier string = "call_classifier"
 //	    {"name": "Flights", "description": "Booking or changing flights"},
 //	    {"name": "Hotels", "description": "Booking or changing hotel rooms"}
 //	  ],
-//	  "output_local": "_classification",
-//	  "confidence_local": "_classification_conf"
+//	  "min_confidence": 0.5,
+//	  "output_local": "_classification"
 //	}
 //
 // @action call_classifier
@@ -49,34 +51,31 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	Model           *assets.ModelReference   `json:"model"                      validate:"required"`
-	Input           string                   `json:"input"                      validate:"max=10000"                          engine:"evaluated"`
-	Options         []*core.ClassifierOption `json:"options"                    validate:"required,min=1,max=100,unique=Name,dive"`
-	OutputLocal     string                   `json:"output_local"               validate:"required,local_ref"`
-	ConfidenceLocal string                   `json:"confidence_local,omitempty" validate:"omitempty,local_ref"`
+	Model         *assets.ModelReference   `json:"model"                    validate:"required"`
+	Input         string                   `json:"input"                    validate:"max=10000"                          engine:"evaluated"`
+	Options       []*core.ClassifierOption `json:"options"                  validate:"required,min=1,max=10,unique=Name,dive"`
+	MinConfidence float64                  `json:"min_confidence,omitempty" validate:"min=0,max=1"`
+	OutputLocal   string                   `json:"output_local"             validate:"required,local_ref"`
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, model *assets.ModelReference, input string, options []*core.ClassifierOption, outputLocal, confidenceLocal string) *CallClassifier {
+func NewCallClassifier(uuid flows.ActionUUID, model *assets.ModelReference, input string, options []*core.ClassifierOption, minConfidence float64, outputLocal string) *CallClassifier {
 	return &CallClassifier{
-		baseAction:      newBaseAction(TypeCallClassifier, uuid),
-		Model:           model,
-		Input:           input,
-		Options:         options,
-		OutputLocal:     outputLocal,
-		ConfidenceLocal: confidenceLocal,
+		baseAction:    newBaseAction(TypeCallClassifier, uuid),
+		Model:         model,
+		Input:         input,
+		Options:       options,
+		MinConfidence: minConfidence,
+		OutputLocal:   outputLocal,
 	}
 }
 
 // Validate validates our action is valid
 func (a *CallClassifier) Validate() error {
 	for _, o := range a.Options {
-		if o.Name == ModelErrorOutput {
-			return fmt.Errorf("options can't include %s", ModelErrorOutput)
+		if o.Name == ModelErrorOutput || o.Name == ClassifierNoneOutput {
+			return fmt.Errorf("options can't include %s", o.Name)
 		}
-	}
-	if a.ConfidenceLocal == a.OutputLocal {
-		return fmt.Errorf("confidence_local can't be the same as output_local")
 	}
 	return nil
 }
@@ -84,19 +83,12 @@ func (a *CallClassifier) Validate() error {
 // Execute runs this action
 func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	cls := a.call(ctx, run, log)
-	if cls != nil {
-		run.Locals().Set(a.OutputLocal, cls.Option)
-	} else {
+	if cls == nil {
 		run.Locals().Set(a.OutputLocal, ModelErrorOutput)
-	}
-
-	if a.ConfidenceLocal != "" {
-		// always numeric so flows can compare it without checking for errors first
-		confidence := 0.0
-		if cls != nil {
-			confidence = cls.Confidence
-		}
-		run.Locals().Set(a.ConfidenceLocal, strconv.FormatFloat(confidence, 'f', -1, 64))
+	} else if cls.Confidence < a.MinConfidence {
+		run.Locals().Set(a.OutputLocal, ClassifierNoneOutput)
+	} else {
+		run.Locals().Set(a.OutputLocal, cls.Option)
 	}
 
 	return nil
@@ -138,7 +130,4 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 func (a *CallClassifier) Inspect(dependency func(assets.Reference), local func(string), result func(*flows.ResultInfo)) {
 	dependency(a.Model)
 	local(a.OutputLocal)
-	if a.ConfidenceLocal != "" {
-		local(a.ConfidenceLocal)
-	}
 }
