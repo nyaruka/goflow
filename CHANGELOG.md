@@ -1,3 +1,6 @@
+## v0.296.0 (2026-09-29)
+ * Add email attribute to contacts, using email.keyword for exact matches and sorting
+
 ## v0.295.2 (2026-09-29)
  * Limit call_classifier options to 10
  * Add 14.6.0 migration to replace AI categorize call_llm actions with call_classifier, without writing a null input when the original action had none
