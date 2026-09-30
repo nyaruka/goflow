@@ -565,7 +565,7 @@
         }
     },
     {
-        "description": "Option in local for any confidence if required confidence is any",
+        "description": "Option in local for any confidence if required confidence is none",
         "model_mocks": [
             {
                 "option": "Flights",
