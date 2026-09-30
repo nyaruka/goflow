@@ -27,8 +27,9 @@ const ClassifierNoneOutput = "<NONE>"
 //
 // A [event:classifier_called] event will be created if the model could be called. The action sets the local specified
 // by `output_local` to the name of the chosen option, or to `<ERROR>` if the call failed. The model always chooses one
-// of the options, so if its confidence in that option is below `min_confidence` (between 0 and 1), the local is set
-// to `<NONE>` instead.
+// of the options, so if its confidence in that option is below `required_confidence` (`low`, `medium` or `high`), the
+// local is set to `<NONE>` instead. A `required_confidence` of `any` accepts every choice, so the local is never
+// `<NONE>`.
 //
 //	{
 //	  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -42,7 +43,7 @@ const ClassifierNoneOutput = "<NONE>"
 //	    {"name": "Flights", "description": "Booking or changing flights"},
 //	    {"name": "Hotels", "description": "Booking or changing hotel rooms"}
 //	  ],
-//	  "min_confidence": 0.5,
+//	  "required_confidence": "medium",
 //	  "output_local": "_classification"
 //	}
 //
@@ -51,22 +52,22 @@ type CallClassifier struct {
 	baseAction
 	onlineAction
 
-	Model         *assets.ModelReference   `json:"model"                    validate:"required"`
-	Input         string                   `json:"input"                    validate:"max=10000"                          engine:"evaluated"`
-	Options       []*core.ClassifierOption `json:"options"                  validate:"required,min=1,max=10,unique=Name,dive"`
-	MinConfidence float64                  `json:"min_confidence,omitempty" validate:"min=0,max=1"`
-	OutputLocal   string                   `json:"output_local"             validate:"required,local_ref"`
+	Model              *assets.ModelReference    `json:"model"               validate:"required"`
+	Input              string                    `json:"input"               validate:"max=10000"                          engine:"evaluated"`
+	Options            []*core.ClassifierOption  `json:"options"             validate:"required,min=1,max=10,unique=Name,dive"`
+	RequiredConfidence core.ClassifierConfidence `json:"required_confidence" validate:"required,required_confidence"`
+	OutputLocal        string                    `json:"output_local"        validate:"required,local_ref"`
 }
 
 // NewCallClassifier creates a new call classifier action
-func NewCallClassifier(uuid flows.ActionUUID, model *assets.ModelReference, input string, options []*core.ClassifierOption, minConfidence float64, outputLocal string) *CallClassifier {
+func NewCallClassifier(uuid flows.ActionUUID, model *assets.ModelReference, input string, options []*core.ClassifierOption, requiredConfidence core.ClassifierConfidence, outputLocal string) *CallClassifier {
 	return &CallClassifier{
-		baseAction:    newBaseAction(TypeCallClassifier, uuid),
-		Model:         model,
-		Input:         input,
-		Options:       options,
-		MinConfidence: minConfidence,
-		OutputLocal:   outputLocal,
+		baseAction:         newBaseAction(TypeCallClassifier, uuid),
+		Model:              model,
+		Input:              input,
+		Options:            options,
+		RequiredConfidence: requiredConfidence,
+		OutputLocal:        outputLocal,
 	}
 }
 
@@ -85,7 +86,7 @@ func (a *CallClassifier) Execute(ctx context.Context, run flows.Run, step flows.
 	cls := a.call(ctx, run, log)
 	if cls == nil {
 		run.Locals().Set(a.OutputLocal, ModelErrorOutput)
-	} else if cls.Confidence < a.MinConfidence {
+	} else if !cls.Confidence.Meets(a.RequiredConfidence) {
 		run.Locals().Set(a.OutputLocal, ClassifierNoneOutput)
 	} else {
 		run.Locals().Set(a.OutputLocal, cls.Option)

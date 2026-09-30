@@ -14,7 +14,7 @@
     "environment": null,
     "model_mocks": [
         {
-            "confidence": 0.3,
+            "confidence": "none",
             "option": "Flights",
             "tokens": {
                 "input": 34,
@@ -113,7 +113,7 @@
                     "value": "I want to fly to Paris"
                 },
                 {
-                    "confidence": 0.3,
+                    "confidence": "none",
                     "created_on": "2025-05-04T12:31:11.123456789Z",
                     "elapsed_ms": 1000,
                     "input": "I want to fly to Paris",

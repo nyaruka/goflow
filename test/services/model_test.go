@@ -52,7 +52,7 @@ func TestModelServiceClassify(t *testing.T) {
 	cls, err := svc.Classify(ctx, "I want to book a room", options)
 	assert.NoError(t, err)
 	assert.Equal(t, "Hotels", cls.Option)
-	assert.Equal(t, 0.8, cls.Confidence)
+	assert.Equal(t, core.ClassifierConfidenceHigh, cls.Confidence)
 	assert.Equal(t, map[string]float64{"Flights": 0.1, "Hotels": 0.9}, cls.Probabilities)
 }
 
@@ -75,7 +75,7 @@ func TestMockModel(t *testing.T) {
 
 	svc := services.NewMockModel(
 		&services.MockModelResult{Output: "Bonjour", Tokens: core.ModelTokens{Input: 12, Output: 3}},
-		&services.MockModelResult{Option: "Flights", Confidence: 0.7},
+		&services.MockModelResult{Option: "Flights", Confidence: core.ClassifierConfidenceMedium},
 		&services.MockModelResult{Error: "boom"},
 		&services.MockModelResult{Items: map[string][]string{"a": {"Bonjour"}}, Tokens: core.ModelTokens{Input: 20, Output: 4}},
 		&services.MockModelResult{Error: "bang"},
@@ -90,7 +90,7 @@ func TestMockModel(t *testing.T) {
 
 	cls, err := svc.Classify(ctx, "I want to fly to Paris", options)
 	assert.NoError(t, err)
-	assert.Equal(t, &core.Classification{Option: "Flights", Confidence: 0.7}, cls)
+	assert.Equal(t, &core.Classification{Option: "Flights", Confidence: core.ClassifierConfidenceMedium}, cls)
 
 	_, err = svc.Classify(ctx, "Hi", options)
 	assert.EqualError(t, err, "boom")

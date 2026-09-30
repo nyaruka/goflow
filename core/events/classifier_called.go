@@ -15,8 +15,8 @@ func init() {
 const TypeClassifierCalled string = "classifier_called"
 
 // ClassifierCalled events are created when a model is called to classify some input as one of a set of options.
-// Confidence is a measure of how reliable the choice is and isn't necessarily the chosen option's probability. The
-// per-option probabilities are only included if the model provides them.
+// Confidence is a level of how reliable the choice is. Any per-option probabilities the model provides are included for
+// diagnostics, but they aren't comparable across models and may not cover every option.
 //
 //	{
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
@@ -29,7 +29,7 @@ const TypeClassifierCalled string = "classifier_called"
 //	  "input": "I'd like to book a room for two nights",
 //	  "options": ["Flights", "Hotels"],
 //	  "option": "Hotels",
-//	  "confidence": 0.86,
+//	  "confidence": "high",
 //	  "probabilities": {"Flights": 0.29, "Hotels": 0.71},
 //	  "tokens": {"input": 123, "output": 5},
 //	  "elapsed_ms": 123
@@ -39,14 +39,14 @@ const TypeClassifierCalled string = "classifier_called"
 type ClassifierCalled struct {
 	BaseEvent
 
-	Model         *assets.ModelReference `json:"model" validate:"required"`
-	Input         string                 `json:"input"`
-	Options       []string               `json:"options"`
-	Option        string                 `json:"option"`
-	Confidence    float64                `json:"confidence"`
-	Probabilities map[string]float64     `json:"probabilities,omitempty"`
-	Tokens        core.ModelTokens       `json:"tokens"`
-	ElapsedMS     int64                  `json:"elapsed_ms"`
+	Model         *assets.ModelReference    `json:"model" validate:"required"`
+	Input         string                    `json:"input"`
+	Options       []string                  `json:"options"`
+	Option        string                    `json:"option"`
+	Confidence    core.ClassifierConfidence `json:"confidence" validate:"required,classifier_confidence"`
+	Probabilities map[string]float64        `json:"probabilities,omitempty"`
+	Tokens        core.ModelTokens          `json:"tokens"`
+	ElapsedMS     int64                     `json:"elapsed_ms"`
 }
 
 // NewClassifierCalled returns a new classifier called event
