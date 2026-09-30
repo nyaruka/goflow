@@ -12,7 +12,7 @@
         "Hotels"
     ],
     "option": "Hotels",
-    "confidence": 0.86,
+    "confidence": "high",
     "probabilities": {
         "Flights": 0.29,
         "Hotels": 0.71

@@ -3,8 +3,19 @@ package core
 import (
 	"slices"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/utils"
 )
+
+func init() {
+	utils.RegisterValidatorAlias("classifier_confidence", "eq=none|eq=low|eq=medium|eq=high", func(validator.FieldError) string {
+		return "is not a valid classifier confidence"
+	})
+	utils.RegisterValidatorAlias("required_confidence", "eq=any|eq=low|eq=medium|eq=high", func(validator.FieldError) string {
+		return "is not a valid required confidence"
+	})
+}
 
 // Model represents an AI model.
 type Model struct {
@@ -69,11 +80,36 @@ type ClassifierOption struct {
 	Description string `json:"description,omitempty" validate:"max=1000"`
 }
 
+// ClassifierConfidence is a level of confidence in a classification. Model services map whatever measure of confidence
+// their model provides onto these levels, so that a level means the same thing whichever model is used.
+type ClassifierConfidence string
+
+// possible classifier confidence levels, where any is only used as a requirement that any level meets
+const (
+	ClassifierConfidenceAny    ClassifierConfidence = "any"
+	ClassifierConfidenceNone   ClassifierConfidence = "none"
+	ClassifierConfidenceLow    ClassifierConfidence = "low"
+	ClassifierConfidenceMedium ClassifierConfidence = "medium"
+	ClassifierConfidenceHigh   ClassifierConfidence = "high"
+)
+
+var classifierConfidenceRanks = map[ClassifierConfidence]int{
+	ClassifierConfidenceNone:   0,
+	ClassifierConfidenceLow:    1,
+	ClassifierConfidenceMedium: 2,
+	ClassifierConfidenceHigh:   3,
+}
+
+// Meets returns whether this confidence level meets the given required level
+func (c ClassifierConfidence) Meets(required ClassifierConfidence) bool {
+	return required == ClassifierConfidenceAny || classifierConfidenceRanks[c] >= classifierConfidenceRanks[required]
+}
+
 // Classification is the result of a model service classification call
 type Classification struct {
-	Option        string             // the name of the chosen option, which must be one of the given options
-	Confidence    float64            // confidence in the chosen option, between 0 and 1
-	Probabilities map[string]float64 // per-option probabilities, if the model provides them
+	Option        string               // the name of the chosen option, which must be one of the given options
+	Confidence    ClassifierConfidence // confidence in the chosen option
+	Probabilities map[string]float64   // per-option probabilities, if the model provides them, which may be partial
 	Tokens        ModelTokens
 }
 

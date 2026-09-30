@@ -394,7 +394,7 @@ func TestConstructors(t *testing.T) {
 				assets.NewModelReference("0baee364-07a7-4c93-9778-9f55a35903bb", "GPT-4"),
 				"@input.text",
 				[]*core.ClassifierOption{{Name: "Flights", Description: "Booking flights"}, {Name: "Hotels"}},
-				0.5,
+				core.ClassifierConfidenceMedium,
 				"_classification",
 			),
 			`{
@@ -406,7 +406,7 @@ func TestConstructors(t *testing.T) {
 			},
 			"input": "@input.text",
 			"options": [{"name": "Flights", "description": "Booking flights"}, {"name": "Hotels"}],
-			"min_confidence": 0.5,
+			"required_confidence": "medium",
 			"output_local": "_classification"
 		}`,
 		},
@@ -815,6 +815,7 @@ func TestReadAction(t *testing.T) {
 		"model": {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4"},
 		"input": "@input.text",
 		"options": %s,
+		"required_confidence": "any",
 		"output_local": "_classification"
 	}`, optionsJSON))
 	assert.EqualError(t, err, "field 'options' must have a maximum of 10 items")

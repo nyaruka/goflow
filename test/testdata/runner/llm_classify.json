@@ -71,7 +71,7 @@
                                     "description": "Booking or changing hotel rooms"
                                 }
                             ],
-                            "min_confidence": 0.5,
+                            "required_confidence": "medium",
                             "output_local": "_classification"
                         }
                     ],

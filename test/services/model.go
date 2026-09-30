@@ -73,7 +73,7 @@ func (s *ModelService) Classify(ctx context.Context, input string, options []*co
 		}
 	}
 
-	return &core.Classification{Option: option, Confidence: 0.8, Probabilities: probs, Tokens: core.ModelTokens{Input: 34, Output: 5}}, nil
+	return &core.Classification{Option: option, Confidence: core.ClassifierConfidenceHigh, Probabilities: probs, Tokens: core.ModelTokens{Input: 34, Output: 5}}, nil
 }
 
 func (s *ModelService) Translate(ctx context.Context, source, target i18n.Language, items map[string][]string) (*core.Translation, error) {
@@ -99,13 +99,13 @@ func (s *ModelService) Translate(ctx context.Context, source, target i18n.Langua
 // MockModelResult is a canned result for a call to a MockModel. A call to Response uses Output, a call to Classify uses
 // Option, Confidence and Probabilities, a call to Translate uses Items, and any returns Error instead if it's set.
 type MockModelResult struct {
-	Output        string              `json:"output,omitempty"`
-	Option        string              `json:"option,omitempty"`
-	Confidence    float64             `json:"confidence,omitempty"`
-	Probabilities map[string]float64  `json:"probabilities,omitempty"`
-	Items         map[string][]string `json:"items,omitempty"`
-	Tokens        core.ModelTokens    `json:"tokens,omitzero"`
-	Error         string              `json:"error,omitempty"`
+	Output        string                    `json:"output,omitempty"`
+	Option        string                    `json:"option,omitempty"`
+	Confidence    core.ClassifierConfidence `json:"confidence,omitempty"`
+	Probabilities map[string]float64        `json:"probabilities,omitempty"`
+	Items         map[string][]string       `json:"items,omitempty"`
+	Tokens        core.ModelTokens          `json:"tokens,omitzero"`
+	Error         string                    `json:"error,omitempty"`
 }
 
 // ModelCall is a call made to a MockModel

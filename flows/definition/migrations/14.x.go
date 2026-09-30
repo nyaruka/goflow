@@ -78,7 +78,7 @@ func Migrate14_6_0(f Flow, cfg *Config) (Flow, error) {
 			action["input"] = input
 		}
 		action["options"] = options
-		action["min_confidence"] = jsontext.Value("0.5")
+		action["required_confidence"] = "low"
 		action["output_local"] = outputLocal
 	}
 
