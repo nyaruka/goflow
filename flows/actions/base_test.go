@@ -41,6 +41,7 @@ var defaultContactJSON = []byte(`{
 	"name": "Ryan Lewis",
 	"status": "active",
 	"language": "eng",
+	"email": "ryan@nyaruka.com",
 	"timezone": "America/Guayaquil",
 	"urns": [
 		"tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -645,6 +646,17 @@ func TestConstructors(t *testing.T) {
 				"name": "Gender"
 			},
 			"value": "Male"
+		}`,
+		},
+		{
+			actions.NewSetContactEmail(
+				actionUUID,
+				"bob@example.com",
+			),
+			`{
+			"type": "set_contact_email",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"email": "bob@example.com"
 		}`,
 		},
 		{

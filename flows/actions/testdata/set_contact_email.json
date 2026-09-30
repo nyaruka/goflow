@@ -1,10 +1,10 @@
 [
     {
-        "description": "Error event and action skipped if language contains expression error",
+        "description": "Error event and action skipped if email contains expression error",
         "action": {
-            "type": "set_contact_language",
+            "type": "set_contact_email",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "language": "@(1 / 0)"
+            "email": "@(1 / 0)"
         },
         "events": [
             {
@@ -35,178 +35,191 @@
         }
     },
     {
-        "description": "Error event and action skipped if language isn't valid",
+        "description": "NOOP if email doesn't change",
         "action": {
-            "type": "set_contact_language",
+            "type": "set_contact_email",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "language": "xxxxxxxxxx"
+            "email": "ryan@nyaruka.com"
+        },
+        "events": [],
+        "locals_after": {},
+        "templates": [
+            "ryan@nyaruka.com"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "NOOP if normalized email doesn't change",
+        "action": {
+            "type": "set_contact_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "email": " Ryan@Nyaruka.COM "
+        },
+        "events": [],
+        "locals_after": {},
+        "templates": [
+            " Ryan@Nyaruka.COM "
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Email changed event if email changes",
+        "action": {
+            "type": "set_contact_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "email": "@(\"bob\" & \"@example.com\")"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "email": "bob@example.com"
+            }
+        ],
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "email": "bob@example.com",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
+            "urns": [
+                "tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "telegram:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
+        },
+        "locals_after": {},
+        "templates": [
+            "@(\"bob\" & \"@example.com\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Email changed event if email cleared",
+        "action": {
+            "type": "set_contact_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "email": ""
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "email": ""
+            }
+        ],
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Ryan Lewis",
+            "language": "eng",
+            "status": "active",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
+            "urns": [
+                "tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "telegram:54784326227#nyaruka"
+            ],
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
+        },
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
+    },
+    {
+        "description": "Error event if email is invalid",
+        "action": {
+            "type": "set_contact_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "email": "@contact.name"
         },
         "events": [
             {
                 "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
                 "type": "error",
                 "created_on": "2025-05-04T12:30:57.123456789Z",
-                "text": "iso-639-3 codes must be 3 characters, got: xxxxxxxxxx"
+                "text": "'Ryan Lewis' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "Ryan Lewis"
+                }
             }
         ],
         "locals_after": {},
         "templates": [
-            "xxxxxxxxxx"
-        ],
-        "inspection": {
-            "counts": {
-                "languages": 0,
-                "nodes": 1
-            },
-            "dependencies": [],
-            "locals": [],
-            "results": [],
-            "parent_refs": [],
-            "issues": []
-        }
-    },
-    {
-        "description": "NOOP if language doesn't change",
-        "action": {
-            "type": "set_contact_language",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "language": "eng"
-        },
-        "events": [],
-        "locals_after": {},
-        "templates": [
-            "eng"
-        ],
-        "inspection": {
-            "counts": {
-                "languages": 0,
-                "nodes": 1
-            },
-            "dependencies": [],
-            "locals": [],
-            "results": [],
-            "parent_refs": [],
-            "issues": []
-        }
-    },
-    {
-        "description": "Language changed event if language cleared",
-        "action": {
-            "type": "set_contact_language",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "language": ""
-        },
-        "events": [
-            {
-                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
-                "type": "contact_language_changed",
-                "created_on": "2025-05-04T12:30:57.123456789Z",
-                "language": ""
-            }
-        ],
-        "contact_after": {
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-            "name": "Ryan Lewis",
-            "email": "ryan@nyaruka.com",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
-            "urns": [
-                "tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "telegram:54784326227#nyaruka"
-            ],
-            "groups": [
-                {
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "name": "Testers"
-                },
-                {
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
-                    "name": "Males"
-                }
-            ],
-            "fields": {
-                "gender": {
-                    "text": "Male"
-                }
-            }
-        },
-        "locals_after": {},
-        "inspection": {
-            "counts": {
-                "languages": 0,
-                "nodes": 1
-            },
-            "dependencies": [],
-            "locals": [],
-            "results": [],
-            "parent_refs": [],
-            "issues": []
-        }
-    },
-    {
-        "description": "Language changed and query based group changed events if language changes",
-        "action": {
-            "type": "set_contact_language",
-            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-            "language": "fra"
-        },
-        "events": [
-            {
-                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
-                "type": "contact_language_changed",
-                "created_on": "2025-05-04T12:30:57.123456789Z",
-                "language": "fra"
-            },
-            {
-                "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
-                "type": "contact_groups_changed",
-                "created_on": "2025-05-04T12:30:59.123456789Z",
-                "groups_added": [
-                    {
-                        "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
-                        "name": "Francophones"
-                    }
-                ]
-            }
-        ],
-        "contact_after": {
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-            "name": "Ryan Lewis",
-            "language": "fra",
-            "email": "ryan@nyaruka.com",
-            "status": "active",
-            "timezone": "America/Guayaquil",
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "last_seen_on": "2025-05-04T12:30:46.123456789Z",
-            "urns": [
-                "tel:+12065550100?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "telegram:54784326227#nyaruka"
-            ],
-            "groups": [
-                {
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "name": "Testers"
-                },
-                {
-                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
-                    "name": "Males"
-                },
-                {
-                    "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
-                    "name": "Francophones"
-                }
-            ],
-            "fields": {
-                "gender": {
-                    "text": "Male"
-                }
-            }
-        },
-        "locals_after": {},
-        "templates": [
-            "fra"
+            "@contact.name"
         ],
         "inspection": {
             "counts": {

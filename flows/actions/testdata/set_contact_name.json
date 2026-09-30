@@ -87,6 +87,7 @@
         "contact_after": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "language": "eng",
+            "email": "ryan@nyaruka.com",
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
@@ -147,6 +148,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Bryan",
             "language": "eng",
+            "email": "ryan@nyaruka.com",
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
@@ -206,6 +208,7 @@
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa ",
             "language": "eng",
+            "email": "ryan@nyaruka.com",
             "status": "active",
             "timezone": "America/Guayaquil",
             "created_on": "2018-06-20T11:40:30.123456789Z",
