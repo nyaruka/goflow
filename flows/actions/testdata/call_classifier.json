@@ -27,7 +27,7 @@
                     "name": "Flights"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "read_error": "field 'options' must not contain duplicates"
@@ -47,7 +47,7 @@
                     "description": "Booking or changing flights"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "read_error": "field 'options[0].name' is required"
@@ -70,7 +70,7 @@
                     "name": "<ERROR>"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "read_error": "options can't include <ERROR>"
@@ -93,7 +93,7 @@
                     "name": "<NONE>"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "read_error": "options can't include <NONE>"
@@ -116,10 +116,10 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "none",
+            "required_confidence": "any",
             "output_local": "_classification"
         },
-        "read_error": "field 'required_confidence' is not a valid required confidence"
+        "read_error": "field 'required_confidence' is not a valid classifier confidence"
     },
     {
         "description": "Error event for invalid LLM reference",
@@ -139,7 +139,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [
@@ -212,7 +212,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [
@@ -268,7 +268,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [
@@ -352,7 +352,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [
@@ -592,7 +592,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [
@@ -667,7 +667,7 @@
                     "name": "Hotels"
                 }
             ],
-            "required_confidence": "any",
+            "required_confidence": "none",
             "output_local": "_classification"
         },
         "events": [

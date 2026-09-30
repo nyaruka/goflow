@@ -27,8 +27,8 @@ const ClassifierNoneOutput = "<NONE>"
 //
 // A [event:classifier_called] event will be created if the model could be called. The action sets the local specified
 // by `output_local` to the name of the chosen option, or to `<ERROR>` if the call failed. The model always chooses one
-// of the options, so if its confidence in that option is below `required_confidence` (`low`, `medium` or `high`), the
-// local is set to `<NONE>` instead. A `required_confidence` of `any` accepts every choice, so the local is never
+// of the options, so if its confidence in that option is below `required_confidence` (`none`, `low`, `medium` or `high`),
+// the local is set to `<NONE>` instead. A `required_confidence` of `none` accepts every choice, so the local is never
 // `<NONE>`.
 //
 //	{
@@ -55,7 +55,7 @@ type CallClassifier struct {
 	Model              *assets.ModelReference    `json:"model"               validate:"required"`
 	Input              string                    `json:"input"               validate:"max=10000"                          engine:"evaluated"`
 	Options            []*core.ClassifierOption  `json:"options"             validate:"required,min=1,max=10,unique=Name,dive"`
-	RequiredConfidence core.ClassifierConfidence `json:"required_confidence" validate:"required,required_confidence"`
+	RequiredConfidence core.ClassifierConfidence `json:"required_confidence" validate:"required,classifier_confidence"`
 	OutputLocal        string                    `json:"output_local"        validate:"required,local_ref"`
 }
 

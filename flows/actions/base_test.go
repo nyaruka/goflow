@@ -815,7 +815,7 @@ func TestReadAction(t *testing.T) {
 		"model": {"uuid": "14115c03-b4c5-49e2-b9ac-390c43e9d7ce", "name": "GPT-4"},
 		"input": "@input.text",
 		"options": %s,
-		"required_confidence": "any",
+		"required_confidence": "none",
 		"output_local": "_classification"
 	}`, optionsJSON))
 	assert.EqualError(t, err, "field 'options' must have a maximum of 10 items")
