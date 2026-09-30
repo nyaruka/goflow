@@ -3,6 +3,7 @@ package modifiers
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/gocommon/jsonx"
 	"github.com/nyaruka/goflow/assets"
@@ -38,10 +39,10 @@ func NewEmail(email string) *Email {
 
 // Apply applies this modification to the given contact
 func (m *Email) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
-	email := ""
-	if m.email != "" {
+	email := strings.TrimSpace(m.email)
+	if email != "" {
 		var valid bool
-		email, valid = core.NormalizeEmail(m.email)
+		email, valid = core.NormalizeEmail(email)
 		if !valid {
 			log(events.NewError(fmt.Sprintf("'%s' is not a valid email address", m.email), events.ErrorCodeEmailInvalid, "email", m.email))
 			return false, nil

@@ -231,7 +231,9 @@ func TestNormalizeEmail(t *testing.T) {
 		{"bob@[192.168.0.1]", "", false},
 		{"bob@example.com, jim@example.com", "", false},
 		{"mailto:bob@example.com", "", false},
-		{strings.Repeat("b", 250) + "@example.com", "", false},
+		{strings.Repeat("b", 64) + "@example.com", strings.Repeat("b", 64) + "@example.com", true},
+		{strings.Repeat("b", 65) + "@example.com", "", false},
+		{strings.Repeat("b", 60) + "@" + strings.Repeat("e", 190) + ".com", "", false},
 	}
 
 	for _, tc := range tcs {

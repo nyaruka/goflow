@@ -224,8 +224,11 @@ func (c *Contact) SetEmail(email string) bool {
 // Email gets the email address for this contact
 func (c *Contact) Email() string { return c.email }
 
-// MaxEmailLength is the maximum length of an email address (RFC 5321)
-const MaxEmailLength = 254
+// maximum lengths of an email address and its local part (RFC 5321)
+const (
+	MaxEmailLength      = 254
+	MaxEmailLocalLength = 64
+)
 
 // NormalizeEmail normalizes the given email address, returning false if it isn't valid. A display name
 // (e.g. "Bob <bob@example.com>") is discarded and the address is lowercased since, in practice, mailboxes
@@ -239,8 +242,8 @@ func NormalizeEmail(email string) (string, bool) {
 	normalized := strings.ToLower(addr.Address)
 
 	// ParseAddress allows domains that aren't deliverable on the public internet like localhost or IP literals
-	_, domain, _ := strings.Cut(normalized, "@")
-	if !strings.Contains(domain, ".") || strings.HasPrefix(domain, "[") || len(normalized) > MaxEmailLength {
+	local, domain, _ := strings.Cut(normalized, "@")
+	if !strings.Contains(domain, ".") || strings.HasPrefix(domain, "[") || len(local) > MaxEmailLocalLength || len(normalized) > MaxEmailLength {
 		return "", false
 	}
 
