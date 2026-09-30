@@ -12,9 +12,6 @@ func init() {
 	utils.RegisterValidatorAlias("classifier_confidence", "eq=none|eq=low|eq=medium|eq=high", func(validator.FieldError) string {
 		return "is not a valid classifier confidence"
 	})
-	utils.RegisterValidatorAlias("required_confidence", "eq=any|eq=low|eq=medium|eq=high", func(validator.FieldError) string {
-		return "is not a valid required confidence"
-	})
 }
 
 // Model represents an AI model.
@@ -84,9 +81,8 @@ type ClassifierOption struct {
 // their model provides onto these levels, so that a level means the same thing whichever model is used.
 type ClassifierConfidence string
 
-// possible classifier confidence levels, where any is only used as a requirement that any level meets
+// possible classifier confidence levels
 const (
-	ClassifierConfidenceAny    ClassifierConfidence = "any"
 	ClassifierConfidenceNone   ClassifierConfidence = "none"
 	ClassifierConfidenceLow    ClassifierConfidence = "low"
 	ClassifierConfidenceMedium ClassifierConfidence = "medium"
@@ -102,7 +98,7 @@ var classifierConfidenceRanks = map[ClassifierConfidence]int{
 
 // Meets returns whether this confidence level meets the given required level
 func (c ClassifierConfidence) Meets(required ClassifierConfidence) bool {
-	return required == ClassifierConfidenceAny || classifierConfidenceRanks[c] >= classifierConfidenceRanks[required]
+	return classifierConfidenceRanks[c] >= classifierConfidenceRanks[required]
 }
 
 // Classification is the result of a model service classification call
