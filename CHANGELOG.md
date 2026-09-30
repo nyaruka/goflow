@@ -1,3 +1,6 @@
+## v0.297.1 (2026-09-30)
+ * Add none as a required_confidence level for call_classifier that accepts every choice
+
 ## v0.297.0 (2026-09-30)
  * Replace call_classifier's min_confidence with coded required_confidence levels
 
