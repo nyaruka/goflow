@@ -16,6 +16,7 @@ const TypeError string = "error"
 const (
 	ErrorCodeActionUnsupported    = "action:unsupported"
 	ErrorCodeDependencyMissing    = "dependency:missing"
+	ErrorCodeEmailInvalid         = "email:invalid"
 	ErrorCodeGroupMissing         = "group:missing"
 	ErrorCodeLabelMissing         = "label:missing"
 	ErrorCodeTimezoneInvalid      = "timezone:invalid"
