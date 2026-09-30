@@ -1,3 +1,6 @@
+## v0.297.0 (2026-09-30)
+ * Replace call_classifier's min_confidence with coded required_confidence levels
+
 ## v0.296.1 (2026-09-30)
  * Add email contact modifier, clearing the value on whitespace-only input and enforcing local part length limits
  * Add set_contact_email action
