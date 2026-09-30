@@ -48,8 +48,7 @@ func (m *Email) Apply(ctx context.Context, eng flows.Engine, env envs.Environmen
 		}
 	}
 
-	if contact.Email() != email {
-		contact.SetEmail(email)
+	if contact.SetEmail(email) {
 		log(events.NewContactEmailChanged(email))
 		return true, nil
 	}

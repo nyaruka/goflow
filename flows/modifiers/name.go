@@ -38,11 +38,9 @@ func NewName(name string) *Name {
 
 // Apply applies this modification to the given contact
 func (m *Name) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
-	if contact.Name() != m.name {
-		// truncate value if necessary
-		name := stringsx.Truncate(m.name, eng.Options().MaxNameChars)
+	name := stringsx.Truncate(m.name, eng.Options().MaxNameChars)
 
-		contact.SetName(name)
+	if contact.SetName(name) {
 		log(events.NewContactNameChanged(name))
 		return true, nil
 	}
