@@ -232,6 +232,8 @@ func PrintEvent(event events.Event, out io.Writer) {
 	case *events.BroadcastCreated:
 		text := typed.Translations[typed.BaseLanguage].Text
 		msg = fmt.Sprintf("🔉 broadcasted '%s' to ...", text)
+	case *events.ContactEmailChanged:
+		msg = fmt.Sprintf("📧 email changed to '%s'", typed.Email)
 	case *events.ContactFieldChanged:
 		var action string
 		if typed.Value != nil {

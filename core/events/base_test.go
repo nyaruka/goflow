@@ -169,6 +169,12 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
+				return events.NewContactEmailChanged("bob@example.com")
+			},
+			`contact_email_changed`,
+		},
+		{
+			func() events.Event {
 				return events.NewContactGroupsChanged(
 					core.GroupReferences([]*core.Group{session.Assets().Groups().FindByName("Customers")}),
 					nil,

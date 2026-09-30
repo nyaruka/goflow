@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
@@ -210,6 +211,36 @@ func TestContactURNs(t *testing.T) {
 	assert.True(t, contact.RemoveURN("tel:+12025550110"))
 	assert.False(t, contact.RemoveURN("tel:+12025550113"))
 	assert.Equal(t, core.URNList{core.NewURN("tel", "+12025550111", "", nil), core.NewURN("tel", "+12025550112", "", nil)}, contact.URNs())
+}
+
+func TestNormalizeEmail(t *testing.T) {
+	tcs := []struct {
+		input      string
+		normalized string
+		valid      bool
+	}{
+		{"bob@example.com", "bob@example.com", true},
+		{" Bob@Example.COM\n", "bob@example.com", true},
+		{"Bob Smith <bob@example.com>", "bob@example.com", true},
+		{"bob+tag@mail.example.co.uk", "bob+tag@mail.example.co.uk", true},
+		{"", "", false},
+		{"bob", "", false},
+		{"bob@", "", false},
+		{"@example.com", "", false},
+		{"bob@localhost", "", false},
+		{"bob@[192.168.0.1]", "", false},
+		{"bob@example.com, jim@example.com", "", false},
+		{"mailto:bob@example.com", "", false},
+		{strings.Repeat("b", 64) + "@example.com", strings.Repeat("b", 64) + "@example.com", true},
+		{strings.Repeat("b", 65) + "@example.com", "", false},
+		{strings.Repeat("b", 60) + "@" + strings.Repeat("e", 190) + ".com", "", false},
+	}
+
+	for _, tc := range tcs {
+		normalized, valid := core.NormalizeEmail(tc.input)
+		assert.Equal(t, tc.normalized, normalized, "normalized mismatch for %q", tc.input)
+		assert.Equal(t, tc.valid, valid, "valid mismatch for %q", tc.input)
+	}
 }
 
 func TestReadContact(t *testing.T) {

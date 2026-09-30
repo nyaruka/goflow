@@ -1,0 +1,344 @@
+[
+    {
+        "description": "email changed event if email changed",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bobby@example.com"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bobby@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "email": "bobby@example.com"
+            }
+        ]
+    },
+    {
+        "description": "email set if contact has no email",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bob@example.com"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "email": "bob@example.com"
+            }
+        ]
+    },
+    {
+        "description": "email normalized before being set",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "  Bob Smith <Bob@Example.COM> "
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "email": "bob@example.com"
+            }
+        ]
+    },
+    {
+        "description": "noop if normalized email unchanged",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "BOB@example.com"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "clears email if value is empty",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": ""
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "email": ""
+            }
+        ]
+    },
+    {
+        "description": "clears email if value is only whitespace",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "  \t "
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "contact_email_changed",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "email": ""
+            }
+        ]
+    },
+    {
+        "description": "noop if value is empty and contact has no email",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": ""
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": []
+    },
+    {
+        "description": "error if email has no domain",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bob"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "text": "'bob' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "bob"
+                }
+            }
+        ]
+    },
+    {
+        "description": "error if email domain is not qualified",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bob@localhost"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "text": "'bob@localhost' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "bob@localhost"
+                }
+            }
+        ]
+    },
+    {
+        "description": "error if email domain is IP literal",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bob@[192.168.0.1]"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "text": "'bob@[192.168.0.1]' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "bob@[192.168.0.1]"
+                }
+            }
+        ]
+    },
+    {
+        "description": "error if multiple emails",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bob@example.com, jim@example.com"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "text": "'bob@example.com, jim@example.com' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "bob@example.com, jim@example.com"
+                }
+            }
+        ]
+    },
+    {
+        "description": "error if email too long",
+        "contact_before": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "modifier": {
+            "type": "email",
+            "email": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb@example.com"
+        },
+        "contact_after": {
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "name": "Bob",
+            "status": "active",
+            "created_on": "2018-06-20T11:40:30.123456789Z"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:46.123456789Z",
+                "text": "'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb@example.com' is not a valid email address",
+                "code": "email:invalid",
+                "extra": {
+                    "email": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb@example.com"
+                }
+            }
+        ]
+    }
+]

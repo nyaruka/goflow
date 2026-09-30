@@ -38,8 +38,7 @@ func NewLanguage(language i18n.Language) *Language {
 
 // Apply applies this modification to the given contact
 func (m *Language) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
-	if contact.Language() != m.language {
-		contact.SetLanguage(m.language)
+	if contact.SetLanguage(m.language) {
 		log(events.NewContactLanguageChanged(m.language))
 		return true, nil
 	}

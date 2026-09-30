@@ -38,16 +38,11 @@ func NewTimezone(timezone *time.Location) *Timezone {
 
 // Apply applies this modification to the given contact
 func (m *Timezone) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
-	if !timezonesEqual(contact.Timezone(), m.timezone) {
-		contact.SetTimezone(m.timezone)
+	if contact.SetTimezone(m.timezone) {
 		log(events.NewContactTimezoneChanged(m.timezone))
 		return true, nil
 	}
 	return false, nil
-}
-
-func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
-	return (tz1 == nil && tz2 == nil) || (tz1 != nil && tz2 != nil && tz1.String() == tz2.String())
 }
 
 var _ flows.Modifier = (*Timezone)(nil)

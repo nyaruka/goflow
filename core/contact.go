@@ -2,7 +2,9 @@ package core
 
 import (
 	"fmt"
+	"net/mail"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -198,14 +200,55 @@ func (c *Contact) UUID() ContactUUID { return c.uuid }
 // ID returns the numeric ID of this contact
 func (c *Contact) ID() ContactID { return c.id }
 
-// SetLanguage sets the language for this contact
-func (c *Contact) SetLanguage(lang i18n.Language) { c.language = lang }
+// SetLanguage sets the language for this contact, returning whether it changed
+func (c *Contact) SetLanguage(lang i18n.Language) bool {
+	if c.language == lang {
+		return false
+	}
+	c.language = lang
+	return true
+}
 
 // Language gets the language for this contact
 func (c *Contact) Language() i18n.Language { return c.language }
 
+// SetEmail sets the email address for this contact, which should already be normalized, returning whether it changed
+func (c *Contact) SetEmail(email string) bool {
+	if c.email == email {
+		return false
+	}
+	c.email = email
+	return true
+}
+
 // Email gets the email address for this contact
 func (c *Contact) Email() string { return c.email }
+
+// maximum lengths of an email address and its local part (RFC 5321)
+const (
+	MaxEmailLength      = 254
+	MaxEmailLocalLength = 64
+)
+
+// NormalizeEmail normalizes the given email address, returning false if it isn't valid. A display name
+// (e.g. "Bob <bob@example.com>") is discarded and the address is lowercased since, in practice, mailboxes
+// are case-insensitive and we need a single canonical form to match on.
+func NormalizeEmail(email string) (string, bool) {
+	addr, err := mail.ParseAddress(strings.TrimSpace(email))
+	if err != nil {
+		return "", false
+	}
+
+	normalized := strings.ToLower(addr.Address)
+
+	// ParseAddress allows domains that aren't deliverable on the public internet like localhost or IP literals
+	local, domain, _ := strings.Cut(normalized, "@")
+	if !strings.Contains(domain, ".") || strings.HasPrefix(domain, "[") || len(local) > MaxEmailLocalLength || len(normalized) > MaxEmailLength {
+		return "", false
+	}
+
+	return normalized, true
+}
 
 // Country gets the country for this contact..
 //
@@ -241,11 +284,24 @@ func (c *Contact) Locale(env envs.Environment) i18n.Locale {
 // Status returns the contact status
 func (c *Contact) Status() ContactStatus { return c.status }
 
-// SetStatus sets the status of this contact (blocked, stopped or active)
-func (c *Contact) SetStatus(status ContactStatus) { c.status = status }
+// SetStatus sets the status of this contact (blocked, stopped or active), returning whether it changed
+func (c *Contact) SetStatus(status ContactStatus) bool {
+	if c.status == status {
+		return false
+	}
+	c.status = status
+	return true
+}
 
-// SetTimezone sets the timezone of this contact
-func (c *Contact) SetTimezone(tz *time.Location) { c.timezone = tz }
+// SetTimezone sets the timezone of this contact, returning whether it changed
+func (c *Contact) SetTimezone(tz *time.Location) bool {
+	// locations are compared by name since the same zone can be loaded more than once
+	if (c.timezone == nil && tz == nil) || (c.timezone != nil && tz != nil && c.timezone.String() == tz.String()) {
+		return false
+	}
+	c.timezone = tz
+	return true
+}
 
 // Timezone returns the timezone of this contact
 func (c *Contact) Timezone() *time.Location { return c.timezone }
@@ -259,8 +315,14 @@ func (c *Contact) LastSeenOn() *time.Time { return c.lastSeenOn }
 // SetLastSeenOn sets the last seen on time of this contact
 func (c *Contact) SetLastSeenOn(t time.Time) { c.lastSeenOn = &t }
 
-// SetName sets the name of this contact
-func (c *Contact) SetName(name string) { c.name = name }
+// SetName sets the name of this contact, returning whether it changed
+func (c *Contact) SetName(name string) bool {
+	if c.name == name {
+		return false
+	}
+	c.name = name
+	return true
+}
 
 // Name returns the name of this contact
 func (c *Contact) Name() string { return c.name }
