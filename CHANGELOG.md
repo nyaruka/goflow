@@ -1,3 +1,8 @@
+## v0.296.1 (2026-09-30)
+ * Add email contact modifier, clearing the value on whitespace-only input and enforcing local part length limits
+ * Add set_contact_email action
+ * Make contact setters return whether they changed anything
+
 ## v0.296.0 (2026-09-29)
  * Add email attribute to contacts, using email.keyword for exact matches and sorting
 
