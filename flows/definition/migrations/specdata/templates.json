@@ -59,6 +59,9 @@
                 ".text"
             ],
             "set_contact_channel": [],
+            "set_contact_email": [
+                ".email"
+            ],
             "set_contact_field": [
                 ".value"
             ],
