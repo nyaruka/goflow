@@ -202,15 +202,13 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		var trigger flows.Trigger
 		var call *core.Call
 
+		if flow.Type() == flows.FlowTypeVoice {
+			channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
+			call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065550100"))
+		}
+
 		if tc.NoInput || tc.AsBatch {
-			tb := triggers.NewBuilder(flow.Reference(false)).Manual().AsBatch()
-
-			if flow.Type() == flows.FlowTypeVoice {
-				channel := sa.Channels().Get("57f1078f-88aa-46f4-a59a-948a5739c03d")
-				call = core.NewCall("01978a2f-ad9a-7f2e-ad44-6e7547078cec", channel, urns.URN("tel:+12065550100"))
-			}
-
-			trigger = tb.Build()
+			trigger = triggers.NewBuilder(flow.Reference(false)).Manual().AsBatch().Build()
 		} else {
 			msg := core.NewMsgIn(
 				urns.URN("tel:+12065550100"),

@@ -667,5 +667,47 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Warning event if executed in a voice flow",
+        "has_ticket": true,
+        "action": {
+            "type": "open_ticket",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "topic": null,
+            "note": "Last message: @input.text"
+        },
+        "in_flow_type": "voice",
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "warning",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "Opening tickets outside of messaging flows is deprecated",
+                "code": "action:deprecated",
+                "extra": {
+                    "type": "open_ticket"
+                }
+            }
+        ],
+        "locals_after": {
+            "_new_ticket": ""
+        },
+        "templates": [
+            "Last message: @input.text"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [
+                "_new_ticket"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

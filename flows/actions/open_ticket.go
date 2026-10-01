@@ -63,6 +63,10 @@ func NewOpenTicket(uuid flows.ActionUUID, topic *assets.TopicReference, assignee
 func (a *OpenTicket) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
 	sa := run.Session().Assets()
 
+	if run.Flow().Type() != flows.FlowTypeMessaging {
+		log(events.NewWarning("Opening tickets outside of messaging flows is deprecated", events.WarningCodeDeprecatedAction, "type", TypeOpenTicket))
+	}
+
 	// get topic or fallback to default
 	var topic *core.Topic
 	if a.Topic != nil {
