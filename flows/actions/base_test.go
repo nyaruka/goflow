@@ -139,9 +139,13 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		// pick a suitable "holder" flow in our assets JSON
 		flowIndex := 0
 		flowUUID := assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a")
-		if tc.InFlowType == flows.FlowTypeVoice {
+		switch tc.InFlowType {
+		case flows.FlowTypeVoice:
 			flowIndex = 1
 			flowUUID = assets.FlowUUID("7a84463d-d209-4d3e-a0ff-79f977cd7bd0")
+		case flows.FlowTypeMessagingBackground:
+			flowIndex = 3
+			flowUUID = assets.FlowUUID("5765539a-0e4f-4861-8f71-a3d69e723c67")
 		}
 
 		// inject the action into a suitable node's actions in that flow
