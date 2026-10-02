@@ -8,6 +8,7 @@ func init() {
 const TypeWarning string = "warning"
 
 const (
+	WarningCodeDeprecatedAction    = "action:deprecated"
 	WarningCodeDeprecatedContext   = "context:deprecated"
 	WarningCodeWebhookResponseSize = "webhook:response_size"
 )
