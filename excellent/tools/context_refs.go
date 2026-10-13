@@ -17,7 +17,7 @@ func FindContextRefsInTemplate(template string, allowedTopLevels []string, callb
 
 	return excellent.VisitTemplate(template, allowedTopLevels, false, func(tokenType excellent.XTokenType, token string) error {
 		switch tokenType {
-		case excellent.IDENTIFIER, excellent.EXPRESSION:
+		case excellent.IDENTIFIER, excellent.EXPRESSION_PARENTHESES, excellent.EXPRESSION_BRACES:
 			excellent.Parse(token, wrapped)
 		}
 		return nil

@@ -14,7 +14,11 @@ More complex expressions can be embedded using the `@(...)` syntax. For example 
 takes the value of `foo`, converts it to uppercase, and the prefixes it with another string. Note than within a 
 complex expression you don't prefix variables with `@`.
 
-The `@` symbol can be escaped in templates by repeating it, e.g, `Hi @@twitter` will output `Hi @twitter`.
+Complex expressions can also be embedded using the `{{"{{"}}...}}` syntax, e.g. `Hi {{"{{"}}"Dr " & upper(foo)}}`, which ends at 
+the first `}}` outside of a string literal, so is easier to read than counting the parentheses of a nested `@(...)`.
+
+The `@` symbol can be escaped in templates by repeating it, e.g, `Hi @@twitter` will output `Hi @twitter`, and `{{"{{"}}` 
+can be escaped by prefixing it with a backslash, e.g. `\{{"{{"}}foo}}` will output `{{"{{"}}foo}}`.
 
 # Types
 

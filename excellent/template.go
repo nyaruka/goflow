@@ -23,7 +23,7 @@ func ParseTemplate(src string) *Template {
 	t := &Template{}
 
 	// scan the source twice - once without unescaping so that text segments retain their original source including
-	// @@ sequences, and once with unescaping to get the values that text segments evaluate to.. the two scans always
+	// escape sequences, and once with unescaping to get the values that text segments evaluate to.. the two scans always
 	// produce the same sequence of tokens, differing only in the text of BODY tokens
 	rawScanner := NewXScanner(strings.NewReader(src), nil)
 	rawScanner.SetUnescapeBody(false)
@@ -47,10 +47,10 @@ func ParseTemplate(src string) *Template {
 				expression: expression,
 				err:        err,
 			})
-		case EXPRESSION:
+		case EXPRESSION_PARENTHESES, EXPRESSION_BRACES:
 			expression, err := Parse(rawToken, nil)
 			t.segments = append(t.segments, &expressionSegment{
-				src:        "@(" + rawToken + ")",
+				src:        Source(tokenType, rawToken),
 				expression: expression,
 				err:        err,
 			})
@@ -127,10 +127,10 @@ type textSegment struct {
 
 func (s *textSegment) source() string { return s.src }
 
-// a segment which is an expression, in either @identifier or @(...) form
+// a segment which is an expression, in @identifier, @(...) or {{...}} form
 type expressionSegment struct {
-	src        string     // original source, e.g. "@contact.name" or "@(1 + 2)"
-	topLevel   string     // lowercased top-level of an @identifier segment, empty for @(...) segments
+	src        string     // original source, e.g. "@contact.name", "@(1 + 2)" or "{{1 + 2}}"
+	topLevel   string     // lowercased top-level of an @identifier segment, empty otherwise
 	expression Expression // parsed expression, nil if source is malformed
 	err        error      // error from parsing if source is malformed
 }

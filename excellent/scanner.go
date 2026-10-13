@@ -19,12 +19,28 @@ const (
 	// IDENTIFIER - 'contact.age' in '@contact.age'
 	IDENTIFIER
 
-	// EXPRESSION - the body of an expression '1+2' in '@(1+2)'
-	EXPRESSION
+	// EXPRESSION_PARENTHESES - the body of an expression '1+2' in '@(1+2)'
+	EXPRESSION_PARENTHESES
+
+	// EXPRESSION_BRACES - the body of an expression '1+2' in '{{1+2}}'
+	EXPRESSION_BRACES
 
 	// EOF - end of expression
 	EOF
 )
+
+// Source returns the template source of the given token, e.g. "@(1+2)" for an EXPRESSION_PARENTHESES token "1+2"
+func Source(tokenType XTokenType, token string) string {
+	switch tokenType {
+	case IDENTIFIER:
+		return "@" + token
+	case EXPRESSION_PARENTHESES:
+		return "@(" + token + ")"
+	case EXPRESSION_BRACES:
+		return "{{" + token + "}}"
+	}
+	return token
+}
 
 func isNameChar(ch rune) bool {
 	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '_'
@@ -34,13 +50,15 @@ func isNameChar(ch rune) bool {
 type Scanner interface {
 	Scan() (XTokenType, string)
 	SetUnescapeBody(bool)
+	SetBraces(bool)
 }
 
 // xscanner represents a lexical scanner.
 type xscanner struct {
 	input               *xinput
 	identifierTopLevels []string
-	unescapeBody        bool // unescape @@ sequences in the body
+	unescapeBody        bool // unescape @@ and \{{ sequences in the body
+	braces              bool // recognize {{...}} expressions and \{{ escapes
 }
 
 // NewXScanner returns a new instance of our excellent scanner
@@ -49,11 +67,17 @@ func NewXScanner(r io.Reader, identifierTopLevels []string) Scanner {
 		input:               newInput(bufio.NewReader(r)),
 		identifierTopLevels: identifierTopLevels,
 		unescapeBody:        true,
+		braces:              true,
 	}
 }
 
 func (s *xscanner) SetUnescapeBody(unescape bool) {
 	s.unescapeBody = unescape
+}
+
+// SetBraces sets whether {{...}} expressions are recognized - disabled to scan templates written before they existed
+func (s *xscanner) SetBraces(braces bool) {
+	s.braces = braces
 }
 
 // scanExpression consumes the current rune and all contiguous pieces until the end of the expression
@@ -87,10 +111,34 @@ func (s *xscanner) scanExpression() (XTokenType, string) {
 	}
 
 	if parens == 0 {
-		return EXPRESSION, buf.String()
+		return EXPRESSION_PARENTHESES, buf.String()
 	}
 
 	return BODY, strings.Join([]string{"@(", buf.String()}, "")
+}
+
+// scanBraces consumes everything until the closing }} of a braced expression, our read should be after the '{{'
+func (s *xscanner) scanBraces() (XTokenType, string) {
+	buf := &bytes.Buffer{}
+
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
+		if ch == '"' {
+			buf.WriteRune(ch)
+			s.readTextLiteral(buf)
+		} else if ch == '}' {
+			peek := s.input.read()
+			if peek == '}' {
+				return EXPRESSION_BRACES, buf.String()
+			}
+			s.input.unread(peek)
+			buf.WriteRune(ch)
+		} else {
+			buf.WriteRune(ch)
+		}
+	}
+
+	// unterminated so treat as body text
+	return BODY, "{{" + buf.String()
 }
 
 // reads the remainder of a " quoted text literal
@@ -199,11 +247,53 @@ func (s *xscanner) scanBody() (XTokenType, string) {
 			} else if peek == eof {
 				buf.WriteRune('@')
 
-				// @ followed by non-letter
+				// @ followed by non-letter, which is scanned normally as it could be the start of {{ or \{{
 			} else {
 				buf.WriteRune('@')
-				buf.WriteRune(peek)
+				s.input.unread(peek)
 			}
+		} else if ch == '{' && s.braces {
+			peek := s.input.read()
+
+			// start of a braces expression
+			if peek == '{' {
+				s.input.unread(peek)
+				s.input.unread('{')
+				break
+			}
+
+			s.input.unread(peek)
+			buf.WriteRune(ch)
+		} else if ch == '\\' && s.braces {
+			// handlebars style escaping: \{{ is a literal {{ and \\{{ is a literal \ followed by an expression
+			p1 := s.input.read()
+			p2 := s.input.read()
+
+			if p1 == '{' && p2 == '{' {
+				if !s.unescapeBody {
+					buf.WriteRune('\\')
+				}
+				buf.WriteString("{{")
+				continue
+			}
+
+			if p1 == '\\' && p2 == '{' {
+				p3 := s.input.read()
+				s.input.unread(p3)
+
+				if p3 == '{' {
+					s.input.unread(p2)
+					buf.WriteRune('\\')
+					if !s.unescapeBody {
+						buf.WriteRune('\\')
+					}
+					break
+				}
+			}
+
+			s.input.unread(p2)
+			s.input.unread(p1)
+			buf.WriteRune(ch)
 		} else {
 			buf.WriteRune(ch)
 		}
@@ -239,6 +329,16 @@ func (s *xscanner) Scan() (XTokenType, string) {
 
 			s.input.unread(peek)
 			s.input.unread('@')
+			return s.scanBody()
+
+		case '{':
+			peek := s.input.read()
+			if peek == '{' && s.braces {
+				return s.scanBraces()
+			}
+
+			s.input.unread(peek)
+			s.input.unread('{')
 			return s.scanBody()
 
 		default:

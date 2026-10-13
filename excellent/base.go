@@ -48,7 +48,7 @@ func (e *Evaluator) Template(ctx context.Context, env envs.Environment, root *ty
 		switch tokenType {
 		case BODY:
 			buf.WriteString(token)
-		case IDENTIFIER, EXPRESSION:
+		case IDENTIFIER, EXPRESSION_PARENTHESES, EXPRESSION_BRACES:
 			value, warnings := e.Expression(ctx, env, root, token)
 
 			allWarnings = append(allWarnings, warnings...)
@@ -75,7 +75,7 @@ func (e *Evaluator) Template(ctx context.Context, env envs.Environment, root *ty
 }
 
 // TemplateValue is equivalent to Template except in the case where the template contains
-// a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In these cases we return
+// a single identifier or expression, ie: "@contact", "@(first(contact.urns))" or "{{first(contact.urns)}}". In these cases we return
 // the typed value from EvaluateExpression instead of stringifying the result.
 func (e *Evaluator) TemplateValue(ctx context.Context, env envs.Environment, root *types.XObject, template string) (types.XValue, []string, error) {
 	template = strings.TrimSpace(template)
@@ -90,7 +90,7 @@ func (e *Evaluator) TemplateValue(ctx context.Context, env envs.Environment, roo
 	// if we only have an identifier or an expression, evaluate it on its own
 	if nextTT == EOF {
 		switch tokenType {
-		case IDENTIFIER, EXPRESSION:
+		case IDENTIFIER, EXPRESSION_PARENTHESES, EXPRESSION_BRACES:
 			val, warnings := e.Expression(ctx, env, root, token)
 			return val, warnings, nil
 		}
@@ -160,14 +160,7 @@ func VisitTemplate(template string, allowedTopLevels []string, unescapeBody bool
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		if err := callback(tokenType, token); err != nil {
-			var repr string
-			if tokenType == IDENTIFIER {
-				repr = "@" + token
-			} else {
-				repr = "@(" + token + ")"
-			}
-
-			errors.Add(repr, err)
+			errors.Add(Source(tokenType, token), err)
 		}
 	}
 
@@ -182,7 +175,7 @@ func HasExpressions(template string, allowedTopLevels []string) bool {
 	found := false
 	VisitTemplate(template, allowedTopLevels, false, func(tokenType XTokenType, token string) error {
 		switch tokenType {
-		case IDENTIFIER, EXPRESSION:
+		case IDENTIFIER, EXPRESSION_PARENTHESES, EXPRESSION_BRACES:
 			found = true
 			return nil
 		}
