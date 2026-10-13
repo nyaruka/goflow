@@ -29,8 +29,8 @@ func init() {
 var literalBracesRegex = regexp.MustCompile(`(@*)(\\*)\{\{`)
 
 // escapes a literal {{ as \{{ so that its output is unchanged. There's no escape for a literal \ before {{ so any
-// such backslashes are output by an expression (as char(92) since engines before 14.7.0 can't scan a text literal
-// ending with a backslash), and a lone @ before that expression is escaped so that it can't combine with it into @@.
+// such backslashes are output by an expression (as char(92), which predates support for text literals ending with a
+// backslash), and a lone @ before that expression is escaped so that it can't combine with it into @@.
 func escapeLiteralBraces(m string) string {
 	parts := literalBracesRegex.FindStringSubmatch(m)
 	ats, backslashes := parts[1], parts[2]

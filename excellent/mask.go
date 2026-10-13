@@ -54,7 +54,7 @@ type MaskedTemplate struct {
 }
 
 type maskedExpression struct {
-	src        string // original source, e.g. "@contact.name" or "@(1 + 2)"
+	src        string // original source, e.g. "@contact.name", "@(1 + 2)" or "{{1 + 2}}"
 	identifier string // set if this is an @identifier, e.g. "contact.name"
 }
 
@@ -66,44 +66,48 @@ func MaskTemplate(src string, allowedTopLevels []string, syntax *PlaceholderSynt
 	m := &MaskedTemplate{syntax: syntax, allowedTopLevels: allowedTopLevels}
 	var buf strings.Builder
 
-	// scanned without unescaping so that a body starting with @( can only be an unterminated expression
-	VisitTemplate(src, allowedTopLevels, false, func(tt XTokenType, token string) error {
-		var expr maskedExpression
+	// scanned twice like ParseTemplate - raw so that a body starting with @( or {{ can only be an unterminated
+	// expression, and unescaped for the text itself
+	rawScanner := NewXScanner(strings.NewReader(src), allowedTopLevels)
+	rawScanner.SetUnescapeBody(false)
+	valScanner := NewXScanner(strings.NewReader(src), allowedTopLevels)
+
+	for {
+		tt, raw := rawScanner.Scan()
+		_, val := valScanner.Scan()
+
 		switch tt {
-		case IDENTIFIER:
-			expr = maskedExpression{src: "@" + token, identifier: token}
-		case EXPRESSION:
-			expr = maskedExpression{src: "@(" + token + ")"}
-		default:
+		case EOF:
+			m.Text = buf.String()
+
+			// the only things that look like placeholders must be our placeholders, in order
+			matches := syntax.pattern.FindAllStringSubmatch(m.Text, -1)
+			ok := len(matches) == len(m.exprs)
+			for i := 0; ok && i < len(matches); i++ {
+				ok = matches[i][0] == syntax.render(i+1)
+			}
+			if !ok {
+				return nil, errors.New("template text contains placeholder-like content")
+			}
+			return m, nil
+		case BODY:
 			// an unterminated expression runs to the end of the template, and must stay there because anything
 			// following it would become part of it, so it's kept verbatim and away from the transformation
-			if strings.HasPrefix(token, "@(") {
-				m.tail = token
-				return nil
+			if strings.HasPrefix(raw, "@(") || strings.HasPrefix(raw, "{{") {
+				m.tail = raw
+				continue
 			}
-			text := strings.ReplaceAll(token, "@@", "@")
-			m.hasText = m.hasText || strings.IndexFunc(text, func(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) }) >= 0
-			buf.WriteString(text)
-			return nil
+			m.hasText = m.hasText || strings.IndexFunc(val, func(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) }) >= 0
+			buf.WriteString(val)
+		default:
+			expr := maskedExpression{src: Source(tt, raw)}
+			if tt == IDENTIFIER {
+				expr.identifier = raw
+			}
+			m.exprs = append(m.exprs, expr)
+			buf.WriteString(syntax.render(len(m.exprs)))
 		}
-		m.exprs = append(m.exprs, expr)
-		buf.WriteString(syntax.render(len(m.exprs)))
-		return nil
-	})
-
-	m.Text = buf.String()
-
-	// the only things that look like placeholders must be our placeholders, in order
-	matches := syntax.pattern.FindAllStringSubmatch(m.Text, -1)
-	ok := len(matches) == len(m.exprs)
-	for i := 0; ok && i < len(matches); i++ {
-		ok = matches[i][0] == syntax.render(i+1)
 	}
-	if !ok {
-		return nil, errors.New("template text contains placeholder-like content")
-	}
-
-	return m, nil
 }
 
 // HasText returns whether there is anything other than punctuation and whitespace outside of the placeholders, i.e.
@@ -124,14 +128,14 @@ func (m *MaskedTemplate) Unmask(transformed string) (string, error) {
 	var prev *maskedExpression
 	last := 0
 
-	writeText := func(text string, followedByExpr bool) {
+	writeText := func(text string, next string) {
 		// an identifier followed by text which would extend it is wrapped so that it stays the same
 		if prev != nil && prev.identifier != "" && extendsIdentifier(text) {
 			buf.WriteString("@(" + prev.identifier + ")")
 		} else if prev != nil {
 			buf.WriteString(prev.src)
 		}
-		buf.WriteString(m.escapeText(text, followedByExpr))
+		buf.WriteString(m.escapeText(text, next))
 	}
 
 	for _, match := range matches {
@@ -144,19 +148,58 @@ func (m *MaskedTemplate) Unmask(transformed string) (string, error) {
 		}
 		seen[id-1] = true
 
-		writeText(transformed[last:match[0]], true)
+		writeText(transformed[last:match[0]], m.exprs[id-1].src)
 		prev = &m.exprs[id-1]
 		last = match[1]
 	}
-	writeText(transformed[last:], m.tail != "")
+	writeText(transformed[last:], m.tail)
 	buf.WriteString(m.tail)
 
 	return buf.String(), nil
 }
 
+// matches a literal {{ in text, along with any backslashes before it
+var textBracesRegex = regexp.MustCompile(`(\\*)\{\{`)
+
+// escapes text so that it can't introduce new expressions or change the next one, which is the source of the expression
+// that follows it, if any. Each {{ is escaped as \{{, and as there's no escape for a literal \ before {{, any such
+// backslashes are output by an expression.
+func (m *MaskedTemplate) escapeText(s string, next string) string {
+	var buf strings.Builder
+
+	// text which would run into a following {{ expression is made to stop short of it
+	var suffix string
+	if strings.HasPrefix(next, "{{") {
+		if trimmed, ok := strings.CutSuffix(s, "{"); ok {
+			s, suffix = trimmed, `@("{")`
+		} else if trimmed := strings.TrimRight(s, `\`); trimmed != s {
+			s, suffix = trimmed, strings.Repeat(`\`, len(s)-len(trimmed)+1)
+		}
+	}
+
+	last := 0
+	for _, match := range textBracesRegex.FindAllStringSubmatchIndex(s, -1) {
+		backslashes := s[match[2]:match[3]]
+		if backslashes == "" {
+			buf.WriteString(m.escapeAts(s[last:match[0]], false))
+		} else {
+			buf.WriteString(m.escapeAts(s[last:match[0]], true))
+			buf.WriteString(`@("` + strings.ReplaceAll(backslashes, `\`, `\\`) + `")`)
+		}
+		buf.WriteString(`\{{`)
+		last = match[1]
+	}
+
+	followedByExpr := strings.HasPrefix(suffix, "@") || (suffix == "" && next != "")
+	buf.WriteString(m.escapeAts(s[last:], followedByExpr))
+	buf.WriteString(suffix)
+	return buf.String()
+}
+
 // escapes each @ in text which would otherwise start an expression or an escape sequence, leaving others, e.g. in an
-// email address, as they are. Every expression starts with @, so a trailing @ needs escaping if an expression follows.
-func (m *MaskedTemplate) escapeText(s string, followedByExpr bool) string {
+// email address, as they are. Every @(...) expression starts with @, so a trailing @ needs escaping if an expression
+// follows.
+func (m *MaskedTemplate) escapeAts(s string, followedByExpr bool) string {
 	var buf strings.Builder
 	for i, r := range s {
 		buf.WriteRune(r)
