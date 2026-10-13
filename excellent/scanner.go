@@ -247,10 +247,10 @@ func (s *xscanner) scanBody() (XTokenType, string) {
 			} else if peek == eof {
 				buf.WriteRune('@')
 
-				// @ followed by non-letter
+				// @ followed by non-letter, which is scanned normally as it could be the start of {{ or \{{
 			} else {
 				buf.WriteRune('@')
-				buf.WriteRune(peek)
+				s.input.unread(peek)
 			}
 		} else if ch == '{' && s.braces {
 			peek := s.input.read()

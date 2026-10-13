@@ -2,6 +2,7 @@ package migrations
 
 import (
 	"encoding/json/jsontext"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -24,6 +25,27 @@ func init() {
 	registerMigration(semver.MustParse("14.0.0"), Migrate14_0_0)
 }
 
+// matches {{ in body text, along with any backslashes before it, and any @ characters before those
+var literalBracesRegex = regexp.MustCompile(`(@*)(\\*)\{\{`)
+
+// escapes a literal {{ as \{{ so that its output is unchanged. There's no escape for a literal \ before {{ so any
+// such backslashes are output by an expression (as char(92) because the scanner doesn't allow a text literal to end
+// with a backslash), and a lone @ before that expression is escaped so that it can't
+// combine with it into @@.
+func escapeLiteralBraces(m string) string {
+	parts := literalBracesRegex.FindStringSubmatch(m)
+	ats, backslashes := parts[1], parts[2]
+
+	if backslashes == "" {
+		return ats + `\{{`
+	}
+	if len(ats)%2 == 1 {
+		ats += "@"
+	}
+	chars := strings.TrimSuffix(strings.Repeat("char(92) & ", len(backslashes)), " & ")
+	return ats + "@(" + chars + `)\{{`
+}
+
 // Migrate14_7_0 escapes literal {{ sequences in templates as \{{ so that they aren't treated as {{...}} expressions.
 //
 // @version 14_7_0 "14.7.0"
@@ -40,7 +62,7 @@ func Migrate14_7_0(f Flow, cfg *Config) (Flow, error) {
 
 		for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 			if tokenType == excellent.BODY {
-				token = strings.ReplaceAll(token, "{{", `\{{`)
+				token = literalBracesRegex.ReplaceAllStringFunc(token, escapeLiteralBraces)
 			}
 			buf.WriteString(excellent.Source(tokenType, token))
 		}

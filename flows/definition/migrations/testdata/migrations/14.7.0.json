@@ -143,7 +143,7 @@
         }
     },
     {
-        "description": "flow with literal braces in templates and translations",
+        "description": "flow with literal braces in templates and translations, including after a backslash",
         "original": {
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
             "name": "Test Flow",
@@ -254,7 +254,7 @@
                                 "uuid": "ff810df6-23c2-4dff-9be1-eebffae2bb9d",
                                 "type": "has_pattern",
                                 "arguments": [
-                                    "\\\\{{\\w+}}"
+                                    "@(char(92))\\{{\\w+}}"
                                 ],
                                 "category_uuid": "be4ad508-3afb-4c4a-80ba-86b61518411c"
                             }

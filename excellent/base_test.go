@@ -350,6 +350,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`\\{{string1}}`, `\foo`, false},
 		{`a\b`, `a\b`, false},
 		{`@string1{{string2}}`, "foobar", false},
+		{`@{{string1}}`, "@foo", false},
+		{`@\{{string1}}`, "@{{string1}}", false},
 	}
 
 	env := envs.NewBuilder().Build()
