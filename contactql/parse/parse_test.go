@@ -165,7 +165,12 @@ func TestParseQuery(t *testing.T) {
 		{text: `status = "xxxx"`, err: "'xxxx' is not a valid contact status", resolver: resolver},
 		{text: `language = "xxxx"`, err: "'xxxx' is not a valid language code", resolver: resolver},
 
-		{text: `name = "O\"Leary"`, parsed: `name = "O\"Leary"`, resolver: resolver}, // string unquoting
+		{text: `name = "O\"Leary"`, parsed: `name = "O\"Leary"`, resolver: resolver},                               // string unquoting
+		{text: `name = "a\\"`, parsed: `name = "a\\"`, resolver: resolver},                                         // escaped trailing backslash
+		{text: `name = "a\\" OR name = "b"`, parsed: `name = "a\\" OR name = "b"`, resolver: resolver},             // which doesn't escape the closing quote
+		{text: `name = "a\\\"b\\"`, parsed: `name = "a\\\"b\\"`, resolver: resolver},                               // escaped backslash then escaped quote
+		{text: `name = "\w+"`, parsed: `name = "\\w+"`, resolver: resolver},                                        // invalid escapes kept literally
+		{text: `name = "a\"`, err: "extraneous input '\"' expecting {STRING, PROPERTY, TEXT}", resolver: resolver}, // unterminated string
 
 		// = supported for everything
 		{text: `uuid = f81d1eb5-215d-4ae8-90fa-38b3f2d6e328`, parsed: `uuid = "f81d1eb5-215d-4ae8-90fa-38b3f2d6e328"`, resolver: resolver},
