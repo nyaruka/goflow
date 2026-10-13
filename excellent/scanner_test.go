@@ -28,6 +28,10 @@ func TestScanner(t *testing.T) {
 		{`@(")`, []scannedToken{{excellent.BODY, `@(")`}}},
 		{`@(")")`, []scannedToken{{excellent.EXPRESSION, `")"`}}},
 		{`@("zz\"zz")`, []scannedToken{{excellent.EXPRESSION, `"zz\"zz"`}}},
+		{`@("\\")`, []scannedToken{{excellent.EXPRESSION, `"\\"`}}},
+		{`@("a\\") b`, []scannedToken{{excellent.EXPRESSION, `"a\\"`}, {excellent.BODY, " b"}}},
+		{`@("\\\"")`, []scannedToken{{excellent.EXPRESSION, `"\\\""`}}},
+		{`@("\\\")`, []scannedToken{{excellent.BODY, `@("\\\")`}}},
 	}
 
 	for _, test := range tests {

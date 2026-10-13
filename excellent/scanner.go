@@ -102,7 +102,7 @@ func (s *xscanner) readTextLiteral(buf *bytes.Buffer) {
 		if ch == '"' && !escaped {
 			break
 		} else if ch == '\\' {
-			escaped = true
+			escaped = !escaped
 		} else {
 			escaped = false
 		}
