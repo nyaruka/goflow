@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 	"sync"
@@ -33,6 +34,9 @@ var leetify = strings.NewReplacer(
 	"t", "7", "T", "7",
 ).Replace
 
+// placeholder markup is left as is so that callers which substitute placeholders for parts of the text can restore them
+var placeholderRegex = regexp.MustCompile(`<x id="\d+"\s*/>`)
+
 func translate(s string) (string, error) {
 	if s == "error" {
 		return "", errors.New("simulated model error")
@@ -40,7 +44,16 @@ func translate(s string) (string, error) {
 	if s == "untranslatable" {
 		return "<CANT>", nil
 	}
-	return leetify(s), nil
+
+	var b strings.Builder
+	last := 0
+	for _, loc := range placeholderRegex.FindAllStringIndex(s, -1) {
+		b.WriteString(leetify(s[last:loc[0]]))
+		b.WriteString(s[loc[0]:loc[1]])
+		last = loc[1]
+	}
+	b.WriteString(leetify(s[last:]))
+	return b.String(), nil
 }
 
 func (s *ModelService) Response(ctx context.Context, instructions, input string, maxTokens int) (*core.ModelResponse, error) {
