@@ -49,6 +49,7 @@ type MaskedTemplate struct {
 	syntax           *PlaceholderSyntax
 	allowedTopLevels []string
 	exprs            []maskedExpression // indexed by placeholder id - 1
+	tail             string             // unterminated expression which ends the template, if any
 	hasText          bool
 }
 
@@ -58,8 +59,9 @@ type maskedExpression struct {
 }
 
 // MaskTemplate replaces the expressions in the given template with placeholders of the given syntax. Identifiers whose
-// top-level isn't allowed, e.g. the @gmail in an email address, are left as text. It errors if the template's text
-// already contains something which looks like a placeholder, as that couldn't be told apart from a real one.
+// top-level isn't allowed, e.g. the @gmail in an email address, are left as text. An unterminated expression is left
+// out of the text altogether and restored at the end. It errors if the template's text already contains something
+// which looks like a placeholder, as that couldn't be told apart from a real one.
 func MaskTemplate(src string, allowedTopLevels []string, syntax *PlaceholderSyntax) (*MaskedTemplate, error) {
 	m := &MaskedTemplate{syntax: syntax, allowedTopLevels: allowedTopLevels}
 	var buf strings.Builder
@@ -73,13 +75,16 @@ func MaskTemplate(src string, allowedTopLevels []string, syntax *PlaceholderSynt
 		case EXPRESSION:
 			expr = maskedExpression{src: "@(" + token + ")"}
 		default:
-			if !strings.HasPrefix(token, "@(") {
-				text := strings.ReplaceAll(token, "@@", "@")
-				m.hasText = m.hasText || strings.IndexFunc(text, func(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) }) >= 0
-				buf.WriteString(text)
+			// an unterminated expression runs to the end of the template, and must stay there because anything
+			// following it would become part of it, so it's kept verbatim and away from the transformation
+			if strings.HasPrefix(token, "@(") {
+				m.tail = token
 				return nil
 			}
-			expr = maskedExpression{src: token} // kept verbatim so that it fails the same way when evaluated
+			text := strings.ReplaceAll(token, "@@", "@")
+			m.hasText = m.hasText || strings.IndexFunc(text, func(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) }) >= 0
+			buf.WriteString(text)
+			return nil
 		}
 		m.exprs = append(m.exprs, expr)
 		buf.WriteString(syntax.render(len(m.exprs)))
@@ -143,7 +148,8 @@ func (m *MaskedTemplate) Unmask(transformed string) (string, error) {
 		prev = &m.exprs[id-1]
 		last = match[1]
 	}
-	writeText(transformed[last:], false)
+	writeText(transformed[last:], m.tail != "")
+	buf.WriteString(m.tail)
 
 	return buf.String(), nil
 }
