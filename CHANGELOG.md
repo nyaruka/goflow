@@ -1,3 +1,6 @@
+## v0.300.0 (2026-10-13)
+ * Update to latest gocommon
+
 ## v0.299.0 (2026-10-13)
  * Allow contactql strings to end with an escaped backslash
 
