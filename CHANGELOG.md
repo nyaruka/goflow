@@ -1,3 +1,9 @@
+## v0.298.0 (2026-10-13)
+ * Preserve placeholder markup in test model translations
+ * Disable review progress tracking
+ * Bump the review model to Opus 5.5
+ * Drop .gitignore entries for the retired deploy tooling
+
 ## v0.297.1 (2026-09-30)
  * Add none as a required_confidence level for call_classifier that accepts every choice
 
