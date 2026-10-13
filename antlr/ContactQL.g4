@@ -23,7 +23,7 @@ COMPARATOR: (
 		| HAS
 		| IS
 	);
-STRING: '"' (~["] | '\\"')* '"';
+STRING: '"' (~["\\] | '\\' .)* '"';
 PROPERTY: (PROPTYPE '.')? PROPKEY;
 TEXT: (
 		UnicodeLetter

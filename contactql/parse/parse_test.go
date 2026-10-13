@@ -165,7 +165,13 @@ func TestParseQuery(t *testing.T) {
 		{text: `status = "xxxx"`, err: "'xxxx' is not a valid contact status", resolver: resolver},
 		{text: `language = "xxxx"`, err: "'xxxx' is not a valid language code", resolver: resolver},
 
-		{text: `name = "O\"Leary"`, parsed: `name = "O\"Leary"`, resolver: resolver}, // string unquoting
+		{text: `name = "O\"Leary"`, parsed: `name = "O\"Leary"`, resolver: resolver},                               // string unquoting
+		{text: `name = "a\\"`, parsed: `name = "a\\"`, resolver: resolver},                                         // escaped trailing backslash
+		{text: `name = "a\\" OR name = "b"`, parsed: `name = "a\\" OR name = "b"`, resolver: resolver},             // which doesn't escape the closing quote
+		{text: `name = "a\\\"b\\"`, parsed: `name = "a\\\"b\\"`, resolver: resolver},                               // escaped backslash then escaped quote
+		{text: `name = "\w+"`, parsed: `name = "\\w+"`, resolver: resolver},                                        // invalid escapes kept literally
+		{text: `name = "\w\"x"`, parsed: `name = "\\w\\\"x"`, resolver: resolver},                                  // so an invalid escape keeps valid ones literal too
+		{text: `name = "a\"`, err: "extraneous input '\"' expecting {STRING, PROPERTY, TEXT}", resolver: resolver}, // unterminated string
 
 		// = supported for everything
 		{text: `uuid = f81d1eb5-215d-4ae8-90fa-38b3f2d6e328`, parsed: `uuid = "f81d1eb5-215d-4ae8-90fa-38b3f2d6e328"`, resolver: resolver},
@@ -492,6 +498,19 @@ func TestSimplify(t *testing.T) {
 		parsed, err := parse.Query(env, tc.text, resolver)
 		assert.NoError(t, err)
 		assert.Equal(t, tc.parsed, parsed.String(), "parsed mismatch for input '%s'", tc.text)
+	}
+}
+
+func TestEscapeValueRoundTrip(t *testing.T) {
+	env := envs.NewBuilder().Build()
+
+	for _, value := range []string{`a\`, `a\\`, `\"`, `"" OR (id = 1)`, "line\nbreak"} {
+		query := `name = ` + contactql.EscapeValue(value) + ` OR name = "b"`
+
+		parsed, err := parse.Query(env, query, nil)
+		if assert.NoError(t, err, "unexpected error for '%s'", query) {
+			assert.Equal(t, query, parsed.String(), "parse mismatch for '%s'", query)
+		}
 	}
 }
 
