@@ -48,7 +48,7 @@ func TestMigrate14_7_0PreservesOutput(t *testing.T) {
 
 		flow := migrations.Flow{
 			"spec_version": "14.6.0",
-			"nodes": []any{map[string]any{"actions": []any{map[string]any{"type": "send_msg", "text": tc}}}},
+			"nodes":        []any{map[string]any{"actions": []any{map[string]any{"type": "send_msg", "text": tc}}}},
 		}
 		migrated, err := migrations.Migrate14_7_0(flow, nil)
 		require.NoError(t, err)
