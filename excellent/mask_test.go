@@ -2,6 +2,7 @@ package excellent_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/envs"
@@ -39,6 +40,12 @@ func TestMaskTemplate(t *testing.T) {
 		{`See @contact.name.`, `See {{1}}.`, true},
 		{`Unknown @foo.bar`, `Unknown @foo.bar`, true},
 		{`Trailing @`, `Trailing @`, true},
+		{`Hi {{contact.name}}!`, `Hi {{1}}!`, true},
+		{`{{ "}}" & contact.name }} @(fields.age)`, `{{1}} {{2}}`, false},
+		{`@contact.name{{fields.age}}@(1)`, `{{1}}{{2}}{{3}}`, false},
+		{`Oops {{upper(contact.name`, `Oops `, true},
+		{`Literal \{{x}} and {{contact.name}}`, `Literal {{x}} and {{1}}`, true},
+		{`Slash \\{{contact.name}}`, `Slash \{{1}}`, true},
 	}
 
 	for _, tc := range tcs {
@@ -76,13 +83,13 @@ func TestMaskTemplate(t *testing.T) {
 	assert.Equal(t, `Email bob{{1}}`, m.Text)
 
 	// text which looks like a placeholder can't be masked
-	for _, src := range []string{`Hi {{1}}`, `Hi {{ 3 }} @contact.name`, `Hi @contact.name {{1}}`, `{{2}}@contact.name`} {
+	for _, src := range []string{`Hi \{{1}}`, `Hi \{{ 3 }} @contact.name`, `Hi @contact.name \{{1}}`, `\{{2}}@contact.name`} {
 		_, err := excellent.MaskTemplate(src, maskTopLevels, excellent.BracePlaceholders)
 		assert.EqualError(t, err, "template text contains placeholder-like content", "expected error masking %q", src)
 	}
 
 	// but is fine for a different syntax
-	m, err = excellent.MaskTemplate(`Hi {{1}} @contact.name`, maskTopLevels, excellent.TagPlaceholders)
+	m, err = excellent.MaskTemplate(`Hi \{{1}} @contact.name`, maskTopLevels, excellent.TagPlaceholders)
 	assert.NoError(t, err)
 	assert.Equal(t, `Hi {{1}} <x id="1"/>`, m.Text)
 }
@@ -173,6 +180,34 @@ func TestUnmaskTemplate(t *testing.T) {
 			transformed: `{{1}}{{2}}. x`,
 			unmasked:    `@contact.name@fields.age. x`,
 		},
+		{ // braces expressions restored as they were
+			src:         `Hi {{contact.name}}, {{ "}}" }}`,
+			syntax:      excellent.TagPlaceholders,
+			masked:      `Hi <x id="1"/>, <x id="2"/>`,
+			transformed: `Hola <x id="1"/>, <x id="2"/>`,
+			unmasked:    `Hola {{contact.name}}, {{ "}}" }}`,
+		},
+		{ // introduced {{ are escaped, with any backslashes before them output by an expression
+			src:         `Hello`,
+			syntax:      excellent.TagPlaceholders,
+			masked:      `Hello`,
+			transformed: `{{contact}} a\{{b}} @\\{{c}} {{{{`,
+			unmasked:    `\{{contact}} a@("\\")\{{b}} @@@("\\\\")\{{c}} \{{\{{`,
+		},
+		{ // text which would run into a following braces expression is stopped short of it
+			src:         `{{contact.name}}{{fields.age}}{{fields.total}}`,
+			syntax:      excellent.TagPlaceholders,
+			masked:      `<x id="1"/><x id="2"/><x id="3"/>`,
+			transformed: `<x id="1"/>{<x id="2"/>\<x id="3"/>`,
+			unmasked:    `{{contact.name}}@("{"){{fields.age}}\\{{fields.total}}`,
+		},
+		{ // as is text before an unterminated one
+			src:         `Hi {{contact.name`,
+			syntax:      excellent.TagPlaceholders,
+			masked:      `Hi `,
+			transformed: `Hola @{`,
+			unmasked:    `Hola @@@("{"){{contact.name`,
+		},
 		{ // missing placeholder
 			src:         `Hi @contact.name and @fields.age`,
 			syntax:      excellent.BracePlaceholders,
@@ -221,6 +256,31 @@ func TestUnmaskTemplate(t *testing.T) {
 		} else {
 			assert.NoError(t, err, "unexpected error unmasking %q", tc.transformed)
 			assert.Equal(t, tc.unmasked, unmasked, "unmasked mismatch for %q", tc.transformed)
+		}
+	}
+
+	// whatever text a transformation introduces, it's output as is around the expressions
+	env := envs.NewBuilder().Build()
+	ctx := makeTemplateContext()
+	src := `@string1{{string1}}`
+
+	for _, text := range []string{
+		`@string1 @(1) @@ @ a@b.com @`, `{{string1}} {{{{ {{ }}`, `\{{x}} \\{{x}} \ \\`, `{ \ @{ @\ @\{{ {\{{`,
+	} {
+		m, err := excellent.MaskTemplate(src, ctx.Properties(), excellent.TagPlaceholders)
+		require.NoError(t, err)
+
+		for _, transformed := range []string{
+			text + `<x id="1"/>` + text + `<x id="2"/>` + text,
+			`<x id="1"/>` + text + `<x id="2"/>`,
+		} {
+			unmasked, err := m.Unmask(transformed)
+			require.NoError(t, err)
+
+			expected := strings.NewReplacer(`<x id="1"/>`, "foo", `<x id="2"/>`, "foo").Replace(transformed)
+			actual, _, err := excellent.ParseTemplate(unmasked).Evaluate(env, ctx, nil)
+			assert.NoError(t, err, "unexpected error evaluating %q", unmasked)
+			assert.Equal(t, expected, actual, "output mismatch for %q unmasked as %q", transformed, unmasked)
 		}
 	}
 }

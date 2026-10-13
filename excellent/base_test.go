@@ -259,6 +259,10 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@("hello\nworld")`, "hello\nworld", false},
 		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
 		{`@("hello😁world")`, "hello😁world", false},
+		{`@("\\")`, `\`, false},
+		{`@("a\\") b`, `a\ b`, false},
+		{`@(replace("a\\b", "\\", "/")) c`, "a/b c", false},
+		{`@("\\\"")`, `\"`, false},
 		{`@("hello\U0001F601world")`, "hello😁world", false},
 		{`@(title("hello"))`, "Hello", false},
 		{`@(title(hello))`, "", true},
@@ -342,6 +346,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		// braced expressions
 		{`Hello {{title(string1)}}!`, "Hello Foo!", false},
 		{`{{ string1 & string2 }}`, "foobar", false},
+		{`{{replace("a\\b", "\\", "/")}} c`, "a/b c", false},
 		{`{{if(int1 > 0, "}}", "{{")}}`, "}}", false},
 		{`{{hello}}`, "", true}, // unlike @hello, always evaluated
 		{`{{string1`, "{{string1", false},
