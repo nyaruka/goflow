@@ -1,3 +1,6 @@
+## v0.299.0 (2026-10-13)
+ * Allow contactql strings to end with an escaped backslash
+
 ## v0.298.1 (2026-10-13)
  * Add excellent.MaskTemplate for hiding template expressions behind placeholders, supporting {{...}} expressions
  * Support {{...}} braces syntax for expressions in templates
