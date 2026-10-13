@@ -1,3 +1,8 @@
+## v0.298.1 (2026-10-13)
+ * Add excellent.MaskTemplate for hiding template expressions behind placeholders, supporting {{...}} expressions
+ * Support {{...}} braces syntax for expressions in templates
+ * Allow text literals in templates to end with an escaped backslash
+
 ## v0.298.0 (2026-10-13)
  * Preserve placeholder markup in test model translations
  * Disable review progress tracking
