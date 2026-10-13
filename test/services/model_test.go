@@ -22,6 +22,11 @@ func TestModelService(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "H3110", resp.Output)
 
+	// placeholder markup is preserved
+	resp, err = svc.Response(ctx, "Translate to Spanish", `Hi <x id="1"/>, it's <x id="2" />`, 100)
+	assert.NoError(t, err)
+	assert.Equal(t, `H1 <x id="1"/>, 17'5 <x id="2" />`, resp.Output)
+
 	// lower-case "translate" does NOT trigger — only the capitalized prefix
 	resp, err = svc.Response(ctx, "please translate this", "Hello", 100)
 	assert.NoError(t, err)
@@ -64,6 +69,11 @@ func TestModelServiceTranslate(t *testing.T) {
 	tr, err := svc.Translate(ctx, "eng", "spa", map[string][]string{"greeting": {"Hello", "Hi"}, "name": {"World"}, "other": {"Hi", "untranslatable"}})
 	assert.NoError(t, err)
 	assert.Equal(t, map[string][]string{"greeting": {"H3110", "H1"}, "name": {"W0r1d"}}, tr.Items)
+
+	// placeholder markup is preserved while surrounding text is leetified
+	tr, err = svc.Translate(ctx, "eng", "spa", map[string][]string{"a": {`Hi <x id="1"/>`, `<x id="12"/><x id="3" />tea`, `<x id="a"/>`}})
+	assert.NoError(t, err)
+	assert.Equal(t, map[string][]string{"a": {`H1 <x id="1"/>`, `<x id="12"/><x id="3" />734`, `<x 1d="4"/>`}}, tr.Items)
 
 	// values exactly equal to "error" cause the service to error
 	_, err = svc.Translate(ctx, "eng", "spa", map[string][]string{"a": {"Hi", "error"}})
