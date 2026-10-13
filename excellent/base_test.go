@@ -69,6 +69,9 @@ func TestEvaluateTemplateValue(t *testing.T) {
 		{"hello world", xs("hello world")},
 		{"@hello", xs("@hello")},
 		{"@(title(\"hello\"))", xs("Hello")},
+		{"{{title(\"hello\")}}", xs("Hello")},
+		{" {{ dec1 + dec2 }} ", xn("4.0")},
+		{"{{array2d[0]}}", array1d},
 
 		{"@dec1", xn("1.5")},
 		{"@(dec1 + dec2)", xn("4.0")},
@@ -339,6 +342,21 @@ func TestEvaluateTemplate(t *testing.T) {
 		// objects with defaults
 		{`@object1`, "123", false},
 		{`@object2`, "", false},
+
+		// braced expressions
+		{`Hello {{title(string1)}}!`, "Hello Foo!", false},
+		{`{{ string1 & string2 }}`, "foobar", false},
+		{`{{replace("a\\b", "\\", "/")}} c`, "a/b c", false},
+		{`{{if(int1 > 0, "}}", "{{")}}`, "}}", false},
+		{`{{hello}}`, "", true}, // unlike @hello, always evaluated
+		{`{{string1`, "{{string1", false},
+		{`{string1}`, "{string1}", false},
+		{`\{{string1}}`, "{{string1}}", false},
+		{`\\{{string1}}`, `\foo`, false},
+		{`a\b`, `a\b`, false},
+		{`@string1{{string2}}`, "foobar", false},
+		{`@{{string1}}`, "@foo", false},
+		{`@\{{string1}}`, "@{{string1}}", false},
 	}
 
 	env := envs.NewBuilder().Build()

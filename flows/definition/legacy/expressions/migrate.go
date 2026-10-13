@@ -67,6 +67,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 	scanner.SetUnescapeBody(false)
+	scanner.SetBraces(false)
 	errors := excellent.NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
@@ -84,7 +85,7 @@ func migrateLegacyTemplateAsString(template string, options *MigrateOptions) (st
 			// optionally wrap expression so that it is URL encoded or defaults to itself on error
 			buf.WriteString(wrapRawExpression(value, errorAs, options.URLEncode))
 
-		case excellent.EXPRESSION:
+		case excellent.EXPRESSION_PARENTHESES:
 			// special case of @("") which was a common workaround for the editor requiring a
 			// non-empty string, but is no longer needed and can be replaced by an empty string
 			if token == `""` {

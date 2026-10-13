@@ -30,8 +30,11 @@ func TestRefactorTemplate(t *testing.T) {
 		{`@(AND(1>2, 3<4, 5>=6, 7<=8))`, `@(and(1 > 2, 3 < 4, 5 >= 6, 7 <= 8))`, false},
 		{`@(FOO_Func(x, y))`, `@(foo_func(x, y))`, false},
 		{`@(1 / ) @(1+2)`, `@(1 / ) @(1 + 2)`, true},
-		{`test@example.com`, `test@example.com`, false},   // not a valid top level
-		{`test@@example.com`, `test@@example.com`, false}, // escaped @ unchanged
+		{`{{ foo . bar }}`, `{{foo.bar}}`, false},
+		{`{{1 / }} {{1+2}}`, `{{1 / }} {{1 + 2}}`, true},
+		{`\{{foo}} \\{{foo}}`, `\{{foo}} \\{{foo}}`, false}, // escapes unchanged
+		{`test@example.com`, `test@example.com`, false},     // not a valid top level
+		{`test@@example.com`, `test@@example.com`, false},   // escaped @ unchanged
 	}
 
 	eval := excellent.NewEvaluator(excellent.DefaultEvaluationBudget)

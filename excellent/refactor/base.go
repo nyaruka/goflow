@@ -14,17 +14,17 @@ func Template(template string, allowedTopLevels []string, tx func(excellent.Expr
 		switch tokenType {
 		case excellent.BODY:
 			buf.WriteString(token)
-		case excellent.IDENTIFIER, excellent.EXPRESSION:
+		case excellent.IDENTIFIER, excellent.EXPRESSION_PARENTHESES, excellent.EXPRESSION_BRACES:
 			refactored, err := expression(token, tx)
 
 			// if we got an error, return that, and rewrite original expression
 			if err != nil {
-				buf.WriteString(wrapExpression(tokenType, token))
+				buf.WriteString(excellent.Source(tokenType, token))
 				return err
 			}
 
 			// if not, append refactored expresion to the output
-			buf.WriteString(wrapExpression(tokenType, refactored))
+			buf.WriteString(excellent.Source(tokenType, refactored))
 		}
 		return nil
 	})
@@ -46,11 +46,4 @@ func expression(expression string, tx func(excellent.Expression) bool) (string, 
 
 	// otherwise keep original
 	return expression, nil
-}
-
-func wrapExpression(tokenType excellent.XTokenType, token string) string {
-	if tokenType == excellent.IDENTIFIER {
-		return "@" + token
-	}
-	return "@(" + token + ")"
 }
