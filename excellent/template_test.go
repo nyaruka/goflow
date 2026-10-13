@@ -19,7 +19,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// a mix of templates that exercise every segment kind - literal text, @@ escapes, @identifier and @(...) forms,
+// a mix of templates that exercise every segment kind - literal text, escapes, @identifier, @(...) and {{...}} forms,
 // valid and invalid identifiers, malformed expressions, and evaluation errors
 var templateTestCases = []string{
 	``,
@@ -69,6 +69,15 @@ var templateTestCases = []string{
 	`@(err)`,
 	`1 + 2`,
 	"line1\nline2 @string1\n@@line3",
+	`{{string1}}`,
+	`Hello {{ title(string1) }}!`,
+	`{{"}}"}}`,
+	`{{hello}}`,
+	`{{0 / }}`,
+	`{{string1`,
+	`\{{string1}}`,
+	`\\{{string1}}`,
+	`@string1{{string2}}@(int1)`,
 }
 
 func makeTemplateContext() *types.XObject {

@@ -160,6 +160,7 @@ var tests = []testTemplate{
 
 	// strings
 	{old: `@("")`, new: ``},
+	{old: `{{contact.name}}`, new: `{{contact.name}}`}, // escaped by a later migration
 	{old: `@(" ")`, new: `@(" ")`},
 	{old: `@(" "" ")`, new: `@(" \" ")`},
 	{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & fields.gender)`},
