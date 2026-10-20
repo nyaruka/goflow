@@ -6,5 +6,6 @@
         "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
         "name": "Reminders"
     },
-    "point_uuid": "77410ef5-1b3d-4571-b8c3-a692b07d2d09"
+    "point_uuid": "77410ef5-1b3d-4571-b8c3-a692b07d2d09",
+    "reason": "existing_session"
 }
