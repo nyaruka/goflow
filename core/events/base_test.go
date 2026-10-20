@@ -121,6 +121,16 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
+				return events.NewCampaignSkipped(
+					assets.NewCampaignReference("58e9b092-fe42-4173-876c-ff45a14a24fe", "Reminders"),
+					"77410ef5-1b3d-4571-b8c3-a692b07d2d09",
+					events.CampaignSkippedReasonExistingSession,
+				)
+			},
+			`campaign_skipped`,
+		},
+		{
+			func() events.Event {
 				return events.NewChatStarted(telegram.Reference(), map[string]string{"referrer_id": "acme"})
 			},
 			`chat_started`,

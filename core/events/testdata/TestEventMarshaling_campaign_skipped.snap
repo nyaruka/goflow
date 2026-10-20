@@ -1,0 +1,11 @@
+{
+    "uuid": "01969b47-0583-76f8-924e-9de1a11831b3",
+    "type": "campaign_skipped",
+    "created_on": "2025-05-04T12:30:46.123456789Z",
+    "campaign": {
+        "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+        "name": "Reminders"
+    },
+    "point_uuid": "77410ef5-1b3d-4571-b8c3-a692b07d2d09",
+    "reason": "existing_session"
+}
