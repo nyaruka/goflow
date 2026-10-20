@@ -16,7 +16,6 @@ type CampaignSkippedReason string
 
 const (
 	CampaignSkippedReasonExistingSession CampaignSkippedReason = "existing_session"
-	CampaignSkippedReasonContactStatus   CampaignSkippedReason = "contact_status"
 )
 
 // CampaignSkipped events are created when a campaign point that should have fired for the contact was skipped.
@@ -39,7 +38,7 @@ type CampaignSkipped struct {
 
 	Campaign  *assets.CampaignReference `json:"campaign"   validate:"required"`
 	PointUUID assets.CampaignPointUUID  `json:"point_uuid" validate:"required"`
-	Reason    CampaignSkippedReason     `json:"reason"     validate:"required,eq=existing_session|eq=contact_status"`
+	Reason    CampaignSkippedReason     `json:"reason"     validate:"required,eq=existing_session"`
 }
 
 // NewCampaignSkipped returns a new campaign skipped event
