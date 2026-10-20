@@ -1,3 +1,6 @@
+## v0.301.0 (2026-10-20)
+ * Add campaign_skipped event type
+
 ## v0.300.0 (2026-10-13)
  * Update to latest gocommon
 
