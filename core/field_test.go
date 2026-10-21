@@ -85,6 +85,7 @@ func TestFieldValueParse(t *testing.T) {
 		{joinDate, "1800-01-01T00:00:00Z", core.NewValue(xt("1800-01-01T00:00:00Z"), types.NewXDateTime(time.Date(1800, 1, 1, 0, 0, 0, 0, time.UTC)), nil, nilLocPath, nilLocPath, nilLocPath)},
 		{joinDate, "1799-12-31T00:00:00Z", core.NewValue(xt("1799-12-31T00:00:00Z"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
 		{joinDate, "0001-01-01T00:00:00Z", core.NewValue(xt("0001-01-01T00:00:00Z"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{joinDate, "1/1/1753", core.NewValue(xt("1/1/1753"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
 	}
 
 	for _, tc := range tcs {
