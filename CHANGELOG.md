@@ -1,3 +1,6 @@
+## v0.302.0 (2026-10-21)
+ * Don't parse field values before 1800 as datetimes
+
 ## v0.301.0 (2026-10-20)
  * Add campaign_skipped event type
 
