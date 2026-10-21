@@ -2,6 +2,7 @@ package core_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
@@ -61,6 +62,7 @@ func TestFieldValueParse(t *testing.T) {
 	gender := fields.Get("gender")
 	age := fields.Get("age")
 	state := fields.Get("state")
+	joinDate := fields.Get("join_date")
 
 	xt := types.NewXText
 	xn := func(s string) *types.XNumber { xn := types.RequireXNumberFromString(s); return xn }
@@ -80,6 +82,10 @@ func TestFieldValueParse(t *testing.T) {
 		{state, "", nil},
 		{state, "kigali city", core.NewValue(xt("kigali city"), nil, nil, envs.LocationPath("Rwanda > Kigali City"), nilLocPath, nilLocPath)},
 		{state, "x", core.NewValue(xt("x"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{joinDate, "1800-01-01T00:00:00Z", core.NewValue(xt("1800-01-01T00:00:00Z"), types.NewXDateTime(time.Date(1800, 1, 1, 0, 0, 0, 0, time.UTC)), nil, nilLocPath, nilLocPath, nilLocPath)},
+		{joinDate, "1799-12-31T00:00:00Z", core.NewValue(xt("1799-12-31T00:00:00Z"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{joinDate, "0001-01-01T00:00:00Z", core.NewValue(xt("0001-01-01T00:00:00Z"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
+		{joinDate, "1/1/1753", core.NewValue(xt("1/1/1753"), nil, nil, nilLocPath, nilLocPath, nilLocPath)},
 	}
 
 	for _, tc := range tcs {

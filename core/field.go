@@ -165,6 +165,10 @@ func (f FieldValues) Set(field *Field, value *Value) {
 	f[field.Key()] = fv
 }
 
+// minFieldYear is the earliest year a field value can have and still be parsed as a datetime - earlier years are
+// placeholders for "no date" (e.g. 0001-01-01) rather than real dates
+const minFieldYear = 1800
+
 // Parse parses a raw string field value into the different possible types
 func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	if rawValue == "" {
@@ -179,7 +183,7 @@ func (f FieldValues) Parse(env envs.Environment, fields *FieldAssets, field *Fie
 		asNumber = parsedNumber
 	}
 
-	if parsedDate, xerr := types.ToXDateTimeWithTimeFill(env, asText); xerr == nil {
+	if parsedDate, xerr := types.ToXDateTimeWithTimeFill(env, asText); xerr == nil && parsedDate.Native().Year() >= minFieldYear {
 		asDateTime = parsedDate
 	}
 
