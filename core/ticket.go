@@ -98,8 +98,8 @@ func (l *TicketList) Find(uuid TicketUUID) *Ticket {
 
 // Active returns the ticket that isn't closed, if any - a contact can have at most one
 func (l *TicketList) Active() *Ticket {
-	for _, t := range l.all {
-		if t.status != TicketStatusClosed {
+	for i := len(l.all) - 1; i >= 0; i-- {
+		if t := l.all[i]; t.status != TicketStatusClosed {
 			return t
 		}
 	}
