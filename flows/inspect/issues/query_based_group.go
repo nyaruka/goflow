@@ -40,7 +40,7 @@ func QueryBasedGroupCheck(sa flows.SessionAssets, flow flows.Flow, tpls []flows.
 
 	for _, ref := range refs {
 		groupRef, isGroup := ref.Reference.(*assets.GroupReference)
-		if !isGroup || ref.Action == nil || groupRef.Variable() {
+		if !isGroup || ref.Action == nil {
 			continue
 		}
 
