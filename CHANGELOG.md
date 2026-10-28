@@ -1,3 +1,9 @@
+## v0.303.0 (2026-10-28)
+ * Add query_based_group inspection issue for actions adding or removing contacts to or from query based groups
+ * Order inspection issues deterministically within a node
+ * Remove redundant variable ref check
+ * Update dependencies
+
 ## v0.302.0 (2026-10-21)
  * Don't parse field values before 1800 as datetimes
 
