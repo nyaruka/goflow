@@ -1,0 +1,225 @@
+[
+    {
+        "description": "add and remove actions with query based groups",
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                    "name": "Testers"
+                                },
+                                {
+                                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                                    "name": "Males"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                            "type": "remove_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                                    "name": "Females"
+                                }
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": [
+            {
+                "type": "query_based_group",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                "description": "can't add contacts to query based group 'Males'",
+                "group": {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            },
+            {
+                "type": "query_based_group",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                "description": "can't remove contacts from query based group 'Females'",
+                "group": {
+                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                    "name": "Females"
+                }
+            }
+        ]
+    },
+    {
+        "description": "no issues for static or missing groups",
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                    "name": "Testers"
+                                },
+                                {
+                                    "name_match": "@fields.gender"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                            "type": "remove_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                                    "name": "Customers"
+                                },
+                                {
+                                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                                    "name": "Deleted"
+                                }
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": [
+            {
+                "type": "missing_dependency",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                "description": "missing group dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
+                "dependency": {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Deleted",
+                    "type": "group"
+                }
+            }
+        ]
+    },
+    {
+        "description": "action with both missing and query based groups",
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                                    "name": "Males"
+                                },
+                                {
+                                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                                    "name": "Deleted"
+                                }
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": [
+            {
+                "type": "missing_dependency",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                "description": "missing group dependency '3f65d88a-95dc-4140-9451-943e94e06fea'",
+                "dependency": {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Deleted",
+                    "type": "group"
+                }
+            },
+            {
+                "type": "query_based_group",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                "description": "can't add contacts to query based group 'Males'",
+                "group": {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            }
+        ]
+    },
+    {
+        "description": "no issues found if no assets avaiable",
+        "no_assets": true,
+        "flow": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "spec_version": "13.0.0",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                                    "name": "Males"
+                                }
+                            ]
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+                        }
+                    ]
+                }
+            ]
+        },
+        "issues": []
+    }
+]
