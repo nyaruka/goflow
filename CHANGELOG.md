@@ -1,3 +1,6 @@
+## v0.303.1 (2026-10-28)
+ * Replace ticket list open helpers with a single active ticket lookup
+
 ## v0.303.0 (2026-10-28)
  * Add query_based_group inspection issue for actions adding or removing contacts to or from query based groups
  * Order inspection issues deterministically within a node
