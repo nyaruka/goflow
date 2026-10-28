@@ -1,6 +1,8 @@
 package issues
 
 import (
+	"maps"
+	"slices"
 	"sort"
 
 	"github.com/nyaruka/gocommon/i18n"
@@ -59,17 +61,32 @@ func Check(sa flows.SessionAssets, flow flows.Flow, tpls []flows.ExtractedTempla
 		issues = append(issues, i)
 	}
 
-	for _, fn := range RegisteredTypes {
-		fn(sa, flow, tpls, refs, report)
+	// run checks in a fixed order so that issues on the same action are reported deterministically
+	for _, typeName := range slices.Sorted(maps.Keys(RegisteredTypes)) {
+		RegisteredTypes[typeName](sa, flow, tpls, refs, report)
 	}
 
-	// sort issues by node order
+	// sort issues by node order, then by action order within the node (router issues come last)
 	nodeOrder := make(map[core.NodeUUID]int, len(flow.Nodes()))
+	actionOrder := make(map[flows.ActionUUID]int)
 	for i, node := range flow.Nodes() {
 		nodeOrder[node.UUID()] = i
+		for j, action := range node.Actions() {
+			actionOrder[action.UUID()] = j
+		}
+	}
+	actionIndex := func(i flows.Issue) int {
+		if idx, ok := actionOrder[i.ActionUUID()]; ok {
+			return idx
+		}
+		return len(actionOrder)
 	}
 	sort.SliceStable(issues, func(i, j int) bool {
-		return nodeOrder[issues[i].NodeUUID()] < nodeOrder[issues[j].NodeUUID()]
+		ni, nj := nodeOrder[issues[i].NodeUUID()], nodeOrder[issues[j].NodeUUID()]
+		if ni != nj {
+			return ni < nj
+		}
+		return actionIndex(issues[i]) < actionIndex(issues[j])
 	})
 
 	return issues
