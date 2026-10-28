@@ -43,8 +43,8 @@ func NewTicketOpen(topic *core.Topic, assignee *core.User, note string) *TicketO
 
 // Apply applies this modification to the given contact
 func (m *TicketOpen) Apply(ctx context.Context, eng flows.Engine, env envs.Environment, sa flows.SessionAssets, contact *core.Contact, log events.EventLogger) (bool, error) {
-	// if there's already an open ticket, nothing to do
-	if contact.Tickets().Open().Count() > 0 {
+	// if there's already an active ticket, nothing to do
+	if contact.Tickets().Active() != nil {
 		return false, nil
 	}
 
