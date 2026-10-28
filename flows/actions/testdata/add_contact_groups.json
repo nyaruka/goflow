@@ -106,7 +106,18 @@
             "locals": [],
             "results": [],
             "parent_refs": [],
-            "issues": []
+            "issues": [
+                {
+                    "type": "query_based_group",
+                    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "description": "can't add contacts to query based group 'Females'",
+                    "group": {
+                        "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                        "name": "Females"
+                    }
+                }
+            ]
         }
     },
     {
