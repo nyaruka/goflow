@@ -261,6 +261,10 @@ func TestReadContact(t *testing.T) {
 	// read invalid contact
 	_, err = core.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "drunk", "created_on": "2020-07-22T13:50:30.123456789Z"}`), assets.PanicOnMissing)
 	assert.EqualError(t, err, "unable to read contact: field 'status' is not a valid contact status")
+
+	// read contact with invalid ticket status
+	_, err = core.ReadContact(sa, []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30.123456789Z", "tickets": [{"uuid": "01992f54-5ab6-725e-be9c-0c6407efd755", "status": "Pending"}]}`), assets.PanicOnMissing)
+	assert.EqualError(t, err, "unable to read contact: field 'tickets[0].status' is not a valid ticket status")
 }
 
 func TestReadContactWithMissingAssets(t *testing.T) {

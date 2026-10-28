@@ -8,7 +8,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2026-03-27 10:14-0500\n"
+"POT-Creation-Date: 2026-10-28 23:14+0000\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -722,6 +722,11 @@ msgstr ""
 msgid "any attachments on the input"
 msgstr "cualquier archivo adjunto en la entrada"
 
+#, fuzzy
+#| msgid "any attachments on the input"
+msgid "any structured data on the input"
+msgstr "cualquier archivo adjunto en la entrada"
+
 msgid "the URN values of the contact"
 msgstr "los valores URN del contacto"
 
@@ -756,11 +761,6 @@ msgstr "el UUID del nodo"
 
 msgid "the UUID of the node in the flow that generated the result"
 msgstr "el UUID del nodo en el flujo que generó el resultado"
-
-#, fuzzy
-#| msgid "the UUID of the topic"
-msgid "the UUID of the optin"
-msgstr "el UUID del tema"
 
 msgid "the UUID of the run"
 msgstr "el UUID de la ejecución"
@@ -846,6 +846,11 @@ msgstr "los valores de campo personalizados del contacto"
 msgid "the custom field values of the run"
 msgstr "los valores de campo personalizados de la ejecución"
 
+#, fuzzy
+#| msgid "the email address of the user"
+msgid "the email address of the contact"
+msgstr "el correo del usuario"
+
 msgid "the email address of the user"
 msgstr "el correo del usuario"
 
@@ -889,11 +894,6 @@ msgid "the last seen date of the contact"
 msgstr "la fecha de última vista del contacto"
 
 #, fuzzy
-#| msgid "the last child run"
-msgid "the last webhook call "
-msgstr "la última ejecución de hijo"
-
-#, fuzzy
 #| msgid "the global value {key}"
 msgid "the local variable {key}"
 msgstr "el valor global {key}"
@@ -930,11 +930,6 @@ msgstr "el nombre del flujo"
 
 msgid "the name of the group"
 msgstr "el nombre del grupo"
-
-#, fuzzy
-#| msgid "the name of the topic"
-msgid "the name of the optin"
-msgstr "el nombre del tema"
 
 msgid "the name of the result"
 msgstr "el nombre del resultado"
@@ -990,6 +985,11 @@ msgstr "el estado actual de la ejecución"
 msgid "the result for {key}"
 msgstr "el resultado de {key}"
 
+#, fuzzy
+#| msgid "the parsed JSON response of the last webhook call"
+msgid "the result of the last webhook or resthook call"
+msgstr "la respuesta JSON analizada de la última llamada de webhook"
+
 msgid "the results saved by the run"
 msgstr "los resultados guardados por la ejecución"
 
@@ -1005,6 +1005,11 @@ msgstr "el nombre del contacto"
 #| msgid "the current status of the run"
 msgid "the status of the run"
 msgstr "el estado actual de la ejecución"
+
+#, fuzzy
+#| msgid "the name of the contact"
+msgid "the status of the ticket"
+msgstr "el nombre del contacto"
 
 msgid "the text and attachments"
 msgstr "el texto y los archivos adjuntos"
@@ -1062,11 +1067,26 @@ msgstr "{type} URN para el contacto"
 #~ "valor final significa que se deben devolver todas las palabras después del inicio. Hay un parámetro final opcional `delimiters`\n"
 #~ "que es una cadena de caracteres utilizada para dividir el texto en palabras."
 
+#, fuzzy
+#~| msgid "the UUID of the topic"
+#~ msgid "the UUID of the optin"
+#~ msgstr "el UUID del tema"
+
 #~ msgid "the extra data of the result such as a webhook response"
 #~ msgstr "los datos adicionales del resultado, como una respuesta de webhook"
 
 #~ msgid "the last opened ticket for the contact"
 #~ msgstr "el último ticket que se ha abierto para el contacto"
+
+#, fuzzy
+#~| msgid "the last child run"
+#~ msgid "the last webhook call "
+#~ msgstr "la última ejecución de hijo"
+
+#, fuzzy
+#~| msgid "the name of the topic"
+#~ msgid "the name of the optin"
+#~ msgstr "el nombre del tema"
 
 #~ msgid "the numeric ID of the contact"
 #~ msgstr "el ID numérico del contacto"
@@ -1075,6 +1095,3 @@ msgstr "{type} URN para el contacto"
 #~| msgid "the creation date of the result"
 #~ msgid "the optional extra data of the result"
 #~ msgstr "la fecha de creación del resultado"
-
-#~ msgid "the parsed JSON response of the last webhook call"
-#~ msgstr "la respuesta JSON analizada de la última llamada de webhook"

@@ -1,11 +1,19 @@
 package core
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
+
+func init() {
+	utils.RegisterValidatorAlias("ticket_status", "eq=pending|eq=open|eq=closed", func(validator.FieldError) string {
+		return "is not a valid ticket status"
+	})
+}
 
 // TicketUUID is the UUID of a ticket
 type TicketUUID uuids.UUID
@@ -126,7 +134,7 @@ func (l *TicketList) Marshal() []*TicketEnvelope {
 // against assets into a live ticket.
 type TicketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=pending|eq=open|eq=closed"`
+	Status   TicketStatus           `json:"status"                 validate:"omitempty,ticket_status"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }
