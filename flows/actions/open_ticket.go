@@ -109,9 +109,7 @@ func (a *OpenTicket) open(ctx context.Context, run flows.Run, topic *core.Topic,
 	}
 	if modified {
 		// if we were able to open a ticket, return it
-		if lastOpen := run.Session().Contact().Tickets().LastOpen(); lastOpen != nil {
-			return lastOpen, nil
-		}
+		return run.Session().Contact().Tickets().Active(), nil
 	}
 	return nil, nil
 }

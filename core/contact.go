@@ -508,7 +508,12 @@ func (c *Contact) Context(env envs.Environment) map[string]types.XValue {
 	id := types.NewXText(strconv.Itoa(int(c.id)))
 	id.SetDeprecated("@contact.id is deprecated, use @contact.ref instead")
 
-	tickets := c.tickets.Open().ToXValue(env)
+	var tickets *types.XArray
+	if active := c.tickets.Active(); active != nil {
+		tickets = types.NewXArray(Context(env, active))
+	} else {
+		tickets = types.NewXArray()
+	}
 	tickets.SetDeprecated("@contact.tickets is deprecated, use @ticket instead")
 
 	return map[string]types.XValue{
@@ -670,7 +675,10 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 			}
 			return vals
 		case contactql.AttributeTickets:
-			return []any{types.NewXNumberFromInt(c.tickets.Open().Count())}
+			if c.tickets.Active() != nil {
+				return []any{types.NewXNumberFromInt(1)}
+			}
+			return []any{types.NewXNumberFromInt(0)}
 		case contactql.AttributeCreatedOn:
 			return []any{c.createdOn}
 		case contactql.AttributeLastSeenOn:

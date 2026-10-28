@@ -197,7 +197,7 @@ func (r *run) RootContext(env envs.Environment) map[string]types.XValue {
 		urns = core.ContextFunc(env, r.Contact().URNs().MapContext)
 		fields = core.Context(env, r.Contact().Fields())
 
-		if t := r.Contact().Tickets().LastOpen(); t != nil {
+		if t := r.Contact().Tickets().Active(); t != nil {
 			ticket = core.Context(env, t)
 		}
 	}

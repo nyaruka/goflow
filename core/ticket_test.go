@@ -104,3 +104,26 @@ func TestTickets(t *testing.T) {
 	assert.Equal(t, computers, ticket3.Topic())
 	assert.Nil(t, ticket3.Assignee())
 }
+
+func TestTicketListActive(t *testing.T) {
+	closed1 := core.NewTicket(core.NewTicketUUID(), core.TicketStatusClosed, nil, nil)
+	closed2 := core.NewTicket(core.NewTicketUUID(), core.TicketStatusClosed, nil, nil)
+	open1 := core.NewTicket(core.NewTicketUUID(), core.TicketStatusOpen, nil, nil)
+	open2 := core.NewTicket(core.NewTicketUUID(), core.TicketStatusOpen, nil, nil)
+	other := core.NewTicket(core.NewTicketUUID(), core.TicketStatus("pending"), nil, nil)
+
+	tcs := []struct {
+		tickets []*core.Ticket
+		active  *core.Ticket
+	}{
+		{nil, nil},
+		{[]*core.Ticket{closed1, closed2}, nil},
+		{[]*core.Ticket{closed1, open1, closed2}, open1},
+		{[]*core.Ticket{open1, open2}, open2}, // newest wins if there's somehow more than one
+		{[]*core.Ticket{closed1, other}, other},
+	}
+
+	for i, tc := range tcs {
+		assert.Equal(t, tc.active, core.NewTicketList(tc.tickets).Active(), "%d: active mismatch", i)
+	}
+}

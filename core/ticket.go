@@ -96,36 +96,14 @@ func (l *TicketList) Find(uuid TicketUUID) *Ticket {
 	return nil
 }
 
-func (l *TicketList) LastOpen() *Ticket {
+// Active returns the ticket that isn't closed, if any - a contact can have at most one
+func (l *TicketList) Active() *Ticket {
 	for i := len(l.all) - 1; i >= 0; i-- {
-		if l.all[i].status == TicketStatusOpen {
-			return l.all[i]
+		if t := l.all[i]; t.status != TicketStatusClosed {
+			return t
 		}
 	}
 	return nil
-}
-
-func (l *TicketList) Open() *TicketList {
-	open := make([]*Ticket, 0, len(l.all))
-	for _, t := range l.all {
-		if t.status == TicketStatusOpen {
-			open = append(open, t)
-		}
-	}
-	return NewTicketList(open)
-}
-
-func (l *TicketList) Count() int {
-	return len(l.all)
-}
-
-// ToXValue returns a representation of this object for use in expressions
-func (l *TicketList) ToXValue(env envs.Environment) types.XValue {
-	array := make([]types.XValue, len(l.all))
-	for i, val := range l.all {
-		array[i] = Context(env, val)
-	}
-	return types.NewXArray(array...)
 }
 
 func (l *TicketList) Marshal() []*TicketEnvelope {

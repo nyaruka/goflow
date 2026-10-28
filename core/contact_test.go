@@ -131,13 +131,13 @@ func TestContact(t *testing.T) {
 		"whatsapp":   core.NewURN("whatsapp", "235423721788", "", nil).ToXValue(env),
 	}), core.ContextFunc(env, contact.URNs().MapContext))
 
-	assert.Equal(t, 0, contact.Tickets().Open().Count())
+	assert.Nil(t, contact.Tickets().Active())
 
 	weather := sa.Topics().Get("472a7a73-96cb-4736-b567-056d987cc5b4")
 	ticket := core.OpenTicket(weather, nil)
 	contact.Tickets().Add(ticket)
 
-	assert.Equal(t, 1, contact.Tickets().Open().Count())
+	assert.Equal(t, ticket, contact.Tickets().Active())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
@@ -147,7 +147,7 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, "joe@example.com", clone.Email())
 	assert.Equal(t, i18n.Country("US"), clone.Country())
 	assert.Equal(t, android, clone.PreferredChannel())
-	assert.Equal(t, 0, clone.Tickets().Open().Count()) // not included
+	assert.Nil(t, clone.Tickets().Active()) // not included
 
 	// country can be resolved from tel urns if there's no preferred channel
 	clone.UpdatePreferredChannel(nil)
@@ -167,7 +167,7 @@ func TestContact(t *testing.T) {
 		"name":         types.NewXText("Joe Bloggs"),
 		"ref":          types.NewXText("A6YWQL"),
 		"status":       types.NewXText(string(contact.Status())),
-		"tickets":      contact.Tickets().ToXValue(env),
+		"tickets":      types.NewXArray(core.Context(env, ticket)),
 		"timezone":     types.NewXText("America/Bogota"),
 		"urn":          contact.URNs()[0].ToXValue(env),
 		"urns":         contact.URNs().ToXValue(env),
