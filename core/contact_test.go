@@ -741,4 +741,22 @@ func TestContactQuery(t *testing.T) {
 			assert.Equal(t, tc.result, result, "unexpected result for '%s'", tc.query)
 		}
 	}
+
+	// and a contact without an active ticket
+	noTicket, err := core.ReadContact(session.Assets(), []byte(`{"uuid": "a20f7948-e497-4a4a-be3c-b17f79f7ab7d", "status": "active", "created_on": "2020-07-22T13:50:30Z"}`), assets.PanicOnMissing)
+	require.NoError(t, err)
+
+	for q, expected := range map[string]bool{
+		`ticket = ""`:    true,
+		`ticket = open`:  false,
+		`ticket != open`: true,
+		`tickets > 0`:    false,
+		`tickets = 0`:    true,
+		`tickets = 2`:    false,
+		`tickets <= 1`:   true,
+	} {
+		parsed, err := parse.Query(session.Environment(), q, session.Assets())
+		require.NoError(t, err)
+		assert.Equal(t, expected, contactql.EvaluateQuery(session.Environment(), parsed, noTicket), "unexpected result for '%s'", q)
+	}
 }
