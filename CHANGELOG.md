@@ -1,3 +1,7 @@
+## v0.303.3 (2026-10-29)
+ * Rewrite every tickets condition to a ticket conditions and stop handling tickets in evaluation and ES
+ * Test tickets and ticket conditions against a contact without an active ticket
+
 ## v0.303.2 (2026-10-29)
  * Add pending ticket status and expose ticket status in expressions
  * Validate ticket status on read
