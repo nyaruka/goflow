@@ -674,6 +674,11 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				vals[i] = urn.Path
 			}
 			return vals
+		case contactql.AttributeTicket:
+			if t := c.tickets.Active(); t != nil {
+				return []any{string(t.Status())}
+			}
+			return nil
 		case contactql.AttributeTickets:
 			if c.tickets.Active() != nil {
 				return []any{types.NewXNumberFromInt(1)}

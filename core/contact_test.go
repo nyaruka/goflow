@@ -685,6 +685,12 @@ func TestContactQuery(t *testing.T) {
 		{`urn = ""`, envs.RedactionPolicyURNs, false, ""},
 		{`urn != ""`, envs.RedactionPolicyURNs, true, ""},
 
+		{`ticket = open`, envs.RedactionPolicyNone, true, ""},
+		{`ticket = pending`, envs.RedactionPolicyNone, false, ""},
+		{`ticket != pending`, envs.RedactionPolicyNone, true, ""},
+		{`ticket = ""`, envs.RedactionPolicyNone, false, ""},
+		{`ticket != ""`, envs.RedactionPolicyNone, true, ""},
+
 		{`tickets = 1`, envs.RedactionPolicyNone, true, ""},
 		{`tickets = 0`, envs.RedactionPolicyNone, false, ""},
 		{`tickets != 1`, envs.RedactionPolicyNone, false, ""},

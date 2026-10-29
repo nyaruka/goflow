@@ -17,7 +17,8 @@ const (
 	AttributeGroup      = "group"
 	AttributeFlow       = "flow"
 	AttributeHistory    = "history"
-	AttributeTickets    = "tickets"
+	AttributeTicket     = "ticket"
+	AttributeTickets    = "tickets" // deprecated in favor of ticket
 	AttributeCreatedOn  = "created_on"
 	AttributeLastSeenOn = "last_seen_on"
 )
@@ -34,6 +35,7 @@ var attributes = map[string]assets.FieldType{
 	AttributeGroup:      assets.FieldTypeText,
 	AttributeFlow:       assets.FieldTypeText,
 	AttributeHistory:    assets.FieldTypeText,
+	AttributeTicket:     assets.FieldTypeText,
 	AttributeTickets:    assets.FieldTypeNumber,
 	AttributeCreatedOn:  assets.FieldTypeDatetime,
 	AttributeLastSeenOn: assets.FieldTypeDatetime,
