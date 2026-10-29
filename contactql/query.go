@@ -275,18 +275,23 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 }
 
 func (c *Condition) Simplify() QueryNode {
-	// a contact has at most one active ticket so a deprecated tickets condition is either a check for that ticket
-	// or its absence, unless it matches both or neither, in which case we leave it alone
+	// a contact has at most one active ticket so a deprecated tickets condition is a check for that ticket or its
+	// absence, or if it matches both or neither, a condition that is always true or always false
 	if c.propType == PropertyTypeAttribute && c.propKey == AttributeTickets {
 		value, _ := c.ValueAsNumber()
 		matchesNone := numberComparison(types.XNumberZero, c.operator, value)
 		matchesOne := numberComparison(types.NewXNumberFromInt(1), c.operator, value)
+		isOpen := NewCondition(PropertyTypeAttribute, AttributeTicket, OpEqual, "open")
+		notOpen := NewCondition(PropertyTypeAttribute, AttributeTicket, OpNotEqual, "open")
 
-		if matchesOne && !matchesNone {
-			return NewCondition(PropertyTypeAttribute, AttributeTicket, OpEqual, "open")
-		} else if matchesNone && !matchesOne {
-			return NewCondition(PropertyTypeAttribute, AttributeTicket, OpNotEqual, "open")
+		if matchesOne && matchesNone {
+			return NewBoolCombination(BoolOperatorOr, isOpen, notOpen)
+		} else if matchesOne {
+			return isOpen
+		} else if matchesNone {
+			return notOpen
 		}
+		return NewBoolCombination(BoolOperatorAnd, isOpen, notOpen)
 	}
 
 	return c

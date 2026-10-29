@@ -2266,13 +2266,30 @@
         "redact_urns": false
     },
     {
-        "description": "tickets equality",
+        "description": "tickets equality normalized to always false",
         "query": "tickets = 2",
         "elastic": {
-            "match": {
-                "tickets": {
-                    "query": 2
-                }
+            "bool": {
+                "must": [
+                    {
+                        "term": {
+                            "ticket": {
+                                "value": "open"
+                            }
+                        }
+                    },
+                    {
+                        "bool": {
+                            "must_not": {
+                                "term": {
+                                    "ticket": {
+                                        "value": "open"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         },
         "redact_urns": false
@@ -2330,13 +2347,30 @@
         "redact_urns": false
     },
     {
-        "description": "tickets less than or equal",
+        "description": "tickets less than or equal normalized to always true",
         "query": "tickets <= 1",
         "elastic": {
-            "range": {
-                "tickets": {
-                    "lte": 1
-                }
+            "bool": {
+                "should": [
+                    {
+                        "term": {
+                            "ticket": {
+                                "value": "open"
+                            }
+                        }
+                    },
+                    {
+                        "bool": {
+                            "must_not": {
+                                "term": {
+                                    "ticket": {
+                                        "value": "open"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         },
         "redact_urns": false

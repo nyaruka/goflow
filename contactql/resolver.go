@@ -18,7 +18,7 @@ const (
 	AttributeFlow       = "flow"
 	AttributeHistory    = "history"
 	AttributeTicket     = "ticket"
-	AttributeTickets    = "tickets" // deprecated in favor of ticket
+	AttributeTickets    = "tickets" // deprecated, conditions on it are rewritten to ticket conditions
 	AttributeCreatedOn  = "created_on"
 	AttributeLastSeenOn = "last_seen_on"
 )

@@ -696,6 +696,8 @@ func TestContactQuery(t *testing.T) {
 		{`tickets != 1`, envs.RedactionPolicyNone, false, ""},
 		{`tickets != 0`, envs.RedactionPolicyNone, true, ""},
 		{`tickets > 0`, envs.RedactionPolicyNone, true, ""},
+		{`tickets = 2`, envs.RedactionPolicyNone, false, ""},
+		{`tickets <= 1`, envs.RedactionPolicyNone, true, ""},
 
 		{`age = 39`, envs.RedactionPolicyNone, true, ""},
 		{`age != 39`, envs.RedactionPolicyNone, false, ""},

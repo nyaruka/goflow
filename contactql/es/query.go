@@ -388,8 +388,6 @@ func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contac
 		}
 
 		return textAttributeQuery(cond, "ticket", strings.ToLower)
-	case contactql.AttributeTickets:
-		return numericalAttributeQuery(cond, "tickets")
 	default:
 		panic(fmt.Sprintf("unsupported contact attribute: %s", key))
 	}
@@ -440,27 +438,6 @@ func textAttributeQuery(c *contactql.Condition, name string, tx func(string) str
 		return elastic.Term(name, value)
 	case contactql.OpNotEqual:
 		return elastic.Not(elastic.Term(name, value))
-	default:
-		panic(fmt.Sprintf("unsupported %s attribute operator: %s", name, c.Operator()))
-	}
-}
-
-func numericalAttributeQuery(c *contactql.Condition, name string) elastic.Query {
-	value, _ := c.ValueAsNumber()
-
-	switch c.Operator() {
-	case contactql.OpEqual:
-		return elastic.Match(name, value)
-	case contactql.OpNotEqual:
-		return elastic.Not(elastic.Match(name, value))
-	case contactql.OpGreaterThan:
-		return elastic.GreaterThan(name, value)
-	case contactql.OpGreaterThanOrEqual:
-		return elastic.GreaterThanOrEqual(name, value)
-	case contactql.OpLessThan:
-		return elastic.LessThan(name, value)
-	case contactql.OpLessThanOrEqual:
-		return elastic.LessThanOrEqual(name, value)
 	default:
 		panic(fmt.Sprintf("unsupported %s attribute operator: %s", name, c.Operator()))
 	}
