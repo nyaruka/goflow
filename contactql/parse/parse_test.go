@@ -189,8 +189,10 @@ func TestParseQuery(t *testing.T) {
 		{text: `tickets < 1`, parsed: `ticket != "open"`, resolver: resolver},
 		{text: `tickets <= 0`, parsed: `ticket != "open"`, resolver: resolver},
 		{text: `tickets != 1`, parsed: `ticket != "open"`, resolver: resolver},
-		{text: `tickets > 1`, parsed: `tickets > 1`, resolver: resolver},   // matches no contact so left alone
-		{text: `tickets >= 0`, parsed: `tickets >= 0`, resolver: resolver}, // matches every contact so left alone
+		{text: `tickets > 1`, parsed: `ticket = "open" AND ticket != "open"`, resolver: resolver}, // matches no contact
+		{text: `tickets >= 0`, parsed: `ticket = "open" OR ticket != "open"`, resolver: resolver}, // matches every contact
+		{text: `name = bob OR tickets = 2`, parsed: `name = "bob" OR (ticket = "open" AND ticket != "open")`, resolver: resolver},
+		{text: `name = bob AND tickets <= 1`, parsed: `name = "bob" AND (ticket = "open" OR ticket != "open")`, resolver: resolver},
 		{text: `group = u-reporters`, parsed: `group = "u-reporters"`, resolver: resolver},
 		{text: `flow = registration`, parsed: `flow = "registration"`, resolver: resolver},
 		{text: `created_on = 20-02-2020`, parsed: `created_on = "20-02-2020"`, resolver: resolver},

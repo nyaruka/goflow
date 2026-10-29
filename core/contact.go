@@ -679,11 +679,6 @@ func (c *Contact) QueryProperty(env envs.Environment, key string, propType conta
 				return []any{string(t.Status())}
 			}
 			return nil
-		case contactql.AttributeTickets:
-			if c.tickets.Active() != nil {
-				return []any{types.NewXNumberFromInt(1)}
-			}
-			return []any{types.NewXNumberFromInt(0)}
 		case contactql.AttributeCreatedOn:
 			return []any{c.createdOn}
 		case contactql.AttributeLastSeenOn:
