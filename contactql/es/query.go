@@ -377,6 +377,17 @@ func (c *Converter) attributeCondition(resolver contactql.Resolver, cond *contac
 		default:
 			panic(fmt.Sprintf("unsupported flow attribute operator: %s", cond.Operator()))
 		}
+	case contactql.AttributeTicket:
+		// special case for set/unset
+		if (cond.Operator() == contactql.OpEqual || cond.Operator() == contactql.OpNotEqual) && value == "" {
+			query := elastic.Exists("ticket")
+			if cond.Operator() == contactql.OpEqual {
+				query = elastic.Not(query)
+			}
+			return query
+		}
+
+		return textAttributeQuery(cond, "ticket", strings.ToLower)
 	case contactql.AttributeTickets:
 		return numericalAttributeQuery(cond, "tickets")
 	default:

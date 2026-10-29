@@ -2214,6 +2214,58 @@
         "redact_urns": false
     },
     {
+        "description": "ticket is open",
+        "query": "ticket = OPEN",
+        "elastic": {
+            "term": {
+                "ticket": {
+                    "value": "open"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ticket is not pending",
+        "query": "ticket != pending",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "term": {
+                        "ticket": {
+                            "value": "pending"
+                        }
+                    }
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ticket is set",
+        "query": "ticket != \"\"",
+        "elastic": {
+            "exists": {
+                "field": "ticket"
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "ticket is not set",
+        "query": "ticket = \"\"",
+        "elastic": {
+            "bool": {
+                "must_not": {
+                    "exists": {
+                        "field": "ticket"
+                    }
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
         "description": "tickets equality",
         "query": "tickets = 2",
         "elastic": {
@@ -2226,52 +2278,52 @@
         "redact_urns": false
     },
     {
-        "description": "tickets inequality",
+        "description": "tickets inequality normalized to ticket",
         "query": "tickets != 0",
+        "elastic": {
+            "term": {
+                "ticket": {
+                    "value": "open"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "tickets greater than normalized to ticket",
+        "query": "tickets > 0",
+        "elastic": {
+            "term": {
+                "ticket": {
+                    "value": "open"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "tickets greater than or equal normalized to ticket",
+        "query": "tickets >= 1",
+        "elastic": {
+            "term": {
+                "ticket": {
+                    "value": "open"
+                }
+            }
+        },
+        "redact_urns": false
+    },
+    {
+        "description": "tickets less than normalized to ticket",
+        "query": "tickets < 1",
         "elastic": {
             "bool": {
                 "must_not": {
-                    "match": {
-                        "tickets": {
-                            "query": 0
+                    "term": {
+                        "ticket": {
+                            "value": "open"
                         }
                     }
-                }
-            }
-        },
-        "redact_urns": false
-    },
-    {
-        "description": "tickets greater than",
-        "query": "tickets > 0",
-        "elastic": {
-            "range": {
-                "tickets": {
-                    "gt": 0
-                }
-            }
-        },
-        "redact_urns": false
-    },
-    {
-        "description": "tickets greater than or equal",
-        "query": "tickets >= 1",
-        "elastic": {
-            "range": {
-                "tickets": {
-                    "gte": 1
-                }
-            }
-        },
-        "redact_urns": false
-    },
-    {
-        "description": "tickets less than",
-        "query": "tickets < 1",
-        "elastic": {
-            "range": {
-                "tickets": {
-                    "lt": 1
                 }
             }
         },

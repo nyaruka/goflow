@@ -255,6 +255,11 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 				if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
 					return NewQueryError(ErrInvalidStatus, fmt.Sprintf("'%s' is not a valid contact status", c.value)).WithExtra("value", c.value)
 				}
+			} else if c.propKey == AttributeTicket {
+				val := strings.ToLower(c.value)
+				if val != "pending" && val != "open" {
+					return NewQueryError(ErrInvalidTicketStatus, fmt.Sprintf("'%s' is not a valid ticket status", c.value)).WithExtra("value", c.value)
+				}
 			} else if c.propKey == AttributeLanguage {
 				if c.value != "" {
 					_, err := i18n.ParseLanguage(c.value)
@@ -270,6 +275,20 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 }
 
 func (c *Condition) Simplify() QueryNode {
+	// a contact has at most one active ticket so a deprecated tickets condition is either a check for that ticket
+	// or its absence, unless it matches both or neither, in which case we leave it alone
+	if c.propType == PropertyTypeAttribute && c.propKey == AttributeTickets {
+		value, _ := c.ValueAsNumber()
+		matchesNone := numberComparison(types.XNumberZero, c.operator, value)
+		matchesOne := numberComparison(types.NewXNumberFromInt(1), c.operator, value)
+
+		if matchesOne && !matchesNone {
+			return NewCondition(PropertyTypeAttribute, AttributeTicket, OpEqual, "open")
+		} else if matchesNone && !matchesOne {
+			return NewCondition(PropertyTypeAttribute, AttributeTicket, OpNotEqual, "open")
+		}
+	}
+
 	return c
 }
 

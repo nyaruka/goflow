@@ -27,6 +27,7 @@ func TestEvaluateQuery(t *testing.T) {
 		"ref":      []any{"A6YWQL"},
 		"name":     []any{"Bob Smithwick"},
 		"email":    []any{"bob@example.com"},
+		"ticket":   []any{"pending"},
 		"flow":     []any{"Registration"},
 		"tel":      []any{"+59313145145"},
 		"twitter":  []any{"bob_smith"},
@@ -78,6 +79,14 @@ func TestEvaluateQuery(t *testing.T) {
 		{query: `email ~ "gmail"`, result: false},
 		{query: `email = ""`, result: false},
 		{query: `email != ""`, result: true},
+
+		// ticket condition
+		{query: `ticket = pending`, result: true},
+		{query: `ticket = PENDING`, result: true},
+		{query: `ticket = open`, result: false},
+		{query: `ticket != open`, result: true},
+		{query: `ticket = ""`, result: false},
+		{query: `ticket != ""`, result: true},
 
 		{query: `flow = "Registration"`, result: true},
 		{query: `flow != "Registration"`, result: false},
