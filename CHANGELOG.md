@@ -1,3 +1,8 @@
+## v0.303.2 (2026-10-29)
+ * Add pending ticket status and expose ticket status in expressions
+ * Validate ticket status on read
+ * Add ticket contact query attribute and normalize tickets conditions to it
+
 ## v0.303.1 (2026-10-28)
  * Replace ticket list open helpers with a single active ticket lookup
 
