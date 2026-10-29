@@ -44,7 +44,7 @@ func (m *TicketReopen) Apply(ctx context.Context, eng flows.Engine, env envs.Env
 
 	ticket := contact.Tickets().Find(m.ticketUUID)
 
-	if ticket != nil && ticket.Status() != core.TicketStatusOpen {
+	if ticket != nil && ticket.Status() == core.TicketStatusClosed {
 		ticket.SetStatus(core.TicketStatusOpen)
 		log(events.NewTicketReopened(ticket.UUID()))
 		return true, nil

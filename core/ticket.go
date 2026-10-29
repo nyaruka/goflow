@@ -1,11 +1,19 @@
 package core
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/nyaruka/gocommon/uuids"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/envs"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
+
+func init() {
+	utils.RegisterValidatorAlias("ticket_status", "eq=pending|eq=open|eq=closed", func(validator.FieldError) string {
+		return "is not a valid ticket status"
+	})
+}
 
 // TicketUUID is the UUID of a ticket
 type TicketUUID uuids.UUID
@@ -16,6 +24,8 @@ func NewTicketUUID() TicketUUID { return TicketUUID(uuids.NewV7()) }
 type TicketStatus string
 
 const (
+	// TicketStatusPending is the status of a ticket that is active but not yet open
+	TicketStatusPending TicketStatus = "pending"
 	// TicketStatusOpen is the status of an open ticket
 	TicketStatusOpen TicketStatus = "open"
 	// TicketStatusClosed is the status of a closed ticket
@@ -59,6 +69,7 @@ func (t *Ticket) SetAssignee(user *User) { t.assignee = user }
 // Context returns the properties available in expressions
 //
 //	uuid:text -> the UUID of the ticket
+//	status:text -> the status of the ticket
 //	topic:any -> the topic of the ticket
 //	assignee:any -> the assignee of the ticket
 //
@@ -66,6 +77,7 @@ func (t *Ticket) SetAssignee(user *User) { t.assignee = user }
 func (t *Ticket) Context(env envs.Environment) map[string]types.XValue {
 	return map[string]types.XValue{
 		"uuid":     types.NewXText(string(t.uuid)),
+		"status":   types.NewXText(string(t.status)),
 		"topic":    Context(env, t.topic),
 		"assignee": Context(env, t.assignee),
 	}
@@ -122,7 +134,7 @@ func (l *TicketList) Marshal() []*TicketEnvelope {
 // against assets into a live ticket.
 type TicketEnvelope struct {
 	UUID     TicketUUID             `json:"uuid"                   validate:"required,uuid"`
-	Status   TicketStatus           `json:"status"` // TODO validate:"required,eq=open|eq=closed"`
+	Status   TicketStatus           `json:"status"                 validate:"omitempty,ticket_status"`
 	Topic    *assets.TopicReference `json:"topic"                  validate:"omitempty"`
 	Assignee *assets.UserReference  `json:"assignee,omitempty"     validate:"omitempty"`
 }

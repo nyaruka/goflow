@@ -726,7 +726,7 @@ type ContactEnvelope struct {
 	URNs       []urns.URN               `json:"urns,omitempty"      validate:"dive,urn"`
 	Groups     []*assets.GroupReference `json:"groups,omitempty"    validate:"dive"`
 	Fields     map[string]*Value        `json:"fields,omitempty"`
-	Tickets    []*TicketEnvelope        `json:"tickets,omitempty"`
+	Tickets    []*TicketEnvelope        `json:"tickets,omitempty"   validate:"dive"`
 }
 
 func (e *ContactEnvelope) Unmarshal(sa Assets, missing assets.MissingCallback) (*Contact, error) {

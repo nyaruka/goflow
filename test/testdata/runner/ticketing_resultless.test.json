@@ -129,7 +129,7 @@
                     "uuid": "01969b47-7ab3-76f8-89aa-1577771fa183"
                 },
                 {
-                    "body": "[{\"assignee\":null,\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-9729-57745fb13b06\"}]",
+                    "body": "[{\"assignee\":null,\"status\":\"open\",\"topic\":{\"name\":\"Weather\",\"uuid\":\"472a7a73-96cb-4736-b567-056d987cc5b4\"},\"uuid\":\"01969b47-5f5b-76f8-9729-57745fb13b06\"}]",
                     "created_on": "2025-05-04T12:31:18.123456789Z",
                     "subject": "New ticket: 01969b47-5f5b-76f8-9729-57745fb13b06",
                     "to": [
