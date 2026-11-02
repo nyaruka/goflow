@@ -471,7 +471,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			func() events.Event {
-				return events.NewTicketClosed(ticket.UUID())
+				return events.NewTicketClosed(ticket.UUID(), core.TicketOutcomeResolved)
 			},
 			`ticket_closed`,
 		},
@@ -545,7 +545,7 @@ func TestEventMarshaling(t *testing.T) {
 	}
 
 	// check setting of user reference field and non marshaling of steps
-	var evt events.Event = events.NewTicketClosed(ticket.UUID())
+	var evt events.Event = events.NewTicketClosed(ticket.UUID(), core.TicketOutcomeResolved)
 	evt.SetUser(user.Reference(), "ui")
 	evt.SetStep(&events.Step{Flow: assets.NewFlowReference("50c3706e-fedb-42c0-8eab-dda3335714b7", "Registration"), Node: "72ecb927-db78-4acf-b947-db2f29bf6662"})
 

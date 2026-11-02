@@ -289,6 +289,12 @@ func TestReadModifier(t *testing.T) {
 	_, err = modifiers.Read(sessionAssets, []byte(`{"type": "do_the_foo", "foo": "bar"}`), missing)
 	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 
+	// error if ticket close outcome is missing or invalid
+	_, err = modifiers.Read(sessionAssets, []byte(`{"type": "ticket_close", "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5"}`), missing)
+	assert.EqualError(t, err, "field 'outcome' is required")
+	_, err = modifiers.Read(sessionAssets, []byte(`{"type": "ticket_close", "ticket_uuid": "01969b47-0583-76f8-ae7f-f8b243c49ff5", "outcome": "spam"}`), missing)
+	assert.EqualError(t, err, "field 'outcome' is not a valid ticket outcome")
+
 	// no-modifier error and a missing asset record if we load a channel modifier for a channel that no longer exists
 	mod, err := modifiers.Read(sessionAssets, []byte(`{"type": "channel", "channel": {"uuid": "8632b9f0-ac2f-40ad-808f-77781a444dc9", "name": "Vonage Channel"}}`), missing)
 	assert.Equal(t, modifiers.ErrNoModifier, err)

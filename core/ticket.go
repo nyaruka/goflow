@@ -13,6 +13,9 @@ func init() {
 	utils.RegisterValidatorAlias("ticket_status", "eq=pending|eq=open|eq=closed", func(validator.FieldError) string {
 		return "is not a valid ticket status"
 	})
+	utils.RegisterValidatorAlias("ticket_outcome", "eq=resolved|eq=idle", func(validator.FieldError) string {
+		return "is not a valid ticket outcome"
+	})
 }
 
 // TicketUUID is the UUID of a ticket
@@ -30,6 +33,16 @@ const (
 	TicketStatusOpen TicketStatus = "open"
 	// TicketStatusClosed is the status of a closed ticket
 	TicketStatusClosed TicketStatus = "closed"
+)
+
+// TicketOutcome is how a closed ticket ended
+type TicketOutcome string
+
+const (
+	// TicketOutcomeResolved is the outcome of a ticket whose issue was resolved
+	TicketOutcomeResolved TicketOutcome = "resolved"
+	// TicketOutcomeIdle is the outcome of a ticket closed because it had no activity
+	TicketOutcomeIdle TicketOutcome = "idle"
 )
 
 // Ticket is a ticket in a ticketing system

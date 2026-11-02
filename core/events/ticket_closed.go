@@ -15,20 +15,23 @@ const TypeTicketClosed string = "ticket_closed"
 //	  "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	  "type": "ticket_closed",
 //	  "created_on": "2006-01-02T15:04:05Z",
-//	  "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2"
+//	  "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
+//	  "outcome": "resolved"
 //	}
 //
 // @event ticket_closed
 type TicketClosed struct {
 	BaseEvent
 
-	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID    `json:"ticket_uuid"       validate:"required,uuid"`
+	Outcome    core.TicketOutcome `json:"outcome,omitempty" validate:"omitempty,ticket_outcome"`
 }
 
 // NewTicketClosed returns a new ticket closed event
-func NewTicketClosed(ticketUUID core.TicketUUID) *TicketClosed {
+func NewTicketClosed(ticketUUID core.TicketUUID, outcome core.TicketOutcome) *TicketClosed {
 	return &TicketClosed{
 		BaseEvent:  NewBaseEvent(TypeTicketClosed),
 		TicketUUID: ticketUUID,
+		Outcome:    outcome,
 	}
 }
