@@ -285,7 +285,7 @@ func TestTriggerMarshaling(t *testing.T) {
 			"msg",
 		},
 		{
-			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket.UUID()), ticket).Build(),
+			triggers.NewBuilder(flow).TicketClosed(events.NewTicketClosed(ticket.UUID(), core.TicketOutcomeResolved), ticket).Build(),
 			"ticket_closed",
 		},
 	}

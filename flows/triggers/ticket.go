@@ -27,7 +27,8 @@ const TypeTicket string = "ticket"
 //	    "uuid": "0197b335-6ded-79a4-95a6-3af85b57f108",
 //	    "type": "ticket_closed",
 //	    "created_on": "2006-01-02T15:04:05Z",
-//	    "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2"
+//	    "ticket_uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",
+//	    "outcome": "resolved"
 //	  },
 //	  "ticket": {
 //	    "uuid": "019905d4-5f7b-71b8-bcb8-6a68de2d91d2",

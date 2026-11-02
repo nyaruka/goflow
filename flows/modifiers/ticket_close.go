@@ -24,13 +24,15 @@ type TicketClose struct {
 	baseModifier
 
 	ticketUUID core.TicketUUID
+	outcome    core.TicketOutcome
 }
 
 // NewTicketClose creates a new close modifier
-func NewTicketClose(ticketUUID core.TicketUUID) *TicketClose {
+func NewTicketClose(ticketUUID core.TicketUUID, outcome core.TicketOutcome) *TicketClose {
 	return &TicketClose{
 		baseModifier: newBaseModifier(TypeTicketClose),
 		ticketUUID:   ticketUUID,
+		outcome:      outcome,
 	}
 }
 
@@ -40,7 +42,7 @@ func (m *TicketClose) Apply(ctx context.Context, eng flows.Engine, env envs.Envi
 
 	if ticket != nil && ticket.Status() != core.TicketStatusClosed {
 		ticket.SetStatus(core.TicketStatusClosed)
-		log(events.NewTicketClosed(ticket.UUID()))
+		log(events.NewTicketClosed(ticket.UUID(), m.outcome))
 		return true, nil
 	}
 	return false, nil
@@ -55,7 +57,8 @@ var _ flows.Modifier = (*TicketClose)(nil)
 type ticketCloseEnvelope struct {
 	utils.TypedEnvelope
 
-	TicketUUID core.TicketUUID `json:"ticket_uuid" validate:"required,uuid"`
+	TicketUUID core.TicketUUID    `json:"ticket_uuid" validate:"required,uuid"`
+	Outcome    core.TicketOutcome `json:"outcome"     validate:"required,ticket_outcome"`
 }
 
 func readTicketClose(sa flows.SessionAssets, data []byte, missing assets.MissingCallback) (flows.Modifier, error) {
@@ -64,12 +67,13 @@ func readTicketClose(sa flows.SessionAssets, data []byte, missing assets.Missing
 		return nil, err
 	}
 
-	return NewTicketClose(e.TicketUUID), nil
+	return NewTicketClose(e.TicketUUID, e.Outcome), nil
 }
 
 func (m *TicketClose) MarshalJSON() ([]byte, error) {
 	return jsonx.Marshal(&ticketCloseEnvelope{
 		TypedEnvelope: utils.TypedEnvelope{Type: m.Type()},
 		TicketUUID:    m.ticketUUID,
+		Outcome:       m.outcome,
 	})
 }
