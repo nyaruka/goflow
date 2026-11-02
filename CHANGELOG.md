@@ -1,3 +1,6 @@
+## v0.304.0 (2026-11-02)
+ * Add outcome to ticket_close modifier and ticket_closed event
+
 ## v0.303.3 (2026-10-29)
  * Rewrite every tickets condition to a ticket conditions and stop handling tickets in evaluation and ES
  * Test tickets and ticket conditions against a contact without an active ticket
