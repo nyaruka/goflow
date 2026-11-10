@@ -1,3 +1,10 @@
+## v0.304.1 (2026-11-10)
+ * Resolve the email service before evaluating anything in send_email
+ * Resolve webhook and model services before evaluating templates
+ * Record resthook payload even when the webhook service is unavailable
+ * Stop the review workflow adding Claude Code attribution
+ * Update dependencies
+
 ## v0.304.0 (2026-11-02)
  * Add outcome to ticket_close modifier and ticket_closed event
 
