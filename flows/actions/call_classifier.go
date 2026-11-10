@@ -107,13 +107,13 @@ func (a *CallClassifier) call(ctx context.Context, run flows.Run, log events.Eve
 		return nil
 	}
 
-	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
-
 	svc, err := run.Session().Engine().Services().Model(model)
 	if err != nil {
 		log(events.NewRawError(err))
 		return nil
 	}
+
+	input, _ := run.EvaluateTemplate(ctx, a.Input, log)
 
 	start := dates.Now()
 

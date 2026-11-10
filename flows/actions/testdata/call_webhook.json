@@ -981,5 +981,39 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Single error event and nothing evaluated if there is no webhook service",
+        "service_error": "no service for you",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "GET",
+            "url": "@(\"\")"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "no service for you"
+            }
+        ],
+        "webhook": null,
+        "locals_after": {},
+        "templates": [
+            "@(\"\")"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

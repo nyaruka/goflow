@@ -703,5 +703,62 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Single error event and nothing evaluated if there is no model service",
+        "service_error": "no service for you",
+        "action": {
+            "type": "call_classifier",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "model": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "input": "@input.text@(1 / 0)",
+            "options": [
+                {
+                    "name": "Flights",
+                    "description": "Booking or changing flights"
+                },
+                {
+                    "name": "Hotels"
+                }
+            ],
+            "required_confidence": "none",
+            "output_local": "_classification"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "no service for you"
+            }
+        ],
+        "locals_after": {
+            "_classification": "<ERROR>"
+        },
+        "templates": [
+            "@input.text@(1 / 0)"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_classification"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

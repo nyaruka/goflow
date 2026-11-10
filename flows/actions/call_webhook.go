@@ -107,6 +107,12 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 	// left holding the result of a previous call
 	run.SetWebhook(nil)
 
+	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
+	if err != nil {
+		log(events.NewRawError(err))
+		return nil
+	}
+
 	url, _ := run.EvaluateTemplate(ctx, a.URL, log)
 	url = strings.TrimSpace(url)
 
@@ -145,24 +151,18 @@ func (a *CallWebhook) Execute(ctx context.Context, run flows.Run, step flows.Ste
 		return nil
 	}
 
-	call := a.call(ctx, run, step, url, method, headers, body, log)
+	call := a.call(ctx, run, step, svc, url, method, headers, body, log)
 	run.SetWebhook(call)
 
 	return nil
 }
 
 // Execute runs this action
-func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, url, method string, headers map[string]string, body string, log events.EventLogger) *flows.WebhookCall {
+func (a *CallWebhook) call(ctx context.Context, run flows.Run, step flows.Step, svc flows.WebhookService, url, method string, headers map[string]string, body string, log events.EventLogger) *flows.WebhookCall {
 	// build our request
 	req, err := httpx.NewRequest(ctx, method, url, strings.NewReader(body), headers)
 	if err != nil {
 		// in theory this can't happen because we're already validating the method and the URL.. but just in case
-		log(events.NewRawError(err))
-		return nil
-	}
-
-	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
-	if err != nil {
 		log(events.NewRawError(err))
 		return nil
 	}

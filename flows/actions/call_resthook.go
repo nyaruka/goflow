@@ -99,6 +99,12 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 		return nil
 	}
 
+	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
+	if err != nil {
+		log(events.NewRawError(err))
+		return nil
+	}
+
 	// build our payload (not truncated)
 	payload, _ := run.EvaluateTemplateText(ctx, ResthookPayload, nil, false, log)
 
@@ -121,12 +127,6 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 		}
 
 		req.Header.Add("Content-Type", "application/json")
-
-		svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
-		if err != nil {
-			log(events.NewRawError(err))
-			return nil
-		}
 
 		call, err := svc.Call(req)
 

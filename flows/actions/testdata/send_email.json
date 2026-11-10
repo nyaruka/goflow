@@ -390,7 +390,7 @@
     },
     {
         "description": "Single error event and nothing evaluated if there is no email service",
-        "no_email": "workspace has no SMTP settings for sending email",
+        "service_error": "workspace has no SMTP settings for sending email",
         "action": {
             "type": "send_email",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
