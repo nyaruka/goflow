@@ -387,5 +387,47 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Single error event and nothing evaluated if there is no email service",
+        "no_email": "workspace has no SMTP settings for sending email",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "@(\"\")"
+            ],
+            "subject": "Hi there@(1 / 0)",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "workspace has no SMTP settings for sending email"
+            }
+        ],
+        "locals_after": {},
+        "templates": [
+            "@(\"\")",
+            "Hi there@(1 / 0)",
+            "So I was thinking..."
+        ],
+        "localizables": [
+            "Hi there@(1 / 0)",
+            "So I was thinking..."
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

@@ -53,6 +53,13 @@ func NewSendEmail(uuid flows.ActionUUID, addresses []string, subject string, bod
 
 // Execute creates the email events
 func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step, log events.EventLogger) error {
+	// without a service nothing can be sent, so the only error worth reporting is that
+	svc, err := run.Session().Engine().Services().Email(run.Session().Assets())
+	if err != nil {
+		log(events.NewRawError(err))
+		return nil
+	}
+
 	localizedSubject, _ := run.GetText(uuids.UUID(a.UUID()), "subject", a.Subject)
 	evaluatedSubject, _ := run.EvaluateTemplate(ctx, localizedSubject, log)
 
@@ -89,12 +96,6 @@ func (a *SendEmail) Execute(ctx context.Context, run flows.Run, step flows.Step,
 
 	// nothing to do if there are no addresses
 	if len(evaluatedAddresses) == 0 {
-		return nil
-	}
-
-	svc, err := run.Session().Engine().Services().Email(run.Session().Assets())
-	if err != nil {
-		log(events.NewRawError(err))
 		return nil
 	}
 
