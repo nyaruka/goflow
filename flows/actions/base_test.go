@@ -85,6 +85,7 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 		HTTPMocks    map[string][]*httpx.MockResponse `json:"http_mocks,omitempty"`
 		ModelMocks   []*services.MockModelResult      `json:"model_mocks,omitempty"`
 		SMTPError    string                           `json:"smtp_error,omitempty"`
+		ServiceError string                           `json:"service_error,omitempty"`
 		Contact      json.RawMessage                  `json:"contact,omitempty"`
 		HasTicket    bool                             `json:"has_ticket,omitempty"`
 		NoInput      bool                             `json:"no_input,omitempty"`
@@ -233,11 +234,22 @@ func testActionType(t *testing.T, assetsJSON []byte, typeName string) {
 				"categorize": template.Must(template.New("").Parse("Categorize the following text into one of the following categories and only return that category or <CANT> if you can't: {{ .arg1 }}")),
 			}).
 			WithEmailServiceFactory(func(flows.SessionAssets) (flows.EmailService, error) {
+				if tc.ServiceError != "" {
+					return nil, errors.New(tc.ServiceError)
+				}
 				return smtp.NewService("smtp://nyaruka:pass123@mail.temba.io?from=flows@temba.io", nil)
 			}).
 			WithWebhookLimits(256*1024, 100000).
-			WithWebhookServiceFactory(webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})).
+			WithWebhookServiceFactory(func(e flows.Engine, sa flows.SessionAssets) (flows.WebhookService, error) {
+				if tc.ServiceError != "" {
+					return nil, errors.New(tc.ServiceError)
+				}
+				return webhooks.NewServiceFactory(map[string]string{"User-Agent": "goflow-testing"}, []string{"graph.facebook.com"})(e, sa)
+			}).
 			WithModelServiceFactory(func(l *core.Model) (flows.ModelService, error) {
+				if tc.ServiceError != "" {
+					return nil, errors.New(tc.ServiceError)
+				}
 				return model, nil
 			}).
 			WithAirtimeServiceFactory(func(flows.SessionAssets) (flows.AirtimeService, error) {

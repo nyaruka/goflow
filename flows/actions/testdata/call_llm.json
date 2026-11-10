@@ -171,5 +171,54 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Single error event and nothing evaluated if there is no model service",
+        "service_error": "no service for you",
+        "action": {
+            "type": "call_llm",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "llm": {
+                "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                "name": "Claude"
+            },
+            "instructions": "Categorize the following text as positive or negative",
+            "input": "@input.text@(1 / 0)",
+            "output_local": "_llm_output"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "text": "no service for you"
+            }
+        ],
+        "locals_after": {
+            "_llm_output": "<ERROR>"
+        },
+        "templates": [
+            "Categorize the following text as positive or negative",
+            "@input.text@(1 / 0)"
+        ],
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [
+                {
+                    "uuid": "51ade705-8338-40a9-8a77-37657a936966",
+                    "name": "Claude",
+                    "type": "llm"
+                }
+            ],
+            "locals": [
+                "_llm_output"
+            ],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]

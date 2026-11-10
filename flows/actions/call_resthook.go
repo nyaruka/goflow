@@ -110,6 +110,17 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 	// regardless of what subscriber calls we make, we need to record the payload that would be sent
 	log(events.NewResthookCalled(a.Resthook, []byte(payload)))
 
+	// the payload is recorded without needing the service, so only subscriber calls depend on it
+	if len(resthook.Subscribers()) == 0 {
+		return nil
+	}
+
+	svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
+	if err != nil {
+		log(events.NewRawError(err))
+		return nil
+	}
+
 	// make a call to each subscriber URL
 	calls := make([]*httpx.Trace, 0, len(resthook.Subscribers()))
 
@@ -121,12 +132,6 @@ func (a *CallResthook) Execute(ctx context.Context, run flows.Run, step flows.St
 		}
 
 		req.Header.Add("Content-Type", "application/json")
-
-		svc, err := run.Session().Engine().Services().Webhook(run.Session().Assets())
-		if err != nil {
-			log(events.NewRawError(err))
-			return nil
-		}
 
 		call, err := svc.Call(req)
 

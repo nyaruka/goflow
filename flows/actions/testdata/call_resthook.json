@@ -806,5 +806,177 @@
             "parent_refs": [],
             "issues": []
         }
+    },
+    {
+        "description": "Payload still recorded but no calls made if there is no webhook service",
+        "service_error": "no service for you",
+        "action": {
+            "type": "call_resthook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "resthook": "new-registration"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "resthook_called",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "resthook": "new-registration",
+                "payload": {
+                    "channel": null,
+                    "contact": {
+                        "language": "eng",
+                        "name": "Ryan Lewis",
+                        "urn": "tel:+12065550100",
+                        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+                    },
+                    "flow": {
+                        "name": "Action Tester",
+                        "revision": 123,
+                        "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a"
+                    },
+                    "input": {
+                        "attachments": [
+                            {
+                                "content_type": "image/jpeg",
+                                "url": "http://http://s3.amazon.com/bucket/test.jpg"
+                            },
+                            {
+                                "content_type": "audio/mp3",
+                                "url": "http://s3.amazon.com/bucket/test.mp3"
+                            }
+                        ],
+                        "channel": null,
+                        "created_on": "2025-05-04T12:30:46.123456Z",
+                        "text": "Hi everybody",
+                        "type": "msg",
+                        "urn": {
+                            "display": "(206) 555-0100",
+                            "path": "+12065550100",
+                            "scheme": "tel"
+                        },
+                        "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+                    },
+                    "path": [
+                        {
+                            "arrived_on": "2025-05-04T12:30:54.123456Z",
+                            "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                        }
+                    ],
+                    "results": {},
+                    "run": {
+                        "created_on": "2025-05-04T12:30:50.123456Z",
+                        "uuid": "01969b47-1cf3-76f8-92ed-42cbd11a03fd"
+                    }
+                }
+            },
+            {
+                "uuid": "01969b47-384b-76f8-a7eb-cc4cc9ec3e6b",
+                "type": "error",
+                "created_on": "2025-05-04T12:30:59.123456789Z",
+                "text": "no service for you"
+            }
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [],
+            "parent_refs": [],
+            "issues": []
+        },
+        "webhook": null
+    },
+    {
+        "description": "Webhook service not needed if there are no subscribers",
+        "service_error": "no service for you",
+        "action": {
+            "type": "call_resthook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "resthook": "unpopular-resthook",
+            "result_name": "My Result"
+        },
+        "events": [
+            {
+                "uuid": "01969b47-307b-76f8-b774-0a98171a0712",
+                "type": "resthook_called",
+                "created_on": "2025-05-04T12:30:57.123456789Z",
+                "resthook": "unpopular-resthook",
+                "payload": {
+                    "channel": null,
+                    "contact": {
+                        "language": "eng",
+                        "name": "Ryan Lewis",
+                        "urn": "tel:+12065550100",
+                        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+                    },
+                    "flow": {
+                        "name": "Action Tester",
+                        "revision": 123,
+                        "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a"
+                    },
+                    "input": {
+                        "attachments": [
+                            {
+                                "content_type": "image/jpeg",
+                                "url": "http://http://s3.amazon.com/bucket/test.jpg"
+                            },
+                            {
+                                "content_type": "audio/mp3",
+                                "url": "http://s3.amazon.com/bucket/test.mp3"
+                            }
+                        ],
+                        "channel": null,
+                        "created_on": "2025-05-04T12:30:46.123456Z",
+                        "text": "Hi everybody",
+                        "type": "msg",
+                        "urn": {
+                            "display": "(206) 555-0100",
+                            "path": "+12065550100",
+                            "scheme": "tel"
+                        },
+                        "uuid": "01969b47-0583-76f8-924e-9de1a11831b3"
+                    },
+                    "path": [
+                        {
+                            "arrived_on": "2025-05-04T12:30:54.123456Z",
+                            "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                        }
+                    ],
+                    "results": {},
+                    "run": {
+                        "created_on": "2025-05-04T12:30:50.123456Z",
+                        "uuid": "01969b47-1cf3-76f8-92ed-42cbd11a03fd"
+                    }
+                }
+            }
+        ],
+        "locals_after": {},
+        "inspection": {
+            "counts": {
+                "languages": 0,
+                "nodes": 1
+            },
+            "dependencies": [],
+            "locals": [],
+            "results": [
+                {
+                    "key": "my_result",
+                    "name": "My Result",
+                    "categories": [
+                        "Success",
+                        "Failure"
+                    ],
+                    "node_uuids": [
+                        "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+                    ]
+                }
+            ],
+            "parent_refs": [],
+            "issues": []
+        }
     }
 ]
