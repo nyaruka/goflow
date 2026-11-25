@@ -368,13 +368,13 @@ func TestParsingErrors(t *testing.T) {
 		},
 		{
 			query:    `id = 1--`,
-			errMsg:   "can't convert '1--' to a number",
+			errMsg:   "'1--' is not a valid contact ID",
 			errCode:  "invalid_number",
 			errExtra: map[string]any{"value": "1--"},
 		},
 		{
 			query:    `id != 1.5`,
-			errMsg:   "can't convert '1.5' to a number",
+			errMsg:   "'1.5' is not a valid contact ID",
 			errCode:  "invalid_number",
 			errExtra: map[string]any{"value": "1.5"},
 		},
