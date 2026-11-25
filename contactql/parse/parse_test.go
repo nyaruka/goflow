@@ -367,6 +367,18 @@ func TestParsingErrors(t *testing.T) {
 			errExtra: map[string]any{"value": "1e200"},
 		},
 		{
+			query:    `id = 1--`,
+			errMsg:   "can't convert '1--' to a number",
+			errCode:  "invalid_number",
+			errExtra: map[string]any{"value": "1--"},
+		},
+		{
+			query:    `id != 1.5`,
+			errMsg:   "can't convert '1.5' to a number",
+			errCode:  "invalid_number",
+			errExtra: map[string]any{"value": "1.5"},
+		},
+		{
 			query:    `dob = AB`,
 			errMsg:   "can't convert 'AB' to a date",
 			errCode:  "invalid_date",

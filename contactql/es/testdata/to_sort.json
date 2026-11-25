@@ -170,6 +170,6 @@
     {
         "description": "unknown field",
         "sort_by": "foo",
-        "error": "no such field with key: foo"
+        "error": "can't resolve 'foo' to attribute or field"
     }
 ]

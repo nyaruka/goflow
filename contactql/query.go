@@ -250,6 +250,11 @@ func (c *Condition) validate(env envs.Environment, resolver Resolver) error {
 				if flow == nil {
 					return NewQueryError(ErrInvalidFlow, fmt.Sprintf("'%s' is not a valid flow name", c.value)).WithExtra("value", c.value)
 				}
+			} else if c.propKey == AttributeID {
+				// IDs are integers in the index, so anything else would make for an invalid search
+				if _, err := strconv.ParseInt(c.value, 10, 64); err != nil {
+					return NewQueryError(ErrInvalidNumber, fmt.Sprintf("can't convert '%s' to a number", c.value)).WithExtra("value", c.value)
+				}
 			} else if c.propKey == AttributeStatus {
 				val := strings.ToLower(c.value)
 				if val != "active" && val != "blocked" && val != "stopped" && val != "archived" {
