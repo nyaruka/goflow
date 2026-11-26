@@ -1,3 +1,6 @@
+## v0.304.2 (2026-11-26)
+ * Reject non-integer id values and unknown sort keys as query errors (#1658)
+
 ## v0.304.1 (2026-11-10)
  * Resolve the email service before evaluating anything in send_email
  * Resolve webhook and model services before evaluating templates
