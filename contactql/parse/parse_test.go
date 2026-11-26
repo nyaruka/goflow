@@ -367,6 +367,18 @@ func TestParsingErrors(t *testing.T) {
 			errExtra: map[string]any{"value": "1e200"},
 		},
 		{
+			query:    `id = 1--`,
+			errMsg:   "'1--' is not a valid contact ID",
+			errCode:  "invalid_number",
+			errExtra: map[string]any{"value": "1--"},
+		},
+		{
+			query:    `id != 1.5`,
+			errMsg:   "'1.5' is not a valid contact ID",
+			errCode:  "invalid_number",
+			errExtra: map[string]any{"value": "1.5"},
+		},
+		{
 			query:    `dob = AB`,
 			errMsg:   "can't convert 'AB' to a date",
 			errCode:  "invalid_date",

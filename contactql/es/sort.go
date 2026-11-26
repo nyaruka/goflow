@@ -39,7 +39,7 @@ func (c *Converter) Sort(sortBy string, resolver contactql.Resolver) (elastic.So
 	// we are sorting by a custom field
 	field := resolver.ResolveField(property)
 	if field == nil {
-		return nil, fmt.Errorf("no such field with key: %s", property)
+		return nil, contactql.NewQueryError(contactql.ErrUnknownProperty, fmt.Sprintf("can't resolve '%s' to attribute or field", property)).WithExtra("property", property)
 	}
 
 	var key string

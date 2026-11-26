@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/gocommon/jsonx"
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/contactql/es"
 	"github.com/nyaruka/goflow/test"
 
@@ -36,6 +37,11 @@ func TestElasticSort(t *testing.T) {
 
 		if tc.Error != "" {
 			assert.EqualError(t, err, tc.Error)
+
+			var qerr *contactql.QueryError
+			if assert.ErrorAs(t, err, &qerr, "expected query error for %s", tc.Description) {
+				assert.Equal(t, contactql.ErrUnknownProperty, qerr.Code())
+			}
 		} else {
 			encoded := jsonx.MustMarshal(sort)
 			test.AssertEqualJSON(t, []byte(tc.Elastic), encoded, "field sort mismatch for %s", tc.Description)
